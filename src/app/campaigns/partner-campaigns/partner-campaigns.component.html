@@ -170,31 +170,49 @@
                         </a>
                         <span>
                           <ng-container *ngIf="campaign.allowRedistribution">
+                            <!----XNFR-125---->
+                            <ng-container *ngIf="campaign?.oneClickLaunch">
+                              <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
+                                data-placement="top" title="One Click Launch" data-rel="fancybox-button">
+                                  <i class="fa fa-hand-pointer-o"></i>
+                              </a>
+                              <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
+                                  data-placement="top" title="One Click Launch" data-rel="fancybox-button">
+                                  <i class="fa fa-hand-pointer-o"></i>
+                              </a>
+                            </ng-container>
+                            <!----XNFR-125---->
                             <a *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended"
-                            (click)="reDistributeCampaign(campaign)"
-                            data-toggle="tooltip" data-placement="top"
-                            title="Redistribute Campaign" data-rel="fancybox-button">
-                            <i class="fa fa-clone" aria-hidden="true"></i>
+                                (click)="reDistributeCampaign(campaign)"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Redistribute Campaign" data-rel="fancybox-button">
+                                <i class="fa fa-clone" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended"
-                            data-toggle="tooltip" data-placement="top"
-                            title="Campaign can not be further redistributed" data-rel="fancybox-button">
-                            <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
+                                data-toggle="tooltip" data-placement="top"
+                                title="Campaign can not be further redistributed" data-rel="fancybox-button">
+                                <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
-                            (click)="reDistributeCampaign(campaign)"
-                            data-toggle="tooltip" data-placement="top"
-                            title="Redistribute Campaign" data-rel="fancybox-button">
-                            <i class="fa fa-clone" aria-hidden="true"></i>
+                                (click)="reDistributeCampaign(campaign)"
+                                data-toggle="tooltip" data-placement="top"
+                                title="Redistribute Campaign" data-rel="fancybox-button">
+                                <i class="fa fa-clone" aria-hidden="true"></i>
                             </a>
                             <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"
-                              data-toggle="tooltip" data-placement="top"
-                              title="Not available for cancelled event"
-                              data-rel="fancybox-button">
-                            <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
+                                data-toggle="tooltip" data-placement="top"
+                                title="Not available for cancelled event"
+                                data-rel="fancybox-button">
+                                <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
                             </a>
                           </ng-container>
                           <ng-container *ngIf="!campaign.allowRedistribution">
+                            <!----XNFR-125---->
+                            <a data-toggle="tooltip" data-placement="top"
+                              title="{{campaign?.redistibuteToolTipMessage}}"
+                              data-rel="fancybox-button">
+                            <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+                            </a>
                             <a data-toggle="tooltip" data-placement="top"
                               title="{{campaign?.redistibuteToolTipMessage}}"
                               data-rel="fancybox-button">
@@ -235,7 +253,9 @@
                             </a>
                           </ng-container>
                         </span>
-                        <a class="hidden"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        <a class="hidden">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
                       </div>
                     </td>
                   </tr>
@@ -246,6 +266,7 @@
           <div *ngIf="totalRecords <= 0 && this.modulesDisplayType.isListView" class="alert alert-info">
             <strong translate>No campaigns found</strong>
           </div>
+          <!---Grid View-->
           <div class="tab-pane active" *ngIf="this.modulesDisplayType.isGridView">
             <div class="margin-top-10">
               <div class="row mix-grid p10">
@@ -307,12 +328,20 @@
                         <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                         <i class="fa fa-eye mr5" aria-hidden="true"></i>
                         </a>
+                        
                         <ng-container *ngIf="campaign.allowRedistribution">
                           <!----XNFR-125---->
-                          <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
-                            data-placement="top" title="One Click Launch" data-rel="fancybox-button">
-                            <i class="fa fa-hand-pointer-o"></i>
-                          </a>
+                          <ng-container *ngIf="campaign?.oneClickLaunch">
+                            <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
+                              data-placement="top" title="One Click Launch" data-rel="fancybox-button">
+                                <i class="fa fa-hand-pointer-o"></i>
+                            </a>
+                            <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
+                                data-placement="top" title="One Click Launch" data-rel="fancybox-button">
+                                <i class="fa fa-hand-pointer-o"></i>
+                            </a>
+                          </ng-container>
+                          <!----XNFR-125---->
                           <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" (click)="reDistributeCampaign(campaign)" 
                             data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
                           <i class="fa fa-clone"></i>
@@ -330,7 +359,7 @@
                         </ng-container>
                         <ng-container *ngIf="!campaign.allowRedistribution">
                           <!----XNFR-125---->
-                          <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
+                          <a *ngIf="campaign?.oneClickLaunch" data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
                             <i class="fa fa-hand-pointer-o cancelled-event"></i>
                           </a>
                           <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
@@ -361,10 +390,6 @@
                             <i class="fa fa-history" aria-hidden="true"></i>
                             </a>
                         </ng-container>
-                        <!-- <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
-                          data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
-                          <i class="fa fa-download"></i>
-                          </a> -->
                       </div>
                     </div>
                   </div>
