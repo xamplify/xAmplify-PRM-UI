@@ -1174,8 +1174,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
     /********XNFR-125***********/
-    isOneClickCampaignLaunched(campaignId:number){
-        let url = this.URL + "campaign/isOneClickCampaignLaunched/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+    isOneClickLaunchCampaignRedistributed(campaignId:number){
+        let url = this.URL + "campaign/isOneClickLaunchCampaignRedistributed/"+campaignId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

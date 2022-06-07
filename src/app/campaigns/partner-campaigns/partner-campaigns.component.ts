@@ -637,11 +637,15 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   oneClickCampaignLaunched(campaignId:number){
     this.oneClickLaunchParentCampaignId = campaignId;
     this.ngxloading = true;
-    this.campaignService.isOneClickCampaignLaunched(campaignId).
+    this.campaignService.isOneClickLaunchCampaignRedistributed(campaignId).
     subscribe(
         response=>{
             this.ngxloading = false;
-            this.openSweetAlert(response.data);
+            if(response.data){
+                alert("Already Launched");
+            }else{
+                this.openSweetAlert();
+            }
         },error=>{
             this.oneClickLaunchParentCampaignId = 0;
             this.ngxloading = false;
@@ -650,9 +654,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     )
   }
  /**********XNFR-125*******/
-  openSweetAlert(campaignLaunched:boolean){
+  openSweetAlert(){
     this.showSweetAlert = true;
-    let message = campaignLaunched ? "This campaign is already redistributed.Do you want to redistribute again?":"Campaign will be redistributed to the share leads with one click"
+    let message = "Campaign will be redistributed to the share leads shared by your vendor";
     this.sweetAlertParameterDto.text=message;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
   }
@@ -660,7 +664,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   receiveEvent(event:any){
     this.showSweetAlert = false;
       if(event){
-        this.referenceService.showSweetAlertProcessingLoader('We are redistributing the campaign');
+        this.referenceService.showSweetAlertProcessingLoader('We are launching the campaign');
         let timeZoneId = this.referenceService.getBrowserTimeZone();
         let vanityUrlDomainName = "";
         let vanityUrlCampaign = false;    
@@ -676,12 +680,13 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             'vanityUrlDomainName':vanityUrlDomainName,
             'vanityUrlCampaign':vanityUrlCampaign
         }
-        console.log(data);
         this.campaignService.redistributeOneClickLaunchCampaign(data)
         .subscribe(response=>{
             this.referenceService.closeSweetAlert();
             if(response.access){
-                this.referenceService.showSweetAlertSuccessMessage("Campaign Redistributed Successfully");
+                this.ngxloading = true;
+                this.referenceService.campaignSuccessMessage = "NOW";
+                this.router.navigate(["/home/campaigns/manage"]);
             }else{
                 this.authenticationService.forceToLogout();
             }
