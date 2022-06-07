@@ -2584,6 +2584,7 @@ export class ReferenceService {
       showConfirmButton: false,
       imageUrl: "assets/images/loader.gif",
       allowOutsideClick: false,
+      allowEscapeKey : false,
     });
   }
   showSweetAlertProceesor(title: string) {
@@ -2877,5 +2878,9 @@ export class ReferenceService {
       timeZoneId = moment.tz.guess();
     }
 	return timeZoneId;
+  }
+/*****XNFR-125******/
+  closeSweetAlert(){
+    swal.close();
   }
 }

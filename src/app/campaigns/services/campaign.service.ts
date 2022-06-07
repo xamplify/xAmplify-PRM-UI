@@ -1180,6 +1180,12 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    redistributeOneClickLaunchCampaign(campaign:any){
+        let url = this.URL + "campaign/redistributeOneClickCampaign?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

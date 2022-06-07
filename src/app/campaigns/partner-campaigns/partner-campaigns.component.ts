@@ -658,8 +658,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   }
  /**********XNFR-125*******/
   receiveEvent(event:any){
-      alert(event);
+    this.showSweetAlert = false;
       if(event){
+        this.referenceService.showSweetAlertProcessingLoader('We are redistributing the campaign');
         let timeZoneId = this.referenceService.getBrowserTimeZone();
         let vanityUrlDomainName = "";
         let vanityUrlCampaign = false;    
@@ -676,9 +677,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             'vanityUrlCampaign':vanityUrlCampaign
         }
         console.log(data);
+        this.campaignService.redistributeOneClickLaunchCampaign(data)
+        .subscribe(response=>{
+            this.referenceService.closeSweetAlert();
+            this.referenceService.showSweetAlertSuccessMessage("Campaign Redistributed Successfully");
+        },error=>{
+            this.referenceService.closeSweetAlert();
+            this.referenceService.showSweetAlertServerErrorMessage();
+        });
 
       }
-      this.showSweetAlert = false;
+      
 
   }
 
