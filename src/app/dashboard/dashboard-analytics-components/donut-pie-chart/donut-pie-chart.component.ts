@@ -90,7 +90,7 @@ export class DonutPieChartComponent implements OnInit {
       credits: {
         enabled: false,
       },
-      colors: ["#E87E04", "#8a8282c4"],
+      colors: ["#E87E04", "#5C9BD1"],
       series: [
         {
           name: "Count",

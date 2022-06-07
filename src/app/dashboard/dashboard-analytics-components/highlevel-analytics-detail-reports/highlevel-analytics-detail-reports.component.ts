@@ -64,4 +64,37 @@ findHighLevelDetailReportsForTotalUsers(){
   this.loader = false;
   this.statusCode = 0;
 });};
+goToManage(dto:HighLevelAnalyticsDetailReportDTO){
+  if(dto.hasAccess){
+    this.loader = true;
+    let moduleId = dto.moduleId;
+    if(moduleId==1){
+      /************* Total Partners **********/
+      this.router.navigate(["/home/dashboard"]);
+    }else if(moduleId==2){
+      /************* Onboard Partners *********/
+      this.router.navigate(["/home/dashboard"]);
+    }else if(moduleId==3 || moduleId == 4 ){
+      /***** Active Partners ,InActive Partners **********/
+      this.router.navigate(["/home/partners/analytics"]);
+    }else if(moduleId==5){
+      /****** Launched Campaigns **********/
+      this.router.navigate(["/home/campaigns/manage"]);
+    }else if (moduleId == 6){
+      /***** Redistributed Campaigns *****/
+      this.router.navigate(["/home/dashboard"])
+    }else if(moduleId==7){
+       /********** Share Leads **********/
+      this.router.navigate(["/home/assignleads/manage"]);
+    }else if(moduleId == 8){
+      /*******Total Contacts ********/
+      this.router.navigate(["/home/dashboard"]);
+    }else if(moduleId==9){
+        /****** Total Users *********/
+      this.router.navigate(["/home/team/add-team"]);
+    }
+  }
+
+}
+
 }
