@@ -191,7 +191,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     expandedUserList: any;
     mergeTagsInput:any = {};
     dataShare: boolean;
-
+    /*******XNFR-125******/
+    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();                           
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -257,6 +258,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     setCampaignData(result){
         this.campaign = result;
+        /*****XNFR-125****/
+        this.showOneClickLaunchCampaignRedistributedInfo();
         if(this.campaignService.isExistingRedistributedCampaignName){
             this.editedCampaignName = this.campaign.campaignName;
         }
@@ -310,7 +313,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         this.findDataShareOption();
     }
-
+    
     findDataShareOption(){
         this.ngxloading = true;
         this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
@@ -1103,9 +1106,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.loadContactList(this.contactListPagination);
     }
 
-
-
-
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
         this.campaignContact.httpRequestLoader.isHorizontalCss=true;
@@ -1475,6 +1475,16 @@ appendValueToSubjectLine(event:any){
         }
      }
      this.mergeTagsInput['hideButton'] = false;
+    }
+
+    /*****XNFR-125****/
+    private showOneClickLaunchCampaignRedistributedInfo() {
+        if (this.campaign.oneClickLaunch) {
+            let oneClickLaunchIcon = "<i class='fa fa-hand-pointer-o'></i>";
+            let optionInBold = "<strong>One Click Launch</strong>";
+            let message = "This campaign is already redistributed using "+optionInBold +" "+oneClickLaunchIcon;
+            this.oneClickLaunchCampaignRedistributedMessage = new CustomResponse('INFO', message, true);
+        }
     }
 
 

@@ -27,6 +27,10 @@
         </div>
       </div>
       <div class="folder-custom-response">
+        <app-response-message  [customResponse]="oneClickLaunchCampaignRedistributedMessage" *ngIf="oneClickLaunchCampaignRedistributedMessage.isVisible">
+        </app-response-message>
+      </div>
+      <div class="folder-custom-response">
         <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
         </app-response-message>
       </div>
