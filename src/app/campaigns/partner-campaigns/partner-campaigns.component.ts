@@ -84,6 +84,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     showSweetAlert = false;
     sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
     oneClickLaunchParentCampaignId = 0;
+    oneClickLaunchCampaignRedistributedErrorMessage = "This campaign is already redistributed,please use redistribute option to relaunch";
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -635,6 +636,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
   }
  /**********XNFR-125*******/
   oneClickCampaignLaunched(campaignId:number){
+    this.customResponse = new CustomResponse();
     this.oneClickLaunchParentCampaignId = campaignId;
     this.ngxloading = true;
     this.campaignService.isOneClickLaunchCampaignRedistributed(campaignId).
@@ -642,7 +644,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         response=>{
             this.ngxloading = false;
             if(response.data){
-                alert("Already Launched");
+                this.customResponse = new CustomResponse("ERROR",this.oneClickLaunchCampaignRedistributedErrorMessage,true);
             }else{
                 this.openSweetAlert();
             }
@@ -656,7 +658,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
  /**********XNFR-125*******/
   openSweetAlert(){
     this.showSweetAlert = true;
-    let message = "Campaign will be redistributed to the share leads shared by your vendor";
+    let message = "Campaign will be redistributed to the share leads";
     this.sweetAlertParameterDto.text=message;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
   }

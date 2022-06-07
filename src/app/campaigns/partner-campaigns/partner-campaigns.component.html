@@ -173,10 +173,11 @@
                             <!----XNFR-125---->
                             <ng-container *ngIf="campaign?.oneClickLaunch">
                               <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
-                                data-placement="top" title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
-                                  <i class="fa fa-hand-pointer-o"></i>
+                                data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? oneClickLaunchCampaignRedistributedErrorMessage:'One Click Launch'" 
+                                data-rel="fancybox-button" (click)="campaign?.oneClickLaunchCampaignRedistributed ? false: launchOneClickCampaign(campaign)">
+                                  <i [className]="campaign?.oneClickLaunchCampaignRedistributed ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i>
                               </a>
-                              <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
+                              <a  *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
                                   data-placement="top" title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
                                   <i class="fa fa-hand-pointer-o"></i>
                               </a>
