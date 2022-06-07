@@ -670,7 +670,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             vanityUrlCampaign = true;
         }
         const data = {
-            'userId': this.authenticationService.getUserId(),
+            'userId': this.superiorId ,
             'timeZoneId': timeZoneId,
             'parentCampaignId':this.oneClickLaunchParentCampaignId,
             'vanityUrlDomainName':vanityUrlDomainName,
@@ -680,7 +680,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.redistributeOneClickLaunchCampaign(data)
         .subscribe(response=>{
             this.referenceService.closeSweetAlert();
-            this.referenceService.showSweetAlertSuccessMessage("Campaign Redistributed Successfully");
+            if(response.access){
+                this.referenceService.showSweetAlertSuccessMessage("Campaign Redistributed Successfully");
+            }else{
+                this.authenticationService.forceToLogout();
+            }
         },error=>{
             this.referenceService.closeSweetAlert();
             this.referenceService.showSweetAlertServerErrorMessage();
