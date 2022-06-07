@@ -21,8 +21,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {Properties} from 'app/common/models/properties';
 import { CampaignAccess } from '../models/campaign-access';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
-
-declare var $,swal: any;
+declare var $:any,swal:any;
 
 @Component({
     selector: 'app-partner-campaigns',
@@ -84,6 +83,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignAccess:CampaignAccess = new CampaignAccess();
     showSweetAlert = false;
     sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+    oneClickLaunchParentCampaignId = 0;
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -633,8 +633,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     this.oneClickCampaignLaunched(campaign.campaignId);
       
   }
-
+ /**********XNFR-125*******/
   oneClickCampaignLaunched(campaignId:number){
+    this.oneClickLaunchParentCampaignId = campaignId;
     this.ngxloading = true;
     this.campaignService.isOneClickCampaignLaunched(campaignId).
     subscribe(
@@ -642,24 +643,44 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.ngxloading = false;
             this.openSweetAlert(response.data);
         },error=>{
+            this.oneClickLaunchParentCampaignId = 0;
             this.ngxloading = false;
             this.referenceService.showSweetAlertServerErrorMessage();
         }
     )
   }
-
+ /**********XNFR-125*******/
   openSweetAlert(campaignLaunched:boolean){
     this.showSweetAlert = true;
     let message = campaignLaunched ? "This campaign is already redistributed.Do you want to redistribute again?":"Campaign will be redistributed to the share leads with one click"
     this.sweetAlertParameterDto.text=message;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
   }
-
+ /**********XNFR-125*******/
   receiveEvent(event:any){
+      alert(event);
       if(event){
-        this.showSweetAlert = false;
-      }else{
-        this.showSweetAlert = false;
+        let timeZoneId = this.referenceService.getBrowserTimeZone();
+        let vanityUrlDomainName = "";
+        let vanityUrlCampaign = false;    
+        /********Vanity Url Related Code******************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+            vanityUrlCampaign = true;
+        }
+        const data = {
+            'userId': this.authenticationService.getUserId(),
+            'timeZoneId': timeZoneId,
+            'parentCampaignId':this.oneClickLaunchParentCampaignId,
+            'vanityUrlDomainName':vanityUrlDomainName,
+            'vanityUrlCampaign':vanityUrlCampaign
+        }
+        console.log(data);
+
       }
+      this.showSweetAlert = false;
+
   }
+
+  
 }
