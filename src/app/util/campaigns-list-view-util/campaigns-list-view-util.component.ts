@@ -21,6 +21,7 @@ import { UserService } from '../../core/services/user.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { utc } from 'moment';
+import { Properties } from 'app/common/models/properties';
 
 declare var swal, $: any, flatpickr;
 
@@ -28,7 +29,7 @@ declare var swal, $: any, flatpickr;
     selector: 'app-campaigns-list-view-util',
     templateUrl: './campaigns-list-view-util.component.html',
     styleUrls: ['./campaigns-list-view-util.component.css', '../../campaigns/manage-publish/manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -126,7 +127,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
-        private vanityUrlService: VanityURLService) {
+        public properties: Properties) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');

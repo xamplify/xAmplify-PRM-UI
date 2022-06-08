@@ -254,6 +254,8 @@
                                         <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
                                             translate>
                                             Ended</h6>
+                                        <!---XNFR-125-->
+                                        <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
                                     </td>
                                     <td>
                                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -1015,7 +1017,7 @@
                     style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12"
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
-                        <div class="grid-box" style="height:270px">
+                        <div class="grid-box" style="height:300px">
                             <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                             <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
@@ -1028,6 +1030,12 @@
                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
                                         style="position: relative;top: -3px;">To Campaign</span>
                                 </ng-container>
+                                <!--XNFR-125--->
+                                <ng-container *ngIf="campaign?.oneClickLaunch">
+                                    <br><br>
+                                    <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
+                                </ng-container>
+                                <!--XNFR-125--->
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                                     style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>

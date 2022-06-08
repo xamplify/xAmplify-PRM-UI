@@ -238,9 +238,6 @@
                         <span class="gridHeader" translate>Campaign</span>
                       </th>
                       <th class="center" translate scope="col" style="width: 50%; min-width: 532px;"></th>
-                      <!--   <th class="center" translate scope="col"></th> -->
-                      <!-- <th class="center" translate scope="col"></th>
-                      <th class="center" translate scope="col"></th> -->
                       <th style="text-align:right" translate scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -994,7 +991,7 @@
                     *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                       class="col-xs-12 col-sm-4 col-lg-3">
-                      <div class="grid-box" style="height:250px">
+                      <div class="grid-box" style="height:300px">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">
                           {{campaign.campaignName | slice:0:22}}
@@ -1007,6 +1004,12 @@
                               *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
                               style="position: relative;top: -3px;" translate>To Campaign</span>
                           </ng-container>
+                          <!--XNFR-125--->
+                          <ng-container *ngIf="campaign?.oneClickLaunch">
+                            <br><br>
+                            <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
+                          </ng-container>
+                          <!--XNFR-125--->
                           <span class="view-banner"
                             *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                             style="position: relative;top: -3px; background-color: #f76c1a !important"
