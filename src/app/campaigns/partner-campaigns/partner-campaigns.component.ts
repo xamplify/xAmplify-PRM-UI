@@ -699,8 +699,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         });
 
       }
-      
-
   }
 
   
