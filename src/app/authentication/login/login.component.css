@@ -39,4 +39,8 @@ a.forget-password:hover {color: #4db1e2;}
   .agree-link:hover {
     color: #5b9bd1;
   }
+  .solid-wb {
+    border-top: 1px solid #eee;
+  }
+  
   
