@@ -13,7 +13,7 @@
            <div class="number">{{dto.count}}</div>
            <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=25 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
          </div>
-         <span class="morePadding" title="{{dto.description}}">
+         <span class="morePadding" (click)="goToManage(dto)" title="{{dto.description}}">
            <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
              {{dto.description | slice:0:33}}
              <span *ngIf="dto?.description?.length>33">..</span>

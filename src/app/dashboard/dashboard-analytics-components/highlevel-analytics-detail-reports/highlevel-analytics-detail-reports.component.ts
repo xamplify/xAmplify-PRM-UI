@@ -18,7 +18,7 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
 
   loader = false;
   statusCode = 200;
-
+ 
   detailReportsForTotalUsers: Array<HighLevelAnalyticsDetailReportDTO> = new Array<HighLevelAnalyticsDetailReportDTO>();;
   
   @Input() applyFilter: boolean;
@@ -74,9 +74,12 @@ goToManage(dto:HighLevelAnalyticsDetailReportDTO){
     }else if(moduleId==2){
       /************* Onboard Partners *********/
       this.router.navigate(["/home/dashboard"]);
-    }else if(moduleId==3 || moduleId == 4 ){
+    }else if(moduleId==3 ){
       /***** Active Partners ,InActive Partners **********/
       this.router.navigate(["/home/partners/analytics"]);
+    }else if( moduleId == 4 ){
+      /***** InActive Partners **********/
+      this.router.navigate(["/home/partners/analytics/"+1]);
     }else if(moduleId==5){
       /****** Launched Campaigns **********/
       this.router.navigate(["/home/campaigns/manage"]);
@@ -97,4 +100,7 @@ goToManage(dto:HighLevelAnalyticsDetailReportDTO){
 
 }
 
+getPatnerDiv(moduleId: number){
+  this.selectedTabIndex = moduleId;
+}
 }
