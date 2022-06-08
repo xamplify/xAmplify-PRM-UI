@@ -480,7 +480,34 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   }
 
    /**********XNFR-125*******/
-   openSweetAlert(){
+  launchOneClickCampaign(campaign:any){
+    this.oneClickCampaignLaunched(campaign.campaignId);
+      
+  }
+ /**********XNFR-125*******/
+  oneClickCampaignLaunched(campaignId:number){
+    this.customResponse = new CustomResponse();
+    this.oneClickLaunchParentCampaignId = campaignId;
+    this.ngxloading = true;
+    this.campaignService.isOneClickLaunchCampaignRedistributed(campaignId).
+    subscribe(
+        response=>{
+            this.ngxloading = false;
+            if(response.data){
+                this.customResponse = new CustomResponse("ERROR",this.oneClickLaunchCampaignRedistributedErrorMessage,true);
+                this.listCampaign(this.pagination);
+            }else{
+                this.openSweetAlert();
+            }
+        },error=>{
+            this.oneClickLaunchParentCampaignId = 0;
+            this.ngxloading = false;
+            this.referenceService.showSweetAlertServerErrorMessage();
+        }
+    )
+  }
+ /**********XNFR-125*******/
+  openSweetAlert(){
     this.showSweetAlert = true;
     let message = "Campaign will be redistributed to the share leads";
     this.sweetAlertParameterDto.text=message;
@@ -523,5 +550,4 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
 
       }
   }
-
 }
