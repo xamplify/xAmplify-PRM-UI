@@ -1479,7 +1479,7 @@ appendValueToSubjectLine(event:any){
 
     /*****XNFR-125****/
     private showOneClickLaunchCampaignRedistributedInfo() {
-        if (this.campaign.oneClickLaunch) {
+        if (this.campaign.oneClickLaunch && this.campaign.oneClickLaunchCampaignRedistributed) {
             let oneClickLaunchIcon = "<i class='fa fa-hand-pointer-o'></i>";
             let optionInBold = "<strong>One Click Launch</strong>";
             let message = "This campaign is already redistributed using "+optionInBold +" "+oneClickLaunchIcon;

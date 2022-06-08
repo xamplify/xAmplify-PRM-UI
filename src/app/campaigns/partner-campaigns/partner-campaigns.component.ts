@@ -645,6 +645,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.ngxloading = false;
             if(response.data){
                 this.customResponse = new CustomResponse("ERROR",this.oneClickLaunchCampaignRedistributedErrorMessage,true);
+                this.listCampaign(this.pagination);
             }else{
                 this.openSweetAlert();
             }
