@@ -168,7 +168,7 @@
 										</a>
 										</div>
 										<div class="mActionAlign"> 
-										<a *ngIf="!isPartnerView "	title="Preview" (click)="preview(asset)">
+										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && videoFileService.videoType!='partnerVideos'" title="Publish" (click)="openPublishPopup(asset.id)">
