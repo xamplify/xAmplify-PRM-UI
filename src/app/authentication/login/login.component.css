@@ -30,3 +30,13 @@ a.forget-password:hover {color: #4db1e2;}
 .login-content-right{
     margin-right: 50px;
 }
+
+/***08/06/2022****/
+.agree-link {
+    color: white;
+    cursor: pointer;
+  }
+  .agree-link:hover {
+    color: #5b9bd1;
+  }
+  
