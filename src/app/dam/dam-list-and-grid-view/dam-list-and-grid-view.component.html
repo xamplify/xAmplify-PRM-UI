@@ -145,6 +145,7 @@
 										</ng-container>
 									</h6>
 									<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
 								</td>
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp

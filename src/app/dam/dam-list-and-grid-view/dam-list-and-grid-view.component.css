@@ -257,3 +257,12 @@ cursor: default;
 	font-size: 12px;
 	text-transform: uppercase;
 }
+
+.draft-video{
+  background-color: #f76c1a;
+  color: white;
+  width: fit-content;
+  padding: 1px;
+  text-align: center;
+  margin-top: 7px;
+}
