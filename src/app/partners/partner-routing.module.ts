@@ -14,8 +14,11 @@ const routes: Routes = [
     { path: 'zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'analytics', component: PartnerReportsComponent },
-    {path: 'analytics/:id', component: PartnerReportsComponent},
     { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+    /*** For XNFR-127 *********/
+    { path: 'manage/:id', component: ManagePartnersComponent},
+    {path: 'analytics/:id', component: PartnerReportsComponent},
+
 
 ];
 

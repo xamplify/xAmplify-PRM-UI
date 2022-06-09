@@ -18,7 +18,8 @@ export class HighlevelAnalyticsDetailReportsComponent implements OnInit {
 
   loader = false;
   statusCode = 200;
- 
+  
+  selectedTabIndex: any
   detailReportsForTotalUsers: Array<HighLevelAnalyticsDetailReportDTO> = new Array<HighLevelAnalyticsDetailReportDTO>();;
   
   @Input() applyFilter: boolean;
@@ -70,10 +71,10 @@ goToManage(dto:HighLevelAnalyticsDetailReportDTO){
     let moduleId = dto.moduleId;
     if(moduleId==1){
       /************* Total Partners **********/
-      this.router.navigate(["/home/dashboard"]);
+      this.router.navigate(["/home/partners/manage/"+"all"]);
     }else if(moduleId==2){
       /************* Onboard Partners *********/
-      this.router.navigate(["/home/dashboard"]);
+      this.router.navigate(["/home/partners/manage/"+"active"]);
     }else if(moduleId==3 ){
       /***** Active Partners ,InActive Partners **********/
       this.router.navigate(["/home/partners/analytics"]);
@@ -85,13 +86,13 @@ goToManage(dto:HighLevelAnalyticsDetailReportDTO){
       this.router.navigate(["/home/campaigns/manage"]);
     }else if (moduleId == 6){
       /***** Redistributed Campaigns *****/
-      this.router.navigate(["/home/dashboard"])
+      this.router.navigate(["/home/partners/analytics/"+6])
     }else if(moduleId==7){
        /********** Share Leads **********/
       this.router.navigate(["/home/assignleads/manage"]);
     }else if(moduleId == 8){
       /*******Total Contacts ********/
-      this.router.navigate(["/home/dashboard"]);
+      this.router.navigate(["/home/contacts/manage"]);
     }else if(moduleId==9){
         /****** Total Users *********/
       this.router.navigate(["/home/team/add-team"]);
