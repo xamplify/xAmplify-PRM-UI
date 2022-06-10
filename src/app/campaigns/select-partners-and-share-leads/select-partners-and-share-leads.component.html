@@ -66,6 +66,9 @@
                         </tr>
                         <tr *ngIf="partner?.expand">
                             <td colspan="5" class="bgc-lg">
+                                <div class="alert alert-success text-center" *ngIf="selectedShareLeadsListIds?.length>0">
+                                    <strong>Selected Rows : {{selectedShareLeadsListIds?.length}}</strong>
+                                </div>
                                <div class="table-responsive x-hidden">
                                   <div class="portlet-input input-inline float-right mb10p" id="search-div">
                                      <div class="input-icon right" id="icon">
@@ -146,7 +149,7 @@
                                                                 <strong>{{shareLead.companyName | slice:0:50}}</strong> 
                                                                 <span *ngIf="shareLead.companyName?.length>50">...</span>
                                                             </h5>
-                                                            <h5 *ngIf="shareLead?.assignedToPartner" class="green-banner ellipsis">Assigned</h5>
+                                                            <span class="green-banner ellipsis mt5"  *ngIf="shareLead?.assignedToPartner">Assigned</span>
                                                         </td>
                                                         <td class="text-center">
                                                             {{shareLead?.noOfContacts}}

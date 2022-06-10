@@ -189,9 +189,11 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 	}
 
 	highlightSelectedShareListOnRowClick(shareLeadsListId: any,partnershipId:number, event: any) {
-		let shareLeadsListTableId = "one-click-share-leads-"+partnershipId;
-		this.referenceService.highlightRowOnRowCick('one-click-share-leads-tr', shareLeadsListTableId, 'oneClickShareLeadsCheckBox', this.selectedShareLeadsListIds, 'one-click-share-leads-header-checkbox-id', shareLeadsListId, event);
-		this.sendSelectedValuesToOtherComponent();
+		if(this.selectedPartnershipId==partnershipId){
+			let shareLeadsListTableId = "one-click-share-leads-"+partnershipId;
+			this.referenceService.highlightRowOnRowCick('one-click-share-leads-tr', shareLeadsListTableId, 'oneClickShareLeadsCheckBox', this.selectedShareLeadsListIds, 'one-click-share-leads-header-checkbox-id', shareLeadsListId, event);
+			this.sendSelectedValuesToOtherComponent();
+		}
 	}
 	
 	highlightShareListRowOnCheckBoxClick(shareLeadsListId: any,partnershipId:number, event: any) {
