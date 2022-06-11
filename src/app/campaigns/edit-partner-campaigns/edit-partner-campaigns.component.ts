@@ -1096,7 +1096,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     ngOnDestroy(){
-      $('#usersModal').modal('hide');
+        this.campaignService.campaign = undefined;
+        this.campaignService.reDistributeCampaign = undefined;
+        $('#usersModal').modal('hide');
     }
 
     /************Pagination-Search-Sort**************************/
