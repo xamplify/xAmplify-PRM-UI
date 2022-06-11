@@ -36,6 +36,7 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { utc } from 'moment';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -1608,6 +1609,11 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     }
     this.selectedCampaignId = 0;
     this.editButtonClicked = false;
+    let currentUrl = this.router.url;
+    if(currentUrl.includes('campaigns/calendar/')){
+      this.router.navigate([currentUrl]);
+    }
+   
 }
 
 

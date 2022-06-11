@@ -96,6 +96,7 @@ export class ManageCampaignDealsComponent implements OnInit {
 
   searchDeals() {
     this.getAllFilteredResultsDeals(this.dealsPagination);
+    
   }
 
   dealsPaginationDropdown(items: any) {
