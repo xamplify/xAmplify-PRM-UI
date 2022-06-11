@@ -20,6 +20,7 @@ import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { utc } from 'moment';
+import { Properties } from 'app/common/models/properties';
 
 declare var swal, $: any, flatpickr;
 
@@ -27,7 +28,7 @@ declare var swal, $: any, flatpickr;
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -123,7 +124,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedCampaignId = 0;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
+        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
+        private route: ActivatedRoute,public renderer:Renderer,public properties:Properties) {
 		this.refService.renderer = this.renderer;    
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -393,8 +395,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => {
+                     this.logger.errorPage(error);
+                    });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
@@ -417,9 +420,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
-                                this.campaignService.reDistributeCampaign = data;
-                                this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId,false);
+                                /*********XNFR-125*********/
+                                if(campaign.oneClickLaunch){
+                                    this.sharedListExists(data,campaign);
+                                }else{
+                                   this.navigateToRedistributeCampaign(data,campaign);
+                                }
                             }
                             else {
                                 this.refService.isEditNurtureCampaign = false;
@@ -429,11 +435,39 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     }
                 },
                 error => {
-                     this.logger.errorPage(error) 
+                     this.logger.errorPage(error);
                 });
             this.isScheduledCampaignLaunched = false;
         }
     }
+    /**********XNFR-125***********/
+    sharedListExists(data:any,campaign:any){
+        this.customResponse = new CustomResponse();
+        this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+        subscribe(
+            response=>{
+                if(response.data){
+                    this.navigateToRedistributeCampaign(data,campaign);
+                }else{
+                    this.refService.goToTop();
+                    let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                    this.customResponse = new CustomResponse("ERROR",message,true);
+                    this.isloading = false;
+                }
+            },_error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+            }
+        );
+    }
+    /**********XNFR-125***********/
+    navigateToRedistributeCampaign(data:any,campaign:any){
+        this.campaignService.reDistributeCampaign = data;
+        this.campaignService.isExistingRedistributedCampaignName = true;
+        this.isPartnerGroupSelected(campaign.campaignId,false);
+    }
+
+
 
     isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
         this.pagination.campaignId = campaignId;
@@ -445,7 +479,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                    let message = "This campaign cannot be edited as "+this.authenticationService.partnerModule.customName+" group has been selected.";
                    this.customResponse = new CustomResponse('ERROR',message,true); 
                    this.isloading = false;
- 					this.refService.goToTop();
+ 				   this.refService.goToTop();
                }else{
                    if(eventCampaign){
                     this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaignId]);

@@ -21,6 +21,7 @@ import { UserService } from '../../core/services/user.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { utc } from 'moment';
+import { Properties } from 'app/common/models/properties';
 
 declare var swal, $: any, flatpickr;
 
@@ -28,7 +29,7 @@ declare var swal, $: any, flatpickr;
     selector: 'app-campaigns-list-view-util',
     templateUrl: './campaigns-list-view-util.component.html',
     styleUrls: ['./campaigns-list-view-util.component.css', '../../campaigns/manage-publish/manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -126,7 +127,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
-        private vanityUrlService: VanityURLService) {
+        public properties: Properties) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -362,8 +363,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => { this.logger.errorPage(error) });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
@@ -386,9 +386,12 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
-                                this.campaignService.reDistributeCampaign = data;
-                                this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId,false);
+                                /*********XNFR-125*********/
+                                if(campaign.oneClickLaunch){
+                                    this.sharedListExists(data,campaign);
+                                }else{
+                                   this.navigateToRedistributeCampaign(data,campaign);
+                                }
                             }
                             else {
                                 this.refService.isEditNurtureCampaign = false;
@@ -402,6 +405,34 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 });
             this.isScheduledCampaignLaunched = false;
         }
+    }
+
+    /**********XNFR-125***********/
+    sharedListExists(data:any,campaign:any){
+        this.customResponse = new CustomResponse();
+        this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+        subscribe(
+            response=>{
+                if(response.data){
+                    this.navigateToRedistributeCampaign(data,campaign);
+                }else{
+                    this.refService.goToTop();
+                    let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                    this.customResponse = new CustomResponse("ERROR",message,true);
+                    this.isloading = false;
+                }
+            },_error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+            }
+        );
+    }
+
+    /**********XNFR-125***********/
+    navigateToRedistributeCampaign(data:any,campaign:any){
+        this.campaignService.reDistributeCampaign = data;
+        this.campaignService.isExistingRedistributedCampaignName = true;
+        this.isPartnerGroupSelected(campaign.campaignId,false);
     }
 
     isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){

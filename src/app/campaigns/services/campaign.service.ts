@@ -1173,6 +1173,28 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    /********XNFR-125***********/
+    isOneClickLaunchCampaignRedistributed(campaignId:number){
+        let url = this.URL + "campaign/isOneClickLaunchCampaignRedistributed/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /********XNFR-125***********/
+    redistributeOneClickLaunchCampaign(campaign:any){
+        let url = this.URL + "campaign/redistributeOneClickCampaign?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-125***********/
+    isSharedLeadsListExists(campaignId:number){
+        let url = this.URL + "campaign/isSharedLeadsListExists/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

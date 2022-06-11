@@ -21,6 +21,7 @@ import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $,swal: any;
 
@@ -81,6 +82,10 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   socialAccountsLoader  =false;
   socialCampaign: any;
   campaignAccess:CampaignAccess = new CampaignAccess();
+  showSweetAlert = false;
+  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  oneClickLaunchParentCampaignId = 0;
+  oneClickLaunchCampaignRedistributedErrorMessage = "This campaign is already redistributed,please use redistribute option to relaunch";
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
@@ -474,6 +479,75 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
     this.campaignTemplateDownloadHistoryComponent.viewHistoryForPartners(campaign);
   }
 
-  
+   /**********XNFR-125*******/
+  launchOneClickCampaign(campaign:any){
+    this.oneClickCampaignLaunched(campaign.campaignId);
+      
+  }
+ /**********XNFR-125*******/
+  oneClickCampaignLaunched(campaignId:number){
+    this.customResponse = new CustomResponse();
+    this.oneClickLaunchParentCampaignId = campaignId;
+    this.ngxloading = true;
+    this.campaignService.isOneClickLaunchCampaignRedistributed(campaignId).
+    subscribe(
+        response=>{
+            this.ngxloading = false;
+            if(response.data){
+                this.customResponse = new CustomResponse("ERROR",this.oneClickLaunchCampaignRedistributedErrorMessage,true);
+                this.listCampaign(this.pagination);
+            }else{
+                this.openSweetAlert();
+            }
+        },error=>{
+            this.oneClickLaunchParentCampaignId = 0;
+            this.ngxloading = false;
+            this.referenceService.showSweetAlertServerErrorMessage();
+        }
+    )
+  }
+ /**********XNFR-125*******/
+  openSweetAlert(){
+    this.showSweetAlert = true;
+    let message = "Campaign will be redistributed to the share leads";
+    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.confirmButtonText = "Yes";
+  }
+ /**********XNFR-125*******/
+  receiveEvent(event:any){
+    this.showSweetAlert = false;
+      if(event){
+        this.referenceService.showSweetAlertProcessingLoader('We are launching the campaign');
+        let timeZoneId = this.referenceService.getBrowserTimeZone();
+        let vanityUrlDomainName = "";
+        let vanityUrlCampaign = false;    
+        /********Vanity Url Related Code******************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+            vanityUrlCampaign = true;
+        }
+        const data = {
+            'userId': this.superiorId ,
+            'timeZoneId': timeZoneId,
+            'parentCampaignId':this.oneClickLaunchParentCampaignId,
+            'vanityUrlDomainName':vanityUrlDomainName,
+            'vanityUrlCampaign':vanityUrlCampaign
+        }
+        this.campaignService.redistributeOneClickLaunchCampaign(data)
+        .subscribe(response=>{
+            this.referenceService.closeSweetAlert();
+            if(response.access){
+                this.ngxloading = true;
+                this.referenceService.campaignSuccessMessage = "NOW";
+                this.router.navigate(["/home/campaigns/manage"]);
+            }else{
+                this.authenticationService.forceToLogout();
+            }
+        },error=>{
+            this.referenceService.closeSweetAlert();
+            this.referenceService.showSweetAlertServerErrorMessage();
+        });
 
+      }
+  }
 }

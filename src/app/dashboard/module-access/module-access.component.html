@@ -163,7 +163,14 @@
 								</tr>
 								<tr *ngIf="roleId!=19">
 									<th scope="row">Share Leads</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.shareLeads"
+									<td>
+										<input type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
+											[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
+									</td>
+								</tr>
+								<tr *ngIf="campaignAccess.shareLeads">
+									<th scope="row">One-Click Launch</th>
+									<td><input type="checkbox" [(ngModel)]="campaignAccess.oneClickLaunch"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
