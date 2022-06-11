@@ -363,8 +363,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => { this.logger.errorPage(error) });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
@@ -387,9 +386,12 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
-                                this.campaignService.reDistributeCampaign = data;
-                                this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId,false);
+                                /*********XNFR-125*********/
+                                if(campaign.oneClickLaunch){
+                                    this.sharedListExists(data,campaign);
+                                }else{
+                                   this.navigateToRedistributeCampaign(data,campaign);
+                                }
                             }
                             else {
                                 this.refService.isEditNurtureCampaign = false;
@@ -403,6 +405,34 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 });
             this.isScheduledCampaignLaunched = false;
         }
+    }
+
+    /**********XNFR-125***********/
+    sharedListExists(data:any,campaign:any){
+        this.customResponse = new CustomResponse();
+        this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+        subscribe(
+            response=>{
+                if(response.data){
+                    this.navigateToRedistributeCampaign(data,campaign);
+                }else{
+                    this.refService.goToTop();
+                    let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                    this.customResponse = new CustomResponse("ERROR",message,true);
+                    this.isloading = false;
+                }
+            },_error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+            }
+        );
+    }
+
+    /**********XNFR-125***********/
+    navigateToRedistributeCampaign(data:any,campaign:any){
+        this.campaignService.reDistributeCampaign = data;
+        this.campaignService.isExistingRedistributedCampaignName = true;
+        this.isPartnerGroupSelected(campaign.campaignId,false);
     }
 
     isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
