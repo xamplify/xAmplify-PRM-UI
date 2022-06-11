@@ -870,9 +870,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.isScheduledCampaignLaunched = true;
             } else {
               if (isNurtureCampaign) {
-                this.campaignService.reDistributeCampaign = data;
-                this.campaignService.isExistingRedistributedCampaignName = true;
-                this.isPartnerGroupSelected(campaign.campaignId,false);
+                 /*********XNFR-125*********/
+                 if(campaign.oneClickLaunch){
+                  this.sharedListExists(data,campaign);
+                  }else{
+                    this.navigateToRedistributeCampaign(data,campaign);
+                  }
               }
               else {
                 $('#myModal').modal('hide');
@@ -888,6 +891,32 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
     }
 
+    /**********XNFR-125***********/
+     sharedListExists(data:any,campaign:any){
+      this.campaignErrorResponse = new CustomResponse();
+      this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+      subscribe(
+          response=>{
+              if(response.data){
+                  this.navigateToRedistributeCampaign(data,campaign);
+              }else{
+                  this.referenceService.scrollToModalBodyTopByClass();
+                  let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                  this.campaignErrorResponse = new CustomResponse("ERROR",message,true);
+                  this.ngxloading = false;
+              }
+          },_error=>{
+              this.ngxloading = false;
+              this.campaignErrorResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+          }
+      );
+  }
+
+  navigateToRedistributeCampaign(data:any,campaign:any){
+    this.campaignService.reDistributeCampaign = data;
+    this.campaignService.isExistingRedistributedCampaignName = true;
+    this.isPartnerGroupSelected(campaign.campaignId,false);
+  }
 
     isPartnerGroupSelected(campaignId:number,eventCamaign:boolean){
       this.editCampaignPagination.campaignId = campaignId;
@@ -910,8 +939,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
              }
 
       },error=>{
-        this.ngxloading = false;
-          this.xtremandLogger.errorPage(error)
+          this.ngxloading = false;
+          this.xtremandLogger.errorPage(error);
       });
   }
 
