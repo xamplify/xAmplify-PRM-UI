@@ -553,9 +553,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         $('#public-event-url-modal').modal('hide');
         $('#public-event-url-modal').modal('hide');
         $('#endDateModal').modal('hide');
-        // if (!this.navigatingToRelatedComponent) {
-        //     this.campaignService.archived = false;
-        // }
                 
     }
     openSaveAsModal(campaign: any) {
@@ -584,6 +581,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         return campaignData;
     }
     saveAsCampaign() {
+        this.customResponse = new CustomResponse();
         $('#saveAsModal').modal('hide');
         this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
@@ -593,10 +591,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.clicked = false;
                 if(data.access){
                     this.refService.loading(this.httpRequestLoader, false);
-                    this.campaignSuccessMessage = "Campaign copied successfully";
-                    $('#lanchSuccess').show(600);
-                    this.showMessageOnTop();
-                    this.listCampaign(this.pagination);
+                    let statusCode =  data.statusCode;
+                    if(statusCode==404){
+                        this.refService.scrollSmoothToTop();
+                        this.customResponse = new CustomResponse('ERROR',data.message,true);
+                    }else{
+                        this.campaignSuccessMessage = "Campaign copied successfully";
+                        $('#lanchSuccess').show(600);
+                        this.showMessageOnTop();
+                        this.listCampaign(this.pagination);
+                    }
                 }else{
                     this.authenticationService.forceToLogout();
                 }
