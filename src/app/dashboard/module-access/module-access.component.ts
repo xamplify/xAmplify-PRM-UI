@@ -35,6 +35,8 @@ export class ModuleAccessComponent implements OnInit {
   dnsLoader = false;
   dnsError = false;
   dnsErrorMessage = "";
+  scheduledCampaignsCount: number = 0;
+  showOneClickLaunchErrorMessage: boolean;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -199,9 +201,30 @@ export class ModuleAccessComponent implements OnInit {
   }
 
   updateOneClickLaunchOption(){
+    this.showOneClickLaunchErrorMessage = false;
     let shareLeadsChecked = $('#share-leads-e').is(':checked');
     if(!shareLeadsChecked){
+      this.showOneClickLaunchErrorMessage = true;
       this.campaignAccess.oneClickLaunch = false;
+      this.findScheduledCampaignsCount();
+    }
+  }
+
+  /**********XNFR-125*************/
+  findScheduledCampaignsCount(){
+    let oneClickLaunchCheckBoxChecked = $('#one-click-launch-e').is(':checked');
+    if(!oneClickLaunchCheckBoxChecked){
+      this.ngxLoading = true;
+      this.dashboardService.findOneClickLaunchScheduledCampaigns(this.companyId)
+      .subscribe(
+          response=>{
+            this.ngxLoading = false;
+            this.scheduledCampaignsCount = response.data;
+          },error=>{
+            this.ngxLoading = false;
+          });
+    }else{
+      this.scheduledCampaignsCount = 0;
     }
   }
   
