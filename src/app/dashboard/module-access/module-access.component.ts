@@ -213,7 +213,8 @@ export class ModuleAccessComponent implements OnInit {
   /**********XNFR-125*************/
   findScheduledCampaignsCount(){
     let oneClickLaunchCheckBoxChecked = $('#one-click-launch-e').is(':checked');
-    if(!oneClickLaunchCheckBoxChecked){
+    let shareLeadsChecked = $('#share-leads-e').is(':checked');
+    if(!oneClickLaunchCheckBoxChecked || !shareLeadsChecked){
       this.ngxLoading = true;
       this.dashboardService.findOneClickLaunchScheduledCampaigns(this.companyId)
       .subscribe(
