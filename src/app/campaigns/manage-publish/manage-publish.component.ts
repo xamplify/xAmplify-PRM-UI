@@ -429,9 +429,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             }
                             else {
                                 /********XNFR-125*******/
-                                
-                                this.refService.isEditNurtureCampaign = false;
-                                this.router.navigate(["/home/campaigns/edit"]);
+                                this.checkOneClickLaunchAccess(campaign.campaignId);
                             }
                         }
                     }
@@ -442,6 +440,30 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.isScheduledCampaignLaunched = false;
         }
     }
+    /*****XNFR-125*****/
+    checkOneClickLaunchAccess(campaignId:number){
+        this.isloading = true;
+        this.customResponse = new CustomResponse();
+        this.campaignService.checkOneClickLaunchAccess(campaignId).
+        subscribe(
+            response=>{
+                let access = response.data;
+                if(access){
+                    this.refService.isEditNurtureCampaign = false;
+                    this.router.navigate(["/home/campaigns/edit"]);
+                }else{
+                    this.refService.scrollSmoothToTop();
+                    let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
+                    this.customResponse = new CustomResponse('ERROR',message,true);
+                }
+                this.isloading = false;
+            },error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+            });
+    }
+
+
     /**********XNFR-125***********/
     sharedListExists(data:any,campaign:any){
         this.customResponse = new CustomResponse();
