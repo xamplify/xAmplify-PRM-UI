@@ -873,15 +873,15 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               if (isNurtureCampaign) {
                  /*********XNFR-125*********/
                  if(campaign.oneClickLaunch){
-                  this.sharedListExists(data,campaign);
+                  this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
                   }else{
                     this.navigateToRedistributeCampaign(data,campaign);
                   }
               }
               else {
-                $('#myModal').modal('hide');
-                this.referenceService.isEditNurtureCampaign = false;
-                this.router.navigate(["/home/campaigns/edit"]);
+                /********XNFR-125*******/
+                this.checkOneClickLaunchAccess(campaign.campaignId);
+               
               }
             }
           },
@@ -892,17 +892,43 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
     }
 
-    /**********XNFR-125***********/
-     sharedListExists(data:any,campaign:any){
+
+     /*****XNFR-125*****/
+     checkOneClickLaunchAccess(campaignId:number){
+      this.ngxloading = true;
       this.campaignErrorResponse = new CustomResponse();
-      this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+      this.campaignService.checkOneClickLaunchAccess(campaignId).
+      subscribe(
+          response=>{
+              let access = response.data;
+              if(access){
+                  $('#myModal').modal('hide');
+                  this.referenceService.isEditNurtureCampaign = false;
+                  this.router.navigate(["/home/campaigns/edit"]);
+              }else{
+                  this.referenceService.scrollToModalBodyTopByClass();
+                  this.campaignErrorResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchAccessErrorMessage,true);
+              }
+              this.ngxloading = false;
+          },error=>{
+              this.ngxloading = false;
+              this.campaignErrorResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+          });
+  }
+
+
+    /**********XNFR-125***********/
+    checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
+      this.campaignErrorResponse = new CustomResponse();
+      this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
       subscribe(
           response=>{
               if(response.data){
                   this.navigateToRedistributeCampaign(data,campaign);
               }else{
                   this.referenceService.scrollToModalBodyTopByClass();
-                  let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                  let statusCode = response.statusCode;
+                  let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
                   this.campaignErrorResponse = new CustomResponse("ERROR",message,true);
                   this.ngxloading = false;
               }

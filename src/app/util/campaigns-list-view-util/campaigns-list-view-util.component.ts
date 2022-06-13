@@ -388,7 +388,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             if (isNurtureCampaign) {
                                 /*********XNFR-125*********/
                                 if(campaign.oneClickLaunch){
-                                    this.sharedListExists(data,campaign);
+                                    this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
                                 }else{
                                    this.navigateToRedistributeCampaign(data,campaign);
                                 }
@@ -420,8 +420,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     this.router.navigate(["/home/campaigns/edit"]);
                 }else{
                     this.refService.scrollSmoothToTop();
-                    let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
-                    this.customResponse = new CustomResponse('ERROR',message,true);
+                    this.customResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchAccessErrorMessage,true);
                 }
                 this.isloading = false;
             },error=>{
@@ -431,16 +430,17 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     }
     
     /**********XNFR-125***********/
-    sharedListExists(data:any,campaign:any){
+    checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
         this.customResponse = new CustomResponse();
-        this.campaignService.isSharedLeadsListExists(campaign.campaignId).
+        this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
         subscribe(
             response=>{
                 if(response.data){
                     this.navigateToRedistributeCampaign(data,campaign);
                 }else{
                     this.refService.goToTop();
-                    let message = "Editing this campaign is not available, as the vendor has deleted the shared list";
+                    let statusCode = response.statusCode;
+                    let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
                     this.customResponse = new CustomResponse("ERROR",message,true);
                     this.isloading = false;
                 }

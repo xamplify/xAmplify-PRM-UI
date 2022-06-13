@@ -217,5 +217,12 @@ export class Properties {
 	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
 
+	/***One-Click Launch Error Messages */
+	emptyShareListErrorMessage =  "Edit campaign is not available, as the vendor has deleted the shared list";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed for your vendor account";
+	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
+
+
+
 }
 
