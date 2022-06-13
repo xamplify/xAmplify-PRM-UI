@@ -2,45 +2,9 @@ a:hover {
     background-color: #f7f1f1 !important;
   }
 
-  .close-circle-danger-banner{
-    border: 1px solid #a94442;
-    padding: 5px;
-    text-align: center;
-    color: #a94442;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: block;
-    float: right;
-    
-  }
-
-  .close-circle-success-banner{
-    border: 1px solid #3c763d;
-    padding: 5px;
-    text-align: center;
-    color: #3c763d;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: block;
-    float: right;
-    
-  }
-
-  .close-circle-info-banner{
-    border: 1px solid #5b9bd1;
-    padding: 5px;
-    text-align: center;
-    color: #5b9bd1;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: block;
-    float: right;
-    
-  }
-
+.alert{
+  margin-bottom: 0px !important;
+}
   .custom-margin{
     display: block !important;
     margin-top: -1px;

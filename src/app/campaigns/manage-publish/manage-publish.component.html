@@ -35,7 +35,7 @@
   </div>
   <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
   </ngx-loading>
-  <div style="position: relative; top:-10px;">
+  <div class="prt10n">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>
   <ng-container *ngIf="!addWorkflows">

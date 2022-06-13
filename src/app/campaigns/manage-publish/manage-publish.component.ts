@@ -428,6 +428,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                                 }
                             }
                             else {
+                                /********XNFR-125*******/
+                                
                                 this.refService.isEditNurtureCampaign = false;
                                 this.router.navigate(["/home/campaigns/edit"]);
                             }
