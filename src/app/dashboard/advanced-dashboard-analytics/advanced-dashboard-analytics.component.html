@@ -30,7 +30,8 @@
         <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany" [applyFilter]="applyFilter"></app-donut-pie-chart> 
         <app-horizontal-bat-chart [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
       </div>
-  <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6">
+  <div [className]="(authenticationService?.module?.isPrm || !authenticationService?.module?.isPrmTeamMember ||
+  !authenticationService?.module?.isPrmAndPartner || !authenticationService?.module?.isPrmAndPartnerTeamMember)? 'col-xs-12 col-sm-6 col-md-6 col-lg-6' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12' ">
    <app-highlevel-analytics-detail-reports  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
   </div>
   </div>

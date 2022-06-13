@@ -92,7 +92,7 @@ goToManage(dto:HighLevelAnalyticsDetailReportDTO){
       this.router.navigate(["/home/assignleads/manage"]);
     }else if(moduleId == 8){
       /*******Total Contacts ********/
-      this.router.navigate(["/home/contacts/manage"]);
+      this.router.navigate(["/home/contacts/manage/"+"all"]);
     }else if(moduleId==9){
         /****** Total Users *********/
       this.router.navigate(["/home/team/add-team"]);

@@ -271,7 +271,8 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
+        <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) 
             && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
             <div class="portlet light shadow">
                 <div class="portlet-title" style="min-height: 0px;">
