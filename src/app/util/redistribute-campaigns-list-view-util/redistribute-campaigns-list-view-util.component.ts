@@ -22,6 +22,7 @@ import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { Properties } from 'app/common/models/properties';
 
 declare var $,swal: any;
 
@@ -29,7 +30,7 @@ declare var $,swal: any;
   selector: 'app-redistribute-campaigns-list-view-util',
   templateUrl: './redistribute-campaigns-list-view-util.component.html',
   styleUrls: ['./redistribute-campaigns-list-view-util.component.css','../../campaigns/partner-campaigns/partner-campaigns.component.css'],
-  providers: [Pagination, HttpRequestLoader,LandingPageService,CampaignAccess]
+  providers: [Pagination, HttpRequestLoader,LandingPageService,CampaignAccess,Properties]
 })
 export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDestroy {
 
@@ -85,12 +86,11 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   showSweetAlert = false;
   sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   oneClickLaunchParentCampaignId = 0;
-  oneClickLaunchCampaignRedistributedErrorMessage = "This campaign is already redistributed,please use redistribute option to relaunch";
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
-      public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService,
-      public renderer:Renderer,private vanityUrlService:VanityURLService) {
+      public authenticationService: AuthenticationService,private emailTemplateService:EmailTemplateService,
+      public renderer:Renderer,public properties:Properties) {
       this.referenceService.renderer = this.renderer;
       let superiorId = parseInt(localStorage.getItem('superiorId'));
       if(isNaN(superiorId)){
@@ -494,7 +494,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         response=>{
             this.ngxloading = false;
             if(response.data){
-                this.customResponse = new CustomResponse("ERROR",this.oneClickLaunchCampaignRedistributedErrorMessage,true);
+                this.customResponse = new CustomResponse("ERROR",this.properties.oneClickLaunchCampaignRedistributedErrorMessage,true);
                 this.listCampaign(this.pagination);
             }else{
                 this.openSweetAlert();
