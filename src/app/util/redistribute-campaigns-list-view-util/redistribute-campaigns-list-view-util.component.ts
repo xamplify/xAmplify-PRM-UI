@@ -537,9 +537,14 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         .subscribe(response=>{
             this.referenceService.closeSweetAlert();
             if(response.access){
-                this.ngxloading = true;
-                this.referenceService.campaignSuccessMessage = "NOW";
-                this.router.navigate(["/home/campaigns/manage"]);
+                if(response.statusCode==2015){
+                    this.referenceService.scrollSmoothToTop();
+                    this.customResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchCampaignExpiredMessage,true);
+                }else{
+                    this.ngxloading = true;
+                    this.referenceService.campaignSuccessMessage = "NOW";
+                    this.router.navigate(["/home/campaigns/manage"]);
+                }
             }else{
                 this.authenticationService.forceToLogout();
             }

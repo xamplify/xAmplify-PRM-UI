@@ -686,9 +686,14 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         .subscribe(response=>{
             this.referenceService.closeSweetAlert();
             if(response.access){
-                this.ngxloading = true;
-                this.referenceService.campaignSuccessMessage = "NOW";
-                this.router.navigate(["/home/campaigns/manage"]);
+                if(response.statusCode==2015){
+                    this.customResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchCampaignExpiredMessage,true);
+                    this.referenceService.scrollSmoothToTop();
+                }else{
+                    this.ngxloading = true;
+                    this.referenceService.campaignSuccessMessage = "NOW";
+                    this.router.navigate(["/home/campaigns/manage"]);
+                }
             }else{
                 this.authenticationService.forceToLogout();
             }
