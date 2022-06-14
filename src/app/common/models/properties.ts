@@ -218,12 +218,12 @@ export class Properties {
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
 
 	/***One-Click Launch Error Messages */
-	emptyShareListErrorMessage =  "Edit campaign is not available, as the vendor has deleted the shared list";
-	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed from your vendor account";
-	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed from your account";
-	oneClickLaunchCampaignExpiredMessage = "Campaign cannot be redistributed, as it is expired";
-	oneClickLaunchCampaignRedistributedErrorMessage = "Campaign is already redistributed,please use redistribute option to relaunch";
-	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is not available, as One-Click Launch access has been removed from your account";
+	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list";
+	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available because your account no longer has One-Click Launch access";
+	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
+	oneClickLaunchCampaignRedistributedErrorMessage = "If the campaign has already been redistributed, please use the redistribute option to relaunch it";
+	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is no longer available because your account's One-Click Launch access has been disabled";
 	
 
 
