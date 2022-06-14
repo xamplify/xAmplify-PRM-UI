@@ -224,7 +224,9 @@ export class Properties {
 	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
 	oneClickLaunchCampaignRedistributedErrorMessage = "If the campaign has already been redistributed, please use the redistribute option to relaunch it";
 	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is no longer available because your account's One-Click Launch access has been disabled";
-	
+	emptyOneClickLaunchCampaignErrorMessage = "You cannot redistribute the campaign because the vendor deleted the shared list associated with it";
+
+
 
 
 

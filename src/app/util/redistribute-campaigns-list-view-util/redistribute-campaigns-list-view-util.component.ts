@@ -540,6 +540,9 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
                 if(response.statusCode==2015){
                     this.referenceService.scrollSmoothToTop();
                     this.customResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchCampaignExpiredMessage,true);
+                }else if(response.statusCode==404){
+                    this.customResponse = new CustomResponse('ERROR',this.properties.emptyOneClickLaunchCampaignErrorMessage,true);
+                    this.referenceService.scrollSmoothToTop();
                 }else{
                     this.ngxloading = true;
                     this.referenceService.campaignSuccessMessage = "NOW";
