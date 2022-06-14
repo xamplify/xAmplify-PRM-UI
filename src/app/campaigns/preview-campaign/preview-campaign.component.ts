@@ -1697,6 +1697,8 @@ viewShareLeads(partner:any){
   findShareLeads(pagination:Pagination){
 		this.referenceService.loading(this.shareLeadsLoader, true);
 		pagination.channelCampaign = true;
+    pagination.previewSelectedSharedLeads = true;
+    pagination.parentCampaignId = this.campaign.campaignId;
 		pagination.campaignId = this.campaign.campaignId;
 		this.showExpandButton = $.trim(pagination.searchKey).length>0;
 		this.contactService.loadAssignedLeadsLists(pagination).
