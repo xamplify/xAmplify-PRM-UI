@@ -4,7 +4,8 @@
       <ng-container *ngIf="!loader">
         <div *ngFor="let dto of detailReportsForTotalUsers" style="padding: 1em 1em 0 1em;"
         [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
-        [className]="dto.hasAccess? 'col-sm-6 col-xs-6 col-lg-6 col-md-6' : 'col-sm-6 col-xs-6 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">
+        [className]="dto.hasAccess?(authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrm
+      || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)? 'col-sm-6 col-xs-6 col-lg-4 col-md-4': 'col-sm-6 col-xs-12 col-lg-6 col-md-6' : 'col-sm-6 col-xs-12 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">
        <a  class="{{dto.color}}">
          <div class="visual">
            <i class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
@@ -15,8 +16,8 @@
          </div>
          <span class="morePadding" (click)="goToManage(dto)" title="{{dto.description}}">
            <a [className]="dto.hasAccess? 'more more-hl-stat':'more more-hl-stat dashboard-access-denied'" translate>
-             {{dto.description | slice:0:33}}
-             <span *ngIf="dto?.description?.length>33">..</span>
+             {{dto.description | slice:0:28}}
+             <span *ngIf="dto?.description?.length>28">...</span>
             </a>
          </span>
        </a>
