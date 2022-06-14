@@ -44,7 +44,6 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
-	
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
   }
@@ -58,10 +57,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
 		}, error => {
-      this.xtremandLogger.error(error);
-      this.xtremandLogger.errorPage(error);
-		}, () => {
-
+			this.xtremandLogger.error(error);
+			this.xtremandLogger.errorPage(error);
 		});
 	}
 

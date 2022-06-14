@@ -160,6 +160,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     /***XNFR-118****/
     @Input() viewType:string;
     @Input() categoryId:number;
+    /****XNFR-125****/
+    oneClickLaunchLoader = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -221,9 +223,13 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }
         
     }
-    setCampaignData(result){
+    setCampaignData(result:any){
         this.campaign = result;
-        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
+        if(this.campaign.oneClickLaunch){
+          alert("Call New API");
+        }else{
+          this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
+        }
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
@@ -287,9 +293,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
            this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
        }
        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
-      //  this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
-      //  if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
-    this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
+      this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
     for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
       if(this.timezonesCampaignEventTime[i].timezoneId === this.campaign.campaignEventTimes[0].timeZone){
         console.log(this.timezonesCampaignEventTime[i].timezoneId);
@@ -1235,9 +1239,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             },
             (error: string) => {this.xtremandLogger.errorPage(error);
             this.isContactListLoader = false;
-            },
-            () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
-            )
+            });
     }
     showContacts(){
         if($('#campaign-contact-list').css('display') == 'none'){
