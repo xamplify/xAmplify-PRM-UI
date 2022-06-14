@@ -493,9 +493,14 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
     subscribe(
         response=>{
             this.ngxloading = false;
-            if(response.data){
+            let map = response['map'];
+            let isCampaignRedistributed = map["isCampaignRedistributed"];
+            let isShareLeadListExists = map["isShareLeadListExists"];
+            if(isCampaignRedistributed){
                 this.customResponse = new CustomResponse("ERROR",this.properties.oneClickLaunchCampaignRedistributedErrorMessage,true);
                 this.listCampaign(this.pagination);
+            }else if(!isShareLeadListExists){
+                this.customResponse = new CustomResponse("ERROR",this.properties.emptyOneClickLaunchCampaignErrorMessage,true);
             }else{
                 this.openSweetAlert();
             }
