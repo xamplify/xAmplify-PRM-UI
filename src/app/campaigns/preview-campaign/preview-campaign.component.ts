@@ -162,6 +162,17 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     @Input() categoryId:number;
     /****XNFR-125****/
     oneClickLaunchLoader = false;
+    oneClickLaunchResponse:CustomResponse = new CustomResponse();
+    oneClickLaunchPartnerCompany:any;
+    oneClickLaunchStatusCode = 0;
+    showExpandButton = false;
+    shareLeadsPagination: Pagination = new Pagination();
+    shareLeadsErrorMessage: CustomResponse = new CustomResponse();
+    shareLeadsLoader: HttpRequestLoader = new HttpRequestLoader();
+    selectedListId: number;
+    selectedListName: string;
+    showLeadsPreview: boolean;
+    expandedUserList: any;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -226,7 +237,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result:any){
         this.campaign = result;
         if(this.campaign.oneClickLaunch){
-          alert("Call New API");
+          this.getOneClickLaunchCampaignPartnerCompany(this.campaign.campaignId);
         }else{
           this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
         }
@@ -257,6 +268,26 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
         this.showSelectedListType();
+    }
+
+    /****XNFR-125****/
+    getOneClickLaunchCampaignPartnerCompany(campaignId:number){
+      this.oneClickLaunchResponse = new CustomResponse();
+      this.oneClickLaunchLoader = true;
+      this.campaignService.getOneClickLaunchCampaignPartnerCompany(campaignId).
+      subscribe(
+        response=>{
+          this.oneClickLaunchStatusCode = response.statusCode;
+          if(this.oneClickLaunchStatusCode==200){
+              this.oneClickLaunchPartnerCompany = response.data;
+          }else{
+            this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
+          }
+          this.oneClickLaunchLoader = false;
+        },error=>{
+          this.oneClickLaunchLoader = false;
+          this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+        });
     }
 
     setEventCampaignData(result:EventCampaign){
@@ -1650,7 +1681,76 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
     }
    
 }
+/****XNFR-125****/
+viewShareLeads(partner:any){
+  this.shareLeadsPagination = new Pagination();
+  this.shareLeadsErrorMessage = new CustomResponse();
+    partner.expand = !partner.expand;
+    if (partner.expand) {
+			this.referenceService.loading(this.shareLeadsLoader, true);
+			this.shareLeadsPagination.partnerCompanyId = partner.partnerCompanyId;
+			this.shareLeadsPagination.partnershipId = partner.partnershipId;
+			this.findShareLeads(this.shareLeadsPagination);
+		}
+  }
 
+  findShareLeads(pagination:Pagination){
+		this.referenceService.loading(this.shareLeadsLoader, true);
+		pagination.channelCampaign = true;
+		pagination.campaignId = this.campaign.campaignId;
+		this.showExpandButton = $.trim(pagination.searchKey).length>0;
+		this.contactService.loadAssignedLeadsLists(pagination).
+		subscribe(
+			(data:any)=>{
+				pagination.totalRecords = data.totalRecords;
+				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
+				this.referenceService.loading(this.shareLeadsLoader, false);
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.shareLeadsLoader, false);
+				this.shareLeadsErrorMessage = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
 
+	searchShareLeadsList() {
+		this.getAllFilteredShareLeadsResults();
+	}
+
+	/************Page************** */
+	navigateToShareLeadsListNextPage(event: any) {
+		this.shareLeadsPagination.pageIndex = event.page;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+
+	getAllFilteredShareLeadsResults() {
+		this.shareLeadsPagination.pageIndex = 1;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+
+	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
+
+  previewLeads(shareLead:any){
+		this.selectedListId = shareLead.id;
+		this.selectedListName = shareLead.name;
+		this.showLeadsPreview = true;
+
+	}
+	resetShareLeadsPreviewValues(){
+		this.selectedListId = 0;
+		this.selectedListName = "";
+		this.showLeadsPreview = false;
+	}
+
+  viewMatchedContacts(userList: any) {
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;		
+		}
+	} 
 
 }
