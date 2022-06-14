@@ -23,6 +23,9 @@
                          <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
                          <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
                       </span>
+                      <span class="campaign-label now ml5">
+                        <strong>{{properties?.oneClickLaunch}}</strong>
+                      </span>
                    </h6>
                    <div class="media col-xs-12">
                       <div class="col-sm-6 col-sm-12">

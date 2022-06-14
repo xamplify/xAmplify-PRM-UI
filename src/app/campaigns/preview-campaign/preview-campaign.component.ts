@@ -349,9 +349,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         .subscribe(data => {
         	if(data.access){
               $(window).scrollTop(0);
+            let statusCode = data.statusCode;
+            if(statusCode==404){
+              $('#myModal').modal('hide');
+              this.closeNotifyParent.emit('copy campaign error');
+            }else{
               this.customResponse =  new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
-             $('#myModal').modal('hide');
-             this.closeNotifyParent.emit('copy campaign success');
+              $('#myModal').modal('hide');
+              this.closeNotifyParent.emit('copy campaign success');
+            }
+              
         }else{
         	this.authenticationService.forceToLogout();
         }

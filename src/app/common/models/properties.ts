@@ -219,10 +219,11 @@ export class Properties {
 
 	/***One-Click Launch Error Messages */
 	emptyShareListErrorMessage =  "Edit campaign is not available, as the vendor has deleted the shared list";
-	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed for your vendor account";
-	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed from your vendor account";
+	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available, as One-Click Launch access has been removed from your account";
 	oneClickLaunchCampaignExpiredMessage = "Campaign cannot be redistributed, as it is expired";
 	oneClickLaunchCampaignRedistributedErrorMessage = "Campaign is already redistributed,please use redistribute option to relaunch";
+	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is not available, as One-Click Launch access has been removed from your account";
 	
 
 
