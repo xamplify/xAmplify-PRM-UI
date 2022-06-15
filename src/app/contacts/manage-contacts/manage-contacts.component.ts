@@ -430,7 +430,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.contactService.loadAssignedLeadsLists(pagination)
                 .subscribe(
                 (data: any) => {
-                    this.xtremandLogger.info(data);
                     data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
                     this.contactLists = data.listOfUserLists;
                     this.totalRecords = data.totalRecords;

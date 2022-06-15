@@ -1619,6 +1619,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
             this.campaignAccess.salesEnablement = false;
             this.campaignAccess.dataShare = false;
+            this.campaignAccess.oneClickLaunch = false;
           }else if(this.vendorTier){
               this.campaignAccess.shareLeads = false;
           }
@@ -1641,5 +1642,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.campaignAccess.lms = false;
               this.campaignAccess.playbooks = false;
           }
+      }
+
+      /****XNFR-125****/
+      updateOneClickLaunchOption(){
+        let isShareLeadsChecked = $('#share-leads-c').is(':checked');
+        if(!isShareLeadsChecked){
+            this.campaignAccess.oneClickLaunch = false;
+        }
       }
 }
