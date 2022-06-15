@@ -8,7 +8,8 @@ import { Component, OnInit,Input } from '@angular/core';
 export class ModalPopupLoaderComponent implements OnInit {
 
 @Input() height:any;
-updatedHeight:string=""
+updatedHeight:string="";
+@Input() showCircle:boolean;
   constructor() { }
 
   ngOnInit() {

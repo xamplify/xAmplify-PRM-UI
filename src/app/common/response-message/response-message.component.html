@@ -1,19 +1,8 @@
-<div *ngIf="customResponse.responseType != null">
-	<div class="col-xs-12 alert alert-dismissible m0" role="alert"
-		[ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
-			'alert-danger': customResponse.responseType == 'ERROR',
-			'alert-info': customResponse.responseType == 'INFO'}">
-		<button type="button" class="close" data-dismiss="alert"
-			aria-label="Close" (click)="customResponse.responseType = null">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<h4 style="padding-top: 6px;">
-			<!-- <i class="fa"
-				[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
-				'fa-exclamation': customResponse.responseType == 'ERROR'}"
-				aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> -->
-				<span class="text" id='responseMessage'
-				[innerHTML]="customResponse.responseMessage"></span>
-		</h4>
-	</div>
-</div>
+<div *ngIf="customResponse.isVisible" class="text-center">
+    <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success' : customResponse?.responseType=='ERROR'? 'alert alert-danger' : 'alert alert-info'">
+      <a *ngIf="customResponse?.responseType!='INFO'" (click)="customResponse.isVisible=false" [ngClass]="customResponse?.responseType=='SUCCESS' || customResponse?.responseType=='INFO'? 'close-circle scc':'close-circle ecc'">
+        <i class="fa fa-close custom-margin" aria-hidden="true"></i>
+      </a>
+      <strong [innerHTML]="customResponse.responseMessage"></strong>
+    </div>
+  </div>

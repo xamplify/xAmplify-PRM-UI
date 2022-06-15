@@ -21,6 +21,7 @@ import { UserService } from '../../core/services/user.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { utc } from 'moment';
+import { Properties } from 'app/common/models/properties';
 
 declare var swal, $: any, flatpickr;
 
@@ -28,7 +29,7 @@ declare var swal, $: any, flatpickr;
     selector: 'app-campaigns-list-view-util',
     templateUrl: './campaigns-list-view-util.component.html',
     styleUrls: ['./campaigns-list-view-util.component.css', '../../campaigns/manage-publish/manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -126,7 +127,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService, private route: ActivatedRoute, public renderer: Renderer,
-        private vanityUrlService: VanityURLService) {
+        public properties: Properties) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -362,8 +363,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => { this.logger.errorPage(error) });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
@@ -386,13 +386,16 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
-                                this.campaignService.reDistributeCampaign = data;
-                                this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId,false);
+                                /*********XNFR-125*********/
+                                if(campaign.oneClickLaunch){
+                                    this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
+                                }else{
+                                   this.navigateToRedistributeCampaign(data,campaign);
+                                }
                             }
                             else {
-                                this.refService.isEditNurtureCampaign = false;
-                                this.router.navigate(["/home/campaigns/edit"]);
+                                /********XNFR-125*******/
+                                this.checkOneClickLaunchAccess(campaign.campaignId);
                             }
                         }
                     }
@@ -402,6 +405,57 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 });
             this.isScheduledCampaignLaunched = false;
         }
+    }
+
+     /*****XNFR-125*****/
+     checkOneClickLaunchAccess(campaignId:number){
+        this.isloading = true;
+        this.customResponse = new CustomResponse();
+        this.campaignService.checkOneClickLaunchAccess(campaignId).
+        subscribe(
+            response=>{
+                let access = response.data;
+                if(access){
+                    this.refService.isEditNurtureCampaign = false;
+                    this.router.navigate(["/home/campaigns/edit"]);
+                }else{
+                    this.refService.scrollSmoothToTop();
+                    this.customResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchAccessErrorMessage,true);
+                }
+                this.isloading = false;
+            },error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+            });
+    }
+    
+    /**********XNFR-125***********/
+    checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
+        this.customResponse = new CustomResponse();
+        this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
+        subscribe(
+            response=>{
+                if(response.data){
+                    this.navigateToRedistributeCampaign(data,campaign);
+                }else{
+                    this.refService.goToTop();
+                    let statusCode = response.statusCode;
+                    let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
+                    this.customResponse = new CustomResponse("ERROR",message,true);
+                    this.isloading = false;
+                }
+            },_error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+            }
+        );
+    }
+
+    /**********XNFR-125***********/
+    navigateToRedistributeCampaign(data:any,campaign:any){
+        this.campaignService.reDistributeCampaign = data;
+        this.campaignService.isExistingRedistributedCampaignName = true;
+        this.isPartnerGroupSelected(campaign.campaignId,false);
     }
 
     isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
@@ -519,10 +573,16 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 this.clicked = false; 
                 if (data.access) {
                     this.refService.loading(this.httpRequestLoader, false);
-                    this.campaignSuccessMessage = "Campaign copied successfully";
-                    $('#lanchSuccess').show(600);
-                    this.showMessageOnTop();
-                    this.listCampaign(this.pagination);
+                    let statusCode =  data.statusCode;
+                    if(statusCode==404){
+                        this.refService.scrollSmoothToTop();
+                        this.customResponse = new CustomResponse('ERROR',data.message,true);
+                    }else{
+                        this.campaignSuccessMessage = "Campaign copied successfully";
+                        $('#lanchSuccess').show(600);
+                        this.showMessageOnTop();
+                        this.listCampaign(this.pagination);
+                    }
                 } else {
                     this.authenticationService.forceToLogout();
                 }

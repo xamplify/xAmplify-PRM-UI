@@ -271,6 +271,21 @@
                 </div>
             </div>
         </div>
+        <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) 
+            && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <div class="portlet light shadow">
+                <div class="portlet-title" style="min-height: 0px;">
+                    <div class="caption">
+                        <span class="caption-subject" translate>High Level Anlaytics</span>
+                    </div>
+                </div>
+                <div class="portlet-body clearfix" style="padding-left: 15px;padding-right: 15px;">
+            
+                    <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+                </div>
+            </div>
+        </div>
 
         <!--Opportunity Stats-->
         <div *ngIf="!authenticationService?.module?.deletedPartner 

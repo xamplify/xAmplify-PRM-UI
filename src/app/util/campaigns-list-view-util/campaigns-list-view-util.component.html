@@ -177,9 +177,6 @@
                                         <span class="gridHeader">Campaign</span>
                                     </th>
                                     <th class="center" translate scope="col" style="width: 50%; min-width: 532px;"></th>
-                                    <!-- <th class="center" translate scope="col"></th>
-                                        <th class="center" translate scope="col"></th>
-                                        <th class="center" translate scope="col"></th> -->
                                     <th style="width: 25%;text-align:right">Actions</th>
                                 </tr>
                             </thead>
@@ -257,6 +254,8 @@
                                         <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
                                             translate>
                                             Ended</h6>
+                                        <!---XNFR-125-->
+                                        <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
                                     </td>
                                     <td>
                                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -361,8 +360,6 @@
                                             </div>
                                         </td>
                                     </ng-container>
-
-
                                     <ng-container
                                         *ngIf="campaign?.campaignType!='LANDINGPAGE' && campaign?.campaignType!='SOCIAL'">
                                         <td *ngIf="campaign?.emailNotification || campaign?.nurtrueCampaign">
@@ -589,97 +586,6 @@
                                             </div>
                                         </td>
                                     </ng-container>
-
-
-
-
-                                    <!--  <td class="center" title="{{campaign?.totalRecipients}}">
-                                            <div>
-                                            <button class="btn btn-default btn-xs re-distributed-high-level">
-                                              <div>
-                                                <h6 class="custom-font-size">
-                                                  <strong class="custom-font-weight">{{campaign?.totalRecipients}}</strong>
-                                                </h6>
-                                                <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') > -1">Invites</span>
-                                                <span class="custom-font-weight" *ngIf="campaign.campaignType.indexOf('EVENT') < 0">Recipients</span>
-                                              </div>
-                                            </button>
-                                          </div>
-                                           </td>
-                                            <td class="center" title="{{campaign?.activeRecipients}}">
-                                             <div>
-                                              <button class="btn btn-default btn-xs re-distributed-high-level">
-                                                <div>
-                                                  <h6 class="custom-font-size">
-                                                    <strong class="custom-font-weight">{{campaign?.activeRecipients}}</strong>
-                                                  </h6>
-                                                <span class="custom-font-weight"*ngIf="campaign.campaignType.indexOf('EVENT') > -1">Opened</span>
-                                                <span class="custom-font-weight"*ngIf="campaign.campaignType.indexOf('EVENT') < 0">Active Recipients</span>
-                                                </div>
-                                              </button>
-                                            </div>
-                                           </td>
-                                           <td *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 " class="center" title="{{campaign?.emailClicked}}">
-                                            <div>
-                                            <button class="btn btn-default btn-xs re-distributed-high-level">
-                                              <div>
-                                                <h6 class="custom-font-size">
-                                                 <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong> 
-                                                </h6>
-                                                <span class="custom-font-weight">Clicked URL</span>
-                                              </div>
-                                            </button>
-                                          </div>
-                                          </td>
-                                          <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.attendeesCount}}">
-                                            <div>
-                                            <button class="btn btn-default btn-xs re-distributed-high-level">
-                                              <div>
-                                                <h6 class="custom-font-size">
-                                                 <strong class="custom-font-weight">{{campaign?.attendeesCount}}</strong> 
-                                                </h6>
-                                                <span class="custom-font-weight">Yes</span>
-                                              </div>
-                                            </button>
-                                          </div>
-                                          </td>
-                                          <td *ngIf="campaign.campaignType.indexOf('EVENT') >-1" class="center" title="{{campaign?.totalAttendeesCount}}">
-						                        <div>
-						                        <button class="btn btn-default btn-xs re-distributed-high-level">
-						                          <div class="portlet-body text-center">
-						                            <h6 class="custom-font-size">
-						                             <strong class="custom-font-weight">{{campaign?.totalAttendeesCount}}</strong> 
-						                            </h6>
-						                            <span class="custom-font-weight">Total</span>
-						                          </div>
-						                        </button>
-						                      </div>
-					                      </td>
-                                          <td *ngIf="campaign.campaignType.indexOf('SOCIAL') >-1" class="center" title="{{campaign?.socialCampaignRedistributedCount}}">
-                                            <div>
-                                            <button class="btn btn-default btn-xs re-distributed-high-level">
-                                              <div>
-                                                <h6 class="custom-font-size">
-                                                 <strong class="custom-font-weight">{{campaign?.socialCampaignRedistributedCount}}</strong> 
-                                                </h6>
-                                                <span class="custom-font-weight">Redistributed</span>
-                                              </div>
-                                            </button>
-                                          </div>
-                                          </td>
-                                          <td *ngIf="campaign.campaignType.indexOf('VIDEO')<0 && campaign.campaignType.indexOf('EVENT')<0"></td>
-                                           <td *ngIf="campaign.campaignType.indexOf('VIDEO')>-1" class="center" title="{{campaign?.views}}">
-                                              <div>
-                                              <button class="btn btn-default btn-xs re-distributed-high-level">
-                                                <div>
-                                                  <h6 class="custom-font-size">
-                                                    <strong class="custom-font-weight">{{campaign?.views}}</strong>
-                                                  </h6>
-                                                  <span class="custom-font-weight">Views</span>
-                                                </div>
-                                              </button>
-                                          </div>
-                                           </td> -->
                                     <td class="center">
                                         <!----Buttons start here----->
                                         <div class="actions-block override-actions" style="display: flex;">
@@ -693,7 +599,6 @@
                                                         <span [class.disablednew]="!campaign.hasAccess"
                                                             class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
                                                     </a>
-
                                                     <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
                                                      (loggedInUserId==campaign.userId) || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0"
                                                         data-toggle="tooltip" data-placement="top"
@@ -1112,7 +1017,7 @@
                     style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12"
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
-                        <div class="grid-box" style="height:270px">
+                        <div class="grid-box" style="height:300px">
                             <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                             <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
@@ -1125,6 +1030,12 @@
                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
                                         style="position: relative;top: -3px;">To Campaign</span>
                                 </ng-container>
+                                <!--XNFR-125--->
+                                <ng-container *ngIf="campaign?.oneClickLaunch">
+                                    <br><br>
+                                    <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
+                                </ng-container>
+                                <!--XNFR-125--->
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                                     style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
