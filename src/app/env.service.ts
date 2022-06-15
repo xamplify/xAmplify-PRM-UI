@@ -25,6 +25,9 @@ export class EnvService {
   beeTemplateQAClientId = "";
   beeTemplateQAClientSecret = "";
 
+  beeTemplateReleaseClientId = "";
+  beeTemplateReleaseClientSecret = "";
+
   vendorRoleHash = "";
   partnerRoleHash = "";
 
@@ -41,6 +44,9 @@ export class EnvService {
 
   beePageProdClientId = "";
   beePageProdClientSecret = "";
+
+  beePageReleaseClientId = "";
+  beePageReleaseClientSecret = "";
 
 
   /******Auto Reload Configurations */

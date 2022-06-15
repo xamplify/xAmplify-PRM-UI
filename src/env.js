@@ -35,18 +35,22 @@
 	window.__env.beeTemplateDevClientSecret = "jxQSDUiTqkXjrcEQwaQahk94yBGZZXV94w3KT0VIwZf4JHzJz7ID";
 	window.__env.beeTemplateQAClientId = "059b63c2-3a9b-4b8c-8a33-23b58422ba81";
 	window.__env.beeTemplateQAClientSecret = "44NyVor7LZaHN3HsoVie1gdX2xSIrVlrqHPk4SDVNQQA7K6HG5YW";
+	window.__env.beeTemplateReleaseClientId = "a7ba7746-6419-48c2-b713-88cbe57bd67a";
+	window.__env.beeTemplateReleaseClientSecret = "ToUJP4pRWKvErKNFqgnlfuYN8YvTKkALhuy4fPoYsf6VY7I592T2";
 	window.__env.beeHostApi = "https://rsrc.getbee.io/api/templates/m-bee";
 	window.__env.beeRequestType = "GET";
 	window.__env.beePageDevClientId = "4fe8c2d7-9235-42e0-a269-0aef0f0484e9";
 	window.__env.beePageDevClientSecret = "NBQ1g5nOhDSlxNpf2557awmE0XZ9YAdu6ZQS4oEG8dpoY7WCUWkl";
 	window.__env.beePageQAClientId = "5de3522e-acca-480c-ba53-1e85abdc1871";
 	window.__env.beePageQAClientSecret = "YyZ9ysJLmJVAFjngC6Zbh85dKb0F9tgfRj52d1lBEjCdB7SLy3Y9";
+	window.__env.beePageReleaseClientId = "da58c238-fd21-44ab-94ec-f52192c9e1a3";
+	window.__env.beePageReleaseClientSecret = "WeP5O5oKaF3P0oVNyHtOKgrYNd8co9FhYb3ZEsxLbgMSdI3ZwpqP";
 	/**********Production*******/
 	// window.__env.beePageProdClientId = "b9d3b05d-748e-4481-8fc0-63d375048332";
 	// window.__env.beePageProdClientSecret = "xwd1V6IXGx6kNX0QZ1t5niB7CGUrO4SQW46Qs9j4LyvmHePwG5o1";
 	window.__env.beePageProdClientId = "6639d69f-523f-44ca-b809-a00daa26b367";
 	window.__env.beePageProdClientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
-
+	
 	/******Auto Reload Deployment Configurations */
 	window.__env.reloadAfterDeployment = true;
 	window.__env.reloadIntervalInMilliSeconds = 1000 * 60 * 15;//15 Minutes
