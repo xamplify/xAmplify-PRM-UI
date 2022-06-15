@@ -166,6 +166,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadingMarketo: boolean;
 	public getMarketoConatacts: any;
 
+public edited=false;
 
 	marketoImageBlur: boolean = false;
 	marketoImageNormal: boolean = false;
@@ -3874,7 +3875,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	/********XNFR-85********/
 	currentPartner: any;
 	showTeamMembers = false;
+	previewLoader =  false;
 	previewModules(teamMemberGroupId: number) {
+		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
 		this.showModulesPopup = true;
 	}
@@ -3892,6 +3895,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	getTeamMembers(partner: any, index: number) {
 		if (partner.teamMemberGroupId > 0) {
+			this.previewLoader = true;
 			this.currentPartner = partner;
 			this.currentPartner.index = index;
 			this.showTeamMembers = true;
@@ -3902,11 +3906,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	hideModulesPreviewPopUp() {
 		this.showModulesPopup = false;
 		this.teamMemberGroupId = 0;
+		this.previewLoader = false;
 	}
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
 		this.toggleDropDownStatus(partner);
 		this.showTeamMembers = false;
+		this.previewLoader = false;
 	}
 
 	toggleDropDownStatus(partner: any) {
@@ -3927,5 +3933,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
       resetResponse() {
           this.customResponse = new CustomResponse();
 	  }
-
+saveTodos():void{
+	this.edited=true;
+}
 }

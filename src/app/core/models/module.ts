@@ -28,7 +28,6 @@ export class Module {
     isVendor:boolean = false;
     isOrgAdmin:boolean = false;
     isPartner:boolean = false;
-    isMarketing = false;
 
     isPartnershipEstablishedOnlyWithVendorTier = false;
     
@@ -45,6 +44,7 @@ export class Module {
 	isPrmTeamMember = false;
 	isPrmAndPartner = false;
     isPrmAndPartnerTeamMember = false;
+    isPrmSuperVisor = false;
 
     isVendorTier = false;
     isVendorTierTeamMember = false;
@@ -75,6 +75,19 @@ export class Module {
     loggedInThroughOwnVanityUrl = false;
     loggedInThroughXamplifyUrl = false;
     adminOrSuperVisor = false;
+
+    isMarketing = false;
+	isMarketingTeamMember = false;
+	isMarektingAndPartner = false;
+    isMarketingAndPartnerTeamMember = false;
+    isMarketingSuperVisor = false;
+    isMarketingCompany = false;
+
+    isPrmCompany = false;
+    deletedPartner = false;
+    upgradeToMarketing = false;
+    companyProfileCreated = false;
+    loginAs = false;
 
    
 }

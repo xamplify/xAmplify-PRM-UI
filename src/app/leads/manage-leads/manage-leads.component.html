@@ -16,9 +16,11 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !allApisLoader">
+            <ul class="mix-filter p0 m0" style="float: right"
+              *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !allApisLoader">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-            						margin-top: 5px;" *ngIf="isCompanyPartner" translate>{{authenticationService?.partnerModule?.customName}} View </li>
+            						margin-top: 5px;" *ngIf="isCompanyPartner" translate>
+                {{authenticationService?.partnerModule?.customName}} View </li>
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" *ngIf=" isVendor && enableLeads" translate>Vendor View</li>
               <p class="filter" style="float: right;
@@ -49,7 +51,8 @@
                   <div class="desc" translate>Total Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
+                      aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
@@ -112,81 +115,86 @@
                   <div class="desc" translate>Converted Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
+                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
+                      aria-hidden="true"></i></a>
                 </span>
               </a>
             </div>
-            
+
           </div>
         </div>
       </div>
 
-      <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
-      <!-- -----------------------------Leads List-------------------------------------- -->    
+      <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible">
+      </app-response-message>
+      <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
-        <div class="col-md-12">          
+        <div class="col-md-12">
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
-            <div class="tab-content"> 
-              <div *ngIf="!showCampaignLeads">              
-                <div class="page-bar m10">                
-                  <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
-                    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+            <div class="tab-content">
+              <div *ngIf="!showCampaignLeads">
+                <div class="page-bar m10">
+                  <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
+                    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
+                      (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
                   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                     <div class="btn-group pull-right" style="width: max-content;">
-                      <ng-container class='m10'>
+                      <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
-                        <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                          title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
+                        <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom"
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
+                          [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                       </ng-container>
                       <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                          title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" 
-                          *ngIf="listView" (click)="downloadLeads()" >
-                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
-                      </span>                          
-        
-                      <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addLead()" style="padding-left: 11px;">
+                        title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
+                        (click)="downloadLeads()">
+                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                      </span>
+
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
                       </a>
-        
+
                       <a *ngIf="isVendorVersion && syncSalesForce" (click)="syncLeadsWithSalesforce()">
                         <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize with Salesforce" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> Salesforce
                         </button>
                       </a>
-        
+
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">
                             <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search"
                               (keypress)="leadEventHandler($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="leadsSortOption.searchKey"
-                              (click)="clearSearch()"></button>
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                              *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
                             <button type="submit" class="search-box-item-click" (click)="searchLeads()">
                               <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
-                          </div>                        
+                          </div>
                         </div>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
-                            *ngIf="listView" (click)="toggleFilterOption()">
-                            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                          title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
+                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
-  
+
                     </div>
                   </div>
                 </div>
                 <!-- -------------------- Apply Filters Box-------------------- -->
-                <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="row"
+                  *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
                       <div class="portlet-title">
@@ -194,47 +202,69 @@
                         <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
-                      </div>                                       
+                      </div>
                       <div class="portlet box">
-                        <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
-                        </app-response-message> 
+                        <app-response-message class="pg8" [customResponse]="filterResponse"
+                          *ngIf="filterResponse.isVisible">
+                        </app-response-message>
                         <form role="form" class="form-horizontal form-bordered form-label-stripped">
-                          <div class="form-group">                         
+                          <div class="form-group">
                             <div class="form-inline col-sm-12">
                               <div class="form-group col-sm-4">
-                                <label class="control-label">From Date
-                                  <span class="required">*</span>
+                                <label class="control-label">From Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4">
-                                <label class="control-label">To Date
-                                  <span class="required">*</span>
+                                <label class="control-label">To Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <div class="form-group col-sm-4">
+                              <!-- <div class="form-group col-sm-4">
                                 <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
                                   translate>Filter</button>
+                              </div> -->
+                              
+                              <div class="row">
+                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
+                                  <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option value="">---Select Status---</option>
+                                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                                    </option>
+                                  </select>
+                                </div>
                               </div>
+                            <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                              <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
                             </div>
                           </div>
+                        </div>
                         </form>
                       </div>
-                    </div>                                    
-                  </div>                
+                    </div>
+                  </div>
                 </div>
+                <!-- <div>
+              <select class="form-control" [(ngModel)]="lead.pipelineStageId" (ngModelChange)="setLeadStatus(lead)"
+                                style="width: 135px">
+                                <option *ngFor="let stage of lead.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
+                              </select>
+                              </div> -->
                 <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
                   Please contact admin for 'Leads'
-                </div>             
+                </div>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
                 <!-- -------------------- List View for Leads-------------------- -->
-                <section class='m10' 
+                <section class='m10'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-        
+
                   <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
@@ -243,9 +273,9 @@
                           <th class="center" translate>Added By</th>
                           <th class="center" translate>Status</th>
                           <th style="width: 18%; text-align:right" translate>Actions</th>
-                        </tr>      
+                        </tr>
                       </thead>
-        
+
                       <tbody>
                         <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
                           <tr>
@@ -280,13 +310,14 @@
                                   </span>
                                 </h5>
                               </div>
-        
+
                             </td>
                             <td style="width: 20%;">
                               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                              <h5 class='ellipsis' title="{{lead.createdByName}}"
+                                style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
                               </h5>
@@ -295,7 +326,7 @@
                                 <span *ngIf="lead.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
-                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime"> 
+                                <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                                 </app-timestamp>
                               </h5>
                             </td>
@@ -306,54 +337,42 @@
                                   style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                 Deal
                               </div>
-        
-                              <div *ngIf="lead?.canRegisterDeal" class="register_deal">
+
+                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
                                 <a style="color: #008fd5;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
-        
+
                             </td>
                             <td>
                               <div class="actions-block override-actions">
-                                <ng-container>
                                   <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                   </a>
-                                  <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
+                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
                                     title="Edit Lead" id="lead">
-                                    <i class="fa fa-edit mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
-                                    title="Delete Lead" id="lead">
-                                    <i class="fa fa-trash mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
-                                    <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-                                  </a>
-                                </ng-container>
+                                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                    </a>
+                                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
+                                      title="Delete Lead" id="lead">
+                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                    </a>
+                                  </ng-container>
+                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
+                                      title="Comments" style="margin-top: 10px">
+                                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                      <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
+                                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                                    </a>
                               </div>
-        
-                              <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                                      <span class="circled-number"  style="height: 40px;width:40px">
-                                        <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                      </span>
-                                    </a> 
-                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                                      <span class="circled-number" style="height: 40px;width:40px">
-                                        <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                          style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                                      </span>
-                                    </a> -->
-        
                             </td>
-                          </tr>      
+                          </tr>
                         </ng-container>
                       </tbody>
-        
                     </table>
                   </div>
-        
+
                   <!-- --------------------Pagination0-------------------- -->
                   <div *ngIf="!httpRequestLoader.isLoading" class="pg8">
                     <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
@@ -364,14 +383,15 @@
                     <strong translate>No Leads Found.</strong>
                   </div>
                 </section>
-                <div *ngIf="listView && !httpRequestLoader.isLoading && leadsSortOption.totalRecords==0" class="alert alert-info">
+                <div *ngIf="listView && !httpRequestLoader.isLoading && leadsSortOption.totalRecords==0"
+                  class="alert alert-info">
                   <strong translate>No Leads Found.</strong>
                 </div>
-        
+
                 <!-- -------------------- Campaign Level View for Leads-------------------- -->
                 <section class='m10'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
-        
+
                   <div class="table-responsive" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
@@ -381,28 +401,34 @@
                           <th class="center" translate>Launched On</th>
                           <th class="center">Count</th>
                         </tr>
-        
+
                       </thead>
-        
+
                       <tbody>
                         <ng-container *ngFor='let campaign of campaignPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 10%;" class="hidden-xs">
-                              <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.png"
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.png"
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.png"
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png"
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.png" 
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.png" 
+                              <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
+                                src="assets/images/video-email.png" style="height: 50px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
+                                src="assets/images/regular-email.png" style="height: 50px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 "
+                                src="assets/images/social-campaign.png" style="height: 50px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 "
+                                src="assets/images/event-campaign.png" style="height: 50px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
+                                src="assets/images/landing-page.png" style="height: 50px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.png"
                                 style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
-                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaign}}">
+                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;"
+                                title="{{campaign.campaign}}">
                                 {{campaign.campaign|
                                 slice:0:25}}
                                 <span *ngIf="campaign.campaign?.length>25">...</span>
@@ -420,39 +446,42 @@
                               </span>
                             </td>
                             <td>
-                              <a data-toggle="tooltip" data-placement="top" title="Number of Leads" style="cursor: default">
+                              <a data-toggle="tooltip" data-placement="top" title="Number of Leads"
+                                style="cursor: default">
                                 <span class="circled-number"><strong>{{campaign.leadsCount}}</strong></span>
                               </a>
-        
-                              <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
-                                title="View leads for this campaign">
+
+                              <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip"
+                                data-placement="top" title="View leads for this campaign">
                                 <span class="circled-number">
                                   <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
                                     aria-hidden="true"></i>
                                 </span>
                               </a>
-  
-                              <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" 
-                                title="View leads for this campaign">
+
+                              <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)"
+                                data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
                                 <span class="circled-number">
                                   <i class="fa fa-users" aria-hidden="true"></i>
                                 </span>
                               </a>
-        
+
                             </td>
                           </tr>
-        
+
                           <!-- -------------------- Partners List inside a Campaign-------------------- -->
                           <tr [ngClass]="{'hidden': !campaign.expand}">
                             <td colspan="8" style="padding-right: 0px !important;">
-                              <app-list-loader *ngIf="partnerRequestLoader.isLoading && !partnerRequestLoader.isServerError">
+                              <app-list-loader
+                                *ngIf="partnerRequestLoader.isLoading && !partnerRequestLoader.isServerError">
                               </app-list-loader>
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
                                     <div class="portlet-title">
                                       <div class="caption">
-                                        <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
+                                        <span
+                                          class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                                       </div>
                                       <div class="inputs" align="right" style="float: right; display: flex;">
                                         <!-- <div style="float: left;">
@@ -465,31 +494,34 @@
                                                   <option *ngFor="let option of sortOption.dealPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
                                                 </select>
                                               </div> -->
-                                        <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+                                        <div class="portlet-input input-inline input-medium"
+                                          style="margin-right: 10px;">
                                           <div class="input-icon right" style="position: relative;right: -11px;">
                                             <input type="text" style="height:34px;" class="form-control"
-                                              [(ngModel)]="partnerSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                              [(ngModel)]="partnerSortOption.searchKey"
+                                              [ngModelOptions]="{standalone: true}"
                                               placeholder="Search for a {{authenticationService?.partnerModule?.customName}}"
                                               (keypress)="searchPartnersKeyPress($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                                               *ngIf="partnerSortOption.searchKey"
                                               (click)="clearPartnerSearch()"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
-                                                class="fa fa-search"></i></button>
+                                            <button type="submit" class="search-box-item-click"
+                                              (click)="searchPartners()"><i class="fa fa-search"></i></button>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                                     <div class="row" id="box" *ngIf="partnerRequestLoader.isServerError">
                                       Please contact admin for "Campaigns"
-                                    </div>                                  
+                                    </div>
                                     <div class="portlet-body table-responsive" style="overflow: hidden;"
                                       [hidden]="partnerRequestLoader.isLoading || partnerRequestLoader.isServerError || partnerSortOption.totalRecords == 0">
                                       <div class="table-responsive" [hidden]="partnerRequestLoader.isLoading">
                                         <table class="table tgrid">
                                           <thead>
                                             <tr>
-                                              <th class="center-aligned">{{authenticationService?.partnerModule?.customName}}</th>
+                                              <th class="center-aligned">
+                                                {{authenticationService?.partnerModule?.customName}}</th>
                                               <th class="center">#Leads Count</th>
                                             </tr>
                                           </thead>
@@ -519,86 +551,99 @@
                                       <!-- End of 24 -->
                                       <div *ngIf="!partnerRequestLoader.isLoading && partnerPagination.totalRecords==0"
                                         class="alert alert-info">
-                                        <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
+                                        <strong translate>No {{authenticationService?.partnerModule?.customName}}
+                                          Found.</strong>
                                       </div>
                                     </div>
-                                    <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
-                                      <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
+                                    <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0"
+                                      class="alert alert-info">
+                                      <strong translate>No {{authenticationService?.partnerModule?.customName}}
+                                        Found.</strong>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </td>
                           </tr>
-        
+
                         </ng-container>
                       </tbody>
-        
+
                     </table>
                   </div>
-        
+
                   <div *ngIf="!campaignRequestLoader.isLoading" class="pg8">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>
                   <!-- End of 24 -->
-                  <div *ngIf="!campaignRequestLoader.isLoading && campaignPagination.totalRecords==0" class="alert alert-info">
+                  <div *ngIf="!campaignRequestLoader.isLoading && campaignPagination.totalRecords==0"
+                    class="alert alert-info">
                     <strong translate>No Campaigns Found.</strong>
                   </div>
                 </section>
-                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="alert alert-info">
+                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0"
+                  class="alert alert-info">
                   <strong translate>No Campaigns Found.</strong>
                 </div>
               </div>
-        
+
               <!-- -----------------------------Leads List inside a Campaign-------------------------------------- -->
               <div *ngIf="showCampaignLeads">
                 <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
                 </app-response-message>
                 <div class="caption col-xs-10 col-md-10" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
                   ;font-size: 18px;font-weight: 600">
-                  Campaign: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
-                    translate>{{selectedCampaignName}}</span>
-                    <span *ngIf="selectedPartnerCompanyName !== ''"> {{authenticationService?.partnerModule?.customName}}: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
+                  Campaign: <span class="caption-subject font-red-sunglo uppercase"
+                    style="padding-left: 5px; padding-right: 15px;" translate>{{selectedCampaignName}}</span>
+                  <span *ngIf="selectedPartnerCompanyName !== ''"> {{authenticationService?.partnerModule?.customName}}:
+                    <span class="caption-subject font-red-sunglo uppercase"
+                      style="padding-left: 5px; padding-right: 15px;"
                       translate>{{selectedPartnerCompanyName}}</span></span>
-                 
+
                 </div>
-        
+
                 <a (click)="closeCampaignLeads()" class="pull-right close-circle"
                   style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-                  <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
-                [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-                (viewCampaignLeadForm)="viewCampaignLeadForm($event)" (editCampaignLeadForm)="editCampaignLeadForm($event)" 
-                (registerDealForm)="registerDealForm($event)" (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
+                  <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+                    aria-hidden="true"></span></a>
+                <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId"
+                  [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
+                  [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
+                  (viewCampaignLeadForm)="viewCampaignLeadForm($event)"
+                  (editCampaignLeadForm)="editCampaignLeadForm($event)" (registerDealForm)="registerDealForm($event)"
+                  (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
                 </app-manage-campaign-leads>
               </div>
-            </div>            
+            </div>
           </div>
         </div><!-- End Of Tab Content -->
       </div>
 
       <!-- <app-modal-popup-loader *ngIf="showLeadForm"> </app-modal-popup-loader> -->
-      
-      </div>
 
-      
+    </div>
+
+
 
   </div>
 </div>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" (isCommentSection)="addCommentModalClose($event)">
+</app-deal-chat-popup>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitLeadSuccess()"
-  (notifyManageLeadsComponentToHidePopup) = "resetValues()"
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType"
+  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
-	<div class="page-content">
-		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
-	</div>
+  <div class="page-content">
+    <a (click)="closeDealForm()" class="pull-right close-circle"
+      style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()">
+    </app-add-deal>
+  </div>
 </section>

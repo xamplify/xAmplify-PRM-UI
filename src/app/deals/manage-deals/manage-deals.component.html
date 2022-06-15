@@ -113,11 +113,11 @@
               <div *ngIf="!showCampaignDeals">
                 <div class="page-bar m10">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
-                    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
                   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
                     <div class="btn-group pull-right">
-                      <ng-container class='m10'>
+                      <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
@@ -126,12 +126,13 @@
                           title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                        title="Download" [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
+                       
+                      </ng-container>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
+                        [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
-                      </ng-container>
-                      <a *ngIf="isPartnerVersion || isOrgAdmin" (click)="addDeal()" style="padding-left: 11px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addDeal()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                         </button>
@@ -176,29 +177,52 @@
                           <div class="form-group">
                             <div class="form-inline col-sm-12 ">
                               <div class="form-group col-sm-4">
-                                <label class="control-label">From Date
-                                  <span class="required">*</span>
+                                <label class="control-label">From Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4">
-                                <label class="control-label">To Date
-                                  <span class="required">*</span>
+                                <label class="control-label">To Date &nbsp;
+                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <div class="form-group col-sm-4">
-                                <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                                  translate>Filter</button>
+                              <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
+                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 30px;;display: flex;">
+                                  <label class="control-label" style="padding-right: 5px;">Added For &nbsp;</label>
+                                  <select class="form-control" style="width: 196px;height: 32px;" [(ngModel)]="vendorCompanyIdFilter"
+                                    (ngModelChange)="onChangeVendorCompany()" [ngModelOptions]="{standalone: true}">
+                                    <option value="">---Select Company---</option>
+                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
+                                    </option>
+                                  </select>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </form>
+
+                              <div class="row">
+                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
+                                  <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                                  [ngModelOptions]="{standalone: true}">
+                                      <option value="">---Select Status---</option>  
+                                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                      
+                        <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div> 
+                      </div>
+                    </div>
+                    </form>
                       </div>
                     </div>                                    
-                  </div>                
+                  </div>               
                 </div>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
@@ -263,70 +287,38 @@
                               </h5>
                             </td>
                             <td style="width: 10%;">
-                              <select class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal)"
+                              <select [disabled]="authenticationService?.module?.deletedPartner" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
                                 style="width: 135px">
-                                <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
+                                  <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                               </select>
-                
                             </td>
                             <td style="width: 30%;">
                               <div class="actions-block override-actions">
-                                <ng-container>
                                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                     <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
-                                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
-                                    id="deal">
-                                    <i class="fa fa-edit mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
-                                    title="Delete Deal" id="deal">
-                                    <i class="fa fa-trash mr5" aria-hidden="true"></i>
-                                  </a>
-                                  <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
-                                    <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
-                                    <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
-                                  </a>
-                                </ng-container>
+                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
+                                      id="deal">
+                                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                    </a>
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                                      title="Delete Deal" id="deal">
+                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                    </a>
+                                  </ng-container>
+                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                      <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                    </a>
                               </div>
-                              <!-- <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-eye mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a>
-                                            <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-edit mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a>   -->
-                              <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                                              <span class="circled-number"  style="height: 40px;width:40px">
-                                                <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span>
-                                            </a> 
-                                            <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                                                  style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                                              </span>
-                                            </a> -->
-                              <!-- <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)" title="Delete Deal" style="margin-top: 10px"
-                                              id="deal">
-                                              <span class="circled-number" style="height: 40px;width:40px">
-                                                <i class="fa fa-trash mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                              </span> 
-                                            </a> -->
                             </td>
                           </tr>
-                
                         </ng-container>
                       </tbody>
-                
                     </table>
                   </div>
                 
@@ -547,11 +539,6 @@
 
   </div>
 </div>
-
-<!-- Add Deal Form-->
-<!-- <ng-container *ngIf="showDealForm">
-  <app-add-deal></app-add-deal>
-</ng-container> -->
 
 <section *ngIf="showDealForm">
 	<div class="page-content">

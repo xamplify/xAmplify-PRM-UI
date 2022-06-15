@@ -1,3 +1,4 @@
+import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { Injectable } from '@angular/core';
 import { Http,Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -13,9 +14,9 @@ import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var swal, $, Promise: any;
+declare var swal:any, $:any, Promise: any;
 @Injectable()
-export class CampaignService {
+export class CampaignService {    
    
     campaign: Campaign;
     eventCampaign:any;
@@ -25,6 +26,7 @@ export class CampaignService {
     URL = this.authenticationService.REST_URL;
     reDistributeEvent = false;
     loading = false;
+    archived:boolean = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -69,6 +71,7 @@ export class CampaignService {
     }
 
     getCampaignById(data: any) {
+        data['userId'] = this.authenticationService.getUserId();
         return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token,data)
             .map(this.extractData)
             .catch(this.handleError);
@@ -89,6 +92,7 @@ export class CampaignService {
         .map(this.extractData)
         .catch(this.handleError);
       } else {
+        data['userId'] = this.authenticationService.getUserId();
         return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token, data)
         .map(this.extractData)
         .catch(this.handleError);
@@ -1131,6 +1135,83 @@ export class CampaignService {
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    archiveCampaign(request: any) {
+        return this.http.post(this.URL + `campaign/archive?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    unarchiveCampaign(request: any) {
+        return this.http.post(this.URL + `campaign/unarchive?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    updateEndDate(request: any) {
+        return this.http.post(this.URL + `campaign/enddate/edit?access_token=${this.authenticationService.access_token}`, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    /********XNFR-118***********/
+    getCampaignDetailsById(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/getCampaignDetailsById/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-118***********/
+    updateCampaignDetails(campaignDetailsDto:CampaignDetailsDto){
+        let userId = this.authenticationService.getUserId();
+        campaignDetailsDto.userId = userId;
+        let url = this.URL + "campaign/updateCampaignDetails?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaignDetailsDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /********XNFR-125***********/
+    isOneClickLaunchCampaignRedistributed(campaignId:number){
+        let url = this.URL + "campaign/isOneClickLaunchCampaignRedistributed/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /********XNFR-125***********/
+    redistributeOneClickLaunchCampaign(campaign:any){
+        let url = this.URL + "campaign/redistributeOneClickCampaign?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url,campaign)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-125***********/
+    checkOneClickLaunchRedistributeEditAccess(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/checkOneClickLaunchRedistributeEditAccess/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-125***********/
+    checkOneClickLaunchAccess(campaignId:number){
+        let userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/checkOneClickLaunchAccess/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    /********XNFR-125***********/
+    getOneClickLaunchCampaignPartnerCompany(campaignId:number){
+        let url = this.URL + "campaign/getOneClickLaunchCampaignPartnerCompany/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     private extractData(res: Response) {

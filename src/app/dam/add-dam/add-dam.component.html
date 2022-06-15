@@ -71,7 +71,7 @@
                           <div class="col-sm-8">
                             <!-- <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea> -->
                             <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
-                              (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="getCkEditorData();validateForm('description')"
+                              (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="validateForm('description')"
                               (input)="getCkEditorData();validateForm('description')">
                             </ckeditor>
                           </div>

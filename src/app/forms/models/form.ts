@@ -39,7 +39,9 @@ export class Form {
     pageBackgroundColor="";
     showBackgroundImage=false;
     showCaptcha=false;
-
+    showTitleHeader = true;
+    descriptionColor="";
+    
     openLinkInNewTab = false;
     formSubmissionUrl = "";
     isValidFormSubmissionUrl = true;
@@ -52,4 +54,7 @@ export class Form {
     isSurvey = false;
     disableEmail = false;
     emailId:string = "";
+    selectedTeamMemberIds:any[] = [];
+    selectedGroupIds:any[] = [];
+
 }

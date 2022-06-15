@@ -124,11 +124,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.teamMembers = data.list;
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, this.teamMembers);
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         error => {
           this.logger.errorPage(error);
         }, () => {
-          this.findAllTeamMemberGroupIdsAndNames();
+        
         }
       );
   }
@@ -141,7 +142,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   findAllTeamMemberGroupIdsAndNames() {
     this.referenceService.loading(this.addTeamMemberLoader, true);
-    let isDefaultOption = this.showAddTeamMemberDiv || this.showUploadedTeamMembers;
+    let isDefaultOption = this.showAddTeamMemberDiv || this.showUploadedTeamMembers || (this.team.teamMemberGroupId==0 && this.editTeamMember);
     this.teamMemberService.findAllTeamMemberGroupIdsAndNames(isDefaultOption)
       .subscribe(
         response => {
@@ -456,17 +457,36 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           this.team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getPartnersCount(teamMemberGroupId,undefined);
         }
-      )
+      );
+    }else{
+      this.loading = true;
+     this.getPartnersCount(teamMemberGroupId,undefined);
     }
   }
 
-
+  getPartnersCount(teamMemberGroupId:number,team:any){
+    this.teamMemberService.getPartnersCount(teamMemberGroupId).subscribe(
+      response=>{
+        this.loading = false;
+        let count = response.data;
+        if(team!=undefined){
+          team.teamMemberGroupPartnersCount = count;
+        }else{
+          this.team.teamMemberGroupPartnersCount = count;
+        }
+      },error=>{
+        this.loading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
+  }
 
   validateAddTeamMemberForm(fieldName: string) {
     if ("emailId" == fieldName) {
@@ -481,6 +501,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   validateAllFields() {
     if (this.editTeamMember) {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
+      this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
     }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId;
   }
@@ -665,16 +686,19 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.teamMemberService.hasSuperVisorRole(teamMemberGroupId).subscribe(
         response => {
-          this.loading = false;
           team.enableOption = response.data;
         }, _error => {
           this.loading = false;
           this.referenceService.showSweetAlertServerErrorMessage();
+        },()=>{
+          this.getPartnersCount(teamMemberGroupId,team);
         }
       )
+    }else{
+     this.loading = true;
+      this.getPartnersCount(teamMemberGroupId,team);
     }
   }
-
   validateCsvData() {
     let names = this.csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
     let duplicateEmailIds = this.referenceService.returnDuplicates(names);
@@ -793,10 +817,17 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         this.team.id = id;
         this.editTeamMember = true;
         this.saveOrUpdateButtonText = "Update";
-        this.team.validForm = true;
+        if(this.team.teamMemberGroupId==null){
+            this.team.teamMemberGroupId=0;
+            this.team.validForm = false;
+        }else{
+          this.team.validForm = true;
+        }
       }, error => {
         this.referenceService.loading(this.httpRequestLoader, false);
         this.referenceService.showSweetAlertServerErrorMessage();
+      },()=>{
+        this.findAllTeamMemberGroupIdsAndNames();
       }
     );
   }

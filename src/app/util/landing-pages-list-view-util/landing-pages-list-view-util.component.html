@@ -9,16 +9,16 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
-                                <ul class="mix-filter">
+                                <ul class="mix-filter" *ngIf="!authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)
+                                        <li class="filter"  (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
+                                        <li class="filter"  (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
+                                        <li class="filter"  (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
                                         </li>
                                     </ng-container>
                                     <ng-container *ngIf="isPartnerLandingPage">
@@ -119,6 +119,13 @@
                                             <h6 class="moreipsis">
                                                 <span>Folder <strong>{{landingPage.categoryName}}</strong></span>
                                             </h6>
+                                            <h6 class="moreipsis">
+                                                <span translate>
+                                                    <strong translate>Open Links In New Tab 
+                                                        <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                                    </strong>
+                                                </span>
+                                            </h6>
                                             <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
@@ -201,6 +208,13 @@
                                     <h6 title="{{landingPage.createdUser}}">By
                                         <strong>{{landingPage.createdUser | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.createdUser?.length>25">..</span>
+                                    </h6>
+                                    <h6 class="moreipsis">
+                                        <span translate>
+                                            <strong translate>Open Links In New Tab 
+                                                <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                            </strong>
+                                        </span>
                                     </h6>
                                 </div>
 

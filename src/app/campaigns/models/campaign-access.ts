@@ -31,4 +31,5 @@ export class CampaignAccess {
   allBoundSamlSettings = false;
   survey  = false;
   dataShare = false;
+  oneClickLaunch = false;
 }

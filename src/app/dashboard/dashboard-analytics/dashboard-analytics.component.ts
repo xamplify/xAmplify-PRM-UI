@@ -19,7 +19,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 
-declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
+declare var $:any, Highcharts: any;
 @Component({
   selector: 'app-dashboard-analytics',
   templateUrl: './dashboard-analytics.component.html',
@@ -61,13 +61,14 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    customResponse: CustomResponse = new CustomResponse();
    showSandboxText = false;
    applyFilter = true;
+   hasAccess = false;
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.showSandboxText = ("https://xamplify.co/"==envService.CLIENT_URL && !this.authenticationService.vanityURLEnabled);
+    this.showSandboxText = (("https://xamplify.co/"==envService.CLIENT_URL||"http://localhost:4200/"==envService.CLIENT_URL) && !this.authenticationService.vanityURLEnabled);
     
 }
 
@@ -79,13 +80,13 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     const currentUser = localStorage.getItem( 'currentUser' );
     if(currentUser!=undefined){
       this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
-    }
+      
+      }
     if(!this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner){
         this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getUserCampaignReport();
-        this.xtremandLogger.log(this.authenticationService.getRoles());
     }
   }
 
@@ -427,5 +428,5 @@ showCampaignDetails(campaign:any){
     self.applyFilter = event['selectedOptionIndex'] == 1;
     }, 500);
   }
-
+  
 }

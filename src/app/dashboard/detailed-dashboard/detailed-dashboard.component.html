@@ -1,16 +1,17 @@
 <div class="page-content">
-<div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
-    <div class="col-xs-12 col-sm-6 p0">
-        <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+    <div class="page-bar" [hidden]="loading">
+        <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
+            <div class="col-md-11 col-xs-11 col-sm-11">
+            <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+            </div>
+            <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+        </div>
     </div>
-    <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-</div>
-<app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
-<div class="row" *ngIf="!loading && hasAccess">
+    <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+    <div class="row" *ngIf="!loading && hasAccess">
         <div class="page-bar portlet light border-radius-0 shadow mmtp">
-            <ng-container *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner
-             || authenticationService?.module?.isPrmAndPartnerTeamMember ||authenticationService?.module?.isVendorTier || authenticationService?.module?.isVendorTierTeamMember
-             || authenticationService?.module?.isVendorTierAndPartner ||  authenticationService?.module?.isVendorTierAndPartnerTeamMember )">
+            <!---The Below Logic For Only PRM Company-->
+            <ng-container *ngIf="authenticationService?.module?.isPrmCompany">
                 <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">
                     <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
                 </ng-container>
@@ -23,17 +24,21 @@
                     </div>
                 </ng-container>
             </ng-container>
+
+            <!---The Below Logic For NOT PRM Company-->
             <ng-container *ngIf="(!authenticationService?.module?.isPrm && !authenticationService?.module?.isPrmTeamMember && !authenticationService?.module?.isPrmAndPartner
-             && !authenticationService?.module?.isPrmAndPartnerTeamMember && !authenticationService?.module?.isVendorTier && !authenticationService?.module?.isVendorTierTeamMember
-             && !authenticationService?.module?.isVendorTierAndPartner && !authenticationService?.module?.isVendorTierAndPartnerTeamMember)">
+            && !authenticationService?.module?.isPrmAndPartnerTeamMember)">
+                <div *ngIf="authenticationService?.module?.isMarketingCompany && !authenticationService?.mdf && !authenticationService?.leadsAndDeals" class="alert alert-info center-align">
+                    <strong>No Analytics Found</strong>
+                </div>
                 <app-advanced-dashboard-analytics [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
             </ng-container>
-            <ng-container *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-            || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
-            <!----Show PRM Content--------->
-			<app-show-prm-content [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
-			authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
-			</app-show-prm-content>
+
+            <!---The Below Logic For Only PRM Company || Partnership Only With Prm || Logged In As PRM Partner-->
+            <ng-container *ngIf="authenticationService?.module?.isPrmCompany || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+            <app-show-prm-content [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner ||
+            authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner">
+            </app-show-prm-content>
             <!--Top 4 Assets--------------->  
             <app-top-4-assets [isPartnerView]="false" [hideRowClass]="true" *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
             <!--Top 4 Shared Assets--------------->  
@@ -47,10 +52,13 @@
             <!--Top 4 Shared PlayBooks--------------->  
             <app-top-4-tracks-and-play-books [isPartnerView]="true" [hideRowClass]="true" [tracks]="false" *ngIf="authenticationService?.module?.playbookAccessAsPartner"></app-top-4-tracks-and-play-books>
             </ng-container>
+
+
             <div class="clearfix" *ngIf="authenticationService?.leadsAndDeals">
                 <app-leads-statistics [applyFilter]="applyFilter"></app-leads-statistics>
                 <app-deals-statistics [applyFilter]="applyFilter"></app-deals-statistics>
-             </div>
+            </div>
+
         </div>
-</div>
+    </div>
 </div>

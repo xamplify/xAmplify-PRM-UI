@@ -19,6 +19,7 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 	@Output() deleteAssetLoaderEmitter = new EventEmitter();
 	@Output() deleteAssetSuccessEmitter = new EventEmitter();
 	@Output() deleteAssetCancelEmitter = new EventEmitter();
+	@Output() deleteAssetFailEmitter = new EventEmitter();
 	properties: Properties = new Properties();
 	constructor(public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
 		public damService: DamService) { }
@@ -57,7 +58,11 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 		this.damService.delete(damUploadPostDto)
 			.subscribe(
 				(response: any) => {
-					this.deleteAssetSuccessEmitter.emit(response);
+					if (response.statusCode === 200) {
+						this.deleteAssetSuccessEmitter.emit(response);
+					} else {
+						this.deleteAssetFailEmitter.emit(response.message);						
+					}
 				},
 				(_error: string) => {
 					this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);

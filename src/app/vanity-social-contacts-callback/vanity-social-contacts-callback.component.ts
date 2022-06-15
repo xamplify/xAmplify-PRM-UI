@@ -164,7 +164,7 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                                 if(type == 'hubspot'){
                                     this.postingMessage = "isHubSpotAuth";
                                 }
-                                else{
+                                else if(type === "isalesforce"){
                                     this.postingMessage = "isSalesForceAuth";
                                 }
                                 this.postingMessageToParentWindow(this.postingMessage);

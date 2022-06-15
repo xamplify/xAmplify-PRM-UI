@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ParterService } from '../services/parter.service';
@@ -78,7 +78,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
-        public utilService: UtilService) {
+        public utilService: UtilService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
@@ -89,7 +89,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/home/partners/manage');
     }
     clickWorldMapReports(event) {
-        console.log(event);
     }
     campaignTypeChart(data: any) {
         Highcharts.chart('campaign-type-chart', {
@@ -147,7 +146,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.activePartnersPagination.maxResults = 3;
         this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
             (response: any) => {
-                console.log(response);
                 for (var i in response.activePartnesList) {
                     response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
                 }
@@ -155,7 +153,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
                 this.referenseService.loading(this.activeParnterHttpRequestLoader, false);
             },
-            (error: any) => { console.log("error") });
+            (error: any) => {  });
     }
 
     searchActivePartnerAnalytics() {
@@ -175,11 +173,11 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 for (var i in this.partnerUserInteraction) {
                     this.partnerUserInteraction[i].contactCompany = this.partnerUserInteraction[i].companyName;
                 }
-                console.log(this.partnerUserInteraction);
+              
                 this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
                 this.referenseService.loading(this.campaignUserInteractionHttpRequestLoader, false);
             },
-            (error: any) => { console.log('error got here') });
+            (error: any) => {  });
     }
     searchInPartnerCampaignsUI() {
         this.pagination.pageIndex = 1;
@@ -198,7 +196,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.campaignInteractionPagination = this.pagerService.getPagedItems(this.campaignInteractionPagination, data.message.data);
                 $('#campaignInteractionModal').modal('show');
             },
-            (error: any) => { console.log('error got here') });
+            (error: any) => {  });
     }
 
     setPage(event) {
@@ -237,6 +235,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
 
     goToActivePartnersDiv() {
+        this.reloadWithFilter = false;
+        this.loadAllCharts = true;
         this.sortOption = new SortOption();
         this.selectedTabIndex = 0;
         this.campaignUserInteractionHttpRequestLoader = new HttpRequestLoader();
@@ -248,7 +248,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         $('#approve-partners-div').hide();
         this.getActivePartnerReports();
         this.loadCountryData();
-        this.partnerReportData();
+        setTimeout(() => {
+             this.partnerReportData();
+             this.reloadWithFilter = true;
+             this.loadAllCharts = false;
+        }, 500);
+        
+
     }
 
     /****************************Through Partner Analytics**************************/
@@ -412,11 +418,9 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         if (this.authenticationService.isSuperAdmin()) {
             pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
         }
-        console.log(pagination);
         this.parterService.getApprovePartnersAnalytics(pagination).subscribe(
             (response: any) => {
                 pagination.totalRecords = response.totalRecords;
-                console.log(response);
                 if (response.approvePartnerList.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
                 }
@@ -440,7 +444,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.parterService.getInActivePartnersAnalytics(pagination).subscribe(
             (response: any) => {
                 pagination.totalRecords = response.totalRecords;
-                console.log(response);
                 if (response.inactivePartnerList.length === 0) {
                     this.customResponse = new CustomResponse('INFO', 'No records found', true);
                 } else {
@@ -492,7 +495,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
 
     sendPartnerReminder(item: any) {
-        console.log(item);
         let user = new User();
         user.emailId = item.emailId;
         user.firstName = item.firstName;
@@ -528,7 +530,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.referenseService.loading(this.campaignUserInteractionHttpRequestLoader, true);
         this.parterService.listRedistributedThroughPartnerCampaign(this.loggedInUserId, pagination).subscribe(
             (response: any) => {
-                console.log(response);
                 let data = response.data;
                 $.each(data.redistributedCampaigns, function (index, campaign) {
                     campaign.redistributedOn = new Date(campaign.redistributedUtcString);
@@ -538,7 +539,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 pagination = this.pagerService.getPagedItems(pagination, data.redistributedCampaigns);
                 this.referenseService.loading(this.campaignUserInteractionHttpRequestLoader, false);
             },
-            (error: any) => { console.log('error got here') });
+            (error: any) => { });
     }
     showRedistributedCampaings(item: any) {
         this.pagination.pagedItems.forEach((element) => {
@@ -554,30 +555,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         });
         item.expand = !item.expand;
     }
-
-    /*showApprovePartnerSweetAlert( partnerId: number ) {
-        try {
-            this.xtremandLogger.info( "PartnerId in sweetAlert() " + partnerId );
-            let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, approve it!'
-  
-            }).then( function( myData: any ) {
-                console.log( "Partner ReportPage showAlert then()" + myData );
-                self.approvePartnerRequest( partnerId );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "PartnerReport Page", "ApprovePartnerAlert()" );
-        }
-    }*/
 
 
     approvePartnerRequest() {
@@ -599,7 +576,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.referenseService.loading(this.httpRequestLoader, false);
                         },
                         (error: any) => {
-                            console.log(error);
                             this.referenseService.loading(this.httpRequestLoader, false);
                         },
                         () => this.xtremandLogger.info("Approved successfully.")
@@ -612,29 +588,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         }
     }
 
-    /*showDeclinePartnerSweetAlert( partnerId: number ) {
-        try {
-            this.xtremandLogger.info( "PartnerId decline partner in sweetAlert() " + partnerId );
-            let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "You won't be able to undo this action!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, approve it!'
-  
-            }).then( function( myData: any ) {
-                console.log( "Partner ReportPage showAlert then()" + myData );
-                self.declinePartnerRequest( partnerId );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "PartnerReport Page", "DeclinePartnerAlert()" );
-        }
-    }*/
 
     declinePartnerRequest() {
         try {
@@ -655,7 +608,6 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                             this.referenseService.loading(this.httpRequestLoader, false);
                         },
                         (error: any) => {
-                            console.log(error);
                             this.referenseService.loading(this.httpRequestLoader, false);
                         },
                         () => this.xtremandLogger.info("Declined successfully.")
@@ -719,14 +671,23 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.loggedInUserId > 0) {
-            this.findActivePartnersCount();
-            this.findRedistributedCampaignsCount();
-            this.findThroughCampaignsCount();
-            this.findInActivePartnersCount();
-            this.findApprovePartnersCount();
-            this.loadCountryData();
-            this.partnerReportData();
-            this.goToActivePartnersDiv();
+                let tabIndex = this.route.snapshot.params['id'];
+                this.findActivePartnersCount();
+                this.findRedistributedCampaignsCount();
+                this.findThroughCampaignsCount();
+                this.findInActivePartnersCount();
+            if(tabIndex != undefined){
+                if(tabIndex == 1){
+                this.goToInActivePartnersDiv()
+                }
+                else {
+                    this.goToReDistributedPartnersDiv();
+                }
+            }else{
+                this.loadCountryData();
+                this.partnerReportData();
+                this.goToActivePartnersDiv();
+            }
             if (localStorage != undefined) {
                 this.throughPartnerCampaignsTabName = "Through " + localStorage.getItem('partnerModuleCustomName') + " Campaigns";
             }
@@ -753,7 +714,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                     }
                 },
                 error => {
-                    console.log("error in fetching module")
+                   
                 },
                 () => this.xtremandLogger.info("Finished getModuleAccess()")
             );

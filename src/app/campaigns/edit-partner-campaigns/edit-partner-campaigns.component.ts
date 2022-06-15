@@ -191,7 +191,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     expandedUserList: any;
     mergeTagsInput:any = {};
     dataShare: boolean;
-
+    /*******XNFR-125******/
+    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();                           
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -257,6 +258,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
     setCampaignData(result){
         this.campaign = result;
+        /*****XNFR-125****/
+        this.showOneClickLaunchCampaignRedistributedInfo();
         if(this.campaignService.isExistingRedistributedCampaignName){
             this.editedCampaignName = this.campaign.campaignName;
         }
@@ -264,20 +267,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaign.parentCampaignId = this.campaign.campaignId;
             this.campaign.parentCampaignUserId = this.campaign.userId;
         }
-        /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
-       /****if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
-            this.listAllTeamMemberEmailIds();
-        }else{
-            this.setLoggedInUserEmailId();
-        }***/
-
         this.listAllTeamMemberEmailIds();
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-
         this.loadContactList(this.contactListPagination);
-        
-        if(this.campaign.nurtureCampaign){
+        if(this.campaign.nurtureCampaign || this.campaign.oneClickLaunch){
             this.selectedUserlistIds = this.campaign.userListIds;
             this.getValidUsersCount();
         }
@@ -319,12 +313,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         this.findDataShareOption();
     }
-
+    
     findDataShareOption(){
         this.ngxloading = true;
         this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
             response=>{
                 this.dataShare = response.data;
+                this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
+                this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
                 this.ngxloading = false;
             },error=>{
                 this.dataShare = false;
@@ -1100,7 +1096,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     ngOnDestroy(){
-      $('#usersModal').modal('hide');
+        this.campaignService.campaign = undefined;
+        this.campaignService.reDistributeCampaign = undefined;
+        $('#usersModal').modal('hide');
     }
 
     /************Pagination-Search-Sort**************************/
@@ -1109,9 +1107,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.contactListPagination.pageIndex = event.page;
         this.loadContactList(this.contactListPagination);
     }
-
-
-
 
     /*************************************************************Contact List***************************************************************************************/
     loadContactList(contactsPagination: Pagination) {
@@ -1181,7 +1176,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.loadContactList(this.contactListPagination);
     }
     highlightContactRow(contactId:number,event:any,count:number,isValid:boolean){
-        if(isValid){
+        if(isValid && !this.campaign.oneClickLaunch){
             this.emptyContactsMessage = "";
             if(count>0){
                 let isChecked = $('#'+contactId).is(':checked');
@@ -1255,18 +1250,18 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         ev.stopPropagation();
     }
     
-      showContactsAlert(count:number){
-          this.emptyContactsMessage = "";
-          if(count==0){
-              this.emptyContactsMessage = "No Contacts Found For This Contact List";
-          }
-      }
+    showContactsAlert(count:number){
+        this.emptyContactsMessage = "";
+        if(count==0){
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
 
- contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
+    contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
   
 
   listCategories(){
-      this.loading = true;
+    this.loading = true;
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;
@@ -1482,6 +1477,16 @@ appendValueToSubjectLine(event:any){
         }
      }
      this.mergeTagsInput['hideButton'] = false;
+    }
+
+    /*****XNFR-125****/
+    private showOneClickLaunchCampaignRedistributedInfo() {
+        if (this.campaign.oneClickLaunch && this.campaign.oneClickLaunchCampaignRedistributed) {
+            let oneClickLaunchIcon = "<i class='fa fa-hand-pointer-o'></i>";
+            let optionInBold = "<strong>One Click Launch</strong>";
+            let message = "This campaign is already redistributed using "+optionInBold +" "+oneClickLaunchIcon;
+            this.oneClickLaunchCampaignRedistributedMessage = new CustomResponse('INFO', message, true);
+        }
     }
 
 

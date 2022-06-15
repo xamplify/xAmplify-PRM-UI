@@ -21,6 +21,7 @@ declare var $: any;
 export class CategoryFolderViewUtilComponent implements OnInit {
     @Input() moduleType: any;
     @Output() valueUpdate = new EventEmitter();
+    @Output() navigatingToRelatedComponent = new EventEmitter();
     inputObject:any;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
@@ -30,6 +31,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     folderViewType = "List";
 	folderListViewInput = {};
 	selectedModuleType = "";
+    archived: any = false;
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -41,6 +43,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 
     setViewType(type: string) {
         this.inputObject['viewType'] = type;
+        this.inputObject['archived'] = this.archived;
         this.valueUpdate.emit(this.inputObject);
     }
 
@@ -50,6 +53,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.folderListViewInput = {};
         this.folderViewType = this.moduleType['folderType'];
         this.selectedModuleType = this.moduleType['type'];
+        this.archived = this.moduleType['archived'];
+        this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
     }
 
@@ -139,6 +144,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
     viewItemsByCategoryId(categoryId:number) {
+        this.navigatingToRelatedComponent.emit();
         let type = this.moduleType['type'];
         if(type==1){
             this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
@@ -166,6 +172,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
 
     goToCalendarView(){
+        this.navigatingToRelatedComponent.emit();
         let teamMemberId = this.route.snapshot.params['teamMemberId'];
         if(teamMemberId!=undefined && teamMemberId>0){
             this.router.navigate(['/home/campaigns/calendar/' + teamMemberId]);
@@ -194,10 +201,14 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 getUpdatedItemsCount(event:any){
     let categoryId = event['categoryId'];
     let itemsCount = event['itemsCount'];
+    let updated = event['updated'];
     if(itemsCount>0){
         itemsCount = itemsCount-1;
     }
     $('#count-'+this.selectedModuleType+"-"+categoryId).text(itemsCount);
+    if(updated){
+        this.searchCategories();
+    }
 }
 
 }

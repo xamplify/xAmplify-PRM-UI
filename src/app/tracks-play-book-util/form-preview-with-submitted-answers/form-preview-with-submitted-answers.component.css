@@ -107,3 +107,9 @@
     border-radius: 5px;
     box-shadow: 3px 3px 6px -3px #333;
 }
+
+.name-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

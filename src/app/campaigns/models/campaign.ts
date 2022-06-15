@@ -91,5 +91,12 @@ export class Campaign {
     viewInBrowserTag = true;
     unsubscribeLink = true;
     toPartner : boolean;
+    companyId : number; 
 
+    endDate: string;
+    endDateInUtcString: string;
+    clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    oneClickLaunch = false;
+    partnershipId = 0;
+    oneClickLaunchCampaignRedistributed = false;
 }

@@ -18,13 +18,14 @@ import { ContactService } from 'app/contacts/services/contact.service';
 import { ContactList } from 'app/contacts/models/contact-list';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from 'app/core/services/util.service';
+import { Properties } from 'app/common/models/properties';
 declare var $: any;
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader]
+  providers:[HttpRequestLoader,Properties]
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   campaigns: any = [];
@@ -82,7 +83,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   selectedSortedOption:any = this.sortByDropDown[this.sortByDropDown.length-1];
   teamMemberId: number = 0;
   categoryId:number = 0;
-  constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
+  constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService,public properties:Properties,
     public referenceService: ReferenceService, private router: Router, public videoUtilService:VideoUtilService, public xtremandLogger:XtremandLogger,
     public contactService:ContactService, public pagerService:PagerService, public utilService:UtilService,private route: ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -101,7 +102,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if(this.teamMemberId>0){
       teamMemberAnalytics = true;
     }
-    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId,'teamMemberAnalytics':teamMemberAnalytics,'teamMemberId':this.teamMemberId,'categoryId':this.categoryId };
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId, 'teamMemberAnalytics': teamMemberAnalytics, 'teamMemberId': this.teamMemberId, 'categoryId': this.categoryId, 'archived': this.campaignService.archived };
     this.loading = true;
     this.campaignService.getCampaignCalendarView(request)
       .subscribe(
@@ -192,9 +193,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
     $(window).scrollTop(0);
     this.customResponse =  new CustomResponse('SUCCESS', mesg, true);
 }
-  closePreviewCampaign(event){
+  closePreviewCampaign(event:any){
     this.previewCampaign = undefined;
-    if(event === 'copy campaign success'){ this.showMessageOnTop('Copy campaign saved successfully'); this.getCampaignCalendarView();}
+    if(event === 'copy campaign success'){ 
+      this.showMessageOnTop('Copy campaign saved successfully'); 
+      this.getCampaignCalendarView();
+    }else if(event === 'copy campaign error'){
+      $(window).scrollTop(0);
+      this.customResponse =  new CustomResponse('ERROR', this.properties.copyCampaignOneClickLaunchErrorMessage, true);
+    }
     if(event.delete ==='deleted campaign success'){
       this.showMessageOnTop(event.campaignName + ' campaign deleted successfully');
       this.refreshCalendar(event.id);

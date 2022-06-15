@@ -16,11 +16,11 @@
                   </div>
                   <div class="vertical-center">
                       <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
-                          <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
-                              <div class="panel-title">{{form.name}}</div>
+                          <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                              <div class="panel-title name-wrap" title="{{form.name}}" >{{form.name}}</div>
                           </div>
                           <div class="panel-body" *ngIf="!formError">
-                              <h5>{{form.description}}</h5>
+                              <h5 class="name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                               <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                                   <div class="form-group">
                                       <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}

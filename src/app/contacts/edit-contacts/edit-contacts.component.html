@@ -547,7 +547,9 @@
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10' translate>Phone Number:</td>
-																				<td class='pt10 pb10'>{{user.mobileNumber}}</td>
+																				<td class='pt10 pb10'>
+																					<a href="tel:{{user.mobileNumber}}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>{{user.mobileNumber}}</a>
+																				</td>
 																			</tr>
 																			<!-- <tr style="border-bottom: 1px solid #dcdcdc">
 																				<td class='pt10 pb10'>Notes:</td>
@@ -729,7 +731,8 @@
 																	<i class="fa fa-trash-o" aria-hidden="true"></i>
 																</a>
 
-																<ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember">
+																<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
+                                   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
 																	<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
 																		<i class="fa fa-bullhorn" aria-hidden="true"></i></a>
 																</ng-container>
@@ -1198,7 +1201,7 @@
 
 
 <app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner"
-   [showGDPR]="showGDPR" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
+   [showGDPR]="showGDPR" [isFormList]="isFormList" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <!-- <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"

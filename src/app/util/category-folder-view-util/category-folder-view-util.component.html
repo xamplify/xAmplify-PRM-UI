@@ -48,8 +48,8 @@
     <div class="row mix-grid p10" *ngIf="folderViewType=='Folder-Grid'">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
-        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading">
-            <div *ngFor="let category of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading"> 
+            <div class="col-xs-12 col-sm-4 col-lg-3" *ngFor="let category of pagination.pagedItems; let i= index">                
                 <div class="ffolder big gray">
                     <div class="grid-box" style="max-height: 194px;">
                         <div id="category-icon-div">
@@ -60,6 +60,7 @@
                             <span *ngIf="category.name?.length>22">...</span>
                         </h4><br><br>
                         <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
+                        <!-- <span class="view-banner" *ngIf="archived" id="custom-view-banner">{{category.archivedCount}}</span> -->
                         <h6 [title]="category.createdBy" translate>By
                             <strong>{{category.createdBy | slice:0:15}}<span
                                     *ngIf="category.createdBy?.length>15">...</span></strong>
@@ -103,59 +104,60 @@
             </thead>
             <tbody>
                 <ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
-                <tr id="folder-row-{{i}}" class="child-row-list-view">
-                    <td class="custom-icon-width">
-                        <a  (click)="$event.stopPropagation();viewFolderItems(category,i)"  title="View Items">
-                        <i class="fa" id="fa-folder-custom-size"
-                          [ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}" aria-hidden="true">
-                        </i>
-                        <i class="fa" id="fa-folder-custom-size"
-                          [ngClass]="{'fa-folder': !category.expanded, 'fa-folder-open': category.expanded}" aria-hidden="true">
-                        </i>
-                        </a>
-                    </td>
-                    <td>
-                        <h4 class="moreipsis" title="{{category.name}}">
-                            <span>{{category.name}}</span>
-                        </h4>
-                        <h6 class="moreipsis">
-                            <span translate> Created By <strong>{{category.createdBy}}</strong></span>
-                        </h6>
-                    </td>
-                    <td class="text-center">
-                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="category.displayTime">
-                        </app-timestamp>
-                        <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
-                    </td>
-                    <td class="text-center">
-                        <div  class="override-actions">
-                            <span  id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
-                        </div> 
-                    </td>
-                </tr>
-                <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
-                    <td colspan="5">
-                        <ng-container *ngIf="category.expanded">
-                            <ng-container *ngIf="selectedModuleType==1">
-                        		<app-email-templates-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-email-templates-list-view-util>
+                    <tr id="folder-row-{{i}}" class="child-row-list-view">
+                        <td class="custom-icon-width">
+                            <a  (click)="$event.stopPropagation();viewFolderItems(category,i)"  title="View Items">
+                            <i class="fa" id="fa-folder-custom-size"
+                              [ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}" aria-hidden="true">
+                            </i>
+                            <i class="fa" id="fa-folder-custom-size"
+                              [ngClass]="{'fa-folder': !category.expanded, 'fa-folder-open': category.expanded}" aria-hidden="true">
+                            </i>
+                            </a>
+                        </td>
+                        <td>
+                            <h4 class="moreipsis" title="{{category.name}}">
+                                <span>{{category.name}}</span>
+                            </h4>
+                            <h6 class="moreipsis">
+                                <span translate> Created By <strong>{{category.createdBy}}</strong></span>
+                            </h6>
+                        </td>
+                        <td class="text-center">
+                            <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="category.displayTime">
+                            </app-timestamp>
+                            <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+                        </td>
+                        <td class="text-center">
+                            <div  class="override-actions">
+                                <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
+                                <!-- <span *ngIf="archived" id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.archivedCount}}</b></span> -->
+                            </div> 
+                        </td>
+                    </tr>
+                    <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
+                        <td colspan="5">
+                            <ng-container *ngIf="category.expanded">
+                                <ng-container *ngIf="selectedModuleType==1">
+                                    <app-email-templates-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-email-templates-list-view-util>
+                                </ng-container>
+                                <ng-container *ngIf="selectedModuleType==2">
+                                    <app-forms-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
+                                </ng-container>
+                                <ng-container *ngIf="selectedModuleType==3">
+                                    <app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-landing-pages-list-view-util>
+                                </ng-container>
+                                <ng-container *ngIf="selectedModuleType==4">
+                                    <app-campaigns-list-view-util [archived]="archived" [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
+                                </ng-container>
+                                <ng-container *ngIf="selectedModuleType==5">
+                                    <app-redistribute-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
+                                </ng-container>
+                                
                             </ng-container>
-                        	<ng-container *ngIf="selectedModuleType==2">
-                        		<app-forms-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
-                        	</ng-container>
-                        	<ng-container *ngIf="selectedModuleType==3">
-                        		<app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-landing-pages-list-view-util>
-                            </ng-container>
-                        	<ng-container *ngIf="selectedModuleType==4">
-                        		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-campaigns-list-view-util>
-                            </ng-container>
-                            <ng-container *ngIf="selectedModuleType==5">
-                        		<app-redistribute-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
-                            </ng-container>
-                            
-                        </ng-container>
-                    </td>
-                 </tr>   
-                 </ng-container>
+                        </td>
+                     </tr>                   
+                </ng-container>
             </tbody>
         </table>
     </div>

@@ -1,6 +1,6 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
     <div class="" *ngIf="hasFormExists">
-        <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')'}" [style.backgroundColor]="pageBackgroundColor" id="form-background-image">
+        <div [ngClass]="{'form-background-image-from-track': learningTrackId !== undefined && learningTrackId > 0}" [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')'}" [style.backgroundColor]="pageBackgroundColor" id="form-background-image">
         </div>
         <div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [ngClass]="{'p0': authenticationService.isFromRsvpPage}">
@@ -29,14 +29,14 @@
                         </div>
 
                         <div *ngIf="!formSubmitted">
-                            <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                            <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                 <a class="close-circle" (click)="refreshForm()" title="Refresh">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
                                 </a>
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body">
-                                <h5 class="mb15" title="{{form.description}}">{{form.description}}</h5>
+                                <h5 class="mb15 form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                                 <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
                                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                                     <div class="form-group label-box">

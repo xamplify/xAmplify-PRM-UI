@@ -19,14 +19,16 @@ import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receiver
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { utc } from 'moment';
+import { Properties } from 'app/common/models/properties';
 
-declare var swal, $: any;
+declare var swal, $: any, flatpickr;
 
 @Component({
     selector: 'app-manage-publish',
     templateUrl: './manage-publish.component.html',
     styleUrls: ['./manage-publish.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class ManagePublishComponent implements OnInit, OnDestroy {
     campaigns: Campaign[];
@@ -52,6 +54,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
+    sortByDropDownArchived = [
+        { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+        { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Archived On (ASC)', 'value': 'archivedTime-ASC' },
+        { 'name': 'Archived On (DESC)', 'value': 'archivedTime-DESC' }
+    ];
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -62,6 +74,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedSortedOption: any = this.sortByDropDown[0];
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
+    endDateRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     isError = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
@@ -99,10 +112,20 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     toDateFilter: any = "";
     filterResponse: CustomResponse = new CustomResponse(); 
     filterMode: boolean = false;
-
+    archived: boolean = false;
+    navigatingToRelatedComponent: boolean = false;
+    showEditEndDateForm: boolean;
+    endDate: any;
+    selectedEndDate: any;
+    endDateCustomResponse: CustomResponse = new CustomResponse();
+    endDatePickr: any;
+    clicked = false;
+    editButtonClicked = false;
+    selectedCampaignId = 0;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
+        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
+        private route: ActivatedRoute,public renderer:Renderer,public properties:Properties) {
 		this.refService.renderer = this.renderer;    
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
@@ -158,7 +181,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this.pagination.vanityUrlFilter = true;
         }
-        let self = this;
+        this.pagination.archived = this.archived;
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -177,15 +200,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }else{
                     this.authenticationService.forceToLogout();
                 }
-                
-                
             },
             error => {
                 this.isloading = false;
                 this.logger.errorPage(error);
-            },
-            () => this.logger.info("Finished listCampaign()", this.campaigns)
-            );
+            });
     }
 
     setPage(event) {
@@ -225,16 +244,54 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (this.pagination.pagedItems.length > 2 && (i === (this.pagination.pagedItems.length - 1) || i === this.pagination.pagedItems.length - 2)) { this.isLastElement = true; } else { this.isLastElement = false; }
     }
     
+    ngAfterViewInit() {        
+        let now:Date = new Date();
+        let defaultDate = now;
+        if (this.selectedEndDate != undefined && this.selectedEndDate != null) {
+            defaultDate = new Date(this.selectedEndDate);
+        }
+
+        this.endDatePickr = flatpickr('#campaignEndDate', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            time_24hr: true,
+            minDate: now,
+            defaultDate: defaultDate
+        }); 
+        
+        flatpickr('.dateFilterPickr', {
+            enableTime: false,
+            dateFormat: 'Y-m-d',
+            maxDate: new Date()
+        });
+    }
    
     
     ngOnInit() {
-        try {
-            this.getCampaignTypes();
+        try {             
+            this.archived = this.campaignService.archived;    
+            if (this.archived) {
+                this.selectedSortedOption = this.sortByDropDownArchived[0];
+            }   
+            this.refService.loading(this.httpRequestLoader, true);
+            this.authenticationService.isPartnershipOnlyWithPrm().subscribe(
+                response=>{
+                    if(response.data){
+                        this.refService.goToAccessDeniedPage();
+                    }else{
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.getCampaignTypes();
+                    }
+                },error=>{
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                });
+            
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
     }
-  
+
     getCampaignTypes(){
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -267,7 +324,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.refService.manageRouter = true;
                     this.pagination.maxResults = 12;
                     this.categoryId = this.route.snapshot.params['categoryId'];
-                    if(this.categoryId!=undefined){
+                    if(this.categoryId!=undefined ){
                         this.pagination.categoryId = this.categoryId;
                         this.pagination.categoryType = 'c';
                     }
@@ -299,14 +356,33 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editCampaign(campaign: any) {
         this.isloading = true;
         this.customResponse = new CustomResponse();
+        if(campaign.launched){
+            this.editButtonClicked = true;
+            this.selectedCampaignId = campaign.campaignId;
+            this.isloading = false;
+        }else{
+            if(campaign.campaignType.indexOf('SOCIAL') > -1){
+                this.isloading = false;
+                this.customResponse = new CustomResponse();
+                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
+            }else{
+                this.editCampaignsWhichAreNotLaunched(campaign);
+            }
+        }
+    }
+
+    editCampaignsWhichAreNotLaunched(campaign:any){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             let obj = { 'campaignId': campaign.campaignId }
             this.campaignService.getCampaignById(obj)
                 .subscribe(
                 data => {
-                        this.campaignService.campaign = data;
+                        this.campaignService.campaign = data; 
+                        let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }                      
                         let isLaunched = this.campaignService.campaign.launched;
-                        let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
                         	this.isScheduledCampaignLaunched = true;
                             this.isloading = false;
@@ -319,8 +395,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => {
+                     this.logger.errorPage(error);
+                    });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
@@ -332,6 +409,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         this.router.navigate(["/home/campaigns/social"]);
                     } else {
                         this.campaignService.campaign = data;
+                        let endDate = this.campaignService.campaign.endDate;
+                        if (endDate != undefined && endDate != null) {
+                            this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                        }
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
                         if (isLaunched) {
@@ -339,22 +420,79 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             this.isloading = false;
                         } else {
                             if (isNurtureCampaign) {
-                                this.campaignService.reDistributeCampaign = data;
-                                this.campaignService.isExistingRedistributedCampaignName = true;
-                                this.isPartnerGroupSelected(campaign.campaignId,false);
+                                /*********XNFR-125*********/
+                                if(campaign.oneClickLaunch){
+                                    this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
+                                }else{
+                                   this.navigateToRedistributeCampaign(data,campaign);
+                                }
                             }
                             else {
-                                this.refService.isEditNurtureCampaign = false;
-                                this.router.navigate(["/home/campaigns/edit"]);
+                                /********XNFR-125*******/
+                                this.checkOneClickLaunchAccess(campaign.campaignId);
                             }
                         }
                     }
                 },
-                error => { this.logger.errorPage(error) },
-                () => console.log())
+                error => {
+                     this.logger.errorPage(error);
+                });
             this.isScheduledCampaignLaunched = false;
         }
     }
+    /*****XNFR-125*****/
+    checkOneClickLaunchAccess(campaignId:number){
+        this.isloading = true;
+        this.customResponse = new CustomResponse();
+        this.campaignService.checkOneClickLaunchAccess(campaignId).
+        subscribe(
+            response=>{
+                let access = response.data;
+                if(access){
+                    this.refService.isEditNurtureCampaign = false;
+                    this.router.navigate(["/home/campaigns/edit"]);
+                }else{
+                    this.refService.scrollSmoothToTop();
+                    let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
+                    this.customResponse = new CustomResponse('ERROR',message,true);
+                }
+                this.isloading = false;
+            },error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+            });
+    }
+
+
+    /**********XNFR-125***********/
+    checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
+        this.customResponse = new CustomResponse();
+        this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
+        subscribe(
+            response=>{
+                if(response.data){
+                    this.navigateToRedistributeCampaign(data,campaign);
+                }else{
+                    this.refService.goToTop();
+                    let statusCode = response.statusCode;
+                    let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
+                    this.customResponse = new CustomResponse("ERROR",message,true);
+                    this.isloading = false;
+                }
+            },_error=>{
+                this.isloading = false;
+                this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+            }
+        );
+    }
+    /**********XNFR-125***********/
+    navigateToRedistributeCampaign(data:any,campaign:any){
+        this.campaignService.reDistributeCampaign = data;
+        this.campaignService.isExistingRedistributedCampaignName = true;
+        this.isPartnerGroupSelected(campaign.campaignId,false);
+    }
+
+
 
     isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
         this.pagination.campaignId = campaignId;
@@ -366,7 +504,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                    let message = "This campaign cannot be edited as "+this.authenticationService.partnerModule.customName+" group has been selected.";
                    this.customResponse = new CustomResponse('ERROR',message,true); 
                    this.isloading = false;
- 					this.refService.goToTop();
+ 				   this.refService.goToTop();
                }else{
                    if(eventCampaign){
                     this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaignId]);
@@ -439,6 +577,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         $('#cancelEventModal').modal('hide');
         $('#public-event-url-modal').modal('hide');
         $('#public-event-url-modal').modal('hide');
+        $('#endDateModal').modal('hide');
+                
     }
     openSaveAsModal(campaign: any) {
         $('#saveAsModal').modal('show');
@@ -466,24 +606,32 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         return campaignData;
     }
     saveAsCampaign() {
+        this.customResponse = new CustomResponse();
         $('#saveAsModal').modal('hide');
         this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
         campaignData.userId = this.authenticationService.getUserId();
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
+                this.clicked = false;
                 if(data.access){
                     this.refService.loading(this.httpRequestLoader, false);
-                    this.campaignSuccessMessage = "Campaign copied successfully";
-                    $('#lanchSuccess').show(600);
-                    this.showMessageOnTop();
-                    this.listCampaign(this.pagination);
-                    console.log("saveAsCampaign Successfully");
+                    let statusCode =  data.statusCode;
+                    if(statusCode==404){
+                        this.refService.scrollSmoothToTop();
+                        this.customResponse = new CustomResponse('ERROR',data.message,true);
+                    }else{
+                        this.campaignSuccessMessage = "Campaign copied successfully";
+                        $('#lanchSuccess').show(600);
+                        this.showMessageOnTop();
+                        this.listCampaign(this.pagination);
+                    }
                 }else{
                     this.authenticationService.forceToLogout();
                 }
             },
             error => {
+                this.clicked = false;
                 $('#saveAsModal').modal('hide'); this.logger.errorPage(error)
                 this.customResponse = new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
             },
@@ -609,6 +757,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
         }
+        if(event['updated']){
+            this.resetValues('updated');
+        }
     }
     
     goToFormAnalytics(id:number){
@@ -678,6 +829,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         
           
           goToCalendarView(){
+              this.navigatingToRelatedComponent = true;
               if(this.teamMemberId>0){
                 if(this.categoryId!=undefined && this.categoryId>0){
                     this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
@@ -725,7 +877,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
+            this.exportObject['archived'] = this.archived;
             if(this.categoryId>0){
+                this.navigatingToRelatedComponent = true;
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
                     this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
                 }else{
@@ -741,6 +895,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
+            this.exportObject['archived'] = this.archived;
             this.closeFilterOption();
         }
     }
@@ -782,7 +937,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
 
     getUpdatedValue(event:any){
-        let viewType = event.viewType;
+        //this.archived = event.archived;
+        let viewType = event.viewType;        
         if(viewType!=undefined){
             this.setViewType(viewType);
         }
@@ -822,7 +978,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'categoryType' : categoryType,
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
-                 'toDate' : this.pagination.toDateFilterString
+                 'toDate' : this.pagination.toDateFilterString,
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          } else {
              param = {
@@ -836,7 +994,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                  'categoryType' : categoryType,
                  'searchKey' : searchKey,
                  'fromDate' : this.pagination.fromDateFilterString,
-                 'toDate' : this.pagination.toDateFilterString
+                 'toDate' : this.pagination.toDateFilterString,
+                 'archived': this.pagination.archived,
+                 'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
              };
          }
          let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
@@ -895,6 +1055,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.pagination.toDateFilterString = this.toDateFilter;
                     this.filterMode = true;
                     this.filterResponse.isVisible = false;
+                    this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                     this.listCampaign(this.pagination);
                 } else {
                     this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
@@ -906,5 +1067,189 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
         }
     }
+
+    showArchivedCampaigns() {
+        this.archived = true;
+        this.campaignService.archived = true;
+        this.resetPagination();        
+        this.listCampaign(this.pagination);
+    }
+
+    showActiveCampaigns() {
+        this.archived = false;
+        this.campaignService.archived = false;  
+        this.resetPagination();      
+        this.listCampaign(this.pagination);
+    }
+
+    resetPagination() {
+        this.pagination.pageIndex = 1;
+        this.searchKey = this.pagination.searchKey = "";
+        this.pagination.sortcolumn = this.pagination.sortingOrder = null;
+        if (this.archived) {
+            this.selectedSortedOption = this.sortByDropDownArchived[0];
+        } else {
+            this.selectedSortedOption = this.sortByDropDown[0];
+        }
+        
+        this.pagination.maxResults = 12;
+        this.itemsSize = this.numberOfItemsPerPage[0];
+        this.pagination.campaignType = 'NONE';
+        this.selectedCampaignTypeIndex = 0;
+        this.modulesDisplayType.isListView = true;
+        this.modulesDisplayType.isGridView = false;
+        this.modulesDisplayType.isFolderGridView = false;
+        this.modulesDisplayType.isFolderListView = false;
+
+        this.showFilterOption = false;
+        this.fromDateFilter = "";
+        this.toDateFilter = ""; 
+        this.pagination.fromDateFilterString = "";
+        this.pagination.toDateFilterString = "";
+        this.filterResponse.isVisible = false;
+        this.filterMode = false;
+        this.customResponse = new CustomResponse();
+
+        if (this.categoryId != undefined && this.categoryId > 0) {
+            this.navigatingToRelatedComponent = true;
+            if(this.teamMemberId!=undefined && this.teamMemberId>0){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+        }
+    }
+
+    archiveCampaign(campaign: any) {
+        var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+        this.campaignService.archiveCampaign(request)
+            .subscribe(
+                response => {
+                    this.isloading = false;
+                    if (response.statusCode == 200) {
+                        this.listCampaign(this.pagination);
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.customResponse = new CustomResponse('SUCCESS', "Campaign Archived Successfully", true);
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished archiveCampaign()", campaign)
+            );
+    }
+
+    unarchiveCampaign(campaign: any) {
+        var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+        this.campaignService.unarchiveCampaign(request)
+            .subscribe(
+                response => {
+                    this.isloading = false;
+                    if (response.statusCode == 200) {
+                        this.listCampaign(this.pagination);
+                        this.refService.loading(this.httpRequestLoader, false);
+                        this.customResponse = new CustomResponse('SUCCESS', "Campaign Unarchived Successfully", true);
+                    }
+                },
+                error => {
+                    this.isloading = false;
+                    this.logger.errorPage(error);
+                },
+                () => this.logger.info("Finished archiveCampaign()", campaign)
+            );
+    }
+
+    navigatedToCategoryItems() {
+        this.navigatingToRelatedComponent = true;
+    }
+
+    showEndDateModal(campaign: any) {
+        this.showEditEndDateForm = true;
+        $('#endDateModal').modal('show');
+        this.selectedCampaign = campaign;
+
+        if (campaign.endDate != undefined && campaign.endDate != null) {
+            this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
+            let selectedDate = new Date(this.selectedEndDate);            
+            if (Array.isArray(this.endDatePickr)) {
+                $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                    endDatePickrObj.setDate(selectedDate);                        
+                });
+            } else {
+                this.endDatePickr.setDate(selectedDate);
+            }
+        } else {
+            this.clearEndDate();
+        }
+
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.set("minDate", new Date());                        
+            });
+        } else {
+            this.endDatePickr.set("minDate", new Date());
+        }
+        
+    }
+
+    closeEndDateModal() {       
+        this.showEditEndDateForm = false;
+        this.selectedCampaign = undefined;        
+        this.endDateCustomResponse.isVisible = false;
+
+        //this.selectedEndDate = undefined;
+        //this.endDatePickr.clear();
+        this.clearEndDate();
+
+        $('#endDateModal').modal('hide');
+    }
+
+    updateEndDate() {
+        this.refService.loading(this.endDateRequestLoader, true);
+        let obj = {
+            'campaignId': this.selectedCampaign.campaignId, 'endDate': this.selectedEndDate,
+            'userId': this.loggedInUserId, 'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+        };
+        this.campaignService.updateEndDate(obj)
+            .subscribe(
+            data => {
+                if(data.statusCode == 200){
+                    this.closeEndDateModal();
+                    this.customResponse = new CustomResponse('SUCCESS','End Date updated successfully',true);
+                    this.listCampaign(this.pagination);               
+                } else {
+                    this.endDateCustomResponse = new CustomResponse('ERROR', data.message, true);
+                }
+                this.refService.loading(this.endDateRequestLoader, false);
+            },
+            error => { 
+                this.refService.loading(this.endDateRequestLoader, false);
+                this.endDateCustomResponse = new CustomResponse('ERROR','Failed to update end date',true);
+             },
+            () => console.log("End date updated Successfully")
+            );
+    }
+
+    clearEndDate() {        
+        if (Array.isArray(this.endDatePickr)) {
+            $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+                endDatePickrObj.clear();                        
+            });
+        } else {
+            this.endDatePickr.clear();
+        }       
+        this.selectedEndDate = undefined;
+    }
+
+    /*****XNFR-118********/
+    resetValues(event:any){
+    if("updated"==event){
+      this.listCampaign(this.pagination);
+    }
+    this.selectedCampaignId = 0;
+    this.editButtonClicked = false;
+    }
+
 
 }

@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px" 
-              *ngIf="!isVendorVersion || (isVendorVersion && isOrgAdmin) ">
+              *ngIf="!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany)) ">
               <label class="control-label">Deal For<font style="color: #f55d7a"> <b>*</b></font></label>
               <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
                 [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
@@ -164,9 +164,8 @@
             </a>
           </div>
           <div class=" row portlet light deal-box" *ngIf="propertiesComments?.length>0">
-            <h4 class="caption" class="portlet-title" *ngIf="!isVendorVersion && !preview">Add Your Comments</h4>
-            <h4 class="caption" class="portlet-title" *ngIf="isVendorVersion">{{authenticationService?.partnerModule?.customName}} Comments</h4>
-            <h4 class="caption" class="portlet-title" *ngIf="!isVendorVersion && preview">Your Comments</h4>
+            <h4 class="caption" class="portlet-title" *ngIf="!preview">Add Your Comments</h4>
+            <h4 class="caption" class="portlet-title" *ngIf="preview">Comments</h4>
             <div *ngFor="let property of propertiesComments;let i=index">
               <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'"
               style="margin-bottom: 50px;border: 1px solid rgb(176, 177, 177);margin: 10px;padding: 10px">
@@ -176,10 +175,10 @@
                   </div>
                   <div class="col-xs-6">
                     <div class="pull-right" id="question-icons">
-                      <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)" *ngIf="!isVendorVersion && !preview">
+                      <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)" *ngIf="showCommentActions">
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
-                      <button type="button" class="btn-primary button-blue" (click)="addProperties()" *ngIf="!isVendorVersion && !preview">
+                      <button type="button" class="btn-primary button-blue" (click)="addProperties()" *ngIf="showCommentActions">
                         <span class="glyphicon glyphicon-plus"></span>
                       </button>
                       <button type="button" class="btn-primary button-blue" (click)="commentsection(property)" *ngIf="property.isSaved">
@@ -198,7 +197,7 @@
                           </font>
                         </label>
                         <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
-                          id="question" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendorVersion || preview" />
+                          id="question" (input)="validateComment(property)" [disabled]="property.isDisabled || !showCommentActions || preview" />
                       </div>
                       <div class="form-group" [attr.class]="property.validationStausValue">
                         <label class="control-label">Comment
@@ -207,7 +206,7 @@
                           </font>
                         </label>
                         <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value" [ngModelOptions]="{standalone: true}"
-                          id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendorVersion || preview"></textarea>
+                          id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled || !showCommentActions || preview"></textarea>
                       </div>
                     </div>
                   </form>

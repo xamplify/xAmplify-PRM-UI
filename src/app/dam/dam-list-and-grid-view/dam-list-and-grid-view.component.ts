@@ -527,6 +527,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	deleteAssetFailEmitter(message: any) {
+		this.customResponse = new CustomResponse('ERROR', message, true);
+		this.deleteAsset = false;
+		this.referenceService.loading(this.listLoader, false);
+		this.asset = {};		
+	}
+
 	deleteAssetLoaderEmitter() {
 		this.referenceService.loading(this.listLoader, true);
 	}

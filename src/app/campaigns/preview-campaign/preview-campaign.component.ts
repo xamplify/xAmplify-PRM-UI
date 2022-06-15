@@ -32,12 +32,11 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
-
-import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
-import { CampaignType } from '../models/campaign-type';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { utc } from 'moment';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -155,6 +154,25 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     campaignPartnersOrContactsPagination:Pagination = new Pagination();
     campaignPartnersOrContactsPreviewError = false;
     socialAccountsLoader = false;
+    buttonClicked = false;
+    editButtonClicked = false;
+    selectedCampaignId = 0;
+    /***XNFR-118****/
+    @Input() viewType:string;
+    @Input() categoryId:number;
+    /****XNFR-125****/
+    oneClickLaunchLoader = false;
+    oneClickLaunchResponse:CustomResponse = new CustomResponse();
+    oneClickLaunchPartnerCompany:any;
+    oneClickLaunchStatusCode = 0;
+    showExpandButton = false;
+    shareLeadsPagination: Pagination = new Pagination();
+    shareLeadsErrorMessage: CustomResponse = new CustomResponse();
+    shareLeadsLoader: HttpRequestLoader = new HttpRequestLoader();
+    selectedListId: number;
+    selectedListName: string;
+    showLeadsPreview: boolean;
+    expandedUserList: any;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -206,9 +224,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.campaignType = 'REGULAR';
             } 
             this.getEmailSentCount(this.previewCampaignId);
-            //this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
             this.referenceService.loadingPreview = false;
+            this.ngxloading = false;
             $('#myModal').modal('show');
           });
         }else{
@@ -216,12 +234,13 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }
         
     }
-    setCampaignData(result){
+    setCampaignData(result:any){
         this.campaign = result;
-        console.log(this.campaign);
-        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
-        // this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
-        // if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
+        if(this.campaign.oneClickLaunch && !this.campaign.nurtureCampaign){
+          this.getOneClickLaunchCampaignPartnerCompany(this.campaign.campaignId);
+        }else{
+          this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
+        }
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
@@ -251,10 +270,29 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.showSelectedListType();
     }
 
+    /****XNFR-125****/
+    getOneClickLaunchCampaignPartnerCompany(campaignId:number){
+      this.oneClickLaunchResponse = new CustomResponse();
+      this.oneClickLaunchLoader = true;
+      this.campaignService.getOneClickLaunchCampaignPartnerCompany(campaignId).
+      subscribe(
+        response=>{
+          this.oneClickLaunchStatusCode = response.statusCode;
+          if(this.oneClickLaunchStatusCode==200){
+              this.oneClickLaunchPartnerCompany = response.data;
+          }else{
+            this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
+          }
+          this.oneClickLaunchLoader = false;
+        },error=>{
+          this.oneClickLaunchLoader = false;
+          this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+        });
+    }
+
     setEventCampaignData(result:EventCampaign){
       this.campaign = result;
       this.isCampaignLaunched = this.campaign.launched;
-      console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
       this.campaign.launchTimeInString = new Date(result.launchTimeInString);
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
@@ -286,9 +324,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
            this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
        }
        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
-      //  this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
-      //  if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
-    this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
+      this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
     for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
       if(this.timezonesCampaignEventTime[i].timezoneId === this.campaign.campaignEventTimes[0].timeZone){
         console.log(this.timezonesCampaignEventTime[i].timezoneId);
@@ -348,20 +384,31 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         .subscribe(data => {
         	if(data.access){
               $(window).scrollTop(0);
+            let statusCode = data.statusCode;
+            if(statusCode==404){
+              $('#myModal').modal('hide');
+              this.closeNotifyParent.emit('copy campaign error');
+            }else{
               this.customResponse =  new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
-             $('#myModal').modal('hide');
-             this.closeNotifyParent.emit('copy campaign success');
+              $('#myModal').modal('hide');
+              this.closeNotifyParent.emit('copy campaign success');
+            }
+              
         }else{
         	this.authenticationService.forceToLogout();
         }
+        this.buttonClicked = false;
           },
-          error => { $('#saveAsModalcalendar').modal('hide'); $('#myModal').modal('hide');
-          this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
-          this.closeNotifyParent.emit('something went wrong');
+          error => { 
+            $('#saveAsModalcalendar').modal('hide'); 
+            $('#myModal').modal('hide');
+            this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+            this.closeNotifyParent.emit('something went wrong');
+            this.buttonClicked = false;
         },
           () => {
           $('#saveAsModalcalendar').modal('hide');
-          // this.getCampaignCalendarView();
+          this.buttonClicked = false;
           }
         );
     }
@@ -808,6 +855,22 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     editCampaign(campaign: any) {
       this.ngxloading = true;
       this.campaignErrorResponse = new CustomResponse();
+      if(campaign.launched){
+        this.editButtonClicked = true;
+        this.selectedCampaignId = this.previewCampaignId;
+        this.ngxloading = false;
+    }else{
+        if(campaign.campaignType.indexOf('SOCIAL') > -1){
+            this.ngxloading = false;
+            this.customResponse = new CustomResponse();
+            this.referenceService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
+        }else{
+            this.editCampaignsToLaunch(campaign);
+        }
+    }
+    }
+
+    editCampaignsToLaunch(campaign:any){
       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
         this.editCampaignPagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         this.editCampaignPagination.vanityUrlFilter = true;
@@ -840,29 +903,90 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           .subscribe(
           data => {
             this.campaignService.campaign = data;
+            let endDate = this.campaignService.campaign.endDate;
+            if (endDate != undefined && endDate != null) {
+                this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+            }
             const isLaunched = this.campaignService.campaign.launched;
             const isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
             if (isLaunched) {
               this.isScheduledCampaignLaunched = true;
             } else {
               if (isNurtureCampaign) {
-                this.campaignService.reDistributeCampaign = data;
-                this.campaignService.isExistingRedistributedCampaignName = true;
-                this.isPartnerGroupSelected(campaign.campaignId,false);
+                 /*********XNFR-125*********/
+                 if(campaign.oneClickLaunch){
+                  this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
+                  }else{
+                    this.navigateToRedistributeCampaign(data,campaign);
+                  }
               }
               else {
-                $('#myModal').modal('hide');
-                this.referenceService.isEditNurtureCampaign = false;
-                this.router.navigate(["/home/campaigns/edit"]);
+                /********XNFR-125*******/
+                this.checkOneClickLaunchAccess(campaign.campaignId);
+               
               }
             }
           },
-          error => {this.ngxloading = false; console.error(error) },
-          () => console.log()
-          )
+          error => {
+            this.ngxloading = false; 
+           });
         this.isScheduledCampaignLaunched = false;
       }
     }
+
+
+     /*****XNFR-125*****/
+     checkOneClickLaunchAccess(campaignId:number){
+      this.ngxloading = true;
+      this.campaignErrorResponse = new CustomResponse();
+      this.campaignService.checkOneClickLaunchAccess(campaignId).
+      subscribe(
+          response=>{
+              let access = response.data;
+              if(access){
+                  $('#myModal').modal('hide');
+                  this.referenceService.isEditNurtureCampaign = false;
+                  this.router.navigate(["/home/campaigns/edit"]);
+              }else{
+                  this.referenceService.scrollToModalBodyTopByClass();
+                  this.campaignErrorResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchAccessErrorMessage,true);
+              }
+              this.ngxloading = false;
+          },error=>{
+              this.ngxloading = false;
+              this.campaignErrorResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+          });
+  }
+
+
+    /**********XNFR-125***********/
+    checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
+      this.campaignErrorResponse = new CustomResponse();
+      this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
+      subscribe(
+          response=>{
+              if(response.data){
+                  this.navigateToRedistributeCampaign(data,campaign);
+              }else{
+                  this.referenceService.scrollToModalBodyTopByClass();
+                  let statusCode = response.statusCode;
+                  let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
+                  this.campaignErrorResponse = new CustomResponse("ERROR",message,true);
+                  this.ngxloading = false;
+              }
+          },_error=>{
+              this.ngxloading = false;
+              this.campaignErrorResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+          }
+      );
+  }
+
+  navigateToRedistributeCampaign(data:any,campaign:any){
+    this.campaignService.reDistributeCampaign = data;
+    this.campaignService.isExistingRedistributedCampaignName = true;
+    this.isPartnerGroupSelected(campaign.campaignId,false);
+  }
+
     isPartnerGroupSelected(campaignId:number,eventCamaign:boolean){
       this.editCampaignPagination.campaignId = campaignId;
       this.editCampaignPagination.userId = this.loggedInUserId;
@@ -884,8 +1008,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
              }
 
       },error=>{
-        this.ngxloading = false;
-          this.xtremandLogger.errorPage(error)
+          this.ngxloading = false;
+          this.xtremandLogger.errorPage(error);
       });
   }
 
@@ -1146,9 +1270,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             },
             (error: string) => {this.xtremandLogger.errorPage(error);
             this.isContactListLoader = false;
-            },
-            () => this.xtremandLogger.info("Finished loadContactList()", this.contactListPagination)
-            )
+            });
     }
     showContacts(){
         if($('#campaign-contact-list').css('display') == 'none'){
@@ -1290,8 +1412,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   
   showSelectedListType(){
       const roles = this.authenticationService.getRoles();
+      let marketing = this.authenticationService.module.isMarketingCompany;
       let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 || roles.indexOf(this.roleName.prmRole)>-1 ;
-      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor && !marketing);
       if(isOrgAdmin){
           this.channelCampaignFieldName = "To Recipient";
       }else{
@@ -1304,7 +1427,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " Recipients";
+                  this.contactType = " Recipient(s)";
                   this.tableHeader = "Recipients Details";
               }else{
                   this.contactType = this.authenticationService.partnerModule.customName+" / Recipients";
@@ -1314,8 +1437,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.showContactType = true;
           }
 
-      }else if(isVendor|| this.authenticationService.isAddedByVendor){
-
+      }else if(this.authenticationService.module.isMarketingCompany){
+        this.contactType = " Recipient(s)";
+        this.tableHeader = "Recipients Details";
+      } else if(isVendor|| this.authenticationService.isAddedByVendor){
         if(this.campaign.nurtureCampaign){
           this.contactType = " Recipient(s)";
           this.tableHeader = "Recipients Details";
@@ -1536,4 +1661,98 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
       this.referenceService.goToRouter(prefixUrl + "/p/" + suffixUrl);
     }
   }
+
+  /*****XNFR-118********/
+  resetValues(event:any){
+    this.ngxloading = true;
+    if("updated"==event){
+      this.getCampaignById();
+      if("folderList"==this.viewType || this.categoryId!=undefined && this.categoryId>0){
+        this.closeNotifyParent.emit({'updated':true});
+      }
+    }else{
+      this.ngxloading = false;
+    }
+    this.selectedCampaignId = 0;
+    this.editButtonClicked = false;
+    let currentUrl = this.router.url;
+    if(currentUrl.includes('campaigns/calendar/')){
+      this.router.navigate([currentUrl]);
+    }
+   
+}
+/****XNFR-125****/
+viewShareLeads(partner:any){
+  this.shareLeadsPagination = new Pagination();
+  this.shareLeadsErrorMessage = new CustomResponse();
+    partner.expand = !partner.expand;
+    if (partner.expand) {
+			this.referenceService.loading(this.shareLeadsLoader, true);
+			this.shareLeadsPagination.partnerCompanyId = partner.partnerCompanyId;
+			this.shareLeadsPagination.partnershipId = partner.partnershipId;
+			this.findShareLeads(this.shareLeadsPagination);
+		}
+  }
+
+  findShareLeads(pagination:Pagination){
+		this.referenceService.loading(this.shareLeadsLoader, true);
+		pagination.channelCampaign = true;
+    pagination.previewSelectedSharedLeads = true;
+    pagination.parentCampaignId = this.campaign.campaignId;
+		pagination.campaignId = this.campaign.campaignId;
+		this.showExpandButton = $.trim(pagination.searchKey).length>0;
+		this.contactService.loadAssignedLeadsLists(pagination).
+		subscribe(
+			(data:any)=>{
+				pagination.totalRecords = data.totalRecords;
+				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
+				this.referenceService.loading(this.shareLeadsLoader, false);
+			},error=>{
+				this.xtremandLogger.error(error);
+				this.referenceService.loading(this.shareLeadsLoader, false);
+				this.shareLeadsErrorMessage = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+			}
+		);
+	}
+
+	searchShareLeadsList() {
+		this.getAllFilteredShareLeadsResults();
+	}
+
+	/************Page************** */
+	navigateToShareLeadsListNextPage(event: any) {
+		this.shareLeadsPagination.pageIndex = event.page;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+
+	getAllFilteredShareLeadsResults() {
+		this.shareLeadsPagination.pageIndex = 1;
+		this.findShareLeads(this.shareLeadsPagination);
+	}
+
+	shareLeadsEventHandler(keyCode: any) { if (keyCode === 13) { this.searchShareLeadsList(); } }
+
+  previewLeads(shareLead:any){
+		this.selectedListId = shareLead.id;
+		this.selectedListName = shareLead.name;
+		this.showLeadsPreview = true;
+
+	}
+	resetShareLeadsPreviewValues(){
+		this.selectedListId = 0;
+		this.selectedListName = "";
+		this.showLeadsPreview = false;
+	}
+
+  viewMatchedContacts(userList: any) {
+		userList.expand = !userList.expand;		
+		if (userList.expand) {
+			if ((this.expandedUserList != undefined || this.expandedUserList != null)
+			 && userList != this.expandedUserList) {				
+				this.expandedUserList.expand = false;				
+			}			
+			this.expandedUserList = userList;		
+		}
+	} 
+
 }

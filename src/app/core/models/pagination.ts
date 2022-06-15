@@ -89,4 +89,11 @@ export class Pagination {
 	fromDateFilterString:string = "";
 	toDateFilterString:string = "";
 	forCampaignAnalytics = false;
+
+	archived = false;
+	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  	stageFilter:string = "";
+	companyNameFilter:string = "";
+	oneClickLaunch = false;
+	previewSelectedSharedLeads = false;
 }

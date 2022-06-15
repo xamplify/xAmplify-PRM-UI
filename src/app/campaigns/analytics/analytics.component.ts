@@ -207,6 +207,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   selectedLead: Lead;
   selectedDeal: Deal;
   isCommentSection: boolean = false;
+  loggedInUserCompanyId : number;
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -1076,14 +1077,18 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   getCampaignById(campaignId: number) {
     try {
       this.loading = true;
-      const obj = { 'campaignId': campaignId }
+      const obj = { 'campaignId': campaignId, 'userId': this.loggedInUserId }
       this.campaignService.getCampaignById(obj)
         .subscribe(
           data => {
             this.campaign = data;
             this.isChannelCampaign = data.channelCampaign;
-            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId
-            		&& !this.authenticationService.module.isOnlyPartner && !this.authenticationService.module.partnerTeamMember) {
+            
+            if(this.campaign.nurtureCampaign && this.campaign.companyId == this.loggedInUserCompanyId){
+            	this.isNavigatedThroughAnalytics = false;
+                this.isPartnerEnabledAnalyticsAccess = true;
+                this.isDataShare = true;
+            }else if (this.campaign.nurtureCampaign &&  this.loggedInUserCompanyId != this.campaign.companyId) {
               this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
               this.isDataShare = this.campaign.dataShare;
               this.isNavigatedThroughAnalytics = true;
@@ -2327,6 +2332,7 @@ checkParentAndRedistributedCampaignAccess(){
         this.emailActionDetailsPagination.pageIndex = 1;
         this.usersWatchListPagination.pageIndex = 1;
         this.campaignId = this.route.snapshot.params['campaignId'];
+        this.getCompanyId();
         this.getCampaignById(this.campaignId);
         this.pagination.pageIndex = 1;
         if (this.isTimeLineView === true) {
@@ -2923,10 +2929,10 @@ checkParentAndRedistributedCampaignAccess(){
 
     if(this.campaignType=="REGULAR"){
       headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
-                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe'];
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','HardBounce', 'SoftBounce','Unsubscribe','Leads', 'Deals'];
     }else{
       headers = ['Campaign Name', 'Campaign Type', 'No of List(s) Used', 'Recipients', 'Total Emails Sent',  'Deliverability',
-                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe'];
+                 'Active Recipients', 'Open Rate','Clicked URL' , 'Clickthrough Rate','Views','HardBounce', 'SoftBounce','Unsubscribe','Leads', 'Deals'];
     }
 
     var data = [
@@ -2944,7 +2950,9 @@ checkParentAndRedistributedCampaignAccess(){
         clickthroughRate :this.campaignReport.clickthroughRate,
         hardBounce : this.campaignReport.hardBounce,
         softBounce : this.campaignReport.softBounce,
-        unsubscribed : this.campaignReport.unsubscribed
+        unsubscribed : this.campaignReport.unsubscribed,
+        leads:this.campaignReport.leadCount,
+        deals:this.campaignReport.dealCount
       }
     ];
 
@@ -2963,7 +2971,9 @@ checkParentAndRedistributedCampaignAccess(){
         viewsCount:this.campaignReport.usersWatchCount,
         hardBounce : this.campaignReport.hardBounce,
         softBounce : this.campaignReport.softBounce,
-        unsubscribed : this.campaignReport.unsubscribed
+        unsubscribed : this.campaignReport.unsubscribed,
+        leads:this.campaignReport.leadCount,
+        deals:this.campaignReport.dealCount
     }
       
 
@@ -3101,5 +3111,16 @@ viewCampaignLeadForm(leadId: any) {
   refreshCounts() {
     this.customResponse.isVisible = false;
   }
+  
+  getCompanyId() {
+      this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+          (result: any) => {
+              this.loggedInUserCompanyId = result;
+          }, (error: any) => {
+              this.xtremandLogger.error(error);
+              this.xtremandLogger.errorPage(error);
+          }
+      );
+	  }
 
 }

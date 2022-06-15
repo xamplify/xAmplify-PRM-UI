@@ -80,6 +80,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
     '<div class="col-xs-12 col-sm-12 col-md-12">' +
     '</div></div>';
     errorHtml:any;
+    campaignVideoTemplate2 = '<br /><br /><div id="newPlayerVideo">'+
+    '<div id="overlay-logo-bee"><a href='+this.logoLink+' target="_blank" >'+
+    '<img id="image"  style="position:absolute;top:46px;float: right;left: 440px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div>';
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public http: Http, public authenticationService: AuthenticationService, public referService: ReferenceService,
@@ -265,7 +268,12 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                                 +'</div><a>');
                             }
                             else {
-                                updatedBody = this.campaignVideoTemplate;
+                            	updatedBody = updatedBody.replace('<p><br /><img src="https://release.xamp.io/vod/images/xtremand-video.gif" /></p>', this.campaignVideoTemplate2);
+                            	updatedBody = updatedBody.replace('<p><br /><img src="https://aravindu.com/vod/images/xtremand-video.gif" /></p>', this.campaignVideoTemplate2);
+                            	updatedBody = updatedBody.replace('<br><img src=https://release.xamp.io/vod/images/xtremand-video.gif><p><img src="" /></p>', this.campaignVideoTemplate2);
+                            	updatedBody = updatedBody.replace('<br><img src=https://aravindu.com/vod/images/xtremand-video.gif><p><img src="" /></p>', this.campaignVideoTemplate2);
+                            	updatedBody = updatedBody.replace('<br><img src=https://aravindu.com/vod/images/xtremand-video.gif>', this.campaignVideoTemplate2);
+                            	updatedBody = updatedBody.replace('<br><img src=https://release.xamp.io/vod/images/xtremand-video.gif>', this.campaignVideoTemplate2);
                             }
                             updatedBody = updatedBody.replace("<emailOpenImgURL>", '');
                             updatedBody = updatedBody.replace("<SocialUbuntuImgURL>", '');

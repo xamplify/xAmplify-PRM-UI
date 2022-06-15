@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'angular-idle-timeout';
   public isShowingRouteLoadIndicator: boolean;
   public showLoaderForAuthGuard:boolean;
+  public loader:boolean;
   sessionExpireMessage = "Your session has timed out. Please login again.";
   xamplifygif = "assets/images/xamplify-icon.gif";
    
@@ -103,7 +104,7 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
     
     
     ngOnInit() {
-        //this.versionCheckService.initVersionCheck();
+        this.versionCheckService.initVersionCheck();
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };
@@ -160,12 +161,32 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
         });
     }
     private navigationInterceptor(event: Event): void {
-      if (event instanceof NavigationStart) {  this.slimLoadingBarService.start(); }
-      if (event instanceof NavigationEnd) { this.slimLoadingBarService.complete(); }
+      if (event instanceof NavigationStart) { 
+      //  this.loader = true;
+         this.slimLoadingBarService.start();
+      }
+      if (event instanceof NavigationEnd) { 
+      //  this.stopLoader();
+        this.slimLoadingBarService.complete();
+       }
       // Set loading state to false in both of the below events to hide the loader in case a request fails
-      if (event instanceof NavigationCancel) { this.slimLoadingBarService.stop(); }
-      if (event instanceof NavigationError) { this.slimLoadingBarService.stop(); }
+      if (event instanceof NavigationCancel) {
+      //  this.stopLoader();
+         this.slimLoadingBarService.stop();
+      }
+      if (event instanceof NavigationError) { 
+        //this.stopLoader();
+        this.slimLoadingBarService.stop();
+        
+      }
     }
+    stopLoader(){
+      let self = this;
+      setTimeout(() => { 
+        self.loader = false;
+      }, 300);
+    }
+
     ngAfterViewInit(){
           $('body').tooltip({ selector: '[data-toggle="tooltip"]' }); 
           $('body').popover({ selector: '[data-toggle="popover"]' }); 

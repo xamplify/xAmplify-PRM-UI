@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     dealsUrl = 'deal';
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
-
+    addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -52,12 +52,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ 
                 this.router.navigateByUrl('/home/dashboard') 
-              }
+            }
             else if(!this.authenticationService.user.hasCompany) {
-              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
+              if(url.includes(this.addCompanyProfileUrl)){
                 return true;
               } else { 
-                this.goToAccessDenied(url);  
+                this.referenceService.goToRouter(this.addCompanyProfileUrl)
              }
             }else if(url.includes("/home/design/add")){
                 return true;
@@ -115,7 +115,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
         }
         if(url.indexOf("/home/contacts/")>-1){
-            return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && url.indexOf("home/contacts/manage")>-1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            }
         }
         if(url.indexOf("/home/partners/")>-1){
             return this.authorizeUrl(roles, url, this.partnerBaseUrl);
@@ -127,10 +131,32 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
         }
         if(url.indexOf(this.campaignBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.indexOf('ROLE_PRM')>-1){
+                if(roles.length==2){
+                    this.goToAccessDenied(this.campaignBaseUrl);
+                }else if(roles.indexOf('ROLE_COMPANY_PARTNER')>-1){
+                    if(url.indexOf("home/campaigns/select")>-1 || url.indexOf("home/campaigns/create")>-1){
+                        this.goToAccessDenied(this.campaignBaseUrl);
+                    }else{
+                        return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                    }
+                }
+            }else{
+                if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
+                || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
+                    return true;
+                }else{
+                    return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                }
+            }
         }
         if(url.indexOf(this.teamBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            }
+            
         }
         if(url.indexOf(this.socialBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);
@@ -228,6 +254,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
         const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
+        const isMarketing = roles.indexOf(this.roles.marketingRole)>-1;
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
@@ -240,7 +267,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1 
-                            || roles.indexOf(this.roles.prmRole)>-1 || roles.indexOf(this.roles.vendorTierRole); 
+                            || roles.indexOf(this.roles.prmRole)>-1 || isMarketing; 
             let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
             if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
                 return true;
@@ -269,7 +296,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1
-                            || roles.indexOf(this.roles.prmRole)>-1 || roles.indexOf(this.roles.vendorTierRole);  
+                            || roles.indexOf(this.roles.prmRole)>-1 || isMarketing;  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
@@ -280,8 +307,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         else if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);
+        }else if(isMarketing && !isPartner){
+            return this.checkMarketingAccessUrls(url,urlType);
         }
-        else if(isPartner && !isVendor && !orgAdmin){
+        else if(isPartner && !isVendor && !orgAdmin && !isMarketing){
             return this.checkPartnerAccessUrls(url, urlType)
         }
         else{
@@ -319,6 +348,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
     }catch(error){ console.log('error'+error);}
     }
+
+    checkMarketingAccessUrls(url:string,urlType:string):boolean{
+        try{
+        if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
+                  && url.indexOf("/"+this.partnerBaseUrl+"/")< 0){
+              return true;
+          }else{
+              return this.goToAccessDenied(url);
+          }
+        }catch(error){ console.log('error'+error);}
+      }
 
     goToAccessDenied(url):boolean{
         if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember())){

@@ -16,16 +16,6 @@
 	/*margin-top: 27px;*/
 }
 
-.view-banner {
-	background-color: #00a6e8;
-	color: white;
-	padding: 4px;
-	text-align: center;
-	width: 125px;
-	margin: 0 auto;
-	font-size: 11px;
-	font-weight: 600;
-}
 
 .progress {
 	position: relative;
@@ -524,4 +514,8 @@ table tr:nth-child(even) td {
 	.mFloatSearch{
 		float: right!important;
 	}
+}
+
+.breadcrumb-right-btn {
+	padding: 9px;
 }

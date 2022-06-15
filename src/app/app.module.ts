@@ -76,6 +76,7 @@ import {ClearChunkFile} from 'app/core/clear-chunk-file';
 import { ErrorHandler } from '@angular/core';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LinkedinService } from './social/services/linkedin.service';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -111,7 +112,7 @@ import { LinkedinService } from './social/services/linkedin.service';
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService, RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService, ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider, HubSpotService, Title, IntegrationService,
-        VanityURLService,LinkedinService],
+        VanityURLService,LinkedinService,DatePipe],
     bootstrap: [AppComponent]
 
 })

@@ -92,7 +92,7 @@
 									class="fa fa-check"></i></b></font>
                     </div>
                     <br>
-                    <div>
+                    <div *ngIf="!authenticationService?.module?.isMarketingCompany">
                         <label for="info">
 							<font class="error">Copy the below image tag link to enable co-branding.</font>
 						</label>
@@ -102,7 +102,7 @@
 									class="fa fa-check"></i></b></font>
                     </div>
                     <br>
-                    <div class="form-group" *ngIf="mycontent?.length>0">
+                    <div  class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && mycontent?.length>0">
                         <label class="control-label col-sm-5" id="margin">Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>

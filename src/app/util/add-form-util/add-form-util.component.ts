@@ -178,7 +178,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   loggedInAsSuperAdmin = false;
   isCreateDefaultForm = false;
   showQuizField= true;
-  
+  descriptionColor: string;
+  isValidDescriptionColor = true;
+
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, 
@@ -321,6 +323,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else {
             this.pageBackgroundColor = this.form.pageBackgroundColor;
             this.formBackgroundImage = "";
+        }
+        if (this.form.showTitleHeader === undefined || this.form.showTitleHeader === null) {
+            this.form.showTitleHeader = true;
+        }
+        if (this.form.descriptionColor) {
+            this.descriptionColor = this.form.descriptionColor;
         }
         this.form.isValid = true;
         this.form.isFormButtonValueValid = true;
@@ -1206,6 +1214,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               form.pageBackgroundColor = event;
               this.pageBackgroundColor = event;
               this.isValidPageBackgroundColor = true;
+          } else if(type === "descriptionColor") {
+            this.descriptionColor = event;
+            form.descriptionColor = event;
+            this.isValidDescriptionColor = true;
           }
       } catch (error) { console.log(error); }
       this.checkValideColorCodes();
@@ -1408,6 +1420,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     this.form.showCaptcha = !this.form.showCaptcha;
   }
 
+  showTitleHeaderChange() {
+    this.form.showTitleHeader = !this.form.showTitleHeader;
+  }
   errorHandler(event) { event.target.src = 'assets/images/your-logo.png'; }
 
   uploadFile(file: File, type: string) {
@@ -1682,6 +1697,9 @@ private addColorCodeErrorMessage(type: string) {
         this.form.pageBackgroundColor = "";
         this.pageBackgroundColor = "";
         this.isValidPageBackgroundColor = false;
+    } else if (type === "descriptionColor") {
+        this.form.descriptionColor = "";
+        this.isValidDescriptionColor = false;
     }
 }
 
@@ -1708,12 +1726,16 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
         this.form.pageBackgroundColor = colorCode;
         this.pageBackgroundColor = colorCode;
         this.isValidPageBackgroundColor = true;
+    } else if (type === "descriptionColor") {
+        this.form.descriptionColor = colorCode;
+        this.descriptionColor = colorCode;
+        this.isValidDescriptionColor = true;
     }
     this.checkValideColorCodes();
 }
 
 checkValideColorCodes(){
-    if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor) {
+    if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor && this.isValidDescriptionColor) {
         this.form.isValidColorCode = true;
     }
 }
@@ -1726,6 +1748,11 @@ saveAs(){
 addOrUpdate(){
 	this.isSaveAs = false;
 	this.validateForm();
+}
+
+UpdateFormTeamMemberGroupData(form: Form){
+    this.form.selectedTeamMemberIds = form.selectedTeamMemberIds;
+    this.form.selectedGroupIds = form.selectedGroupIds;
 }
 
 }
