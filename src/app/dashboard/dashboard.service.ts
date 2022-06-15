@@ -701,15 +701,34 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
-
-   /***XNFR-125*****/
+  /***XNFR-125*****/
    findOneClickLaunchScheduledCampaigns(companyId:number){
     const url = this.superAdminUrl + 'findOneClickLaunchScheduledCampaingsByVendorCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
         .map(this.extractData)
         .catch(this.handleError);
 }
+    /********* XNFR-127 *************/
+   /********High Level analytics******* */
+   findActivePartnersAndInActivePartnersForDonutChart(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getActiveAndInActivePartnersForDonut?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
-   
+   findLaunchedAndRedistributedCampiagnsForBarChart(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getLaunchedAndRedistributedCampaignsForBarChart?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
+    findHighLevelAnalyticsOfDetailReportsForTotalUsersTile(vanityLoginDto:VanityLoginDto){
+         const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports?access_token=' + this.authenticationService.access_token;
+         return this.http.post(url,vanityLoginDto)
+         .map(this.extractData)
+         .catch(this.handleError);
+        }
+    
 }

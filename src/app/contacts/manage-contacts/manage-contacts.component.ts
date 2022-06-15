@@ -7,7 +7,7 @@ import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialContact } from '../models/social-contact';
 import { UserListIds } from '../models/user-listIds';
@@ -230,7 +230,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   downloadAssociatedPagination : Pagination = new Pagination();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
-		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
+		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
+		public route: ActivatedRoute) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 
 		  this.loggedInUserId = this.authenticationService.getUserId();
@@ -2309,15 +2310,22 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			  this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
 	        }
 	}
-
 	ngOnInit() {
+		let moduleId =this.route.snapshot.params['id'];
+		if(moduleId != undefined){
+		 if(moduleId == 'all'){
+		     this.loadContactsByType(moduleId)
+		 }else{
+             this.loadContactsByType(moduleId)
+		 }
+		}
 		this.callInitMethods();
 	}
 	
 	callInitMethods(){
 	      try {
 	    	  this.getCompanyId();
-	    	  
+			 
 	    	    /*if (this.loggedInThroughVanityUrl){
 	                if (this.socialNetworkForSyncLocal == 'google'
 	                    || this.socialNetworkForSyncLocal == 'salesforce'

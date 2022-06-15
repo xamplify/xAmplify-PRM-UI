@@ -1,5 +1,5 @@
 <div class="timeline-wrapper">
-		<div class="animated-background" [ngStyle]="{ 'height': updatedHeight }">
+		<div [className]="showCircle ? 'animated-background circle-loader-css ':'animated-background'" [ngStyle]="{ 'height': updatedHeight }">
 			<div class="background-masker header-top"></div>
 			<div class="background-masker header-left"></div>
 			<div class="background-masker header-right"></div>
