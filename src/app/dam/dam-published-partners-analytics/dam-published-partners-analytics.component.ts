@@ -12,6 +12,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
+import { VideoFileService } from '../../videos/services/video-file.service';
 
 @Component({
   selector: 'app-dam-published-partners-analytics',
@@ -31,7 +33,12 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   selectedAssetName: any;
   initLoader = false;
   statusCode = 200;
-  constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+  selectedVideo: SaveVideoFile;
+  campaignReport : boolean = false;
+  
+  constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
+ private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
+ private router: Router, public properties: Properties, private videoFileService : VideoFileService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -41,6 +48,10 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damId = parseInt(this.route.snapshot.params['damId']);
     this.referenceService.loading(this.listLoader, true);
     this.getCompanyId();
+    if (this.videoFileService.campaignReport) {
+    	this.campaignReport = true;
+        this.selectedVideo = this.videoFileService.saveVideoFile;
+    }
   }
 
   getCompanyId() {

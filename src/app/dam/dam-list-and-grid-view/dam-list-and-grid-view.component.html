@@ -57,8 +57,22 @@
 						</div>
 					</div>
 				</div>
+							<!-- // -->
+			       <div class="col-xs-12" style="margin: 2px -18px;"  >
+                   <ul class="mix-filter">
+                      <li class="filter" (click)="listAssetsByType('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
+                          My Assets
+                      </li>
+                      <li class="filter" (click)="listAssetsByType('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                        Partner Assets
+                    </li>
+                    </ul>
+                  </div>
+			<!-- // -->
+				
+				
 			</div>
-
+			
 			<app-list-loader
 				*ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
 			<app-grid-loader
@@ -79,7 +93,7 @@
 									*ngIf="isPartnerView">Published On</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="!isPartnerView">Created On</th>
-								<th class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
+								<th  class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -131,11 +145,12 @@
 										</ng-container>
 									</h6>
 									<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
 								</td>
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td class="mAlignView">
+								<td class="mAlignView" >
 									<div
 										[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
@@ -149,7 +164,7 @@
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit && videoFileService.videoType!='partnerVideos'" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
@@ -157,15 +172,15 @@
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
+										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && videoFileService.videoType!='partnerVideos'" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
 										</a>
 										</div> 
 										<div class="mActionAlign">
-										<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
+										<a *ngIf="!isPartnerView && videoFileService.videoType!='partnerVideos'" title="Download"	(click)="openPopup(asset)">
 											 <i class="fa fa-download"	aria-hidden="true"></i>
 										</a> 
-										<a title="View Analytics" (click)="viewAnalytics(asset)">
+										<a *ngIf="videoFileService.videoType!='partnerVideos'" title="View Analytics" (click)="viewAnalytics(asset)">
 											<i class="fa fa-line-chart" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="isPartnerView" title="View Details"
@@ -174,7 +189,7 @@
 										</a>
 										</div>
 										<div class="mActionAlign2">
-										<a *ngIf="!isPartnerView && asset?.delete " title="Delete"
+										<a *ngIf="!isPartnerView && asset?.delete && videoFileService.videoType!='partnerVideos'" title="Delete"
 											(click)="confirmDelete(asset)"> 
 											<i class="fa fa-trash-o" aria-hidden="true"></i>
 										</a>
@@ -230,7 +245,7 @@
 													<td class="text-center">{{asset?.assetType}}</td>
 													<td class="text-center"><app-timestamp
 															[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-													<td id="actions-row">
+													<td id="actions-row" *ngIf="videoFileService.videoType!='partnerVideos'">
 														<div class="actions-block override-actions custom-width-icon">
 															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
 																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
@@ -447,8 +462,7 @@
 <!--Delete Asset-->
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter()" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
-	 (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>

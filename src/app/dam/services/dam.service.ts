@@ -135,14 +135,18 @@ export class DamService {
   }
 
   uploadOrUpdate(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
-    formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-      {
-        type: "application/json"
-      }));
-    let url = isAdd ? 'upload' : 'update';
-    return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
-      .map(this.extractData)
-      .catch(this.handleError);
+      if (!damUploadPostDto.cloudContent) {
+          formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+              {
+                  type: "application/json"
+              }));
+          let url = isAdd ? 'upload-content' : 'update';
+          return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
+              .map(this.extractData)
+              .catch(this.handleError);
+      } else {
+          return this.uploadCloudContent( formData, damUploadPostDto, isAdd );
+      }
   }
 
   getSharedAssetDetailsById(id: number) {
@@ -213,4 +217,16 @@ export class DamService {
   handleError(error: any) {
     return Observable.throw(error);
   }
+  // upload content from cloud storage
+  uploadCloudContent(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
+      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+          {
+              type: "application/json"
+          }));
+      let url = isAdd ? 'upload-cloud-content' : 'update';
+      return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
+          .map(this.extractData)
+          .catch(this.handleError);
+	  }
+  
 }

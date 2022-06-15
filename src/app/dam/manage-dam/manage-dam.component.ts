@@ -10,11 +10,13 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 	styleUrls: ['./manage-dam.component.css']
 })
 export class ManageDamComponent implements OnInit {
+	manageDam : boolean = true;
+    editVideo : boolean = false;
+    playVideo : boolean = false;
 	loading = false;
 	uploadAsset = false;
 	isPartnerView = false;
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
-		
 	}
 
 	ngOnInit() {
@@ -43,6 +45,25 @@ export class ManageDamComponent implements OnInit {
 		}else{
 			this.referenceService.goToRouter("/home/dam/manage");
 		}
-		
 	}
+	
+    setManageDam(result: any) {
+        if (result != null) {
+            this.manageDam = result;
+            this.editVideo = !result;
+        } else {
+            this.playVideo = true;
+            this.manageDam = false;
+            this.editVideo = false;
+        }
+    }
+    
+    update(videoFile: any) {
+        if (videoFile != null) {
+            this.referenceService.isAssetDetailsUpldated = true;
+        }
+        this.referenceService.goToRouter("home/dam/manage");
+    }
+    
+    
 }

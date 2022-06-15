@@ -21,6 +21,11 @@
      </div> -->
    </div>
    <!---Component Comes here-->
-   <app-dam-list-and-grid-view></app-dam-list-and-grid-view>
+   <app-dam-list-and-grid-view *ngIf="manageDam" (newItemEvent)="setManageDam($event)"> </app-dam-list-and-grid-view>
+   
+   <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)" ></app-edit-video> 
+   
+   <app-play-video *ngIf="playVideo"></app-play-video>
+   
    </div>
    

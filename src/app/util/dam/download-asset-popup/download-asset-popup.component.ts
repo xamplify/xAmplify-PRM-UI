@@ -53,7 +53,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 					this.getDownloadOptions(alias);
 				}
 			} else {
-				this.downloadContent(alias);
+				this.downloadContent(asset);
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error);
@@ -61,11 +61,12 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 		}
 	}
 
-	downloadContent(alias: string) {
+	downloadContent(asset: any) {
 		if (this.isPartnerView) {
 			this.utilService.getJSONLocation().subscribe(
 				(response: any) => {
-					let param = this.getLocationDetails(response, alias);
+					let param = this.getLocationDetails(response, asset.alias);
+					param.id = asset.damId;
 					let completeUrl = this.authenticationService.REST_URL + "dam/downloadpc?access_token=" + this.authenticationService.access_token;
 					this.referenceService.post(param, completeUrl);
 				}, (_error: any) => {
@@ -73,8 +74,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 				}
 			);
 		} else {
-			window.open(this.authenticationService.REST_URL + "dam/downloadc/" + alias + "?access_token=" + this.authenticationService.access_token);
-
+			window.open(this.authenticationService.REST_URL + "dam/downloadc/" + asset.alias +"/" + asset.id + "?access_token=" + this.authenticationService.access_token);
 		}
 		this.downloadAssetPopupEventEmitter.emit();
 	}
@@ -84,7 +84,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 		if (deviceInfo.device === 'unknown') {
 			deviceInfo.device = 'computer';
 		}
-		let param = {
+		let param : any = {
 			'alias': alias,
 			'loggedInUserId': this.loggedInUserId,
 			'deviceType': deviceInfo.device,

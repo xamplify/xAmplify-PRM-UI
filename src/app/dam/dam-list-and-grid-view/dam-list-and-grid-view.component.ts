@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { DamService } from '../services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,6 +18,9 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { SaveVideoFile } from '../../videos/models/save-video-file';
+import { VideoFileService } from '../../videos/services/video-file.service';
+import { UserService } from '../../core/services/user.service';
 
 declare var $, swal: any;
 @Component({
@@ -27,7 +30,6 @@ declare var $, swal: any;
 	providers: [HttpRequestLoader, SortOption, Properties]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
-
 	loading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
@@ -60,17 +62,22 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	asset: any;
 	showPdfModalPopup: boolean;
 	deleteAsset = false;
-	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
+	@Output() newItemEvent  = new EventEmitter<any>();
+	
+	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
+			public videoFileService: VideoFileService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
+		this.videoFileService.videoType ='myVideos';
 	}
 
 	ngOnInit() {
 		this.callInitMethods();
+		this.videoFileService.campaignReport = false;
 	}
 
 	callInitMethods() {
@@ -94,7 +101,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (this.referenceService.isAssetDetailsUpldated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
-		this.getCompanyId();
+		this.getCompanyId();		
 	}
 
 	ngOnDestroy() {
@@ -144,6 +151,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.pagination.userId = this.loggedInUserId;
+							this.pagination.type = this.videoFileService.videoType;
 							this.listAssets(this.pagination);
 						}
 					}
@@ -270,6 +278,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+			this.pagination.type = this.videoFileService.videoType;
 			this.listAssets(this.pagination);
 		}
 
@@ -347,18 +356,56 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 
 
-	viewAnalytics(asset: any) {
-		this.loading = true;
-		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-		} else {
-			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
-		}
-	}
+    viewAnalytics(asset: any) {
+        this.loading = true;
+        let isVideo = this.isVideo(asset.assetType);
+        if (isVideo) {
+        	   if (this.isPartnerView) {
+                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+            } else {
+                try {
+                    this.videoFileService.getVideo(asset.alias, 'DRAFT')
+                        .subscribe((editVideoFile: SaveVideoFile) => {
+                            if (editVideoFile.access) {
+                                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                                }
+                                editVideoFile.damId = asset.id;
+                                this.videoFileService.saveVideoFile = editVideoFile;
+                                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                                this.videoFileService.campaignReport = true;
+                                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+                            } else {
+                                this.authenticationService.forceToLogout();
+                            }
+                        },
+                        (error: any) => {
+                            this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                            this.xtremandLogger.errorPage(error);
+                        }
+                        );
+                } catch (error) {
+                    this.xtremandLogger.error('error' + error);
+                }
+            }
+        } else {
+            if (this.isPartnerView) {
+                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
 
-	editDetails(id: number) {
-		this.loading = true;
-		this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+            } else {
+                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+            }
+        }
+    }
+
+    editDetails(id: number, assetType: string, alias:string) {
+        if (this.isVideo(assetType)) {
+            this.showEditVideo(alias, id);
+        } else {
+            this.loading = true;
+            this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+        }
 	}
 
 	refreshList() {
@@ -396,10 +443,43 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callInitMethods();
 	}
 	/*****Preview Asset******* */
-	preview(asset: any) {
-		this.isPreview = true;
-		this.asset = asset;
+    preview(asset: any) {
+        if (this.isVideo(asset.assetType)) {
+            this.showPlayVideo(asset.id, asset.alias);
+        } else {
+            this.isPreview = true;
+            this.asset = asset;
+        }
 	}
+    
+    showPlayVideo(id: number, alias: string) {
+        try {
+            this.videoFileService.getVideo(alias, 'DRAFT')
+                .subscribe((editVideoFile: SaveVideoFile) => {
+                    if (editVideoFile.access) {
+                        if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                            editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                        }
+                        editVideoFile.damId = id;
+                        this.videoFileService.saveVideoFile = editVideoFile;
+                        this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                        this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                        this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+                        this.videoFileService.actionValue = 'Update';
+                        this.newItemEvent.emit(null);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                (error: any) => {
+                    this.xtremandLogger.error('Error In: showPlayVideo():' + error);
+                    this.xtremandLogger.errorPage(error);
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error('error' + error);
+        }
+    }
 
 	previewAssetPopupEmitter() {
 		this.isPreview = false;
@@ -434,13 +514,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = event;
 	}
 
-	deleteAssetSuccessEmitter() {
+	deleteAssetSuccessEmitter(response:any) {
+		if(response.statusCode==200){
 		this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
 		this.deleteAsset = false;
 		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
 		this.listAssets(this.pagination);
+		}else if(response.statusCode==401){
+			this.customResponse = new CustomResponse('ERROR', response.message, true);
+		}
 	}
 
 	deleteAssetFailEmitter(message: any) {
@@ -462,7 +546,88 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	viewDetails(asset:any){
 		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
 	}
+	
+    showEditVideo(alias:string, id: number) {
+        if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
+        try{
+        this.videoFileService.getVideo(alias, 'DRAFT')
+            .subscribe((editVideoFile: SaveVideoFile) => {
+                if(editVideoFile.access){
+                this.xtremandLogger.log('enter the show edit vidoe method');
+                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                }
+                editVideoFile.damId = id;
+                this.videoFileService.saveVideoFile = editVideoFile;
+                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                this.xtremandLogger.log('show edit vidoe object :');
+                this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+                this.videoFileService.actionValue = 'Update';
+                this.newItemEvent.emit(false);
+                //this.showVideosPage(false, true, false, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            (error: any) => {
+                this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                this.xtremandLogger.errorPage(error);
+            }
+            );
+          }catch(error){
+            this.xtremandLogger.error('error'+error);
+          }
+    }
+    getDefaultVideoSettings() {
+        this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
+    }
 
+    showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {
+        // this.manageVideos = manageVideos;
+        
+       // this.playVideo = playVideo;
+        //this.campaignReport = campaignReport;
+        this.newItemEvent.emit(false);
+    }
+
+    update(videoFile: SaveVideoFile) {
+
+    }
+	
+    isVideo(filename: any) {
+        const parts = filename.split('.');
+        const ext = parts[parts.length - 1];
+        switch (ext.toLowerCase()) {
+            case 'm4v':
+            case 'mkv':
+            case 'avi':
+            case 'mpg':
+            case 'mp4':
+            case 'flv':
+            case 'mov':
+            case 'wmv':
+            case 'divx':
+            case 'f4v':
+            case 'mpeg':
+            case 'vob':
+            case 'xvid':
+                // etc
+                return true;
+        }
+        return false;
+    }
+    
+    listAssetsByType(videoType: string) {
+        this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 12;
+        this.pagination.type = videoType;
+        this.videoFileService.videoType =videoType;
+        this.pagination.userId = this.loggedInUserId;
+        this.sortOption.searchKey = null;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.listAssets(this.pagination);
+    }
 
 
 

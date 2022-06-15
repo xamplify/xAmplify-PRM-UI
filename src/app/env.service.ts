@@ -19,6 +19,9 @@ export class EnvService {
   clientId = "";
   clientSecret = "";
 
+  beeTemplateDevClientId = "";
+  beeTemplateDevClientSecret = "";
+
   beeTemplateQAClientId = "";
   beeTemplateQAClientSecret = "";
 
@@ -32,6 +35,9 @@ export class EnvService {
   /*****Bee Page Credentials */
   beePageDevClientId = "";
   beePageDevClientSecret = "";
+
+  beePageQAClientId = "";
+  beePageQAClientSecret = "";
 
   beePageProdClientId = "";
   beePageProdClientSecret = "";

@@ -26,6 +26,7 @@
         <div class="portlet-body">
           <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany">
             <!--------Videos------------->
+            <!--------
             <div *ngIf="authenticationService?.module.isVideo" [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
               <div class="portlet light cpad  hover-effect pointer">
@@ -62,7 +63,8 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> 
+            ------------->
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">

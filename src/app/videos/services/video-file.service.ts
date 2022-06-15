@@ -37,6 +37,7 @@ export class VideoFileService {
     videoFileSweetAlertMessage: boolean;
     contentRedirect = false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
+    campaignReport : boolean = false;
     constructor(public envService: EnvService, private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }
@@ -355,4 +356,13 @@ export class VideoFileService {
             return Observable.throw(error);
         }
     }
+    
+    updateVideoContent(videoFile: SaveVideoFile) {
+    	let requestParam =  'userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        let url = this.authenticationService.REST_URL ;
+        return this.http.post(url + "dam/update-video?" +requestParam, videoFile)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 }

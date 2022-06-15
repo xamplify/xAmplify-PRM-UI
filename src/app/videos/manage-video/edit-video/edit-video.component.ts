@@ -144,6 +144,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   clientError = false;
   itemOfTags = [];
   isProcessed = true;
+  
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -170,9 +171,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.saveVideoFile.viewBy === 'DRAFT') {
           this.isThisDraftVideo = true;
           this.saveVideoFile.viewBy = 'PRIVATE';
-          this.saveButtonTitle = 'Save';
+          //this.saveButtonTitle = 'Save';
           this.categories.forEach(element => { if(element.name  === 'None'){ this.saveVideoFile.categoryId = element.id; }});
       } else { this.saveButtonTitle = 'Update'; }
+      
+      this.saveButtonTitle = 'Update'; 
       this.formErrors = this.videoUtilService.formErrors;
       this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
       this.defaultSaveImagePath = this.saveVideoFile.imagePath;
@@ -1000,7 +1003,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     try{
       this.getDefaultPlayerSettings();
-      this.removeVideoTitlesWhiteSpaces();
+     // this.removeVideoTitlesWhiteSpaces();
       this.loadRangeDisable = true;
       $('#overlay-modal').hide();
       console.log('EditVideoComponent ngOnit: ');
@@ -1266,10 +1269,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.validVideoTitle(this.saveVideoFile.title);
       const titleUpdatedValue = this.saveVideoFile.title.replace(/\s\s+/g, ' ');
       const descriptionData = this.saveVideoFile.description.replace(/\s\s+/g, ' ');
+      let damId = this.saveVideoFile.damId;
       if (this.isValidTitle === false && this.checkTagsValidation()) {
           this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
           this.isDisable = true;
           this.saveVideoFile = this.videoForm.value;
+          this.saveVideoFile.damId = damId;
           this.saveVideoFile.defaultSetting = this.defaultSettingValue;
           this.saveVideoFile.playerColor = this.compPlayerColor;
           this.saveVideoFile.controllerColor = this.compControllerColor;
@@ -1324,15 +1329,21 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.saveVideoFile.callACtion = this.enableCalltoAction;
           this.xtremandLogger.info(this.saveVideoFile);
-          return this.videoFileService.saveVideo(this.saveVideoFile)
+          return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
             	  if(result.access){
                   if (this.saveVideoFile != null) {
-                      this.saveVideoFile = result;
-                      this.notifyParent.emit(this.saveVideoFile);
-                      this.videoFileService.videoViewBy = 'Save';
-                   //   this.saveButtonTitle = 'Save';
-                      this.isDisable = false;
+                      if (result.statusCode == 200) {
+                          this.saveVideoFile = result;
+                          this.notifyParent.emit(this.saveVideoFile);
+                          this.videoFileService.videoViewBy = 'Save';
+                          //   this.saveButtonTitle = 'Save';
+                          this.isDisable = false;
+                      } else if (result.statusCode == 401) {
+                          this.isValidTitle = true;
+                          this.saveButtonTitle = 'Update';
+                          this.isDisable = false;
+                  }
                   } else {
                       this.isDisable = false;
                     //  this.saveButtonTitle = 'Save';

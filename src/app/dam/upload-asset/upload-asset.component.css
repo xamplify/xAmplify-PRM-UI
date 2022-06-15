@@ -196,3 +196,14 @@ width:150%;
     width:250%;
   }
 }
+
+.box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
+
+.customDisableCss {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+#myVideo{  background-color: #5fdbf5; width: 100%; height: 350px;}
+
