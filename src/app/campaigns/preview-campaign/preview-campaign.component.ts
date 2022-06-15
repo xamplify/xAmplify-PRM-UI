@@ -236,7 +236,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
     setCampaignData(result:any){
         this.campaign = result;
-        if(this.campaign.oneClickLaunch){
+        if(this.campaign.oneClickLaunch && !this.campaign.nurtureCampaign){
           this.getOneClickLaunchCampaignPartnerCompany(this.campaign.campaignId);
         }else{
           this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);

@@ -284,7 +284,7 @@
                    </div>
                 </fieldset>
                 <!---Selected Partners/Contacts-->
-                <ng-container *ngIf="!campaign?.oneClickLaunch">
+                <ng-container *ngIf="campaign.nurtureCampaign">
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
@@ -344,7 +344,7 @@
                   </fieldset>
                </ng-container>
                 <!---XNFR-125---->
-                <ng-container *ngIf="campaign?.oneClickLaunch">
+                <ng-container *ngIf="campaign?.oneClickLaunch && !campaign.nurtureCampaign">
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}} Company & Share Leads:</legend>
                      <app-modal-popup-loader *ngIf="oneClickLaunchLoader"></app-modal-popup-loader>
