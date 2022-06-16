@@ -149,5 +149,5 @@
 </div>
 <!--XNFR-125-->
 <ng-container *ngIf="showLeadsPreview">
-    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetShareLeadsPreviewValues()"></app-preview-user-list>
+    <app-preview-user-list [customWidth]="true" [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetShareLeadsPreviewValues()"></app-preview-user-list>
  </ng-container>

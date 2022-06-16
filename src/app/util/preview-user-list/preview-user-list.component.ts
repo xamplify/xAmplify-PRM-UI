@@ -20,6 +20,7 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
  
   @Input()userListName:string;
   @Input() userListId:number;
+  @Input() customWidth:boolean;
   @Output() notifyParentComponent = new EventEmitter();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   pagination:Pagination = new Pagination();
