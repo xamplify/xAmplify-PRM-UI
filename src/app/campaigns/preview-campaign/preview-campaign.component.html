@@ -725,7 +725,8 @@
                       </div>
                    </div>
                 </div>
-                <fieldset *ngIf="campaign?.launched" class="scheduler-border" [style.border-color]="contactListBorderColor" >
+
+                <fieldset *ngIf="campaign?.launched && !campaign?.oneClickLaunch &&!campaign.channelCampaign" class="scheduler-border" [style.border-color]="contactListBorderColor" >
                    <legend class="scheduler-border">Analytics </legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
@@ -777,7 +778,7 @@
           (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
           <i class="fa fa-files-o"></i>
           </a>
-          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
+          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
           data-placement="auto" title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
           <i class="fa fa-handshake-o" id="partner-icon"></i>
           </a>
