@@ -21,6 +21,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { UserService } from '../../core/services/user.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
 
 declare var $, swal: any;
 @Component({
@@ -65,7 +66,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Output() newItemEvent  = new EventEmitter<any>();
 	
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
-			public videoFileService: VideoFileService, public userService: UserService) {
+			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;

@@ -116,6 +116,14 @@
 										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
 									</h6>
 									<h6 class="moreipsis"
+										*ngIf="!isPartnerView && asset.videoId">
+										<span  translate> <strong>{{asset?.totalViews}} views</strong></span>
+									</h6>
+									<h6 class="moreipsis"
+										*ngIf="!isPartnerView && asset.videoId">
+										<span translate> Video Length <strong>{{videoUtilService.truncateHourZeros(asset.videoLength)}}</strong></span>
+									</h6>
+									<h6 class="moreipsis"
 										*ngIf="!isPartnerView && asset?.beeTemplate">
 										<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 									</h6>
