@@ -716,8 +716,8 @@
                                                                 </a>
                                                             </li>
                                                             <li
-                                                                *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign">
-                                                                <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign"
+                                                                *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch">
+                                                                <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
                                                                     (click)="goToPreviewPartners(campaign)"
                                                                     data-rel="fancybox-button">
                                                                     <i class="fa fa-handshake-o" style="width: 30px;"
@@ -946,15 +946,12 @@
                                                             </a>
                                                         </li>
                                                         <li
-                                                            *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign">
-                                                            <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign"
+                                                            *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor   || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch">
+                                                            <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
                                                                 (click)="goToPreviewPartners(campaign)"
                                                                 data-rel="fancybox-button">
-                                                                <i class="fa fa-handshake-o"
-                                                                    style="width: 30px; margin-right: 0px;"
-                                                                    id="partner-icon" aria-hidden="true"></i> Preview &
-                                                                Delete
-                                                                {{authenticationService?.partnerModule?.customName}}
+                                                                <i class="fa fa-handshake-o" style="width: 30px; margin-right: 0px;" id="partner-icon" aria-hidden="true"></i> 
+                                                                    Preview & Delete {{authenticationService?.partnerModule?.customName}}
                                                             </a>
                                                         </li>
                                                     </ng-container>
@@ -1207,7 +1204,7 @@
                                         title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                         <i class="fa fa-files-o"></i>
                                     </a>
-                                    <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign"
+                                    <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm  || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
                                         (click)="goToPreviewPartners(campaign)" data-toggle="tooltip"
                                         data-placement="top" title="{{actionsDescription.campaign_preview_partner}}"
                                         data-rel="fancybox-button">
