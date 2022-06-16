@@ -1511,10 +1511,12 @@
     <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
       <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
       </div>
-
       <div class="portlet light clearfix">
         <div class="portlet-body">
-              <h4>One Click Launch</h4>
+            <div class="one-click-title">
+              Selected {{authenticationService?.partnerModule?.customName}} Company
+            </div>
+          <app-one-click-launch-partner-preview  [campaignId]="campaign.campaignId"></app-one-click-launch-partner-preview>
         </div>
       </div>
   </div>

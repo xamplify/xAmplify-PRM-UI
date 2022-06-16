@@ -1130,9 +1130,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           () => {
 
             /********XNFR-125*****/
-            if(this.campaign.oneClickLaunchCondition){
-              alert("New API");
-            }else{
+            if(!this.campaign.oneClickLaunchCondition){
               if (this.customResponse.responseType !== 'ERROR') {
                 const campaignType = this.campaign.campaignType.toLocaleString();
                 if (campaignType.includes('VIDEO')) {
