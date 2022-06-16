@@ -1083,7 +1083,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           data => {
             this.campaign = data;
             this.isChannelCampaign = data.channelCampaign;
-            
             if(this.campaign.nurtureCampaign && this.campaign.companyId == this.loggedInUserCompanyId){
             	this.isNavigatedThroughAnalytics = false;
                 this.isPartnerEnabledAnalyticsAccess = true;
@@ -1102,14 +1101,17 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               this.isPartnerEnabledAnalyticsAccess = true;
               this.isDataShare = true;
             }
-            if (!this.campaign.campaignType.toLocaleString().includes('SMS')) {
-              if (!this.isSmsServiceAnalytics)
-                this.getEmailLogCountByCampaign(this.campaignId);
-              else
+            /*********XNFR-125****/
+            if(!this.campaign.oneClickLaunchCondition){
+              if (!this.campaign.campaignType.toLocaleString().includes('SMS')) {
+                if (!this.isSmsServiceAnalytics)
+                  this.getEmailLogCountByCampaign(this.campaignId);
+                else
+                  this.getSmsLogCountByCampaign(this.campaignId);
+  
+              } else {
                 this.getSmsLogCountByCampaign(this.campaignId);
-
-            } else {
-              this.getSmsLogCountByCampaign(this.campaignId);
+              }
             }
             if (data.campaignType === 'VIDEO') {
               this.campaignViewsSortByDropDown.push( { 'name': 'Views Count (ASC)', 'value': 'views_count-ASC'});
@@ -1126,52 +1128,56 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             this.loading = false;
           },
           () => {
-            if (this.customResponse.responseType !== 'ERROR') {
-              const campaignType = this.campaign.campaignType.toLocaleString();
-              if (campaignType.includes('VIDEO')) {
-                this.campaignType = 'VIDEO';
-                this.getCountryWiseCampaignViews(campaignId);
-                this.getCampaignViewsReportDurationWise(campaignId);
-              } else if (campaignType.includes('SOCIAL')) {
-                this.campaignType = 'SOCIAL';
-                this.getSocialCampaignByCampaignId(campaignId);
-              } else if (campaignType.includes('EVENT')) {
-                this.campaignType = 'EVENT';
-                this.colspanValue = 10;
-                if (this.campaign.emailTemplate) {
-                  this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+
+            /********XNFR-125*****/
+            if(!this.campaign.oneClickLaunchCondition){
+              if (this.customResponse.responseType !== 'ERROR') {
+                const campaignType = this.campaign.campaignType.toLocaleString();
+                if (campaignType.includes('VIDEO')) {
+                  this.campaignType = 'VIDEO';
+                  this.getCountryWiseCampaignViews(campaignId);
+                  this.getCampaignViewsReportDurationWise(campaignId);
+                } else if (campaignType.includes('SOCIAL')) {
+                  this.campaignType = 'SOCIAL';
+                  this.getSocialCampaignByCampaignId(campaignId);
+                } else if (campaignType.includes('EVENT')) {
+                  this.campaignType = 'EVENT';
+                  this.colspanValue = 10;
+                  if (this.campaign.emailTemplate) {
+                    this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+                  }
+                  this.getEventCampaignById(campaignId);
+                  this.getEventCampaignByCampaignId(campaignId);
+                } else if (campaignType.includes('SMS')) {
+                  this.campaignType = 'SMS';
+                } else if (campaignType.includes('LANDINGPAGE')) {
+                  this.campaignType = 'LANDINGPAGE';
+                } else if (campaignType.includes('SURVEY')) {
+                  this.campaignType = 'SURVEY';
                 }
-                this.getEventCampaignById(campaignId);
-                this.getEventCampaignByCampaignId(campaignId);
-              } else if (campaignType.includes('SMS')) {
-                this.campaignType = 'SMS';
-              } else if (campaignType.includes('LANDINGPAGE')) {
-                this.campaignType = 'LANDINGPAGE';
-              } else if (campaignType.includes('SURVEY')) {
-                this.campaignType = 'SURVEY';
+                else {
+                  this.campaignType = 'REGULAR';
+                }
               }
-              else {
-                this.campaignType = 'REGULAR';
+              if (this.campaignType != 'SMS') {
+                 this.getCampaignHighLevelAnalytics(this.campaignId);
+              } else {
+                this.getSmsSentCount(this.campaignId);
+                this.getSmsSentSuccessCount(this.campaignId);
+                this.getSmsSentFailureCount(this.campaignId);
               }
-            }
-            if (this.campaignType != 'SMS') {
-            	 this.getCampaignHighLevelAnalytics(this.campaignId);
-            } else {
-              this.getSmsSentCount(this.campaignId);
-              this.getSmsSentSuccessCount(this.campaignId);
-              this.getSmsSentFailureCount(this.campaignId);
-            }
-            if (this.campaignType == 'EVENT') {
-              this.exportingObject['eventCampaign'] = true;
-              this.exportingObject['campaignAlias'] = this.campaignId;
-              this.exportingObject['formAlias'] = this.campaign.formAlias;
-              this.exportingObject['isPublicEventLeads'] = true;
-              this.exportingObject['totalLeads'] = true;
-              this.exportingObject['totalAttendees'] = false;
-              this.exportingObject['totalPartnerLeads'] = false;
-            }
-            if (this.campaignType == 'EVENT' && this.isChannelCampaign) {
-            	this.getPartnerRedistributedCampaignsRSVP(this.campaignId);
+              if (this.campaignType == 'EVENT') {
+                this.exportingObject['eventCampaign'] = true;
+                this.exportingObject['campaignAlias'] = this.campaignId;
+                this.exportingObject['formAlias'] = this.campaign.formAlias;
+                this.exportingObject['isPublicEventLeads'] = true;
+                this.exportingObject['totalLeads'] = true;
+                this.exportingObject['totalAttendees'] = false;
+                this.exportingObject['totalPartnerLeads'] = false;
+              }
+              if (this.campaignType == 'EVENT' && this.isChannelCampaign) {
+                this.getPartnerRedistributedCampaignsRSVP(this.campaignId);
+              }
             }
             this.loading = false;
           }
