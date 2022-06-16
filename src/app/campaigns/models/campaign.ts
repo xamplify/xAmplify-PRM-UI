@@ -99,4 +99,5 @@ export class Campaign {
     oneClickLaunch = false;
     partnershipId = 0;
     oneClickLaunchCampaignRedistributed = false;
+    oneClickLaunchCondition = false;
 }

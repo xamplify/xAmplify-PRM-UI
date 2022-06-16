@@ -284,7 +284,7 @@
                    </div>
                 </fieldset>
                 <!---Selected Partners/Contacts-->
-                <ng-container *ngIf="campaign.nurtureCampaign">
+                <ng-container *ngIf="!campaign?.oneClickLaunchCondition">
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
@@ -344,7 +344,7 @@
                   </fieldset>
                </ng-container>
                 <!---XNFR-125---->
-                <ng-container *ngIf="campaign?.oneClickLaunch && !campaign.nurtureCampaign">
+                <ng-container *ngIf="campaign?.oneClickLaunchCondition">
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}} Company & Share Leads:</legend>
                      <app-modal-popup-loader *ngIf="oneClickLaunchLoader"></app-modal-popup-loader>
@@ -726,7 +726,7 @@
                    </div>
                 </div>
 
-                <fieldset *ngIf="campaign?.launched && !campaign?.oneClickLaunch &&!campaign.channelCampaign" class="scheduler-border" [style.border-color]="contactListBorderColor" >
+                <fieldset *ngIf="campaign?.launched && !campaign?.oneClickLaunchCondition" class="scheduler-border" [style.border-color]="contactListBorderColor" >
                    <legend class="scheduler-border">Analytics </legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
