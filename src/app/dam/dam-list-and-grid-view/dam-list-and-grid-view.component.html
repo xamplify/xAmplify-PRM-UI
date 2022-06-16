@@ -405,20 +405,20 @@
 								<a class="mMobileDisable" *ngIf="asset?.beeTemplate" title="Design"
 									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 									aria-hidden="true"></i>
-								</a> <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
-									(click)="editDetails(asset.id)">
+								</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit && videoFileService.videoType!='partnerVideos'" title="Edit"
+									(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
 									 <i class="fa fa-edit mDisableColor"
 									aria-hidden="true"></i>
-								</a> <a title="Preview" (click)="preview(asset)"> <i
+								</a> <a title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
 									class="fa fa-eye" aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Publish"
+								</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && videoFileService.videoType!='partnerVideos'" title="Publish"
 									(click)="openPublishPopup(asset.id)"> <i
 									class="fa fa-share" aria-hidden="true"></i>
-								</a> <a title="Download" (click)="openPopup(asset)"> <i
+								</a> <a *ngIf="!isPartnerView && videoFileService.videoType!='partnerVideos'" title="Download" (click)="openPopup(asset)"> <i
 									class="fa fa-download" aria-hidden="true"></i>
-								</a> <a title="View Analytics" (click)="viewAnalytics(asset)"> <i
+								</a> <a *ngIf="videoFileService.videoType!='partnerVideos'" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 									class="fa fa-line-chart" aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Delete" class="delete"
+								</a> <a *ngIf="!isPartnerView && asset?.delete && videoFileService.videoType!='partnerVideos'" title="Delete" class="delete"
 									(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 									aria-hidden="true"></i>
 								</a>
