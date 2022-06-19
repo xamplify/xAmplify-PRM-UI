@@ -113,6 +113,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			this.referenceService.loading(this.shareLeadsLoader, true);
 			this.shareLeadsPagination.partnerCompanyId = partner.partnerCompanyId;
 			this.shareLeadsPagination.partnershipId = partner.partnershipId;
+			this.shareLeadsPagination.headerCheckBoxChecked = this.selectedPartnershipId==partner.partnershipId;
 			this.findShareLeads(this.shareLeadsPagination);
 		}
 	}
@@ -132,7 +133,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 				let items = $.grep(this.selectedShareLeadsListIds, function (element: any) {
 					return $.inArray(element, shareLeadsListIds) !== -1;
 				});
-				if (items.length == shareLeadsListIds.length && shareLeadsListIds.length > 0) {
+				if (items.length == shareLeadsListIds.length && shareLeadsListIds.length > 0 && this.shareLeadsPagination.headerCheckBoxChecked) {
 					this.isHeaderCheckBoxChecked = true;
 				} else {
 					this.isHeaderCheckBoxChecked = false;

@@ -96,4 +96,5 @@ export class Pagination {
 	companyNameFilter:string = "";
 	oneClickLaunch = false;
 	previewSelectedSharedLeads = false;
+	headerCheckBoxChecked = false;
 }

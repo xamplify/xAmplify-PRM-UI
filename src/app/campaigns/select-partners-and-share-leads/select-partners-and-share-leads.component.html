@@ -66,7 +66,7 @@
                         </tr>
                         <tr *ngIf="partner?.expand">
                             <td colspan="5" class="bgc-lg">
-                                <div class="alert alert-success text-center" *ngIf="selectedShareLeadsListIds?.length>0">
+                                <div class="alert alert-success text-center" *ngIf="selectedShareLeadsListIds?.length>0 && selectedPartnershipId==partner.partnershipId">
                                     <strong>Selected Rows : {{selectedShareLeadsListIds?.length}}</strong>
                                 </div>
                                <div class="table-responsive x-hidden">
