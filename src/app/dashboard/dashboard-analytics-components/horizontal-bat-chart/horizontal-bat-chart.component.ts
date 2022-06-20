@@ -22,6 +22,10 @@ export class HorizontalBatChartComponent implements OnInit {
   totalCount: number = 0;
   vanityLogin = false;
   @Input()applyFilter:boolean;
+  redistributedName: string ="Redistributed campaigns";
+  throughCampaignName: string ="Through Campaigns";
+  tocampaignsName: string = "To Camapaigns";
+  
 
   constructor(public authenticationService: AuthenticationService, public properties: Properties,
      public dashboardService: DashboardService, public xtremandLogger: XtremandLogger,
@@ -41,6 +45,8 @@ export class HorizontalBatChartComponent implements OnInit {
     this.findHorizontalBarChart();
   }
 
+  
+
   findHorizontalBarChart(){
     this.loader =true;
     this.dashboardService.findLaunchedAndRedistributedCampiagnsForBarChart(this.vanityLoginDto)
@@ -48,9 +54,11 @@ export class HorizontalBatChartComponent implements OnInit {
       (response) =>{
          this.horizontalBarData =response.data;
          this.totalCount=this.horizontalBarData.totalCampaignsCount;
+         
          if(this.totalCount>0){
-          this.loadHorizontalBarChart(this.horizontalBarData);
-         }
+          this.loadHorizontalBarChart(this.horizontalBarData)
+          }
+
          this.statusCode = 200;
          this.loader = false;
       },
@@ -86,7 +94,11 @@ export class HorizontalBatChartComponent implements OnInit {
     plotOptions: {
         series: {
             stacking: 'normal'
-        }
+        },
+        dataLabels: {
+          enabled: true,
+          format: "{point.name}",
+        },
     },
     credits: {
                 enabled: false
@@ -96,20 +108,24 @@ export class HorizontalBatChartComponent implements OnInit {
               "#3faba4",
               "#008fd5"
             ],
-    series: [
+    series: 
+    [
       {
-        name: 'Redistributed Campaigns',
+        showInLegend: this.horizontalBarData.showInLegendRedistributedCampaign,
+        name: this.redistributedName,
         data: [this.horizontalBarData.redistributedCampaignsCount]
       },
-      {
-        name: 'Through Campaigns',
-        data: [this.horizontalBarData.throughCampaignsCount]
+       {
+         showInLegend: this.horizontalBarData.showInLegendThroughCampaign,
+         name: this.throughCampaignName,
+         data: [this.horizontalBarData.throughCampaignsCount]
 
       },
-      {
-      name: 'To Campaigns',
-      data: [this.horizontalBarData.toCampaignsCount]
-    }
+       {
+      showInLegend: this.horizontalBarData.showInLegendToCampaign,
+       name: this.tocampaignsName,
+       data: [this.horizontalBarData.toCampaignsCount]
+     }
    ]
 });
  }

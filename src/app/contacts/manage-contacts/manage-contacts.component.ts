@@ -2313,11 +2313,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	ngOnInit() {
 		let moduleId =this.route.snapshot.params['id'];
 		if(moduleId != undefined){
-		 if(moduleId == 'all'){
 		     this.loadContactsByType(moduleId)
-		 }else{
-             this.loadContactsByType(moduleId)
-		 }
 		}
 		this.callInitMethods();
 	}
