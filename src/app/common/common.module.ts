@@ -115,6 +115,7 @@ import { TeamMemberPartnersComponent } from 'app/util/team-member-partners/team-
 import { FormTeamMemberGroupComponent } from 'app/util/form-team-member-group/form-team-member-group.component';
 import { DisplayDateAndTimeComponent } from './display-date-and-time/display-date-and-time.component';
 import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-details-modal-popup/edit-campaign-details-modal-popup.component';
+import { OneClickLaunchPartnerPreviewComponent } from 'app/util/one-click-launch-partner-preview/one-click-launch-partner-preview.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -135,11 +136,8 @@ import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-d
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,EditCampaignDetailsModalPopupComponent],
-
-
-
-
+		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
+		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -158,7 +156,8 @@ import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-d
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
-		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,EditCampaignDetailsModalPopupComponent]
+		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
+		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent]
 
 
 

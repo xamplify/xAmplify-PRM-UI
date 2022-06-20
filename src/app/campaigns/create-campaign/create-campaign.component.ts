@@ -324,6 +324,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     /***XNFR-125****/
     oneClickLaunch = false;
     selectedPartnershipId = 0;
+    oneClickLaunchToolTip = "";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -824,6 +825,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
+        this.oneClickLaunchToolTip = "Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute with one click";
         if ('landingPage' == this.campaignType) {
             this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Share a public page";
