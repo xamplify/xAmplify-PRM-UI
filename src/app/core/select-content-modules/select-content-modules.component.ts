@@ -14,7 +14,8 @@ export class SelectContentModulesComponent implements OnInit {
 
   loading = false;
   prefixUrl = "home/";
-  constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger) { }
+  constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
+    public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
 
