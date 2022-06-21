@@ -5,18 +5,7 @@
   </ng-container>
 
   <ng-container *ngIf="!initLoader && !oneClickLaunchCampaign">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li *ngIf="!authenticationService.isSuperAdmin()">
-            <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a [routerLink]="['/home/campaigns/manage']">Manage
-            Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
-      </ul>
-   </div>
+   <ng-template [ngTemplateOutlet]="header"></ng-template>
    <div class="row">
       <div class="col-xs-12 p5">
          <div class="portlet light">
@@ -155,20 +144,7 @@
 
    <!--One-Click Launch Campaign-->
    <ng-container *ngIf="!initLoader && oneClickLaunchCampaign">
-
-      <div class="page-bar">
-         <ul class="page-breadcrumb">
-            <li *ngIf="!authenticationService.isSuperAdmin()">
-               <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
-               <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li><a [routerLink]="['/home/campaigns/manage']">Manage
-               Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
-         </ul>
-      </div>
-
+      <ng-template [ngTemplateOutlet]="header"></ng-template>
       <div class="row">
          <div class="col-xs-12 p5">
             <div class="portlet light">
@@ -184,6 +160,23 @@
       </div>
       </div>
    </ng-container>
+
+
    
+   <ng-template #header>
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+               <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a [routerLink]="['/home/campaigns/manage']">Manage
+               Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
+         </ul>
+      </div>
+   </ng-template>
+
    <app-scroll-top></app-scroll-top>
 </div>

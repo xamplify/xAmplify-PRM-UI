@@ -33,11 +33,14 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   expandedUserList: any;
   campaign: any;
   @Input() viewType:string;
+  showShareLeadsList = false;
+  downloadCount = 0;
+  openedCount = 0;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    alert(this.viewType);
+    this.showShareLeadsList = this.viewType == undefined;
     this.getOneClickLaunchCampaignPartnerCompany(this.campaignId);
   }
 
@@ -58,7 +61,25 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
       },error=>{
         this.oneClickLaunchLoader = false;
         this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-      });
+      },()=>{
+        if(!this.showShareLeadsList){
+          this.oneClickLaunchLoader = true;
+          if(this.viewType=="tda" || this.viewType=="teoa"){
+            this.campaignService.getDownloadOrOpenedCount(this.viewType,this.campaignId)
+            .subscribe(
+              response=>{
+                this.downloadCount = response.data;
+                this.openedCount = response.data;
+                this.oneClickLaunchLoader = false;
+              },error=>{
+                this.xtremandLogger.errorPage(error);
+              }
+            );
+          }
+          
+        }
+      }
+      );
   }
 
   /****XNFR-125****/
@@ -134,5 +155,13 @@ viewShareLeads(partner:any){
 			this.expandedUserList = userList;		
 		}
 	} 
+
+  expandList(partner:any){
+    if(this.showShareLeadsList){
+      this.viewShareLeads(partner);
+    }else if(this.viewType="tda"){
+      partner.expand = !partner.expand;
+    }
+  }
 
 }
