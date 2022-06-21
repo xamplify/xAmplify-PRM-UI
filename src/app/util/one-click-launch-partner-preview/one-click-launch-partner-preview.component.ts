@@ -36,6 +36,11 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   showShareLeadsList = false;
   downloadCount = 0;
   openedCount = 0;
+  historyPagination: Pagination = new Pagination();
+  historyLoader:HttpRequestLoader = new HttpRequestLoader();
+  historyList:Array<any> = new Array<any>();
+  historyResponse: CustomResponse = new CustomResponse();
+  campaignPartnerId = 0;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
@@ -68,8 +73,10 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
             this.campaignService.getDownloadOrOpenedCount(this.viewType,this.campaignId)
             .subscribe(
               response=>{
-                this.downloadCount = response.data;
-                this.openedCount = response.data;
+                let map = response.data;
+                this.downloadCount = map.count;
+                this.openedCount = map.count;
+                this.campaignPartnerId = map.campaignPartnerId;
                 this.oneClickLaunchLoader = false;
               },error=>{
                 this.xtremandLogger.errorPage(error);
@@ -82,7 +89,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
       );
   }
 
-  /****XNFR-125****/
+/****XNFR-125****/
 viewShareLeads(partner:any){
   this.shareLeadsPagination = new Pagination();
   this.shareLeadsErrorMessage = new CustomResponse();
@@ -159,9 +166,45 @@ viewShareLeads(partner:any){
   expandList(partner:any){
     if(this.showShareLeadsList){
       this.viewShareLeads(partner);
-    }else if(this.viewType="tda"){
+    }else if(this.viewType=="tda" || this.viewType=="teoa"){
       partner.expand = !partner.expand;
+      if(partner.expand){
+        this.historyPagination.campaignId = this.campaignPartnerId;
+        this.listDownloadHistory(this.historyPagination);
+      }else{
+        this.historyPagination.campaignId = 0;
+      }
+      
     }
   }
+
+  listDownloadHistory(pagination: Pagination) {
+		this.referenceService.loading(this.historyLoader, true);
+		this.campaignService.listDownloadOrOpenedHistory(pagination,this.viewType).
+    subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+        pagination.totalRecords = data.totalRecords;
+        let self = this;
+        $.each(data.list, function (_index: number, history: any) {
+            if(self.viewType=="tda"){
+                history.displayTime = new Date(history.downloadedTimeInUTCString);
+            }else{
+                history.displayTime = new Date(history.trackedTimeInUTCString);
+            }
+        });
+        this.historyList = data.list;
+				pagination = this.pagerService.getPagedItems(pagination, data.list);
+			}
+			this.referenceService.loading(this.historyLoader, false);
+		}, error => {
+			this.historyResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+		});
+	}
+	/************Page************** */
+	setHistoryPage(event: any) {
+		this.historyPagination.pageIndex = event.page;
+		this.listDownloadHistory(this.historyPagination);
+    }
 
 }

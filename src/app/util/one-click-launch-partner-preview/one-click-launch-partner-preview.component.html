@@ -40,7 +40,7 @@
                </td>
             </tr>
             <!--Share Leads-->
-            <tr *ngIf="oneClickLaunchPartnerCompany?.expand">
+            <tr *ngIf="oneClickLaunchPartnerCompany?.expand && showShareLeadsList">
                <td colspan="5" class="bgc-lg">
                   <div class="table-responsive x-hidden">
                      <div class="portlet-input input-inline float-right mb10p" id="search-div">
@@ -149,6 +149,41 @@
                   </div>
                </td>
            </tr>
+           <!--One-Click Launch-->
+           <tr *ngIf="oneClickLaunchPartnerCompany?.expand && !showShareLeadsList">
+            <td colspan="4">
+               <app-response-message [customResponse]="historyResponse" *ngIf="historyResponse.isVisible"></app-response-message>
+               <div class="table-responsive" *ngIf="!historyResponse.isVisible">
+                  <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
+                     <thead>
+                        <tr>
+                           <th *ngIf="viewType=='tda'" class="text-center" scope="row" translate>Downloaded Type</th>
+                           <th *ngIf="viewType=='tda'" class="text-center" id="min-width" translate>Downloaded Time</th>
+                           <th *ngIf="viewType=='teoa'" class="text-center" id="min-width" translate>Opened Time</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
+                        <ng-container *ngIf="!historyLoader.isLoading">
+                           <tr *ngFor="let history of historyList ;let i =index" id="history-tr">
+                              <td *ngIf="viewType=='tda'" class="text-center">
+                                 {{history?.downloadedType}}
+                              </td>
+                              <td  class="text-center">
+                                 <app-timestamp  [dateAndTime]="history?.displayTime">
+                                 </app-timestamp>
+                              </td>
+                           </tr>
+                        </ng-container>
+                     </tbody>
+                  </table>
+                  <div  *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
+                     <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listDownloadHistory($event)">
+                     </app-pagination>
+                    </div>
+                  </div>
+               </td>
+         </tr>
       </tbody>
    </table>  
 </div>
