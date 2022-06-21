@@ -32,10 +32,12 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   showLeadsPreview: boolean;
   expandedUserList: any;
   campaign: any;
+  @Input() viewType:string;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
+    alert(this.viewType);
     this.getOneClickLaunchCampaignPartnerCompany(this.campaignId);
   }
 
