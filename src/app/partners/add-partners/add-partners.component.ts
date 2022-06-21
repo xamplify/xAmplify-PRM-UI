@@ -3874,25 +3874,23 @@ public edited=false;
 
 	/********XNFR-85********/
 	currentPartner: any;
-	showTeamMembers = false;
 	previewLoader =  false;
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
 		this.showModulesPopup = true;
 	}
-
 	getTeamMembersByGroupId(partner: any, index: number) {
 		partner.expand = false;
-		this.processingPartnersLoader = true;
+		this.previewLoader = true;
 		if (partner['selectedTeamMemberIds'].length > 0) {
 			partner['selectedTeamMemberIds'] = [];
 			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
-			this.processingPartnersLoader = false;
+			this.previewLoader = false;
 		} else {
 			setTimeout(() => {
 				this.getTeamMembers(partner, index);
-				this.processingPartnersLoader = false;
+				this.previewLoader = false;
 			}, 500);
 			
 		}
@@ -3903,11 +3901,8 @@ public edited=false;
 		partner.expand = !partner.expand;
 		if (partner.teamMemberGroupId > 0) {
 			if(partner.expand){
-				this.previewLoader = true;
 				this.currentPartner = partner;
 				this.currentPartner.index = index;
-				this.showTeamMembers = true;
-				this.previewLoader = false;
 			}
 		}else{
 			partner.expand = false;
@@ -3923,7 +3918,6 @@ public edited=false;
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
 		this.toggleDropDownStatus(partner);
-		this.showTeamMembers = false;
 		this.previewLoader = false;
 	}
 

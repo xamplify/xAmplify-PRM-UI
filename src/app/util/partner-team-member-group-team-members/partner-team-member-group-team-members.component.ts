@@ -72,16 +72,16 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
           });
           partner['isTeamMemberHeaderCheckBoxChecked'] = (items.length == teamMemberIds.length && teamMemberIds.length > 0);
           this.referenceService.stopLoader(this.teamMembersLoader);
+          let divId = "partner-module-team-members-table-"+this.currentPartner.index;
+          this.referenceService.goToDiv(divId);
         }, _error => {
           this.referenceService.stopLoader(this.teamMembersLoader);
           this.referenceService.showSweetAlertServerErrorMessage();
-          this.closeTeamMembersPreviewPopup();
         }
       );
   }
 
   navigatePartnerModuleTeamMembers(event: any, partner: any) {
-    this.referenceService.goToTop();
     this.teamMembersPagination.pageIndex = event.page;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, partner);
   }

@@ -1,7 +1,7 @@
 <div>
     <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
     <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
-        <div *ngIf="currentPartner?.selectedTeamMemberIds  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
+        <div *ngIf="currentPartner?.selectedTeamMemberIds?.length>0  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
             <strong>Selected Team Members : {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
          </div>
         <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
