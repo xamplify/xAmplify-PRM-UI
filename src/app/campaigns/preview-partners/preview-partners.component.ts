@@ -39,6 +39,8 @@ export class PreviewPartnersComponent implements OnInit {
     templateEmailOpenedPartners = false;
     viewType = "";
     initLoader = false;
+    validAccess = false;
+    oneClickLaunchCampaign = false;
     constructor(public properties: Properties,public route: ActivatedRoute,private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, private userService: UserService, public authenticationService: AuthenticationService,public sortOption:SortOption) {
@@ -64,16 +66,39 @@ export class PreviewPartnersComponent implements OnInit {
         this.campaignService.checkCampaignIdAccess(this.campaignId).
         subscribe(
             data=>{
-                if(data.statusCode==200){
-                    this.partnersPagination.partnerTeamMemberGroupFilter = true;
-                    this.listPartners(this.partnersPagination);
+                this.validAccess = data.statusCode==200;
+            },error=>{
+                this.logger.errorPage( error );
+            },()=>{
+                if(this.validAccess){
+                    if(this.templateDownloadPartners || this.templateEmailOpenedPartners){
+                        this.isOneClickLaunchCampaign(); 
+                    }else{
+                        this.partnersPagination.partnerTeamMemberGroupFilter = true;
+                        this.listPartners(this.partnersPagination);
+                    }
                 }else{
                     this.refService.goToPageNotFound();
+                }
+            }
+        );
+    }
+
+    isOneClickLaunchCampaign(){
+        this.campaignService.isOneClickLaunchCampaign(this.campaignId).
+        subscribe(
+            response=>{
+                let oneClickLaunchCampaign = response.data;
+                this.oneClickLaunchCampaign = oneClickLaunchCampaign;
+                if(oneClickLaunchCampaign){
+                    this.initLoader = false;
+                }else{
+                    this.partnersPagination.partnerTeamMemberGroupFilter = true;
+                    this.listPartners(this.partnersPagination);
                 }
             },error=>{
                 this.logger.errorPage( error );
             }
-
         );
     }
     listPartners(pagination: Pagination ) {
