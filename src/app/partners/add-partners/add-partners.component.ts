@@ -3883,22 +3883,34 @@ public edited=false;
 	}
 
 	getTeamMembersByGroupId(partner: any, index: number) {
+		partner.expand = false;
 		this.processingPartnersLoader = true;
 		if (partner['selectedTeamMemberIds'].length > 0) {
 			partner['selectedTeamMemberIds'] = [];
 			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
+			this.processingPartnersLoader = false;
 		} else {
-			this.getTeamMembers(partner, index);
+			setTimeout(() => {
+				this.getTeamMembers(partner, index);
+				this.processingPartnersLoader = false;
+			}, 500);
+			
 		}
-		this.processingPartnersLoader = false;
 	}
 
+
 	getTeamMembers(partner: any, index: number) {
+		partner.expand = !partner.expand;
 		if (partner.teamMemberGroupId > 0) {
-			this.previewLoader = true;
-			this.currentPartner = partner;
-			this.currentPartner.index = index;
-			this.showTeamMembers = true;
+			if(partner.expand){
+				this.previewLoader = true;
+				this.currentPartner = partner;
+				this.currentPartner.index = index;
+				this.showTeamMembers = true;
+				this.previewLoader = false;
+			}
+		}else{
+			partner.expand = false;
 		}
 	}
 

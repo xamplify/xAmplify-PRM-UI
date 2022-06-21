@@ -30,7 +30,6 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   ngOnInit() {
     this.teamMembersPagination = new Pagination();
     this.referenceService.startLoader(this.teamMembersLoader);
-    $('#teamMembersPreviewPopup').modal('show');
     this.teamMembersPagination.categoryId = this.currentPartner.teamMemberGroupId;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
   }
