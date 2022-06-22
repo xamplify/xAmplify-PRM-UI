@@ -118,6 +118,8 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		}
 	}
 
+	
+
 	findShareLeads(pagination:Pagination){
 		this.referenceService.loading(this.shareLeadsLoader, true);
 		pagination.channelCampaign = true;

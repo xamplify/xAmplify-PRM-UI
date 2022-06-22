@@ -34,12 +34,12 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
   }
 
-
-
   highlightTeamMemberOnRowClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
       this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId + "-" + partner.index,
       teamMemberId, event);
+      /******Notify Other Component***/
+      this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
 
   }
 
@@ -47,12 +47,16 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.referenceService.highlightRowByCheckBox(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
       this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId + "-" + partner.index,
       teamMemberId, event);
+      /******Notify Other Component***/
+      this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
   }
 
   selectOrUnselectAllTeamMembersOfTheCurrentPage(event: any, partner: any) {
     partner.selectedTeamMemberIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage(this.partnerModuleTeamMembersTrId + "-" + partner.index,
       this.partnerModuleTeamMembersTableId + "-" + partner.index, this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds,
       this.teamMembersPagination, event);
+      /******Notify Other Component***/
+      this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
   }
 
   
@@ -85,18 +89,6 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.teamMembersPagination.pageIndex = event.page;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, partner);
   }
-  closeTeamMembersPreviewPopup() {
-    $('#teamMembersPreviewPopup').modal('hide');
-    this.teamMembers = new Array<any>();
-    this.teamMembersPagination = new Pagination();
-    this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
-  }
 
-  removeAllSelectedTeamMembers(){
-    this.referenceService.scrollToModalBodyTopByClass();
-    this.currentPartner.selectedTeamMemberIds =  [];
-    this.currentPartner['isTeamMemberHeaderCheckBoxChecked'] = false;
-    $('#'+this.partnerGroupTeamMemberheaderCheckBoxId+"-"+this.currentPartner['index']).prop('checked', false);
-  }
-
+  
 }
