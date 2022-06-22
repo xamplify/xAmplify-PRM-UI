@@ -256,7 +256,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }
     }
 
-    setCampaignData(result){
+    setCampaignData(result:any){
         this.campaign = result;
         /*****XNFR-125****/
         this.showOneClickLaunchCampaignRedistributedInfo();
@@ -1482,9 +1482,7 @@ appendValueToSubjectLine(event:any){
     /*****XNFR-125****/
     private showOneClickLaunchCampaignRedistributedInfo() {
         if (this.campaign.oneClickLaunch && this.campaign.oneClickLaunchCampaignRedistributed) {
-            let oneClickLaunchIcon = "<i class='fa fa-hand-pointer-o'></i>";
-            let optionInBold = "<strong>One Click Launch</strong>";
-            let message = "This campaign is already redistributed using "+optionInBold +" "+oneClickLaunchIcon;
+            let message = "This campaign is already redistributed";
             this.oneClickLaunchCampaignRedistributedMessage = new CustomResponse('INFO', message, true);
         }
     }
