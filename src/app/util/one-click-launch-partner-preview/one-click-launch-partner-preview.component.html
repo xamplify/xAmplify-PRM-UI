@@ -33,7 +33,8 @@
                      <div class="actions-block float-none">
                         <span *ngIf="viewType=='tda'" class="circled-number" title="Download Count">{{downloadCount}}</span>
                         <span *ngIf="viewType=='teoa'" class="circled-number" title="Email Opened Count">{{openedCount}}</span>
-                        <a  (click)="expandList(oneClickLaunchPartnerCompany)">
+                        <a *ngIf="showShareLeadsList || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
+                            (click)="expandList(oneClickLaunchPartnerCompany)">
                            <i class="fa" [ngClass]="{'fa-plus': !oneClickLaunchPartnerCompany.expand, 'fa-minus': oneClickLaunchPartnerCompany.expand}" aria-hidden="true"></i>
                         </a>
                      </div>
