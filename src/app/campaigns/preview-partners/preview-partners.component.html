@@ -1,20 +1,11 @@
 <div class="page-content">
+
   <ng-container *ngIf="initLoader">
    <app-modal-popup-loader></app-modal-popup-loader>
   </ng-container>
-  <ng-container *ngIf="!initLoader">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li *ngIf="!authenticationService.isSuperAdmin()">
-            <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a [routerLink]="['/home/campaigns/manage']">Manage
-            Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
-      </ul>
-   </div>
+
+  <ng-container *ngIf="!initLoader && !oneClickLaunchCampaign">
+   <ng-template [ngTemplateOutlet]="header"></ng-template>
    <div class="row">
       <div class="col-xs-12 p5">
          <div class="portlet light">
@@ -149,7 +140,43 @@
          </div>
       </div>
    </div>
+  </ng-container>
+
+   <!--One-Click Launch Campaign-->
+   <ng-container *ngIf="!initLoader && oneClickLaunchCampaign">
+      <ng-template [ngTemplateOutlet]="header"></ng-template>
+      <div class="row">
+         <div class="col-xs-12 p5">
+            <div class="portlet light">
+               <div class="portlet-title">
+                  <div class="caption">
+                     <span class="caption-subject font-red-sunglo uppercase">Selected {{authenticationService?.partnerModule?.customName}} Company</span>
+                  </div>
+               </div>
+               <div class="portlet-body">
+                  <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="viewType"></app-one-click-launch-partner-preview>
+               </div>
+         </div>
+      </div>
+      </div>
    </ng-container>
+
+
    
+   <ng-template #header>
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+               <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a [routerLink]="['/home/campaigns/manage']">Manage
+               Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
+         </ul>
+      </div>
+   </ng-template>
+
    <app-scroll-top></app-scroll-top>
 </div>

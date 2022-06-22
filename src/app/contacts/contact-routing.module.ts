@@ -16,6 +16,7 @@ const routes: Routes = [
     { path: 'leads-google-callback', component: SocialContactsCallbackComponent },
     { path: 'leads-zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'leads-salesforce-callback', component: SocialContactsCallbackComponent },
+    { path: 'manage/:id', component: ManageContactsComponent },
 
 ];
 

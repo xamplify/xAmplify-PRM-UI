@@ -781,14 +781,13 @@
                                                                 <div class="col-md-9 col-lg-9">
                                                                     <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU's General Data Protection Regulations. This includes:
                                                                     </h5>
-                                                                        <ul>
-                                                                            <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
-                                                                            <li id="text-color-my-profile" style="margin-top: 5px" translate>Automatic inclusion of an unsubscribe link in every campaign email</li>
-                                                                        </ul>
-                                                                  
+                                                                    <ul>
+                                                                        <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
+                                                                        <li id="text-color-my-profile" style="margin-top: 5px" translate>Automatic inclusion of an unsubscribe link in every campaign email</li>
+                                                                    </ul>
                                                                     <h5 id="text-color-my-profile">
-                                                                        <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank" translate>Privacy & consent</a>&nbsp; |
-                                                                        <a rel="noopener noreferrer" class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank" translate>Cookies & tracking</a> &nbsp;
+                                                                        <a rel="noopener noreferrer" class="link" href="{{properties.privacyPolicyUrl}}" target="_blank" translate>Privacy & consent</a> &nbsp;|
+                                                                        <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
                                                                     <h5 id="text-color-my-profile" translate>
                                                                         <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM

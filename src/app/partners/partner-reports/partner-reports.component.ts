@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ParterService } from '../services/parter.service';
@@ -78,7 +78,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
         public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
-        public utilService: UtilService) {
+        public utilService: UtilService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('partnerAnalytics');
         this.isListView = !this.referenseService.isGridView;
@@ -671,14 +671,23 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.loggedInUserId > 0) {
-            this.findActivePartnersCount();
-            this.findRedistributedCampaignsCount();
-            this.findThroughCampaignsCount();
-            this.findInActivePartnersCount();
-            this.findApprovePartnersCount();
-            this.loadCountryData();
-            this.partnerReportData();
-            this.goToActivePartnersDiv();
+                let tabIndex = this.route.snapshot.params['id'];
+                this.findActivePartnersCount();
+                this.findRedistributedCampaignsCount();
+                this.findThroughCampaignsCount();
+                this.findInActivePartnersCount();
+            if(tabIndex != undefined){
+                if(tabIndex == 1){
+                this.goToInActivePartnersDiv()
+                }
+                else {
+                    this.goToReDistributedPartnersDiv();
+                }
+            }else{
+                this.loadCountryData();
+                this.partnerReportData();
+                this.goToActivePartnersDiv();
+            }
             if (localStorage != undefined) {
                 this.throughPartnerCampaignsTabName = "Through " + localStorage.getItem('partnerModuleCustomName') + " Campaigns";
             }
