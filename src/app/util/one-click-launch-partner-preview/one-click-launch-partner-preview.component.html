@@ -61,10 +61,10 @@
                      <div *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                        <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
                        <ng-container *ngIf="!shareLeadsLoader.isLoading">
-                           <table  class="table tgrid table-condensed child-table-xamp bgc-lg" aria-describedby="">
+                           <table  class="table tgrid table-condensed" aria-describedby="">
                                <thead>
                                    <tr>
-                                   <th scope="row" colspan="2">List Name</th>
+                                   <th scope="row" colspan="3">List Name</th>
                                    <th class="text-center" translate>Total Leads</th>
                                    <th class="text-center" translate>Created Time</th>
                                    <th class="text-center" translate>Preview</th>
