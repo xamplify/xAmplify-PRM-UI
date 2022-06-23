@@ -1271,9 +1271,9 @@
                                             <i class="fa fa-eye white" aria-hidden="true"></i>
                                           </button>
                                         </span>
-                                        <span class="input-group-btn">
-                                            <button title="Preview Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-                                              <i class="fa fa-users white" aria-hidden="true"></i>
+                                        <span class="input-group-btn" >
+                                            <button title="Select Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                              <i  class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
                                             </button>
                                           </span>
                                         </div>
@@ -1282,6 +1282,12 @@
                                         </span>
                                       </td>
                                 </tr>
+								<!---XNFR-131-->
+								<tr *ngIf="partner?.expand">
+                                    <td colspan="5" class="bgc-lg">
+                                        <app-partner-team-member-group-team-members  [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+                                    </td>
+                                </tr>
                             </ng-container>
                         </tbody>
                     </table>
@@ -1289,7 +1295,7 @@
 
             <br>
             </div>
-            <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <ngx-loading [show]="processingPartnersLoader || previewLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
                 <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
                 <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
@@ -1297,7 +1303,6 @@
         </div>
     </div>
 </div>
-<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
 <!-- Group Preview Popup  (XNFR-85)-->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->

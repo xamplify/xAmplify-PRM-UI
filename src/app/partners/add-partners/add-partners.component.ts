@@ -856,12 +856,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					/*if (!this.searchKey) {
-						this.loadAllPartnerInList(pagination.totalRecords);
-					} else {
-						this.pageLoader = false;
-
-					}*/
 					this.pageLoader = false;
 
 				},
@@ -3836,23 +3830,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.showModulesPopup = true;
 	}
 	getTeamMembersByGroupId(partner: any, index: number) {
-		partner.expand = false;
 		this.previewLoader = true;
-		if (partner['selectedTeamMemberIds'].length > 0) {
-			partner['selectedTeamMemberIds'] = [];
-			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
+		partner.expand = false;
+		setTimeout(() => {
+			this.getTeamMembers(partner, index);
 			this.previewLoader = false;
-		} else {
-			setTimeout(() => {
-				this.getTeamMembers(partner, index);
-				this.previewLoader = false;
-			}, 500);
-			
-		}
+		}, 500);
+		
 	}
 
 
 	getTeamMembers(partner: any, index: number) {
+		/****XNFR-131****/
 		$.each(this.newPartnerUser,function(partnerUserIndex:number,partnerUser:any){
 			if(index!=partnerUserIndex){
 				partnerUser.expand = false;
