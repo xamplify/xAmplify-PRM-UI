@@ -44,6 +44,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
+	this.pagination.campaignId = this.campaignId;
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
   }
