@@ -971,18 +971,13 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-                                                <div class="alert alert-success" *ngIf="selectedContactListIds?.length>0">
-                                                    <ng-container *ngIf="selectedContactListIds?.length==1">
-                                                        {{selectedContactListIds?.length}} row is selected
-                                                    </ng-container>
-                                                    <ng-container *ngIf="selectedContactListIds?.length>1">
-                                                        {{selectedContactListIds?.length}} rows are selected
-                                                    </ng-container>
+                                                <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                                    Selected Rows : {{selectedContactListIds?.length}}
                                                 </div>
                                             <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0" aria-describedby="contactandpartnerstable">
                                                 <tr>
                                                     <th colspan="5" scope="row">
-                                                        <div class="alert alert-info">
+                                                        <div class="alert alert-info text-center">
                                                             <strong>{{emptyContactListMessage}}</strong>
                                                         </div>
                                                     </th>
