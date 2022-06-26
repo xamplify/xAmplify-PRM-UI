@@ -1,4 +1,28 @@
-<div>
+<!--Expand/Collpase-->
+<div *ngIf="!openInModalPopup">
+    <ng-template [ngTemplateOutlet]="teamMemberGroupsTemplateOutlet"></ng-template>
+</div>
+
+<!--Modal PopUp-->
+<div  class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog full-width-modal-popup" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
+            </div>
+            <div class="modal-body">
+                <ng-template [ngTemplateOutlet]="teamMemberGroupsTemplateOutlet"></ng-template>
+            </div>
+            <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
+                <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
+                <button type="submit" class="btn green-haze"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #teamMemberGroupsTemplateOutlet>
     <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
     <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
         <div *ngIf="currentPartner?.selectedTeamMemberIds?.length>0  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
@@ -43,4 +67,4 @@
         </app-pagination>
      </div>
 <br>
-</div>
+</ng-template>
