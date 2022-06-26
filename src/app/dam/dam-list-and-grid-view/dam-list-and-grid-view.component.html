@@ -86,8 +86,9 @@
 						aria-describedby="manageAssetTables">
 						<thead>
 							<tr>
-								<th colspan="2" style="width: 45%" id="border-bottom"><span
-									class="gridHeader" translate>Asset Details </span></th>
+								<!-- <th colspan="2" style="width: 45%" id="border-bottom"><span
+									class="gridHeader" translate>Asset Details </span></th> -->
+									<th style="width:45%" translate>Asset Details</th>
 								<th class="text-center" style="width: 5%;" scope="row" translate>Type</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="isPartnerView">Published On</th>
@@ -100,28 +101,24 @@
 							<ng-container
 								*ngFor="let asset of pagination.pagedItems ;let i =index">
 							<tr>
-								<td style="width: 10%;">
+							 <td *ngIf="!isPartnerView && asset.videoId">
+                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+                        </td>
+                        
+                        <td  *ngIf="!asset.videoId" >
 									<div class="thumbnail-wrapper">
 										<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
 											alt="Image Not Found">
 									</div>
-								</td>
-								<td>
+							
+							<div class="title-div" style="width: 35%;">
 									<h4 class="moreipsis mt5 mb5 f-w-600"
 										title="{{asset?.assetName}}">
-										<span><strong>{{asset?.assetName}}</strong></span>
+										<span><strong>{{asset?.assetName | slice: 0: 23}}</strong></span>
 									</h4>
 									<h6 class="moreipsis" title="{{asset?.displayName}}">
 										<span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
-										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
-									</h6>
-									<h6 class="moreipsis"
-										*ngIf="!isPartnerView && asset.videoId">
-										<span  translate> <strong>{{asset?.totalViews}} views</strong></span>
-									</h6>
-									<h6 class="moreipsis"
-										*ngIf="!isPartnerView && asset.videoId">
-										<span translate> Video Length <strong>{{videoUtilService.truncateHourZeros(asset.videoLength)}}</strong></span>
+										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName | slice: 0: 23}}</strong></span>
 									</h6>
 									<h6 class="moreipsis"
 										*ngIf="!isPartnerView && asset?.beeTemplate">
@@ -154,6 +151,7 @@
 									</h6>
 									<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
 									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
+									</div>
 								</td>
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp

@@ -266,3 +266,18 @@ cursor: default;
   text-align: center;
   margin-top: 7px;
 }
+
+.title-div {
+  margin-left: 10px;
+  float: left;
+  text-align: left !important;
+}
+.title-div > a {
+  color: #666;
+}
+.title-div > h4 {
+  font-size: 15px;
+}
+.title-div > h5 {
+  font-size: 12px;
+}
