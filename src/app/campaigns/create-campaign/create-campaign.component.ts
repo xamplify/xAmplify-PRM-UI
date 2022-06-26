@@ -325,6 +325,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     oneClickLaunch = false;
     selectedPartnershipId = 0;
     oneClickLaunchToolTip = "";
+    invalidShareLeadsSelection = false;
+    invalidShareLeadsSelectionErrorMessage = "";
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -2462,9 +2464,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         if (!this.hasInternalError && this.router.url != "/login") {
             if (!this.isReloaded) {
                 if (!this.isLaunched) {
-                    // if(this.isAdd){
-                    //     this.saveCampaignOnDestroy();
-                    // }else{
                     let self = this;
                     swal({
                         title: 'Are you sure?',
@@ -2478,14 +2477,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
                     }).then(function () {
                         self.saveCampaignOnDestroy();
-                        /*self.getRepliesData();
-                        self.getOnClickData();*/
-                    }, function (dismiss) {
+                    }, function (dismiss:any) {
                         if (dismiss == 'cancel') {
                             self.reInitialize();
                         }
                     })
-                    // }
                 }
             }
         }
@@ -2934,6 +2930,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.isLaunched = true;
                                 this.reInitialize();
                                 this.router.navigate(["/home/campaigns/manage"]);
+                            }else if(response.statusCode==2020){
+                                this.selectedContactListIds = [];
+                                this.selectedPartnershipId = 0;
+                                this.resetActive(null, 60, 'step-4');
+                                this.invalidShareLeadsSelection = true;
+                                this.invalidShareLeadsSelectionErrorMessage = response.message;
                             } else {
                                 this.invalidScheduleTime = true;
                                 this.invalidScheduleTimeError = response.message;
