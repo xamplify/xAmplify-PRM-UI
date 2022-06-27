@@ -2933,6 +2933,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                             }else if(response.statusCode==2020){
                                 this.selectedContactListIds = [];
                                 this.selectedPartnershipId = 0;
+                                this.isContactList = false;
                                 this.resetActive(null, 60, 'step-4');
                                 this.invalidShareLeadsSelection = true;
                                 this.invalidShareLeadsSelectionErrorMessage = response.message;
