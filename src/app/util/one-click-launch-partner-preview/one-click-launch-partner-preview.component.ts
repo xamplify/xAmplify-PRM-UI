@@ -41,7 +41,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   historyList:Array<any> = new Array<any>();
   historyResponse: CustomResponse = new CustomResponse();
   campaignPartnerId = 0;
-  redistributedCount = 0;
+  @Input() redistributedCount = 0;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
@@ -73,8 +73,8 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
           this.oneClickLaunchLoader = true;
           if (this.viewType == "tda" || this.viewType == "teoa") {
             this.getDownloadOrOpenedEmailsCount();
-          } else {
-            this.getRedistributedCount();
+          }else{
+            this.oneClickLaunchLoader = false;
           }
         }
       }
@@ -98,17 +98,6 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
       );
   }
 
-  getRedistributedCount(){
-    this.campaignService.getRedistributedCount(this.campaignId).subscribe(
-      (response) => {
-        this.redistributedCount = response.data;
-        this.oneClickLaunchLoader = false;
-      },
-      (error) => {
-        this.xtremandLogger.errorPage(error);
-      }
-    );
-  }
 
 /****XNFR-125****/
 viewShareLeads(partner:any){

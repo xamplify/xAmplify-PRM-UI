@@ -7,7 +7,8 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li *ngIf="authenticationService.isSuperAdmin()">
-        <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+        <i class="fa fa-home" aria-hidden="true"></i>
+          <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
@@ -85,20 +86,8 @@
     </div>
 
     <!--XNFR-125-->
-    <div *ngIf="oneClickLaunchCampaign">
-        <div class="col-xs-12 p5">
-           <div class="portlet light">
-              <div class="portlet-title">
-                 <div class="caption">
-                    <span class="caption-subject font-red-sunglo uppercase">Selected {{authenticationService?.partnerModule?.customName}} Company</span>
-                 </div>
-              </div>
-              <div class="portlet-body">
-                <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="'analytics'"></app-one-click-launch-partner-preview>
-                <br>
-              </div>
-        </div>
-     </div>
+    <div *ngIf="!httpRequestLoader.isLoading && oneClickLaunchCampaign">
+        <app-one-click-launch-redistributed [campaignId]="campaignId"></app-one-click-launch-redistributed>
     </div>
 
 </div>

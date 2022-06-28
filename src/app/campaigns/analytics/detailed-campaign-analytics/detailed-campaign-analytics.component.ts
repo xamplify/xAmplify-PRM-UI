@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild,Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Campaign } from '../../models/campaign';
 import { CampaignReport } from '../../models/campaign-report';
@@ -205,7 +205,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
   loggedInUserCompanyId : number;
   /****XNFR-125****/
   @Input() campaignId = 0;
-  constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
+  constructor(private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
     public xtremandLogger: XtremandLogger, private twitterService: TwitterService, private emailTemplateService: EmailTemplateService, private dealRegService: DealRegistrationService, private leadsService: LeadsService, public router: Router) {
@@ -914,11 +914,10 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 10;
         if (this.campaignId === null) {
-          this.campaignId = this.route.snapshot.params['campaignId'];
+          this.campaignId = 0;
         }
         console.log('campaign id : ' + this.campaignId);
         this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-
         this.loading = false;
       }
       this.getDealState(campaignViews);
@@ -2317,7 +2316,6 @@ checkParentAndRedistributedCampaignAccess(){
         this.emailActionListPagination.pageIndex = 1;
         this.emailActionDetailsPagination.pageIndex = 1;
         this.usersWatchListPagination.pageIndex = 1;
-        this.campaignId = this.route.snapshot.params['campaignId'];
         this.getCompanyId();
         this.getCampaignById(this.campaignId);
         this.pagination.pageIndex = 1;
