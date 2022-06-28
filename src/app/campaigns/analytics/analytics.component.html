@@ -40,7 +40,6 @@
         id="check-in-css" (click)="downloadReport()">
         <i class="fa fa-download" aria-hidden="true"></i>
       </a>
-      <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
     </div>
 
     <div class="portlet light clearfix" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
@@ -2311,60 +2310,6 @@
   </div>
 </div>
 
-<!-- RSVP showing details modal -->
-<!-- <div class="modal fade" id="rsvpDetailsModal" tabindex="-1" role="dialog" aria-labelledby="emailSentListModalLabel" data-backdrop="static"
- data-keyboard="false">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" *ngIf="rsvpResposeType === 'YES'">People who have says YES</h4>
-				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NO'">People who have says NO</h4>
-				<h4 class="modal-title" *ngIf="rsvpResposeType === 'MAYBE'">People who have says MAYBE</h4>
-				<h4 class="modal-title" *ngIf="rsvpResposeType === 'NOTYET'">People who have says NOTYETRESPONDED</h4>
-				<div class="btn-group pull-right" style="margin-top: -4px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
-					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="table-responsive">
-					 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-				 	<ng-container>
-						<table class="table tgrid">
-							<thead>
-								<tr>
-									<th style="font-size: 12px; font-weight: 500;" style="width:35%">NAME</th>
-									<th style="font-size: 12px; font-weight: 500;">MESSAGE</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr *ngFor="let item of rsvpDetailsList">
-									<td>
-										<app-user-info  [userInfo]="item"> </app-user-info>
-									</td>
-									<td>
-										<h6>{{item.message}}</h6>
-										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						</ng-container>
-						<app-pagination [pagination]="campaignViewsPagination"
-						 [type]="'campaignViews'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
- -->
 
 <!-- Email Sent List Modal -->
 <div class="modal right fade" id="emailSentListModal" tabindex="-1" role="dialog"
@@ -2463,6 +2408,7 @@
     </div>
   </div>
 </div>
+
 <!--  model popup for donuts analytics page  -->
 <div class="modal right fade" id="donutModelPopup" tabindex="-1" role="dialog" data-backdrop="static"
   data-keyboard="false">
@@ -2993,20 +2939,7 @@
   </div>
 </div>
 
-<!-- --_Deal Registration -->
-<!-- <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  data-keyboard="false" data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
-  <div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
-    <div class="modal-content">
-      <div class="modal-body" style="overflow:unset">
-        <a (click)="showTimeLineView()" class="pull-right close-circle"
-          style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-          <app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
-      </div>
-    </div>
-  </div>
-</div> -->
+
 
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaign.campaignId"

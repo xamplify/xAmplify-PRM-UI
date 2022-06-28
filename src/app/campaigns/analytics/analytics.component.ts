@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
@@ -31,13 +31,12 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { ClickedUrlsVendorAnalyticsComponent} from '../clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
 import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 import { LeadsService } from '../../leads/services/leads.service';
-import { isUndefined } from 'util';
 import { Subject } from 'rxjs';
 import { DealsService } from 'app/deals/services/deals.service';
 import { Lead } from 'app/leads/models/lead';
 import { Deal } from 'app/deals/models/deal';
 
-declare var $, Highcharts, swal: any;
+declare var $:any, Highcharts:any, swal: any;
 
 @Component({
   selector: 'app-analytics',
@@ -208,7 +207,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   selectedDeal: Deal;
   isCommentSection: boolean = false;
   loggedInUserCompanyId : number;
-
+  /****XNFR-125****/
+  @Input() oneClickLaunchCampaignId = 0;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -220,15 +220,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.isOnlyPartner = this.authenticationService.isOnlyPartner();
       this.campaign = new Campaign();
       this.selectedRow.emailId = "";
-     /* if (this.referenceService.isFromTopNavBar) {
-        const object = {
-          "campaignId": this.referenceService.topNavBarNotificationDetails.campaignId,
-          "userId": this.referenceService.topNavBarNotificationDetails.userId,
-          "emailId": this.referenceService.topNavBarNotificationDetails.emailId
-        }
-        this.isTimeLineView = false;
-        this.userTimeline(object);
-      }*/
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
   showTimeline() {
@@ -241,8 +232,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
      if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO' || this.campaignType === 'SURVEY'){
         pagination.campaignType = this.campaignType;
      }
-
-
       this.referenceService.loading(this.httpRequestLoader, true);
 
       if (this.searchKey) {

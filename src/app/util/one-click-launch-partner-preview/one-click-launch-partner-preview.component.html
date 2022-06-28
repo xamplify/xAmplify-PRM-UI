@@ -9,6 +9,7 @@
             <th scope="col" class="text-center" *ngIf="viewType=='tda'">#DOWNLOAD</th>
             <th scope="col" class="text-center" *ngIf="viewType=='teoa'">#OPENED</th>
             <th scope="col" class="text-center" *ngIf="showShareLeadsList">Share Leads</th>
+            <th scope="col" class="text-center" *ngIf="viewType=='analytics'">#Redistributed</th>
          </tr>
       </thead>
       <tbody>
@@ -33,6 +34,7 @@
                      <div class="actions-block float-none">
                         <span *ngIf="viewType=='tda'" class="circled-number" title="Download Count">{{downloadCount}}</span>
                         <span *ngIf="viewType=='teoa'" class="circled-number" title="Email Opened Count">{{openedCount}}</span>
+                        <span *ngIf="viewType=='analytics'" class="circled-number" title="Redistributed Count">{{redistributedCount}}</span>
                         <a *ngIf="showShareLeadsList || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
                             (click)="expandList(oneClickLaunchPartnerCompany)">
                            <i class="fa" [ngClass]="{'fa-plus': !oneClickLaunchPartnerCompany.expand, 'fa-minus': oneClickLaunchPartnerCompany.expand}" aria-hidden="true"></i>
@@ -151,7 +153,7 @@
                </td>
            </tr>
            <!--One-Click Launch-->
-           <tr *ngIf="oneClickLaunchPartnerCompany?.expand && !showShareLeadsList">
+           <tr *ngIf="oneClickLaunchPartnerCompany?.expand && !showShareLeadsList && viewType!='analytics'">
             <td colspan="4">
                <app-response-message [customResponse]="historyResponse" *ngIf="historyResponse.isVisible"></app-response-message>
                <div class="table-responsive" *ngIf="!historyResponse.isVisible">

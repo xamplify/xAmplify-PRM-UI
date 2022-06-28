@@ -41,6 +41,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   historyList:Array<any> = new Array<any>();
   historyResponse: CustomResponse = new CustomResponse();
   campaignPartnerId = 0;
+  redistributedCount = 0;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
@@ -68,26 +69,45 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
         this.oneClickLaunchLoader = false;
         this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       },()=>{
-        if(!this.showShareLeadsList){
+        if (!this.showShareLeadsList) {
           this.oneClickLaunchLoader = true;
-          if(this.viewType=="tda" || this.viewType=="teoa"){
-            this.campaignService.getDownloadOrOpenedCount(this.viewType,this.campaignId)
-            .subscribe(
-              response=>{
-                let map = response.data;
-                this.downloadCount = map.count;
-                this.openedCount = map.count;
-                this.campaignPartnerId = map.campaignPartnerId;
-                this.oneClickLaunchLoader = false;
-              },error=>{
-                this.xtremandLogger.errorPage(error);
-              }
-            );
+          if (this.viewType == "tda" || this.viewType == "teoa") {
+            this.getDownloadOrOpenedEmailsCount();
+          } else {
+            this.getRedistributedCount();
           }
-          
         }
       }
       );
+  }
+
+  getDownloadOrOpenedEmailsCount(){
+    this.campaignService
+      .getDownloadOrOpenedCount(this.viewType, this.campaignId)
+      .subscribe(
+        (response) => {
+          let map = response.data;
+          this.downloadCount = map.count;
+          this.openedCount = map.count;
+          this.campaignPartnerId = map.campaignPartnerId;
+          this.oneClickLaunchLoader = false;
+        },
+        (error) => {
+          this.xtremandLogger.errorPage(error);
+        }
+      );
+  }
+
+  getRedistributedCount(){
+    this.campaignService.getRedistributedCount(this.campaignId).subscribe(
+      (response) => {
+        this.redistributedCount = response.data;
+        this.oneClickLaunchLoader = false;
+      },
+      (error) => {
+        this.xtremandLogger.errorPage(error);
+      }
+    );
   }
 
 /****XNFR-125****/
