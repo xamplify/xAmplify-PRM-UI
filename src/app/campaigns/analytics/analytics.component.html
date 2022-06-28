@@ -1,7 +1,43 @@
 <div [ngClass]="loader.isLoading ? 'page-content':''">
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
+
+  <!---XNFR-125-->
   <ng-container *ngIf="!loader.isLoading && !oneClickLaunchChannelCampaign">
     <app-detailed-campaign-analytics [campaignId]="campaignId"></app-detailed-campaign-analytics>
   </ng-container>
+<!---One Click Launch Campaign Analytics-->
+<ng-container *ngIf="!loader.isLoading && oneClickLaunchChannelCampaign">
+  <div class="page-content">
+    <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
+      <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
+      </div>
+      <div class="portlet light clearfix">
+        <div class="portlet-body">
+            <div class="one-click-title">
+              Selected {{authenticationService?.partnerModule?.customName}} Company
+            </div>
+          <app-one-click-launch-partner-preview  [campaignId]="campaignId"></app-one-click-launch-partner-preview>
+        </div>
+      </div>
+  </div>
+</ng-container>
 </div>
+
+<ng-template #campaignAnalyticsBreadCrumb>
+  <ul class="page-breadcrumb">
+    <li *ngIf="!authenticationService.isSuperAdmin()">
+      <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+      <i class="fa fa-angle-right" aria-hidden="true"></i>
+    </li>
+    <li *ngIf="authenticationService.isSuperAdmin()">
+      <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
+        Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+    </li>
+    <li>
+      <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
+        aria-hidden="true"></i>
+    </li>
+    
+  </ul>
+</ng-template>
 
