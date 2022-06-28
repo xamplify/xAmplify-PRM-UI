@@ -8,8 +8,9 @@
      </div>
      <div class="portlet-body">
        <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="'analytics'" [redistributedCount]="redistributedCount"></app-one-click-launch-partner-preview>
-       <br>
-       <app-detailed-campaign-analytics *ngIf="redistributedCount==1" [campaignId]="redistributedCampaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
-     </div>
+       <div>
+         <app-detailed-campaign-analytics *ngIf="redistributedCount==1" [campaignId]="redistributedCampaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
+      </div>
+      </div>
    </div>
 </div>

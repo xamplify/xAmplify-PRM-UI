@@ -28,7 +28,7 @@
     [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 
-      <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
+      <ng-template  [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
 
       <button routerLink="/home/campaigns/{{campaign.campaignId}}/checkin"
         *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary"
@@ -1508,7 +1508,7 @@
 
 <!-- Deal Form-->
 <section *ngIf="showDealForm">
-  <div class="page-content">
+  <div [ngClass]="hidePageContent? '':'page-content'">
     <a (click)="closeDealForm()" class="pull-right close-circle"
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
@@ -1519,7 +1519,7 @@
 </section>
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
-  <div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
+  <div id="timeline-view" [ngClass]="hidePageContent? '':'page-content'" *ngIf="isTimeLineView">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     <div class="page-bar" style="min-height: 572px;">
       <a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle"
@@ -1783,7 +1783,7 @@
 </section>
 
 <section *ngIf="!isChannelCampaign || campaignType != 'EVENT'">
-  <div id="timeline-view" class="page-content" *ngIf="isTimeLineView "
+  <div [ngClass]="hidePageContent? '':'page-content'" id="timeline-view"  *ngIf="isTimeLineView"
     [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar" style="border: 1px solid #CCC;">
       <a (click)="resetTopNavBarValue()" class="pull-right close-circle"
@@ -2961,7 +2961,7 @@
   </div>
 </div>
 <!-- ---------------Partner Lead Analytics -->
-<div id="timeline-view" class="page-content" *ngIf="isShowPartnerLeads">
+<div [ngClass]="hidePageContent? '':'page-content'" id="timeline-view"  *ngIf="isShowPartnerLeads">
   <div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
     <div class="col-xs-12 caption-subject font-red-sunglo p0">
       <div id="partner-lead-info-content">
@@ -3123,33 +3123,35 @@
 
 <ng-template #campaignAnalyticsBreadCrumb>
   <ul class="page-breadcrumb">
-    <li *ngIf="!authenticationService.isSuperAdmin()">
-      <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
-      <i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li *ngIf="authenticationService.isSuperAdmin()">
-      <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
-        Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li *ngIf="campaignRouter==='managecampaigns'">
-      <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
-        aria-hidden="true"></i>
-    </li>
-    <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a>
-      <i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li *ngIf="campaignRouter==='partnerAnalytics'"><a
-        [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}}
-        Analytics</a>
-      <i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
-      {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-      <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</strong>
-      <strong *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify
-        {{authenticationService?.partnerModule?.customName}} is OFF)</strong>
-    </li>
-    <li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
+    <ng-container *ngIf="!hidePageContent">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
+          Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="campaignRouter==='managecampaigns'">
+        <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
+          aria-hidden="true"></i>
+      </li>
+      <li *ngIf="campaignRouter==='notification'"><a [routerLink]="['/home/dashboard/notifications']">Notifications</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="campaignRouter==='partnerAnalytics'"><a
+          [routerLink]="['/home/partners/analytics']">{{authenticationService?.partnerModule?.customName}}
+          Analytics</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
+        {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
+        <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</strong>
+        <strong *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify
+          {{authenticationService?.partnerModule?.customName}} is OFF)</strong>
+      </li>
+    </ng-container>
+    <li [ngClass]="hidePageContent ? 'caption-subject font-red-sunglo':''" style="color: #888;" *ngIf="!isDataShare || hidePageContent" title="{{campaign.campaignName}}">
       {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
     </li>
   </ul>
