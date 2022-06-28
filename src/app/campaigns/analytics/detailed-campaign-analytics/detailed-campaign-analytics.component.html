@@ -24,7 +24,7 @@
 
 <!---XNFR-125-->
 <ng-container>
-  <div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads && !showDealForm"
+  <div [ngClass]="hidePageContent? '':'page-content'" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads && !showDealForm"
     [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 
