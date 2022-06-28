@@ -22,13 +22,14 @@ import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { UserService } from '../../core/services/user.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
+import { ActionsDescription } from '../../common/models/actions-description';
 
 declare var $, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
 	styleUrls: ['./dam-list-and-grid-view.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties]
+	providers: [HttpRequestLoader, SortOption, Properties, ActionsDescription]
 })
 export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	loading = false;
@@ -63,10 +64,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	asset: any;
 	showPdfModalPopup: boolean;
 	deleteAsset = false;
+	hasVideoRole = false;
+    hasCampaignRole = false;
+    hasAllAccess = false;
 	@Output() newItemEvent  = new EventEmitter<any>();
 	
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
-			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService) {
+			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -82,6 +86,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	callInitMethods() {
+		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
+        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+        this.hasAllAccess = this.referenceService.hasAllAccess();
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
 		this.viewType = this.route.snapshot.params['viewType'];
@@ -629,6 +636,29 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         this.pagination.searchKey = this.sortOption.searchKey;
         this.listAssets(this.pagination);
     }
+    
+    campaignRouter(alias:string, viewBy:string) {
+        try{
+         this.xtremandLogger.log('ManageVideoComponent campaign router:');
+         this.videoFileService.getVideo(alias, viewBy)
+             .subscribe((videoFile: SaveVideoFile) => {
+                 if(videoFile.access){
+                 console.log(videoFile);
+                 this.referenceService.campaignVideoFile = videoFile;
+                 this.referenceService.selectedCampaignType = 'video';
+                 this.referenceService.isCampaignFromVideoRouter = true;
+                 this.referenceService.videoType =  this.videoFileService.videoType;
+                 this.router.navigateByUrl('/home/campaigns/create');
+                 }else{
+                     this.authenticationService.forceToLogout();
+                 }
+             },
+             (error: string) => {
+                 this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+                 this.xtremandLogger.errorPage(error);
+             });
+           }catch(error){ this.xtremandLogger.error('error'+error);}
+     }
 
 
 
