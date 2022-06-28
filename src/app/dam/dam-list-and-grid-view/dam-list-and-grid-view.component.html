@@ -58,7 +58,7 @@
 					</div>
 				</div>
 							<!-- // -->
-			       <div class="col-xs-12" style="margin: 2px -18px;"  >
+			       <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="!isPartnerView">
                    <ul class="mix-filter">
                       <li class="filter" (click)="listAssetsByType('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
                           My Assets
@@ -101,8 +101,8 @@
 							<ng-container
 								*ngFor="let asset of pagination.pagedItems ;let i =index">
 							<tr>
-							 <td *ngIf="!isPartnerView && asset.videoId">
-                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+							 <td *ngIf="(!isPartnerView && asset.videoId) || (!isPartnerView && videoFileService.videoType === 'partnerVideos')">
+                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
                         </td>
                         
                         <td  *ngIf="!asset.videoId" >

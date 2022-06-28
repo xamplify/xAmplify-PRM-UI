@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
+  @Input() published: boolean ;
   @Output() notifyParent: EventEmitter<any>;
   isCreate: boolean;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
