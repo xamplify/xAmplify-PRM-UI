@@ -15,6 +15,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
   @Input() campaignId= 0;
+  campaignName:string = "";
+  notifyPartners = false;
   loader:HttpRequestLoader = new HttpRequestLoader();
   oneClickLaunchChannelCampaign = false;
   constructor(private route: ActivatedRoute,public campaignService:CampaignService,public authenticationService:AuthenticationService,
@@ -32,6 +34,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     subscribe(
         response=>{
           this.oneClickLaunchChannelCampaign = response.data;
+          let map = response.map;
+          this.campaignName = map['campaignName'];
+          this.notifyPartners = map['notifyPartners'];
           this.referenceService.loading(this.loader, false);
         },error=>{
           this.xtremandLogger.errorPage(error);
