@@ -97,7 +97,7 @@
                                                 <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
                                                     <input type="checkbox" title="Please select the company" disabled>
                                                 </th>
-                                                <th scope="row" colspan="2">List Name</th>
+                                                <th scope="row" [attr.colspan]="colspanValue">List Name</th>
                                                 <th class="text-center" translate>Total Leads</th>
                                                 <th class="text-center" translate>Created Time</th>
                                                 <th class="text-center" translate>Preview</th>

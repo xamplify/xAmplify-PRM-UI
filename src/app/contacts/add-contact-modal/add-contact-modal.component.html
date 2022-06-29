@@ -250,4 +250,4 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 </div>
 </div>
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
-<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser" [openInModalPopup]="true" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>

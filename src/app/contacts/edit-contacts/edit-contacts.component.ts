@@ -230,6 +230,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     showFilter = true;
     resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
     downloadAssociatedPagination: Pagination = new Pagination();
+	previewLoader: boolean;
 	
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
@@ -3454,26 +3455,36 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	teamMemberGroupId = 0;
 	teamMemberGroups:Array<any> = new Array<any>();
 	previewModules(teamMemberGroupId: number) {
+		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
 		this.showModulesPopup = true;
 	}
 
 	getTeamMembersByGroupId(partner: any, index: number) {
-		this.processingPartnersLoader = true;
-		if (partner['selectedTeamMemberIds'].length > 0) {
-			partner['selectedTeamMemberIds'] = [];
-			this.refService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
-		} else {
+		this.previewLoader = true;
+		partner.expand = false;
+		setTimeout(() => {
 			this.getTeamMembers(partner, index);
-		}
-		this.processingPartnersLoader = false;
+			this.previewLoader = false;
+		}, 500);
+		
 	}
 
 	getTeamMembers(partner: any, index: number) {
+		/****XNFR-131****/
+		$.each(this.users,function(partnerUserIndex:number,partnerUser:any){
+			if(index!=partnerUserIndex){
+				partnerUser.expand = false;
+			}
+		});
+		partner.expand = !partner.expand;
 		if (partner.teamMemberGroupId > 0) {
-			this.currentPartner = partner;
-			this.currentPartner.index = index;
-			this.showTeamMembers = true;
+			if(partner.expand){
+				this.currentPartner = partner;
+				this.currentPartner.index = index;
+			}
+		}else{
+			partner.expand = false;
 		}
 	}
 
@@ -3481,18 +3492,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	hideModulesPreviewPopUp() {
 		this.showModulesPopup = false;
 		this.teamMemberGroupId = 0;
+		this.previewLoader = false;
 	}
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
 		this.toggleDropDownStatus(partner);
-		this.showTeamMembers = false;
+		this.previewLoader = false;
 	}
 
 	toggleDropDownStatus(partner: any) {
     if (partner.selectedTeamMemberIds.length > 0) {
       $("#edit-partner-tm-group-" + partner.index).prop("disabled", true);
     } else {
-	  partner.teamMemberGroupId=0;
       $("#edit-partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }

@@ -166,7 +166,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadingMarketo: boolean;
 	public getMarketoConatacts: any;
 
-public edited=false;
+	public edited=false;
 
 	marketoImageBlur: boolean = false;
 	marketoImageNormal: boolean = false;
@@ -216,6 +216,7 @@ public edited=false;
 	public teamMemberGroupId = 0;
 	selectedFilterIndex: number = 1;
     showFilter = true;
+	collapseAll = false;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -313,7 +314,6 @@ public edited=false;
 					},
 					error => this.xtremandLogger.error(error),
 					() => {
-						console.log('loadContacts() finished');
 						this.loadPartnerList(this.pagination);
 					}
 				);
@@ -431,15 +431,12 @@ public edited=false;
 			if (newArray[w].count >= 2) {
 				this.duplicateEmailIds.push(newArray[w].value);
 			}
-			console.log(newArray[w].value);
-			console.log(newArray[w].count);
 		}
 		this.xtremandLogger.log("DUPLICATE EMAILS" + this.duplicateEmailIds);
 		var valueArr = this.newPartnerUser.map(function (item) { return item.emailId.toLowerCase() });
 		var isDuplicate = valueArr.some(function (item, idx) {
 			return valueArr.indexOf(item) != idx
 		});
-		console.log("emailDuplicate" + isDuplicate);
 		this.isDuplicateEmailId = isDuplicate;
 		if (this.newPartnerUser[0].emailId != undefined) {
 			if (!isDuplicate && !this.isEmailExist) {
@@ -509,9 +506,7 @@ public edited=false;
 					if (isEmail) { existedEmails.push(emails[i]) }
 				}
 			}
-			console.log(existedEmails);
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
-
 				let userDetails = {
 					"firstName": this.newPartnerUser[i].firstName,
 					"lastName": this.newPartnerUser[i].lastName,
@@ -563,7 +558,6 @@ public edited=false;
 				}
 			}
 			this.newPartnerUser = this.validateSocialContacts(this.newPartnerUser);
-			console.log(this.newPartnerUser);
 			if (existedEmails.length === 0) {
 				if (this.isCompanyDetails) {
 					if (this.validCsvContacts) {
@@ -786,7 +780,6 @@ public edited=false;
 					}
 					this.xtremandLogger.error(error);
 					this.loading = false;
-					console.log(error);
 					this.newPartnerUser.length = 0;
 					this.allselectedUsers.length = 0;
 					this.loadPartnerList(this.pagination);
@@ -863,12 +856,6 @@ public edited=false;
 					} else {
 						this.editContactComponent.isHeaderCheckBoxChecked = false;
 					}
-					/*if (!this.searchKey) {
-						this.loadAllPartnerInList(pagination.totalRecords);
-					} else {
-						this.pageLoader = false;
-
-					}*/
 					this.pageLoader = false;
 
 				},
@@ -989,8 +976,6 @@ public edited=false;
 					self.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
 					self.cancelPartners();
 				}
-
-				console.log("ManagePartnerComponent : readFiles() Partners " + JSON.stringify(self.newPartnerUser));
 			}
 		} else {
 			this.fileTypeError = true;
@@ -1254,7 +1239,6 @@ public edited=false;
 			confirmButtonText: 'Yes, delete it!'
 
 		}).then(function (myData: any) {
-			console.log("ManagePartner showAlert then()" + myData);
 			self.removeContactListUsers1(contactId);
 		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -1283,7 +1267,6 @@ public edited=false;
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("deleted completed")
 				);
@@ -1646,8 +1629,6 @@ public edited=false;
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
 					},
 					() => this.xtremandLogger.log("googleContacts data :" + JSON.stringify(this.getGoogleConatacts.contacts))
 				);
@@ -1845,16 +1826,12 @@ public edited=false;
 							response => {
 								this.storeLogin = response.data;
 								let data = response.data;
-								console.log(data);
 								if (response.statusCode == 200) {
 									this.showModal();
-									console.log("AddContactComponent salesforce() Authentication Success");
 									this.checkingPopupValues();
 								} else {
 									localStorage.setItem("userAlias", data.userAlias)
 									localStorage.setItem("currentModule", data.module)
-									console.log(data.redirectUrl);
-									console.log(data.userAlias);
 									window.location.href = "" + data.redirectUrl;
 								}
 							},
@@ -2149,7 +2126,6 @@ public edited=false;
 	unlinkSocailAccount() {
 		try {
 			let socialNetwork = this.settingSocialNetwork.toUpperCase();
-			console.log("CheckBoXValueUNlink" + this.isUnLinkSocialNetwork);
 			this.contactService.unlinkSocailAccount(socialNetwork, this.isUnLinkSocialNetwork)
 				.subscribe(
 					(data: any) => {
@@ -2181,7 +2157,6 @@ public edited=false;
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => {
 						$('#settingSocialNetworkPartner').modal('hide');
@@ -2210,13 +2185,11 @@ public edited=false;
 	checkAll(ev: any) {
 		if (this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9) {
 			if (ev.target.checked) {
-				console.log("checked");
 				$('[name="campaignContact[]"]').prop('checked', true);
 				let self = this;
 				$('[name="campaignContact[]"]:checked').each(function () {
 					var id = $(this).val();
 					self.selectedContactListIds.push(parseInt(id));
-					console.log(self.selectedContactListIds);
 					$('#ContactListTable_' + id).addClass('contact-list-selected');
 					for (var i = 0; i < self.pagedItems.length; i++) {
 						var object = {
@@ -2256,7 +2229,6 @@ public edited=false;
 
 	highlightRow(contactId: number, email: any, firstName: any, lastName: any, event: any, company: any) {
 		let isChecked = $('#' + contactId).is(':checked');
-		console.log(this.selectedContactListIds)
 		if (isChecked) {
 			$('#row_' + contactId).addClass('contact-list-selected');
 			this.selectedContactListIds.push(contactId);
@@ -2267,7 +2239,6 @@ public edited=false;
 				"contactCompany": company,
 			}
 			this.allselectedUsers.push(object);
-			console.log(this.allselectedUsers);
 		} else {
 			$('#row_' + contactId).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
@@ -2516,7 +2487,6 @@ public edited=false;
         }
         else if (tempCheckSalesForceAuth == 'yes' ) {
         	 this.showModal();
-             console.log("AddContactComponent salesforce() Authentication Success");
              this.checkingPopupValues();
              tempCheckSalesForceAuth = 'no';
              this.contactService.vanitySocialProviderName = "nothing";
@@ -2607,8 +2577,6 @@ public edited=false;
 
 			window.addEventListener('message', function (e) {
 				window.removeEventListener('message', function (e) { }, true);
-				console.log('received message:  ' + e.data, e);
-
 				if (e.data == 'isGoogleAuth') {
 					localStorage.setItem('isGoogleAuth', 'yes');
 				}
@@ -2763,8 +2731,6 @@ public edited=false;
 								} else {
 									this.xtremandLogger.errorPage(error);
 								}
-								console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
 							},
 							() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
 						)
@@ -2978,15 +2944,12 @@ public edited=false;
 				"mobileNumber": user.mobilePhone
 			}
 			this.allselectedUsers.push(object);
-			console.log(this.allselectedUsers);
 		} else {
 			$('#row_' + user.id).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
 
 			this.allselectedUsers.forEach((value) => {
 				if (value.id == user.id) {
-					console.log(value);
-					console.log(this.allselectedUsers.indexOf(value))
 					this.allselectedUsers.splice(this.allselectedUsers.indexOf(value), 1);
 				}
 			});
@@ -2999,18 +2962,15 @@ public edited=false;
 			this.isHeaderCheckBoxChecked = false;
 		}
 		event.stopPropagation();
-		console.log(this.allselectedUsers);
 	}
 
 	checkAllForMarketo(ev: any) {
 		if (ev.target.checked) {
-			console.log("checked");
 			$('[name="campaignContact[]"]').prop('checked', true);
 			let self = this;
 			$('[name="campaignContact[]"]:checked').each(function () {
 				var id = $(this).val();
 				self.selectedContactListIds.push(parseInt(id));
-				console.log(self.selectedContactListIds);
 				$('#ContactListTable_' + id).addClass('contact-list-selected');
 				for (var i = 0; i < self.pagedItems.length; i++) {
 					var object = {
@@ -3032,7 +2992,6 @@ public edited=false;
 						"mobilePhone": self.pagedItems[i].mobilePhone,
 						"mobileNumber": self.pagedItems[i].mobilePhone
 					}
-					console.log(object);
 					self.allselectedUsers.push(object);
 				}
 			});
@@ -3054,7 +3013,6 @@ public edited=false;
 				this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
 			}
 		}
-		console.log(this.allselectedUsers);
 		ev.stopPropagation();
 	}
 
@@ -3311,7 +3269,6 @@ public edited=false;
 			this.setSocialPage(1);
 			this.customResponse.isVisible = false;
 			this.selectedAddPartnerOption = 9;
-			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
 		}
 	}
 
@@ -3374,7 +3331,6 @@ public edited=false;
 						} else {
 							this.xtremandLogger.errorPage(error);
 						}
-						console.log(error);
 					},
 					() => this.xtremandLogger.info("delete completed")
 				);
@@ -3398,7 +3354,6 @@ public edited=false;
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function (myData: any) {
-				console.log("ManageContacts showAlert then()" + myData);
 				self.removeContactListUsers();
 			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
@@ -3777,8 +3732,6 @@ public edited=false;
 						localStorage.setItem("currentModule", data.module);
 						localStorage.setItem("statusCode", data.statusCode);
 						localStorage.setItem('vanityUrlFilter', 'true');
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						this.googleCurrentUser = localStorage.getItem('currentUser');
 						const encodedData = window.btoa(this.googleCurrentUser);
 						let vanityUserId = JSON.parse(this.googleCurrentUser)['userId'];
@@ -3820,17 +3773,13 @@ public edited=false;
 			.subscribe(
 				response => {
 					let data = response.data;
-					console.log(data);
 					if (response.statusCode == 200) {
 						this.showModal();
-						console.log("AddContactComponent salesforce() Authentication Success");
 						this.checkingPopupValues();
 					} else {
 						localStorage.setItem("userAlias", data.userAlias)
 						localStorage.setItem("currentModule", data.module)
 						localStorage.setItem('vanityUrlFilter', 'true');
-						console.log(data.redirectUrl);
-						console.log(data.userAlias);
 						this.salesForceCurrentUser = localStorage.getItem('currentUser');
 						let vanityUserId = JSON.parse(this.salesForceCurrentUser)['userId'];
 						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null;
@@ -3874,33 +3823,42 @@ public edited=false;
 
 	/********XNFR-85********/
 	currentPartner: any;
-	showTeamMembers = false;
 	previewLoader =  false;
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
 		this.showModulesPopup = true;
 	}
-
 	getTeamMembersByGroupId(partner: any, index: number) {
-		this.processingPartnersLoader = true;
-		if (partner['selectedTeamMemberIds'].length > 0) {
-			partner['selectedTeamMemberIds'] = [];
-			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
-		} else {
+		this.previewLoader = true;
+		partner.expand = false;
+		setTimeout(() => {
 			this.getTeamMembers(partner, index);
-		}
-		this.processingPartnersLoader = false;
+			this.previewLoader = false;
+		}, 500);
+		
 	}
+
 
 	getTeamMembers(partner: any, index: number) {
+		/****XNFR-131****/
+		$.each(this.newPartnerUser,function(partnerUserIndex:number,partnerUser:any){
+			if(index!=partnerUserIndex){
+				partnerUser.expand = false;
+			}
+		});
+		partner.expand = !partner.expand;
 		if (partner.teamMemberGroupId > 0) {
-			this.previewLoader = true;
-			this.currentPartner = partner;
-			this.currentPartner.index = index;
-			this.showTeamMembers = true;
+			if(partner.expand){
+				this.currentPartner = partner;
+				this.currentPartner.index = index;
+			}
+		}else{
+			partner.expand = false;
 		}
 	}
+
+	
 
 
 	hideModulesPreviewPopUp() {
@@ -3911,7 +3869,6 @@ public edited=false;
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
 		this.toggleDropDownStatus(partner);
-		this.showTeamMembers = false;
 		this.previewLoader = false;
 	}
 
@@ -3919,7 +3876,6 @@ public edited=false;
     if (partner.selectedTeamMemberIds.length > 0) {
       $("#partner-tm-group-" + partner.index).prop("disabled", true);
     } else {
-	  partner.teamMemberGroupId=0;
       $("#partner-tm-group-" + partner.index).prop("disabled", false);
     }
   }

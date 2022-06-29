@@ -40,6 +40,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   selectedListId = 0;
   showExpandButton = false;
   expandedUserList: any;
+  colspanValue = 2;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
@@ -119,8 +120,16 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		}
 	}
 
+	
+
 	findShareLeads(pagination:Pagination){
 		this.referenceService.loading(this.shareLeadsLoader, true);
+		let searchKey = $.trim(pagination.searchKey);
+		if(searchKey!=null && searchKey!=undefined && searchKey.length>0){
+			this.colspanValue= 3;
+		}else{
+			this.colspanValue = 2;
+		}
 		pagination.channelCampaign = true;
 		pagination.campaignId = this.campaignId;
 		this.showExpandButton = $.trim(pagination.searchKey).length>0;
