@@ -80,7 +80,16 @@ export class OneClickLaunchRedistributedComponent implements OnInit {
 
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
   
-
+  showCampaignAnalytics(campaign:any){
+		this.pagination.pagedItems.forEach((element) => {
+			let campaignId = element.campaignId;
+			let selectedCampaignId = campaign.campaignId;
+			if (selectedCampaignId != campaignId) {
+				element.expand = false;
+			}
+		});
+		campaign.expand = !campaign.expand;
+	}
 }
 
 
