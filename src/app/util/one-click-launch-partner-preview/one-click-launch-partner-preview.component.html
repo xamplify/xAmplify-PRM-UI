@@ -182,6 +182,9 @@
                      <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listDownloadHistory($event)">
                      </app-pagination>
                     </div>
+                    <div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info text-center">
+                        <strong>No Data Found</strong>
+                   </div>
                   </div>
                </td>
          </tr>
