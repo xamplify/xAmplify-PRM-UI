@@ -1,4 +1,4 @@
-<div class="col-xs-12 p5">
+<div [ngClass]="hideDiv ? '':'col-xs-12 p5'">
    <app-modal-popup-loader *ngIf="loader" ></app-modal-popup-loader>
   <div *ngIf="!loader" class="portlet light">
      <div class="portlet-title">

@@ -18,6 +18,7 @@ import { PagerService } from './../../../core/services/pager.service';
 export class OneClickLaunchRedistributedComponent implements OnInit {
 
   @Input() campaignId = 0;
+  @Input() hideDiv = false;
   redistributedCount = 0;
   redistributedCampaignId = 0;
   loader = false;

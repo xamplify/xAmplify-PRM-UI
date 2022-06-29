@@ -1,6 +1,5 @@
-<div [ngClass]="loader.isLoading ? 'page-content':''">
+<div [ngClass]="loader.isLoading || oneClickLaunchChannelCampaign ? 'page-content':''">
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
-
   <!---XNFR-125-->
   <ng-container *ngIf="!loader.isLoading && !oneClickLaunchChannelCampaign">
     <app-detailed-campaign-analytics [campaignId]="campaignId" [hidePageContent]="false"></app-detailed-campaign-analytics>
@@ -11,7 +10,7 @@
       <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
       </div>
       <div>
-        <app-one-click-launch-redistributed [campaignId]="campaignId"></app-one-click-launch-redistributed>
+        <app-one-click-launch-redistributed [campaignId]="campaignId" [hideDiv]="true"></app-one-click-launch-redistributed>
     </div>
 </ng-container>
 </div>
