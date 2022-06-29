@@ -42,11 +42,12 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   historyResponse: CustomResponse = new CustomResponse();
   campaignPartnerId = 0;
   @Input() redistributedCount = 0;
+  colspanValue = 2;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    this.showShareLeadsList = this.viewType == undefined;
+    this.showShareLeadsList =  this.viewType == undefined;
     this.getOneClickLaunchCampaignPartnerCompany(this.campaignId);
   }
 
@@ -119,6 +120,11 @@ viewShareLeads(partner:any){
     pagination.parentCampaignId = this.campaignId;
 		pagination.campaignId = this.campaignId;
 		this.showExpandButton = $.trim(pagination.searchKey).length>0;
+    if(this.showExpandButton){
+			this.colspanValue= 3;
+		}else{
+			this.colspanValue = 2;
+		}
 		this.contactService.loadAssignedLeadsLists(pagination).
 		subscribe(
 			(data:any)=>{
@@ -174,7 +180,7 @@ viewShareLeads(partner:any){
 	} 
 
   expandList(partner:any){
-    if(this.showShareLeadsList){
+    if(this.showShareLeadsList || this.viewType=="analytics"){
       this.viewShareLeads(partner);
     }else if(this.viewType=="tda" || this.viewType=="teoa"){
       partner.expand = !partner.expand;

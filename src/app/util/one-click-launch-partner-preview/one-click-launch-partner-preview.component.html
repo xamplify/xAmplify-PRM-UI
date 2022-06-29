@@ -8,7 +8,7 @@
             <th scope="col" class="text-center">Company Name</th>
             <th scope="col" class="text-center" *ngIf="viewType=='tda'">#DOWNLOAD</th>
             <th scope="col" class="text-center" *ngIf="viewType=='teoa'">#OPENED</th>
-            <th scope="col" class="text-center" *ngIf="showShareLeadsList">Share Leads</th>
+            <th scope="col" class="text-center" *ngIf="showShareLeadsList || viewType=='analytics'">Share Leads</th>
             <th scope="col" class="text-center" *ngIf="viewType=='analytics'">#Redistributed</th>
          </tr>
       </thead>
@@ -34,16 +34,20 @@
                      <div class="actions-block float-none">
                         <span *ngIf="viewType=='tda'" class="circled-number" title="Download Count">{{downloadCount}}</span>
                         <span *ngIf="viewType=='teoa'" class="circled-number" title="Email Opened Count">{{openedCount}}</span>
-                        <span *ngIf="viewType=='analytics'" class="circled-number" title="Redistributed Count">{{redistributedCount}}</span>
-                        <a *ngIf="showShareLeadsList || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
+                        <a *ngIf="showShareLeadsList || viewType=='analytics' || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
                             (click)="expandList(oneClickLaunchPartnerCompany)">
                            <i class="fa" [ngClass]="{'fa-plus': !oneClickLaunchPartnerCompany.expand, 'fa-minus': oneClickLaunchPartnerCompany.expand}" aria-hidden="true"></i>
                         </a>
                      </div>
                </td>
+               <td class="text-center" *ngIf="viewType=='analytics'">
+                  <div class="actions-block float-none">
+                     <span *ngIf="viewType=='analytics'" class="circled-number" title="Redistributed Count">{{redistributedCount}}</span>
+                  </div>
+            </td>
             </tr>
             <!--Share Leads-->
-            <tr *ngIf="oneClickLaunchPartnerCompany?.expand && showShareLeadsList">
+            <tr *ngIf="oneClickLaunchPartnerCompany?.expand && (showShareLeadsList || viewType=='analytics')">
                <td colspan="5" class="bgc-lg">
                   <div class="table-responsive x-hidden">
                      <div class="portlet-input input-inline float-right mb10p" id="search-div">
@@ -66,7 +70,7 @@
                            <table  class="table tgrid table-condensed" aria-describedby="">
                                <thead>
                                    <tr>
-                                   <th scope="row" colspan="2">List Name</th>
+                                   <th scope="row" [attr.colspan]="colspanValue">List Name</th>
                                    <th class="text-center" translate>Total Leads</th>
                                    <th class="text-center" translate>Created Time</th>
                                    <th class="text-center" translate>Preview</th>
@@ -151,7 +155,7 @@
                      </div>
                   </div>
                </td>
-           </tr>
+            </tr>
            <!--One-Click Launch-->
            <tr *ngIf="oneClickLaunchPartnerCompany?.expand && !showShareLeadsList && viewType!='analytics'">
             <td colspan="4">
