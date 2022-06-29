@@ -39,6 +39,7 @@ export class ReDistributedComponent implements OnInit {
                     if (data.statusCode == 200) {
                         this.oneClickLaunchCampaign = data.data;
                         if(this.oneClickLaunchCampaign){
+                            this.referenceService.goToRouter("/home/campaigns/"+this.campaignId+"/details");
                             this.referenceService.loading(this.httpRequestLoader, false);
                         }else{
                             this.pagination.partnerTeamMemberGroupFilter =true;

@@ -8,15 +8,18 @@
      </div>
      <div class="portlet-body">
        <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="'analytics'" [redistributedCount]="redistributedCount"></app-one-click-launch-partner-preview>
-       <div>
-         <app-detailed-campaign-analytics *ngIf="redistributedCount==1" [campaignId]="redistributedCampaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
-      </div>
       </div>
    </div>
 </div>
 
-<!--Redistributed Campaigns-->
-<div *ngIf="redistributedCount>1">
+<!---Campaign Redistributed Only One Time-->
+<div *ngIf="!loader && redistributedCount==1" class="portlet light">
+  <app-detailed-campaign-analytics *ngIf="redistributedCount==1" [campaignId]="redistributedCampaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
+</div>
+
+
+<!--Campaign Redistributed More Than One Time--->
+<div class="row" *ngIf="redistributedCount>1" >
      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
        <div class="tabbable tabbable-custom tabbable-noborder" id="header">
          <div class="tab-content">
@@ -97,4 +100,4 @@
        </div>
      </div>
    
- </div>
+</div>
