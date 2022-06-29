@@ -1,4 +1,4 @@
-a:hover {
+ a:hover {
     background-color: #f7f1f1 !important;
   }
 
@@ -20,4 +20,9 @@ a:hover {
     color: #3c763d !important;
     border: 1px solid !important;
     margin-bottom: 5px !important;
+} 
+
+.alert-message-fw{
+  font-weight: 600 !important;
 }
+

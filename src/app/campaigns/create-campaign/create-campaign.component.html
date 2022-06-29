@@ -971,18 +971,13 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-                                                <div class="alert alert-success" *ngIf="selectedContactListIds?.length>0">
-                                                    <ng-container *ngIf="selectedContactListIds?.length==1">
-                                                        {{selectedContactListIds?.length}} row is selected
-                                                    </ng-container>
-                                                    <ng-container *ngIf="selectedContactListIds?.length>1">
-                                                        {{selectedContactListIds?.length}} rows are selected
-                                                    </ng-container>
+                                                <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                                    Selected Rows : {{selectedContactListIds?.length}}
                                                 </div>
                                             <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0" aria-describedby="contactandpartnerstable">
                                                 <tr>
                                                     <th colspan="5" scope="row">
-                                                        <div class="alert alert-info">
+                                                        <div class="alert alert-info text-center">
                                                             <strong>{{emptyContactListMessage}}</strong>
                                                         </div>
                                                     </th>
@@ -1103,6 +1098,9 @@
 
                             <!--Partner Companies & Unshared Share Lists-->
                             <div class="row pb10 portlet light" id="one-click-launch-list-selection" *ngIf="campaign.oneClickLaunch">
+                                <div class="alert alert-danger" *ngIf="invalidShareLeadsSelection">
+                                    <strong>{{invalidShareLeadsSelectionErrorMessage}}</strong>
+                                </div>
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
                              </div>   
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
@@ -1610,7 +1608,7 @@
                                                                 <ng-container *ngIf="emailReceiversCountError">
                                                                     <span id="red-font" translate>Something went wrong.Please contact admin</span>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!emailReceiversCountError">
+                                                                <ng-container *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
                                                                     <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                                                                     <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
                                                                 </ng-container>
