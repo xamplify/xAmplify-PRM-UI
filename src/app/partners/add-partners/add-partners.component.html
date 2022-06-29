@@ -1290,9 +1290,9 @@
                                             <i class="fa fa-eye white" aria-hidden="true"></i>
                                           </button>
                                         </span>
-                                        <span class="input-group-btn">
-                                            <button title="Preview Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-                                              <i class="fa fa-users white" aria-hidden="true"></i>
+                                        <span class="input-group-btn" >
+                                            <button title="Select Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+                                              <i  class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
                                             </button>
                                           </span>
                                         </div>
@@ -1300,6 +1300,12 @@
                                             <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
                                         </span>
                                       </td>
+                                </tr>
+                                <!---XNFR-131-->
+                                <tr *ngIf="partner?.expand">
+                                    <td colspan="5" class="bgc-lg">
+                                        <app-partner-team-member-group-team-members  [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+                                    </td>
                                 </tr>
                             </ng-container>
                         </tbody>
@@ -1316,7 +1322,6 @@
     </div>
 </div>
 
-<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
 <!-- Group Preview Popup  (XNFR-85)-->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
