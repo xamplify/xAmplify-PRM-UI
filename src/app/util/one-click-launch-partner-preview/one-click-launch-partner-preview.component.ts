@@ -41,6 +41,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   historyList:Array<any> = new Array<any>();
   historyResponse: CustomResponse = new CustomResponse();
   campaignPartnerId = 0;
+  colspanValue = 2;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
@@ -59,7 +60,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
         this.oneClickLaunchStatusCode = response.statusCode;
         if(this.oneClickLaunchStatusCode==200){
             this.oneClickLaunchPartnerCompany = response.data;
-            this.viewShareLeads(this.oneClickLaunchPartnerCompany);
+            this.expandList(this.oneClickLaunchPartnerCompany);
         }else{
           this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
         }
@@ -110,6 +111,11 @@ viewShareLeads(partner:any){
     pagination.parentCampaignId = this.campaignId;
 		pagination.campaignId = this.campaignId;
 		this.showExpandButton = $.trim(pagination.searchKey).length>0;
+    if(this.showExpandButton){
+			this.colspanValue= 3;
+		}else{
+			this.colspanValue = 2;
+		}
 		this.contactService.loadAssignedLeadsLists(pagination).
 		subscribe(
 			(data:any)=>{
