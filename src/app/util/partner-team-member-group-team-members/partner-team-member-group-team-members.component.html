@@ -11,7 +11,7 @@
                 <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
             </div>
             <div class="modal-body">
-                <ng-template [ngTemplateOutlet]="teamMemberGroupsTemplateOutlet"></ng-template>
+                <ng-template *ngIf="openInModalPopup" [ngTemplateOutlet]="teamMemberGroupsTemplateOutlet"></ng-template>
             </div>
             <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
                 <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
@@ -40,20 +40,18 @@
                   </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index">
-                    <tr id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
-                        (click)="highlightTeamMemberOnRowClick(teamMember.id,$event,currentPartner)">
-                        <td class="text-center">
-                            <input type="checkbox" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
-                                name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.id}}"
-                                (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.id,$event,currentPartner);">
-                         </td>
-                        <td>
-                            <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
-                            </app-user-info>
+                <tr *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index" id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                    (click)="highlightTeamMemberOnRowClick(teamMember.id,$event,currentPartner)">
+                    <td class="text-center">
+                        <input type="checkbox" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.id}}"
+                            (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.id,$event,currentPartner);">
                         </td>
-                    </tr>
-                </ng-container>
+                    <td>
+                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+                        </app-user-info>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

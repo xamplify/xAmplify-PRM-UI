@@ -1298,6 +1298,7 @@
                                         </div>
                                         <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
                                             <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
+                                            <a (click)="applyForAll(partner)"><strong><i class="fa fa-check"></i>Apply For All</strong></a>
                                         </span>
                                       </td>
                                 </tr>
