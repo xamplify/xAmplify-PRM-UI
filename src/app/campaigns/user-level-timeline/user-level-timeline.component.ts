@@ -15,7 +15,7 @@ import { LeadsService } from 'app/leads/services/leads.service';
 @Component({
   selector: 'app-user-level-timeline',
   templateUrl: './user-level-timeline.component.html',
-  styleUrls: ['./user-level-timeline.component.css','../analytics/timeline.css','../analytics/analytics.component.css']
+  styleUrls: ['./user-level-timeline.component.css','../analytics/timeline.css','../analytics/detailed-campaign-analytics/detailed-campaign-analytics.component.css']
 })
 export class UserLevelTimelineComponent implements OnInit {
 
