@@ -268,7 +268,6 @@ export class ContactService {
             headers: headers
         };
         var url = this.contactsUrl + contactListId + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
-        this.logger.info(users);
         return this._http.post(url, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);

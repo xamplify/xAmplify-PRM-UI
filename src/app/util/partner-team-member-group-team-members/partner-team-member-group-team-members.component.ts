@@ -25,35 +25,41 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   teamMembers: Array<any> = new Array<any>();
   @Input() currentPartner: any;
   @Output() partnerTeamMemberGroupTeamMemberEventEmitter = new EventEmitter();
+  @Input() openInModalPopup:boolean = false;
   constructor(public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public pagerService: PagerService) { }
 
   ngOnInit() {
     this.teamMembersPagination = new Pagination();
     this.referenceService.startLoader(this.teamMembersLoader);
-    $('#teamMembersPreviewPopup').modal('show');
+    if(this.openInModalPopup){
+      $('#teamMembersPreviewPopup').modal('show');
+    }
     this.teamMembersPagination.categoryId = this.currentPartner.teamMemberGroupId;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);
   }
 
-
+  
 
   highlightTeamMemberOnRowClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowOnRowCick(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
       this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId + "-" + partner.index,
       teamMemberId, event);
-
+      this.callEmitterForExpandAndCollpaseFunctionality();
+      
   }
 
   highlightTeamMemberRowOnCheckBoxClick(teamMemberId: any, event: any, partner: any) {
     this.referenceService.highlightRowByCheckBox(this.partnerModuleTeamMembersTrId + "-" + partner.index, this.partnerModuleTeamMembersTableId + "-" + partner.index,
       this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds, this.partnerGroupTeamMemberheaderCheckBoxId + "-" + partner.index,
       teamMemberId, event);
+      this.callEmitterForExpandAndCollpaseFunctionality();
   }
 
   selectOrUnselectAllTeamMembersOfTheCurrentPage(event: any, partner: any) {
     partner.selectedTeamMemberIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage(this.partnerModuleTeamMembersTrId + "-" + partner.index,
       this.partnerModuleTeamMembersTableId + "-" + partner.index, this.partnerModuleTeamMemberCheckBoxName + "-" + partner.index, partner.selectedTeamMemberIds,
       this.teamMembersPagination, event);
+      this.callEmitterForExpandAndCollpaseFunctionality();
   }
 
   
@@ -73,6 +79,8 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
           });
           partner['isTeamMemberHeaderCheckBoxChecked'] = (items.length == teamMemberIds.length && teamMemberIds.length > 0);
           this.referenceService.stopLoader(this.teamMembersLoader);
+          let divId = "partner-module-team-members-table-"+this.currentPartner.index;
+          this.referenceService.goToDiv(divId);
         }, _error => {
           this.referenceService.stopLoader(this.teamMembersLoader);
           this.referenceService.showSweetAlertServerErrorMessage();
@@ -82,10 +90,17 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   }
 
   navigatePartnerModuleTeamMembers(event: any, partner: any) {
-    this.referenceService.goToTop();
     this.teamMembersPagination.pageIndex = event.page;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, partner);
   }
+
+  callEmitterForExpandAndCollpaseFunctionality(){
+    if(!this.openInModalPopup){
+      /******Notify Other Component***/
+      this.partnerTeamMemberGroupTeamMemberEventEmitter.emit(this.currentPartner);
+    }
+  }
+
   closeTeamMembersPreviewPopup() {
     $('#teamMembersPreviewPopup').modal('hide');
     this.teamMembers = new Array<any>();
@@ -100,4 +115,7 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     $('#'+this.partnerGroupTeamMemberheaderCheckBoxId+"-"+this.currentPartner['index']).prop('checked', false);
   }
 
+
+
+  
 }
