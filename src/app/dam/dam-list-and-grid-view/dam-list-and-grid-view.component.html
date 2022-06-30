@@ -102,7 +102,7 @@
 								*ngFor="let asset of pagination.pagedItems ;let i =index">
 							<tr>
 							 <td *ngIf="(!isPartnerView && asset.videoId) || (!isPartnerView && videoFileService.videoType === 'partnerVideos')">
-                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo($event)"></app-video-thumbnail>
+                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo(asset.id, $event)"></app-video-thumbnail>
                         </td>
                         
                         <td  *ngIf="!asset.videoId" >
