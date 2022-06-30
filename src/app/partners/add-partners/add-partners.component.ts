@@ -1,35 +1,42 @@
-import { Component, OnInit, OnDestroy, Input, AfterViewInit, ViewChild } from '@angular/core';
-import { User } from '../../core/models/user';
-import { EditUser } from '../../contacts/models/edit-user';
-import { CustomResponse } from '../../common/models/custom-response';
-import { Properties } from '../../common/models/properties';
-import { ActionsDescription } from '../../common/models/actions-description';
-import { CountryNames } from '../../common/models/country-names';
-import { Pagination } from '../../core/models/pagination';
-import { SocialPagerService } from '../../contacts/services/social-pager.service';
-import { SocialContact } from '../../contacts/models/social-contact';
-import { ContactService } from '../../contacts/services/contact.service';
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { ReferenceService } from '../../core/services/reference.service';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PagerService } from '../../core/services/pager.service';
-import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { EditContactsComponent } from '../../contacts/edit-contacts/edit-contacts.component';
-import { ManageContactsComponent } from '../../contacts/manage-contacts/manage-contacts.component';
-import { RegularExpressions } from '../../common/models/regular-expressions';
-import { PaginationComponent } from '../../common/pagination/pagination.component';
-import { TeamMemberService } from '../../team/services/team-member.service';
-import { FileUtil } from '../../core/models/file-util';
-import { HubSpotService } from 'app/core/services/hubspot.service';
-import { GdprSetting } from '../../dashboard/models/gdpr-setting';
-import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
-import { UserService } from '../../core/services/user.service';
-import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
-import { CallActionSwitch } from '../../videos/models/call-action-switch';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { CampaignService } from '../../campaigns/services/campaign.service';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  AfterViewInit,
+  ViewChild,
+} from "@angular/core";
+import { User } from "../../core/models/user";
+import { EditUser } from "../../contacts/models/edit-user";
+import { CustomResponse } from "../../common/models/custom-response";
+import { Properties } from "../../common/models/properties";
+import { ActionsDescription } from "../../common/models/actions-description";
+import { CountryNames } from "../../common/models/country-names";
+import { Pagination } from "../../core/models/pagination";
+import { SocialPagerService } from "../../contacts/services/social-pager.service";
+import { SocialContact } from "../../contacts/models/social-contact";
+import { ContactService } from "../../contacts/services/contact.service";
+import { AuthenticationService } from "../../core/services/authentication.service";
+import { ReferenceService } from "../../core/services/reference.service";
+import { HttpRequestLoader } from "../../core/models/http-request-loader";
+import { Router, ActivatedRoute } from "@angular/router";
+import { PagerService } from "../../core/services/pager.service";
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { FileUploader } from "ng2-file-upload/ng2-file-upload";
+import { EditContactsComponent } from "../../contacts/edit-contacts/edit-contacts.component";
+import { ManageContactsComponent } from "../../contacts/manage-contacts/manage-contacts.component";
+import { RegularExpressions } from "../../common/models/regular-expressions";
+import { PaginationComponent } from "../../common/pagination/pagination.component";
+import { TeamMemberService } from "../../team/services/team-member.service";
+import { FileUtil } from "../../core/models/file-util";
+import { HubSpotService } from "app/core/services/hubspot.service";
+import { GdprSetting } from "../../dashboard/models/gdpr-setting";
+import { LegalBasisOption } from "../../dashboard/models/legal-basis-option";
+import { UserService } from "../../core/services/user.service";
+import { SendCampaignsComponent } from "../../common/send-campaigns/send-campaigns.component";
+import { CallActionSwitch } from "../../videos/models/call-action-switch";
+import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
+import { CampaignService } from "../../campaigns/services/campaign.service";
 
 declare var $, Papa, swal, Swal: any;
 
@@ -4979,9 +4986,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
   getTeamMembers(partner: any, index: number) {
     /****XNFR-131****/
-    $.each(
-      this.newPartnerUser,
-      function (partnerUserIndex: number, partnerUser: any) {
+    $.each(this.newPartnerUser,function (partnerUserIndex: number, partnerUser: any) {
         if (index != partnerUserIndex) {
           partnerUser.expand = false;
         }
@@ -5010,6 +5015,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
   }
 
   toggleDropDownStatus(partner: any) {
+    console.log("Index:---------" + partner.index);
     if (partner.selectedTeamMemberIds.length > 0) {
       $("#partner-tm-group-" + partner.index).prop("disabled", true);
     } else {
@@ -5035,12 +5041,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
   /*******XNFR-130*****/
   applyForAll(selectedPartner: any) {
-	  let self = this;
+    let self = this;
     $.each(this.newPartnerUser, function (index: number, partner: any) {
       if (partner.emailId != selectedPartner.emailId) {
+        console.log("added for" + partner.emailId);
         partner.teamMemberGroupId = selectedPartner.teamMemberGroupId;
         partner.selectedTeamMemberIds = selectedPartner.selectedTeamMemberIds;
-		self.toggleDropDownStatus(partner);
+        partner.index = index;
+        self.toggleDropDownStatus(partner);
+      } else {
+        console.error("Skipped for" + partner.emailId);
       }
     });
   }
