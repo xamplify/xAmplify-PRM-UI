@@ -3,7 +3,7 @@
 
 
 <div class="clearfix" >
-  <div class='thumbnail-wrapper' (click)="$event.stopPropagation();showPlayVideo(videoFile.alias, videoFile.processed)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
+  <div class='thumbnail-wrapper' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
     <img alt="" *ngIf="!videoFile?.processed" src="assets/images/Spinner.gif" class="loader-css">
     <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)">
     <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
@@ -11,10 +11,10 @@
 
 <div class="title-div">
   <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
-    <h4 (click)="titleClickVideo(videoFile.alias, videoFile.processed)" data-toggle="tooltip" data-placement="top" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 23}}
+    <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 23}}
       <span *ngIf="videoFile?.title?.length>23">..</span>
     </h4>
-    <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile.alias, videoFile.processed)">
+    <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
       <h5 data-toggle="tooltip" data-placement="top"  [title]="videoFile.uploadedUserName" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:20}}
         <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
       </h5>
@@ -27,7 +27,7 @@
         </span>
       </h5>
     </span>
-    <span *ngIf="authenticationService.isOnlyPartner()"  (click)="$event.stopPropagation();showPlayVideo(videoFile.alias, videoFile.processed)">
+    <span *ngIf="authenticationService.isOnlyPartner()"  (click)="$event.stopPropagation();showPlayVideo(videoFile)">
       <span data-toggle="tooltip" data-placement="top"  [title]="videoFile.companyName" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:20}}
           <span *ngIf="videoFile.companyName?.length>20">...</span>
       </span>
@@ -35,7 +35,7 @@
           <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
       </span>
     </span>
-    <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile.alias, videoFile.processed)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
+    <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
       <span *ngIf="videoFile?.viewBy!=='DRAFT'">
         <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
         <span *ngIf="!videoFile.views">0 views</span>

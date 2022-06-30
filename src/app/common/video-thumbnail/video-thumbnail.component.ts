@@ -21,15 +21,15 @@ export class VideoThumbnailComponent implements OnInit {
  
   }
 
-  showPlayVideo(alias:string, isProcessed:boolean){
-     if(!this.authenticationService.isSuperAdmin() && isProcessed){
-      this.notifyParent.emit(alias);
+  showPlayVideo(videoFile){
+     if(!this.authenticationService.isSuperAdmin() && videoFile.processed){
+      this.notifyParent.emit(videoFile);
      }
   }
 
-  titleClickVideo(alias:string, isProcessed:boolean){
-    if(!this.authenticationService.isSuperAdmin() && isProcessed && !this.isCreate){
-      this.notifyParent.emit(alias);
+  titleClickVideo(videoFile){
+    if(!this.authenticationService.isSuperAdmin() && videoFile.processed && !this.isCreate){
+      this.notifyParent.emit(videoFile);
      }
   }
   // mouseEnter(event){ event.target.src = this.videoFile.gifImagePath;}

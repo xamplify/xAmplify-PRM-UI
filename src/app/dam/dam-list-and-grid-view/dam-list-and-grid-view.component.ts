@@ -453,16 +453,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/*****Preview Asset******* */
     preview(asset: any) {
         if (this.isVideo(asset.assetType)) {
-            this.showPlayVideo(asset.id, asset.alias);
+            this.showPlayVideo(asset.id, asset.videoFileDTO);
         } else {
             this.isPreview = true;
             this.asset = asset;
         }
 	}
     
-    showPlayVideo(id: number, alias: string) {
+    showPlayVideo(id: number, videoFile: SaveVideoFile) {
         try {
-            this.videoFileService.getVideo(alias, 'DRAFT')
+            this.videoFileService.getVideo(videoFile.alias, 'DRAFT')
                 .subscribe((editVideoFile: SaveVideoFile) => {
                     if (editVideoFile.access) {
                         if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
