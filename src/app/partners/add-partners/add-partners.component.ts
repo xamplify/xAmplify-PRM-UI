@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  AfterViewInit,
-  ViewChild,
-} from "@angular/core";
+import {Component,OnInit,OnDestroy,ViewChild} from "@angular/core";
 import { User } from "../../core/models/user";
 import { EditUser } from "../../contacts/models/edit-user";
 import { CustomResponse } from "../../common/models/custom-response";
@@ -37,6 +30,7 @@ import { SendCampaignsComponent } from "../../common/send-campaigns/send-campaig
 import { CallActionSwitch } from "../../videos/models/call-action-switch";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { CampaignService } from "../../campaigns/services/campaign.service";
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $, Papa, swal, Swal: any;
 
@@ -247,6 +241,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
   selectedFilterIndex: number = 1;
   showFilter = true;
   collapseAll = false;
+  /****XNFR-130*****/
+  selectAllTeamMemberIds = [];
+  selectAllTeamMemberGroupId = 0;
+  applyForAllClicked = false;
+  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  showSweetAlert = false;
+  selectedPartner: any;
   constructor(
     private fileUtil: FileUtil,
     private router: Router,
@@ -732,6 +733,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     $("#assignContactAndMdfPopup").modal("hide");
     this.showNotifyPartnerOption = false;
     this.newPartnerUser = [];
+    this.applyForAllClicked = false;
     this.allselectedUsers = [];
     this.contactAndMdfPopupResponse = new CustomResponse();
     this.cancelPartners();
@@ -741,13 +743,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     $(".modal-body").animate({ scrollTop: 0 }, "slow");
     this.contactAndMdfPopupResponse = new CustomResponse();
     let errorCount = 0;
+    let self = this;
     $.each(this.newPartnerUser, function (index: number, partner: any) {
       let contactsLimit = partner.contactsLimit;
+      if(self.applyForAllClicked){
+        partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
+        partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
+      }
       if (contactsLimit < 1) {
-        errorCount++;
-        $("#contact-count-" + index).css("background-color", "red");
+          errorCount++;
+          $("#contact-count-" + index).css("background-color", "red");
       } else {
         if (errorCount > 0) {
+          if(self.applyForAllClicked){
+            partner.teamMemberGroupId = 0;
+            partner.selectedTeamMemberIds = [];
+          }
           errorCount--;
         }
         $("#contact-count-" + index).css("background-color", "#e9eef2");
@@ -755,6 +766,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     });
     if (errorCount > 0) {
       this.processingPartnersLoader = false;
+      this.applyForAllClicked = false;
     } else if (errorCount == 0) {
       this.validatePartnership();
     }
@@ -772,35 +784,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             $("#assignContactAndMdfPopup").modal("hide");
             this.showNotifyPartnerOption = false;
             this.processingPartnersLoader = false;
+            this.applyForAllClicked = false;
             this.savePartners();
           } else {
+            if(this.applyForAllClicked){
+              $.each(this.newPartnerUser,function(index:number,partner:any){
+                partner.teamMemberGroupId = 0;
+                partner.selectedTeamMemberIds = [];
+                partner.expand = false;
+              });
+            }
             let emailIds = "";
             $.each(data.data, function (index: number, emailId: string) {
               emailIds += index + 1 + "." + emailId + "\n";
             });
             let updatedMessage = data.message + "\n" + emailIds;
-            this.contactAndMdfPopupResponse = new CustomResponse(
-              "ERROR",
-              updatedMessage,
-              true
-            );
+            this.contactAndMdfPopupResponse = new CustomResponse("ERROR",updatedMessage,true);
+            this.applyForAllClicked = false;
           }
         },
         (error: any) => {
+          this.applyForAllClicked = false;
           this.processingPartnersLoader = false;
           let httpStatusCode = error["status"];
           if (httpStatusCode != 500) {
-            this.contactAndMdfPopupResponse = new CustomResponse(
-              "ERROR",
-              httpStatusCode,
-              true
-            );
+            this.contactAndMdfPopupResponse = new CustomResponse("ERROR",httpStatusCode,true);
           } else {
-            this.contactAndMdfPopupResponse = new CustomResponse(
-              "ERROR",
-              this.properties.serverErrorMessage,
-              true
-            );
+            this.contactAndMdfPopupResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
           }
         }
       );
@@ -5015,7 +5025,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
   }
 
   toggleDropDownStatus(partner: any) {
-    console.log("Index:---------" + partner.index);
     if (partner.selectedTeamMemberIds.length > 0) {
       $("#partner-tm-group-" + partner.index).prop("disabled", true);
     } else {
@@ -5041,17 +5050,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
   /*******XNFR-130*****/
   applyForAll(selectedPartner: any) {
-    let self = this;
-    $.each(this.newPartnerUser, function (index: number, partner: any) {
-      if (partner.emailId != selectedPartner.emailId) {
-        console.log("added for" + partner.emailId);
-        partner.teamMemberGroupId = selectedPartner.teamMemberGroupId;
-        partner.selectedTeamMemberIds = selectedPartner.selectedTeamMemberIds;
-        partner.index = index;
-        self.toggleDropDownStatus(partner);
-      } else {
-        console.error("Skipped for" + partner.emailId);
-      }
-    });
+    this.selectedPartner = selectedPartner;
+    let message = "Team Member Group will be assigned to all rows";
+    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.confirmButtonText = "Yes";
+    this.showSweetAlert = true;
+  }
+
+  receiveEvent(event:any){
+    if(event){
+      this.processingPartnersLoader = true;
+      this.applyForAllClicked = true;
+      this.selectAllTeamMemberGroupId = this.selectedPartner.teamMemberGroupId;
+      this.selectAllTeamMemberIds = this.selectedPartner.selectedTeamMemberIds;
+      this.validatePartners();
+      this.showSweetAlert = false;
+    }else{
+      this.showSweetAlert = false;
+    }
   }
 }
