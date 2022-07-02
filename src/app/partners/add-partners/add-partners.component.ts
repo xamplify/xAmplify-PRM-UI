@@ -5051,7 +5051,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
   /*******XNFR-130*****/
   applyForAll(selectedPartner: any) {
     this.selectedPartner = selectedPartner;
-    let message = "Team Member Group will be assigned to all rows";
+    let message = "Selected Team Member Group will be assigned to all rows";
     this.sweetAlertParameterDto.text=message;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
     this.showSweetAlert = true;
