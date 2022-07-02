@@ -1218,11 +1218,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
-				</app-response-message>
+                <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible"> 
+                    <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
+                </div>
 				<app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                 <div class="table-responsive" *ngIf="!processingPartnersLoader" >
-                    <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                    <table class="table tgrid table-hover table-sm beige" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
@@ -1279,7 +1280,10 @@
                                         </div>
                                         <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
                                             <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
-                                        </span>
+											<a *ngIf="users?.length>1" (click)="applyForAll(partner)">
+                                                <strong><i class="fa fa-check"></i>Apply For All</strong>
+                                            </a>
+										</span>
                                       </td>
                                 </tr>
 								<!---XNFR-131-->
@@ -1292,7 +1296,6 @@
                         </tbody>
                     </table>
                 </div>
-
             <br>
             </div>
             <ngx-loading [show]="processingPartnersLoader || previewLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -1306,3 +1309,4 @@
 <!-- Group Preview Popup  (XNFR-85)-->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>

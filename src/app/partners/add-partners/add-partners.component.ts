@@ -733,7 +733,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     $("#assignContactAndMdfPopup").modal("hide");
     this.showNotifyPartnerOption = false;
     this.newPartnerUser = [];
-    this.applyForAllClicked = false;
+    this.resetApplyFilter();
     this.allselectedUsers = [];
     this.contactAndMdfPopupResponse = new CustomResponse();
     this.cancelPartners();
@@ -750,23 +750,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
         partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
       }
-      if (contactsLimit < 1) {
-          errorCount++;
-          $("#contact-count-" + index).css("background-color", "red");
-      } else {
-        if (errorCount > 0) {
-          if(self.applyForAllClicked){
-            partner.teamMemberGroupId = 0;
-            partner.selectedTeamMemberIds = [];
-          }
-          errorCount--;
-        }
-        $("#contact-count-" + index).css("background-color", "#e9eef2");
-      }
+      if(contactsLimit < 1){
+				partner.contactsLimit = 1;
+			 }
     });
     if (errorCount > 0) {
       this.processingPartnersLoader = false;
-      this.applyForAllClicked = false;
+      this.resetApplyFilter();
     } else if (errorCount == 0) {
       this.validatePartnership();
     }
@@ -784,7 +774,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             $("#assignContactAndMdfPopup").modal("hide");
             this.showNotifyPartnerOption = false;
             this.processingPartnersLoader = false;
-            this.applyForAllClicked = false;
+            this.resetApplyFilter();
             this.savePartners();
           } else {
             if(this.applyForAllClicked){
@@ -800,11 +790,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             });
             let updatedMessage = data.message + "\n" + emailIds;
             this.contactAndMdfPopupResponse = new CustomResponse("ERROR",updatedMessage,true);
-            this.applyForAllClicked = false;
+            this.resetApplyFilter();
           }
         },
         (error: any) => {
-          this.applyForAllClicked = false;
+          this.resetApplyFilter();
           this.processingPartnersLoader = false;
           let httpStatusCode = error["status"];
           if (httpStatusCode != 500) {
@@ -5068,5 +5058,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }else{
       this.showSweetAlert = false;
     }
+  }
+
+  resetApplyFilter(){
+    this.selectAllTeamMemberGroupId = 0;
+    this.selectAllTeamMemberIds = [];
+    this.applyForAllClicked = false;
   }
 }
