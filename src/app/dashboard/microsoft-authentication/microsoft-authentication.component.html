@@ -1,0 +1,36 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div>
+  <div>
+    <div>
+      <img src="assets/images/crm/microsoft-dynamics-xamplify.png" style="margin: 30px 25% 0;width: 50%;text-align: center;">
+    </div>
+  </div>
+</div>
+<div class="modal-body">
+  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
+  </app-response-message>
+  <form class="form-horizontal" autocomplete="off">
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="instanceUrl">Instance URL:</label>
+      <div class="col-sm-8">
+        <input type="text" style="width: 75%" class="form-control" id="instanceUrl" placeholder="Instance URL"
+          autocomplete="nope" [(ngModel)]="instanceUrl" [ngModelOptions]="{standalone: true}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="webApiInstanceUrl">Web API Instance URL:</label>
+      <div class="col-sm-8">
+        <input type="text" style="width: 75%" class="form-control" id="webApiInstanceUrl" placeholder="Web API Instance URL"
+          autocomplete="nope" [(ngModel)]="webApiInstanceUrl" [ngModelOptions]="{standalone: true}">
+      </div>
+    </div>
+    
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" (click)="closeForm()">CANCEL</button>
+  <button type="button" class="btn btn-primary"
+    [class.disabled]="!instanceUrl || !webApiInstanceUrl"
+    (click)="validateModelForm()">AUTHORIZE</button>
+</div>

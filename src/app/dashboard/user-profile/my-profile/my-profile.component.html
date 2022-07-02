@@ -511,7 +511,6 @@
                                                 </div>
 
                                             </div>
-
                                             <div class="col-xs-12 integration-row">
                                                 <div class="col-lg-4">
                                                     <div class="card mb-5 mb-lg-4">
@@ -523,12 +522,12 @@
                                                             </div>
                                                             <div style="height: 120px;">
                                                                 <div>
-                                                                    <img src="assets/images/crm/huspot-amplify.png" style="margin-top:20px; text-align: center;width:100%">
+                                                                    <img src="assets/images/crm/microsoft-dynamics-xamplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
 
                                                             <a (click)="configureMicrosoft()" class="btn btn-block btn-primary text-uppercase" *ngIf="microsoftRibbonText == 'configure'" translate>configure</a>
-                                                            <a (click)="reConfigureMicrosoft()" class="btn btn-block btn-primary text-uppercase" *ngIf="microsoftRibbonText == 'configured'" translate>re configure</a>
+                                                            <a (click)="configureMicrosoft()" class="btn btn-block btn-primary text-uppercase" *ngIf="microsoftRibbonText == 'configured'" translate>re configure</a>
                                                                 
                                                         </div>
                                                     </div>
@@ -615,6 +614,11 @@
 													<button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length" 
 													(click)="submitSfSettings()">Submit</button>
 												</div>
+                                        </div>
+
+                                        <div *ngIf="integrationTabIndex == 3">
+                                            <app-microsoft-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="closeMicrosoftForm($event)">
+                                            </app-microsoft-authentication>
                                         </div>
                                     </div>
 

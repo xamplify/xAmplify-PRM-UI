@@ -15,6 +15,7 @@ import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 
 @Injectable()
 export class DashboardService {
+    
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -635,6 +636,18 @@ export class DashboardService {
         return this.getUrl(url);
         
       
+    }
+
+    getPreIntegrationSettingsForMicrosoft(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    savePreIntegrationSettingsForMicrosoft(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
 

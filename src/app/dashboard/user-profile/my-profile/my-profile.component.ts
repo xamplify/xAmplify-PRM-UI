@@ -1734,12 +1734,14 @@ configHubSpot() {
 	}
 
 	configureMicrosoft() {
-		let providerName = 'microsoft';
-		this.configureCRM(providerName, this.microsoftRedirectURL);		
+		this.integrationTabIndex = 3;
+		//let providerName = 'microsoft';
+		//this.configureCRM(providerName, this.microsoftRedirectURL);		
 	}
 
-	reConfigureMicrosoft() {
-
+	closeMicrosoftForm(event: any) {
+		if (event === "0")
+			this.integrationTabIndex = 0;
 	}
 
 	configureCRM(providerName: string, crmRedirectURL: any) {
