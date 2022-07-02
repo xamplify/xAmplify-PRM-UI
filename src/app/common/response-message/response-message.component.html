@@ -20,8 +20,8 @@
         <span aria-hidden="true">&times;</span>
       </button>
       <h4 style="padding-top: 6px;">
-          <span class="text alert-message-fw" id='responseMessage'
-          [innerHTML]="customResponse.responseMessage"></span>
-      </h4>
+				<span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw'"  id='responseMessage'
+				[innerHTML]="customResponse.responseMessage"></span>
+		</h4>
     </div>
   </div>
