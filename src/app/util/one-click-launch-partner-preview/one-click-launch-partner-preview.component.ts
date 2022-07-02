@@ -61,7 +61,9 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
         this.oneClickLaunchStatusCode = response.statusCode;
         if(this.oneClickLaunchStatusCode==200){
             this.oneClickLaunchPartnerCompany = response.data;
-            this.expandList(this.oneClickLaunchPartnerCompany);
+            if(this.showShareLeadsList || this.viewType=="analytics"){
+              this.expandList(this.oneClickLaunchPartnerCompany);
+            }
         }else{
           this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
         }
@@ -92,6 +94,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
           this.openedCount = map.count;
           this.campaignPartnerId = map.campaignPartnerId;
           this.oneClickLaunchLoader = false;
+          this.expandList(this.oneClickLaunchPartnerCompany);
         },
         (error) => {
           this.xtremandLogger.errorPage(error);

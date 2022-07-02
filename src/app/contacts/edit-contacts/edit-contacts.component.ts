@@ -32,6 +32,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -231,7 +232,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
     downloadAssociatedPagination: Pagination = new Pagination();
 	previewLoader: boolean;
-	
+	/****XNFR-130*****/
+	selectAllTeamMemberIds = [];
+	selectAllTeamMemberGroupId = 0;
+	applyForAllClicked = false;
+	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	showSweetAlert = false;
+	selectedPartner: any;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -1681,6 +1688,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
 		this.showNotifyPartnerOption = false;
+		this.applyForAllClicked = false;
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		this.cancelContacts();
 	}
@@ -1713,16 +1721,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		let errorCount = 0;
+		let self = this;
 		$.each(this.users, function(index: number, partner: any) {
 			let contactsLimit = partner.contactsLimit;
-			if (contactsLimit < 1) {
-				errorCount++;
-				$('#contact-count-' + index).css('background-color', 'red');
-			}
+			if(self.applyForAllClicked){
+				partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
+				partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
+			  }
+			 if(contactsLimit < 1){
+				partner.contactsLimit = 1;
+			 }
 		});
 		if (errorCount > 0) {
-			this.contactAndMdfPopupResponse = new CustomResponse('ERROR', 'Minimum 1 contact should be assigned to each partner', true);
 			this.processingPartnersLoader = false;
+			this.resetApplyFilter();
 		} else {
 			this.validatePartnership();
 		}
@@ -1738,16 +1750,26 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					$('#assignContactAndMdfPopup').modal('hide');
 					this.processingPartnersLoader = false;
 					this.showNotifyPartnerOption = false;
+					this.resetApplyFilter();
 					this.saveData();
 				} else {
+					if(this.applyForAllClicked){
+						$.each(this.users,function(index:number,partner:any){
+						  partner.teamMemberGroupId = 0;
+						  partner.selectedTeamMemberIds = [];
+						  partner.expand = false;
+						});
+					  }
 					let emailIds = "";
-					$.each(data.data, function(index: number, emailId: string) {
-						emailIds += (index + 1) + "." + emailId + "<br><br>";
-					});
-					let updatedMessage = data.message + "<br><br>" + emailIds;
-					this.contactAndMdfPopupResponse = new CustomResponse('ERROR', updatedMessage, true);
+					$.each(data.data, function (index: number, emailId: string) {
+						emailIds += index + 1 + "." + emailId + "\n";
+					  });
+					  let updatedMessage = data.message + "\n" + emailIds;
+					  this.contactAndMdfPopupResponse = new CustomResponse("ERROR",updatedMessage,true);
+					this.resetApplyFilter();
 				}
 			}, (error: any) => {
+				this.resetApplyFilter();
 				this.processingPartnersLoader = false;
 				let httpStatusCode = error['status'];
 				if (httpStatusCode != 500) {
@@ -3518,6 +3540,32 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         	this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
         }
     }
+/*******XNFR-130*****/
+applyForAll(selectedPartner: any) {
+    this.selectedPartner = selectedPartner;
+    let message = "Selected Team Member Group will be assigned to all rows";
+    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.confirmButtonText = "Yes";
+    this.showSweetAlert = true;
+  }
 
+  receiveEvent(event:any){
+    if(event){
+      this.processingPartnersLoader = true;
+      this.applyForAllClicked = true;
+      this.selectAllTeamMemberGroupId = this.selectedPartner.teamMemberGroupId;
+      this.selectAllTeamMemberIds = this.selectedPartner.selectedTeamMemberIds;
+      this.validatePartners();
+      this.showSweetAlert = false;
+    }else{
+      this.showSweetAlert = false;
+    }
+  }
+
+  resetApplyFilter(){
+    this.selectAllTeamMemberGroupId = 0;
+    this.selectAllTeamMemberIds = [];
+    this.applyForAllClicked = false;
+  }
     
 }

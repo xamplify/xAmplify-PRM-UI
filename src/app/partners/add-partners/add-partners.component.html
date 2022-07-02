@@ -1298,6 +1298,9 @@
                                         </div>
                                         <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
                                             <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
+                                            <a *ngIf="newPartnerUser?.length>1" (click)="applyForAll(partner)">
+                                                <strong><i class="fa fa-check"></i>Apply For All</strong>
+                                            </a>
                                         </span>
                                       </td>
                                 </tr>
@@ -1325,3 +1328,4 @@
 <!-- Group Preview Popup  (XNFR-85)-->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
 <!-- End of  Group Preview Popup -->
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
