@@ -58,7 +58,9 @@
 					</div>
 				</div>
 							<!-- // -->
-			       <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="!isPartnerView">
+			       <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="!isPartnerView && (authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()
+			       || authenticationService.isMarketingPartner() || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember
+			       || authenticationService.isMarketingAndPartnerTeamMember)">
                    <ul class="mix-filter">
                       <li class="filter" (click)="listAssetsByType('myVideos')" [class.selectedtype]="videoFileService.videoType === 'myVideos'">
                           My Assets

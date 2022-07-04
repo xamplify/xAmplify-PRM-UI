@@ -467,6 +467,16 @@ export class AuthenticationService {
       }
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
+  isMarketingPartner() {
+	    try {
+	      const roleNames = this.getRoles();
+	      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    } catch (error) { this.xtremandLogger.log('error' + error); }
+	  }
   isTeamMember() {
     try {
       const roleNames = this.getRoles();
