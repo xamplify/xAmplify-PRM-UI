@@ -1213,7 +1213,6 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
       this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, this.isChannelCampaign)
         .subscribe(
           data => {
-            console.log(data);
             this.campaignReport.totalYesCount = data.YES;
             this.campaignReport.totalMayBeCount = data.MAYBE;
             this.campaignReport.totalNoCount = data.NO;
