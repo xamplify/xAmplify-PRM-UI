@@ -439,7 +439,7 @@
 
                                                 <div class="col-sm-5 " *ngIf="isPushToCrm" style="display: table-caption;">
                                                     <div class="row ">
-                                                        <div div class="col-md-6" *ngIf="enableLeads">
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="  cenetered-block1">
                                                                 <div class="">
                                                                     <label class="customcheck">
@@ -454,7 +454,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div div class="col-md-6" *ngIf="enableLeads">
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="cenetered-block1">
                                                                 <div class="">
                                                                     <label class="customcheck">
@@ -468,8 +468,21 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-
-
+                                                        </div>
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
+                                                            <div class="cenetered-block1">
+                                                                <div class="">
+                                                                    <label class="customcheck">
+                                                                        <input type="checkbox" [checked]="campaign.pushToMicrosoft"
+                                                                            (click)="pushToCrmRequest('microsoft', $event)">
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
+                                                                    <img class="image-size" src="assets/images/crm/microsoft-crm.png" alt="">
+                                                                    <div>
+                                                                        <h5 class="hidden-xs mr-2" translate>Microsoft Dynamics</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         
                                                     </div>
@@ -987,6 +1000,7 @@
                                                                     <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
                                                                   </td>
                                                                   <td style="text-align: left;">
                                                                     <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
@@ -2570,6 +2584,11 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Microsoft Authentication -->
+<div *ngIf="showMicrosoftAuthenticationForm">
+    <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
 </div>
 
 <div class="modal fade right" id="email_spam_check" *ngIf="emailTemplate" data-backdrop="static" data-keyboard="false">

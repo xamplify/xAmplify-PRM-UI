@@ -30,7 +30,7 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" (click)="closeForm()">CANCEL</button>
-  <button type="button" class="btn btn-primary"
+  <button type="button" class="btn btn-primary" [disabled]="!instanceUrl || !webApiInstanceUrl"
     [class.disabled]="!instanceUrl || !webApiInstanceUrl"
     (click)="validateModelForm()">AUTHORIZE</button>
 </div>

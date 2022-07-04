@@ -30,6 +30,8 @@ import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaig
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 
 declare var $, Papa, swal, Swal: any;
 
@@ -166,7 +168,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	loadingMarketo: boolean;
 	public getMarketoConatacts: any;
 
-public edited=false;
+	public edited = false;
 
 	marketoImageBlur: boolean = false;
 	marketoImageNormal: boolean = false;
@@ -215,13 +217,22 @@ public edited=false;
 	public showModulesPopup = false;
 	public teamMemberGroupId = 0;
 	selectedFilterIndex: number = 1;
-    showFilter = true;
+	showFilter = true;
+
+	microsoftDynamicsImageBlur: boolean = false;
+    microsoftDynamicsImageNormal: boolean = false;
+    microsoftDynamicsSelectContactListOption:any;
+    microsoftDynamicsContactListName: string;
+    showMicrosoftAuthenticationForm: boolean = false;
+    
+
+
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
-		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public campaignService: CampaignService) {
+		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public campaignService: CampaignService, public integrationService: IntegrationService, private dashBoardService: DashboardService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		//Added for Vanity URL
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -372,7 +383,7 @@ public edited=false;
 	}
 
 	downloadEmptyCsv() {
-		window.location.href = this.authenticationService.REST_URL+"userlists/download-default-list/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+		window.location.href = this.authenticationService.REST_URL + "userlists/download-default-list/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
 
 	}
 
@@ -484,9 +495,9 @@ public edited=false;
 		try {
 			this.newUserDetails.length = 0;
 			this.isCompanyDetails = false;
-            /*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
-                this.teamMembersList.push( this.orgAdminsList[i] );
-            }*/
+			/*for ( let i = 0; i < this.orgAdminsList.length; i++ ) {
+				this.teamMembersList.push( this.orgAdminsList[i] );
+			}*/
 			this.teamMembersList.push(this.authenticationService.user.emailId);
 			let emails = []
 			for (let i = 0; i < this.newPartnerUser.length; i++) {
@@ -722,9 +733,9 @@ public edited=false;
 						});
 						this.newPartnerUser.length = 0;
 						this.allselectedUsers.length = 0;
-                        if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-                            this.pagination.partnerTeamMemberGroupFilter = true;
-				            }
+						if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+							this.pagination.partnerTeamMemberGroupFilter = true;
+						}
 						this.loadPartnerList(this.pagination);
 						this.clipBoard = false;
 						this.cancelPartners();
@@ -819,6 +830,7 @@ public edited=false;
 		$('.zohoImageClass').attr('style', 'opacity: 1;');
 		$('.marketoImageClass').attr('style', 'opacity: 1;');
 		$('.hubspotImageClass').attr('style', 'opacity: 1;');
+		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
 		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -926,6 +938,7 @@ public edited=false;
 			$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1020,6 +1033,7 @@ public edited=false;
 		$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 		$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1370,6 +1384,11 @@ public edited=false;
 						} else {
 							this.hubspotImageBlur = true;
 						}
+						if (this.storeLogin.MICROSOFT == true) {
+							this.microsoftDynamicsImageNormal = true;
+						} else {
+							this.microsoftDynamicsImageBlur = true;
+						}
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1466,7 +1485,7 @@ public edited=false;
 	getGoogleContactsUsers() {
 		try {
 			let partnerModuleCustomName = localStorage.getItem('partnerModuleCustomName');
-			let message = 'Retrieving '+partnerModuleCustomName+' from google...! Please Wait...It\'s processing';
+			let message = 'Retrieving ' + partnerModuleCustomName + ' from google...! Please Wait...It\'s processing';
 			swal({
 				text: message,
 				allowOutsideClick: false,
@@ -1505,6 +1524,7 @@ public edited=false;
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -1811,21 +1831,21 @@ public edited=false;
 	}
 
 	showModal() {
-        /*$( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-        $( '#salesforceModal' ).modal( 'show' );
-        $('#salesforceModal').modal('toggle');
-        $("#salesforceModal").modal();*/
+		/*$( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+		$( '#salesforceModal' ).modal( 'show' );
+		$('#salesforceModal').modal('toggle');
+		$("#salesforceModal").modal();*/
 		$('#TestSalesForceModal').modal('show');
 
 	}
 
 	hideModal() {
 		$('#TestSalesForceModal').modal('hide');
-        /*$( '#salesforceModal' ).modal( 'hide' );
-        $( 'body' ).removeClass( 'modal-open' );
-        $( '.modal-backdrop fade in' ).remove();
-        $( '#overlay-modal' ).hide();
-        $( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );*/
+		/*$( '#salesforceModal' ).modal( 'hide' );
+		$( 'body' ).removeClass( 'modal-open' );
+		$( '.modal-backdrop fade in' ).remove();
+		$( '#overlay-modal' ).hide();
+		$( '#salesforceModal' ).appendTo( "body" ).modal( 'hide' );*/
 
 	}
 
@@ -1950,6 +1970,7 @@ public edited=false;
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
@@ -2023,6 +2044,7 @@ public edited=false;
 								$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2074,7 +2096,7 @@ public edited=false;
 			if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9) {
+			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10) {
 				this.openCloudPartnerPopUp();
 			}
 
@@ -2124,6 +2146,14 @@ public edited=false;
 				this.saveHubSpotContacts();
 			} else {
 				this.saveHubSpotContactSelectedUsers();
+			}
+		}
+
+		if (this.selectedAddPartnerOption == 10) {
+			if (this.allselectedUsers.length == 0) {
+				this.saveMicrosoftContacts();
+			} else {
+				this.saveMicrosoftContactSelectedUsers();
 			}
 		}
 
@@ -2325,33 +2355,33 @@ public edited=false;
 		}
 	}
 
-    downloadPartnerList() {
-        this.hasAccess().subscribe(
-            data => {
-                if (data) {
-                    try {
-                        this.downloadAssociatedPagination.userListId = this.partnerListId;
-                        this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
-                        if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-                        	 this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination,this.selectedFilterIndex);
-                        }
-                        this.contactService.downloadContactList(this.downloadAssociatedPagination)
-                            .subscribe(
-                            data => this.downloadFile(data),
-                            (error: any) => {
-                                this.xtremandLogger.error(error);
-                                this.xtremandLogger.errorPage(error);
-                            },
-                            () => this.xtremandLogger.info("download partner List completed")
-                            );
-                    } catch (error) {
-                        this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
-                    }
-                } else {
-                    this.authenticationService.forceToLogout();
-                }
-            }
-        );
+	downloadPartnerList() {
+		this.hasAccess().subscribe(
+			data => {
+				if (data) {
+					try {
+						this.downloadAssociatedPagination.userListId = this.partnerListId;
+						this.downloadAssociatedPagination.userId = this.authenticationService.getUserId();
+						if (this.isPartner && this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+							this.referenceService.setTeamMemberFilterForPagination(this.downloadAssociatedPagination, this.selectedFilterIndex);
+						}
+						this.contactService.downloadContactList(this.downloadAssociatedPagination)
+							.subscribe(
+								data => this.downloadFile(data),
+								(error: any) => {
+									this.xtremandLogger.error(error);
+									this.xtremandLogger.errorPage(error);
+								},
+								() => this.xtremandLogger.info("download partner List completed")
+							);
+					} catch (error) {
+						this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
+					}
+				} else {
+					this.authenticationService.forceToLogout();
+				}
+			}
+		);
 	}
 
 	sendMail(partnerId: number) {
@@ -2497,45 +2527,45 @@ public edited=false;
 	ngAfterViewInit() { }
 
 	ngAfterViewChecked() {
-        let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
-        let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
-        let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
-        let tempZohoAuth = localStorage.getItem('isZohoAuth');
-        let tempValidationMessage : string = '';
-        tempValidationMessage = localStorage.getItem('validationMessage');
-        localStorage.removeItem('isGoogleAuth');
-        localStorage.removeItem('isSalesForceAuth');
-        localStorage.removeItem('isHubSpotAuth');
-        localStorage.removeItem('isZohoAuth');
-        localStorage.removeItem('validationMessage');
-        if (tempCheckGoogleAuth == 'yes' ) {
-        	this.getGoogleContactsUsers();
-        	tempCheckGoogleAuth = 'no';
-            this.contactService.vanitySocialProviderName = "nothing";
-        	//this.router.navigate(['/home/partners/add']);
-        }
-        else if (tempCheckSalesForceAuth == 'yes' ) {
-        	 this.showModal();
-             console.log("AddContactComponent salesforce() Authentication Success");
-             this.checkingPopupValues();
-             tempCheckSalesForceAuth = 'no';
-             this.contactService.vanitySocialProviderName = "nothing";
-        }
-        else if (tempCheckHubSpotAuth == 'yes' ) {
-        	this.showHubSpotModal();
-        	tempCheckHubSpotAuth = 'no';
-            this.contactService.vanitySocialProviderName = "nothing";
-        }else if (tempZohoAuth == 'yes') {
-        	this.zohoShowModal();
-            this.checkingZohoPopupValues();
-            tempZohoAuth = 'no';
-            this.contactService.vanitySocialProviderName = "nothing";
-        }
-        else if (tempValidationMessage!=null && tempValidationMessage.length>0 && this.isPartner) {
-        	swal.close();
-            this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
-        }
-    }
+		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
+		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
+		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempZohoAuth = localStorage.getItem('isZohoAuth');
+		let tempValidationMessage: string = '';
+		tempValidationMessage = localStorage.getItem('validationMessage');
+		localStorage.removeItem('isGoogleAuth');
+		localStorage.removeItem('isSalesForceAuth');
+		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isZohoAuth');
+		localStorage.removeItem('validationMessage');
+		if (tempCheckGoogleAuth == 'yes') {
+			this.getGoogleContactsUsers();
+			tempCheckGoogleAuth = 'no';
+			this.contactService.vanitySocialProviderName = "nothing";
+			//this.router.navigate(['/home/partners/add']);
+		}
+		else if (tempCheckSalesForceAuth == 'yes') {
+			this.showModal();
+			console.log("AddContactComponent salesforce() Authentication Success");
+			this.checkingPopupValues();
+			tempCheckSalesForceAuth = 'no';
+			this.contactService.vanitySocialProviderName = "nothing";
+		}
+		else if (tempCheckHubSpotAuth == 'yes') {
+			this.showHubSpotModal();
+			tempCheckHubSpotAuth = 'no';
+			this.contactService.vanitySocialProviderName = "nothing";
+		} else if (tempZohoAuth == 'yes') {
+			this.zohoShowModal();
+			this.checkingZohoPopupValues();
+			tempZohoAuth = 'no';
+			this.contactService.vanitySocialProviderName = "nothing";
+		}
+		else if (tempValidationMessage != null && tempValidationMessage.length > 0 && this.isPartner) {
+			swal.close();
+			this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
+		}
+	}
 
 
 	ngOnInit() {
@@ -2544,8 +2574,8 @@ public edited=false;
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-            if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-                this.pagination.partnerTeamMemberGroupFilter = true;
+			if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+				this.pagination.partnerTeamMemberGroupFilter = true;
 			}
 			this.defaultPartnerList(this.loggedInUserId);
 			/*if (localStorage.getItem('vanityUrlFilter')) {
@@ -2713,10 +2743,10 @@ public edited=false;
 	}
 
 
-    /**
-     *
-     * MARKETO
-     */
+	/**
+	 *
+	 * MARKETO
+	 */
 
 
 	// Marketo Contacts
@@ -2849,6 +2879,7 @@ public edited=false;
 						$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+						$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3233,35 +3264,35 @@ public edited=false;
 		if (!response.contacts) {
 			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
 		} else {
-            /*this.socialPartnerUsers = [];
-            this.getGoogleConatacts  = response.contacts.length;
-            let socialContact = new SocialContact();safsa
-           // socialContact = response.contacts;
-            for ( var i = 0; i < response.contacts.length; i++ ) {
-                this.xtremandLogger.log("HubSpot Partner :" + response.contacts[i].firstName );
-                socialContact.id = i;
+			/*this.socialPartnerUsers = [];
+			this.getGoogleConatacts  = response.contacts.length;
+			let socialContact = new SocialContact();safsa
+		   // socialContact = response.contacts;
+			for ( var i = 0; i < response.contacts.length; i++ ) {
+				this.xtremandLogger.log("HubSpot Partner :" + response.contacts[i].firstName );
+				socialContact.id = i;
 
 
-                if (this.validateEmailAddress(response.contacts[i].email))
-                {
-                    socialContact.emailId = response.contacts[i].email;
-                    socialContact.firstName = response.contacts[i].firstName;
-                    socialContact.lastName = response.contacts[i].lastName;
+				if (this.validateEmailAddress(response.contacts[i].email))
+				{
+					socialContact.emailId = response.contacts[i].email;
+					socialContact.firstName = response.contacts[i].firstName;
+					socialContact.lastName = response.contacts[i].lastName;
 
-                    socialContact.country = response.contacts[i].country;
-                    socialContact.city = response.contacts[i].city;
-                    socialContact.state = response.contacts[i].state;
-                    socialContact.postalCode = response.contacts[i].postalCode;
-                    socialContact.address = response.contacts[i].address;
-                    socialContact.company = response.contacts[i].company;
-                    socialContact.title = response.contacts[i].title;
-                    socialContact.mobilePhone = response.contacts[i].mobilePhone;
-                    socialContact.website = response.contacts[i].website;
-                }
-                this.socialPartnerUsers.push(socialContact);
-                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
-                        this.socialPartnerUsers.push( socialContact );
-                    }*/
+					socialContact.country = response.contacts[i].country;
+					socialContact.city = response.contacts[i].city;
+					socialContact.state = response.contacts[i].state;
+					socialContact.postalCode = response.contacts[i].postalCode;
+					socialContact.address = response.contacts[i].address;
+					socialContact.company = response.contacts[i].company;
+					socialContact.title = response.contacts[i].title;
+					socialContact.mobilePhone = response.contacts[i].mobilePhone;
+					socialContact.website = response.contacts[i].website;
+				}
+				this.socialPartnerUsers.push(socialContact);
+					if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+						this.socialPartnerUsers.push( socialContact );
+					}*/
 
 			// this.getMarketoConatacts = data.data;
 			this.getGoogleConatacts = response.contacts.length;
@@ -3302,6 +3333,7 @@ public edited=false;
 					$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 					$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 					$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
@@ -3335,6 +3367,29 @@ public edited=false;
 		}
 		else {
 			this.xtremandLogger.error("AddContactComponent saveHubSpotContactSelectedUsers() ContactList Name Error");
+		}
+	}
+
+	saveMicrosoftContacts() {
+		this.socialPartners.socialNetwork = "MICROSOFT";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contacts = this.socialPartnerUsers;
+		if (this.socialPartnerUsers.length > 0) {
+			this.newPartnerUser = this.socialPartners.contacts;
+			this.saveValidEmails();
+		} else
+			this.xtremandLogger.error("AddContactComponent saveMicrosoftContacts() Contacts Null Error");
+
+	}
+
+	saveMicrosoftContactSelectedUsers() {
+		this.newPartnerUser = this.allselectedUsers;
+		if (this.allselectedUsers.length != 0) {
+			this.newPartnerUser = this.allselectedUsers;
+			this.saveValidEmails();
+		}
+		else {
+			this.xtremandLogger.error("AddContactComponent saveMicrosoftContactSelectedUsers() ContactList Name Error");
 		}
 	}
 
@@ -3430,93 +3485,93 @@ public edited=false;
 	}*/
 
 	/**********************Sravan************************ */
-    /*checkingZohoContactsAuthentication() {
-        try {
+	/*checkingZohoContactsAuthentication() {
+		try {
 
-            if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-            }else{
-                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                    this.contactService.checkingZohoAuthentication(this.isPartner)
-                        .subscribe(
-                        ( data: any ) => {
-                            this.storeLogin = data;
-                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                                this.getZohoContactsUsingOAuth2();
-                            } else{
-                                localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "isPartner", data.isPartner );
-                                window.location.href = "" + data.redirectUrl;
-                            }
-                        },
-                        ( error: any ) => {
-                           this.referenceService.showSweetAlertServerErrorMessage();
+			if(this.loggedInThroughVanityUrl){
+				this.referenceService.showSweetAlertInfoMessage();
+			}else{
+				if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
+					this.contactService.checkingZohoAuthentication(this.isPartner)
+						.subscribe(
+						( data: any ) => {
+							this.storeLogin = data;
+							if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+								this.getZohoContactsUsingOAuth2();
+							} else{
+								localStorage.setItem( "userAlias", data.userAlias )
+								localStorage.setItem( "isPartner", data.isPartner );
+								window.location.href = "" + data.redirectUrl;
+							}
+						},
+						( error: any ) => {
+						   this.referenceService.showSweetAlertServerErrorMessage();
 
-                        },
-                        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-                        )
-                }
-            }
+						},
+						() => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
+						)
+				}
+			}
 
 
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
-        }
-    }
+		} catch ( error ) {
+			this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
+		}
+	}
 
-    getZohoContactsUsingOAuth2(){
-        this.socialPartners.socialNetwork = "ZOHO";
-        this.socialPartners.contactType = this.contactType;
-        this.socialPartners.contactType = "CONTACT";
-        swal( {
-            text: 'Retrieving partners from zoho...! Please Wait...It\'s processing',
-            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
-        });
-        this.contactService.getZohoAutherizedContacts(this.socialPartners)
-                .subscribe(
-                data => {
-                    this.getGoogleConatacts = data;
-                    this.zohoImageBlur = false;
-                    this.zohoImageNormal = true;
-                    if ( !this.getGoogleConatacts.contacts ) {
-                        this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
-                        this.selectedAddPartnerOption = 5;
-                        $("button#cancel_button").prop('disabled', false);
-                    } else {
-                        for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
-                            let socialContact = new SocialContact();
-                            socialContact.id = i;
-                            if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
-                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
-                                socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
-                                socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
-                                this.socialPartnerUsers.push( socialContact );
-                            }
-                            this.showFilePreview();
-                            $( "#myModal .close" ).click()
-                            $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                            $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                            $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
-                            $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-                            $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                        }
-                    }
-                    this.selectedAddPartnerOption = 6;
-                    this.setSocialPage( 1 );
-                    swal.close();
-                },
-                ( error: any ) => {
-                    swal.close();
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
-                );
+	getZohoContactsUsingOAuth2(){
+		this.socialPartners.socialNetwork = "ZOHO";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contactType = "CONTACT";
+		swal( {
+			text: 'Retrieving partners from zoho...! Please Wait...It\'s processing',
+			allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+		});
+		this.contactService.getZohoAutherizedContacts(this.socialPartners)
+				.subscribe(
+				data => {
+					this.getGoogleConatacts = data;
+					this.zohoImageBlur = false;
+					this.zohoImageNormal = true;
+					if ( !this.getGoogleConatacts.contacts ) {
+						this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+						this.selectedAddPartnerOption = 5;
+						$("button#cancel_button").prop('disabled', false);
+					} else {
+						for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+							let socialContact = new SocialContact();
+							socialContact.id = i;
+							if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
+								socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
+								socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+								socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+								this.socialPartnerUsers.push( socialContact );
+							}
+							this.showFilePreview();
+							$( "#myModal .close" ).click()
+							$( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+							$( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+							$( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
+							$( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+							$( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+							$( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+							$( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+							$( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+						}
+					}
+					this.selectedAddPartnerOption = 6;
+					this.setSocialPage( 1 );
+					swal.close();
+				},
+				( error: any ) => {
+					swal.close();
+					this.xtremandLogger.error( error );
+					this.xtremandLogger.errorPage( error );
+				},
+				() => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+				);
 
-    }*/
+	}*/
 
 
 	checkingZohoContactsAuthentication() {
@@ -3875,7 +3930,7 @@ public edited=false;
 	/********XNFR-85********/
 	currentPartner: any;
 	showTeamMembers = false;
-	previewLoader =  false;
+	previewLoader = false;
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
 		this.teamMemberGroupId = teamMemberGroupId;
@@ -3916,24 +3971,121 @@ public edited=false;
 	}
 
 	toggleDropDownStatus(partner: any) {
-    if (partner.selectedTeamMemberIds.length > 0) {
-      $("#partner-tm-group-" + partner.index).prop("disabled", true);
-    } else {
-	  partner.teamMemberGroupId=0;
-      $("#partner-tm-group-" + partner.index).prop("disabled", false);
+		if (partner.selectedTeamMemberIds.length > 0) {
+			$("#partner-tm-group-" + partner.index).prop("disabled", true);
+		} else {
+			partner.teamMemberGroupId = 0;
+			$("#partner-tm-group-" + partner.index).prop("disabled", false);
+		}
+	}
+
+	getSelectedIndex(index: number) {
+		this.selectedFilterIndex = index;
+		this.referenceService.setTeamMemberFilterForPagination(this.pagination, index);
+		this.defaultPartnerList(this.loggedInUserId);
+	}
+
+	resetResponse() {
+		this.customResponse = new CustomResponse();
+	}
+	saveTodos(): void {
+		this.edited = true;
+	}
+
+	checkingMicrosoftDynamicsAuthentication() {
+		if (this.selectedAddPartnerOption == 5) {
+			this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+				let response = data;
+				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+					this.xtremandLogger.info("isAuthorize true");
+					this.getMicrosoftContacts();
+				}
+				else {
+					this.showMiscrosoftPreSettingsForm();
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
+			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
+		}
+	}
+
+	getMicrosoftContacts() {
+		this.loading = true;
+		this.integrationService.getContacts('microsoft').subscribe(data => {
+			this.loading = false;
+			let response = data.data;
+			this.selectedAddPartnerOption = 10;
+			this.disableOtherFuctionality = true;
+			this.microsoftDynamicsImageBlur = false;
+			this.microsoftDynamicsImageNormal = true;
+			this.frameMicrosoftPreview(response);
+		});
+	}
+
+	frameMicrosoftPreview(response: any) {
+		if (!response.contacts) {
+			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+		} else {			
+			this.getGoogleConatacts = response.contacts.length;
+			if (response.contacts.length == 0) {
+				this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+			} else {
+				for (var i = 0; i < response.contacts.length; i++) {
+					let socialPartner = new SocialContact();
+					let user = new User();
+					socialPartner.id = i;
+					if (this.validateEmailAddress(response.contacts[i].email)) {
+						socialPartner.emailId = response.contacts[i].email;
+						socialPartner.firstName = response.contacts[i].firstName;
+						socialPartner.lastName = response.contacts[i].lastName;
+
+						socialPartner.country = response.contacts[i].country;
+						socialPartner.city = response.contacts[i].city;
+						socialPartner.state = response.contacts[i].state;
+						socialPartner.postalCode = response.contacts[i].postalCode;
+						socialPartner.address = response.contacts[i].address;
+						socialPartner.company = response.contacts[i].company;
+						socialPartner.title = response.contacts[i].title;
+						socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+						this.socialPartnerUsers.push(socialPartner);
+					}
+
+
+					$("button#sample_editable_1_new").prop('disabled', false);
+					// $( "#Gfile_preview" ).show();
+					this.showFilePreview();
+					$("button#cancel_button").prop('disabled', false);
+					this.hideHubSpotModal();
+					$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+					$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+					$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+					$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+					$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+					$('#salesforceGear').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+				}
+			}
+			this.setSocialPage(1);
+			this.customResponse.isVisible = false;
+			this.selectedAddPartnerOption = 9;
+			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
+		}
+	}
+
+	showMiscrosoftPreSettingsForm() {        
+        this.showMicrosoftAuthenticationForm = true;
     }
-  }
+
+	closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
 	
-	  getSelectedIndex(index:number){
-	      this.selectedFilterIndex = index;
-	      this.referenceService.setTeamMemberFilterForPagination(this.pagination,index);
-	      this.defaultPartnerList(this.loggedInUserId);
-	  }
-	  
-      resetResponse() {
-          this.customResponse = new CustomResponse();
-	  }
-saveTodos():void{
-	this.edited=true;
-}
 }

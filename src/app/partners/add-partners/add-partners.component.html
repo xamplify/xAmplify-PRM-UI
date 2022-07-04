@@ -119,7 +119,7 @@
                             <div class="portlet-body">
                                 <div class="row">
 
-                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
                                         <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Salesforce account"
                                                 height="86" width="90" alt="">
@@ -129,13 +129,13 @@
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';"
                                                  onmouseout="this.src='assets/images/crm/sf.png';" alt="">
                                         </a>
-                                        <div id="salesforceGear" style="position: absolute" id="salesforceGear" *ngIf="sfImageNormal">
+                                        <div id="salesforceGear" style="position: absolute" *ngIf="sfImageNormal">
                                             <a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
                                                 <i id="SgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
                                         <a *ngIf="googleImageBlur" id="googleContact_button" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png" class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Google account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/google.png';" alt="">
@@ -150,7 +150,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
                                         <a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Zoho account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" 
@@ -166,7 +166,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
                                         <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';"
@@ -189,7 +189,7 @@
                                     </div>
 
                                     <!-- Hubspot -->
-                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
                                         <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HubSpot account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
@@ -209,18 +209,17 @@
 											</a>
 										</div> -->
                                     </div>
-
-
-                                    <!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-									<a id="microsoftContact_button" style="background-color: white">
-										<img src="assets/images/crm/dynamicsCmgSoon.png"
-										class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
-										title="Click here to access contacts from your Microsoft CRM account"
-										height="86" width="90" style="margin-bottom: 18px"
-										>
-									</a>
-								</div> -->
-
+                                    <!-- Microsoft -->
+                                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
+                                        <a *ngIf="microsoftDynamicsImageBlur" id="microsoftDynamicsContact_button" style="background-color: white" (click)="checkingMicrosoftDynamicsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}" src="assets/images/crm/microsoft.png" class="microsoftDynamicsImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
+                                                height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/microsoft.png';">
+                                        </a>
+                                        <a *ngIf="microsoftDynamicsImageNormal" id="microsoftDynamicsContact_buttonNormal" style="background-color: white" (click)="checkingMicrosoftDynamicsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}" src="assets/images/crm/microsoft.png" class="microsoftDynamicsImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
+                                                height="86" width="90">
+                                        </a>												
+                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
 
@@ -1119,6 +1118,10 @@
             </div>
         </div>
     </div>
+</div >
+
+<div *ngIf="showMicrosoftAuthenticationForm">
+    <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
 </div>
 
 <!-- T&C Modal -->

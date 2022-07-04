@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -9,7 +10,8 @@ import { DashboardService } from '../dashboard.service';
 @Component({
   selector: 'app-microsoft-authentication',
   templateUrl: './microsoft-authentication.component.html',
-  styleUrls: ['./microsoft-authentication.component.css']
+  styleUrls: ['./microsoft-authentication.component.css'],
+  providers: [RegularExpressions]
 })
 export class MicrosoftAuthenticationComponent implements OnInit {
 
@@ -28,7 +30,7 @@ export class MicrosoftAuthenticationComponent implements OnInit {
   currentUser: string;
 
   constructor(private authenticationService: AuthenticationService, private dashBoardService: DashboardService, 
-    public referenceService: ReferenceService, private vanityUrlService: VanityURLService) { }
+    public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public regularExpressions: RegularExpressions) { }
 
   ngOnInit() {
     this.getPreIntegrationSettings();
@@ -56,10 +58,12 @@ export class MicrosoftAuthenticationComponent implements OnInit {
   validateModelForm() {
     let valid = true;
     let errorMessage = "";
-    if (this.instanceUrl == undefined || this.instanceUrl == null || this.instanceUrl.trim().length <= 0) {
+    if (this.instanceUrl == undefined || this.instanceUrl == null || this.instanceUrl.trim().length <= 0
+    || !this.regularExpressions.URL_PATTERN.test(this.instanceUrl.trim())) {
       valid = false;
       errorMessage = "Please provide valid Instance URL";
-    } else if (this.webApiInstanceUrl == undefined || this.webApiInstanceUrl == null || this.webApiInstanceUrl.trim().length <= 0) {
+    } else if (this.webApiInstanceUrl == undefined || this.webApiInstanceUrl == null || this.webApiInstanceUrl.trim().length <= 0
+    || !this.regularExpressions.URL_PATTERN.test(this.webApiInstanceUrl.trim())) {
       valid = false;
       errorMessage = "Please provide valid Web API Instance URL";
     }

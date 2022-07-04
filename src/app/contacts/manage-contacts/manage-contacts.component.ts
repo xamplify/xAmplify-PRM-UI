@@ -645,7 +645,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
-		else if (contactList.socialNetwork == 'HUBSPOT') {
+		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT') {
 			this.contactListIdForSyncLocal = contactList.id;
             this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
