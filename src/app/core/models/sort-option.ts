@@ -333,8 +333,8 @@ export class SortOption {
 		{ 'name': 'Campaign Name (Z-A)', 'value': 'campaignName-DESC' },
 		{ 'name': 'Launched By (Email Id) (A-Z)', 'value': 'emailId-ASC' },
 		{ 'name': 'Launched By (Email Id) (Z-A)', 'value': 'emailId-DESC' },
-		{ 'name': 'Redistributed (ASC)', 'value': 'redistributedCount-ASC' },
-		{ 'name': 'Redistributed (DESC)', 'value': 'redistributedCount-DESC' }
+		{ 'name': 'Redistributed Count(ASC)', 'value': 'redistributedCount-ASC' },
+		{ 'name': 'Redistributed Count(DESC)', 'value': 'redistributedCount-DESC' }
 	];
 
 	workflowsSortDropDownOptions = [
