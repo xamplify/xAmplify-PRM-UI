@@ -3543,8 +3543,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 /*******XNFR-130*****/
 applyForAll(selectedPartner: any) {
     this.selectedPartner = selectedPartner;
-    let message = "Selected Team Member Group will be assigned to all rows";
-    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.text=this.properties.partnerTeamMemberGroupSelectionSweetAlertMessage;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
     this.showSweetAlert = true;
   }
