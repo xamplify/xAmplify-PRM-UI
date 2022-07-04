@@ -27,9 +27,7 @@
   <div [ngClass]="hidePageContent? '':'page-content'" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads && !showDealForm"
     [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
-
       <ng-template  [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
-
       <button routerLink="/home/campaigns/{{campaign.campaignId}}/checkin"
         *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary"
         id="check-in-css">
@@ -260,10 +258,11 @@
                   <i class="fa fa-users" aria-hidden="true"></i>
                 </div>
                 <div class="camp-details">
-                  <div class="camp-title">List Info</div>
+                  <div class="camp-title" *ngIf="campaign?.oneClickLaunch">Shared List Info</div>
+                  <div class="camp-title" *ngIf="!campaign?.oneClickLaunch">List Info</div>
                   <div class="camp-number">
-                    <strong class="m0">{{campaingContactLists?.length}} List(s)
-                    </strong>
+                    <strong class="m0" *ngIf="!campaign?.oneClickLaunch">{{campaingContactLists?.length}} List(s)</strong>
+                    <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{campaingContactLists?.length}} Shared List(s)</strong>
                   </div>
                   <div class="camp-desc">
                     <span>Click for details</span>
@@ -2644,7 +2643,8 @@
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"
           (click)="clearPaginationValues()"><i class="fa fa-times"></i></button>
         <h4 class="modal-title" id="show_contact-list-info">
-          <span>List Info</span>
+          <span *ngIf="campaign?.oneClickLaunch">Shared List Info</span>
+          <span *ngIf="!campaign?.oneClickLaunch">List Info</span>
         </h4>
       </div>
       <div class="modal-body">

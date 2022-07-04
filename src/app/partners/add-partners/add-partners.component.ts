@@ -1761,7 +1761,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     try {
       if (this.loggedInThroughVanityUrl) {
         this.googleVanityAuthentication();
-        //this.referenceService.showSweetAlertInfoMessage();
       } else {
         if (
           this.selectedAddPartnerOption == 5 &&
@@ -5041,8 +5040,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
   /*******XNFR-130*****/
   applyForAll(selectedPartner: any) {
     this.selectedPartner = selectedPartner;
-    let message = "Selected Team Member Group will be assigned to all rows";
-    this.sweetAlertParameterDto.text=message;
+    this.sweetAlertParameterDto.text=this.properties.partnerTeamMemberGroupSelectionSweetAlertMessage;
     this.sweetAlertParameterDto.confirmButtonText = "Yes";
     this.showSweetAlert = true;
   }

@@ -603,7 +603,7 @@ export class AuthenticationService {
             setTimeout(() => {
               self.router.navigate(['/']);
               $("body").removeClass("logout-loader");
-            }, 2000);
+            }, 1500);
           }else{
             window.location.href = this.envService.CLIENT_URL+"login";
           }
