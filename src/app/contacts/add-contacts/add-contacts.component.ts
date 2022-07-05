@@ -4629,16 +4629,20 @@ vanityCheckingMarketoContactsAuthentication(){
 		}		
 	}
 
-    getMicrosoftContacts(){
+    getMicrosoftContacts() {
         this.loading = true;
         this.integrationService.getContacts('microsoft').subscribe(data => {
             this.loading = false;
-            let response = data.data;
-            this.selectedAddContactsOption = 10;
-            this.disableOtherFuctionality = true;
-            this.microsoftDynamicsImageBlur = false;
-            this.microsoftDynamicsImageNormal = true;
-            this.frameMicrosoftPreview(response);
+            if (data.statusCode == 401) {
+                this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+            } else {
+                let response = data.data;
+                this.selectedAddContactsOption = 10;
+                this.disableOtherFuctionality = true;
+                this.microsoftDynamicsImageBlur = false;
+                this.microsoftDynamicsImageNormal = true;
+                this.frameMicrosoftPreview(response);
+            }
         });
     }
 

@@ -711,6 +711,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						swal.close();
 						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('INFO', data.message, true);
+						} else if (data.statusCode == 401) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						} else {
 							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
 							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
