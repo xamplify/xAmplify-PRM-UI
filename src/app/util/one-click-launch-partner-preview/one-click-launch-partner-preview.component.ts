@@ -65,7 +65,9 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
               this.expandList(this.oneClickLaunchPartnerCompany);
             }
         }else{
-          this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
+          let isCampaignLaunched = response.data;
+          let message = isCampaignLaunched ? 'Partnership has been removed.':'No Data found.';
+          this.oneClickLaunchResponse = new CustomResponse('INFO',message,true);
         }
         this.oneClickLaunchLoader = false;
       },error=>{
