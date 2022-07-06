@@ -488,7 +488,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
      .subscribe(data => {
       this.campaignReport.totalEmailLogs = data;
       this.downloadEmailLogs();
-      //this.emailActionTotalList(campaignId, actionType, this.pagination.totalRecords);
     },
     error => console.log(error),
     () => console.log('emailActionList() completed')  )
@@ -499,20 +498,22 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           this.campaignService.getCampaignHighLevelAnalytics(campaignId, this.loggedInUserId)
           .subscribe(
             response => {
-                this.campaignReport.emailSentCount = response.data.totalEmailsSent;
-                this.campaignReport.totalRecipients = response.data.totalRecipients;
-                this.campaignReport.delivered = response.data.delivered;
-                this.campaignReport.unsubscribed = response.data.unsubscribed;
-                this.campaignReport.softBounce = response.data.softBounce;
-                this.campaignReport.hardBounce = response.data.hardBounce;
-                this.campaignReport.clickthroughRate = response.data.clickthroughRate;
-                this.campaignReport.emailClickedCount = response.data.emailClicked;
-                this.campaignReport.openRate = response.data.openRate;
-                this.campaignReport.activeRecipients = response.data.activeRecipients;
-                this.campaignReport.unsubscribed = response.data.unsubscribed;
-                this.campaignReport.pagesClicked = response.data.pagesClicked;
-                this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
-                this.campaignReport.emailOpenCount = parseInt(response.data.opened);
+              if(response.data!=undefined){
+                  this.campaignReport.emailSentCount = response.data.totalEmailsSent;
+                  this.campaignReport.totalRecipients = response.data.totalRecipients;
+                  this.campaignReport.delivered = response.data.delivered;
+                  this.campaignReport.unsubscribed = response.data.unsubscribed;
+                  this.campaignReport.softBounce = response.data.softBounce;
+                  this.campaignReport.hardBounce = response.data.hardBounce;
+                  this.campaignReport.clickthroughRate = response.data.clickthroughRate;
+                  this.campaignReport.emailClickedCount = response.data.emailClicked;
+                  this.campaignReport.openRate = response.data.openRate;
+                  this.campaignReport.activeRecipients = response.data.activeRecipients;
+                  this.campaignReport.unsubscribed = response.data.unsubscribed;
+                  this.campaignReport.pagesClicked = response.data.pagesClicked;
+                  this.campaignReport.deliveredCount = parseInt(response.data.deliveredCount);
+                  this.campaignReport.emailOpenCount = parseInt(response.data.opened);
+              }
               this.loading = false;
             },
             error => console.log(error),
@@ -520,6 +521,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           )
       } catch (error) { console.error('error' + error); }
     }
+    
     getSocialCampaignByCampaignId(campaignId: number) {
       this.socialAccountsLoader = true;
       try {

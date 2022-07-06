@@ -1229,6 +1229,27 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
+    getRedistributedCount(campaignId:number){
+        let url = this.URL + "campaign/getRedistributedCount/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    isOneClickLaunchChannelCampaign(campaignId:number){
+        let url = this.URL + "campaign/isOneClickLaunchChannelCampaign/"+campaignId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    findOneClickLaunchRedistributedCampaigns(pagination:Pagination){
+        let url = this.URL + "campaign/findOneClickLaunchRedistributedCampaigns?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     private extractData(res: Response) {
         let body = res.json();

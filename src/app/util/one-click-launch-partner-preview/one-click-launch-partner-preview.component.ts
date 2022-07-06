@@ -41,12 +41,13 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   historyList:Array<any> = new Array<any>();
   historyResponse: CustomResponse = new CustomResponse();
   campaignPartnerId = 0;
+  @Input() redistributedCount = 0;
   colspanValue = 2;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    this.showShareLeadsList = this.viewType == undefined;
+    this.showShareLeadsList =  this.viewType == undefined;
     this.getOneClickLaunchCampaignPartnerCompany(this.campaignId);
   }
 
@@ -60,36 +61,49 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
         this.oneClickLaunchStatusCode = response.statusCode;
         if(this.oneClickLaunchStatusCode==200){
             this.oneClickLaunchPartnerCompany = response.data;
-            this.expandList(this.oneClickLaunchPartnerCompany);
+            if(this.showShareLeadsList || this.viewType=="analytics"){
+              this.expandList(this.oneClickLaunchPartnerCompany);
+            }
         }else{
-          this.oneClickLaunchResponse = new CustomResponse('INFO','No Data Found',true);
+          let isCampaignLaunched = response.data;
+          let message = isCampaignLaunched ? 'Partnership has been removed.':'No Data found.';
+          this.oneClickLaunchResponse = new CustomResponse('INFO',message,true);
         }
         this.oneClickLaunchLoader = false;
       },error=>{
         this.oneClickLaunchLoader = false;
         this.oneClickLaunchResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
       },()=>{
-        if(!this.showShareLeadsList){
+        if (!this.showShareLeadsList) {
           this.oneClickLaunchLoader = true;
-          if(this.viewType=="tda" || this.viewType=="teoa"){
-            this.campaignService.getDownloadOrOpenedCount(this.viewType,this.campaignId)
-            .subscribe(
-              response=>{
-                let map = response.data;
-                this.downloadCount = map.count;
-                this.openedCount = map.count;
-                this.campaignPartnerId = map.campaignPartnerId;
-                this.oneClickLaunchLoader = false;
-              },error=>{
-                this.xtremandLogger.errorPage(error);
-              }
-            );
+          if (this.viewType == "tda" || this.viewType == "teoa") {
+            this.getDownloadOrOpenedEmailsCount();
+          }else{
+            this.oneClickLaunchLoader = false;
           }
-          
         }
       }
       );
   }
+
+  getDownloadOrOpenedEmailsCount(){
+    this.campaignService
+      .getDownloadOrOpenedCount(this.viewType, this.campaignId)
+      .subscribe(
+        (response) => {
+          let map = response.data;
+          this.downloadCount = map.count;
+          this.openedCount = map.count;
+          this.campaignPartnerId = map.campaignPartnerId;
+          this.oneClickLaunchLoader = false;
+          this.expandList(this.oneClickLaunchPartnerCompany);
+        },
+        (error) => {
+          this.xtremandLogger.errorPage(error);
+        }
+      );
+  }
+
 
 /****XNFR-125****/
 viewShareLeads(partner:any){
@@ -171,7 +185,7 @@ viewShareLeads(partner:any){
 	} 
 
   expandList(partner:any){
-    if(this.showShareLeadsList){
+    if(this.showShareLeadsList || this.viewType=="analytics"){
       this.viewShareLeads(partner);
     }else if(this.viewType=="tda" || this.viewType=="teoa"){
       partner.expand = !partner.expand;

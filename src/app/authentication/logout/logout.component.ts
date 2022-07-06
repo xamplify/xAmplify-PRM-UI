@@ -11,7 +11,6 @@ export class LogoutComponent implements OnInit {
   constructor(private authenticationService:AuthenticationService,private router: Router) { }
 
   ngOnInit() {
-   // this.authenticationService.reloadLoginPage = true;
     if(this.router.url.indexOf('logout')>-1){
       this.authenticationService.serviceStoppedMessage = 'Service Unavailable Error.';
       this.authenticationService.logout();
