@@ -369,6 +369,7 @@
                             <strong *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                               <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false"
                                 [showInLine]="true" [dateAndTime]="campaign.displayTime">
+                                <!-- setDisplayTimeInUtcString() in CampaignServiceImpl.java -->
                               </app-timestamp>
                               <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                             </strong>
