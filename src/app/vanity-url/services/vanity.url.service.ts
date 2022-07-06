@@ -102,6 +102,7 @@ export class VanityURLService {
     //  let url = "tga.xamplify.com";
    // let url = "movva.xamplify.com";
     let url =window.location.hostname;
+    if (!url.includes("release") && !url.includes("192.168")) {
     //let url="JAVG.xamplify.com";
         if (!url.includes("release") && !url.includes("192.168")) {
       let domainName = url.split('.');

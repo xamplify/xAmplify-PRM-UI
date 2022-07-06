@@ -101,6 +101,17 @@ export class SocialLoginComponent implements OnInit {
 				this.xtremandLogger.error(error);
 			}, () => this.xtremandLogger.log("Salesforce in integrations Configuration Checking done"));
 		}
+		else if (providerName == 'microsoft' && this.isLoggedInVanityUrl == 'true') {
+			this.contactService.vanityConfigMicrosoft().subscribe(data => {
+				let response = data;
+				if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+					window.location.href = "" + response.data.redirectUrl;
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error);
+			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
+
+		}
 
 		else {
 			this.socialService.login(providerName)

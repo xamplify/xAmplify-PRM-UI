@@ -78,7 +78,6 @@ import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-
 import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
 
-
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
