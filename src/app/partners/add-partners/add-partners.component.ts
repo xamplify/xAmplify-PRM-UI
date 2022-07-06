@@ -681,10 +681,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         let self = this;
 		$.each(this.newPartnerUser, function (index: number, partner: any) {
 			let contactsLimit = partner.contactsLimit;
-      if(self.applyForAllClicked){
-        partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
-        partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
-      }
+			if(self.applyForAllClicked){
+				partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
+				partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
+			}
 			if (contactsLimit < 1) {
 				partner.contactsLimit = 1;
 			}
@@ -710,13 +710,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.resetApplyFilter();
 					this.savePartners();
 				} else {
-            if(this.applyForAllClicked){
-              $.each(this.newPartnerUser,function(index:number,partner:any){
-                partner.teamMemberGroupId = 0;
-                partner.selectedTeamMemberIds = [];
-                partner.expand = false;
-              });
-            }
+					if(this.applyForAllClicked){
+						$.each(this.newPartnerUser,function(index:number,partner:any){
+							partner.teamMemberGroupId = 0;
+							partner.selectedTeamMemberIds = [];
+							partner.expand = false;
+						});
+					}
 					let emailIds = "";
 					$.each(data.data, function (index: number, emailId: string) {
 						emailIds += (index + 1) + "." + emailId + "\n";
