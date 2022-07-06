@@ -56,6 +56,10 @@
                         <div class="profile-usertitle-job">
                             {{roleNames}}
                         </div>
+                        <div *ngIf="authenticationService?.module?.upgradeToMarketing" class="profile-usertitle-job" >
+                            <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your Account</button>
+                            <button disabled class="btn btn-primary" *ngIf="isUpgradedRequestSubmitted">Upgrade Request Submitted</button>
+                        </div>
                     </div>
                     <div class="profile-usermenu">
                         <!--------------Account Details----------------------->
@@ -806,14 +810,13 @@
                                                                 <div class="col-md-9 col-lg-9">
                                                                     <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU's General Data Protection Regulations. This includes:
                                                                     </h5>
-                                                                        <ul>
-                                                                            <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
-                                                                            <li id="text-color-my-profile" style="margin-top: 5px" translate>Automatic inclusion of an unsubscribe link in every campaign email</li>
-                                                                        </ul>
-                                                                  
+                                                                    <ul>
+                                                                        <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
+                                                                        <li id="text-color-my-profile" style="margin-top: 5px" translate>Automatic inclusion of an unsubscribe link in every campaign email</li>
+                                                                    </ul>
                                                                     <h5 id="text-color-my-profile">
-                                                                        <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank" translate>Privacy & consent</a>&nbsp; |
-                                                                        <a rel="noopener noreferrer" class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank" translate>Cookies & tracking</a> &nbsp;
+                                                                        <a rel="noopener noreferrer" class="link" href="{{properties.privacyPolicyUrl}}" target="_blank" translate>Privacy & consent</a> &nbsp;|
+                                                                        <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
                                                                     <h5 id="text-color-my-profile" translate>
                                                                         <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
@@ -1723,13 +1726,13 @@
                 <ng-container *ngIf="!addPipelineLoader.isLoading" >
                     <div class="form-group" id="pipelineNameDiv">
                         <label>Name of the Pipeline<font class="required">*</font></label>
-                        <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
+                        <input type="text" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
                         <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
                         <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
                         <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input type="checkbox" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
@@ -1739,9 +1742,9 @@
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <span class="fa fa-ellipsis-v"></span>
-                                    <input type="text" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
+                                    <input type="text" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
-                                    <input type="radio" [disabled]="pipelinePreview" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
+                                    <input type="radio" [disabled]="pipelinePreview || pipeline.salesforcePipeline" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
                                     <span style="margin-right: 5px;">Default</span> 
                                     <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
                                         <option value="markAs">Mark as</option>
@@ -1749,13 +1752,13 @@
                                         <option value="lost">Lost</option>
                                         <option value="none">None</option>
                                     </select>
-                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview"  class="btn-danger button-blue" (click)="deleteStage(x)"
+                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.salesforcePipeline"  class="btn-danger button-blue" (click)="deleteStage(x)"
                                     style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
                                 </li>
                             </ng-container>                            
                           </ul>
                     </div>
-                    <div class="form-group" *ngIf="!pipelinePreview">
+                    <div class="form-group" *ngIf="!pipelinePreview && !pipeline.salesforcePipeline">
                         <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;width: 90px;" (click)="addStage()" >
                             <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
                         </a>
@@ -1860,6 +1863,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
   </div>
 </div>
 </div>
+
+<app-confirm-sweet-alert-util *ngIf="isUpgrading" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 
 
 

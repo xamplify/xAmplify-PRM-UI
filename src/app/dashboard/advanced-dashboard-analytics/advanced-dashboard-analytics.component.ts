@@ -7,6 +7,7 @@ import {AuthenticationService} from 'app/core/services/authentication.service';
 })
 export class AdvancedDashboardAnalyticsComponent implements OnInit {
   @Input() applyFilter:boolean;
+  ngxLoading = false;
   constructor(public authenticationService:AuthenticationService) { 
   }
 

@@ -201,10 +201,14 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 getUpdatedItemsCount(event:any){
     let categoryId = event['categoryId'];
     let itemsCount = event['itemsCount'];
+    let updated = event['updated'];
     if(itemsCount>0){
         itemsCount = itemsCount-1;
     }
     $('#count-'+this.selectedModuleType+"-"+categoryId).text(itemsCount);
+    if(updated){
+        this.searchCategories();
+    }
 }
 
 }

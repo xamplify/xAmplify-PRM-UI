@@ -449,8 +449,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
            this.authenticationService.getUserByUserName( userName )
               .subscribe(
               data => {
-                console.log('logged in user profile info:');
-                console.log(data);
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
                         const currentUser = localStorage.getItem('currentUser');
@@ -471,8 +469,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             userToken['roles'] = this.authenticationService.vanityURLUserRoles;
                         }
                         localStorage.setItem('currentUser', JSON.stringify(userToken));
-                localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-                
+                        localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
               },
               error => {console.log( error ); this.router.navigate(['/su'])},
               () => { }
@@ -498,8 +495,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if( this.companyProfile.phone.length < 6){
                 this.companyProfile.phone = "";
             }
-
-            //this.companyProfileService.save(this.companyProfile, this.loggedInUserId,this.favIconfile,this.bgImageFile)
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
@@ -1624,6 +1619,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
             this.campaignAccess.salesEnablement = false;
             this.campaignAccess.dataShare = false;
+            this.campaignAccess.oneClickLaunch = false;
           }else if(this.vendorTier){
               this.campaignAccess.shareLeads = false;
           }
@@ -1646,5 +1642,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.campaignAccess.lms = false;
               this.campaignAccess.playbooks = false;
           }
+      }
+
+      /****XNFR-125****/
+      updateOneClickLaunchOption(){
+        let isShareLeadsChecked = $('#share-leads-c').is(':checked');
+        if(!isShareLeadsChecked){
+            this.campaignAccess.oneClickLaunch = false;
+        }
       }
 }

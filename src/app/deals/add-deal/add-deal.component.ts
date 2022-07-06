@@ -89,6 +89,8 @@ export class AddDealComponent implements OnInit {
   isDealRegistrationFormValid: boolean = true;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
+  ownDeal: boolean = false;
+  showCommentActions: boolean = false;
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
@@ -110,6 +112,7 @@ export class AddDealComponent implements OnInit {
     this.deal.pipelineId = 0;
     this.deal.pipelineStageId = 0;
     if (this.actionType === "add") {
+      this.showCommentActions = true;
       this.dealFormTitle = "Add a Deal";
       if (this.leadId > 0) {
         this.getLead(this.leadId);        
@@ -254,7 +257,13 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.deal = data.data;            
+            self.deal = data.data; 
+            if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
+              self.ownDeal = true;
+            }   
+            if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
+              self.showCommentActions = true;
+            }           
             if (self.deal.associatedContact != undefined) {
                 self.showContactInfo = true;
                 self.contact = self.deal.associatedContact;

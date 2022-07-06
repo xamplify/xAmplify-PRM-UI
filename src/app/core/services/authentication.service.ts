@@ -48,6 +48,9 @@ export class AuthenticationService {
   isAddedByVendor = false;
   isPartnerTeamMember = false;
   isVendorAndPartnerTeamMember = false;
+  isVendorTeamMember = false;
+  isVendorSuperVisor = false;
+  isOrgAdminSuperVisor = false;
   isOrgAdminAndPartnerTeamMember = false;
   isOrgAdminTeamMember = false ;
   superiorRole = '';
@@ -108,11 +111,10 @@ export class AuthenticationService {
   unauthorized = false;
   moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
   partnerModule:ModuleCustomName = new ModuleCustomName();
- beeHostApi = "";
+  beeHostApi = "";
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
-
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -500,7 +502,7 @@ export class AuthenticationService {
     localStorage.clear();
     this.utilService.topnavBareLoading = false;
     this.isCompanyAdded = false;
-    const module = this.module;
+    let module = this.module;
     module.isOrgAdmin = false;
     this.isShowContact = false;
     module.isContact = false;
@@ -577,10 +579,13 @@ export class AuthenticationService {
     module.isMarektingAndPartner = false;
     module.isMarketingAndPartnerTeamMember = false;
     module.isMarketingCompany = false;
+    module.isPrmCompany = false;
+    module = new Module();
     this.setUserLoggedIn(false);
   }
 
   logout(): void {
+   $("body").addClass("logout-loader");
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
@@ -593,8 +598,12 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
+          let self = this;
           if(this.envService.CLIENT_URL=="http://localhost:4200/"){
-            this.router.navigate(['/']);
+            setTimeout(() => {
+              self.router.navigate(['/']);
+              $("body").removeClass("logout-loader");
+            }, 1500);
           }else{
             window.location.href = this.envService.CLIENT_URL+"login";
           }
@@ -879,6 +888,14 @@ isMarketingCompany(){
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+isPartnershipOnlyWithPrm(){
+  var url = this.REST_URL + "admin/partnershipOnlyWithPrm/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
   
   
 }

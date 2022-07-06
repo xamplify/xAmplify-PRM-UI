@@ -10,6 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
+import { Module } from '../models/module';
 
 declare var window,$: any;
 
@@ -74,6 +75,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			.subscribe(
 				data => {
 					this.menuItem.companyProfileCreated = data.companyProfileCreated;
+					module.companyProfileCreated = data.companyProfileCreated;
 					this.menuItem.accountDashboard = data.accountDashboard;
 					this.menuItem.partners = data.partners;
 					module.isPartner = data.partners;
@@ -138,6 +140,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.loggedInThroughVendorVanityUrl = data.loggedInThroughVendorVanityUrl;
 					this.authenticationService.module.loggedInThroughXamplifyUrl = data.loggedInThroughXamplifyUrl;
 					this.authenticationService.module.adminOrSuperVisor = data.adminOrSuperVisor;
+					this.authenticationService.module.deletedPartner = data.deletedPartner;
+					this.authenticationService.module.upgradeToMarketing = data.upgradeToMarketing;
+					this.authenticationService.module.loginAs = data.loginAs;
+					/*****XNFR-130*****/
+					this.authenticationService.module.prmDashboard = data.prmDashboard;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -158,7 +165,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			);
 	}
 
-	setAuthenticationServiceVariables(module: any, data: any) {
+	setAuthenticationServiceVariables(module: Module, data: any) {
 		module.isContact = data.contacts;
 		module.showCampaignsAnalyticsDivInDashboard = data.showCampaignsAnalyticsDivInDashboard;
 		this.authenticationService.contactsCount = data.contactsCount;
@@ -176,7 +183,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isVendorTierTeamMember = roleDisplayDto.vendorTierTeamMember;
 		module.isVendorTierAndPartner = roleDisplayDto.vendorTierAndPartner;
 		module.isVendorTierAndPartnerTeamMember = roleDisplayDto.vendorTierAndPartnerTeamMember;
+		module.isPrmSuperVisor = roleDisplayDto.prmSuperVisor;
+		module.isMarketingSuperVisor = roleDisplayDto.marketingSuperVisor;
 		this.authenticationService.isVendorAndPartnerTeamMember = roleDisplayDto.vendorAndPartnerTeamMember;
+		this.authenticationService.isVendorTeamMember = roleDisplayDto.vendorTeamMember;
+		this.authenticationService.isVendorSuperVisor = roleDisplayDto.vendorSuperVisor;
+		this.authenticationService.isOrgAdminSuperVisor = roleDisplayDto.orgAdminSuperVisor;
 		this.authenticationService.isOrgAdminAndPartnerTeamMember = roleDisplayDto.orgAdminAndPartnerTeamMember;
 		this.authenticationService.isOrgAdminTeamMember = roleDisplayDto.orgAdminTeamMember;
 		this.authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = data.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner;
@@ -199,6 +211,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isMarektingAndPartner = roleDisplayDto.marketingAndPartner;
     	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
+		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
 	}
 
 	setContentMenu(data: any, module: any) {

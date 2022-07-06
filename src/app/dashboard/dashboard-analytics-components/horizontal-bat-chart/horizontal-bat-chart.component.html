@@ -1,0 +1,22 @@
+<div class="col-xs-12 col-sm-12"  style="padding: 0">
+  <div class="col-xs-12">
+          <div class="portlet-body">
+              <app-modal-popup-loader  [height]=75 [hidden]="!loader"></app-modal-popup-loader>
+              <ng-container *ngIf="!loader && statusCode!=200">
+                  <div class="alert alert-danger">
+                    <strong>{{properties?.serverErrorMessage}}</strong>
+                  </div>
+              </ng-container>
+              <div class="text-center" *ngIf="!loader && totalCount==0">
+                  <div class="alert alert-info">
+                       <strong>No Data Found</strong>
+                   </div>
+              </div>
+              <figure [hidden]="loader || totalCount==0" class="highcharts-figure">
+                  <div id="horizontal-bar-chart-container">
+                  </div>
+              </figure>
+      </div>
+    
+  </div>
+</div> 

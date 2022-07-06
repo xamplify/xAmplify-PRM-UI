@@ -1,3 +1,4 @@
+import { SweetAlertParameterDto } from './../../../common/models/sweet-alert-parameter-dto';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -247,6 +248,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	excludeDomainLoader: HttpRequestLoader = new HttpRequestLoader();
 	microsoftRibbonText: string;
 	microsoftRedirectURL: any;
+	isUpgrading = false;
+	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	isUpgradedRequestSubmitted = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -430,8 +435,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.customConstructorCall();
 			this.geoLocation();
 			this.videoUtilService.normalVideoJsFiles();
-			// const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-			// this.getUserByUserName(currentUser.userName);
 			if (!this.referenceService.isMobileScreenSize()) {
 				this.isGridView(this.authenticationService.getUserId());
 			}
@@ -476,6 +479,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}, false);
 			this.getModuleAccessByUser();
+			this.findUpgradeRequest();
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
@@ -2676,8 +2680,10 @@ configSalesforce() {
 			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
 				if (stage.markAs === "won") {
 					stage.won = true;
+					stage.lost = false;
 				} else if (stage.markAs === "lost") {
 					stage.lost = true;
+					stage.won = false;
 				} else {
 					stage.won = false;
 					stage.lost = false;
@@ -3418,5 +3424,53 @@ configSalesforce() {
             () => { }
             );
     }
+
+	upgrade(){
+		this.isUpgrading = true;
+		this.sweetAlertParameterDto.text="You will be upgraded to Marketing";
+		this.sweetAlertParameterDto.confirmButtonText = "Yes";
+
+	}
+
+	receiveEvent(event:any){
+		if(event){
+			this.ngxloading = true;
+			this.dashBoardService.saveUpgradeRequest().
+			subscribe(
+				response=>{
+					this.ngxloading = false;
+					this.referenceService.showSweetAlertSuccessMessage("Your Request Submitted Successfully");
+					this.isUpgradedRequestSubmitted = true;
+				},error=>{
+					this.ngxloading = false;
+					this.isUpgrading = false;
+					let statusCode = JSON.parse(error['status']);
+					if (statusCode == 409 || statusCode==400) {
+						let errorResponse = JSON.parse(error['_body']);
+						let message = errorResponse['message'];
+						this.isUpgradedRequestSubmitted = true;
+						this.referenceService.showSweetAlertFailureMessage(message);
+					  }else {
+						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}
+				}
+			);
+		}else{
+			this.isUpgrading = false;
+		}
+	}
+
+	findUpgradeRequest(){
+		this.ngxloading = true;
+		this.dashBoardService.isRequestExists().
+		subscribe(
+			response=>{
+				this.isUpgradedRequestSubmitted = response.data;
+			},error=>{
+				this.ngxloading = false;
+				this.isUpgradedRequestSubmitted = false;
+			}
+		);
+	}
 
 }

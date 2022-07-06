@@ -15,10 +15,15 @@ import { SlimLoadingBarModule, SlimLoadingBarService } from 'ng2-slim-loading-ba
 import { CopyrightComponent } from './copyright/copyright.component';
 import { CKEditorModule } from "ng2-ckeditor";
 import { SelectContentModulesComponent } from './select-content-modules/select-content-modules.component';
+import { Top4AssetsComponent } from '../dashboard/dashboard-analytics-components/top-4-assets/top-4-assets.component';
+import { Top4TracksAndPlayBooksComponent } from '../dashboard/dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
+
 @NgModule({
 	imports: [CKEditorModule, CommonModule, RouterModule, SharedModule, SlimLoadingBarModule.forRoot()],
-	declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent, SelectContentModulesComponent],
-	exports: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent],
+	declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent, SelectContentModulesComponent,
+					Top4AssetsComponent,Top4TracksAndPlayBooksComponent],
+	exports: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent,
+				Top4AssetsComponent,Top4TracksAndPlayBooksComponent],
 	providers: [AuthGuard, SlimLoadingBarService,AuthGuardService]
 })
 export class CoreModule { }

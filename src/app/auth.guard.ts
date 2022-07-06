@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     dealsUrl = 'deal';
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
-
+    addCompanyProfileUrl = "/home/dashboard/add-company-profile";
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -52,12 +52,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ 
                 this.router.navigateByUrl('/home/dashboard') 
-              }
+            }
             else if(!this.authenticationService.user.hasCompany) {
-              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
+              if(url.includes(this.addCompanyProfileUrl)){
                 return true;
               } else { 
-                this.goToAccessDenied(url);  
+                this.referenceService.goToRouter(this.addCompanyProfileUrl)
              }
             }else if(url.includes("/home/design/add")){
                 return true;
@@ -112,11 +112,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         try{
         const roles = this.authenticationService.user.roles.map(function(a) {return a.roleName;});
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
-            console.log("In email templats");
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
         }
         if(url.indexOf("/home/contacts/")>-1){
-            return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && url.indexOf("home/contacts/manage")>-1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.contactBaseUrl);
+            }
         }
         if(url.indexOf("/home/partners/")>-1){
             return this.authorizeUrl(roles, url, this.partnerBaseUrl);
@@ -128,10 +131,32 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
         }
         if(url.indexOf(this.campaignBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.indexOf('ROLE_PRM')>-1){
+                if(roles.length==2){
+                    this.goToAccessDenied(this.campaignBaseUrl);
+                }else if(roles.indexOf('ROLE_COMPANY_PARTNER')>-1){
+                    if(url.indexOf("home/campaigns/select")>-1 || url.indexOf("home/campaigns/create")>-1){
+                        this.goToAccessDenied(this.campaignBaseUrl);
+                    }else{
+                        return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                    }
+                }
+            }else{
+                if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
+                || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
+                    return true;
+                }else{
+                    return this.authorizeUrl(roles, url, this.campaignBaseUrl);
+                }
+            }
         }
         if(url.indexOf(this.teamBaseUrl)>-1){
-            return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.teamBaseUrl);
+            }
+            
         }
         if(url.indexOf(this.socialBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);

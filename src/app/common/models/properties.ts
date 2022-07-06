@@ -212,6 +212,26 @@ export class Properties {
 	inActiveMasterPartnerList= 'Inactive Master Partner List';
 
 	sandboxText = "The xAmplify Sandbox instance is ideal for safely designing, loading, updating, and testing all modules of the platform. The xAmplify Sandbox instance type can be used only for testing or user acceptance testing.";
+	oneClickLaunch = "One-Click Launch";
+	/*****Privacy Policy,Cookies,Terms and conidtions urls */
+	privacyPolicyUrl = "https://xamplify.com/privacy-policy-2/";
+	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
+	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
+
+	/***One-Click Launch Error Messages */
+	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available because your account no longer has One-Click Launch access";
+	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
+	oneClickLaunchCampaignRedistributedErrorMessage = "If the campaign has already been redistributed, please use the redistribute option to relaunch it";
+	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is no longer available because your account's One-Click Launch access has been disabled";
+	emptyOneClickLaunchCampaignErrorMessage = "You cannot redistribute the campaign because the vendor deleted the shared list associated with it";
+	/****XNFR-131****/
+	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
+
+
+
+
 
 }
 

@@ -1,5 +1,4 @@
 export class FunnelChartsAnalyticsDto {
-     contactsCount:number;
-	 leadsCount:number;
-	 dealsCounts:number;
+     name:string;
+	 value:number;
 }

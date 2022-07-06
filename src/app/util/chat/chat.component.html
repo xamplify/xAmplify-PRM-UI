@@ -16,7 +16,7 @@
     </ul>
 </div>
 
-<div class="write-new comment-text-area" *ngIf="enableWrite">
+<div class="write-new comment-text-area" *ngIf="enableWrite && !authenticationService?.module?.deletedPartner">
     <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment"
     [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(comment.comment)"></textarea>
     <div>

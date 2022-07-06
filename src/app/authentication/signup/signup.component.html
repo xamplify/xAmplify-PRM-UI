@@ -76,8 +76,8 @@
 				<div class="form-group margin-top-20 margin-bottom-20">
 					<label class="check">
 						<input formControlName="agree" type="checkbox" required /> I agree to the <a class="agree-link"
-							routerLink="../terms-conditions" target="_blank">Terms of Service </a>&<a class="agree-link"
-							routerLink="../privacy-policy" target="_blank"> Privacy Policy </a>
+						href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a class="agree-link"
+						href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
 					</label>
 					<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
 					<div id="register_tnc_error"></div>

@@ -32,7 +32,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
-
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 declare var $, Papa, swal, Swal: any;
 
 @Component({
@@ -218,7 +218,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	public teamMemberGroupId = 0;
 	selectedFilterIndex: number = 1;
 	showFilter = true;
-
+	collapseAll = false;
+  /****XNFR-130*****/
+  selectAllTeamMemberIds = [];
+  selectAllTeamMemberGroupId = 0;
+  applyForAllClicked = false;
+  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  showSweetAlert = false;
+  selectedPartner: any;
 	microsoftDynamicsImageBlur: boolean = false;
     microsoftDynamicsImageNormal: boolean = false;
     microsoftDynamicsSelectContactListOption:any;
@@ -661,6 +668,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('#assignContactAndMdfPopup').modal('hide');
 		this.showNotifyPartnerOption = false;
 		this.newPartnerUser = [];
+        this.resetApplyFilter();
 		this.allselectedUsers = [];
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		this.cancelPartners();
@@ -670,20 +678,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
 		this.contactAndMdfPopupResponse = new CustomResponse();
 		let errorCount = 0;
+        let self = this;
 		$.each(this.newPartnerUser, function (index: number, partner: any) {
 			let contactsLimit = partner.contactsLimit;
+      if(self.applyForAllClicked){
+        partner.teamMemberGroupId = self.selectAllTeamMemberGroupId;
+        partner.selectedTeamMemberIds = self.selectAllTeamMemberIds;
+      }
 			if (contactsLimit < 1) {
-				errorCount++;
-				$('#contact-count-' + index).css('background-color', 'red');
-			} else {
-				if (errorCount > 0) {
-					errorCount--;
-				}
-				$('#contact-count-' + index).css('background-color', '#e9eef2');
+				partner.contactsLimit = 1;
 			}
 		});
 		if (errorCount > 0) {
 			this.processingPartnersLoader = false;
+            this.resetApplyFilter();
 		} else if (errorCount == 0) {
 			this.validatePartnership();
 		}
@@ -699,16 +707,26 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('#assignContactAndMdfPopup').modal('hide');
 					this.showNotifyPartnerOption = false;
 					this.processingPartnersLoader = false;
+                    this.resetApplyFilter();
 					this.savePartners();
 				} else {
+            if(this.applyForAllClicked){
+              $.each(this.newPartnerUser,function(index:number,partner:any){
+                partner.teamMemberGroupId = 0;
+                partner.selectedTeamMemberIds = [];
+                partner.expand = false;
+              });
+            }
 					let emailIds = "";
 					$.each(data.data, function (index: number, emailId: string) {
 						emailIds += (index + 1) + "." + emailId + "\n";
 					});
 					let updatedMessage = data.message + "\n" + emailIds;
 					this.contactAndMdfPopupResponse = new CustomResponse('ERROR', updatedMessage, true);
+											  this.resetApplyFilter();
 				}
 			}, (error: any) => {
+				this.resetApplyFilter();
 				this.processingPartnersLoader = false;
 				let httpStatusCode = error['status'];
 				if (httpStatusCode != 500) {
@@ -3940,7 +3958,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/********XNFR-85********/
 	currentPartner: any;
-	showTeamMembers = false;
 	previewLoader = false;
 	previewModules(teamMemberGroupId: number) {
 		this.previewLoader = true;
@@ -3948,25 +3965,33 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		this.showModulesPopup = true;
 	}
 
-	getTeamMembersByGroupId(partner: any, index: number) {
-		this.processingPartnersLoader = true;
-		if (partner['selectedTeamMemberIds'].length > 0) {
-			partner['selectedTeamMemberIds'] = [];
-			this.referenceService.showSweetAlertErrorMessage("This should not happen.All selected team members are removed");
-		} else {
-			this.getTeamMembers(partner, index);
-		}
-		this.processingPartnersLoader = false;
-	}
+getTeamMembersByGroupId(partner: any, index: number) {
+    this.previewLoader = true;
+    partner.expand = false;
+    setTimeout(() => {
+      this.getTeamMembers(partner, index);
+      this.previewLoader = false;
+    }, 500);
+  }
 
-	getTeamMembers(partner: any, index: number) {
-		if (partner.teamMemberGroupId > 0) {
-			this.previewLoader = true;
-			this.currentPartner = partner;
-			this.currentPartner.index = index;
-			this.showTeamMembers = true;
-		}
-	}
+ getTeamMembers(partner: any, index: number) {
+    /****XNFR-131****/
+    $.each(this.newPartnerUser,function (partnerUserIndex: number, partnerUser: any) {
+        if (index != partnerUserIndex) {
+          partnerUser.expand = false;
+        }
+      }
+    );
+    partner.expand = !partner.expand;
+    if (partner.teamMemberGroupId > 0) {
+      if (partner.expand) {
+        this.currentPartner = partner;
+        this.currentPartner.index = index;
+      }
+    } else {
+      partner.expand = false;
+    }
+  }
 
 
 	hideModulesPreviewPopUp() {
@@ -3977,7 +4002,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	receiveTeamMemberIdsEntity(partner: any) {
 		this.currentPartner = partner;
 		this.toggleDropDownStatus(partner);
-		this.showTeamMembers = false;
 		this.previewLoader = false;
 	}
 
@@ -3985,7 +4009,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		if (partner.selectedTeamMemberIds.length > 0) {
 			$("#partner-tm-group-" + partner.index).prop("disabled", true);
 		} else {
-			partner.teamMemberGroupId = 0;
 			$("#partner-tm-group-" + partner.index).prop("disabled", false);
 		}
 	}
@@ -4100,5 +4123,31 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.showMicrosoftAuthenticationForm = false;
 		}		
 	}
+  /*******XNFR-130*****/
+  applyForAll(selectedPartner: any) {
+    this.selectedPartner = selectedPartner;
+    this.sweetAlertParameterDto.text=this.properties.partnerTeamMemberGroupSelectionSweetAlertMessage;
+    this.sweetAlertParameterDto.confirmButtonText = "Yes";
+    this.showSweetAlert = true;
+  }
+
+  receiveEvent(event:any){
+    if(event){
+      this.processingPartnersLoader = true;
+      this.applyForAllClicked = true;
+      this.selectAllTeamMemberGroupId = this.selectedPartner.teamMemberGroupId;
+      this.selectAllTeamMemberIds = this.selectedPartner.selectedTeamMemberIds;
+      this.validatePartners();
+      this.showSweetAlert = false;
+    }else{
+      this.showSweetAlert = false;
+    }
+  }
+
+  resetApplyFilter(){
+    this.selectAllTeamMemberGroupId = 0;
+    this.selectAllTeamMemberIds = [];
+    this.applyForAllClicked = false;
+  }
 	
 }

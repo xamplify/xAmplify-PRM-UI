@@ -18,3 +18,9 @@
     background-size: 800px 104px;
     position: relative;
 }
+
+.circle-loader-css{
+    width: 300px;
+    margin: 30px auto;
+    border-radius: 50%;
+}

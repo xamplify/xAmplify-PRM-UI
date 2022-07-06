@@ -39,6 +39,9 @@ import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util
 
 import { LeadsService } from '../leads/services/leads.service';
 import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.component';
+import { SelectPartnersAndShareLeadsComponent } from './select-partners-and-share-leads/select-partners-and-share-leads.component';
+import { OneClickLaunchRedistributedComponent } from './analytics/one-click-launch-redistributed/one-click-launch-redistributed.component';
+import { DetailedCampaignAnalyticsComponent } from './analytics/detailed-campaign-analytics/detailed-campaign-analytics.component';
 
 @NgModule({
   imports: [
@@ -75,8 +78,10 @@ import { SpfModalPopupComponent } from './spf-modal-popup/spf-modal-popup.compon
     ClickedUrlsVendorAnalyticsComponent,
     UserLevelTimelineComponent,
     UserCampaignsListUtilComponent,
-    SpfModalPopupComponent
-  ],
+    SpfModalPopupComponent,
+    SelectPartnersAndShareLeadsComponent,
+    OneClickLaunchRedistributedComponent,
+    DetailedCampaignAnalyticsComponent  ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]
