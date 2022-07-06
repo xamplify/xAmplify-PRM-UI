@@ -471,6 +471,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isSalesForceAuth') {
 					localStorage.setItem('isSalesForceAuth', 'yes');
 				}
+				else if (e.data == 'isMicrosoftAuth') {
+					localStorage.setItem('isMicrosoftAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 		} catch (error) {

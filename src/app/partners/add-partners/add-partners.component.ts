@@ -2530,12 +2530,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempZohoAuth = localStorage.getItem('isZohoAuth');
 		let tempValidationMessage: string = '';
 		tempValidationMessage = localStorage.getItem('validationMessage');
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes') {
@@ -2555,7 +2557,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.showHubSpotModal();
 			tempCheckHubSpotAuth = 'no';
 			this.contactService.vanitySocialProviderName = "nothing";
-		} else if (tempZohoAuth == 'yes') {
+		}
+		else if (tempCheckMicrosoftAuth == 'yes') {
+			this.getMicrosoftContacts();
+			tempCheckMicrosoftAuth = 'no';
+			this.contactService.vanitySocialProviderName = "nothing";
+		}
+		else if (tempZohoAuth == 'yes') {
 			this.zohoShowModal();
 			this.checkingZohoPopupValues();
 			tempZohoAuth = 'no';
@@ -2647,6 +2655,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				}
 				else if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
+				}
+				else if (e.data == 'isMicrosoftAuth') {
+					localStorage.setItem('isMicrosoftAuth', 'yes');
 				}
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');

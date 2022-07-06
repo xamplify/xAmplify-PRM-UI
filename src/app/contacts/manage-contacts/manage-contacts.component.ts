@@ -2277,12 +2277,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempValidationMessage : string = '';
         tempValidationMessage = localStorage.getItem('validationMessage');
 
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 
@@ -2303,7 +2305,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.router.navigate(['/home/contacts/add']);
 			tempCheckHubSpotAuth = 'no';
 		}
-		
+		else if (tempCheckMicrosoftAuth == 'yes' && !this.isPartner) {
+			//this.router.navigate(['/home/contacts/add']);
+			this.syncronizeContactList( this.socialContact);
+			tempCheckMicrosoftAuth = 'no';
+		}
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
 			this.syncronizeContactList( this.socialContact);
             tempCheckSalesForceAuth = 'no';
@@ -2400,6 +2406,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	                }
 	                else if (e.data == 'isHubSpotAuth') {
 	                    localStorage.setItem('isHubSpotAuth', 'yes');
+	                }
+					else if (e.data == 'isMicrosoftAuth') {
+	                    localStorage.setItem('isMicrosoftAuth', 'yes');
 	                }
 	                else if (e.data == 'isZohoAuth') {
 	                    localStorage.setItem('isZohoAuth', 'yes');

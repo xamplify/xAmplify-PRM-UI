@@ -3,6 +3,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardService } from '../dashboard.service';
@@ -30,10 +31,25 @@ export class MicrosoftAuthenticationComponent implements OnInit {
   currentUser: string;
 
   constructor(private authenticationService: AuthenticationService, private dashBoardService: DashboardService, 
-    public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public regularExpressions: RegularExpressions) { }
+    public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public regularExpressions: RegularExpressions, 
+    private integrationService: IntegrationService) { }
 
   ngOnInit() {
-    this.getPreIntegrationSettings();
+    this.checkAuthorization(); 
+  }
+
+  checkAuthorization() {
+    this.loading = true;
+    this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
+      this.loading = false;
+			let response = data;      
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.getPreIntegrationSettings();
+			}
+		}, error => {
+      this.loading = false;
+		}, () => {}
+    );
   }
 
   getPreIntegrationSettings() {

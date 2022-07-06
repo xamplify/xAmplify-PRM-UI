@@ -2931,12 +2931,14 @@ salesForceVanityAuthentication() {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+        let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempZohoAuth = localStorage.getItem('isZohoAuth');
 		let tempValidationMessage : string = '';
 		tempValidationMessage = localStorage.getItem('validationMessage');
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+        localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
@@ -2957,6 +2959,11 @@ salesForceVanityAuthentication() {
 		else if (tempCheckHubSpotAuth == 'yes' && !this.isPartner) {
 			this.showHubSpotModal();
             tempCheckHubSpotAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
+		} 
+        else if (tempCheckMicrosoftAuth == 'yes' && !this.isPartner) {
+			this.getMicrosoftContacts();
+            tempCheckMicrosoftAuth = 'no';
             this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
@@ -3107,6 +3114,9 @@ salesForceVanityAuthentication() {
 				}
 				else if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
+				}
+                else if (e.data == 'isMicrosoftAuth') {
+					localStorage.setItem('isMicrosoftAuth', 'yes');
 				}
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');

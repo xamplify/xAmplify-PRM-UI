@@ -447,6 +447,12 @@ export class ContactService {
             .catch(this.handleError);
     }
 
+    vanityConfigMicrosoft() {
+        return this._http.get(this.authenticationService.REST_URL + 'microsoft/' + localStorage.getItem('vanityUserId') + "/authorize" )
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 
     checkingZohoSyncAuthentication() {

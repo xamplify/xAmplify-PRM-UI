@@ -103,6 +103,8 @@ export class VanityURLService {
    // let url = "vendor.xamplify.com";
     let url =window.location.hostname;
 
+   //let url = "3ayag.xamplify.com";
+
     if (!url.includes("release") && !url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
