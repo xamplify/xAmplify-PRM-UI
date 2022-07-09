@@ -240,6 +240,15 @@
               </a>
           </li>
 
+          <!--- Agency (XNFR-83)--->
+          <li *ngIf="authenticationService?.module?.agencyAccess"  [ngClass]="{'active': location.path().includes('agency')}">
+            <a (click)="startLoader()"  [routerLink]="['./agency/']" >
+                <i class="fa fa-user-secret" aria-hidden="true"></i>
+                <span class="title" translate>Agency</span>
+                <span class="selected"></span>
+            </a>
+        </li>
+
           <!-------Configuration-------->
           <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
             <a (click)="startLoader()"  [routerLink]="['/home/dashboard/myprofile']" >

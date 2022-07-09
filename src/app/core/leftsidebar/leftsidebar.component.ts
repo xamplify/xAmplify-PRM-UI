@@ -12,7 +12,7 @@ import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
 import { Module } from '../models/module';
 
-declare var window,$: any;
+declare var window:any, $: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -145,6 +145,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.loginAs = data.loginAs;
 					/*****XNFR-130*****/
 					this.authenticationService.module.prmDashboard = data.prmDashboard;
+					/*******XNFR-83*******/
+					this.authenticationService.module.agencyAccess = data.agencyAccess;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
