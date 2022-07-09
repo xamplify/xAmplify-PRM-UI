@@ -13,13 +13,13 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { AgencyService } from './../services/agency.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { AgencyDto } from './../models/agency-dto';
-
+import { TeamMemberService } from './../../team/services/team-member.service';
 declare var $:any,swal:any;
 @Component({
   selector: 'app-manage-agency',
   templateUrl: './manage-agency.component.html',
   styleUrls: ['./manage-agency.component.css'],
-  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties],
+  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,TeamMemberService],
   animations:[CustomAnimation]
 })
 export class ManageAgencyComponent implements OnInit,OnDestroy {
@@ -30,19 +30,21 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   editAgency = false;
   saveOrUpdateButtonText = "Save";
   agencyDto:AgencyDto = new AgencyDto();
-   /*****Form Related**************/
-   formGroupClass: string = "col-sm-8";
-   emaillIdDivClass: string = this.formGroupClass;
-   groupNameDivClass: string = this.formGroupClass;
-   errorClass: string = "col-sm-8 has-error has-feedback";
-   successClass: string = "col-sm-8 has-success has-feedback";
-   defaultClass: string = this.formGroupClass;
+  defaultModules: Array<any> = new Array<any>();
+  /*****Form Related**************/
+  formGroupClass: string = "col-sm-8";
+  emaillIdDivClass: string = this.formGroupClass;
+  groupNameDivClass: string = this.formGroupClass;
+  errorClass: string = "col-sm-8 has-error has-feedback";
+  successClass: string = "col-sm-8 has-success has-feedback";
+  defaultClass: string = this.formGroupClass;
   /************CSV Related************* */
   showUploadedAgencies = false;
   csvErrors: any[];
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
-    private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties) {
+    private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
+    private teamMemberService:TeamMemberService) {
 
     }
     ngOnDestroy(): void {
@@ -58,11 +60,26 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       if(!agencyAccess){
         this.referenceService.goToPageNotFound();
       }else{
-          
+        this.findDefaultModules();
       }
-      this.referenceService.loading(this.loader,false);
+      this.referenceService.loading(this.loader, false);
     }, 500);
-    
+  }
+
+  findDefaultModules() {
+    this.referenceService.loading(this.addAgencyLoader, true);
+    this.defaultModules = [];
+    this.teamMemberService.findDefaultModules().
+      subscribe(
+        response => {
+          this.defaultModules = response.data.modules;
+          this.referenceService.loading(this.addAgencyLoader, false);
+        }, error => {
+          this.referenceService.loading(this.addAgencyLoader, false);
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          this.logger.errorPage(error);
+        }
+      );
   }
 
   refreshList() {
@@ -77,7 +94,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.showAddAgencyDiv = true;
   }
 
-  clearAddAgencyForm() {
+  clearAgencyForm() {
     this.emaillIdDivClass = this.defaultClass;
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = false;

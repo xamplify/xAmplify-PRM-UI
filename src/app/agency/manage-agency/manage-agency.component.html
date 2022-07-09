@@ -1,8 +1,7 @@
 <div class="page-content" *ngIf="loader.isLoading">
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 </div>
-<!-- [@fadeInOut] -->
-<div class="page-content"  *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
+<div [@fadeInOut] class="page-content"  *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
    <!--Page-bar---->
    <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -38,6 +37,7 @@
     </div>
   </div>
   <!-- End Of CSV Errors---->
+  <!--Add & Manage Agencies-->
   <div class="row">
     <!---Header-->
       <div class="clearfix">
@@ -49,7 +49,7 @@
               </div>
           </div>
             <div class="col-xs-12 col-sm-2">
-                <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddAgency()">
+                <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddAgencyDiv()">
                     <h6 class="fsfpx" translate>Add</h6>
                 </button>
             </div>
@@ -62,14 +62,14 @@
 
     <!--Add Agency Div-->
     <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
-      <div class="portlet light">
+      <div [@fadeInOut] class="portlet light">
         <div class="portlet-title">
           <div class="caption" translate>
             <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>
             <span *ngIf="editAgency">Edit {{properties?.agency}}</span>
           </div>
           <div>
-            <a class="close-circle"  title="Go Back" (click)="clearAgencyDiv()">
+            <a class="close-circle"  title="Go Back" (click)="clearAgencyForm()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -79,6 +79,15 @@
           <form role="form" class="form-horizontal form-bordered form-label-stripped">
             <div class="portlet box">
               <div>
+                <!---Agency Name--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Agency Name</label>
+                      <div class="col-sm-8">
+                        <input type="text" autocomplete="off"  id="agencyName" placeholder="Agency Name" class="form-control" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}" name="agencyName" maxlength="255">
+                      </div>
+                  </div>
+                </div>
                 <!---First Name--->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
@@ -112,6 +121,32 @@
                           <input disabled type="email" class="form-control"   placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
                         </ng-container>
                       </div>
+                  </div>
+                </div>
+
+
+                <!--Modules-->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3" translate>Select Modules<span class="required">*</span></label>
+                    <div class="col-sm-8">
+                        <div class="table-responsive">
+                          <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
+                            <tr *ngFor="let defaultModule of defaultModules;let i = index">
+                              <th scope="row" class="fstcw-tm">
+                                <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                                {{defaultModule?.moduleName}}
+                                <br>
+                              </th>
+                              <th>
+                                <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+                                </switch>
+                              </th>
+                            </tr>
+                          </table>
+                        </div>
+                    </div>
                   </div>
                 </div>
                 <button [disabled]="!agencyDto?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdate()">{{saveOrUpdateButtonText}}</button>
