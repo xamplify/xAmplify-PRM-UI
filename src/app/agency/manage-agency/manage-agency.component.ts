@@ -109,8 +109,32 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       this.agencyDto.validEmailId = this.referenceService.validateEmailId(this.agencyDto.emailId);
       this.agencyDto.emailIdErrorMessage = this.agencyDto.validEmailId ? '' : 'Please enter a valid email address';
       this.emaillIdDivClass = this.agencyDto.validEmailId ? this.successClass : this.errorClass;
-      this.agencyDto.validForm = this.agencyDto.validEmailId;
+      let enabledModulesCount = this.defaultModules.filter((item) => item.enabled).length;
+      this.agencyDto.validForm = this.agencyDto.validEmailId &&  enabledModulesCount > 0;
     }
+  }
+
+  changeStatus(event: any, module: any) {
+    if (module.moduleName == "All") {
+      this.enableOrDisableAllModules(event);
+    } else {
+      module.enabled = event;
+      let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
+      let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
+      let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
+      allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
+    }
+    this.validateAddAgencyForm('emailId');
+    let enabledModules = this.defaultModules.filter((item) => item.enabled);
+    let roleIds = enabledModules.map(function (a) { return a.roleId; });
+    this.agencyDto.roleIds = roleIds;
+  }
+
+  enableOrDisableAllModules(event: any) {
+    let self = this;
+    $.each(self.defaultModules, function (_index: number, defaultModule: any) {
+      defaultModule.enabled = event;
+    });
   }
 
 }

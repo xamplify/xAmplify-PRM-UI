@@ -1667,4 +1667,7 @@ strong {
 .position-relative{
   position: relative;
 }
+.normal-font-weight{
+  font-weight: normal;
+}
 

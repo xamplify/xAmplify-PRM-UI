@@ -124,31 +124,54 @@
                   </div>
                 </div>
 
-
                 <!--Modules-->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3" translate>Select Modules<span class="required">*</span></label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         <div class="table-responsive">
                           <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
-                            <tr *ngFor="let defaultModule of defaultModules;let i = index">
-                              <th scope="row" class="fstcw-tm">
+                            <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+                              <tr *ngIf="0 === i % 2" >
+                                <th  scope="row" class="fstcw-tm">
+                                  <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                                  {{defaultModule?.moduleName}}
+                                  <br>
+                                </th>
+                                <th class="normal-font-weight">
+                                  <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                                  [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+                                  </switch>
+                                </th>
+                              </tr>
+                            </ng-container>
+                          </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="table-responsive">
+                        <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
+                          <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+                            <tr *ngIf="0!= i % 2" >
+                              <th  scope="row" class="fstcw-tm">
                                 <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
                                 {{defaultModule?.moduleName}}
                                 <br>
                               </th>
-                              <th>
+                              <th class="normal-font-weight">
                                 <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
                                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
                                 </switch>
                               </th>
                             </tr>
-                          </table>
-                        </div>
-                    </div>
+                          </ng-container>
+                        </table>
+                      </div>
+                  </div>
+                   
                   </div>
                 </div>
+                
                 <button [disabled]="!agencyDto?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdate()">{{saveOrUpdateButtonText}}</button>
               </div>
             </div>

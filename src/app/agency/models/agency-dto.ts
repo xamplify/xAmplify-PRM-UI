@@ -11,4 +11,5 @@ export class AgencyDto {
     userId = 0;
     emailIdErrorMessage = "";
     validEmailId = false;
+    roleIds = [];
 }
