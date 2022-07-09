@@ -4,7 +4,7 @@ import { AgencyRoutingModule } from './agency-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { ManageAgencyComponent } from './manage-agency/manage-agency.component';
 @NgModule({
-  imports:[AgencyRoutingModule,AgencyService,SharedModule ],
+  imports:[AgencyRoutingModule,SharedModule ],
   declarations: [ManageAgencyComponent],
   providers:[AgencyService]
 })
