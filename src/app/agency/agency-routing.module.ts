@@ -3,7 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { ManageAgencyComponent } from './manage-agency/manage-agency.component';
 
 export const routes: Routes = [
-	{ path: "", component: ManageAgencyComponent },
+  { path: "", redirectTo: "manage", pathMatch: "full" },
+	{ path: "manage", component: ManageAgencyComponent },
 ];
 
 @NgModule({

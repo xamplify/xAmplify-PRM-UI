@@ -1,11 +1,11 @@
+import { AgencyService } from './services/agency.service';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AgencyRoutingModule } from './agency-routing.module';
+import { SharedModule } from '../shared/shared.module';
 import { ManageAgencyComponent } from './manage-agency/manage-agency.component';
-
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [ManageAgencyComponent]
+  imports:[AgencyRoutingModule,AgencyService,SharedModule ],
+  declarations: [ManageAgencyComponent],
+  providers:[AgencyService]
 })
 export class AgencyModule { }

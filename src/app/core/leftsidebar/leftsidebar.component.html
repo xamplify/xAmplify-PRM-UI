@@ -242,7 +242,7 @@
 
           <!--- Agency (XNFR-83)--->
           <li *ngIf="authenticationService?.module?.agencyAccess"  [ngClass]="{'active': location.path().includes('agency')}">
-            <a (click)="startLoader()"  [routerLink]="['./agency/']" >
+            <a (click)="startLoader()"  [routerLink]="['./agency/manage']" >
                 <i class="fa fa-user-secret" aria-hidden="true"></i>
                 <span class="title" translate>Agency</span>
                 <span class="selected"></span>
