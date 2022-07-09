@@ -896,6 +896,18 @@ isPartnershipOnlyWithPrm(){
     .catch(this.handleError);
 }
 
+/*******XNFR-83************/
+hasAgencyAccess(){
+  let input = {};
+  let vanityUrlFilter = this.companyProfileName !== undefined && this.companyProfileName !== '';
+  input['vanityUrlFilter'] = vanityUrlFilter;
+  input['vanityUrlDomainName'] = this.companyProfileName;
+  input['userId'] = this.getUserId();
+  var url = this.REST_URL + "admin/hasAgencyAccess?access_token=" + this.access_token;
+  return this.http.post(url, input)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
   
   
 }

@@ -55,6 +55,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.referenceService.loading(this.loader,true);
+
     setTimeout(() => {
       let agencyAccess = this.authenticationService.module.agencyAccess;
       if(!agencyAccess){
@@ -64,6 +65,10 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       }
       this.referenceService.loading(this.loader, false);
     }, 500);
+  }
+
+  checkAgentAccess(){
+    
   }
 
   findDefaultModules() {
