@@ -1,9 +1,130 @@
 <div class="page-content" *ngIf="loader.isLoading">
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 </div>
+<!-- [@fadeInOut] -->
+<div class="page-content"  *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
+   <!--Page-bar---->
+   <div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li *ngIf="!authenticationService.isSuperAdmin()">
+          <i class="fa fa-home" aria-hidden="true"></i> 
+            <a [routerLink]="referenceService.homeRouter"  translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="authenticationService.isSuperAdmin()">
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <a (click)="goToAdminReport('/home/dashboard/admin-report')"  translate>Admin Report</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li>
+            <a translate>{{properties?.agencies}}</a>
+        </li>
+    </ul>
+  </div>
+  <!--End Of Page-bar---->
+  <!-- CSV Errors---->
+  <div class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
+    <button (click)="referenceService.hideDiv('csv-error-div')" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">x</span>
+    </button>
+    <div>
+        <table class="table table-bordered" aria-describedby="csv-error-messages-table">
+            <ng-container *ngFor="let error of csvErrors">
+                <tr>
+                    <th class="align-bold" id="csverror-th">{{error}}</th>
+                </tr>
+            </ng-container>
+        </table>
+    </div>
+  </div>
+  <!-- End Of CSV Errors---->
+  <div class="row">
+    <!---Header-->
+      <div class="clearfix">
+        <section class="clearfix">
+            <div class="col-xs-6 col-sm-2 hidden-xs">
+              <div class="btn-xs btn-info fileinput-button btn-block rounded-0 position-relative">
+                  <h6 class="text-center fsfpx" translate>Upload a CSV</h6>
+                  <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="agencyCsvInput" accept=".csv" (change)="readCsvFile($event)" />
+              </div>
+          </div>
+            <div class="col-xs-12 col-sm-2">
+                <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddAgency()">
+                    <h6 class="fsfpx" translate>Add</h6>
+                </button>
+            </div>
+            <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
+                <a id="right" class="btn btn-success" (click)="downloadCsv()" download translate>Download CSV Template</a>
+            </div>
+        </section>
+      </div>
+    <!---End Of Header-->
 
-<div class="page-content" *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
-  <h4>This is Agency Component</h4>
+    <!--Add Agency Div-->
+    <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
+      <div class="portlet light">
+        <div class="portlet-title">
+          <div class="caption" translate>
+            <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>
+            <span *ngIf="editAgency">Edit {{properties?.agency}}</span>
+          </div>
+          <div>
+            <a class="close-circle"  title="Go Back" (click)="clearAgencyDiv()">
+              <i class="fa fa-close" aria-hidden="true"></i>
+            </a>
+        </div>
+        </div>
+        <app-modal-popup-loader *ngIf="addAgencyLoader.isLoading"></app-modal-popup-loader>
+        <div *ngIf="!addAgencyLoader.isLoading" class="row" style="margin-top: 20px;">
+          <form role="form" class="form-horizontal form-bordered form-label-stripped">
+            <div class="portlet box">
+              <div>
+                <!---First Name--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">First Name</label>
+                      <div class="col-sm-8">
+                        <input type="text" autocomplete="off"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                      </div>
+                  </div>
+                </div>
+
+                <!---Last Name--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Last Name</label>
+                      <div class="col-sm-8">
+                        <input type="text" autocomplete="off"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
+                      </div>
+                  </div>
+                </div>
+
+                <!---Email Id--->
+                <div class="col-md-12 col-lg-12">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
+                      <div class="{{emaillIdDivClass}}">
+                        <ng-container *ngIf="showAddAgencyDiv">
+                          <input  type="email" autocomplete="off" class="form-control" (input)="validateAddTeamMemberForm('emailId')"  placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <span class="required" *ngIf="team?.emailIdErrorMessage?.length>0">{{team?.emailIdErrorMessage}}</span>
+                        </ng-container>
+                        <ng-container *ngIf="editAgency">
+                          <input disabled type="email" class="form-control"   placeholder="Email" [(ngModel)]="team.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                        </ng-container>
+                      </div>
+                  </div>
+                </div>
+
+                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+  <!--End of Add Agency Div-->
+
+  </div>
 </div>
 
 

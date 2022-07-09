@@ -1660,3 +1660,11 @@ strong {
   filter:blur(15px);
 }
 
+/***XNFR-83****/
+.fsfpx{
+  font-size: 14px;
+}
+.position-relative{
+  position: relative;
+}
+
