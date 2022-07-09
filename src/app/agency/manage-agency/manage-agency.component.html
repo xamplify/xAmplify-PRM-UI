@@ -1,3 +1,9 @@
-<div class="page-content">
+<div class="page-content" *ngIf="loader.isLoading">
+  <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
+</div>
+
+<div class="page-content" *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
   <h4>This is Agency Component</h4>
 </div>
+
+
