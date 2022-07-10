@@ -55,7 +55,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.referenceService.loading(this.loader,true);
-
     setTimeout(() => {
       let agencyAccess = this.authenticationService.module.agencyAccess;
       if(!agencyAccess){

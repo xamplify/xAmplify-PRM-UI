@@ -115,6 +115,7 @@ export class AuthenticationService {
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
+  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -908,6 +909,8 @@ hasAgencyAccess(){
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+
   
   
 }
