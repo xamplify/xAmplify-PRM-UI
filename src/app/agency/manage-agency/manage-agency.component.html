@@ -1,7 +1,7 @@
 <div class="page-content" *ngIf="loader.isLoading">
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 </div>
-<div [@fadeInOut] class="page-content"  *ngIf="!loader.isLoading && authenticationService?.module?.agencyAccess">
+<div [@fadeInOut] class="page-content"  *ngIf="!loader.isLoading && agencyAccess">
    <!--Page-bar---->
    <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -19,7 +19,7 @@
             <a translate>{{properties?.agencies}}</a>
         </li>
     </ul>
-  </div>
+   </div>
   <!--End Of Page-bar---->
   <!-- CSV Errors---->
   <div class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
@@ -37,8 +37,10 @@
     </div>
   </div>
   <!-- End Of CSV Errors---->
+
   <!--Add & Manage Agencies-->
   <div class="row">
+    <div [@fadeInOut] *ngIf="!showAddAgencyDiv && !showUploadedAgencies && !editAgency">
     <!---Header-->
       <div class="clearfix">
         <section class="clearfix">
@@ -59,6 +61,116 @@
         </section>
       </div>
     <!---End Of Header-->
+    <!--List Of Agencies---->
+    <div class="portlet light">
+      <div class="portlet-title">
+        <div class="caption" translate>{{properties?.agencies}}</div>
+        <div class="tools zero-padding-margin">
+            <div class="inputs zero-padding-display-inline">
+                <div class="portlet-input input-inline input-small tmutttpx">
+                    <div class="input-icon right">
+                        <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
+              <i aria-hidden="true" class="fa fa-refresh"></i>
+          </a>
+        </div>
+      </div>
+      <div class="portlet-body clearfix">
+        <div class="table-responsive">
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <table class="table table-striped silvertm" id="agencies" *ngIf="!httpRequestLoader.isLoading" aria-describedby="Agencies">
+            <thead>
+              <tr>
+                <th scope="row">
+                <h4 class="user-permission-min-width" translate>
+                    <img src="assets/images/user-permission.png" alt="No Image Found">
+                    {{properties?.agencies}}
+                </h4>
+                </th>
+                <th  scope="" translate>
+                  <i class="fa fa-lock" aria-hidden="true"></i><br>Status
+                </th>
+                <th scope="" translate>
+                  <i class="fa fa-tasks" aria-hidden="true"></i><br>Actions
+                </th>
+              </tr>
+            </thead>
+            <ng-container *ngIf="pagination.totalRecords>0">
+            <tbody>
+              <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
+                <td>
+                  <app-user-info [isPartnerEntityInfo]="true" [userInfo]="agency"></app-user-info>
+                </td>
+                <!---Enabled---->
+                <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                  <div class="actions-block float-none">
+                    <i class="fa fa-times red" aria-hidden="true"></i>
+                  </div>
+                </td>
+                <td *ngIf="agency?.status!='UNAPPROVED' && agency?.status!='DECLINE'">
+                <div class="actions-block float-none">
+                    <i class="fa fa-check active-status" aria-hidden="true"></i>
+                  </div>
+                </td>
+                <td *ngIf="agency?.status=='DECLINE'" title="This team member is inactive">
+                  <div class="actions-block float-none">
+                    <i class="fa fa-times red" aria-hidden="true"></i>
+                  </div>
+                  </td>
+                <!---Actions-->
+                <td  class="actions-row">
+                  <div class="actions-block override-actions custom-width-icon">
+                    <!--Edit--->
+                    <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(agency.teamMemberId)" >
+                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                    <!---Analytics--->
+                    <a [title]="agency.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="agency.status=='UNAPPROVED'? 'inactive':''" 
+                       (click)="goToCampaignAnalytics(agency)">
+                      <i class="fa fa-line-chart" aria-hidden="true"></i>
+                    </a>
+                    <!--Resend Invitation-->
+                    <ng-container>
+                      <a *ngIf="agency.status=='UNAPPROVED'" title="Resend the invitation email"  (click)="resendEmailInvitation(agency.emailId)">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                      </a>
+                      <a  *ngIf="agency.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                        <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                      </a>
+                    </ng-container>
+                    <!---Delete-->
+                    <a title="Delete"  (click)="showPopup(agency)">
+                      <i class="fa fa-trash red" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </td> 
+            </tr>
+            </tbody>
+          </ng-container>
+          <tr>
+            <td colspan="16">
+                <div *ngIf="pagination.totalRecords==0" class="alert alert-info text-center">
+                  <strong translate>No {{properties?.agencies}} Found</strong>
+              </div>
+            </td>
+        </tr>
+          </table>
+        </div>
+        <!-- -----------Pagination---------------->
+        <div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+            <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
+          </div>
+      </div>
+    </div>
+
+    </div>
 
     <!--Add Agency Div-->
     <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
@@ -171,8 +283,13 @@
                    
                   </div>
                 </div>
+
+
                 
-                <button [disabled]="!agencyDto?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdate()">{{saveOrUpdateButtonText}}</button>
+                <div id="right">
+                  <button [disabled]="!agencyDto?.validForm" type="submit" class="btn btn-primary" (click)="addOrUpdate()">{{saveOrUpdateButtonText}}</button>
+                  <button  type="button" class="btn btn-default" (click)="clearAgencyForm()">Cancel</button>
+                </div>
               </div>
             </div>
           </form>

@@ -23,7 +23,9 @@ declare var $:any,swal:any;
   animations:[CustomAnimation]
 })
 export class ManageAgencyComponent implements OnInit,OnDestroy {
+  agencyAccess = false;
   loader:HttpRequestLoader = new HttpRequestLoader();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   addAgencyLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   showAddAgencyDiv = false;
@@ -31,6 +33,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   saveOrUpdateButtonText = "Save";
   agencyDto:AgencyDto = new AgencyDto();
   defaultModules: Array<any> = new Array<any>();
+  agencies: Array<any> = new Array<any>();
   /*****Form Related**************/
   formGroupClass: string = "col-sm-8";
   emaillIdDivClass: string = this.formGroupClass;
@@ -55,16 +58,37 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.referenceService.loading(this.loader,true);
-    setTimeout(() => {
-      let agencyAccess = this.authenticationService.module.agencyAccess;
-      if(!agencyAccess){
-        this.referenceService.goToPageNotFound();
+    this.authenticationService.hasAgencyAccess().subscribe(
+    response=>{
+      this.agencyAccess = response.statusCode==200;
+    },error=>{
+      this.logger.errorPage(error);
+    },()=>{
+      if(this.agencyAccess){
+        this.referenceService.loading(this.loader,false);
+        this.findAll(this.pagination);
       }else{
-        this.findDefaultModules();
+        this.referenceService.goToPageNotFound();
       }
-      this.referenceService.loading(this.loader, false);
-    }, 500);
+    });
   }
+  
+  findAll(pagination:Pagination){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.scrollSmoothToTop();
+    this.agencyService.findAll(pagination).subscribe(
+      response=>{
+        let data = response.data;
+        this.agencies = data.list;
+        pagination.totalRecords = data.totalRecords;
+        pagination = this.pagerService.getPagedItems(pagination, this.agencies);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.logger.errorPage(error);
+      }
+    );
+  }
+
 
   checkAgentAccess(){
     
@@ -87,7 +111,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 
   refreshList() {
-    throw new Error('Method not implemented.');
+    this.referenceService.scrollSmoothToTop();
   }
 
    /***********Add*******************/
@@ -96,6 +120,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.customResponse = new CustomResponse();
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = true;
+    this.findDefaultModules();
   }
 
   clearAgencyForm() {
