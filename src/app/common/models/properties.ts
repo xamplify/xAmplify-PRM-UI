@@ -233,6 +233,12 @@ export class Properties {
 	agencies = "Agencies";
 	agency = "Agency";
 
+	/****Form Classes*****/
+	formGroupClass: string = "col-sm-8";
+	errorClass: string = "col-sm-8 has-error has-feedback";
+	successClass: string = "col-sm-8 has-success has-feedback";
+	defaultClass: string = this.formGroupClass;
+
 
 
 

@@ -35,12 +35,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   defaultModules: Array<any> = new Array<any>();
   agencies: Array<any> = new Array<any>();
   /*****Form Related**************/
-  formGroupClass: string = "col-sm-8";
-  emaillIdDivClass: string = this.formGroupClass;
-  groupNameDivClass: string = this.formGroupClass;
-  errorClass: string = "col-sm-8 has-error has-feedback";
-  successClass: string = "col-sm-8 has-success has-feedback";
-  defaultClass: string = this.formGroupClass;
+  
   /************CSV Related************* */
   showUploadedAgencies = false;
   csvErrors: any[];
@@ -124,7 +119,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 
   clearAgencyForm() {
-    this.emaillIdDivClass = this.defaultClass;
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = false;
     this.showUploadedAgencies = false;
@@ -135,14 +129,33 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   validateAddAgencyForm(fieldName: string) {
     if ("emailId" == fieldName) {
-      this.agencyDto.validEmailId = this.referenceService.validateEmailId(this.agencyDto.emailId);
-      this.agencyDto.emailIdErrorMessage = this.agencyDto.validEmailId ? '' : 'Please enter a valid email address';
-      this.emaillIdDivClass = this.agencyDto.validEmailId ? this.successClass : this.errorClass;
-      let enabledModulesCount = this.defaultModules.filter((item) => item.enabled).length;
-      this.agencyDto.validForm = this.agencyDto.validEmailId &&  enabledModulesCount > 0;
+        this.validateAgencyEmailId();
+    }else if("agencyName"==fieldName){
+        this.validateAgencyName();
     }
+    let enabledModulesCount = this.defaultModules.filter((item) => item.enabled).length;
+    this.agencyDto.validForm = this.agencyDto.validEmailId && this.agencyDto.validAgencyName &&  enabledModulesCount > 0;
   }
 
+  validateAgencyEmailId(){
+    this.agencyDto.validEmailId = this.referenceService.validateEmailId(this.agencyDto.emailId);
+    this.agencyDto.emailIdErrorMessage = this.agencyDto.validEmailId ? '' : 'Please enter a valid email address';
+    this.agencyDto.emaillIdDivClass = this.referenceService.getSuccessOrErrorClassName(this.agencyDto.validEmailId);
+  }
+
+  validateAgencyName(){
+    let agencyName = this.agencyDto.agencyName;
+    this.agencyDto.validAgencyName = agencyName!=undefined && agencyName!="" && $.trim(agencyName).length>0;
+    this.agencyDto.agencyNameErrorMessage = this.agencyDto.validAgencyName ? '' : 'Please enter Agency Name';
+    this.agencyDto.agencyNameDivClass = this.referenceService.getSuccessOrErrorClassName(this.agencyDto.validAgencyName);
+  }
+
+  validateAgencyForm(){
+    this.validateAddAgencyForm("emailId");
+    this.validateAddAgencyForm("agencyName");
+  }
+
+  
   changeStatus(event: any, module: any) {
     if (module.moduleName == "All") {
       this.enableOrDisableAllModules(event);
@@ -153,7 +166,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
       allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
     }
-    this.validateAddAgencyForm('emailId');
+    this.validateAgencyForm();
     let enabledModules = this.defaultModules.filter((item) => item.enabled);
     let roleIds = enabledModules.map(function (a) { return a.roleId; });
     this.agencyDto.roleIds = roleIds;

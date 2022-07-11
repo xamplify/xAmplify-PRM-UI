@@ -2846,4 +2846,9 @@ export class ReferenceService {
   closeSweetAlert() {
     swal.close();
   }
+
+  /****XNFR-83***/
+  getSuccessOrErrorClassName(condition:boolean){
+    return condition ? this.properties.successClass : this.properties.errorClass;
+  } 
 }
