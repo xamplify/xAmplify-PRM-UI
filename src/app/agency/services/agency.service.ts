@@ -17,7 +17,7 @@ export class AgencyService {
     let size = pagination.maxResults;
     let searchKey = pagination.searchKey;
     let sort = pagination.sortcolumn+","+pagination.sortingOrder;
-    let findAllUrl = this.AGENCY_URL+"&page="+page+"&size="+size+"&sort="+sort+"&search="+searchKey;
+    let findAllUrl = this.AGENCY_URL+"&page="+page+"&size="+size+"&sort="+sort+"&search="+searchKey+"&userId="+this.authenticationService.getUserId();
     return this.http.get(findAllUrl,"")
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);

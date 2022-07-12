@@ -61,6 +61,8 @@
         </section>
       </div>
     <!---End Of Header-->
+
+
     <!--List Of Agencies---->
     <div class="portlet light">
       <div class="portlet-title">
@@ -103,64 +105,59 @@
               </tr>
             </thead>
             <ng-container *ngIf="pagination.totalRecords>0">
-            <tbody>
-              <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
-                <td>
-                  <app-user-info [isPartnerEntityInfo]="true" [userInfo]="agency"></app-user-info>
-                </td>
-                <!---Enabled---->
-                <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
-                  <div class="actions-block float-none">
-                    <i class="fa fa-times red" aria-hidden="true"></i>
-                  </div>
-                </td>
-                <td *ngIf="agency?.status!='UNAPPROVED' && agency?.status!='DECLINE'">
-                <div class="actions-block float-none">
-                    <i class="fa fa-check active-status" aria-hidden="true"></i>
-                  </div>
-                </td>
-                <td *ngIf="agency?.status=='DECLINE'" title="This team member is inactive">
-                  <div class="actions-block float-none">
-                    <i class="fa fa-times red" aria-hidden="true"></i>
-                  </div>
+              <tbody>
+                <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
+                  <td>
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="agency"></app-user-info>
                   </td>
-                <!---Actions-->
-                <td  class="actions-row">
-                  <div class="actions-block override-actions custom-width-icon">
-                    <!--Edit--->
-                    <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(agency.teamMemberId)" >
-                      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </a>
-                    <!---Analytics--->
-                    <a [title]="agency.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="agency.status=='UNAPPROVED'? 'inactive':''" 
-                       (click)="goToCampaignAnalytics(agency)">
-                      <i class="fa fa-line-chart" aria-hidden="true"></i>
-                    </a>
-                    <!--Resend Invitation-->
-                    <ng-container>
-                      <a *ngIf="agency.status=='UNAPPROVED'" title="Resend the invitation email"  (click)="resendEmailInvitation(agency.emailId)">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <!---Enabled---->
+                  <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This account is not activated yet':''">
+                    <div class="actions-block float-none">
+                      <i class="fa fa-times red" aria-hidden="true"></i>
+                    </div>
+                  </td>
+                  <td *ngIf="agency?.status!='UNAPPROVED' && agency?.status!='DECLINE'">
+                  <div class="actions-block float-none">
+                      <i class="fa fa-check active-status" aria-hidden="true"></i>
+                    </div>
+                  </td>
+                  <td *ngIf="agency?.status=='DECLINE'" title="This account is inactive">
+                    <div class="actions-block float-none">
+                      <i class="fa fa-times red" aria-hidden="true"></i>
+                    </div>
+                    </td>
+                  <!---Actions-->
+                  <td  class="actions-row">
+                    <div class="actions-block override-actions custom-width-icon">
+                      <!--Edit--->
+                      <a  title="Edit" (click)="edit(agency.teamMemberId)" >
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       </a>
-                      <a  *ngIf="agency.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
-                        <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                      <!--Resend Invitation-->
+                      <ng-container>
+                        <a *ngIf="agency.status=='UNAPPROVED'" title="Resend the invitation email"  (click)="resendEmailInvitation(agency.emailId)">
+                          <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </a>
+                        <a  *ngIf="agency.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                          <i class="fa fa-envelope gray" aria-hidden="true"></i>
+                        </a>
+                      </ng-container>
+                      <!---Delete-->
+                      <a title="Delete"  (click)="showPopup(agency)">
+                        <i class="fa fa-trash red" aria-hidden="true"></i>
                       </a>
-                    </ng-container>
-                    <!---Delete-->
-                    <a title="Delete"  (click)="showPopup(agency)">
-                      <i class="fa fa-trash red" aria-hidden="true"></i>
-                    </a>
-                  </div>
-                </td> 
+                    </div>
+                  </td> 
+              </tr>
+              </tbody>
+            </ng-container>
+            <tr>
+              <td colspan="16">
+                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info text-center">
+                    <strong translate>No {{properties?.agencies}} Found</strong>
+                </div>
+              </td>
             </tr>
-            </tbody>
-          </ng-container>
-          <tr>
-            <td colspan="16">
-                <div *ngIf="pagination.totalRecords==0" class="alert alert-info text-center">
-                  <strong translate>No {{properties?.agencies}} Found</strong>
-              </div>
-            </td>
-        </tr>
           </table>
         </div>
         <!-- -----------Pagination---------------->
