@@ -54,7 +54,14 @@
 			</label>
 			<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		</div>
-		<div class="row" *ngIf="!authenticationService.vanityURLEnabled" style="border-top: 1px solid #eee;"></div>
+		<div class="row solid-wb"></div>
+		<!--Added On 08/06/20222---->
+		<div class="text-center mt10">
+			<label class="check">
+				<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
+				<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+			</label>
+		</div>
 		<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
 			<h4>Or login with</h4>
 			<ul class="social-icons">

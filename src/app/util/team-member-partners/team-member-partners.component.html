@@ -7,9 +7,9 @@
           <ng-container *ngIf="!apiError">
             <div *ngIf="customResponse.isVisible" class="text-center">
                 <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-                  <a (click)="customResponse.isVisible=false" [ngClass]="customResponse?.responseType=='SUCCESS'? 'close-circle scc':'close-circle ecc' ">
-                    <i class="fa fa-close" aria-hidden="true"></i>
-                  </a>
+                    <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
                   <strong [innerHTML]="customResponse.responseMessage"></strong>
                 </div>
               </div>

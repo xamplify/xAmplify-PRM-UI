@@ -5,7 +5,7 @@
   }
 </style>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div style="position: relative; top:-10px;">
+<div style="position: relative; top:-5px;">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <div class="row">
@@ -128,37 +128,15 @@
                       </a>
                       <span>
                         <ng-container *ngIf="campaign.allowRedistribution">
-                          <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended"
-                          (click)="reDistributeCampaign(campaign)"
-                          data-toggle="tooltip" data-placement="top"
-                          title="Redistribute Campaign" data-rel="fancybox-button">
-                          <i class="fa fa-clone"></i>
-                          </a>
-                          <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended"
-                            data-toggle="tooltip" data-placement="top"
-                            title="Campaign can not be further redistributed" data-rel="fancybox-button">
-                            <i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
-                            </a>
-                          <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
-                          (click)="reDistributeCampaign(campaign)"
-                          data-toggle="tooltip" data-placement="top"
-                          title="Redistribute Campaign" data-rel="fancybox-button">
-                          <i class="fa fa-clone"></i>
-                          </a>
-                          <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"
-                            data-toggle="tooltip" data-placement="top"
-                            title="Not available for cancelled event"
-                            data-rel="fancybox-button">
-                          <i class="fa fa-clone cancelled-event"></i>
-                          </a>
+                            <!----XNFR-125---->
+                          <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                          <!----XNFR-125---->
+                          <ng-template [ngTemplateOutlet]="redistributeIcon" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
+
                         </ng-container>
-                        <ng-container *ngIf="!campaign.allowRedistribution">
-                          <a data-toggle="tooltip" data-placement="top"
-                            title="{{campaign?.redistibuteToolTipMessage}}"
-                            data-rel="fancybox-button">
-                          <i class="fa fa-clone cancelled-event"></i>
-                          </a>
-                        </ng-container>
+                         <!----XNFR-125---->
+                         <ng-template [ngTemplateOutlet]="disableIconsTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                         <!----XNFR-125---->
                         <ng-container class="pull-right"
                           *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
                           <div class="btn-group pull-right" id="download-template"
@@ -256,32 +234,20 @@
                       </div>
                     </div>
                     <div class="bar">
-                      <a *ngIf="campaign.campaignType != 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="preview campaign">
+                      <a *ngIf="campaign.campaignType != 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                       <i class="fa fa-eye mr4" aria-hidden="true"></i>
                       </a>
                       <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                       <i class="fa fa-eye mr5" aria-hidden="true"></i>
                       </a>
                       <ng-container *ngIf="campaign.allowRedistribution">
-                        <a *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-                        <i class="fa fa-clone"></i>
-                        </a>
-                        <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" 
-                          data-toggle="tooltip" data-placement="top" title="Campaign can not be further redistributed" data-rel="fancybox-button">
-                          <i class="fa fa-clone cancelled-event"></i>
-                          </a>
-                        <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-                        <i class="fa fa-clone"></i>
-                        </a>
-                        <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
-                        <i class="fa fa-clone" style="cursor:not-allowed"></i>
-                        </a>
+                        <!----XNFR-125---->
+                        <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
+                        <!----XNFR-125---->
+                        <ng-template [ngTemplateOutlet]="redistributeIcon" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
                       </ng-container>
-                      <ng-container *ngIf="!campaign.allowRedistribution">
-                        <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
-                        <i class="fa fa-clone cancelled-event"></i>
-                        </a>
-                      </ng-container>
+                      <!----XNFR-125---->
+                      <ng-template [ngTemplateOutlet]="disableIconsTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
                       <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
                         <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload">
                           <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;" title="Download"></span>
@@ -307,10 +273,6 @@
                             <i class="fa fa-history" aria-hidden="true"></i>
                             </a>
                       </ng-container>
-                      <!-- <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
-                        data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
-                        <i class="fa fa-download"></i>
-                        </a> -->
                     </div>
                   </div>
                 </div>
@@ -390,3 +352,59 @@
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
 <app-campaign-template-download-history #campaignTemplateDownloadHistoryComponent></app-campaign-template-download-history>
+<!----XNFR-125-->
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
+<!--One Click Launch  Icon-->
+<ng-template #oneClickLaunchIconTemplate let-campaign="campaign">
+  <ng-container *ngIf="campaign?.oneClickLaunch">
+    <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
+      data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
+      !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'" 
+      data-rel="fancybox-button" (click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
+        <i [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i>
+    </a>
+    <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip" 
+      data-placement="top" title="{{properties?.oneClickLaunchCampaignExpiredMessage}}"  data-rel="fancybox-button">
+        <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+    </a>
+    <a  *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
+        data-placement="top" title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
+        <i class="fa fa-hand-pointer-o"></i>
+    </a>
+  </ng-container>
+</ng-template>
+<!--One Click Launch & Redistribute Disabled  Icons-->
+<ng-template #disableIconsTemplate let-campaign="campaign">
+  <ng-container *ngIf="!campaign.allowRedistribution">
+    <!----XNFR-125---->
+    <a data-toggle="tooltip" data-placement="top"
+      title="{{campaign?.redistibuteToolTipMessage}}"
+      data-rel="fancybox-button">
+      <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+    </a>
+    <a data-toggle="tooltip" data-placement="top"
+      title="{{campaign?.redistibuteToolTipMessage}}"
+      data-rel="fancybox-button">
+    <i class="fa fa-rocket cancelled-event" aria-hidden="true"></i>
+    </a>
+  </ng-container>
+</ng-template>
+
+<ng-template #redistributeIcon let-campaign="campaign">
+  <a *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
+  (click)="reDistributeCampaign(campaign)"
+  data-toggle="tooltip" data-placement="top"
+  title="Redistribute Campaign" data-rel="fancybox-button">
+  <i class="fa fa-rocket" aria-hidden="true"></i>
+</a>
+<a *ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)" 
+  data-toggle="tooltip" data-placement="top" [title]= "campaign.ended ? 'Campaign can not be further redistributed':!campaign?.shareLeadsListExists? properties?.emptyOneClickLaunchCampaignErrorMessage:'' " data-rel="fancybox-button">
+  <i class="fa fa-rocket cancelled-event"></i>
+</a>
+<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+<i class="fa fa-rocket"></i>
+</a>
+<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
+<i class="fa fa-rocket" style="cursor:not-allowed"></i>
+</a>
+</ng-template>

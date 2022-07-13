@@ -15,6 +15,7 @@ import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 
 @Injectable()
 export class DashboardService {
+    
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -272,10 +273,6 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-   
-
-
 
     changeAccess(campaignAccess: any) {
         return this.http.post(this.authenticationService.REST_URL + `module/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
@@ -628,15 +625,30 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-/*********funnel chart****** */
+    /*********funnel chart****** */
     getFunnelChartsAnalyticsData(vanityLoginDto:VanityLoginDto) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/getFunnelChartsAnalyticsData?access_token=' + this.authenticationService.access_token;
         return this.http.post(url,vanityLoginDto)
         .map(this.extractData)
         .catch(this.handleError);
     }
-   /************Pie chart ********* */
 
+
+    getPreIntegrationSettingsForMicrosoft(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    savePreIntegrationSettingsForMicrosoft(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+
+   /************Pie chart ********* */
    getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
@@ -706,7 +718,34 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
    }
+  /***XNFR-125*****/
+   findOneClickLaunchScheduledCampaigns(companyId:number){
+    const url = this.superAdminUrl + 'findOneClickLaunchScheduledCampaingsByVendorCompanyId/'+companyId+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+    /********* XNFR-127 *************/
+   /********High Level analytics******* */
+   findActivePartnersAndInActivePartnersForDonutChart(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getActiveAndInActivePartnersForDonut?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
-   
+   findLaunchedAndRedistributedCampiagnsForBarChart(vanityLoginDto:VanityLoginDto){
+    const url = this.authenticationService.REST_URL + 'highlevel/analytics/getLaunchedAndRedistributedCampaignsForBarChart?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+    findHighLevelAnalyticsOfDetailReportsForTotalUsersTile(vanityLoginDto:VanityLoginDto){
+         const url = this.authenticationService.REST_URL + 'highlevel/analytics/detailReports?access_token=' + this.authenticationService.access_token;
+         return this.http.post(url,vanityLoginDto)
+         .map(this.extractData)
+         .catch(this.handleError);
+        }
 
 }

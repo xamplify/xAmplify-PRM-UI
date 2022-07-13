@@ -27,6 +27,8 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 
 declare var swal, $, Papa: any;
 
@@ -180,11 +182,23 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public alias: any;
 	invalidContactNameError = "";
 
+    microsoftDynamicsImageBlur: boolean = false;
+    microsoftDynamicsImageNormal: boolean = false;
+    microsoftDynamicsSelectContactListOption:any;
+    microsoftDynamicsContactListName: string;
+    microsoftService: any;
+    showMicrosoftAuthenticationForm: boolean = false;
+    microsoftInstanceUrl: any;
+    microsoftWebApiInstanceUrl: any;
+    microsoftRedirectUrl: any;
+    microsoftCurrentUser: string;
+    microsoftLoading: boolean = false;
+
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
-        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService) {
+        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService, public integrationService:IntegrationService, private dashBoardService: DashboardService) {
         this.loggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
@@ -328,6 +342,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+            $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -694,6 +709,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.saveHubSpotContactsWithPermission();
         }else if(this.contactOption == 'hubSpotSelectedContacts'){
             this.saveHubSpotSelectedContactsWithPermission();
+        }else if(this.contactOption == 'microsoftContacts'){
+            this.saveExternalContactsWithPermission('microsoft');
+        }else if(this.contactOption == 'microsoftSelectedContacts'){
+            this.saveExternalSelectedContactsWithPermission();
         }
     }
 
@@ -1263,6 +1282,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
             }
 
+            if(this.selectedAddContactsOption == 10){
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveExternalContacts('microsoft');
+                } else{
+                    this.saveExternalContactSelectedUsers('microsoft');
+                }
+            }
+
             if ( this.selectedAddContactsOption == 8 ) {
                 this.noOptionsClickError = true;
             }
@@ -1295,6 +1322,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.marketoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.hubspotImageClass' ).attr( 'style', 'opacity: 1;' );
+        $( '.microsoftImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;' );
@@ -1359,6 +1387,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1388,6 +1417,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+        $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
         $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1558,6 +1588,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -1791,7 +1822,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9) {
+        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10) {
             if ( ev.target.checked ) {
                 console.log( "checked" );
                 $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -2476,6 +2507,7 @@ salesForceVanityAuthentication() {
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -2549,6 +2581,7 @@ salesForceVanityAuthentication() {
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -2754,6 +2787,11 @@ salesForceVanityAuthentication() {
                     } else {
                         this.hubspotImageBlur = true;
                     }
+                    if ( this.storeLogin.MICROSOFT == true ) {
+                        this.microsoftDynamicsImageNormal = true;
+                    } else {
+                        this.microsoftDynamicsImageBlur = true;
+                    }
 
                 },
                 ( error: any ) => {
@@ -2893,12 +2931,14 @@ salesForceVanityAuthentication() {
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+        let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempZohoAuth = localStorage.getItem('isZohoAuth');
 		let tempValidationMessage : string = '';
 		tempValidationMessage = localStorage.getItem('validationMessage');
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+        localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 		if (tempCheckGoogleAuth == 'yes' && !this.isPartner) {
@@ -2920,6 +2960,11 @@ salesForceVanityAuthentication() {
 			this.showHubSpotModal();
             tempCheckHubSpotAuth = 'no';
             this.contactService.vanitySocialProviderName = "nothing";
+		} 
+        else if (tempCheckMicrosoftAuth == 'yes' && !this.isPartner) {
+			this.getMicrosoftContacts();
+            tempCheckMicrosoftAuth = 'no';
+            this.contactService.vanitySocialProviderName = "nothing";
 		}
 		else if (tempValidationMessage!=null && tempValidationMessage.length>0 && !this.isPartner) {
 			swal.close();
@@ -2930,6 +2975,7 @@ salesForceVanityAuthentication() {
     ngOnInit() {
         try {
         	//this.customResponse = new CustomResponse( 'SUCCESS', this.properties.SOCIAL_ACCOUNT_REMOVED_SUCCESS, true );
+            this.loggedInUserId = this.authenticationService.getUserId();
             this.partnerEmails();
             this.socialContactImage();
             //this.hideModal();
@@ -3068,6 +3114,9 @@ salesForceVanityAuthentication() {
 				}
 				else if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
+				}
+                else if (e.data == 'isMicrosoftAuth') {
+					localStorage.setItem('isMicrosoftAuth', 'yes');
 				}
 				else if (e.data == 'isZohoAuth') {
 					localStorage.setItem('isZohoAuth', 'yes');
@@ -3543,6 +3592,7 @@ vanityCheckingMarketoContactsAuthentication(){
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                 }
@@ -3774,6 +3824,23 @@ vanityCheckingMarketoContactsAuthentication(){
 
     }
 
+    checkingMicrosoftContactsAuthentication() {
+        if (this.selectedAddContactsOption == 8) {
+            this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+                let response = data;
+                if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                    this.xtremandLogger.info("isAuthorize true");
+                    this.getMicrosoftContacts();
+                }
+                else {
+                    this.showMiscrosoftPreSettingsForm();
+                }
+            }, (error: any) => {
+                this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
+            }, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
+        }
+    }
+
 	hubSpotVanityAuthentication() {
 		this.contactService.vanitySocialProviderName = 'hubspot';
 		if (this.selectedAddContactsOption == 8) {
@@ -3803,6 +3870,34 @@ vanityCheckingMarketoContactsAuthentication(){
 		}
 	}
 
+    microsoftVanityAuthentication() {
+		this.contactService.vanitySocialProviderName = 'microsoft';
+		if (this.selectedAddContactsOption == 8) {
+			this.microsoftService.config().subscribe(data => {
+				let response = data;
+				let providerName = 'microsoft'
+				if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+					this.xtremandLogger.info("isAuthorize true");
+					this.getMicrosoftContacts();
+				}
+				else {
+					if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+						this.loggedInUserId = this.authenticationService.getUserId();
+						this.hubSpotCurrentUser = localStorage.getItem('currentUser');
+						let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
+						let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + data.userAlias + "/" + data.module + "/" + null ;
+
+						var x = screen.width / 2 - 700 / 2;
+						var y = screen.height / 2 - 450 / 2;
+						window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,addressbar=noresizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+
+					}
+				}
+			}, (error: any) => {
+				this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+			}, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+		}
+	}
     showHubSpotModal() {
         $( '#ContactHubSpotModal' ).modal( 'show' );
     }
@@ -3811,6 +3906,8 @@ vanityCheckingMarketoContactsAuthentication(){
         $( '#ContactHubSpotModal' ).modal( 'hide' );
     }
 
+    
+      
     onChangeHubSpotDropdown( event: Event ) {
         try {
             this.contactType = event.target["value"];
@@ -3918,6 +4015,7 @@ vanityCheckingMarketoContactsAuthentication(){
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
@@ -3930,6 +4028,8 @@ vanityCheckingMarketoContactsAuthentication(){
             this.socialContact.contacts = this.socialContactUsers;
             console.log("Social Contact Users for HubSpot::" + this.socialContactUsers);
     }
+
+   
 
     saveHubSpotContacts() {
         try {
@@ -3951,6 +4051,26 @@ vanityCheckingMarketoContactsAuthentication(){
         }
     }
 
+    saveExternalContacts(type: string) {
+        try {
+           this.socialContact.contacts = this.validateMarketoContacts( this.socialContactUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+            this.socialContact.listName = this.model.contactListName;
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+                if ( this.socialContactUsers.length > 0 ) {
+                    this.askForPermission(type+'Contacts')
+                } else
+                    this.xtremandLogger.error( "AddContactComponent saveExternalContacts() Contacts Null Error" );
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveExternalContacts() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveExternalContacts()." )
+        }
+    }
+
     saveHubSpotContactSelectedUsers() {
         try {
             this.allselectedUsers = this.validateSocialContacts( this.allselectedUsers );
@@ -3965,6 +4085,23 @@ vanityCheckingMarketoContactsAuthentication(){
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent saveHubSpotContactSelectedUsers()." )
+        }
+    }
+
+    saveExternalContactSelectedUsers(type: string) {
+        try {
+            this.allselectedUsers = this.validateSocialContacts( this.allselectedUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {
+               this.askForPermission(type+'SelectedContacts');
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveExternalContactSelectedUsers() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveExternalContactSelectedUsers()." )
         }
     }
 
@@ -4019,6 +4156,57 @@ vanityCheckingMarketoContactsAuthentication(){
         }
     }
 
+    saveExternalContactsWithPermission(type: string) {
+        if (this.assignLeads) {
+            this.contactListObject = new ContactList;
+            this.contactListObject.name = this.model.contactListName;
+            this.contactListObject.isPartnerUserList = this.isPartner;
+            this.contactListObject.synchronisedList = true;
+            this.contactListObject.socialNetwork = type.toLocaleUpperCase();
+            this.contactListObject.contactType  =  "CONTACT";
+            this.contactListObject.publicList = true;
+            this.socialContact.moduleName = this.getModuleName();
+            this.contactListObject.externalListId = this.hubSpotSelectContactListOption;
+            this.setSocialUserObjs();
+            this.setLegalBasisOptions(this.socialUsers);
+
+            this.userUserListWrapper.users = this.socialUsers;
+            this.userUserListWrapper.userList = this.contactListObject;
+            this.saveAssignedLeadsList();
+     } else {
+         this.loading = true;
+         this.socialContact.type = type;
+         this.socialContact.userId = this.authenticationService.getUserId();
+         this.socialContact.externalListId = this.hubSpotSelectContactListOption;
+         this.setLegalBasisOptions(this.socialContact.contacts);
+         this.socialContact.publicList = this.model.isPublic;
+         this.socialContact.moduleName = this.getModuleName();
+         this.integrationService.saveContacts(this.socialContact)
+             .subscribe(
+             data => {
+                 if (data.access) {
+                     this.loading = false;
+                     this.selectedAddContactsOption = 8;
+                     this.contactService.saveAsSuccessMessage = "add";
+                     this.xtremandLogger.info("Save Contacts ListUsers:" + data);
+                     this.router.navigateByUrl('/home/contacts/manage');
+                     localStorage.removeItem('isZohoSynchronization');
+                 } else {
+                     this.authenticationService.forceToLogout();
+                     localStorage.removeItem('isZohoSynchronization');
+                 }
+             },
+
+             (error: any) => {
+                 this.loading = false;
+                 this.xtremandLogger.error(error);
+                 this.xtremandLogger.errorPage(error);
+             },
+             () => this.xtremandLogger.info("addcontactComponent saveExternalContactsWithPermission() finished")
+             )
+     }
+ }
+
     saveHubSpotSelectedContactsWithPermission() {
         if (this.assignLeads) {
             this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
@@ -4067,6 +4255,58 @@ vanityCheckingMarketoContactsAuthentication(){
                     this.xtremandLogger.errorPage(error);
                 },
                 () => this.xtremandLogger.info("addcontactComponent saveHubSpotSelectedContactsWithPermission() finished")
+                )
+        }
+    }
+
+    saveExternalSelectedContactsWithPermission() {
+        if (this.assignLeads) {
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.userUserListWrapper.users = this.allselectedUsers;
+            this.saveAssignedLeadsList();
+        } else {
+            this.loading = true;
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.contactService.saveContactList(this.userUserListWrapper)
+                .subscribe(
+                data => {
+                    if (data.access) {
+                        this.loading = false;
+                        if ( data.statusCode === 401 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message , true );
+                            this.socialUsers=[];
+                        }else if ( data.statusCode === 402 ) {
+                            this.customResponse = new CustomResponse( 'ERROR',  data.message + '<br>' + data.data, true );
+                            this.socialUsers=[];
+                        }else{
+                            this.selectedAddContactsOption = 8;
+                            this.contactService.saveAsSuccessMessage = "add";
+                            this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                            this.disableOtherFuctionality = false;
+                            if (this.isPartner == false) {
+                                this.router.navigateByUrl('/home/contacts/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            } else {
+                                this.router.navigateByUrl('home/partners/manage');
+                                localStorage.removeItem('isZohoSynchronization');
+                            }
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+						localStorage.removeItem('isZohoSynchronization');
+                    }
+                },
+
+                (error: any) => {
+                    this.loading = false;
+                    this.xtremandLogger.error(error);
+                    this.xtremandLogger.errorPage(error);
+                },
+                () => this.xtremandLogger.info("addcontactComponent saveExternalSelectedContactsWithPermission() finished")
                 )
         }
     }
@@ -4388,5 +4628,71 @@ vanityCheckingMarketoContactsAuthentication(){
     resetResponse() {
         this.customResponse = new CustomResponse();
     }
+
+    showMiscrosoftPreSettingsForm() {               
+       this.showMicrosoftAuthenticationForm = true;
+    }
+    
+    closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
+
+    getMicrosoftContacts() {
+        this.loading = true;
+        this.integrationService.getContacts('microsoft').subscribe(data => {
+            this.loading = false;
+            if (data.statusCode == 401) {
+                this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+            } else {
+                let response = data.data;
+                this.selectedAddContactsOption = 10;
+                this.disableOtherFuctionality = true;
+                this.microsoftDynamicsImageBlur = false;
+                this.microsoftDynamicsImageNormal = true;
+                this.frameMicrosoftPreview(response);
+            }
+        });
+    }
+
+    frameMicrosoftPreview(response:any){
+        if ( !response.contacts ) {
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+        } else {
+            this.socialContactUsers = [];            
+            for ( var i = 0; i < response.contacts.length; i++ ) {
+                this.xtremandLogger.log("Contact :" + response.contacts[i].firstName );
+                let socialContact = new SocialContact();
+                socialContact = response.contacts[i];
+                socialContact.id = i;
+                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+                        this.socialContactUsers.push( socialContact );
+                    }
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                    //$( "#Gfile_preview" ).show();
+                    this.showFilePreview();
+                    $( "button#cancel_button" ).prop( 'disabled', false );
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            }
+        }
+            this.setPage( 1 );
+            this.selectedAddContactsOption = 10;
+            this.disableOtherFuctionality = true;
+            this.socialContact.contacts = this.socialContactUsers;
+            console.log("Social Contact Users for Microsoft ::" + this.socialContactUsers);
+    }
+
 
 }

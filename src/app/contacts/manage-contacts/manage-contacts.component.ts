@@ -7,7 +7,7 @@ import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { SocialContact } from '../models/social-contact';
 import { UserListIds } from '../models/user-listIds';
@@ -230,7 +230,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   downloadAssociatedPagination : Pagination = new Pagination();
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
-		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService) {
+		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
+		public route: ActivatedRoute) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 
 		  this.loggedInUserId = this.authenticationService.getUserId();
@@ -429,7 +430,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.contactService.loadAssignedLeadsLists(pagination)
                 .subscribe(
                 (data: any) => {
-                    this.xtremandLogger.info(data);
                     data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
                     this.contactLists = data.listOfUserLists;
                     this.totalRecords = data.totalRecords;
@@ -645,7 +645,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
-		else if (contactList.socialNetwork == 'HUBSPOT') {
+		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT') {
 			this.contactListIdForSyncLocal = contactList.id;
             this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
@@ -711,6 +711,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						swal.close();
 						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('INFO', data.message, true);
+						} else if (data.statusCode == 401) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						} else {
 							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
 							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
@@ -2275,12 +2277,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempValidationMessage : string = '';
         tempValidationMessage = localStorage.getItem('validationMessage');
 
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 
@@ -2301,7 +2305,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.router.navigate(['/home/contacts/add']);
 			tempCheckHubSpotAuth = 'no';
 		}
-		
+		else if (tempCheckMicrosoftAuth == 'yes' && !this.isPartner) {
+			//this.router.navigate(['/home/contacts/add']);
+			this.syncronizeContactList( this.socialContact);
+			tempCheckMicrosoftAuth = 'no';
+		}
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
 			this.syncronizeContactList( this.socialContact);
             tempCheckSalesForceAuth = 'no';
@@ -2310,15 +2318,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			  this.customResponse = new CustomResponse('ERROR', tempValidationMessage, true);
 	        }
 	}
-
 	ngOnInit() {
+		let moduleId =this.route.snapshot.params['id'];
+		if(moduleId != undefined){
+		     this.loadContactsByType(moduleId)
+		}
 		this.callInitMethods();
 	}
 	
 	callInitMethods(){
 	      try {
 	    	  this.getCompanyId();
-	    	  
+			 
 	    	    /*if (this.loggedInThroughVanityUrl){
 	                if (this.socialNetworkForSyncLocal == 'google'
 	                    || this.socialNetworkForSyncLocal == 'salesforce'
@@ -2398,6 +2409,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	                }
 	                else if (e.data == 'isHubSpotAuth') {
 	                    localStorage.setItem('isHubSpotAuth', 'yes');
+	                }
+					else if (e.data == 'isMicrosoftAuth') {
+	                    localStorage.setItem('isMicrosoftAuth', 'yes');
 	                }
 	                else if (e.data == 'isZohoAuth') {
 	                    localStorage.setItem('isZohoAuth', 'yes');

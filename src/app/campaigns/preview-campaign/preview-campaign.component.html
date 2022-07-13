@@ -23,6 +23,9 @@
                          <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
                          <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
                       </span>
+                      <span class="campaign-label now ml5" *ngIf="campaign?.oneClickLaunch">
+                        <strong>{{properties?.oneClickLaunch}}</strong>
+                      </span>
                    </h6>
                    <div class="media col-xs-12">
                       <div class="col-sm-6 col-sm-12">
@@ -89,7 +92,7 @@
                   </div>
                    </div>
                    <!--XNFR-118-->
-                   <ng-container *ngIf="campaign?.emailNotification">
+                   <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign">
                      <div class="media col-xs-12">
                         <!--Email is opened-->
                         <div class="col-xs-6 col-sm-6">
@@ -280,64 +283,74 @@
                       </ng-container>
                    </div>
                 </fieldset>
-                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-                   <legend class="scheduler-border">Selected {{contactType}}:</legend>
-                   <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                   <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
-                   <div class="table-responsive">
-                      <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
-                         <div class="input-icon" style="position:relative;right: -11px;">
-                            <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchCampaignUsers();"></button>
-                            <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i class="fa fa-search" aria-hidden="true"></i></button>
-                         </div>
-                      </div>
-                      <table class="table" aria-describedby="" [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader" id="campaign-preview-contact-list">
-                         <thead>
-                            <tr>
-                               <th scope="row">{{tableHeader}}</th>
-                               <th scope="row">Analytics</th>
-                               <th scope="row" class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">Action</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                            <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
-                               <tr>
-                                  <td>
-                                     <app-user-info [userInfo]="campaignUser"></app-user-info>
-                                  </td>
-                                  <td (click)="viewCampaigns(campaignUser,campaign)" title="Campaign Analytics">
-                                    <div class="actions-block override-actions">
-                                        <a><i class="fa fa-line-chart" aria-hidden="true"></i></a>
-                                    </div>
-                                  </td>
-                                  <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
-                                     <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
-                                        <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
-                                        <span class="hidden-xs pause-text-style">Pause</span>
-                                        <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
-                                        </button>
-                                     </ng-container>
-                                     <ng-container *ngIf="campaignUser.statusInString=='INACTIVE'">
-                                        <button class="btn btn-default workflow-style resume-style" (click)="changeCampaignUserStatus(campaignUser,'Resume')">
-                                        <span class="hidden-xs resume-text-style">Resume</span>
-                                        <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
-                                        </button>
-                                     </ng-container>
-                                  </td>
-                               </tr>
-                            </ng-container>
-                         </tbody>
-                      </table>
-                   </div>
-                   <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0" style="background:white">
-                      <div *ngIf="campaignPartnersOrContactsPagination.pagedItems.length !== 0">
-                         <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-                      </div>
-                   </div>
-                   <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0">No {{contactType}} found</div>
-                </fieldset>
-                <!-- <fieldset> -->
+                <!---Selected Partners/Contacts-->
+                <ng-container *ngIf="!campaign?.oneClickLaunchCondition">
+                  <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                     <legend class="scheduler-border">Selected {{contactType}}:</legend>
+                     <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
+                     <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
+                     <div class="table-responsive">
+                        <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
+                           <div class="input-icon" style="position:relative;right: -11px;">
+                              <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchCampaignUsers();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                           </div>
+                        </div>
+                        <table class="table" aria-describedby="" [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader" id="campaign-preview-contact-list">
+                           <thead>
+                              <tr>
+                                 <th scope="row">{{tableHeader}}</th>
+                                 <th scope="row">Analytics</th>
+                                 <th scope="row" class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
+                                 <tr>
+                                    <td>
+                                       <app-user-info [userInfo]="campaignUser"></app-user-info>
+                                    </td>
+                                    <td (click)="viewCampaigns(campaignUser,campaign)" title="Campaign Analytics">
+                                       <div class="actions-block override-actions">
+                                          <a><i class="fa fa-line-chart" aria-hidden="true"></i></a>
+                                       </div>
+                                    </td>
+                                    <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
+                                       <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
+                                          <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
+                                          <span class="hidden-xs pause-text-style">Pause</span>
+                                          <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                                       </ng-container>
+                                       <ng-container *ngIf="campaignUser.statusInString=='INACTIVE'">
+                                          <button class="btn btn-default workflow-style resume-style" (click)="changeCampaignUserStatus(campaignUser,'Resume')">
+                                          <span class="hidden-xs resume-text-style">Resume</span>
+                                          <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                          </button>
+                                       </ng-container>
+                                    </td>
+                                 </tr>
+                              </ng-container>
+                           </tbody>
+                        </table>
+                     </div>
+                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0" style="background:white">
+                        <div *ngIf="campaignPartnersOrContactsPagination.pagedItems.length !== 0">
+                           <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+                        </div>
+                     </div>
+                     <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0">No {{contactType}} found</div>
+                  </fieldset>
+               </ng-container>
+                <!---XNFR-125---->
+                <ng-container *ngIf="campaign?.oneClickLaunchCondition">
+                  <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                     <legend class="scheduler-border">Selected {{contactType}} Company & Share Leads:</legend>
+                        <app-one-click-launch-partner-preview *ngIf="callOneClickLaunchPreviewComponent" [campaignId]="campaign.campaignId"></app-one-click-launch-partner-preview>
+                     </fieldset>
+                </ng-container>
+               <!---XNFR-125---->
                 <div id="campaign-options-div">
                    <div>
                       <div>
@@ -564,7 +577,8 @@
                       </div>
                    </div>
                 </div>
-                <fieldset *ngIf="campaign?.launched" class="scheduler-border" [style.border-color]="contactListBorderColor" >
+
+                <fieldset *ngIf="campaign?.launched && !campaign?.oneClickLaunchCondition" class="scheduler-border" [style.border-color]="contactListBorderColor" >
                    <legend class="scheduler-border">Analytics </legend>
                    <div>
                       <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
@@ -584,7 +598,7 @@
        <h5>Views</h5>
     </div>
  </div>
- </fieldset>
+               </fieldset>
  </ng-container>
  <div class="swal2-modal show-swal2 visible" style="    display: block;padding: 20px;margin-top: -74px;border: 1px solid #ccc;box-shadow: 0px 0px 20px #f1f1f1;" tabindex="-1" *ngIf="deleteCampaignAlert">
     <div class="swal2-icon swal2-warning pulse-warning" style="display: block;">!</div>
@@ -616,7 +630,7 @@
           (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
           <i class="fa fa-files-o"></i>
           </a>
-          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
+          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
           data-placement="auto" title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
           <i class="fa fa-handshake-o" id="partner-icon"></i>
           </a>
@@ -946,5 +960,4 @@
  <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <!---XNFR-118---->
 <app-edit-campaign-details-modal-popup *ngIf="editButtonClicked" [campaignId]="selectedCampaignId" [navigatedFrom]="'preview'" (resetEmitter)="resetValues($event)"></app-edit-campaign-details-modal-popup>
-
 

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AnalyticsComponent } from "../../campaigns/analytics/analytics.component";
 import { ReferenceService } from '../../core/services/reference.service';
 import { CustomResponse } from '../models/custom-response';
-
+import { DetailedCampaignAnalyticsComponent } from 'app/campaigns/analytics/detailed-campaign-analytics/detailed-campaign-analytics.component';
 @Component({
   selector: 'app-detail-view',
   templateUrl: './detail-view.component.html',
-  styleUrls: ['./detail-view.component.css','../../campaigns/analytics/analytics.component.css','../../campaigns/analytics/timeline.css']
+  styleUrls: ['./detail-view.component.css','../../campaigns/analytics/detailed-campaign-analytics/detailed-campaign-analytics.component.css','../../campaigns/analytics/timeline.css']
 })
 export class DetailViewComponent implements OnInit {
     @Input() detailType: any;
@@ -21,7 +20,7 @@ export class DetailViewComponent implements OnInit {
     reminderSuccessMessage = false;
     customResponse: CustomResponse = new CustomResponse();
     
-  constructor(public analyticsComponent: AnalyticsComponent, public referenceService: ReferenceService) { }
+  constructor(public analyticsComponent: DetailedCampaignAnalyticsComponent, public referenceService: ReferenceService) { }
   
   sendEmailNotOpenReminder(details: any){
     this.isOpenNotificationModal = true;

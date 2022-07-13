@@ -9,7 +9,6 @@ import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
@@ -33,7 +32,7 @@ export class MarketingRoleRequestsComponent implements OnInit {
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
-		public logger: XtremandLogger, public sortOption: SortOption, private utilService: UtilService) {
+		public logger: XtremandLogger, public sortOption: SortOption) {
 		if (this.authenticationService.getUserId() != 1) {
 			this.router.navigate(['/access-denied']);
 		}

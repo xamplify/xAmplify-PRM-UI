@@ -225,12 +225,12 @@
                         && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
                         (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
             <div class="row">
-                <div class="page-bar portlet light border-radius-0 shadow mmtp">
+                <div class="page-bar portlet light border-radius-0 shadow mmtp" *ngIf="authenticationService?.mdf">
                     <app-mdf-statistics  [applyFilter]="applyFilter" *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
                 </div>
             </div>
         </div>
-
+       
         <!---PRM Dashboard -->
         <ng-container
             *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
@@ -271,6 +271,30 @@
                 </div>
             </div>
         </div>
+        <!-- High Level Analytics -->
+        <div class="clearfix" *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+<div class="portlet light">
+  <div class="portlet-title" style="min-height: 0px;">
+      <div class="caption">
+          <span class="caption-subject" translate>High Level Anlaytics</span>
+      </div>
+  </div>
+<div class="portlet-body clearfix" >
+  <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+      || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
+        <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading" [applyFilter]="applyFilter"></app-donut-pie-chart> 
+        <app-horizontal-bat-chart *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
+      </div>
+  <div [className]= "(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+  || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-6 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
+   <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+  </div>
+  </div>
+</div> 
+</div>
+</div>
+       
 
         <!--Opportunity Stats-->
         <div *ngIf="!authenticationService?.module?.deletedPartner 

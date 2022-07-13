@@ -22,6 +22,7 @@ export class ReDistributedComponent implements OnInit {
     campaignId: number = 0;
     pagination: Pagination = new Pagination();
     searchKey: string = "";
+    oneClickLaunchCampaign = false;
     constructor(private campaignService: CampaignService, public route: ActivatedRoute, public partnerService: ParterService, public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router, public xtremandLogger: XtremandLogger) { }
 
@@ -36,8 +37,14 @@ export class ReDistributedComponent implements OnInit {
             subscribe(
                 data => {
                     if (data.statusCode == 200) {
-                        this.pagination.partnerTeamMemberGroupFilter =true;
-                        this.listRedistributedCampaigns();
+                        this.oneClickLaunchCampaign = data.data;
+                        if(this.oneClickLaunchCampaign){
+                            this.referenceService.goToRouter("/home/campaigns/"+this.campaignId+"/details");
+                            this.referenceService.loading(this.httpRequestLoader, false);
+                        }else{
+                            this.pagination.partnerTeamMemberGroupFilter =true;
+                            this.listRedistributedCampaigns();
+                        }
                     } else {
                         this.referenceService.goToPageNotFound();
                     }

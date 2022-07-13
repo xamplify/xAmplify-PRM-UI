@@ -94,4 +94,7 @@ export class Pagination {
 	timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   	stageFilter:string = "";
 	companyNameFilter:string = "";
+	oneClickLaunch = false;
+	previewSelectedSharedLeads = false;
+	headerCheckBoxChecked = false;
 }

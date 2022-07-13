@@ -322,6 +322,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     endDatePickr: any;
 
+    showMicrosoftAuthenticationForm: boolean = false;
+    /***XNFR-125****/
+    oneClickLaunch = false;
+    selectedPartnershipId = 0;
+    oneClickLaunchToolTip = "";
+    invalidShareLeadsSelection = false;
+    invalidShareLeadsSelectionErrorMessage = "";
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -341,21 +349,15 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 refService.getOrgCampaignTypes(response).subscribe(data => {
                     this.enableLeads = data.enableLeads;
                     this.salesEnablement = data.salesEnablement;
+                    this.oneClickLaunch = data.oneClickLaunch;
                     this.isSalesforceIntegrated();
-                    //this.listCampaignPipelines();
                 });
             })
 
-        this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-        /*  CKEDITOR.config.width = 500;
-        CKEDITOR.config.width = '75%';*/
-        /* CKEDITOR.config.height = 500;        // 500 pixels high.
-         CKEDITOR.config.height = '25em'; */
         CKEDITOR.config.height = '100';
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         this.countries = this.refService.getCountries();
-        // this.contactsPagination.filterKey = "isPartnerUserList";
         this.campaign = new Campaign();
         this.savedVideoFile = new SaveVideoFile();
         this.launchVideoPreview = new SaveVideoFile();
@@ -459,6 +461,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
                 this.isCampaignDraftContactList = true;
             }
+            /****XNFR-125****/
+            this.selectedPartnershipId = this.campaign.partnershipId;
             /***********Select Email Template Tab*************************/
             var selectedTemplateId = this.campaignService.campaign.selectedEmailTemplateId;
             if (selectedTemplateId > 0) {
@@ -826,6 +830,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
+        this.oneClickLaunchToolTip = "Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute with one click";
         if ('landingPage' == this.campaignType) {
             this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Share a public page";
@@ -1048,6 +1053,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
         this.contactsPagination.pageIndex = 1;
+        this.contactsPagination.maxResults = 12;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -1059,6 +1065,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             this.loadContacts();
         } else {
+            this.campaign.oneClickLaunch = false;
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
@@ -1086,6 +1093,19 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     setUnsubscribeLink(event: any) {
         this.campaign.unsubscribeLink = event;
     }
+    /***XNFR-125****/
+    setOneClickLaunch(event:any){
+        this.campaign.oneClickLaunch = event;
+        this.contactsPagination.pageIndex = 1;
+        this.contactsPagination.maxResults = 12;
+        this.selectedContactListIds = [];
+        this.userListDTOObj = [];
+        this.isContactList = false;
+        this.selectedPartnershipId = 0;
+        if(!event){
+            this.loadContacts();
+        }
+    }
 
     clearSelectedContactList() {
         const roles = this.authenticationService.getRoles();
@@ -1110,13 +1130,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.enableCoBrandingLogo = event;
         this.removeTemplateAndAutoResponse();
         if (this.campaignType != 'landingPage') {
-            let isRegularCoBranding = this.campaign.emailTemplate != undefined && this.campaign.emailTemplate.regularCoBrandingTemplate;
-            let isVideoCoBranding = this.campaign.emailTemplate != undefined && this.campaign.emailTemplate.videoCoBrandingTemplate;
-            /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
-                this.hideCoBrandedEmailTemplate = true;
-            }else{
-                this.hideCoBrandedEmailTemplate = false;
-            }*/
             this.filterCoBrandedTemplates(event);
         } else {
             this.filterCoBrandedLandingPages(event);
@@ -1271,7 +1284,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     this.logger.error(this.refService.errorPrepender + " loadCampaignVideos():" + error);
                     this.refService.showServerError(this.campaignVideo.httpRequestLoader);
                 },
-                () => this.logger.info("Finished loadCampaignVideos()", this.videosPagination)
+                () => this.logger.info("Finished loadCampaignVideos()")
             )
     }
 
@@ -1291,7 +1304,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error)
                 },
-                () => this.logger.info("Finished loadChannelVideos()", this.channelVideosPagination)
+                () => this.logger.info("Finished loadChannelVideos()")
             )
     }
     /********************Filter Category Videos********************************/
@@ -1552,7 +1565,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadCampaignContacts()", this.contactsPagination)
+                () => this.logger.info("Finished loadCampaignContacts()")
             )
     }
 
@@ -1710,7 +1723,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplates()")
             )
     }
 
@@ -1741,7 +1754,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                 (error: string) => {
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplates()", this.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplates()")
             )
     }
 
@@ -1768,7 +1781,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     reply.loader = false;
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplatesForAddReply()", reply.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplatesForAddReply()")
             )
     }
 
@@ -1794,7 +1807,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     url.loader = false;
                     this.logger.errorPage(error);
                 },
-                () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()", url.emailTemplatesPagination)
+                () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()")
             )
     }
 
@@ -2231,7 +2244,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             'viewInBrowserTag': this.campaign.viewInBrowserTag,
             'unsubscribeLink': this.campaign.unsubscribeLink,
             'endDate': this.campaign.endDate,
-            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+            /****XNFR-125****/
+            "oneClickLaunch":this.campaign.oneClickLaunch,
+            'partnershipId':this.selectedPartnershipId,
         };
         return data;
     }
@@ -2451,9 +2467,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         if (!this.hasInternalError && this.router.url != "/login") {
             if (!this.isReloaded) {
                 if (!this.isLaunched) {
-                    // if(this.isAdd){
-                    //     this.saveCampaignOnDestroy();
-                    // }else{
                     let self = this;
                     swal({
                         title: 'Are you sure?',
@@ -2467,14 +2480,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
                     }).then(function () {
                         self.saveCampaignOnDestroy();
-                        /*self.getRepliesData();
-                        self.getOnClickData();*/
-                    }, function (dismiss) {
+                    }, function (dismiss:any) {
                         if (dismiss == 'cancel') {
                             self.reInitialize();
                         }
                     })
-                    // }
                 }
             }
         }
@@ -2923,6 +2933,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.isLaunched = true;
                                 this.reInitialize();
                                 this.router.navigate(["/home/campaigns/manage"]);
+                            }else if(response.statusCode==2020){
+                                this.selectedContactListIds = [];
+                                this.selectedPartnershipId = 0;
+                                this.isContactList = false;
+                                this.resetActive(null, 60, 'step-4');
+                                this.invalidShareLeadsSelection = true;
+                                this.invalidShareLeadsSelectionErrorMessage = response.message;
                             } else {
                                 this.invalidScheduleTime = true;
                                 this.invalidScheduleTimeError = response.message;
@@ -3273,6 +3290,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             else if (crmName == 'salesforce') {
                 this.checkSalesforceIntegration();
+            } else if (crmName == 'microsoft') {
+                this.checkingMicrosoftAuthentication();
             }
 
             //this.pushToCRM.push(crmName);
@@ -3629,5 +3648,35 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.endDatePickr.clear();
         this.campaign.endDate = undefined;
     }
+
+    checkingMicrosoftAuthentication() {
+        this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.pushToCRM.push('microsoft');
+                this.validatePushToCRM();
+            }
+            else {
+                this.showMicrosoftAuthenticationForm = true;
+            }
+        }, (error: any) => {
+            console.error(error, "Error in Microsoft checkingMicrosoftAuthentication()");
+        }, () => console.log("Microsoft Configuration Checking done"));
+    }
+
+    closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
+
+    /***XNFR-125*****/
+    getSelectedPartnerCompanyIdAndShareLeads(event:any){
+        this.selectedPartnershipId = event['selectedPartnershipId'];
+        this.selectedContactListIds = event['selectedShareListIds'];
+        this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
+    }
+
+
 }
 
