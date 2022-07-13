@@ -84,6 +84,18 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     );
   }
 
+  /**************Search***************/
+  search() {
+    this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
+    this.findAll(this.pagination);
+  }
+  /**************Pagination***************/
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.findAll(this.pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+
 
   checkAgentAccess(){
     
@@ -107,6 +119,9 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   refreshList() {
     this.referenceService.scrollSmoothToTop();
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = "";
+    this.findAll(this.pagination);
   }
 
    /***********Add*******************/

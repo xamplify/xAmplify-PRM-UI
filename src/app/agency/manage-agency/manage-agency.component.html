@@ -72,8 +72,8 @@
                 <div class="portlet-input input-inline input-small tmutttpx">
                     <div class="input-icon right">
                         <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
-                        <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';search()"></button>
+                        <button type="submit" class="search-box-item-click" (click)="search()">
                           <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -108,7 +108,7 @@
               <tbody>
                 <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
                   <td>
-                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="agency"></app-user-info>
+                    <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agency"></app-user-info>
                   </td>
                   <!---Enabled---->
                   <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This account is not activated yet':''">

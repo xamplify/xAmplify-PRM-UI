@@ -2851,4 +2851,16 @@ export class ReferenceService {
   getSuccessOrErrorClassName(condition:boolean){
     return condition ? this.properties.successClass : this.properties.errorClass;
   } 
+
+  getPagebleUrl(pagination:Pagination){
+    let page = pagination.pageIndex;
+    let size = pagination.maxResults;
+    let searchKey = $.trim(pagination.searchKey)!=null ? $.trim(pagination.searchKey) :"";
+    let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
+    let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
+    let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
+    let sortParam = sort.length>0 ? "&sort="+sort:"";
+    let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam);
+  }
 }
