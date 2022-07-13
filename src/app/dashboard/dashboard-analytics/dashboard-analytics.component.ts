@@ -18,6 +18,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 declare var $:any, Highcharts: any;
 @Component({
@@ -62,9 +63,20 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    showSandboxText = false;
    applyFilter = true;
    hasAccess = false;
+   downloadString: string;
+   loader = false;
+   statusCode = 200;
+
+   
+   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
+
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.vanityLoginDto.userId = this.loggedInUserId;
+   // this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
+    
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
@@ -428,5 +440,20 @@ showCampaignDetails(campaign:any){
     self.applyFilter = event['selectedOptionIndex'] == 1;
     }, 500);
   }
-  
+
+  toSave(){
+    this.loader = true;
+    this.dashBoardService.findHighLevelAnalytics(this.loggedInUserId,this.applyFilter)
+    .subscribe(
+        (response) => {
+        this.downloadString  =  response.data;
+    
+    this.loader =false;
+    this.statusCode =200;
+  },
+  (error) =>{
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 0;
+  });};
 }

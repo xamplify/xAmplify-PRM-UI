@@ -748,4 +748,10 @@ export class DashboardService {
          .catch(this.handleError);
         }
 
+ findHighLevelAnalytics(userId: number, applyFilter: Boolean){
+     const url = this.authenticationService.REST_URL + 'highlevel/analytics/save/'+{userId}+'/'+{applyFilter}+'?access_token=' + this.authenticationService.access_token;
+     return this.http.get(url)
+     .map(this.extractData)
+     .catch(this.handleError);
+        }
 }
