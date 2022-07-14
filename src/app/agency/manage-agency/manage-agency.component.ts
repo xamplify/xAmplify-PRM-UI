@@ -89,7 +89,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 /*************************Sort********************** */
 sortBy(text: any) {
-  this.sortOption.selectedActiveUsersSortOption = text;
+  this.sortOption.selectedAgencySortDropDownOption = text;
   this.getAllFilteredResults(this.pagination, this.sortOption);
 }
 /*************************Search********************** */
@@ -101,7 +101,7 @@ search() {
 getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   pagination.pageIndex = 1;
   pagination.searchKey = sortOption.searchKey;
-  pagination = this.utilService.sortOptionValues(sortOption.selectedActiveUsersSortOption, pagination);
+  pagination = this.utilService.sortOptionValues(sortOption.selectedAgencySortDropDownOption, pagination);
   this.findAll(pagination);
 }
   /**************Pagination***************/

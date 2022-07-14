@@ -72,7 +72,7 @@
                 <div class="portlet-input input-inline">
                     <div class="input-icon right flex">
                       <!--Sort DropDown-->
-                      <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedActiveUsersSortOption" (ngModelChange)="sortBy($event)">
+                      <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedAgencySortDropDownOption" (ngModelChange)="sortBy($event)">
                         <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
                             {{option.name}}
                         </option>
