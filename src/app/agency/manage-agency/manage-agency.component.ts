@@ -14,12 +14,16 @@ import { AgencyService } from './../services/agency.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { AgencyDto } from './../models/agency-dto';
 import { TeamMemberService } from './../../team/services/team-member.service';
+import { SortOption } from 'app/core/models/sort-option';
+import { UtilService } from 'app/core/services/util.service';
+
+
 declare var $:any,swal:any;
 @Component({
   selector: 'app-manage-agency',
   templateUrl: './manage-agency.component.html',
   styleUrls: ['./manage-agency.component.css'],
-  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,TeamMemberService],
+  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,TeamMemberService,SortOption],
   animations:[CustomAnimation]
 })
 export class ManageAgencyComponent implements OnInit,OnDestroy {
@@ -33,16 +37,16 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   saveOrUpdateButtonText = "Save";
   agencyDto:AgencyDto = new AgencyDto();
   defaultModules: Array<any> = new Array<any>();
-  agencies: Array<any> = new Array<any>();
-  /*****Form Related**************/
-  
+  agencies: Array<any> = new Array<any>();  
   /************CSV Related************* */
   showUploadedAgencies = false;
   csvErrors: any[];
+  sortOption: SortOption = new SortOption();
+
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
-    private teamMemberService:TeamMemberService) {
+    private teamMemberService:TeamMemberService,public utilService:UtilService) {
 
     }
     ngOnDestroy(): void {
@@ -83,18 +87,28 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       }
     );
   }
+/*************************Sort********************** */
+sortBy(text: any) {
+  this.sortOption.selectedActiveUsersSortOption = text;
+  this.getAllFilteredResults(this.pagination, this.sortOption);
+}
+/*************************Search********************** */
+eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+search() {
+  this.getAllFilteredResults(this.pagination, this.sortOption);
+}
 
-  /**************Search***************/
-  search() {
-    this.referenceService.setTeamMemberFilterForPagination(this.pagination, 0);
-    this.findAll(this.pagination);
-  }
+getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
+  pagination.pageIndex = 1;
+  pagination.searchKey = sortOption.searchKey;
+  pagination = this.utilService.sortOptionValues(sortOption.selectedActiveUsersSortOption, pagination);
+  this.findAll(pagination);
+}
   /**************Pagination***************/
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.findAll(this.pagination);
   }
-  eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 
 
   checkAgentAccess(){

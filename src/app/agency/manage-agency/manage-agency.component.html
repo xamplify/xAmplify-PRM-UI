@@ -69,9 +69,16 @@
         <div class="caption" translate>{{properties?.agencies}}</div>
         <div class="tools zero-padding-margin">
             <div class="inputs zero-padding-display-inline">
-                <div class="portlet-input input-inline input-small tmutttpx">
-                    <div class="input-icon right">
-                        <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                <div class="portlet-input input-inline">
+                    <div class="input-icon right flex">
+                      <!--Sort DropDown-->
+                      <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedActiveUsersSortOption" (ngModelChange)="sortBy($event)">
+                        <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                            {{option.name}}
+                        </option>
+                     </select>
+                      <!--Search Key--->
+                        <input type="text" class="form-control ml5" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';search()"></button>
                         <button type="submit" class="search-box-item-click" (click)="search()">
                           <i class="fa fa-search" aria-hidden="true"></i>
