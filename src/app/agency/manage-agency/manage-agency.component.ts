@@ -100,7 +100,6 @@ search() {
 
 getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   pagination.pageIndex = 1;
-  pagination.searchKey = sortOption.searchKey;
   pagination = this.utilService.sortOptionValues(sortOption.selectedAgencySortDropDownOption, pagination);
   this.findAll(pagination);
 }
@@ -206,6 +205,10 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     $.each(self.defaultModules, function (_index: number, defaultModule: any) {
       defaultModule.enabled = event;
     });
+  }
+
+  downloadCsv(){
+    this.referenceService.downloadCsvTemplate("agencies/downloadCsvTemplate/Add-Agencies.csv");
   }
 
 }

@@ -2863,4 +2863,8 @@ export class ReferenceService {
     let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
     return $.trim("&page="+page+"&size="+size+sortParam+searchParam);
   }
+  
+  downloadCsvTemplate(url:string){
+    window.location.href = this.authenticationService.REST_URL +url+"?access_token=" + this.authenticationService.access_token;
+  }
 }

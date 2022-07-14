@@ -8,7 +8,7 @@ import { ReferenceService } from './../../core/services/reference.service';
 @Injectable()
 export class AgencyService {
   ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
-  AGENCY_PREFIX_URL = this.authenticationService.REST_URL + "agency";
+  AGENCY_PREFIX_URL = this.authenticationService.REST_URL + "agencies";
   AGENCY_URL = this.AGENCY_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   constructor(private http: Http, private authenticationService: AuthenticationService, 
     private logger: XtremandLogger,private referenceService:ReferenceService) { }
