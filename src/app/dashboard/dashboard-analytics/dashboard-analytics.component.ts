@@ -64,9 +64,8 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    applyFilter = true;
    hasAccess = false;
    downloadString: string;
-   loader = false;
-   statusCode = 200;
-
+   highLevelAnalyticsResponse :CustomResponse = new CustomResponse();
+ sweetAlert: boolean;
    
    vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
@@ -441,19 +440,28 @@ showCampaignDetails(campaign:any){
     }, 500);
   }
 
-  toSave(){
-    this.loader = true;
+  saveDownloadRequest(){
+  //  this.referenceService.loading(this.emailStatisticsLoader,true);
+  if(this.sweetAlert === false){}
     this.dashBoardService.findHighLevelAnalytics(this.loggedInUserId,this.applyFilter)
     .subscribe(
         (response) => {
+   //         this.referenceService.loading(this.emailStatisticsLoader,false);
+        if(response.statusCode === 200){
         this.downloadString  =  response.data;
-    
-    this.loader =false;
-    this.statusCode =200;
+        this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS', this.downloadString, true);
+        }else{
+            this.highLevelAnalyticsResponse = new CustomResponse('ERROR', "Failed to download", true);
+        }
   },
   (error) =>{
     this.xtremandLogger.error(error);
-    this.loader = false;
-    this.statusCode = 0;
+   
   });};
+
+//   showMessage(){
+//     //  this.msg = "hi";
+//     //  return this.msg;
+//     this.show = true;
+//   }
 }
