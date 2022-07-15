@@ -722,9 +722,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
           this.isUploadCsv = false;
         }
-
       }
-
     }
   }
 

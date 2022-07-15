@@ -23,12 +23,12 @@
   <!--End Of Page-bar---->
   <!-- CSV Errors---->
   <div class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
-    <button (click)="referenceService.hideDiv('csv-error-div')" type="button" class="close" aria-label="Close">
+    <button (click)="referenceService.hideDiv('agency-csv-error-div')" type="button" class="close" aria-label="Close">
       <span aria-hidden="true">x</span>
     </button>
     <div>
         <table class="table table-bordered" aria-describedby="csv-error-messages-table">
-            <ng-container *ngFor="let error of csvErrors">
+            <ng-container *ngFor="let error of csvDto.csvErrors">
                 <tr>
                     <th class="align-bold" id="csverror-th">{{error}}</th>
                 </tr>
@@ -38,6 +38,16 @@
   </div>
   <!-- End Of CSV Errors---->
 
+  <div *ngIf="customResponse.isVisible">
+    <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
+      <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">x</span>
+      </button>
+      <strong [innerHTML]="customResponse.responseMessage"></strong>
+    </div>
+  </div>
+
+  
   <!--Add & Manage Agencies-->
   <div class="row">
     <div [@fadeInOut] *ngIf="!showAddAgencyDiv && !showUploadedAgencies && !editAgency">
@@ -47,7 +57,7 @@
             <div class="col-xs-6 col-sm-2 hidden-xs">
               <div class="btn-xs btn-info fileinput-button btn-block rounded-0 position-relative">
                   <h6 class="text-center fsfpx" translate>Upload a CSV</h6>
-                  <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="agencyCsvInput" accept=".csv" (change)="readCsvFile($event)" />
+                  <input type="file" title="" class="file-upload" #agencyCsvInput name="Upload Csv" id="agencyCsvInput" accept=".csv" (change)="readCsvFile($event)" />
               </div>
           </div>
             <div class="col-xs-12 col-sm-2">

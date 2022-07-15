@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Event } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -16,6 +16,7 @@ import { AgencyDto } from './../models/agency-dto';
 import { TeamMemberService } from './../../team/services/team-member.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
+import { CsvDto } from 'app/core/models/csv-dto';
 
 
 declare var $:any,swal:any;
@@ -36,12 +37,15 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   editAgency = false;
   saveOrUpdateButtonText = "Save";
   agencyDto:AgencyDto = new AgencyDto();
+  agencyDtos:Array<AgencyDto> = new Array<AgencyDto>();  
   defaultModules: Array<any> = new Array<any>();
   agencies: Array<any> = new Array<any>();  
   /************CSV Related************* */
   showUploadedAgencies = false;
-  csvErrors: any[];
   sortOption: SortOption = new SortOption();
+  csvDto:CsvDto = new CsvDto();
+  @ViewChild('agencyCsvInput')
+  agencyCsvInput: any;
 
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -209,6 +213,121 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
 
   downloadCsv(){
     this.referenceService.downloadCsvTemplate("agencies/downloadCsvTemplate/Add-Agencies.csv");
+  }
+
+  readCsvFile(event: any) {
+    this.csvDto = new CsvDto();
+    this.customResponse = new CustomResponse();
+    this.csvDto.csvErrors = [];
+    var files = event.srcElement.files;
+    if (this.fileUtil.isCSVFile(files[0])) {
+      $("#agency-csv-error-div").hide();
+      var input = event.target;
+      var reader = new FileReader();
+      reader.readAsText(input.files[0]);
+      reader.onload = (data) => {
+        let csvData = reader.result;
+        let csvRecordsArray = csvData['split'](/\r\n|\n/);
+        let headersRow = this.fileUtil
+          .getHeaderArray(csvRecordsArray);
+        let headers = headersRow[0].split(',');
+        if (this.validateHeaders(headers)) {
+          this.csvDto.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+          if (this.csvDto.csvRecords.length > 1) {
+            this.processCSVData();
+          } else {
+            this.showCsvFileError('You Cannot Upload Empty File');
+          }
+        } else {
+          this.showCsvFileError('Invalid CSV');
+        }
+      }
+      let self = this;
+      reader.onerror = function () {
+        self.showErrorMessageDiv('Unable to read the file');
+      };
+    } else {
+      this.showErrorMessageDiv('Please Import csv file only');
+      this.fileReset();
+    }
+  }
+
+  processCSVData() {
+    this.validateCsvData();
+    if (this.csvDto.csvErrors.length > 0) {
+      $("#agency-csv-error-div").show();
+    } else {
+      this.showUploadedAgencies = true;
+      this.appendCsvDataToTable();
+    }
+    this.fileReset();
+  }
+  appendCsvDataToTable() {
+    let csvRecords = this.csvDto.csvRecords;
+    for (var i = 1; i < csvRecords.length; i++) {
+      let rows = csvRecords[i];
+      let row = rows[0].split(',');
+      let emailId = row[0].toLowerCase();
+      if (emailId != undefined && $.trim(emailId).length > 0) {
+        let agencyDto = new AgencyDto();
+        agencyDto.emailId = emailId;
+        agencyDto['firstName'] = row[1];
+        agencyDto['lastName'] = row[2];
+        agencyDto['agencyName'] = row[3];
+        this.agencyDtos.push(agencyDto);
+      }
+    }
+  }
+
+  validateCsvData() {
+    let csvRecords = this.csvDto.csvRecords;
+    let names = csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
+    let duplicateEmailIds = this.referenceService.returnDuplicates(names);
+    this.agencyDtos = [];
+    if (duplicateEmailIds.length == 0) {
+      for (var i = 1; i < csvRecords.length; i++) {
+        let rows = csvRecords[i];
+        let row = rows[0].split(',');
+        let emailId = row[0];
+        if (emailId != undefined && $.trim(emailId).length > 0) {
+          if (!this.referenceService.validateEmailId(emailId)) {
+            this.csvDto.csvErrors.push(emailId + " is invalid email address.");
+          }
+        }
+
+      }
+    } else {
+      for (let d = 0; d < duplicateEmailIds.length; d++) {
+        let emailId = duplicateEmailIds[d];
+        if (emailId != undefined && $.trim(emailId).length > 0) {
+          this.csvDto.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
+        }
+      }
+    }
+  }
+
+  validateHeaders(headers: any) {
+    return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name" && headers[3]=="Company Name");
+  }
+
+  showErrorMessageDiv(message: string) {
+    this.customResponse = new CustomResponse('ERROR', message, true);
+  }
+
+  hideErrorMessageDiv() {
+    this.customResponse = new CustomResponse('ERROR', "", false);
+  }
+
+  showCsvFileError(message: string) {
+    this.customResponse = new CustomResponse('ERROR', message, true);
+    this.fileReset();
+  }
+
+  fileReset() {
+    if (this.agencyCsvInput != undefined) {
+      this.agencyCsvInput.nativeElement.value = "";
+      this.csvDto = new CsvDto();
+    }
   }
 
 }
