@@ -20,7 +20,7 @@ import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
-declare var $:any, Highcharts: any;
+declare var swal, $:any, Highcharts: any;
 @Component({
   selector: 'app-dashboard-analytics',
   templateUrl: './dashboard-analytics.component.html',
@@ -65,8 +65,11 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    hasAccess = false;
    downloadString: string;
    highLevelAnalyticsResponse :CustomResponse = new CustomResponse();
- sweetAlert: boolean;
-   
+   downloadFailedMessage :CustomResponse = new CustomResponse();
+   sweetAlert: boolean;
+   requestChecking: string;
+   showFailMessage: boolean = false;
+
    vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
@@ -440,28 +443,55 @@ showCampaignDetails(campaign:any){
     }, 500);
   }
 
-  saveDownloadRequest(){
-  //  this.referenceService.loading(this.emailStatisticsLoader,true);
-  if(this.sweetAlert === false){}
-    this.dashBoardService.findHighLevelAnalytics(this.loggedInUserId,this.applyFilter)
+  saveData(){
+    this.dashBoardService.saveHighLevelDownloadRequest(this.loggedInUserId,this.applyFilter)
+    .subscribe(
+        (response) =>{
+         this.downloadString =  response.data; 
+         this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS',this.downloadString , true);
+        }
+    )
+}
+
+  checkRequest(){
+    this.dashBoardService.confirmExistedDownloadRequest(this.loggedInUserId,this.applyFilter)
     .subscribe(
         (response) => {
-   //         this.referenceService.loading(this.emailStatisticsLoader,false);
-        if(response.statusCode === 200){
-        this.downloadString  =  response.data;
-        this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS', this.downloadString, true);
-        }else{
-            this.highLevelAnalyticsResponse = new CustomResponse('ERROR', "Failed to download", true);
+        this.requestChecking =   response.data;
+        if(this.requestChecking){
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: "Want to take another download request",
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+        }).then(function () {
+            self.saveData();
+        }, function (dismiss: any){
+             console.log('you clicked on option' + dismiss);
+            }); 
         }
-  },
+        else{
+            this.saveData();
+            this.downloadString  =  response.data;
+            this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS',this.downloadString , true);
+        }
+    },
   (error) =>{
-    this.xtremandLogger.error(error);
-   
-  });};
+    this.xtremandLogger.error(error); 
+  }
+    )};
 
-//   showMessage(){
-//     //  this.msg = "hi";
-//     //  return this.msg;
-//     this.show = true;
+//   showFailedMessage(){
+//     this.dashBoardService.showFailRequest(this.loggedInUserId)
+//     .subscribe(
+//         (response) => {
+//             this.showFailMessage = response.data;
+//             this.downloadFailedMessage = new CustomResponse('ERROR',"Failed to download" , true);
+//       })
+
 //   }
 }
