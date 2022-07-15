@@ -6,6 +6,7 @@ export class AgencyDto {
     firstName = "";
     lastName = "";
     agencyName = "";
+    companyName = "";
     emailId = "";
     enabled:boolean = true;
     xamplifyModules:XamplifyModuleDto = new XamplifyModuleDto();

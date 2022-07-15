@@ -21,6 +21,7 @@
     </ul>
    </div>
   <!--End Of Page-bar---->
+
   <!-- CSV Errors---->
   <div class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
     <button (click)="referenceService.hideDiv('agency-csv-error-div')" type="button" class="close" aria-label="Close">
@@ -266,7 +267,7 @@
                                   <br>
                                 </th>
                                 <th class="normal-font-weight">
-                                  <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                                  <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
                                   [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
                                   </switch>
                                 </th>
@@ -286,7 +287,7 @@
                                 <br>
                               </th>
                               <th class="normal-font-weight">
-                                <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                                <switch   [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
                                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
                                 </switch>
                               </th>
@@ -307,7 +308,77 @@
         </div>
       </div>
     </ng-container>
-  <!--End of Add Agency Div-->
+    <!--End of Add Agency Div-->
+
+
+    <!-----Uplodaded Agencies----->
+    <div class="portlet light" *ngIf="showUploadedAgencies && !showAddAgencyDiv && !editAgency">
+      <div class="portlet-title">
+        <div class="caption" translate>Uploaded {{properties?.agencies}}</div>
+        <div [hidden]="addAgencyLoader.isLoading">
+          <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
+            <i class="fa fa-close" aria-hidden="true"></i>
+          </a>
+      </div>
+      </div>
+      <app-list-loader [hidden]="!addAgencyLoader.isLoading"></app-list-loader>
+      <div class="portlet-body clearfix" [hidden]="addAgencyLoader.isLoading">
+        <div class="table-responsive">
+          <table class="table table-striped silvertm" id="add-agency-table"  aria-describedby="Agencies">
+            <thead>
+              <tr>
+                <th scope="row">
+                <h4 translate>
+                    <img src="assets/images/user-permission.png" alt="No Image Found">
+                    {{properties?.agency}}
+                </h4>
+                </th>
+                <th  scope="" translate>
+                  <i class="fa fa-list-alt" aria-hidden="true"></i><br>Modules
+                </th>
+                <th  scope="" translate>
+                  <i class="fa fa-trash required" aria-hidden="true"></i><br>Delete
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let agency of agencyDtos;let i=index" class="upload-team-member-class">
+                <td>
+                  <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agency"></app-user-info>
+                </td>
+                <!---Modules-->
+                <td>
+                  <table class="table table-bordered">
+                    <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+                      <tr>
+                        <th  scope="row" class="fstcw-tm">
+                          <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                          {{defaultModule?.moduleName}}
+                          <br>
+                        </th>
+                        <th class="normal-font-weight">
+                          <switch  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" (statusChange)="changeStatus($event,defaultModule)">
+                          </switch>
+                        </th>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </td>
+                <!---Delete-->
+                <td>
+                  <a (click)="deleteRow(i,agency)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button  id="right" type="submit" class="btn btn-primary" (click)="addAgencies()">Save</button>
+        </div>
+      </div>
+    </div>
+    <!-----End Of Uplodaded Agencies----->
+
+
 
   </div>
 </div>

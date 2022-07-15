@@ -257,6 +257,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     if (this.csvDto.csvErrors.length > 0) {
       $("#agency-csv-error-div").show();
     } else {
+      this.findDefaultModules();
       this.showUploadedAgencies = true;
       this.appendCsvDataToTable();
     }
@@ -274,6 +275,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
         agencyDto['firstName'] = row[1];
         agencyDto['lastName'] = row[2];
         agencyDto['agencyName'] = row[3];
+        agencyDto['companyName'] = row[3];
         this.agencyDtos.push(agencyDto);
       }
     }
@@ -307,7 +309,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   }
 
   validateHeaders(headers: any) {
-    return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name" && headers[3]=="Company Name");
+    return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name" && headers[3]=="Agency Name");
   }
 
   showErrorMessageDiv(message: string) {
@@ -326,8 +328,33 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   fileReset() {
     if (this.agencyCsvInput != undefined) {
       this.agencyCsvInput.nativeElement.value = "";
-      this.csvDto = new CsvDto();
     }
+    this.csvDto = new CsvDto();
+  }
+
+  deleteRow(index: number, agency: any) {
+    let emailId = agency['emailId'];
+    $('#agency-' + index).remove();
+    emailId = emailId.toLowerCase();
+    this.agencyDtos = this.spliceArray(this.agencyDtos, emailId);
+    let tableRows = $("#add-agency-table > tbody > tr").length;
+    if (tableRows == 0 || this.agencyDtos.length == 0) {
+      this.clearUploadCsvDataAndGoBack();
+    }
+  }
+
+  spliceArray(arr: any, emailId: string) {
+    arr = $.grep(arr, function (data: any, _index: number) {
+      return data.emailId != emailId
+    });
+    return arr;
+  }
+
+  clearUploadCsvDataAndGoBack() {
+    this.customResponse = new CustomResponse();
+    this.showUploadedAgencies = false;
+    this.agencyDtos = [];
+    this.fileReset();
   }
 
 }
