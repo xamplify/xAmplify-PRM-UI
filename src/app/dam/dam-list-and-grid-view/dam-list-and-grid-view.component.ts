@@ -77,7 +77,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
-		this.videoFileService.videoType ='myVideos';
+		//this.videoFileService.videoType ='myAssets';
 	}
 
 	ngOnInit() {
@@ -159,7 +159,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.pagination.userId = this.loggedInUserId;
-							this.pagination.type = this.videoFileService.videoType;
+							//this.pagination.type = this.videoFileService.videoType;
 							this.listAssets(this.pagination);
 						}
 					}
@@ -286,7 +286,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
-			this.pagination.type = this.videoFileService.videoType;
+			//this.pagination.type = this.videoFileService.videoType;
 			this.listAssets(this.pagination);
 		}
 
@@ -630,7 +630,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.pagination.type = videoType;
-        this.videoFileService.videoType =videoType;
+        //this.videoFileService.videoType =videoType;
         this.pagination.userId = this.loggedInUserId;
         this.sortOption.searchKey = null;
         this.pagination.searchKey = this.sortOption.searchKey;
@@ -647,7 +647,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 this.referenceService.videoType =  this.videoFileService.videoType;
+                 //this.referenceService.videoType =  this.videoFileService.videoType;
                  this.router.navigateByUrl('/home/campaigns/create');
                  }else{
                      this.authenticationService.forceToLogout();

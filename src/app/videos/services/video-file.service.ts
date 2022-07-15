@@ -91,12 +91,12 @@ export class VideoFileService {
         if (this.authenticationService.isOnlyPartner()) {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
-            if (this.videoType === 'myVideos') {
+           url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
+            /*if (this.videoType === 'myAssets') {
                 url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             } else if (this.videoType === 'partnerVideos') {
                 url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
-            }
-            else { console.log('load videos not called'); }
+            }*/
         }
         console.log(url);
         return this.http.post(url, pagination)
@@ -144,7 +144,7 @@ export class VideoFileService {
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
         let isChannelVideo: boolean;
-        if (this.videoType === 'myVideos') {
+        if (this.videoType === 'myAssets') {
             isChannelVideo = false;
         } else if (this.videoType === 'partnerVideos') {
             isChannelVideo = true;

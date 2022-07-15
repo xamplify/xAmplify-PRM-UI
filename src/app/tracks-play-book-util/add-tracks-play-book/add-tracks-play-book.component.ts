@@ -436,6 +436,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
+    //pagination.type = 'myAssets';
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -1264,6 +1265,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.showFilePreview = true;
         this.fileType = "video/mp4";
         this.isVideo = true;
+        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
       } else if (this.imageTypes.includes(assetType)) {
         this.showFilePreview = true;
         this.isImage = true;
