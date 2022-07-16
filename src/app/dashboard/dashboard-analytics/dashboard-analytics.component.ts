@@ -485,13 +485,8 @@ showCampaignDetails(campaign:any){
   }
     )};
 
-//   showFailedMessage(){
-//     this.dashBoardService.showFailRequest(this.loggedInUserId)
-//     .subscribe(
-//         (response) => {
-//             this.showFailMessage = response.data;
-//             this.downloadFailedMessage = new CustomResponse('ERROR',"Failed to download" , true);
-//       })
+    sendDownloadRequest(){
 
-//   }
+    }
+
 }
