@@ -19,6 +19,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -64,21 +65,21 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    applyFilter = true;
    hasAccess = false;
    downloadString: string;
-   highLevelAnalyticsResponse :CustomResponse = new CustomResponse();
    downloadFailedMessage :CustomResponse = new CustomResponse();
    sweetAlert: boolean;
    requestChecking: string;
    showFailMessage: boolean = false;
-
    vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+   downloadRequestDto:DownloadRequestDto = new DownloadRequestDto();
+   downloadRequestCustomResponse:CustomResponse = new CustomResponse();
+   downloadRequestButtonClicked = false;
+   duplicateRequest = false;
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
-   // this.vanityLoginDto.applyFilter = this.selectedFilterIndex==1;
-    
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
@@ -443,50 +444,42 @@ showCampaignDetails(campaign:any){
     }, 500);
   }
 
-  saveData(){
-    this.dashBoardService.saveHighLevelDownloadRequest(this.loggedInUserId,this.applyFilter)
-    .subscribe(
-        (response) =>{
-         this.downloadString =  response.data; 
-         this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS',this.downloadString , true);
-        }
-    )
-}
+  
 
-  checkRequest(){
-    this.dashBoardService.confirmExistedDownloadRequest(this.loggedInUserId,this.applyFilter)
-    .subscribe(
-        (response) => {
-        this.requestChecking =   response.data;
-        if(this.requestChecking){
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "Want to take another download request",
-            type: 'warning',
-            showCancelButton: true,
-            swalConfirmButtonColor: '#54a7e9',
-            swalCancelButtonColor: '#999',
-            confirmButtonText: 'Yes'
-        }).then(function () {
-            self.saveData();
-        }, function (dismiss: any){
-             console.log('you clicked on option' + dismiss);
-            }); 
-        }
-        else{
-            this.saveData();
-            this.downloadString  =  response.data;
-            this.highLevelAnalyticsResponse = new CustomResponse('SUCCESS',this.downloadString , true);
-        }
-    },
-  (error) =>{
-    this.xtremandLogger.error(error); 
-  }
-    )};
+ 
 
-    sendDownloadRequest(){
+    saveDownloadRequest(allowDuplicateRequest:boolean){
+        $('#hla-adv-dashboard').addClass('download-loader');
+        this.downloadRequestCustomResponse = new CustomResponse();
+        this.downloadRequestDto = new DownloadRequestDto();
+        this.downloadRequestDto.userId = this.loggedInUserId;
+        this.downloadRequestDto.applyFilter = this.applyFilter;
+        this.downloadRequestDto.allowDuplicateRequest = allowDuplicateRequest;
+        this.dashBoardService.saveHighLevelAnalyticsDownloadRequest(this.downloadRequestDto).
+        subscribe(
+            response=>{
+                let statusCode = response.statusCode;
+                if(statusCode==200){
+                    this.downloadRequestButtonClicked = false;
+                    this.downloadRequestCustomResponse = new CustomResponse('INFO',this.properties.downloadRequestNotificationMessage,true);
+                    $('#hla-adv-dashboard').removeClass('download-loader');
+                }else if(statusCode==419){
+                    this.downloadRequestDto.duplicateRequest = true;
+                }
+            },error=>{
+                $('#hla-adv-dashboard').removeClass('download-loader');
+                this.downloadRequestButtonClicked = false;
+                this.downloadRequestCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+            }
+        );
+    }
 
+    saveDuplicateDownloadRequest(event:boolean){
+        $('#hla-adv-dashboard').removeClass('download-loader');
+        this.downloadRequestButtonClicked = false;
+        if(event){
+            this.saveDownloadRequest(event);
+        }
     }
 
 }

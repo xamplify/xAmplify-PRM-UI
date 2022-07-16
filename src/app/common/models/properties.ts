@@ -228,7 +228,8 @@ export class Properties {
 	emptyOneClickLaunchCampaignErrorMessage = "You cannot redistribute the campaign because the vendor deleted the shared list associated with it";
 	/****XNFR-131****/
 	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
-
+	/***XNFR-128***/
+	downloadRequestNotificationMessage = "We are processing your download request.We will send an email once it is completed.";
 
 
 

@@ -1660,3 +1660,8 @@ strong {
   filter:blur(15px);
 }
 
+.download-loader{
+  background: rgba(0, 0, 0, 0.25) url(./assets/images/loading.gif) no-repeat center center;
+  opacity: 0.5;
+}
+
