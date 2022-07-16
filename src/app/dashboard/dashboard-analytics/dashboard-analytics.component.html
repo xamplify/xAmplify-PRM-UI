@@ -428,4 +428,4 @@
         </div>
     </div>
 </div>
-<app-confirm-sweet-alert-util *ngIf="downloadRequestDto.duplicateRequest" (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>

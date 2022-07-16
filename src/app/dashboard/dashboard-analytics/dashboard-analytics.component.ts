@@ -74,6 +74,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    downloadRequestCustomResponse:CustomResponse = new CustomResponse();
    downloadRequestButtonClicked = false;
    duplicateRequest = false;
+   showSweetAlert = false;
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
@@ -454,17 +455,19 @@ showCampaignDetails(campaign:any){
         this.downloadRequestDto = new DownloadRequestDto();
         this.downloadRequestDto.userId = this.loggedInUserId;
         this.downloadRequestDto.applyFilter = this.applyFilter;
+        alert(allowDuplicateRequest);
         this.downloadRequestDto.allowDuplicateRequest = allowDuplicateRequest;
         this.dashBoardService.saveHighLevelAnalyticsDownloadRequest(this.downloadRequestDto).
         subscribe(
             response=>{
                 let statusCode = response.statusCode;
+                alert(statusCode);
                 if(statusCode==200){
                     this.downloadRequestButtonClicked = false;
                     this.downloadRequestCustomResponse = new CustomResponse('INFO',this.properties.downloadRequestNotificationMessage,true);
                     $('#hla-adv-dashboard').removeClass('download-loader');
                 }else if(statusCode==419){
-                    this.downloadRequestDto.duplicateRequest = true;
+                    this.showSweetAlert = true;
                 }
             },error=>{
                 $('#hla-adv-dashboard').removeClass('download-loader');
@@ -480,6 +483,7 @@ showCampaignDetails(campaign:any){
         if(event){
             this.saveDownloadRequest(event);
         }
+        this.showSweetAlert = false;
     }
 
 }
