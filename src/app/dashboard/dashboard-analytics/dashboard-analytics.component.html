@@ -278,8 +278,17 @@
       <div class="caption">
           <span class="caption-subject" translate>High Level Anlaytics</span>
       </div>
+      <button style="float: right; background-color: rgb(92,155,209); color:white; border-radius: 5%"
+       (click)="checkRequest()">Download</button>
+      
   </div>
+
 <div class="portlet-body clearfix" >
+    <app-response-message class="pg8" [customResponse]="highLevelAnalyticsResponse" *ngIf="highLevelAnalyticsResponse.isVisible">
+    </app-response-message>
+    <!-- <app-response-message class="pg8" [customResponse]="downloadFailedMessage" *ngIf="downloadFailedMessage.isVisible">
+    </app-response-message> -->
+    
   <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
       || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
