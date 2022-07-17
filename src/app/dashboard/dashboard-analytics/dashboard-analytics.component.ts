@@ -455,13 +455,11 @@ showCampaignDetails(campaign:any){
         this.downloadRequestDto = new DownloadRequestDto();
         this.downloadRequestDto.userId = this.loggedInUserId;
         this.downloadRequestDto.applyFilter = this.applyFilter;
-        alert(allowDuplicateRequest);
         this.downloadRequestDto.allowDuplicateRequest = allowDuplicateRequest;
         this.dashBoardService.saveHighLevelAnalyticsDownloadRequest(this.downloadRequestDto).
         subscribe(
             response=>{
                 let statusCode = response.statusCode;
-                alert(statusCode);
                 if(statusCode==200){
                     this.downloadRequestButtonClicked = false;
                     this.downloadRequestCustomResponse = new CustomResponse('INFO',this.properties.downloadRequestNotificationMessage,true);
