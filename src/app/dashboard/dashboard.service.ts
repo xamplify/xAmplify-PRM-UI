@@ -1,3 +1,4 @@
+import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -748,4 +749,14 @@ export class DashboardService {
          .catch(this.handleError);
         }
 
+ saveHighLevelAnalyticsDownloadRequest(downloadRequestDto:DownloadRequestDto){
+     const url =
+       this.authenticationService.REST_URL +
+       "highlevel/analytics/saveDownloadRequest?access_token=" +
+       this.authenticationService.access_token;
+     return this.http
+       .post(url, downloadRequestDto)
+       .map(this.extractData)
+       .catch(this.handleError);
+        }
 }
