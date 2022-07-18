@@ -106,8 +106,7 @@
 							 <td *ngIf="(!isPartnerView && asset.videoId)">
                         <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo(asset.id, $event)"></app-video-thumbnail>
                         </td>
-                        
-                        <td  *ngIf="!asset.videoId" >
+                        <td  *ngIf="!asset.videoId || isPartnerView" >
 									<div class="thumbnail-wrapper">
 										<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
 											alt="Image Not Found">
