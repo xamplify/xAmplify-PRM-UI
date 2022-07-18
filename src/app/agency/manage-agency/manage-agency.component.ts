@@ -365,6 +365,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.showUploadedAgencies = false;
     this.agencyDtos = [];
     this.fileReset();
+    this.referenceService.scrollSmoothToTop();
   }
 
   showOrHideModules(agencyDto:AgencyDto){
