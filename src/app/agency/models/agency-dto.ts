@@ -21,5 +21,8 @@ export class AgencyDto {
     agencyNameErrorMessage = "";
     validAgencyName = false;
     validForm = false;
+    expand = false;
+    module:any;
+    modules:Array<any> = new Array<any>();
     
 }

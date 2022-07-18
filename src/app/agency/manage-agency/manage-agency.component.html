@@ -348,22 +348,14 @@
                 </td>
                 <!---Modules-->
                 <td>
-                  <table class="table table-bordered">
-                    <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
-                      <tr>
-                        <th  scope="row" class="fstcw-tm">
-                          <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                          {{defaultModule?.moduleName}}
-                          <br>
-                        </th>
-                        <th class="normal-font-weight">
-                          <switch  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" (statusChange)="changeStatus($event,defaultModule)">
-                          </switch>
-                        </th>
-                      </tr>
-                    </ng-container>
-                  </table>
+                  <strong>
+                    <i class="{{defaultModules[0]?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                    {{defaultModules[0]?.moduleName}}
+                  </strong>
+                  <br>
+                    <switch  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModules[0])">
+                    </switch>
                 </td>
                 <!---Delete-->
                 <td>

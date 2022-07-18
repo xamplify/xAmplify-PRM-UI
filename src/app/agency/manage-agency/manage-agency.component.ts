@@ -1,3 +1,4 @@
+import { CsvDto } from './../../core/models/csv-dto';
 import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, Event } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
@@ -16,7 +17,6 @@ import { AgencyDto } from './../models/agency-dto';
 import { TeamMemberService } from './../../team/services/team-member.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
-import { CsvDto } from 'app/core/models/csv-dto';
 
 
 declare var $:any,swal:any;
@@ -118,14 +118,18 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     
   }
 
-  findDefaultModules() {
+  findDefaultModules(csv:boolean,csvDto:CsvDto) {
     this.referenceService.loading(this.addAgencyLoader, true);
     this.defaultModules = [];
     this.teamMemberService.findDefaultModules().
       subscribe(
         response => {
           this.defaultModules = response.data.modules;
-          this.referenceService.loading(this.addAgencyLoader, false);
+          if(csv){
+            this.appendCsvDataToTable(csvDto);
+          }else{
+            this.referenceService.loading(this.addAgencyLoader, false);
+          }
         }, error => {
           this.referenceService.loading(this.addAgencyLoader, false);
           this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
@@ -147,7 +151,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.customResponse = new CustomResponse();
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = true;
-    this.findDefaultModules();
+    this.findDefaultModules(false,this.csvDto);
   }
 
   clearAgencyForm() {
@@ -257,28 +261,31 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     if (this.csvDto.csvErrors.length > 0) {
       $("#agency-csv-error-div").show();
     } else {
-      this.findDefaultModules();
-      this.showUploadedAgencies = true;
-      this.appendCsvDataToTable();
+      this.findDefaultModules(true,this.csvDto);
     }
     this.fileReset();
   }
-  appendCsvDataToTable() {
-    let csvRecords = this.csvDto.csvRecords;
+  appendCsvDataToTable(csvDto:CsvDto) {
+    let csvRecords = csvDto.csvRecords;
     for (var i = 1; i < csvRecords.length; i++) {
       let rows = csvRecords[i];
       let row = rows[0].split(',');
       let emailId = row[0].toLowerCase();
       if (emailId != undefined && $.trim(emailId).length > 0) {
         let agencyDto = new AgencyDto();
+        console.log(emailId);
         agencyDto.emailId = emailId;
-        agencyDto['firstName'] = row[1];
-        agencyDto['lastName'] = row[2];
-        agencyDto['agencyName'] = row[3];
-        agencyDto['companyName'] = row[3];
+        agencyDto.firstName = row[1];
+        agencyDto.lastName = row[2];
+        agencyDto.agencyName= row[3];
+        agencyDto.companyName = row[3];
+        agencyDto.expand = false;
+        agencyDto.module = this.defaultModules[0];
         this.agencyDtos.push(agencyDto);
       }
-    }
+    }     
+    this.referenceService.loading(this.addAgencyLoader, false);
+    this.showUploadedAgencies = true;
   }
 
   validateCsvData() {
