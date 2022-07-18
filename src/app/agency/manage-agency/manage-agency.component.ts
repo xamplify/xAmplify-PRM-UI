@@ -273,14 +273,17 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
       let emailId = row[0].toLowerCase();
       if (emailId != undefined && $.trim(emailId).length > 0) {
         let agencyDto = new AgencyDto();
-        console.log(emailId);
         agencyDto.emailId = emailId;
         agencyDto.firstName = row[1];
         agencyDto.lastName = row[2];
         agencyDto.agencyName= row[3];
         agencyDto.companyName = row[3];
         agencyDto.expand = false;
-        agencyDto.module = this.defaultModules[0];
+        agencyDto.modules = this.defaultModules;
+        $.each(agencyDto.modules,function(_index:number,module:any){
+           module.enabled = true;
+        });
+        agencyDto.module = agencyDto.modules[0];
         this.agencyDtos.push(agencyDto);
       }
     }     
@@ -362,6 +365,10 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.showUploadedAgencies = false;
     this.agencyDtos = [];
     this.fileReset();
+  }
+
+  showOrHideModules(agencyDto:AgencyDto){
+    agencyDto.expand = !agencyDto.expand;
   }
 
 }

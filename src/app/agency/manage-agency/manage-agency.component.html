@@ -342,26 +342,53 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let agency of agencyDtos;let i=index" class="upload-team-member-class">
+              <ng-container *ngFor="let agencyDto of agencyDtos;let i=index" class="upload-team-member-class">
+
+              <tr>
                 <td>
-                  <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agency"></app-user-info>
+                  <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
                 </td>
                 <!---Modules-->
                 <td>
                   <strong>
-                    <i class="{{defaultModules[0]?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                    {{defaultModules[0]?.moduleName}}
+                    <i class="{{agencyDto.module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                    {{agencyDto.module?.moduleName}}
                   </strong>
-                  <br>
-                    <switch  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModules[0])">
+                    <switch [status]="agencyDto.module.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,agencyDto.module)">
                     </switch>
+                    <a (click)="showOrHideModules(agencyDto)">
+                      <i class="fa fa-gear" aria-hidden="true"></i>
+                    </a>
                 </td>
                 <!---Delete-->
                 <td>
-                  <a (click)="deleteRow(i,agency)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                  <a (click)="deleteRow(i,agencyDto)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
                 </td>
               </tr>
+              <tr *ngIf="agencyDto?.expand">
+                <td colspan="5">
+                  <div [@fadeInOut] class="table-responsive">
+                    <table class='table tgrid table-hover' aria-describedby="">
+                      <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+                        <tr>
+                          <th  scope="row" class="fstcw-tm">
+                            <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                            {{defaultModule?.moduleName}}
+                            <br>
+                          </th>
+                          <th class="normal-font-weight">
+                            <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+                            </switch>
+                          </th>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </div>
+                </td>
+                </tr>
+              </ng-container>
             </tbody>
           </table>
           <button  id="right" type="submit" class="btn btn-primary" (click)="addAgencies()">Save</button>
