@@ -21,4 +21,12 @@ export class AgencyService {
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
+
+  /***Get All Modules */
+  findAllModules(){
+    let url = this.AGENCY_URL+"/modules";
+    return this.http.get(url,"")
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
 }

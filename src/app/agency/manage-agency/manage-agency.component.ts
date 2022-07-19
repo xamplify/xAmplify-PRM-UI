@@ -14,7 +14,6 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { AgencyService } from './../services/agency.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
 import { AgencyDto } from './../models/agency-dto';
-import { TeamMemberService } from './../../team/services/team-member.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 
@@ -24,7 +23,7 @@ declare var $:any,swal:any;
   selector: 'app-manage-agency',
   templateUrl: './manage-agency.component.html',
   styleUrls: ['./manage-agency.component.css'],
-  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,TeamMemberService,SortOption],
+  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,SortOption],
   animations:[CustomAnimation]
 })
 export class ManageAgencyComponent implements OnInit,OnDestroy {
@@ -50,7 +49,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
-    private teamMemberService:TeamMemberService,public utilService:UtilService) {
+    public utilService:UtilService) {
 
     }
     ngOnDestroy(): void {
@@ -121,7 +120,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   findDefaultModules(csv:boolean,csvDto:CsvDto) {
     this.referenceService.loading(this.addAgencyLoader, true);
     this.defaultModules = [];
-    this.teamMemberService.findDefaultModules().
+    this.agencyService.findAllModules().
       subscribe(
         response => {
           this.defaultModules = response.data.modules;
