@@ -24,7 +24,7 @@ export class AgencyService {
 
   /***Get All Modules */
   findAllModules(){
-    let url = this.AGENCY_URL+"/modules";
+    let url = this.AGENCY_PREFIX_URL+"/modules"+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.http.get(url,"")
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
