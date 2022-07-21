@@ -256,46 +256,8 @@
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3" translate>Select Modules<span class="required">*</span></label>
-                    <div class="col-sm-4">
-                        <div class="table-responsive">
-                          <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
-                            <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
-                              <tr *ngIf="0 === i % 2" >
-                                <th  scope="row" class="fstcw-tm">
-                                  <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                                  {{defaultModule?.moduleName}}
-                                  <br>
-                                </th>
-                                <th class="normal-font-weight">
-                                  <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                                  [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-                                  </switch>
-                                </th>
-                              </tr>
-                            </ng-container>
-                          </table>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="table-responsive">
-                        <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
-                          <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
-                            <tr *ngIf="0!= i % 2" >
-                              <th  scope="row" class="fstcw-tm">
-                                <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                                {{defaultModule?.moduleName}}
-                                <br>
-                              </th>
-                              <th class="normal-font-weight">
-                                <switch   [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-                                </switch>
-                              </th>
-                            </tr>
-                          </ng-container>
-                        </table>
-                      </div>
-                    </div>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:defaultModules,even:true,uploadCsv:false}"></ng-template>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:defaultModules,even:false,uploadCsv:false}"></ng-template>
                   </div>
                 </div>
                 <div id="right">
@@ -323,7 +285,7 @@
       </div>
       <app-list-loader [hidden]="!addAgencyLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addAgencyLoader.isLoading">
-        <div class="table-responsive">
+        <div class="table-responsive overflow-hidden">
           <table class="table table-striped silvertm" id="add-agency-table"  aria-describedby="Agencies">
             <thead>
               <tr>
@@ -343,7 +305,6 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let agencyDto of agencyDtos;let i=index" class="upload-team-member-class">
-
               <tr>
                 <td>
                   <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
@@ -357,7 +318,7 @@
                     <switch [status]="agencyDto.module.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
                     [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,agencyDto.module)">
                     </switch>
-                    <a (click)="showOrHideModules(agencyDto)">
+                    <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto)">
                       <i class="fa fa-gear" aria-hidden="true"></i>
                     </a>
                 </td>
@@ -367,48 +328,10 @@
                 </td>
               </tr>
               <tr [@fadeInOut] *ngIf="agencyDto?.expand">
-                <td colspan="5">
+                <td colspan="4">
                   <div class="table-responsive">
-                    <div class="col-sm-6">
-                      <div class="table-responsive">
-                        <table class='table tgrid table-hover' aria-describedby="">
-                          <ng-container *ngFor="let defaultModule of agencyDto.modules;let i = index;">
-                            <tr *ngIf="0 === i % 2" >
-                              <th  scope="row" class="fstcw-tm">
-                                <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                                {{defaultModule?.moduleName}}
-                                <br>
-                              </th>
-                              <th class="normal-font-weight">
-                                <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-                                </switch>
-                              </th>
-                            </tr>
-                          </ng-container>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="table-responsive">
-                        <table class='table tgrid table-hover' aria-describedby="">
-                          <ng-container *ngFor="let defaultModule of agencyDto.modules;let i = index;">
-                            <tr *ngIf="0!= i % 2" >
-                              <th  scope="row" class="fstcw-tm">
-                                <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                                {{defaultModule?.moduleName}}
-                                <br>
-                              </th>
-                              <th class="normal-font-weight">
-                                <switch   [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                                [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-                                </switch>
-                              </th>
-                            </tr>
-                          </ng-container>
-                        </table>
-                      </div>
-                    </div>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:true,uploadCsv:true}"></ng-template>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:false,uploadCsv:true}"></ng-template>
                   </div>
                 </td>
                 </tr>
@@ -423,10 +346,32 @@
       </div>
     </div>
     <!-----End Of Uplodaded Agencies----->
-
-
-
   </div>
 </div>
+<ng-template #modulesTemplate let-defaultModules="modules" let-even="even" let-uploadCsv="uploadCsv">
+<div [className]="uploadCsv ?'col-sm-6':'col-sm-4'">
+  <div class="table-responsive">
+    <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
+      <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+        <tr *ngIf="(0 === i % 2 && even) ||(0 != i % 2 && !even)">
+          <th  scope="row" class="fstcw-tm">
+            <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+              {{defaultModule?.moduleName}}
+              <a title="{{defaultModule?.description}}">
+                <i class="fa fa-question-circle mrfpx"></i>
+              </a>
+            <br>
+          </th>
+          <th class="normal-font-weight">
+            <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+            </switch>
+          </th>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+</div>
+</ng-template>
 
 

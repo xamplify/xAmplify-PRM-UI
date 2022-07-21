@@ -1670,4 +1670,7 @@ strong {
 .normal-font-weight{
   font-weight: normal;
 }
+.overflow-hidden{
+  overflow: hidden;
+}
 
