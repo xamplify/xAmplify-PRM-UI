@@ -1,36 +1,57 @@
 <div class="bar auto-height">
-  <ng-container *ngIf="asset?.status=='COMPLETED'">
-  <a *ngIf="asset?.history && !isPartnerView && asset?.edit " title="History" (click)="viewGirdHistory(asset)"> 
-    <i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"	aria-hidden="true"></i>
-  </a> 
-  <a class="mMobileDisable mDisableColor" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit" title="Design"	(click)="addOrEdit(asset.id)"> 
-    <i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
-  </a> 
-  <a class="mMobileDisable mDisableColor" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
-     <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
-  </a> 
-  <a class="mMobileDisable mDisableColor" *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id)">
-     <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
-  </a> 
-  <a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)"> 
-    <i	class="fa fa-eye" aria-hidden="true"></i>
-  </a> 
-  <a *ngIf="!isPartnerView" title="Publish"	(click)="openPublishPopup(asset)"> 
-    <i	class="fa fa-share" aria-hidden="true"></i>
-  </a> 
-  <a *ngIf="!isPartnerView" title="Download"	(click)="openDownloadPopup(asset)">
-     <i class="fa fa-download"	aria-hidden="true"></i>
-  </a>
-   <a title="View Analytics" (click)="viewAnalytics(asset)">
-      <i class="fa fa-line-chart" aria-hidden="true"></i>
-  </a> 
-  <a *ngIf="isPartnerView" title="View Details" (click)="viewDetails(asset)">
-     <i class="fa fa-eye" aria-hidden="true"></i>
-  </a> 
-  <a *ngIf="!isPartnerView && asset?.delete" title="Delete" class="delete"	(click)="confirmDelete(asset)"> 
-    <i class="fa fa-trash-o" aria-hidden="true"></i>
-  </a>
-  </ng-container>
+	<ng-container *ngIf="asset?.status=='COMPLETED'"> <a
+		*ngIf="asset?.history && !isPartnerView && asset?.edit "
+		title="History" (click)="viewGirdHistory(asset)"> <i class="fa"
+		[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
+		aria-hidden="true"></i>
+	</a> <a class="mMobileDisable mDisableColor"
+		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
+		title="Design" (click)="addOrEdit(asset.id)"> <i
+		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
+	</a> <a class="mMobileDisable mDisableColor"
+		*ngIf="asset?.beeTemplate && isPartnerView" title="Edit"
+		(click)="addOrEdit(asset.id)"> <i class="fa fa-edit mDisableColor"
+		aria-hidden="true"></i>
+	</a> <a class="mMobileDisable mDisableColor"
+		*ngIf="!isPartnerView && asset?.edit" title="Edit"
+		(click)="editDetails(asset.id)"> <i
+		class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon" title="Preview"
+		(click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
+	</a> <a *ngIf="!isPartnerView" title="Publish"
+		(click)="openPublishPopup(asset)"> <i class="fa fa-share"
+		aria-hidden="true"></i>
+	</a> <a *ngIf="!isPartnerView" title="Download"
+		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
+		aria-hidden="true"></i>
+	</a> <a title="View Analytics" (click)="viewAnalytics(asset)"> <i
+		class="fa fa-line-chart" aria-hidden="true"></i>
+	</a> <a *ngIf="isPartnerView" title="View Details"
+		(click)="viewDetails(asset)"> <i class="fa fa-eye"
+		aria-hidden="true"></i>
+	</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete"
+		class="delete" (click)="confirmDelete(asset)"> <i
+		class="fa fa-trash-o" aria-hidden="true"></i>
+	</a> </ng-container>
+	<ng-container
+		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+	<a
+		*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+		(click)="campaignRouter(asset.alias, asset.viewBy)"
+		data-toggle="tooltip" data-placement="top" title="Create campaign">
+		<i class="fa fa-bullhorn" aria-hidden="true"></i>
+	</a> <a class="disable"
+		*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+		data-toggle="tooltip" data-placement="top"
+		[title]="actionsDescription.video_draft"> <i
+		class="fa fa-bullhorn" aria-hidden="true"></i>
+	</a> <a class="disable"
+		*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
+		data-toggle="tooltip" data-placement="top"
+		title="Unavailable for processing"> <i class="fa fa-bullhorn"
+		aria-hidden="true"></i>
+	</a>
+ </ng-container>
 </div>
 
 
