@@ -2867,4 +2867,22 @@ export class ReferenceService {
   downloadCsvTemplate(url:string){
     window.location.href = this.authenticationService.REST_URL +url+"?access_token=" + this.authenticationService.access_token;
   }
+
+  showHttpErrorMessage(error: any){
+    this.scrollSmoothToTop();
+    let statusCode = JSON.parse(error['status']);
+    let message = this.properties.serverErrorMessage;
+    if (statusCode == 409 || statusCode == 400) {
+      let errorResponse = JSON.parse(error['_body']);
+      message = errorResponse['message'];
+    }
+    return message;
+  }
+
+  appendProcessingLoaderToDiv(divId:string){
+    $(divId).addClass('download-loader');
+  }
+  removeProcessingLoaderToDiv(divId:string){
+    $('#'+divId).removeClass('download-loader');
+  }
 }

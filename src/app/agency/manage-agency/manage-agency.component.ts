@@ -16,7 +16,7 @@ import { CustomAnimation } from 'app/core/models/custom-animation';
 import { AgencyDto } from './../models/agency-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
-
+import { AgencyPostDto } from '../models/agency-post-dto';
 
 declare var $:any,swal:any;
 @Component({
@@ -36,6 +36,8 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   editAgency = false;
   saveOrUpdateButtonText = "Save";
   agencyDto:AgencyDto = new AgencyDto();
+  agencyPostDto:AgencyPostDto = new AgencyPostDto();
+  agencyPostDtos:Array<AgencyPostDto> = new Array<AgencyPostDto>();  
   agencyDtos:Array<AgencyDto> = new Array<AgencyDto>();  
   defaultModules: Array<any> = new Array<any>();
   agencies: Array<any> = new Array<any>();  
@@ -190,6 +192,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.validateAddAgencyForm("agencyName");
   }
 
+
   
   changeStatus(event: any, module: any) {
     if (module.moduleName == "All") {
@@ -203,8 +206,8 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     }
     this.validateAgencyForm();
     let enabledModules = this.defaultModules.filter((item) => item.enabled);
-    let roleIds = enabledModules.map(function (a) { return a.roleId; });
-    this.agencyDto.roleIds = roleIds;
+    let moduleIds = enabledModules.map(function (a) { return a.roleId; });
+    this.agencyDto.moduleIds = moduleIds;
   }
 
   enableOrDisableAllModules(event: any) {
@@ -212,6 +215,32 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     $.each(self.defaultModules, function (_index: number, defaultModule: any) {
       defaultModule.enabled = event;
     });
+  }
+  
+  addOrUpdate(){
+    this.referenceService.appendProcessingLoaderToDiv('add-agency-div');
+    this.customResponse = new CustomResponse();
+    this.agencyPostDto = new AgencyPostDto();
+    this.agencyPostDtos = new Array<AgencyPostDto>();
+    this.agencyPostDto.agencyName = this.agencyDto.agencyName;
+    this.agencyPostDto.emailId = this.agencyDto.emailId;
+    this.agencyPostDto.firstName = this.agencyDto.firstName;
+    this.agencyPostDto.lastName = this.agencyDto.lastName;
+    this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
+    this.agencyPostDtos.push(this.agencyPostDto);
+    this.agencyService.save(this.agencyPostDtos).subscribe(
+        response=>{
+          this.referenceService.scrollSmoothToTop();
+          console.log(response);
+          if(response.statusCode==400){
+            this.customResponse = new CustomResponse('ERROR',"ANDB",true);
+            this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
+          }
+        },error=>{
+          let errorMessage = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+          this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
+        });
   }
 
   downloadCsv(){

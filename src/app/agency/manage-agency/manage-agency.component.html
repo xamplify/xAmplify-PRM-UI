@@ -39,13 +39,8 @@
   </div>
   <!-- End Of CSV Errors---->
 
-  <div *ngIf="customResponse.isVisible">
-    <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-      <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">x</span>
-      </button>
-      <strong [innerHTML]="customResponse.responseMessage"></strong>
-    </div>
+  <div [@fadeInOut] class="row">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>
 
   
@@ -189,7 +184,7 @@
 
     <!--Add Agency Div-->
     <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
-      <div [@fadeInOut] class="portlet light">
+      <div [@fadeInOut] class="portlet light" id="add-agency-div">
         <div class="portlet-title">
           <div class="caption" translate>
             <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>

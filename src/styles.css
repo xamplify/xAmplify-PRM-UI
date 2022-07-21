@@ -1674,3 +1674,9 @@ strong {
   overflow: hidden;
 }
 
+.download-loader{
+  background: rgba(0, 0, 0, 0.25) url(./assets/images/loading.gif) no-repeat center center;
+  opacity: 0.5;
+  pointer-events: none;
+}
+

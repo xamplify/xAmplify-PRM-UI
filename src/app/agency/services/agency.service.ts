@@ -4,6 +4,7 @@ import { Http } from "@angular/http";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Pagination } from "app/core/models/pagination";
 import { ReferenceService } from './../../core/services/reference.service';
+import { AgencyPostDto } from '../models/agency-post-dto';
 
 @Injectable()
 export class AgencyService {
@@ -26,6 +27,17 @@ export class AgencyService {
   findAllModules(){
     let url = this.AGENCY_PREFIX_URL+"/modules"+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.http.get(url,"")
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
+  /****Save****/
+  save(agencyDtos:Array<AgencyPostDto>){
+    console.log(agencyDtos);
+    let dto = {};
+    dto['agencies'] = agencyDtos;
+    console.log(dto);
+    return this.http.post(this.AGENCY_URL,dto)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }

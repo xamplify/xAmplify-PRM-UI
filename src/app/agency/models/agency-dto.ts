@@ -11,7 +11,7 @@ export class AgencyDto {
     enabled:boolean = true;
     xamplifyModules:XamplifyModuleDto = new XamplifyModuleDto();
     userId = 0;
-    roleIds = [];
+    moduleIds = [];
     /******Form Related****/
     properties:Properties = new Properties();
     emaillIdDivClass: string = this.properties.defaultClass;
