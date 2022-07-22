@@ -29,6 +29,7 @@ declare var $:any,swal:any;
 export class ManageAgencyComponent implements OnInit,OnDestroy {
   agencyAccess = false;
   loader:HttpRequestLoader = new HttpRequestLoader();
+  ngxLoading = false;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   addAgencyLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
@@ -126,6 +127,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
       subscribe(
         response => {
           this.defaultModules = response.data.modules;
+          this.addModuleIds();
           if(csv){
             this.appendCsvDataToTable(csvDto);
           }else{
@@ -148,6 +150,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
 
    /***********Add*******************/
    goToAddAgencyDiv() {
+    this.referenceService.scrollSmoothToTop();
     this.referenceService.hideDiv('agency-csv-error-div');
     this.customResponse = new CustomResponse();
     this.agencyDto = new AgencyDto();
@@ -205,6 +208,10 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
       allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
     }
     this.validateAgencyForm();
+    this.addModuleIds();
+  }
+
+  addModuleIds(){
     let enabledModules = this.defaultModules.filter((item) => item.enabled);
     let moduleIds = enabledModules.map(function (a) { return a.roleId; });
     this.agencyDto.moduleIds = moduleIds;
@@ -218,8 +225,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   }
   
   addOrUpdate(){
-    this.referenceService.appendProcessingLoaderToDiv('add-agency-div');
-    this.customResponse = new CustomResponse();
+    this.ngxLoading = true;
     this.agencyPostDto = new AgencyPostDto();
     this.agencyPostDtos = new Array<AgencyPostDto>();
     this.agencyPostDto.agencyName = this.agencyDto.agencyName;
@@ -227,17 +233,21 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.agencyPostDto.firstName = this.agencyDto.firstName;
     this.agencyPostDto.lastName = this.agencyDto.lastName;
     this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
+    alert(this.agencyDto.moduleIds);
     this.agencyPostDtos.push(this.agencyPostDto);
     this.agencyService.save(this.agencyPostDtos).subscribe(
         response=>{
           if(response.statusCode==400){
             this.customResponse = new CustomResponse('ERROR',this.properties.formSubmissionFailed,true);
           }
-          this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
+          this.referenceService.scrollSmoothToTop();
+          this.ngxLoading = false;
         },error=>{
           let errorMessage = this.referenceService.showHttpErrorMessage(error);
           this.customResponse = new CustomResponse('ERROR',errorMessage,true);
-          this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
+          this.referenceService.scrollSmoothToTop();
+          this.ngxLoading = false;          
+         
         });
   }
 

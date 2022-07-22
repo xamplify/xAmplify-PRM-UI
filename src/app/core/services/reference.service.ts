@@ -2879,16 +2879,16 @@ export class ReferenceService {
     return message;
   }
 
-  appendProcessingLoaderToDiv(divId:string){
+  addLoader(divId:string){
     this.scrollSmoothToTop();
-    $('body').addClass('download-loader');
+    $('#'+divId).addClass('download-loader');
     
   }
-  removeProcessingLoaderToDiv(divId:string){
+  removeLoader(divId:string){
     this.scrollSmoothToTop();
     setTimeout(() => {
       $('#'+divId).removeClass('download-loader');
     }, 500);
-    
+   
   }
 }

@@ -2,6 +2,7 @@
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 </div>
 <div [@fadeInOut] class="page-content"  *ngIf="!loader.isLoading && agencyAccess">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <!--Page-bar---->
    <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -181,7 +182,7 @@
 
     <!--Add Agency Div-->
     <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
-      <div [@fadeInOut] class="portlet light" id="add-agency-div">
+      <div [@fadeInOut] class="portlet light">
         <div class="portlet-title">
           <div class="caption" translate>
             <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>
@@ -206,7 +207,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">Agency Name<span class="required">*</span></label>
                       <div  class="{{agencyDto?.agencyNameDivClass}}">
-                        <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
+                        <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control lowercase-text" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
                         <span class="required" *ngIf="agencyDto?.agencyNameErrorMessage?.length>0">{{agencyDto?.agencyNameErrorMessage}}</span>
                       </div>
                   </div>

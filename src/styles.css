@@ -1685,3 +1685,7 @@ strong {
   margin-left: 0 !important;
 }
 
+.lowercase-text{
+  text-transform: lowercase;
+}
+
