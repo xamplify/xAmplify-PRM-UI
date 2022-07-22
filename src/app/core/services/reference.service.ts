@@ -2880,9 +2880,15 @@ export class ReferenceService {
   }
 
   appendProcessingLoaderToDiv(divId:string){
-    $(divId).addClass('download-loader');
+    this.scrollSmoothToTop();
+    $('body').addClass('download-loader');
+    
   }
   removeProcessingLoaderToDiv(divId:string){
-    $('#'+divId).removeClass('download-loader');
+    this.scrollSmoothToTop();
+    setTimeout(() => {
+      $('#'+divId).removeClass('download-loader');
+    }, 500);
+    
   }
 }

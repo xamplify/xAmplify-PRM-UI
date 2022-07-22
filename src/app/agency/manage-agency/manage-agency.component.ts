@@ -230,12 +230,10 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.agencyPostDtos.push(this.agencyPostDto);
     this.agencyService.save(this.agencyPostDtos).subscribe(
         response=>{
-          this.referenceService.scrollSmoothToTop();
-          console.log(response);
           if(response.statusCode==400){
-            this.customResponse = new CustomResponse('ERROR',"ANDB",true);
-            this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
+            this.customResponse = new CustomResponse('ERROR',this.properties.formSubmissionFailed,true);
           }
+          this.referenceService.removeProcessingLoaderToDiv('add-agency-div');
         },error=>{
           let errorMessage = this.referenceService.showHttpErrorMessage(error);
           this.customResponse = new CustomResponse('ERROR',errorMessage,true);

@@ -39,10 +39,7 @@
   </div>
   <!-- End Of CSV Errors---->
 
-  <div [@fadeInOut] class="row">
-    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  </div>
-
+ 
   
   <!--Add & Manage Agencies-->
   <div class="row">
@@ -195,6 +192,9 @@
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
+        </div>
+        <div [@fadeInOut] class="row mrzero-mlzero">
+          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
         <app-modal-popup-loader *ngIf="addAgencyLoader.isLoading"></app-modal-popup-loader>
         <div *ngIf="!addAgencyLoader.isLoading" class="row" style="margin-top: 20px;">
