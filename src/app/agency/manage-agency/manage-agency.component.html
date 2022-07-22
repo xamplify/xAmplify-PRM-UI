@@ -207,7 +207,7 @@
                   <div class="form-group">
                     <label class="control-label col-sm-3">Agency Name<span class="required">*</span></label>
                       <div  class="{{agencyDto?.agencyNameDivClass}}">
-                        <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control lowercase-text" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
+                        <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
                         <span class="required" *ngIf="agencyDto?.agencyNameErrorMessage?.length>0">{{agencyDto?.agencyNameErrorMessage}}</span>
                       </div>
                   </div>
@@ -238,7 +238,7 @@
                     <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
                       <div class="{{agencyDto?.emaillIdDivClass}}">
                         <ng-container *ngIf="showAddAgencyDiv">
-                          <input  type="email" autocomplete="off" class="form-control" (input)="validateAddAgencyForm('emailId')"  placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <input  type="email" autocomplete="off" class="form-control lowercase-text" (input)="validateAddAgencyForm('emailId')"  placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
                           <span class="required" *ngIf="agencyDto?.emailIdErrorMessage?.length>0">{{agencyDto?.emailIdErrorMessage}}</span>
                         </ng-container>
                         <ng-container *ngIf="editAgency">
