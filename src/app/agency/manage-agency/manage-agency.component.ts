@@ -1,5 +1,6 @@
+import { ErrorResponse } from './../../util/models/error-response';
 import { CsvDto } from './../../core/models/csv-dto';
-import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit, ErrorHandler } from '@angular/core';
 import { Router, Event } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from 'app/common/models/properties';
@@ -17,7 +18,6 @@ import { AgencyDto } from './../models/agency-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { AgencyPostDto } from '../models/agency-post-dto';
-
 declare var $:any,swal:any;
 @Component({
   selector: 'app-manage-agency',
@@ -41,7 +41,8 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   agencyPostDtos:Array<AgencyPostDto> = new Array<AgencyPostDto>();  
   agencyDtos:Array<AgencyDto> = new Array<AgencyDto>();  
   defaultModules: Array<any> = new Array<any>();
-  agencies: Array<any> = new Array<any>();  
+  agencies: Array<any> = new Array<any>(); 
+  errorResponses:Array<ErrorResponse> = new Array<ErrorResponse>(); 
   /************CSV Related************* */
   showUploadedAgencies = false;
   sortOption: SortOption = new SortOption();
@@ -195,8 +196,6 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.validateAddAgencyForm("agencyName");
   }
 
-
-  
   changeStatus(event: any, module: any) {
     if (module.moduleName == "All") {
       this.enableOrDisableAllModules(event);
@@ -229,16 +228,18 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.agencyPostDto = new AgencyPostDto();
     this.agencyPostDtos = new Array<AgencyPostDto>();
     this.agencyPostDto.agencyName = this.agencyDto.agencyName;
-    this.agencyPostDto.emailId = this.agencyDto.emailId;
+    this.agencyPostDto.emailId = this.agencyDto.emailId.toLowerCase();
     this.agencyPostDto.firstName = this.agencyDto.firstName;
     this.agencyPostDto.lastName = this.agencyDto.lastName;
     this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
-    alert(this.agencyDto.moduleIds);
     this.agencyPostDtos.push(this.agencyPostDto);
     this.agencyService.save(this.agencyPostDtos).subscribe(
         response=>{
-          if(response.statusCode==400){
-            this.customResponse = new CustomResponse('ERROR',this.properties.formSubmissionFailed,true);
+          let statusCode = response.statusCode;
+          if(statusCode==400){
+            this.addErrorMessages(response);
+          }else if(statusCode==200){
+            this.customResponse = new CustomResponse('SUCCESS',response.message,true);
           }
           this.referenceService.scrollSmoothToTop();
           this.ngxLoading = false;
@@ -247,10 +248,24 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
           this.customResponse = new CustomResponse('ERROR',errorMessage,true);
           this.referenceService.scrollSmoothToTop();
           this.ngxLoading = false;          
-         
         });
   }
 
+  private addErrorMessages(response: any) {
+    this.agencyDto.emailIdErrorMessage = "";
+    this.customResponse = new CustomResponse('ERROR', this.properties.formSubmissionFailed, true);
+    let data = response.data;
+    this.errorResponses = data.errorMessages;
+    let self = this;
+    $.each(this.errorResponses, function (_index: number, errorResponse: ErrorResponse) {
+      let field = errorResponse.field;
+      if ("agencies[0]emailId" == field) {
+        self.agencyDto.emailIdErrorMessage = errorResponse.message;
+      }
+    });
+  }
+
+/***************E N D OF ADD**********/
   downloadCsv(){
     this.referenceService.downloadCsvTemplate("agencies/downloadCsvTemplate/Add-Agencies.csv");
   }

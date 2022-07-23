@@ -242,7 +242,7 @@
                           <span class="required" *ngIf="agencyDto?.emailIdErrorMessage?.length>0">{{agencyDto?.emailIdErrorMessage}}</span>
                         </ng-container>
                         <ng-container *ngIf="editAgency">
-                          <input disabled type="email" class="form-control"   placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
+                          <input disabled type="email" class="form-control" placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
                         </ng-container>
                       </div>
                   </div>

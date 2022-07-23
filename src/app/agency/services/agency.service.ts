@@ -33,10 +33,8 @@ export class AgencyService {
 
   /****Save****/
   save(agencyDtos:Array<AgencyPostDto>){
-    console.log(agencyDtos);
     let dto = {};
     dto['agencies'] = agencyDtos;
-    console.log(dto);
     return this.http.post(this.AGENCY_URL,dto)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
