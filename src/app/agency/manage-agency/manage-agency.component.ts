@@ -56,11 +56,11 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     public utilService:UtilService) {
 
     }
-    ngOnDestroy(): void {
-      $('#delete-agency-popup').modal('hide');
-      $('#preview-agency-popup').modal('hide');
-      swal.close();
-    }
+  ngOnDestroy(): void {
+    $('#delete-agency-popup').modal('hide');
+    $('#preview-agency-popup').modal('hide');
+    swal.close();
+  }
 
   ngOnInit() {
     this.referenceService.loading(this.loader,true);
@@ -94,31 +94,26 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       }
     );
   }
-/*************************Sort********************** */
-sortBy(text: any) {
-  this.sortOption.selectedAgencySortDropDownOption = text;
-  this.getAllFilteredResults(this.pagination, this.sortOption);
-}
-/*************************Search********************** */
-eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
-search() {
-  this.getAllFilteredResults(this.pagination, this.sortOption);
-}
+  /*************************Sort********************** */
+  sortBy(text: any) {
+    this.sortOption.selectedAgencySortDropDownOption = text;
+    this.getAllFilteredResults(this.pagination, this.sortOption);
+  }
+  /*************************Search********************** */
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+  search() {
+    this.getAllFilteredResults(this.pagination, this.sortOption);
+  }
 
-getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
-  pagination.pageIndex = 1;
-  pagination = this.utilService.sortOptionValues(sortOption.selectedAgencySortDropDownOption, pagination);
-  this.findAll(pagination);
-}
+  getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
+    pagination.pageIndex = 1;
+    pagination = this.utilService.sortOptionValues(sortOption.selectedAgencySortDropDownOption, pagination);
+    this.findAll(pagination);
+  }
   /**************Pagination***************/
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.findAll(this.pagination);
-  }
-
-
-  checkAgentAccess(){
-    
   }
 
   findDefaultModules(csv:boolean,csvDto:CsvDto) {
@@ -150,7 +145,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
   }
 
    /***********Add*******************/
-   goToAddAgencyDiv() {
+  goToAddAgencyDiv() {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.hideDiv('agency-csv-error-div');
     this.customResponse = new CustomResponse();
@@ -159,14 +154,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
     this.findDefaultModules(false,this.csvDto);
   }
 
-  clearAgencyForm() {
-    this.agencyDto = new AgencyDto();
-    this.showAddAgencyDiv = false;
-    this.showUploadedAgencies = false;
-    this.editAgency = false;
-    this.saveOrUpdateButtonText = "Save";
-    this.refreshList();
-  }
+ 
 
   validateAddAgencyForm(fieldName: string) {
     if ("emailId" == fieldName) {
@@ -240,6 +228,7 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
             this.addErrorMessages(response);
           }else if(statusCode==200){
             this.customResponse = new CustomResponse('SUCCESS',response.message,true);
+            this.clearFormAndShowList();
           }
           this.referenceService.scrollSmoothToTop();
           this.ngxLoading = false;
@@ -249,6 +238,20 @@ getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
           this.referenceService.scrollSmoothToTop();
           this.ngxLoading = false;          
         });
+  }
+
+  clearFormAndShowList() {
+    this.agencyDto = new AgencyDto();
+    this.agencyPostDto = new AgencyPostDto();
+    this.editAgency =  false;
+    this.showAddAgencyDiv = false;
+    this.saveOrUpdateButtonText = "Save";
+    this.refreshList();
+  }
+
+  cancel(){
+    this.customResponse = new CustomResponse();
+    this.clearFormAndShowList();
   }
 
   private addErrorMessages(response: any) {
