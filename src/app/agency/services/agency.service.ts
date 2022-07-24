@@ -1,3 +1,4 @@
+import { AgencyDto } from './../models/agency-dto';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Http } from "@angular/http";
@@ -39,4 +40,19 @@ export class AgencyService {
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
+
+  /***Get By Id ***/
+  getById(id:number){
+    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL;
+    return this.http.get(url)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
+  update(agencyPostDto:AgencyPostDto){
+    return this.http.put(this.AGENCY_URL,agencyPostDto)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
 }

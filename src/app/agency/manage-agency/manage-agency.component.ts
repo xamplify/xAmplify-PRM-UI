@@ -43,13 +43,12 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   defaultModules: Array<any> = new Array<any>();
   agencies: Array<any> = new Array<any>(); 
   errorResponses:Array<ErrorResponse> = new Array<ErrorResponse>(); 
-  /************CSV Related************* */
   showUploadedAgencies = false;
   sortOption: SortOption = new SortOption();
   csvDto:CsvDto = new CsvDto();
   @ViewChild('agencyCsvInput')
   agencyCsvInput: any;
-
+  statusCode = 0;
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
@@ -116,14 +115,23 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.findAll(this.pagination);
   }
 
-  findDefaultModules(csv:boolean,csvDto:CsvDto) {
+  findDefaultModules(csv:boolean,csvDto:CsvDto,agencyDto:AgencyDto) {
     this.referenceService.loading(this.addAgencyLoader, true);
     this.defaultModules = [];
     this.agencyService.findAllModules().
       subscribe(
         response => {
           this.defaultModules = response.data.modules;
-          this.addModuleIds();
+          if(this.agencyDto.id!=undefined && this.agencyDto.id>0){
+            let moduleIds = agencyDto.moduleIds;
+            $.each(this.defaultModules,function(_index:number,module:any){
+                module.enabled = moduleIds.indexOf(module.roleId)>-1;
+            });
+            this.editAgency =true;
+            this.ngxLoading = false;
+          }else{
+            this.addModuleIds();
+          }
           if(csv){
             this.appendCsvDataToTable(csvDto);
           }else{
@@ -131,6 +139,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
           }
         }, error => {
           this.referenceService.loading(this.addAgencyLoader, false);
+          this.ngxLoading = false;
           this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
           this.logger.errorPage(error);
         }
@@ -151,7 +160,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.customResponse = new CustomResponse();
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = true;
-    this.findDefaultModules(false,this.csvDto);
+    this.findDefaultModules(false,this.csvDto,this.agencyDto);
   }
 
  
@@ -238,25 +247,54 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.agencyPostDto.firstName = this.agencyDto.firstName;
     this.agencyPostDto.lastName = this.agencyDto.lastName;
     this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
+    this.agencyPostDto.id = this.agencyDto.id;
+    if(this.editAgency){
+      this.update();
+    }else{
+      this.save();
+    }
+    
+  }
+
+  private update() {
+    this.agencyService.update(this.agencyPostDto).subscribe(
+      response => {
+        this.showSuccessOrFailureResponse(response);
+      }, error => {
+        this.showHttpError(error);
+      });
+  }
+
+  private save() {
     this.agencyPostDtos.push(this.agencyPostDto);
     this.agencyService.save(this.agencyPostDtos).subscribe(
-        response=>{
-          let statusCode = response.statusCode;
-          if(statusCode==400){
-            this.addErrorMessages(response);
-          }else if(statusCode==200){
-            this.customResponse = new CustomResponse('SUCCESS',response.message,true);
-            this.clearFormAndShowList();
-          }
-          this.referenceService.scrollSmoothToTop();
-          this.ngxLoading = false;
-        },error=>{
-          let errorMessage = this.referenceService.showHttpErrorMessage(error);
-          this.customResponse = new CustomResponse('ERROR',errorMessage,true);
-          this.referenceService.scrollSmoothToTop();
-          this.ngxLoading = false;          
-        });
+      response => {
+        this.showSuccessOrFailureResponse(response);
+      }, error => {
+        this.showHttpError(error);
+      });
   }
+
+  private showHttpError(error: any) {
+    let errorMessage = this.referenceService.showHttpErrorMessage(error);
+    this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+    this.referenceService.scrollSmoothToTop();
+    this.ngxLoading = false;
+  }
+
+  private showSuccessOrFailureResponse(response: any) {
+    let statusCode = response.statusCode;
+    if (statusCode == 400) {
+      this.addErrorMessages(response);
+    } else if (statusCode == 200) {
+      this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+      this.clearFormAndShowList();
+    }
+    this.referenceService.scrollSmoothToTop();
+    this.ngxLoading = false;
+  }
+
+  
 
   clearFormAndShowList() {
     this.agencyDto = new AgencyDto();
@@ -333,7 +371,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     if (this.csvDto.csvErrors.length > 0) {
       $("#agency-csv-error-div").show();
     } else {
-      this.findDefaultModules(true,this.csvDto);
+      this.findDefaultModules(true,this.csvDto,this.agencyDto);
     }
     this.fileReset();
   }
@@ -454,8 +492,36 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     } else {
      
     }
-
     console.log(agencyDto);
   }
+
+  /***************Edit**********/
+  edit(id:number){
+    this.ngxLoading = true;
+    this.agencyService.getById(id).subscribe(
+      response=>{
+        this.statusCode = response.statusCode;
+        if(this.statusCode==200){
+          this.agencyDto = new AgencyDto();
+          let data = response.data;
+          this.agencyDto.id = data.id;
+          this.agencyDto.firstName = data.firstName;
+          this.agencyDto.lastName = data.lastName;
+          this.agencyDto.agencyName = data.companyName;
+          this.agencyDto.emailId = data.emailId;
+          this.agencyDto.moduleIds = data.moduleIds;
+        }
+      },error=>{
+          this.logger.errorPage(error);
+      },()=>{
+        if(this.statusCode==200){
+          this.saveOrUpdateButtonText = "Update";
+          this.findDefaultModules(false,this.csvDto,this.agencyDto);
+        }
+        
+      }
+    );
+  }
+
 
 }
