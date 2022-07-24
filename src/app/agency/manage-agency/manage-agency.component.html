@@ -312,7 +312,7 @@
                     {{agencyDto.module?.moduleName}}
                   </strong>
                     <switch [status]="agencyDto.module.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,agencyDto.module)">
+                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="addOrRemoveModules($event,agencyDto)">
                     </switch>
                     <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto)">
                       <i class="fa fa-gear" aria-hidden="true"></i>
@@ -326,8 +326,8 @@
               <tr [@fadeInOut] *ngIf="agencyDto?.expand">
                 <td colspan="4">
                   <div class="table-responsive">
-                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:true,uploadCsv:true}"></ng-template>
-                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:false,uploadCsv:true}"></ng-template>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:true,uploadCsv:true,agencyDto:agencyDto}"></ng-template>
+                    <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:agencyDto.modules,even:false,uploadCsv:true,agencyDto:agencyDto}"></ng-template>
                   </div>
                 </td>
                 </tr>
@@ -344,7 +344,7 @@
     <!-----End Of Uplodaded Agencies----->
   </div>
 </div>
-<ng-template #modulesTemplate let-defaultModules="modules" let-even="even" let-uploadCsv="uploadCsv">
+<ng-template #modulesTemplate let-defaultModules="modules" let-even="even" let-uploadCsv="uploadCsv" let-agencyDto="agencyDto">
 <div [className]="uploadCsv ?'col-sm-6':'col-sm-4'">
   <div class="table-responsive">
     <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
@@ -360,7 +360,7 @@
           </th>
           <th class="normal-font-weight">
             <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule,uploadCsv,agencyDto)">
             </switch>
           </th>
         </tr>

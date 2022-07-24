@@ -184,18 +184,36 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.validateAddAgencyForm("agencyName");
   }
 
-  changeStatus(event: any, module: any) {
-    if (module.moduleName == "All") {
-      this.enableOrDisableAllModules(event);
-    } else {
-      module.enabled = event;
-      let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
-      let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
-      let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
-      allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
+  changeStatus(event: any, module: any,isUploadCsv:boolean,agencyDto:any) {
+    if(!isUploadCsv){
+      if (module.moduleName == "All") {
+        this.enableOrDisableAllModules(event);
+      } else {
+        module.enabled = event;
+        let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
+        let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
+        let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
+        allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
+      }
+      this.validateAgencyForm();
+      this.addModuleIds();
+    }else if(isUploadCsv){
+      let modules = agencyDto.modules;
+      if(module.moduleName=="All"){
+      $.each(modules, function (_index: number, edit: any) {
+        edit.enabled = event;
+      });
+      }else{
+        module.enabled = event;
+        let modulesWithoutAll = modules.filter((item:any) => item.moduleName != "All");
+        let enabledModulesLength = modulesWithoutAll.filter((item:any) => item.enabled).length;
+        let allModule = modules.filter((item:any) => item.moduleName == "All")[0];
+        allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
+      }
+      console.log(agencyDto);
+
     }
-    this.validateAgencyForm();
-    this.addModuleIds();
+   
   }
 
   addModuleIds(){
@@ -424,6 +442,20 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   showOrHideModules(agencyDto:AgencyDto){
     agencyDto.expand = !agencyDto.expand;
+  }
+
+  addOrRemoveModules(event:any,agencyDto:any){
+    let module = agencyDto.module;
+    if (module.moduleName == "All") {
+      $.each(agencyDto.modules, function (_index: number, module: any) {
+        module.enabled = event;
+      });
+
+    } else {
+     
+    }
+
+    console.log(agencyDto);
   }
 
 }
