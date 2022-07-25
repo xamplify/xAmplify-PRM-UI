@@ -545,10 +545,10 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
         response=>{
           this.resetDeleteOptions();
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.stopNgxAndListLoader();
           this.refreshList();
         },error=>{
-          this.ngxLoading = false;
-          this.referenceService.loading(this.httpRequestLoader, false);
+          this.stopNgxAndListLoader();
           let message = this.referenceService.showHttpErrorMessage(error);
           this.customResponse = new CustomResponse('ERROR', message, true);
           this.resetDeleteOptions();
@@ -563,6 +563,11 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   resetDeleteOptions(){
     this.isDelete = false;
     this.selectedAgencyId = 0;
+  }
+
+  stopNgxAndListLoader(){
+    this.ngxLoading = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
  
 
