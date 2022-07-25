@@ -142,6 +142,10 @@
                   <!---Actions-->
                   <td  class="actions-row">
                     <div class="actions-block override-actions custom-width-icon">
+                       <!--Preview--->
+                       <a  title="Preview" (click)="preview(agency.id)" >
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                      </a>
                       <!--Edit--->
                       <a  title="Edit" (click)="edit(agency.id)" >
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -369,5 +373,3 @@
   </div>
 </div>
 </ng-template>
-
-

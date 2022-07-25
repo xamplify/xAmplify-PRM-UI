@@ -910,6 +910,20 @@ hasAgencyAccess(){
     .catch(this.handleError);
 }
 
+previewTeamMemberGroup(id:number){
+  const url = this.REST_URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getAssigedAgencyModules(id:number){
+  const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 
   
   

@@ -49,6 +49,8 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   @ViewChild('agencyCsvInput')
   agencyCsvInput: any;
   statusCode = 0;
+  showModulesPopup = false;
+  selectedAgencyId = 0;
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
@@ -166,8 +168,9 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
    /***************Edit**********/
    edit(id:number){
-    this.customResponse = new CustomResponse(); 
     this.ngxLoading = true;
+    this.customResponse = new CustomResponse(); 
+    this.referenceService.scrollSmoothToTop();
     this.agencyService.getById(id).subscribe(
       response=>{
         this.statusCode = response.statusCode;
@@ -521,7 +524,13 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     } else {
      
     }
-    console.log(agencyDto);
+  }
+
+
+  preview(id:number){
+    alert("ind");
+    this.showModulesPopup = true;
+    this.selectedAgencyId = id;
   }
 
  
