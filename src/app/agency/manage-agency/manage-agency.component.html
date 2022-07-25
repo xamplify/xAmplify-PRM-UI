@@ -160,7 +160,7 @@
                         </a>
                       </ng-container>
                       <!---Delete-->
-                      <a title="Delete"  (click)="showPopup(agency)">
+                      <a title="Delete"  (click)="showConfirmSweetAlert(agency.id)">
                         <i class="fa fa-trash red" aria-hidden="true"></i>
                       </a>
                     </div>
@@ -377,5 +377,7 @@
 <!-- Modules Preview Popup -->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [agencyId]="selectedAgencyId" (previewGroupPopupEventEmitter)="showModulesPopup=false;selectedAgencyId=0"></app-team-member-group-preview-popup>
 <!-- Modules Preview Popup -->
+
+<app-confirm-sweet-alert-util *ngIf="isDelete" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>
 
 

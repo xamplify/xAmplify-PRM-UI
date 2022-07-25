@@ -15,7 +15,6 @@ export class AgencyService {
   constructor(private http: Http, private authenticationService: AuthenticationService, 
     private logger: XtremandLogger,private referenceService:ReferenceService) { }
 
-  /***Get All Agencies****/
   findAll(pagination:Pagination){
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
     let findAllUrl = this.AGENCY_URL+pageableUrl;
@@ -24,7 +23,6 @@ export class AgencyService {
           .catch(this.authenticationService.handleError);
   }
 
-  /***Get All Modules */
   findAllModules(){
     let url = this.AGENCY_PREFIX_URL+"/modules"+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.http.get(url,"")
@@ -32,7 +30,6 @@ export class AgencyService {
           .catch(this.authenticationService.handleError);
   }
 
-  /****Save****/
   save(agencyDtos:Array<AgencyPostDto>){
     let dto = {};
     dto['agencies'] = agencyDtos;
@@ -41,7 +38,6 @@ export class AgencyService {
           .catch(this.authenticationService.handleError);
   }
 
-  /***Get By Id ***/
   getById(id:number){
     let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.http.get(url)
@@ -52,6 +48,13 @@ export class AgencyService {
   update(agencyPostDto:AgencyPostDto){
     let url = this.AGENCY_PREFIX_URL+"/"+agencyPostDto.id+this.ACCESS_TOKEN_SUFFIX_URL;
     return this.http.put(url,agencyPostDto)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
+  delete(id:number){
+    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL;
+    return this.http.delete(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }

@@ -51,6 +51,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   statusCode = 0;
   showModulesPopup = false;
   selectedAgencyId = 0;
+  isDelete = false;
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
@@ -58,8 +59,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
     }
   ngOnDestroy(): void {
-    $('#delete-agency-popup').modal('hide');
-    $('#preview-agency-popup').modal('hide');
     swal.close();
   }
 
@@ -532,6 +531,39 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.selectedAgencyId = id;
   }
 
+  showConfirmSweetAlert(id:number){
+    this.isDelete = true;
+    this.selectedAgencyId = id;
+  }
+
+  delete(event:any){
+    this.customResponse = new CustomResponse();
+    if(event){
+      this.ngxLoading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.agencyService.delete(this.selectedAgencyId).subscribe(
+        response=>{
+          this.resetDeleteOptions();
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.refreshList();
+        },error=>{
+          this.ngxLoading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+          this.resetDeleteOptions();
+        }
+      );
+    }else{
+      this.resetDeleteOptions();
+    }
+   
+  }
+
+  resetDeleteOptions(){
+    this.isDelete = false;
+    this.selectedAgencyId = 0;
+  }
  
 
 
