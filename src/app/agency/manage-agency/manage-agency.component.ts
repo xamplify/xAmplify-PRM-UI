@@ -528,7 +528,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
 
   preview(id:number){
-    alert("ind");
     this.showModulesPopup = true;
     this.selectedAgencyId = id;
   }

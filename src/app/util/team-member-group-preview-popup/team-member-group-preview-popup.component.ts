@@ -14,7 +14,7 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   emptyModules = false;
   @Input() teamMemberGroupId:number;
   @Output() previewGroupPopupEventEmitter = new EventEmitter();
-  @Input() agentId:number;
+  @Input() agencyId:number;
   constructor(public authenticationService:AuthenticationService,public logger:XtremandLogger,public referenceService:ReferenceService,
     public authencticationService:AuthenticationService) { }
 
@@ -30,21 +30,22 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
     if(this.teamMemberGroupId!=undefined && this.teamMemberGroupId>0){
       this.findTeamMemberGroupModules();
     }else{
-      this.authenticationService.getAssigedAgencyModules(this.teamMemberGroupId).
+      this.findAgencyModules();
+    }
+    
+  }
+
+  private findAgencyModules() {
+    this.authenticationService.getAssigedAgencyModules(this.agencyId).
       subscribe(
         response => {
-          this.defaultModules = response.data.teamMemberModuleDTOs;
+          this.defaultModules = response.data;
           this.emptyModules = this.defaultModules.length == 0;
           this.modulesLoader = false;
         }, error => {
-          this.logger.log(error);
-          this.modulesLoader = false;
-          $('#preview-team-member-popup').modal('hide');
-          this.referenceService.showSweetAlertServerErrorMessage();
+          this.addHttpError(error);
         }
       );
-    }
-    
   }
 
   private findTeamMemberGroupModules() {
@@ -54,12 +55,16 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
         this.emptyModules = this.defaultModules.length == 0;
         this.modulesLoader = false;
       }, error => {
-        this.logger.log(error);
-        this.modulesLoader = false;
-        $('#preview-team-member-popup').modal('hide');
-        this.referenceService.showSweetAlertServerErrorMessage();
+        this.addHttpError(error);
       }
     );
+  }
+
+  private addHttpError(error: any) {
+    this.logger.log(error);
+    this.modulesLoader = false;
+    $('#preview-team-member-popup').modal('hide');
+    this.referenceService.showSweetAlertServerErrorMessage();
   }
 
   hidePopup(){
