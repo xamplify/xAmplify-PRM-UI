@@ -50,7 +50,8 @@ export class AgencyService {
   }
 
   update(agencyPostDto:AgencyPostDto){
-    return this.http.put(this.AGENCY_URL,agencyPostDto)
+    let url = this.AGENCY_PREFIX_URL+"/"+agencyPostDto.id+this.ACCESS_TOKEN_SUFFIX_URL;
+    return this.http.put(url,agencyPostDto)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }

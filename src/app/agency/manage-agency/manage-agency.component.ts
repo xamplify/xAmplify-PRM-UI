@@ -127,6 +127,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
             $.each(this.defaultModules,function(_index:number,module:any){
                 module.enabled = moduleIds.indexOf(module.roleId)>-1;
             });
+            this.validateAgencyForm();
             this.editAgency =true;
             this.ngxLoading = false;
           }else{
@@ -153,7 +154,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.findAll(this.pagination);
   }
 
-   /***********Add*******************/
+   /***********Add/Edit*******************/
   goToAddAgencyDiv() {
     this.referenceService.scrollSmoothToTop();
     this.referenceService.hideDiv('agency-csv-error-div');
@@ -161,6 +162,36 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.agencyDto = new AgencyDto();
     this.showAddAgencyDiv = true;
     this.findDefaultModules(false,this.csvDto,this.agencyDto);
+  }
+
+   /***************Edit**********/
+   edit(id:number){
+    this.customResponse = new CustomResponse(); 
+    this.ngxLoading = true;
+    this.agencyService.getById(id).subscribe(
+      response=>{
+        this.statusCode = response.statusCode;
+        if(this.statusCode==200){
+          this.agencyDto = new AgencyDto();
+          let data = response.data;
+          this.agencyDto.id = data.id;
+          this.agencyDto.firstName = data.firstName;
+          this.agencyDto.lastName = data.lastName;
+          this.agencyDto.agencyName = data.companyName;
+          this.agencyDto.emailId = data.emailId;
+          this.agencyDto.moduleIds = data.moduleIds;
+          
+        }
+      },error=>{
+          this.logger.errorPage(error);
+      },()=>{
+        if(this.statusCode==200){
+          this.saveOrUpdateButtonText = "Update";
+          this.findDefaultModules(false,this.csvDto,this.agencyDto);
+        }
+        
+      }
+    );
   }
 
  
@@ -219,8 +250,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
         let allModule = modules.filter((item:any) => item.moduleName == "All")[0];
         allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
       }
-      console.log(agencyDto);
-
     }
    
   }
@@ -495,33 +524,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     console.log(agencyDto);
   }
 
-  /***************Edit**********/
-  edit(id:number){
-    this.ngxLoading = true;
-    this.agencyService.getById(id).subscribe(
-      response=>{
-        this.statusCode = response.statusCode;
-        if(this.statusCode==200){
-          this.agencyDto = new AgencyDto();
-          let data = response.data;
-          this.agencyDto.id = data.id;
-          this.agencyDto.firstName = data.firstName;
-          this.agencyDto.lastName = data.lastName;
-          this.agencyDto.agencyName = data.companyName;
-          this.agencyDto.emailId = data.emailId;
-          this.agencyDto.moduleIds = data.moduleIds;
-        }
-      },error=>{
-          this.logger.errorPage(error);
-      },()=>{
-        if(this.statusCode==200){
-          this.saveOrUpdateButtonText = "Update";
-          this.findDefaultModules(false,this.csvDto,this.agencyDto);
-        }
-        
-      }
-    );
-  }
+ 
 
 
 }
