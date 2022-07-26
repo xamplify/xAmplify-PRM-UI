@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CustomResponse } from '../../../common/models/custom-response';
 import { Properties } from '../../../common/models/properties';
+import { Roles } from 'app/core/models/roles';
 declare var swal, $: any;
 @Component({
   selector: 'app-rss',
@@ -20,6 +21,8 @@ export class RssComponent implements OnInit {
   @Output() selectedFeed = new EventEmitter();
   customResponse:CustomResponse = new CustomResponse();
   roleDto:any;
+  roleName: Roles = new Roles();
+  prm: boolean;
 
   constructor(private rssService: RssService, private authenticationService: AuthenticationService, private router: Router, private referenceService: ReferenceService,public properties:Properties) { }
   
@@ -43,6 +46,19 @@ export class RssComponent implements OnInit {
             this.hasError = true;
           }
         );
+
+        const roles = this.authenticationService.getRoles();
+        if (roles !== undefined) {
+          if (this.authenticationService.loggedInUserRole != "Team Member") {
+            if (roles.indexOf(this.roleName.prmRole) > -1) {
+              this.prm = true;
+            }
+          } else {
+            if (this.authenticationService.superiorRole.includes("Prm")) {
+              this.prm = true;
+            }
+          }
+        }
   }
   getHomeFeeds(userId: number) {
     this.hasError = false;
