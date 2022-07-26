@@ -214,6 +214,9 @@ export class ManageLeadsComponent implements OnInit {
       this.checkSalesforceIntegration();    
       this.checkMicrosoftIntegration();  
       this.showLeads();
+      if (this.prm) {
+        this.listView = true;
+      }
     } else {
       this.showPartner();
     }
