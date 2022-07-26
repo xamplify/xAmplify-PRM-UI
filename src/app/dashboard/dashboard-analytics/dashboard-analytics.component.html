@@ -279,7 +279,7 @@
                     <span class="caption-subject" translate>High Level Anlaytics</span>
                 </div>
                 <a *ngIf="!downloadRequestButtonClicked"  class="close-circle" (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true">
-                    <i  class="fa fa-download" aria-hidden="true"></i>
+                    <i class="fa fa-download" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="portlet-body clearfix">
@@ -334,7 +334,7 @@
         <a (click)="closeDealForm()" class="pull-right close-circle"
             style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-        <app-add-deal [actionType]="add" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+        <app-add-deal [actionType]="'add'" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
     </div>
 </section>
 

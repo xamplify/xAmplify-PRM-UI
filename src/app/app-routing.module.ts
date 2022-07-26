@@ -57,6 +57,7 @@ export const routes: Routes = [
     { path: 'home/partners/salesforce-callback', component: VanitySocialContactsCallbackComponent },
     { path: 'home/dashboard/hubspot-callback', component: VanitySocialContactsCallbackComponent },
 	{ path: 'home/dashboard/isalesforce-callback', component: VanitySocialContactsCallbackComponent },
+	{ path: 'home/dashboard/microsoft-callback', component: VanitySocialContactsCallbackComponent },
     
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'expired', component: LogoutComponent },
