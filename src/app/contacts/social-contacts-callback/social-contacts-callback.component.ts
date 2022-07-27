@@ -114,13 +114,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.xtremandLogger.info("Integration Callback :: " + result);
                         localStorage.removeItem("userAlias");
                         localStorage.removeItem("currentModule");
-                        this.router.navigate(['/home/dashboard/myprofile']);
-                        // Commented below code by Swathi. Custom form creation should not be done here.
-                        /*if(type === "isalesforce"){
-                            this.contactService.getSfFormFields().subscribe(result =>{
-                                console.log(result);
-                            })
-                        }*/
+                        this.router.navigate(['/home/dashboard/myprofile']);                       
                     },
                     error => {
                         localStorage.removeItem("userAlias");
@@ -148,7 +142,9 @@ export class SocialContactsCallbackComponent implements OnInit {
                this.integrationCallback(code,"hubspot");
             } else if(this.router.url.includes("isalesforce-callback")){
                 this.integrationCallback(code,"isalesforce");
-            }else {
+            } else if(this.router.url.includes("microsoft-callback")){
+                this.integrationCallback(code,"microsoft");
+            } else {
                 this.socialContactsCallback(queryParam);
             }
         }

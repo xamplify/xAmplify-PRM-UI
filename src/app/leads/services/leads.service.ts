@@ -101,6 +101,12 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
+  syncLeadsWithMicrosoft(userId:number) {
+    return this.http.get(this.authenticationService.REST_URL + `/microsoft/${userId}/leads/sync?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
   getSalesforcePipeline(createdForCompanyId:number, userId:number) {
     return this.http.get(this.authenticationService.REST_URL + `/pipeline/LEAD/salesforce/${createdForCompanyId}/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)

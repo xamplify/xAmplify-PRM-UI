@@ -116,7 +116,7 @@
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
                   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
-                    <div class="btn-group pull-right">
+                    <div class="btn-group pull-right" style="width: max-content;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
@@ -137,6 +137,14 @@
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                         </button>
                       </a>
+
+                      <a *ngIf="isVendorVersion && syncMicrosoft" (click)="syncLeadsWithMicrosoft()">
+                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                          title="Synchronize with Microsoft Dynamics" translate>
+                          <i class="fa fa-refresh" aria-hidden="true"></i> Microsoft Dynamics
+                        </button>
+                      </a>
+
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">

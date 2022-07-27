@@ -18,6 +18,7 @@ import { DealsService } from '../services/deals.service';
 import { LeadsService } from '../../leads/services/leads.service';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { IntegrationService } from 'app/core/services/integration.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -80,13 +81,15 @@ export class ManageDealsComponent implements OnInit {
   stageList = new Array();
   selectedVendorCompany: any;
   selectedVendorCompanyId: any;
+  syncMicrosoft: boolean = false;
  
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
     public sortOption: SortOption, public pagerService: PagerService, private userService: UserService,
-    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService ) {
+    private dealRegistrationService: DealRegistrationService, private dealsService: DealsService,public leadsService:LeadsService,
+    public integrationService: IntegrationService ) {
       this.loggedInUserId = this.authenticationService.getUserId();
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -230,7 +233,11 @@ export class ManageDealsComponent implements OnInit {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
       //this.getVendorCounts();
+      this.checkMicrosoftIntegration();  
       this.showDeals();
+      if (this.prm) {
+        this.listView = true;
+      }
     } else {
       this.showPartner();
     }
@@ -1059,4 +1066,47 @@ export class ManageDealsComponent implements OnInit {
       ()=> { }
     ); 
   }
+
+  checkMicrosoftIntegration(): any {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.checkConfigurationByTypeAndUserId("microsoft", this.loggedInUserId).subscribe(data => {
+      let response = data;
+      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+        this.syncMicrosoft = true;  
+      } else {
+        this.syncMicrosoft = false;
+      }
+    }, error => {
+      console.log("Error in salesforce checkMicrosoftIntegration()");
+    }, () => console.log("Error in checkMicrosoftIntegration()"));
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
+  syncLeadsWithMicrosoft() {
+    this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.syncLeadsWithMicrosoft(this.loggedInUserId)
+      .subscribe(
+        data => {
+          let statusCode = data.statusCode;
+          if (statusCode == 200) {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+            //this.getCounts();  
+            this.showDeals();
+          } else {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.dealsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
+          }
+        },
+        error => {
+
+        },
+        () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }
+      );
+  }
+
+
 }

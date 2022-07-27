@@ -1,3 +1,4 @@
+import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -15,6 +16,7 @@ import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 
 @Injectable()
 export class DashboardService {
+    
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
@@ -631,6 +633,22 @@ export class DashboardService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+
+    getPreIntegrationSettingsForMicrosoft(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    savePreIntegrationSettingsForMicrosoft(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `microsoft/preIntegrationSettings?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+
    /************Pie chart ********* */
    getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
@@ -730,5 +748,15 @@ export class DashboardService {
          .map(this.extractData)
          .catch(this.handleError);
         }
-    
+
+ saveHighLevelAnalyticsDownloadRequest(downloadRequestDto:DownloadRequestDto){
+     const url =
+       this.authenticationService.REST_URL +
+       "highlevel/analytics/saveDownloadRequest?access_token=" +
+       this.authenticationService.access_token;
+     return this.http
+       .post(url, downloadRequestDto)
+       .map(this.extractData)
+       .catch(this.handleError);
+        }
 }

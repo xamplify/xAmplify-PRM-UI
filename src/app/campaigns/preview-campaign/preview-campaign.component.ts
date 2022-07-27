@@ -36,10 +36,6 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { utc } from 'moment';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
-
-
 declare var $,swal:any;
 
 @Component({

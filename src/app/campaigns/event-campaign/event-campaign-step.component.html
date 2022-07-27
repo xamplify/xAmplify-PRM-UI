@@ -286,6 +286,22 @@
 	
 	
 															</div>
+															<div div class="col-md-4" *ngIf="enableLeads">
+																<div class="cenetered-block1">
+																	<div class="">
+																		<label class="customcheck">
+																				<input type="checkbox" (click)="pushToCrmRequest('microsoft', $event)"  [checked]="eventCampaign.pushToMicrosoft">
+																				<span class="checkmark"></span>
+																			  </label>
+																		<img class="image-size" src="assets/images/crm/microsoft-crm.png">
+																		<div>
+																			<h5 class="hidden-xs mr-2">Microsoft Dynamics</h5>
+																		</div>
+																	</div>
+																</div>
+	
+	
+															</div>
 														</div>
 													</div>
 												</div>
@@ -960,6 +976,9 @@
 																		class="img-class-list">
 																	<img *ngIf="contactList?.socialNetwork=='MARKETO'"
 																		src="{{properties?.marketoImage}}" alt="Marketo"
+																		class="img-class-list">
+																	<img *ngIf="contactList?.socialNetwork=='MICROSOFT'"
+																		src="{{properties?.microsoftImage}}" alt="microsoft"
 																		class="img-class-list">
 																</td>
 																<td style="text-align: left;"
@@ -1882,6 +1901,10 @@
 		</div>
 	</div>
 	
+	<!-- Microsoft Authentication -->
+	<div *ngIf="showMicrosoftAuthenticationForm">
+		<app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
+	</div>
 	
 	<!-----------------------------View Filter Popup----------->
 	<div class="modal fade right" id="filterPopup" tabindex="-1" role="dialog" aria-labelledby="filterPopup" data-backdrop="static" data-keyboard="false">

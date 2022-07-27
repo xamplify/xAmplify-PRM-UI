@@ -166,6 +166,8 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
                                 }
                                 else if(type === "isalesforce"){
                                     this.postingMessage = "isSalesForceAuth";
+                                }else if(type === "microsoft"){
+                                    this.postingMessage = "isMicrosoftAuth";
                                 }
                                 this.postingMessageToParentWindow(this.postingMessage);
                         }
@@ -219,6 +221,9 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 				this.integrationCallback(code, "hubspot");
 			} else if (this.router.url.includes("isalesforce-callback")) {
 				this.integrationCallback(code, "isalesforce");
+			} else if (this.router.url.includes("microsoft-callback")) {
+				this.integrationCallback(code, "microsoft");
+				
 			} else {
 				this.socialContactsCallback(queryParam);
 			}

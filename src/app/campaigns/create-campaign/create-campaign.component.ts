@@ -321,12 +321,15 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     endDatePickr: any;
+
+    showMicrosoftAuthenticationForm: boolean = false;
     /***XNFR-125****/
     oneClickLaunch = false;
     selectedPartnershipId = 0;
     oneClickLaunchToolTip = "";
     invalidShareLeadsSelection = false;
     invalidShareLeadsSelectionErrorMessage = "";
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -392,6 +395,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             if (this.campaign.pushToHubspot) {
                 this.pushToCRM.push('hubspot');
+            }
+            if (this.campaign.pushToMicrosoft) {
+                this.pushToCRM.push('microsoft');
             }
 
             this.userListDTOObj = this.campaignService.campaign.userLists;
@@ -3287,6 +3293,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             else if (crmName == 'salesforce') {
                 this.checkSalesforceIntegration();
+            } else if (crmName == 'microsoft') {
+                this.checkingMicrosoftAuthentication();
             }
 
             //this.pushToCRM.push(crmName);
@@ -3644,6 +3652,27 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.endDate = undefined;
     }
 
+    checkingMicrosoftAuthentication() {
+        this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.pushToCRM.push('microsoft');
+                this.validatePushToCRM();
+            }
+            else {
+                this.showMicrosoftAuthenticationForm = true;
+            }
+        }, (error: any) => {
+            console.error(error, "Error in Microsoft checkingMicrosoftAuthentication()");
+        }, () => console.log("Microsoft Configuration Checking done"));
+    }
+
+    closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
+
     /***XNFR-125*****/
     getSelectedPartnerCompanyIdAndShareLeads(event:any){
         this.selectedPartnershipId = event['selectedPartnershipId'];
@@ -3651,6 +3680,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
     }
 
-    
+
 }
 
