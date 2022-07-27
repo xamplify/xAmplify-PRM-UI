@@ -1689,4 +1689,7 @@ strong {
 .lowercase-text{
   text-transform: lowercase;
 }
+.child-table-bg-color{
+  background-color: #f1f1f1 !important;
+}
 

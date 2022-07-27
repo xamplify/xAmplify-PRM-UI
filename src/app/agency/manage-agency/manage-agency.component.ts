@@ -226,34 +226,18 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.validateAddAgencyForm("agencyName");
   }
 
-  changeStatus(event: any, module: any,isUploadCsv:boolean,agencyDto:any) {
-    if(!isUploadCsv){
-      if (module.moduleName == "All") {
-        this.enableOrDisableAllModules(event);
-      } else {
-        module.enabled = event;
-        let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
-        let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
-        let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
-        allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
-      }
-      this.validateAgencyForm();
-      this.addModuleIds();
-    }else if(isUploadCsv){
-      let modules = agencyDto.modules;
-      if(module.moduleName=="All"){
-      $.each(modules, function (_index: number, edit: any) {
-        edit.enabled = event;
-      });
-      }else{
-        module.enabled = event;
-        let modulesWithoutAll = modules.filter((item:any) => item.moduleName != "All");
-        let enabledModulesLength = modulesWithoutAll.filter((item:any) => item.enabled).length;
-        let allModule = modules.filter((item:any) => item.moduleName == "All")[0];
-        allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
-      }
+  changeStatus(event: any, module: any) {
+    if (module.moduleName == "All") {
+      this.enableOrDisableAllModules(event);
+    } else {
+      module.enabled = event;
+      let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
+      let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
+      let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
+      allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
     }
-   
+    this.validateAgencyForm();
+    this.addModuleIds();
   }
 
   addModuleIds(){
@@ -447,7 +431,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
             this.csvDto.csvErrors.push(emailId + " is invalid email address.");
           }
         }
-
       }
     } else {
       for (let d = 0; d < duplicateEmailIds.length; d++) {
@@ -509,8 +492,50 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.referenceService.scrollSmoothToTop();
   }
 
-  showOrHideModules(agencyDto:AgencyDto){
+  showOrHideModules(agencyDto:AgencyDto,index:number){
+    $.each(this.agencyDtos,function(agencyIndex:number,value:AgencyDto){
+      if(index!=agencyIndex){
+        value.expand = false;
+      }
+    });
     agencyDto.expand = !agencyDto.expand;
+  }
+
+  selectOrUnSelectAllModules(agencyDto:AgencyDto,event:any){
+    if (event.target.checked) {
+        $('[name="agencyModuleCheckBox[]"]').prop('checked', true);
+        $('[name="agencyModuleCheckBox[]"]:checked').each(function (_index: number) {
+				var id = $(this).val();
+				agencyDto.moduleIds.push(id);
+			});
+    }else{
+      $('[name="agencyModuleCheckBox[]"]').prop('checked', false);
+    }
+    event.stopPropagation();
+  }
+
+  selectOrUnselectModule(moduleId:number,index:number,agencyDto:AgencyDto,event:any){
+    let isChecked = $('#agency-module-' + moduleId+"-"+index).is(':checked');
+    if (isChecked) {
+      agencyDto.moduleIds.push(moduleId);
+		} else {
+			agencyDto.moduleIds.splice($.inArray(moduleId, agencyDto.moduleIds), 1);
+		}
+    alert(agencyDto.moduleIds);
+    // let trLength = $('#admin-and-team-members-' + partnershipId + ' tbody tr').length;
+		// let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
+		// if (selectedRowsLength == 0) {
+		// 	this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
+		// } else {
+		// 	this.selectedPartnershipIds.push(partnershipId);
+		// }
+		// this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
+		// this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
+		event.stopPropagation();
+  }
+
+  addAllAgencies(){
+    console.log(this.agencyDtos);
   }
 
   addOrRemoveModules(event:any,agencyDto:any){
