@@ -405,8 +405,8 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
         agencyDto.companyName = row[3];
         agencyDto.expand = false;
         agencyDto.modules = this.defaultModules;
-        $.each(agencyDto.modules,function(_index:number,module:any){
-           module.enabled = true;
+        $.each(this.defaultModules,function(_index:number,module:any){
+          agencyDto.moduleIds.push(module.roleId);
         });
         agencyDto.module = agencyDto.modules[0];
         this.agencyDtos.push(agencyDto);
@@ -501,15 +501,17 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     agencyDto.expand = !agencyDto.expand;
   }
 
-  selectOrUnSelectAllModules(agencyDto:AgencyDto,event:any){
+  selectOrUnSelectAllModules(agencyDto:AgencyDto,event:any,index:number){
+    let checkBoxName = "agencyModuleCheckBox-"+index;
     if (event.target.checked) {
-        $('[name="agencyModuleCheckBox[]"]').prop('checked', true);
-        $('[name="agencyModuleCheckBox[]"]:checked').each(function (_index: number) {
+      $('[name='+checkBoxName+']').prop('checked', true);
+      $('[name='+checkBoxName+']:checked').each(function (_index: number) {
 				var id = $(this).val();
 				agencyDto.moduleIds.push(id);
 			});
     }else{
-      $('[name="agencyModuleCheckBox[]"]').prop('checked', false);
+      $('[name='+checkBoxName+']').prop('checked', false);
+      agencyDto.moduleIds = [];
     }
     event.stopPropagation();
   }
@@ -521,16 +523,20 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 		} else {
 			agencyDto.moduleIds.splice($.inArray(moduleId, agencyDto.moduleIds), 1);
 		}
-    alert(agencyDto.moduleIds);
-    // let trLength = $('#admin-and-team-members-' + partnershipId + ' tbody tr').length;
-		// let selectedRowsLength = $('[name="adminOrTeamMemberCheckBox[]"]:checked').length;
-		// if (selectedRowsLength == 0) {
-		// 	this.selectedPartnershipIds.splice($.inArray(partnershipId, this.selectedPartnershipIds), 1);
-		// } else {
-		// 	this.selectedPartnershipIds.push(partnershipId);
-		// }
-		// this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
-		// this.isHeaderCheckBoxChecked = (trLength == selectedRowsLength);
+    let trLength = $('#upload-agency-modules-table-' + index + ' tbody tr').length;
+    let checkBoxName = "agencyModuleCheckBox-"+index;
+		let selectedRowsLength = $('[name='+checkBoxName+']:checked').length;
+    if (selectedRowsLength == 0) {
+			  agencyDto.moduleIds = [];
+		} else {
+        agencyDto.moduleIds.push(moduleId);
+		}
+		let checkHeader = ((trLength-1) == selectedRowsLength);
+    if(checkHeader){
+      $("#agency-all-module-9-"+index).prop('checked', true);
+    }else{
+      $("#agency-all-module-9-"+index).prop('checked', false);
+    }
 		event.stopPropagation();
   }
 

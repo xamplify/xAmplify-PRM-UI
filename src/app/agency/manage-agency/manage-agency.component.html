@@ -315,8 +315,7 @@
                     <i class="{{agencyDto.module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
                     {{agencyDto.module?.moduleName}}
                   </strong>
-                    <input type="checkbox" id="upload-agency-module-ckbox-{{i}}">
-                    <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto,i)">
+                  <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto,i)">
                       <i class="fa fa-gear" aria-hidden="true"></i>
                     </a>
                 </td>
@@ -325,7 +324,7 @@
                   <a (click)="deleteRow(i,agencyDto)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
                 </td>
               </tr>
-              <tr [@fadeInOut] *ngIf="agencyDto?.expand">
+              <tr [@fadeInOut] [hidden]="!agencyDto?.expand">
                 <td colspan="4">
                   <div class="table-responsive">
                     <table  class="table tgrid table-condensed table-bordered child-table-bg-color" aria-describedby="team-members-info" 
@@ -333,10 +332,10 @@
                     <tbody>
                       <tr *ngFor="let module of agencyDto.modules;let moduleIndex = index;" id="agency-module-{{i}}"  >
                         <td class="text-center" *ngIf="module.moduleName=='All'">
-                           <input type="checkbox" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event)" id="agency-all-module-{{module.roleId}}-{{i}}" >
+                           <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event,i)" id="agency-all-module-{{module.roleId}}-{{i}}" >
                         </td>
                         <td class="text-center" *ngIf="module.moduleName!='All'">
-                          <input type="checkbox" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}" name="agencyModuleCheckBox[]">
+                          <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" name="agencyModuleCheckBox-{{i}}" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}">
                        </td>
                         <td>
                             <i class="{{module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
