@@ -319,6 +319,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.showAddAgencyDiv = false;
     this.showUploadedAgencies = false;
     this.saveOrUpdateButtonText = "Save";
+    this.csvDto = new CsvDto();
     this.refreshList();
   }
 
@@ -348,12 +349,18 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   private addCsvErrorMessages(field: string, self: this, errorResponse: ErrorResponse) {
     if(this.showUploadedAgencies){
-      let splittedField = field.split("emailId")[0];
-      if (splittedField.length > 0) {
-        let indexPosition = splittedField.length - 1;
-        if (indexPosition > 0) {
-          let agencyDtoIndex = splittedField.substring(indexPosition - 1, indexPosition);
-          self.agencyDtos[agencyDtoIndex].emailIdErrorMessage = errorResponse.message;
+      self.addColumnError(field.split("emailId")[0], self, 'emailIdErrorMessage', errorResponse);
+      self.addColumnError(field.split("moduleIds")[0], self, 'invalidModuleIdsErrorMessage', errorResponse);
+    }
+  }
+
+  private addColumnError(splittedField: string, self: this, columnName: string, errorResponse: ErrorResponse) {
+    if (splittedField.length > 0) {
+      let indexPosition = splittedField.length - 1;
+      if (indexPosition > 0) {
+        let agencyDtoIndex = parseInt(splittedField.substring(indexPosition - 1, indexPosition));
+        if (!isNaN(agencyDtoIndex)) {
+          self.agencyDtos[agencyDtoIndex][columnName] = errorResponse.message;
         }
       }
     }
@@ -383,7 +390,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
         if (this.validateHeaders(headers)) {
           this.csvDto.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
           if (this.csvDto.csvRecords.length > 1) {
-            this.processCSVData();
+              this.processCSVData();
           } else {
             this.showCsvFileError('You Cannot Upload Empty File');
           }
@@ -404,7 +411,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   processCSVData() {
     this.validateCsvData();
     if (this.csvDto.csvErrors.length > 0) {
-      $("#agency-csv-error-div").show();
+       $("#agency-csv-error-div").show();
     } else {
       this.findDefaultModules(true,this.csvDto,this.agencyDto);
     }
@@ -483,7 +490,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     if (this.agencyCsvInput != undefined) {
       this.agencyCsvInput.nativeElement.value = "";
     }
-    this.csvDto = new CsvDto();
+   
   }
 
   deleteRow(index: number, agency: any) {

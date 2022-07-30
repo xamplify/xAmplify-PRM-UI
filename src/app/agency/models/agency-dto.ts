@@ -17,6 +17,7 @@ export class AgencyDto {
     emaillIdDivClass: string = this.properties.defaultClass;
     validEmailId = false;
     emailIdErrorMessage = "";
+    invalidModuleIdsErrorMessage = "";
     agencyNameDivClass: string = this.properties.defaultClass;
     agencyNameErrorMessage = "";
     validAgencyName = false;

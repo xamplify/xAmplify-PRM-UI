@@ -24,7 +24,7 @@
   <!--End Of Page-bar---->
 
   <!-- CSV Errors---->
-  <div class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
+  <div [@fadeInOut] class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
     <button (click)="referenceService.hideDiv('agency-csv-error-div')" type="button" class="close" aria-label="Close">
       <span aria-hidden="true">x</span>
     </button>
@@ -308,7 +308,12 @@
               <tr>
                 <td>
                   <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
-                  <p class="required" *ngIf="errorResponses?.length>0">{{agencyDto.emailIdErrorMessage}}</p>
+                  <p class="required" *ngIf="errorResponses?.length>0">
+                    <strong>{{agencyDto.emailIdErrorMessage}}</strong>
+                  </p>
+                  <p class="required" *ngIf="errorResponses?.length>0">
+                    <strong>{{agencyDto.invalidModuleIdsErrorMessage}}</strong>
+                  </p>
                 </td>
                 <!---Modules-->
                 <td>
@@ -364,6 +369,8 @@
     <!-----End Of Uplodaded Agencies----->
   </div>
 </div>
+
+
 <ng-template #modulesTemplate let-defaultModules="modules" let-even="even">
 <div [className]="uploadCsv ?'col-sm-6':'col-sm-4'">
   <div class="table-responsive">
