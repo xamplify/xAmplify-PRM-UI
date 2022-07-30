@@ -152,11 +152,8 @@
                       </a>
                       <!--Resend Invitation-->
                       <ng-container>
-                        <a *ngIf="agency.status=='UNAPPROVED'" title="Resend the invitation email"  (click)="resendEmailInvitation(agency.emailId)">
+                        <a title="Resend the invitation email"  (click)="resendEmailInvitation(agency.id)">
                           <i class="fa fa-envelope" aria-hidden="true"></i>
-                        </a>
-                        <a  *ngIf="agency.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
-                          <i class="fa fa-envelope gray" aria-hidden="true"></i>
                         </a>
                       </ng-container>
                       <!---Delete-->

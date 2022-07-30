@@ -636,6 +636,9 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.referenceService.loading(this.httpRequestLoader, false);
   }
  
+  resendEmailInvitation(id:number){
+    
+  }
 
 
 }
