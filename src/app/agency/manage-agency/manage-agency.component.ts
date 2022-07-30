@@ -342,7 +342,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       let field = errorResponse.field;
       if ("agencies[0]emailId" == field) {
           self.agencyDto.emailIdErrorMessage = errorResponse.message;
-          self.agencyDto.agencyNameDivClass = self.referenceService.getSuccessOrErrorClassName(false);
+          self.agencyDto.emaillIdDivClass = self.referenceService.getSuccessOrErrorClassName(false);
         }
       self.addCsvErrorMessages(field, self, errorResponse);
     });
