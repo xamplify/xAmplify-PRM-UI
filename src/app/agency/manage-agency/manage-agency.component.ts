@@ -329,6 +329,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   private addErrorMessages(response: any) {
     this.agencyDto.emailIdErrorMessage = "";
+    this.agencyDto.agencyNameDivClass = this.properties.formGroupClass;
     if(this.showUploadedAgencies){
       this.customResponse = new CustomResponse('ERROR', "There was a problem creating agencies", true);
     }else{
@@ -341,6 +342,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       let field = errorResponse.field;
       if ("agencies[0]emailId" == field) {
           self.agencyDto.emailIdErrorMessage = errorResponse.message;
+          self.agencyDto.agencyNameDivClass = self.referenceService.getSuccessOrErrorClassName(false);
         }
       self.addCsvErrorMessages(field, self, errorResponse);
     });
