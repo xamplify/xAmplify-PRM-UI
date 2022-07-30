@@ -261,7 +261,7 @@
                   </div>
                 </div>
                 <div id="right">
-                  <button [disabled]="!agencyDto?.validForm" type="submit" class="btn btn-primary" (click)="addOrUpdate()">{{saveOrUpdateButtonText}}</button>
+                  <button [disabled]="!agencyDto?.validForm" type="submit" class="btn btn-primary" (click)="addOrUpdate($event)">{{saveOrUpdateButtonText}}</button>
                   <button  type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
                 </div>
               </div>
@@ -360,7 +360,7 @@
             </tbody>
           </table>
           <div id="right">
-            <button  type="submit" class="btn btn-primary" (click)="addAllAgencies()">{{saveOrUpdateButtonText}}</button>
+            <button  type="submit" class="btn btn-primary" (click)="addAllAgencies($event)">{{saveOrUpdateButtonText}}</button>
             <button  type="button" class="btn btn-default" (click)="clearUploadCsvDataAndGoBack()">Cancel</button>
           </div>
         </div>

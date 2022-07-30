@@ -182,7 +182,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
           this.agencyDto.agencyName = data.companyName;
           this.agencyDto.emailId = data.emailId;
           this.agencyDto.moduleIds = data.moduleIds;
-          
         }
       },error=>{
           this.logger.errorPage(error);
@@ -195,8 +194,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       }
     );
   }
-
- 
 
   validateAddAgencyForm(fieldName: string) {
     if ("emailId" == fieldName) {
@@ -253,7 +250,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     });
   }
   
-  addOrUpdate(){
+  addOrUpdate(event:any){
     this.ngxLoading = true;
     this.agencyPostDto = new AgencyPostDto();
     this.agencyPostDtos = new Array<AgencyPostDto>();
@@ -264,40 +261,41 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
     if(this.editAgency){
       this.agencyPostDto.id = this.agencyDto.id;
-      this.update();
+      this.update(event);
     }else{
       this.agencyPostDtos.push(this.agencyPostDto);
-      this.save();
+      this.save(event);
     }
     
   }
 
-  private update() {
+  private update(event:any) {
     this.agencyService.update(this.agencyPostDto).subscribe(
       response => {
-        this.showSuccessOrFailureResponse(response);
+        this.showSuccessOrFailureResponse(response,event);
       }, error => {
-        this.showHttpError(error);
+        this.showHttpError(error,event);
       });
   }
 
-  private save() {
+  private save(event:any) {
     this.agencyService.save(this.agencyPostDtos).subscribe(
       response => {
-        this.showSuccessOrFailureResponse(response);
+        this.showSuccessOrFailureResponse(response,event);
       }, error => {
-        this.showHttpError(error);
+        this.showHttpError(error,event);
       });
   }
 
-  private showHttpError(error: any) {
+  private showHttpError(error: any,event:any) {
     let errorMessage = this.referenceService.showHttpErrorMessage(error);
     this.customResponse = new CustomResponse('ERROR', errorMessage, true);
     this.referenceService.scrollSmoothToTop();
     this.ngxLoading = false;
+    this.referenceService.enableButton(event);
   }
 
-  private showSuccessOrFailureResponse(response: any) {
+  private showSuccessOrFailureResponse(response: any,event:any) {
     this.customResponse = new CustomResponse();
     let statusCode = response.statusCode;
     if (statusCode == 400) {
@@ -308,6 +306,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     }
     this.referenceService.scrollSmoothToTop();
     this.ngxLoading = false;
+    this.referenceService.enableButton(event);
   }
 
   
@@ -349,6 +348,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   private addCsvErrorMessages(field: string, self: this, errorResponse: ErrorResponse) {
     if(this.showUploadedAgencies){
+      $('#csv-field-error').text('');
       self.addColumnError(field.split("emailId")[0], self, 'emailIdErrorMessage', errorResponse);
       self.addColumnError(field.split("moduleIds")[0], self, 'invalidModuleIdsErrorMessage', errorResponse);
     }
@@ -360,7 +360,12 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       if (indexPosition > 0) {
         let agencyDtoIndex = parseInt(splittedField.substring(indexPosition - 1, indexPosition));
         if (!isNaN(agencyDtoIndex)) {
-          self.agencyDtos[agencyDtoIndex][columnName] = errorResponse.message;
+          self.agencyDtos[agencyDtoIndex][columnName] = '';
+          if(errorResponse.message.indexOf("moduleIds")>-1){
+            self.agencyDtos[agencyDtoIndex][columnName] = "Please select atleast one module";
+          }else{
+            self.agencyDtos[agencyDtoIndex][columnName] = errorResponse.message;
+          }
         }
       }
     }
@@ -566,8 +571,9 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 		event.stopPropagation();
   }
 
-  addAllAgencies(){
+  addAllAgencies(event:any){
     this.ngxLoading = true;
+    this.referenceService.disableButton(event);
     this.agencyPostDtos = new Array<AgencyPostDto>();
     let self = this;
     $.each(self.agencyDtos,function(index:number,agencyDto:AgencyDto){
@@ -577,9 +583,11 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
       agencyPostDto.firstName = agencyDto.firstName;
       agencyPostDto.lastName = agencyDto.lastName;
       agencyPostDto.moduleIds = agencyDto.moduleIds;
+      agencyDto.emailIdErrorMessage = "";
+      agencyDto.invalidModuleIdsErrorMessage = "";
       self.agencyPostDtos.push(agencyPostDto);
     });
-    this.save(); 
+    this.save(event); 
   }
 
   preview(id:number){

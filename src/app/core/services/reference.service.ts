@@ -2889,6 +2889,17 @@ export class ReferenceService {
     setTimeout(() => {
       $('#'+divId).removeClass('download-loader');
     }, 500);
-   
+  }
+  /*********XNFR-83****/
+  disableButton(event:any){
+    event['target']['disabled'] = true;
+    event['currentTarget']['disabled'] = true;
+  }
+
+  enableButton(event:any){
+    setTimeout(() => {
+      event['target']['disabled'] = false;
+      event['currentTarget']['disabled'] = false;
+     }, 500);
   }
 }
