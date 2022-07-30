@@ -281,7 +281,7 @@
           <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
             <i class="fa fa-close" aria-hidden="true"></i>
           </a>
-      </div>
+        </div>
       </div>
       <app-list-loader [hidden]="!addAgencyLoader.isLoading"></app-list-loader>
       <div class="portlet-body clearfix" [hidden]="addAgencyLoader.isLoading">
@@ -308,6 +308,7 @@
               <tr>
                 <td>
                   <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
+                  <p class="required" *ngIf="errorResponses?.length>0">{{agencyDto.emailIdErrorMessage}}</p>
                 </td>
                 <!---Modules-->
                 <td>

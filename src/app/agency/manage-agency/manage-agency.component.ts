@@ -262,10 +262,11 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.agencyPostDto.firstName = this.agencyDto.firstName;
     this.agencyPostDto.lastName = this.agencyDto.lastName;
     this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
-    this.agencyPostDto.id = this.agencyDto.id;
     if(this.editAgency){
+      this.agencyPostDto.id = this.agencyDto.id;
       this.update();
     }else{
+      this.agencyPostDtos.push(this.agencyPostDto);
       this.save();
     }
     
@@ -281,7 +282,6 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 
   private save() {
-    this.agencyPostDtos.push(this.agencyPostDto);
     this.agencyService.save(this.agencyPostDtos).subscribe(
       response => {
         this.showSuccessOrFailureResponse(response);
@@ -298,6 +298,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 
   private showSuccessOrFailureResponse(response: any) {
+    this.customResponse = new CustomResponse();
     let statusCode = response.statusCode;
     if (statusCode == 400) {
       this.addErrorMessages(response);
@@ -316,6 +317,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.agencyPostDto = new AgencyPostDto();
     this.editAgency =  false;
     this.showAddAgencyDiv = false;
+    this.showUploadedAgencies = false;
     this.saveOrUpdateButtonText = "Save";
     this.refreshList();
   }
@@ -327,16 +329,34 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   private addErrorMessages(response: any) {
     this.agencyDto.emailIdErrorMessage = "";
-    this.customResponse = new CustomResponse('ERROR', this.properties.formSubmissionFailed, true);
+    if(this.showUploadedAgencies){
+      this.customResponse = new CustomResponse('ERROR', "There was a problem creating agencies", true);
+    }else{
+      this.customResponse = new CustomResponse('ERROR', this.properties.formSubmissionFailed, true);
+    }
     let data = response.data;
     this.errorResponses = data.errorMessages;
     let self = this;
     $.each(this.errorResponses, function (_index: number, errorResponse: ErrorResponse) {
       let field = errorResponse.field;
       if ("agencies[0]emailId" == field) {
-        self.agencyDto.emailIdErrorMessage = errorResponse.message;
-      }
+          self.agencyDto.emailIdErrorMessage = errorResponse.message;
+        }
+      self.addCsvErrorMessages(field, self, errorResponse);
     });
+  }
+
+  private addCsvErrorMessages(field: string, self: this, errorResponse: ErrorResponse) {
+    if(this.showUploadedAgencies){
+      let splittedField = field.split("emailId")[0];
+      if (splittedField.length > 0) {
+        let indexPosition = splittedField.length - 1;
+        if (indexPosition > 0) {
+          let agencyDtoIndex = splittedField.substring(indexPosition - 1, indexPosition);
+          self.agencyDtos[agencyDtoIndex].emailIdErrorMessage = errorResponse.message;
+        }
+      }
+    }
   }
 
 /***************E N D OF ADD**********/
@@ -489,6 +509,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.showUploadedAgencies = false;
     this.agencyDtos = [];
     this.fileReset();
+    this.errorResponses = new Array<ErrorResponse>();
     this.referenceService.scrollSmoothToTop();
   }
 
@@ -528,9 +549,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 		let selectedRowsLength = $('[name='+checkBoxName+']:checked').length;
     if (selectedRowsLength == 0) {
 			  agencyDto.moduleIds = [];
-		} else {
-        agencyDto.moduleIds.push(moduleId);
-		}
+		} 
 		let checkHeader = ((trLength-1) == selectedRowsLength);
     if(checkHeader){
       $("#agency-all-module-9-"+index).prop('checked', true);
@@ -541,21 +560,20 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
 
   addAllAgencies(){
-    console.log(this.agencyDtos);
+    this.ngxLoading = true;
+    this.agencyPostDtos = new Array<AgencyPostDto>();
+    let self = this;
+    $.each(self.agencyDtos,function(index:number,agencyDto:AgencyDto){
+      let agencyPostDto = new AgencyPostDto();
+      agencyPostDto.agencyName = agencyDto.agencyName;
+      agencyPostDto.emailId = agencyDto.emailId.toLowerCase();
+      agencyPostDto.firstName = agencyDto.firstName;
+      agencyPostDto.lastName = agencyDto.lastName;
+      agencyPostDto.moduleIds = agencyDto.moduleIds;
+      self.agencyPostDtos.push(agencyPostDto);
+    });
+    this.save(); 
   }
-
-  addOrRemoveModules(event:any,agencyDto:any){
-    let module = agencyDto.module;
-    if (module.moduleName == "All") {
-      $.each(agencyDto.modules, function (_index: number, module: any) {
-        module.enabled = event;
-      });
-
-    } else {
-     
-    }
-  }
-
 
   preview(id:number){
     this.showModulesPopup = true;
