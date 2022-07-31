@@ -637,7 +637,17 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   }
  
   resendEmailInvitation(id:number){
-    
+    this.customResponse = new CustomResponse();
+    this.ngxLoading = true;
+    this.agencyService.resendEmailInvitation(id).subscribe(
+        response=>{
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+        },error=>{
+          this.ngxLoading = false;
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+        });
   }
 
 

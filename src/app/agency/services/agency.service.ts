@@ -59,4 +59,11 @@ export class AgencyService {
           .catch(this.authenticationService.handleError);
   }
 
+  resendEmailInvitation(id:number){
+    let url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+    return this.http.get(url)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
 }
