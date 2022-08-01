@@ -1,3 +1,4 @@
+import { SweetAlertParameterDto } from './../../common/models/sweet-alert-parameter-dto';
 import { ErrorResponse } from './../../util/models/error-response';
 import { CsvDto } from './../../core/models/csv-dto';
 import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit, ErrorHandler } from '@angular/core';
@@ -52,6 +53,8 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
   showModulesPopup = false;
   selectedAgencyId = 0;
   isDelete = false;
+  showResendEmailInvitationAlert = false;
+  resendEmailInvitationSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
@@ -631,24 +634,42 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
     this.selectedAgencyId = 0;
   }
 
+  resetEmailInvitation(){
+    this.selectedAgencyId = 0;
+    this.showResendEmailInvitationAlert = false; 
+  }
+
   stopNgxAndListLoader(){
     this.ngxLoading = false;
     this.referenceService.loading(this.httpRequestLoader, false);
   }
  
-  resendEmailInvitation(id:number){
-    this.customResponse = new CustomResponse();
-    this.ngxLoading = true;
-    this.agencyService.resendEmailInvitation(id).subscribe(
-        response=>{
-          this.ngxLoading = false;
-          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
-        },error=>{
-          this.ngxLoading = false;
-          let message = this.referenceService.showHttpErrorMessage(error);
-          this.customResponse = new CustomResponse('ERROR', message, true);
-        });
+  openResendEmailInvitationAlert(id:number){
+    this.selectedAgencyId = id;
+    this.resendEmailInvitationSweetAlertParameterDto.text = 'An invitation email will be sent';
+    this.resendEmailInvitationSweetAlertParameterDto.confirmButtonText = "Yes,send it";
+    this.showResendEmailInvitationAlert = true;
   }
 
-
+  resendEmailInvitationEventEmitter(event:any){
+    if(event){
+      this.ngxLoading = true;
+      this.customResponse = new CustomResponse();
+      this.agencyService.resendEmailInvitation(this.selectedAgencyId).subscribe(
+        response=>{
+          let message = response.message;
+          this.resetEmailInvitationOptions(message,'SUCCESS');
+        },error=>{
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.resetEmailInvitationOptions(message,'ERROR');
+        });
+    }else{
+      this.resetEmailInvitation();
+    }
+  }
+  private resetEmailInvitationOptions(message: string,responseType:string) {
+    this.ngxLoading = false;
+    this.resetEmailInvitation();
+    this.customResponse = new CustomResponse(responseType, message, true);
+  }
 }

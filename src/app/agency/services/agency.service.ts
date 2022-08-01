@@ -60,7 +60,14 @@ export class AgencyService {
   }
 
   resendEmailInvitation(id:number){
-    let url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+    let companyProfileName = this.authenticationService.getSubDomain();
+    let url = "";
+    if(companyProfileName.length>0){
+      url = this.AGENCY_PREFIX_URL+"/"+id+"/subDomain/"+companyProfileName+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+    }else{
+      url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+    }
+    alert(url);
     return this.http.get(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);

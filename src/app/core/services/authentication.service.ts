@@ -754,7 +754,6 @@ export class AuthenticationService {
   authorizeUrl(url: string) {
     let angularUrlInput = {};
     let browserUrl = window.location.hostname;
-    //let browserUrl = "tga.xamplify.com";
     if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
       let domainName = browserUrl.split('.');
       if (domainName.length > 2) {
@@ -925,6 +924,8 @@ getAssigedAgencyModules(id:number){
 }
 
 
-  
+getSubDomain(){
+  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
+}
   
 }
