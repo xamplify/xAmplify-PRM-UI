@@ -2048,7 +2048,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             data => {
                 this.loading = false;
                 if (data.access) {
-                    if (data.statusCode == 401) {
+                    if (data.statusCode == 401 || data.statusCode == 402) {
                     	this.disableSave = false;
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
@@ -2057,7 +2057,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                         this.loadContactLists(this.pagination);
-                    }
+                    } 
                 } else {
                     this.authenticationService.forceToLogout();
                 }

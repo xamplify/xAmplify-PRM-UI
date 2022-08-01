@@ -5,7 +5,7 @@
         'alert-info': customResponse.responseType == 'INFO'}">
       <button type="button" class="close" data-dismiss="alert"
         aria-label="Close" (click)="customResponse.responseType = null">
-        <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">x</span>
       </button>
       <h4 style="padding-top: 6px;">
 				<span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw'"  id='responseMessage'

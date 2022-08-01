@@ -2847,6 +2847,7 @@ export class ReferenceService {
     swal.close();
   }
 
+  
   /****XNFR-83***/
   getSuccessOrErrorClassName(condition:boolean){
     return condition ? this.properties.successClass : this.properties.errorClass;
@@ -2902,4 +2903,5 @@ export class ReferenceService {
       event['currentTarget']['disabled'] = false;
      }, 500);
   }
+
 }

@@ -601,6 +601,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             campaign.campaignId = this.saveAsCampaignId;
             campaign.scheduleCampaign = "SAVE";
             campaign.campaignType = this.saveAsCampaignInfo.campaignType;
+            
             campaignData = campaign;
         }
         return campaignData;

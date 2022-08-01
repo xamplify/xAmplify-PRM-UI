@@ -10,7 +10,7 @@
       || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)?
       'col-sm-6 col-xs-6 col-lg-4 col-md-4 dashboard-access-denied' :'col-sm-6 col-xs-12 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">
        <a  class="{{dto.color}}">
-         <div class="visual">
+         <div [className]="dto.count>0 ? 'visual' : 'visual dashboard-access-denied' ">
            <i class="{{dto.faIcon}} dbiconscss" aria-hidden="true"></i>
          </div>
          <div class="details">

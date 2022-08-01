@@ -22,9 +22,9 @@
 
   <!-- CSV Errors---->
   <div class="alert alert-danger" id="csv-error-div" style="display: none;">
-    <a (click)="referenceService.hideDiv('csv-error-div')" class="close-circle ecc">
-      <i class="fa fa-close" aria-hidden="true"></i>
-    </a>
+    <button (click)="referenceService.hideDiv('csv-error-div')" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">x</span>
+    </button>
     <div>
         <table class="table table-bordered" aria-describedby="csv-error-messages-table">
             <ng-container *ngFor="let error of csvErrors">
@@ -39,9 +39,9 @@
 
 <div *ngIf="customResponse.isVisible">
   <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-    <a (click)="customResponse.isVisible=false" [ngClass]="customResponse?.responseType=='SUCCESS'? 'close-circle scc':'close-circle ecc' ">
-      <i class="fa fa-close" aria-hidden="true"></i>
-    </a>
+    <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">x</span>
+    </button>
     <strong [innerHTML]="customResponse.responseMessage"></strong>
   </div>
 </div>

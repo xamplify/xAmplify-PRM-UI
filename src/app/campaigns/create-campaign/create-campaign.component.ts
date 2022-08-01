@@ -396,6 +396,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             if (this.campaign.pushToHubspot) {
                 this.pushToCRM.push('hubspot');
             }
+            if (this.campaign.pushToMicrosoft) {
+                this.pushToCRM.push('microsoft');
+            }
 
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }

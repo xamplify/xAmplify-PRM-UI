@@ -79,6 +79,7 @@ export class ManageLeadsComponent implements OnInit {
   stageNamesForFilterDropDown: any;
   statusFilter: any;
   prm: boolean;
+  syncMicrosoft: boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -210,8 +211,12 @@ export class ManageLeadsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      this.checkSalesforceIntegration();      
+      this.checkSalesforceIntegration();    
+      this.checkMicrosoftIntegration();  
       this.showLeads();
+      if (this.prm) {
+        this.listView = true;
+      }
     } else {
       this.showPartner();
     }
@@ -660,6 +665,21 @@ export class ManageLeadsComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, false);
   }
 
+  checkMicrosoftIntegration(): any {
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.integrationService.checkConfigurationByTypeAndUserId("microsoft", this.loggedInUserId).subscribe(data => {
+      let response = data;
+      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+        this.syncMicrosoft = true;  
+      } else {
+        this.syncMicrosoft = false;
+      }
+    }, error => {
+      console.log("Error in salesforce checkMicrosoftIntegration()");
+    }, () => console.log("Error in checkMicrosoftIntegration()"));
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+
   syncLeadsWithSalesforce() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -675,6 +695,32 @@ export class ManageLeadsComponent implements OnInit {
           } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
+          } else {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
+          }
+        },
+        error => {
+
+        },
+        () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }
+      );
+  }
+
+  syncLeadsWithMicrosoft() {
+    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.syncLeadsWithMicrosoft(this.loggedInUserId)
+      .subscribe(
+        data => {
+          let statusCode = data.statusCode;
+          if (statusCode == 200) {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+            //this.getCounts();  
+            this.showLeads();
           } else {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);

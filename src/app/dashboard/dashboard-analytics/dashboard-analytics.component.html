@@ -272,28 +272,33 @@
             </div>
         </div>
         <!-- High Level Analytics -->
-        <div class="clearfix" *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-<div class="portlet light">
-  <div class="portlet-title" style="min-height: 0px;">
-      <div class="caption">
-          <span class="caption-subject" translate>High Level Anlaytics</span>
-      </div>
-  </div>
-<div class="portlet-body clearfix" >
-  <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-      || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
-        <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading" [applyFilter]="applyFilter"></app-donut-pie-chart> 
-        <app-horizontal-bat-chart *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
-      </div>
-  <div [className]= "(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-  || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-6 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
-   <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
-  </div>
-  </div>
-</div> 
-</div>
-</div>
+        <div class="clearfix"  *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <div class="portlet light" id="hla-adv-dashboard">
+            <div class="portlet-title" style="min-height: 0px;">
+                <div class="caption">
+                    <span class="caption-subject" translate>High Level Anlaytics</span>
+                </div>
+                <a *ngIf="!downloadRequestButtonClicked"  class="close-circle" (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="portlet-body clearfix">
+                <app-response-message class="pg8" [customResponse]="downloadRequestCustomResponse" *ngIf="downloadRequestCustomResponse.isVisible">
+                </app-response-message>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
+                        <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading" [applyFilter]="applyFilter"></app-donut-pie-chart> 
+                        <app-horizontal-bat-chart *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
+                    </div>
+                <div [className]= "(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-6 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
+                    <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+                </div>
+                </div>
+            </div> 
+            </div>
+        </div>
        
 
         <!--Opportunity Stats-->
@@ -329,7 +334,7 @@
         <a (click)="closeDealForm()" class="pull-right close-circle"
             style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-        <app-add-deal [actionType]="add" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+        <app-add-deal [actionType]="'add'" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
     </div>
 </section>
 
@@ -423,3 +428,4 @@
         </div>
     </div>
 </div>
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
