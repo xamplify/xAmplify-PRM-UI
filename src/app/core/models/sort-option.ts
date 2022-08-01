@@ -407,4 +407,6 @@ export class SortOption {
 	public selectedWorkflowSortDropDownOption = this.workflowsSortDropDownOptions[this.workflowsSortDropDownOptions.length-1];
 	public selectedUnsubscribeReasonSortDropDownOption: any = this.unsubscribeReasonsDropDownOptions[this.unsubscribeReasonsDropDownOptions.length-1];
 	public selectedTeamMemberGroupSortDropDown = this.teamMemberGroupDropDownOptions[this.teamMemberGroupDropDownOptions.length-3];
+	public selectedAgencySortDropDownOption: any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
+
 }

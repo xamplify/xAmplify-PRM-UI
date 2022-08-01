@@ -377,12 +377,17 @@
 											<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
 													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
+										<!---XNFR-83--->
+										<tr>
+											<th scope="row">Agency</th>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.agency"
+													[ngModelOptions]="{standalone: true}"></td>
+										</tr>
 										</table>
 									</div>
 									<div class="modal-footer">
-										<button type="button" id="module-access-button"
-											(click)="updateAccess()" disabled="disabled"
-											class="btn green-haze" translate>Save</button>
+										<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn green-haze"
+											translate>Save</button>
 									</div>
 								</div>
 							</div>

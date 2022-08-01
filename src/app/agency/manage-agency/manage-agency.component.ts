@@ -1,0 +1,654 @@
+import { ErrorResponse } from './../../util/models/error-response';
+import { CsvDto } from './../../core/models/csv-dto';
+import { Component, OnInit, ViewChild, Input, OnDestroy, AfterViewInit, ErrorHandler } from '@angular/core';
+import { Router, Event } from '@angular/router';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { Pagination } from '../../core/models/pagination';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { PagerService } from 'app/core/services/pager.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { FileUtil } from '../../core/models/file-util';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { AgencyService } from './../services/agency.service';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+import { AgencyDto } from './../models/agency-dto';
+import { SortOption } from 'app/core/models/sort-option';
+import { UtilService } from 'app/core/services/util.service';
+import { AgencyPostDto } from '../models/agency-post-dto';
+declare var $:any,swal:any;
+@Component({
+  selector: 'app-manage-agency',
+  templateUrl: './manage-agency.component.html',
+  styleUrls: ['./manage-agency.component.css'],
+  providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties,SortOption],
+  animations:[CustomAnimation]
+})
+export class ManageAgencyComponent implements OnInit,OnDestroy {
+  agencyAccess = false;
+  loader:HttpRequestLoader = new HttpRequestLoader();
+  ngxLoading = false;
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  addAgencyLoader:HttpRequestLoader = new HttpRequestLoader();
+  customResponse:CustomResponse = new CustomResponse();
+  showAddAgencyDiv = false;
+  editAgency = false;
+  saveOrUpdateButtonText = "Save";
+  agencyDto:AgencyDto = new AgencyDto();
+  agencyPostDto:AgencyPostDto = new AgencyPostDto();
+  agencyPostDtos:Array<AgencyPostDto> = new Array<AgencyPostDto>();  
+  agencyDtos:Array<AgencyDto> = new Array<AgencyDto>();  
+  defaultModules: Array<any> = new Array<any>();
+  agencies: Array<any> = new Array<any>(); 
+  errorResponses:Array<ErrorResponse> = new Array<ErrorResponse>(); 
+  showUploadedAgencies = false;
+  sortOption: SortOption = new SortOption();
+  csvDto:CsvDto = new CsvDto();
+  @ViewChild('agencyCsvInput')
+  agencyCsvInput: any;
+  statusCode = 0;
+  showModulesPopup = false;
+  selectedAgencyId = 0;
+  isDelete = false;
+  constructor(public agencyService:AgencyService,public logger: XtremandLogger, public referenceService: ReferenceService,
+    public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
+    private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch,private router: Router, public properties: Properties,
+    public utilService:UtilService) {
+
+    }
+  ngOnDestroy(): void {
+    swal.close();
+  }
+
+  ngOnInit() {
+    this.referenceService.loading(this.loader,true);
+    this.authenticationService.hasAgencyAccess().subscribe(
+    response=>{
+      this.agencyAccess = response.statusCode==200;
+    },error=>{
+      this.logger.errorPage(error);
+    },()=>{
+      if(this.agencyAccess){
+        this.referenceService.loading(this.loader,false);
+        this.findAll(this.pagination);
+      }else{
+        this.referenceService.goToPageNotFound();
+      }
+    });
+  }
+  
+  findAll(pagination:Pagination){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.scrollSmoothToTop();
+    this.agencyService.findAll(pagination).subscribe(
+      response=>{
+        let data = response.data;
+        this.agencies = data.list;
+        pagination.totalRecords = data.totalRecords;
+        pagination = this.pagerService.getPagedItems(pagination, this.agencies);
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.logger.errorPage(error);
+      }
+    );
+  }
+  /*************************Sort********************** */
+  sortBy(text: any) {
+    this.sortOption.selectedAgencySortDropDownOption = text;
+    this.getAllFilteredResults(this.pagination, this.sortOption);
+  }
+  /*************************Search********************** */
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+  search() {
+    this.getAllFilteredResults(this.pagination, this.sortOption);
+  }
+
+  getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
+    pagination.pageIndex = 1;
+    pagination = this.utilService.sortOptionValues(sortOption.selectedAgencySortDropDownOption, pagination);
+    this.findAll(pagination);
+  }
+  /**************Pagination***************/
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.findAll(this.pagination);
+  }
+
+  findDefaultModules(csv:boolean,csvDto:CsvDto,agencyDto:AgencyDto) {
+    this.referenceService.loading(this.addAgencyLoader, true);
+    this.defaultModules = [];
+    this.agencyService.findAllModules().
+      subscribe(
+        response => {
+          this.defaultModules = response.data.modules;
+          if(this.agencyDto.id!=undefined && this.agencyDto.id>0){
+            let moduleIds = agencyDto.moduleIds;
+            $.each(this.defaultModules,function(_index:number,module:any){
+                module.enabled = moduleIds.indexOf(module.roleId)>-1;
+            });
+            this.validateAgencyForm();
+            this.editAgency =true;
+            this.ngxLoading = false;
+          }else{
+            this.addModuleIds();
+          }
+          if(csv){
+            this.appendCsvDataToTable(csvDto);
+          }else{
+            this.referenceService.loading(this.addAgencyLoader, false);
+          }
+        }, error => {
+          this.referenceService.loading(this.addAgencyLoader, false);
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          this.logger.errorPage(error);
+        }
+      );
+  }
+
+  refreshList() {
+    this.referenceService.scrollSmoothToTop();
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = "";
+    this.findAll(this.pagination);
+  }
+
+   /***********Add/Edit*******************/
+  goToAddAgencyDiv() {
+    this.referenceService.scrollSmoothToTop();
+    this.referenceService.hideDiv('agency-csv-error-div');
+    this.customResponse = new CustomResponse();
+    this.agencyDto = new AgencyDto();
+    this.showAddAgencyDiv = true;
+    this.findDefaultModules(false,this.csvDto,this.agencyDto);
+  }
+
+   /***************Edit**********/
+   edit(id:number){
+    this.ngxLoading = true;
+    this.customResponse = new CustomResponse(); 
+    this.referenceService.scrollSmoothToTop();
+    this.agencyService.getById(id).subscribe(
+      response=>{
+        this.statusCode = response.statusCode;
+        if(this.statusCode==200){
+          this.agencyDto = new AgencyDto();
+          let data = response.data;
+          this.agencyDto.id = data.id;
+          this.agencyDto.firstName = data.firstName;
+          this.agencyDto.lastName = data.lastName;
+          this.agencyDto.agencyName = data.companyName;
+          this.agencyDto.emailId = data.emailId;
+          this.agencyDto.moduleIds = data.moduleIds;
+        }
+      },error=>{
+          this.logger.errorPage(error);
+      },()=>{
+        if(this.statusCode==200){
+          this.saveOrUpdateButtonText = "Update";
+          this.findDefaultModules(false,this.csvDto,this.agencyDto);
+        }
+        
+      }
+    );
+  }
+
+  validateAddAgencyForm(fieldName: string) {
+    if ("emailId" == fieldName) {
+        this.validateAgencyEmailId();
+    }else if("agencyName"==fieldName){
+        this.validateAgencyName();
+    }
+    let enabledModulesCount = this.defaultModules.filter((item) => item.enabled).length;
+    this.agencyDto.validForm = this.agencyDto.validEmailId && this.agencyDto.validAgencyName &&  enabledModulesCount > 0;
+  }
+
+  validateAgencyEmailId(){
+    this.agencyDto.validEmailId = this.referenceService.validateEmailId(this.agencyDto.emailId);
+    this.agencyDto.emailIdErrorMessage = this.agencyDto.validEmailId ? '' : 'Please enter a valid email address';
+    this.agencyDto.emaillIdDivClass = this.referenceService.getSuccessOrErrorClassName(this.agencyDto.validEmailId);
+  }
+
+  validateAgencyName(){
+    let agencyName = this.agencyDto.agencyName;
+    this.agencyDto.validAgencyName = agencyName!=undefined && agencyName!="" && $.trim(agencyName).length>0;
+    this.agencyDto.agencyNameErrorMessage = this.agencyDto.validAgencyName ? '' : 'Please enter Agency Name';
+    this.agencyDto.agencyNameDivClass = this.referenceService.getSuccessOrErrorClassName(this.agencyDto.validAgencyName);
+  }
+
+  validateAgencyForm(){
+    this.validateAddAgencyForm("emailId");
+    this.validateAddAgencyForm("agencyName");
+  }
+
+  changeStatus(event: any, module: any) {
+    if (module.moduleName == "All") {
+      this.enableOrDisableAllModules(event);
+    } else {
+      module.enabled = event;
+      let modulesWithoutAll = this.defaultModules.filter((item) => item.moduleName != "All");
+      let enabledModulesLength = modulesWithoutAll.filter((item) => item.enabled).length;
+      let allModule = this.defaultModules.filter((item) => item.moduleName == "All")[0];
+      allModule.enabled = (modulesWithoutAll.length == enabledModulesLength);
+    }
+    this.validateAgencyForm();
+    this.addModuleIds();
+  }
+
+  addModuleIds(){
+    let enabledModules = this.defaultModules.filter((item) => item.enabled);
+    let moduleIds = enabledModules.map(function (a) { return a.roleId; });
+    this.agencyDto.moduleIds = moduleIds;
+  }
+
+  enableOrDisableAllModules(event: any) {
+    let self = this;
+    $.each(self.defaultModules, function (_index: number, defaultModule: any) {
+      defaultModule.enabled = event;
+    });
+  }
+  
+  addOrUpdate(event:any){
+    this.ngxLoading = true;
+    this.agencyPostDto = new AgencyPostDto();
+    this.agencyPostDtos = new Array<AgencyPostDto>();
+    this.agencyPostDto.agencyName = this.agencyDto.agencyName;
+    this.agencyPostDto.emailId = this.agencyDto.emailId.toLowerCase();
+    this.agencyPostDto.firstName = this.agencyDto.firstName;
+    this.agencyPostDto.lastName = this.agencyDto.lastName;
+    this.agencyPostDto.moduleIds = this.agencyDto.moduleIds;
+    if(this.editAgency){
+      this.agencyPostDto.id = this.agencyDto.id;
+      this.update(event);
+    }else{
+      this.agencyPostDtos.push(this.agencyPostDto);
+      this.save(event);
+    }
+    
+  }
+
+  private update(event:any) {
+    this.agencyService.update(this.agencyPostDto).subscribe(
+      response => {
+        this.showSuccessOrFailureResponse(response,event);
+      }, error => {
+        this.showHttpError(error,event);
+      });
+  }
+
+  private save(event:any) {
+    this.agencyService.save(this.agencyPostDtos).subscribe(
+      response => {
+        this.showSuccessOrFailureResponse(response,event);
+      }, error => {
+        this.showHttpError(error,event);
+      });
+  }
+
+  private showHttpError(error: any,event:any) {
+    let errorMessage = this.referenceService.showHttpErrorMessage(error);
+    this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+    this.referenceService.scrollSmoothToTop();
+    this.ngxLoading = false;
+    this.referenceService.enableButton(event);
+  }
+
+  private showSuccessOrFailureResponse(response: any,event:any) {
+    this.customResponse = new CustomResponse();
+    let statusCode = response.statusCode;
+    if (statusCode == 400) {
+      this.addErrorMessages(response);
+    } else if (statusCode == 200) {
+      this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+      this.clearFormAndShowList();
+    }
+    this.referenceService.scrollSmoothToTop();
+    this.ngxLoading = false;
+    this.referenceService.enableButton(event);
+  }
+
+  
+
+  clearFormAndShowList() {
+    this.agencyDto = new AgencyDto();
+    this.agencyPostDto = new AgencyPostDto();
+    this.editAgency =  false;
+    this.showAddAgencyDiv = false;
+    this.showUploadedAgencies = false;
+    this.saveOrUpdateButtonText = "Save";
+    this.csvDto = new CsvDto();
+    this.refreshList();
+  }
+
+  cancel(){
+    this.customResponse = new CustomResponse();
+    this.clearFormAndShowList();
+  }
+
+  private addErrorMessages(response: any) {
+    this.agencyDto.emailIdErrorMessage = "";
+    this.agencyDto.agencyNameDivClass = this.properties.formGroupClass;
+    if(this.showUploadedAgencies){
+      this.customResponse = new CustomResponse('ERROR', "There was a problem creating agencies", true);
+    }else{
+      this.customResponse = new CustomResponse('ERROR', this.properties.formSubmissionFailed, true);
+    }
+    let data = response.data;
+    this.errorResponses = data.errorMessages;
+    let self = this;
+    $.each(this.errorResponses, function (_index: number, errorResponse: ErrorResponse) {
+      let field = errorResponse.field;
+      if ("agencies[0]emailId" == field) {
+          self.agencyDto.emailIdErrorMessage = errorResponse.message;
+          self.agencyDto.emaillIdDivClass = self.referenceService.getSuccessOrErrorClassName(false);
+        }
+      self.addCsvErrorMessages(field, self, errorResponse);
+    });
+  }
+
+  private addCsvErrorMessages(field: string, self: this, errorResponse: ErrorResponse) {
+    if(this.showUploadedAgencies){
+      $('#csv-field-error').text('');
+      self.addColumnError(field.split("emailId")[0], self, 'emailIdErrorMessage', errorResponse);
+      self.addColumnError(field.split("moduleIds")[0], self, 'invalidModuleIdsErrorMessage', errorResponse);
+    }
+  }
+
+  private addColumnError(splittedField: string, self: this, columnName: string, errorResponse: ErrorResponse) {
+    if (splittedField.length > 0) {
+      let indexPosition = splittedField.length - 1;
+      if (indexPosition > 0) {
+        let agencyDtoIndex = parseInt(splittedField.substring(indexPosition - 1, indexPosition));
+        if (!isNaN(agencyDtoIndex)) {
+          self.agencyDtos[agencyDtoIndex][columnName] = '';
+          if(errorResponse.message.indexOf("moduleIds")>-1){
+            self.agencyDtos[agencyDtoIndex][columnName] = "Please select atleast one module";
+          }else{
+            self.agencyDtos[agencyDtoIndex][columnName] = errorResponse.message;
+          }
+        }
+      }
+    }
+  }
+
+/***************E N D OF ADD**********/
+  downloadCsv(){
+    this.referenceService.downloadCsvTemplate("agencies/downloadCsvTemplate/Add-Agencies.csv");
+  }
+
+  readCsvFile(event: any) {
+    this.csvDto = new CsvDto();
+    this.customResponse = new CustomResponse();
+    this.csvDto.csvErrors = [];
+    var files = event.srcElement.files;
+    if (this.fileUtil.isCSVFile(files[0])) {
+      $("#agency-csv-error-div").hide();
+      var input = event.target;
+      var reader = new FileReader();
+      reader.readAsText(input.files[0]);
+      reader.onload = (data) => {
+        let csvData = reader.result;
+        let csvRecordsArray = csvData['split'](/\r\n|\n/);
+        let headersRow = this.fileUtil
+          .getHeaderArray(csvRecordsArray);
+        let headers = headersRow[0].split(',');
+        if (this.validateHeaders(headers)) {
+          this.csvDto.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, headersRow.length);
+          if (this.csvDto.csvRecords.length > 1) {
+              this.processCSVData();
+          } else {
+            this.showCsvFileError('You Cannot Upload Empty File');
+          }
+        } else {
+          this.showCsvFileError('Invalid CSV');
+        }
+      }
+      let self = this;
+      reader.onerror = function () {
+        self.showErrorMessageDiv('Unable to read the file');
+      };
+    } else {
+      this.showErrorMessageDiv('Please Import csv file only');
+      this.fileReset();
+    }
+  }
+
+  processCSVData() {
+    this.validateCsvData();
+    if (this.csvDto.csvErrors.length > 0) {
+       $("#agency-csv-error-div").show();
+    } else {
+      this.findDefaultModules(true,this.csvDto,this.agencyDto);
+    }
+    this.fileReset();
+  }
+  appendCsvDataToTable(csvDto:CsvDto) {
+    let csvRecords = csvDto.csvRecords;
+    for (var i = 1; i < csvRecords.length; i++) {
+      let rows = csvRecords[i];
+      let row = rows[0].split(',');
+      let emailId = row[0].toLowerCase();
+      if (emailId != undefined && $.trim(emailId).length > 0) {
+        let agencyDto = new AgencyDto();
+        agencyDto.emailId = emailId;
+        agencyDto.firstName = row[1];
+        agencyDto.lastName = row[2];
+        agencyDto.agencyName= row[3];
+        agencyDto.companyName = row[3];
+        agencyDto.expand = false;
+        agencyDto.modules = this.defaultModules;
+        $.each(this.defaultModules,function(_index:number,module:any){
+          agencyDto.moduleIds.push(module.roleId);
+        });
+        agencyDto.module = agencyDto.modules[0];
+        this.agencyDtos.push(agencyDto);
+      }
+    }     
+    this.referenceService.loading(this.addAgencyLoader, false);
+    this.showUploadedAgencies = true;
+  }
+
+  validateCsvData() {
+    let csvRecords = this.csvDto.csvRecords;
+    let names = csvRecords.map(function (a) { return a[0].split(',')[0].toLowerCase() });
+    let duplicateEmailIds = this.referenceService.returnDuplicates(names);
+    this.agencyDtos = [];
+    if (duplicateEmailIds.length == 0) {
+      for (var i = 1; i < csvRecords.length; i++) {
+        let rows = csvRecords[i];
+        let row = rows[0].split(',');
+        let emailId = row[0];
+        if (emailId != undefined && $.trim(emailId).length > 0) {
+          if (!this.referenceService.validateEmailId(emailId)) {
+            this.csvDto.csvErrors.push(emailId + " is invalid email address.");
+          }
+        }
+      }
+    } else {
+      for (let d = 0; d < duplicateEmailIds.length; d++) {
+        let emailId = duplicateEmailIds[d];
+        if (emailId != undefined && $.trim(emailId).length > 0) {
+          this.csvDto.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
+        }
+      }
+    }
+  }
+
+  validateHeaders(headers: any) {
+    return (headers[0] == "Email Id" && headers[1] == "First Name" && headers[2] == "Last Name" && headers[3]=="Agency Name");
+  }
+
+  showErrorMessageDiv(message: string) {
+    this.customResponse = new CustomResponse('ERROR', message, true);
+  }
+
+  hideErrorMessageDiv() {
+    this.customResponse = new CustomResponse('ERROR', "", false);
+  }
+
+  showCsvFileError(message: string) {
+    this.customResponse = new CustomResponse('ERROR', message, true);
+    this.fileReset();
+  }
+
+  fileReset() {
+    if (this.agencyCsvInput != undefined) {
+      this.agencyCsvInput.nativeElement.value = "";
+    }
+   
+  }
+
+  deleteRow(index: number, agency: any) {
+    let emailId = agency['emailId'];
+    $('#agency-' + index).remove();
+    emailId = emailId.toLowerCase();
+    this.agencyDtos = this.spliceArray(this.agencyDtos, emailId);
+    let tableRows = $("#add-agency-table > tbody > tr").length;
+    if (tableRows == 0 || this.agencyDtos.length == 0) {
+      this.clearUploadCsvDataAndGoBack();
+    }
+  }
+
+  spliceArray(arr: any, emailId: string) {
+    arr = $.grep(arr, function (data: any, _index: number) {
+      return data.emailId != emailId
+    });
+    return arr;
+  }
+
+  clearUploadCsvDataAndGoBack() {
+    this.customResponse = new CustomResponse();
+    this.showUploadedAgencies = false;
+    this.agencyDtos = [];
+    this.fileReset();
+    this.errorResponses = new Array<ErrorResponse>();
+    this.referenceService.scrollSmoothToTop();
+  }
+
+  showOrHideModules(agencyDto:AgencyDto,index:number){
+    $.each(this.agencyDtos,function(agencyIndex:number,value:AgencyDto){
+      if(index!=agencyIndex){
+        value.expand = false;
+      }
+    });
+    agencyDto.expand = !agencyDto.expand;
+  }
+
+  selectOrUnSelectAllModules(agencyDto:AgencyDto,event:any,index:number){
+    let checkBoxName = "agencyModuleCheckBox-"+index;
+    if (event.target.checked) {
+      $('[name='+checkBoxName+']').prop('checked', true);
+      $('[name='+checkBoxName+']:checked').each(function (_index: number) {
+				var id = $(this).val();
+				agencyDto.moduleIds.push(id);
+			});
+    }else{
+      $('[name='+checkBoxName+']').prop('checked', false);
+      agencyDto.moduleIds = [];
+    }
+    event.stopPropagation();
+  }
+
+  selectOrUnselectModule(moduleId:number,index:number,agencyDto:AgencyDto,event:any){
+    let isChecked = $('#agency-module-' + moduleId+"-"+index).is(':checked');
+    if (isChecked) {
+      agencyDto.moduleIds.push(moduleId);
+		} else {
+			agencyDto.moduleIds.splice($.inArray(moduleId, agencyDto.moduleIds), 1);
+		}
+    let trLength = $('#upload-agency-modules-table-' + index + ' tbody tr').length;
+    let checkBoxName = "agencyModuleCheckBox-"+index;
+		let selectedRowsLength = $('[name='+checkBoxName+']:checked').length;
+    if (selectedRowsLength == 0) {
+			  agencyDto.moduleIds = [];
+		} 
+		let checkHeader = ((trLength-1) == selectedRowsLength);
+    if(checkHeader){
+      $("#agency-all-module-9-"+index).prop('checked', true);
+    }else{
+      $("#agency-all-module-9-"+index).prop('checked', false);
+    }
+		event.stopPropagation();
+  }
+
+  addAllAgencies(event:any){
+    this.ngxLoading = true;
+    this.referenceService.disableButton(event);
+    this.agencyPostDtos = new Array<AgencyPostDto>();
+    let self = this;
+    $.each(self.agencyDtos,function(index:number,agencyDto:AgencyDto){
+      let agencyPostDto = new AgencyPostDto();
+      agencyPostDto.agencyName = agencyDto.agencyName;
+      agencyPostDto.emailId = agencyDto.emailId.toLowerCase();
+      agencyPostDto.firstName = agencyDto.firstName;
+      agencyPostDto.lastName = agencyDto.lastName;
+      agencyPostDto.moduleIds = agencyDto.moduleIds;
+      agencyDto.emailIdErrorMessage = "";
+      agencyDto.invalidModuleIdsErrorMessage = "";
+      self.agencyPostDtos.push(agencyPostDto);
+    });
+    this.save(event); 
+  }
+
+  preview(id:number){
+    this.showModulesPopup = true;
+    this.selectedAgencyId = id;
+  }
+
+  showConfirmSweetAlert(id:number){
+    this.isDelete = true;
+    this.selectedAgencyId = id;
+  }
+
+  delete(event:any){
+    this.customResponse = new CustomResponse();
+    if(event){
+      this.ngxLoading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.agencyService.delete(this.selectedAgencyId).subscribe(
+        response=>{
+          this.resetDeleteOptions();
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.stopNgxAndListLoader();
+          this.refreshList();
+        },error=>{
+          this.stopNgxAndListLoader();
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+          this.resetDeleteOptions();
+        }
+      );
+    }else{
+      this.resetDeleteOptions();
+    }
+   
+  }
+
+  resetDeleteOptions(){
+    this.isDelete = false;
+    this.selectedAgencyId = 0;
+  }
+
+  stopNgxAndListLoader(){
+    this.ngxLoading = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
+  }
+ 
+  resendEmailInvitation(id:number){
+    this.customResponse = new CustomResponse();
+    this.ngxLoading = true;
+    this.agencyService.resendEmailInvitation(id).subscribe(
+        response=>{
+          this.ngxLoading = false;
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+        },error=>{
+          this.ngxLoading = false;
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+        });
+  }
+
+
+}

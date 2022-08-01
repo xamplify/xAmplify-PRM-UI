@@ -230,6 +230,17 @@ export class Properties {
 	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
 	/***XNFR-128***/
 	downloadRequestNotificationMessage = "We are processing your download request.We will send an email once it is completed.";
+	
+	/****XNFR-83****/
+	agencies = "Agencies";
+	agency = "Agency";
+	/****Form Classes*****/
+	formGroupClass: string = "col-sm-8";
+	errorClass: string = "col-sm-8 has-error has-feedback";
+	successClass: string = "col-sm-8 has-success has-feedback";
+	defaultClass: string = this.formGroupClass;
+	formSubmissionFailed = "Form submission failed!";
+
 
 
 

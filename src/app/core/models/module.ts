@@ -91,5 +91,8 @@ export class Module {
 
     prmDashboard = false;
 
+    /*******XNFR-84*******/
+    agencyAccess = false;
+
    
 }

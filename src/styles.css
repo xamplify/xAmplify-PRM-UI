@@ -1660,7 +1660,7 @@ strong {
   filter:blur(15px);
 }
 
-***XNFR-83****/
+
 .fsfpx{
   font-size: 14px;
 }
@@ -1683,5 +1683,13 @@ strong {
 .mrzero-mlzero{
   margin-right: 0 !important;
   margin-left: 0 !important;
+  margin-bottom: 10px !important;
+}
+
+.lowercase-text{
+  text-transform: lowercase;
+}
+.child-table-bg-color{
+  background-color: #f1f1f1 !important;
 }
 

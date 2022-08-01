@@ -115,6 +115,7 @@ export class AuthenticationService {
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
+
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -895,6 +896,34 @@ isPartnershipOnlyWithPrm(){
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+/*******XNFR-83************/
+hasAgencyAccess(){
+  let input = {};
+  let vanityUrlFilter = this.companyProfileName !== undefined && this.companyProfileName !== '';
+  input['vanityUrlFilter'] = vanityUrlFilter;
+  input['vanityUrlDomainName'] = this.companyProfileName;
+  input['userId'] = this.getUserId();
+  var url = this.REST_URL + "admin/hasAgencyAccess?access_token=" + this.access_token;
+  return this.http.post(url, input)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+previewTeamMemberGroup(id:number){
+  const url = this.REST_URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getAssigedAgencyModules(id:number){
+  const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
 
   
   
