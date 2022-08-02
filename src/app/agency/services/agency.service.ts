@@ -12,8 +12,7 @@ export class AgencyService {
   ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
   AGENCY_PREFIX_URL = this.authenticationService.REST_URL + "agencies";
   AGENCY_URL = this.AGENCY_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
-  constructor(private http: Http, private authenticationService: AuthenticationService, 
-    private logger: XtremandLogger,private referenceService:ReferenceService) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService,private referenceService:ReferenceService) { }
 
   findAll(pagination:Pagination){
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
@@ -68,6 +67,19 @@ export class AgencyService {
       url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
     }
     alert(url);
+    return this.http.get(url)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
+
+  hasAgencyAccess(){
+    let companyProfileName = this.authenticationService.getSubDomain();
+    let url = "";
+    if(companyProfileName.length>0){
+      url = this.AGENCY_PREFIX_URL+"/subDomain/"+companyProfileName+"/access"+this.ACCESS_TOKEN_SUFFIX_URL;
+    }else{
+      url = this.AGENCY_PREFIX_URL+"/access"+this.ACCESS_TOKEN_SUFFIX_URL;
+    }
     return this.http.get(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);

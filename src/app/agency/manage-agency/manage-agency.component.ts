@@ -67,7 +67,7 @@ export class ManageAgencyComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this.referenceService.loading(this.loader,true);
-    this.authenticationService.hasAgencyAccess().subscribe(
+    this.agencyService.hasAgencyAccess().subscribe(
     response=>{
       this.agencyAccess = response.statusCode==200;
     },error=>{
