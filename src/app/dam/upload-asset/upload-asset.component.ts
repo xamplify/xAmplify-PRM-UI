@@ -224,6 +224,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.formData.delete("uploadedFile");
 	            this.uploadedAssetName  = "";
 	            this.uploadedCloudAssetName = "";
+	            this.damUploadPostDto.source = "";
 	            this.customResponse = new CustomResponse();
 				//
 				this.formData.append("uploadedFile", file, file['name']);
@@ -435,24 +436,45 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         
         if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
             swal({
-                text: 'Thanks for waiting while we retrieve your video from Drop box',
+                text: 'Thanks for waiting while we retrieve your video from '+this.damUploadPostDto.source,
                 allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
             });
         }
         
          this.damService.uploadVideo(this.formData, this.damUploadPostDto).subscribe(
                   (event: any) => {
-                      if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
-                    	  this.isDisable = true;
-                    	  swal.close();
-                    	  this.processVideo(event);
+                      if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source === 'webcam') {
+                          if (event.statusCode == 200) {
+                              this.isDisable = true;
+                              swal.close();
+                              this.processVideo(event);
+                          } else if (event.statusCode == 401) {
+                        	  swal.close();
+                              this.progress = 0;
+                              this.processing = false;
+                              this.dupliateNameErrorMessage = "Already exists";
+                              this.formData.delete("damUploadPostDTO");
+                              this.isDisableForm = false;
+                          }
                       } else {
                           if (event.type === HttpEventType.UploadProgress) {
                               this.progress = Math.round(100 * event.loaded / event.total);
                               console.log("File is" + this.progress + "% uploaded.");
                           } else if (event instanceof HttpResponse) {
                               console.log('File is completely uploaded!');
-                              this.processVideo(event.body);
+                              let result = event.body;
+                              if (result.statusCode == 200) {
+                                  this.processVideo(result);
+                              } else if (result.statusCode == 400) {
+                                  this.customResponse = new CustomResponse('ERROR', result.message, true);
+                              } else if (result.statusCode == 404) {
+                                  this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+                              } else if (result.statusCode == 401) {
+                                  this.progress = 0;
+                                  this.dupliateNameErrorMessage = "Already exists";
+                                  this.formData.delete("damUploadPostDTO");
+                                  this.isDisableForm = false;
+                              }
                           }
                 	  }
                   }, error => {
@@ -627,6 +649,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
   // cloud content -- Google Drive code changes  
   googleDriveChange() {
       try {
+    	  this.damUploadPostDto.source = 'Google Drive';
           this.videoFileService.hasVideoAccess(this.loggedInUserId)
               .subscribe(
               (result: any) => {
@@ -702,6 +725,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
   // cloud content -- DropBox code changes  
   dropBoxChange() {
       try {
+    	  this.damUploadPostDto.source= 'Dropbox';
           const self = this;
           const options = {
               success: function(files: any) {
@@ -721,6 +745,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 //cloud content -- Box code changes 
   downloadFrombox() {
       try{
+    	  this.damUploadPostDto.source= 'Box';
         const value = this;
         const options = {
             clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
@@ -754,6 +779,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.cloudContent = true;
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
         this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
+        this.validateAllFields();
       }
     
     
@@ -956,6 +982,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.damUploadPostDto.oauthToken = null;
            this.damUploadPostDto.source= 'webcam';
            this.isVideoAsset = true;
+           this.validateAllFields();
            
            (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
            (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
@@ -1035,13 +1062,12 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
        removefileUploadVideo() {
            this.formData.delete("uploadedFile");
            this.uploadedAssetName = "";
-           /*
-           this.uploadedCloudAssetName = "";
-           this.customResponse = new CustomResponse();
-           this.damUploadPostDto = new DamUploadPostDto();*/
            this.showVideoPreview = false;
            this.fileSize = 0;
            this.isDisable = false;
+           $('#uploadedAsset').val("");
+           this.validateAllFields();
        }
   
 }
+;
