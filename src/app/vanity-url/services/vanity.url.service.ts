@@ -94,7 +94,7 @@ export class VanityURLService {
 
   isVanityURLEnabled() {
     let url =window.location.hostname;
-      if (!url.includes("release") && !url.includes("192.168")) {
+      if (!url.includes("release") && !url.includes("192.168") && !url.includes("localhost")) {
       let domainName = url.split('.')[0];
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
