@@ -8,7 +8,7 @@ import { DamPostDto } from '../models/dam-post-dto';
 import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpRequest } from "@angular/common/http";
 
 @Injectable()
 export class DamService {
@@ -133,20 +133,51 @@ export class DamService {
       .map(this.extractData)
       .catch(this.handleError);
   }
-
   uploadOrUpdate(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
+      let url: string = "";
       if (!damUploadPostDto.cloudContent) {
-          formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-              {
-                  type: "application/json"
-              }));
-          let url = isAdd ? 'upload-content' : 'update';
-          return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
+          url = isAdd ? 'upload-content' : 'update';
+      } else {
+          url = isAdd ? 'upload-cloud-content' : 'update';
+      }
+      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+          {
+              type: "application/json"
+          }));
+      return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
+          .map(this.extractData)
+          .catch(this.handleError);
+  }
+
+  uploadVideo(formData: FormData, damUploadPostDto: DamUploadPostDto) {
+      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+          {
+              type: "application/json"
+          }));
+      if (!damUploadPostDto.cloudContent && damUploadPostDto.source!= 'webcam') {
+          let requestURL = this.URL + "upload-content?access_token=" + this.authenticationService.access_token;
+          const req = new HttpRequest('POST', requestURL, formData, {
+              reportProgress: true,
+              responseType: 'json'
+          });
+          return this.http.request(req);
+      } else {
+    	  let url = damUploadPostDto.source!= 'webcam'?'upload-cloud-content' : 'upload-content';
+          let requestURL = this.URL + url +"?access_token=" + this.authenticationService.access_token;
+          return this.http.post(requestURL, formData)
               .map(this.extractData)
               .catch(this.handleError);
-      } else {
-          return this.uploadCloudContent( formData, damUploadPostDto, isAdd );
       }
+  }
+  
+  processVideo(formData: FormData, damUploadPostDto: DamUploadPostDto, path : string) {
+      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
+          {
+              type: "application/json"
+          }));
+      return this.http.post(this.URL + "process-video?path="+path+"&access_token=" + this.authenticationService.access_token, formData)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   getSharedAssetDetailsById(id: number) {
@@ -217,16 +248,5 @@ export class DamService {
   handleError(error: any) {
     return Observable.throw(error);
   }
-  // upload content from cloud storage
-  uploadCloudContent(formData: FormData, damUploadPostDto: DamUploadPostDto, isAdd: boolean) {
-      formData.append('damUploadPostDTO', new Blob([JSON.stringify(damUploadPostDto)],
-          {
-              type: "application/json"
-          }));
-      let url = isAdd ? 'upload-cloud-content' : 'update';
-      return this.http.post(this.URL + url + "?access_token=" + this.authenticationService.access_token, formData)
-          .map(this.extractData)
-          .catch(this.handleError);
-	  }
   
 }

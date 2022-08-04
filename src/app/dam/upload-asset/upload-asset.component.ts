@@ -15,6 +15,8 @@ import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { HttpClient,HttpEventType,HttpResponse} from "@angular/common/http";
 
 declare var $, swal, CKEDITOR: any, gapi, google, Dropbox, BoxSelect, videojs: any;
 
@@ -93,10 +95,19 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     checkSpeedValue = false;
     isFileDrop = false;
     recordCustomResponse: CustomResponse = new CustomResponse();
-
+    processing : boolean = false;
+    videoPreviewPath: SafeUrl;
+    showVideoPreview : boolean = false;
+   // inputVideofile : File = null;
+    fileSize : number = 0;
+    progress: number = 0;
+    isDisable: boolean = false;
+    isDisableForm: boolean = false;
+    isVideoAsset : boolean = false;
+    	
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
-	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService){
+	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
 		
 		//this.isChecked = false;
        // this.isDisable = false;
@@ -217,10 +228,18 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				//
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
+				//this.damUploadPostDto = new DamUploadPostDto();
 				this.damUploadPostDto.cloudContent = false;
 				this.damUploadPostDto.fileName = this.uploadedAssetName;
 	            this.damUploadPostDto.downloadLink = null;
 	            this.damUploadPostDto.oauthToken = null;
+	            this.isVideoAsset = this.isVideo(this.uploadedAssetName);
+	            if(this.isVideoAsset){
+	            	this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
+	            	this.showVideoPreview = true;
+	            	this.fileSize = file.size;
+	            	this.isDisable = true;
+	            }
 			}
 		}else{
 			this.clearPreviousSelectedAsset();
@@ -372,7 +391,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
 		console.log(this.damUploadPostDto);
-		
+
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -405,9 +424,88 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				}
 			});
 	}
-
 	
-
+	uploadVideo() {
+        this.getCkEditorData();
+        this.referenceService.goToTop();
+        this.clearErrors();
+        this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+        console.log(this.damUploadPostDto);
+        this.isDisableForm = true;
+        
+        if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
+            swal({
+                text: 'Thanks for waiting while we retrieve your video from Drop box',
+                allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+            });
+        }
+        
+         this.damService.uploadVideo(this.formData, this.damUploadPostDto).subscribe(
+                  (event: any) => {
+                      if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
+                    	  this.isDisable = true;
+                    	  swal.close();
+                    	  this.processVideo(event);
+                      } else {
+                          if (event.type === HttpEventType.UploadProgress) {
+                              this.progress = Math.round(100 * event.loaded / event.total);
+                              console.log("File is" + this.progress + "% uploaded.");
+                          } else if (event instanceof HttpResponse) {
+                              console.log('File is completely uploaded!');
+                              this.processVideo(event.body);
+                          }
+                	  }
+                  }, error => {
+                      swal.close();
+                      this.formLoader = false;
+                      let statusCode = JSON.parse(error['status']);
+                      if (statusCode == 409) {
+                          this.dupliateNameErrorMessage = "Already exists";
+                          this.formData.delete("damUploadPostDTO");
+                      } else {
+                          this.xtremandLogger.log(error);
+                          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+                      }
+                  });
+    }
+	
+	processVideo(result: any){
+		//let result = response.body;
+		let path : string = result.map.assetPath;
+		 this.processing = true;
+		if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
+		this.damService.processVideo(this.formData, this.damUploadPostDto, path).subscribe(
+	            (result: any) => {
+	                if (result.statusCode == 200) {
+	                    if(this.isAdd){
+	                        this.referenceService.isUploaded = true;
+	                    }else{
+	                        this.referenceService.isAssetDetailsUpldated = true;
+	                    }
+	                    this.referenceService.goToRouter("home/dam/manage");
+	                } else if (result.statusCode == 400) {
+	                    this.customResponse = new CustomResponse('ERROR', result.message, true);
+	                } else if (result.statusCode == 404) {
+	                    this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+	                }else if (result.statusCode == 401) {
+	                    this.dupliateNameErrorMessage = "Already exists";
+	                    this.formData.delete("damUploadPostDTO");
+	                }
+	                this.formLoader = false;
+	            }, error => {
+	                swal.close();
+	                this.formLoader = false;
+	                let statusCode = JSON.parse(error['status']);
+	                if (statusCode == 409) {
+	                    this.dupliateNameErrorMessage = "Already exists";
+	                    this.formData.delete("damUploadPostDTO");
+	                } else {
+	                    this.xtremandLogger.log(error);
+	                    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+	                }
+	            });
+	}
+	
 	goToManageDam() {
 		this.loading = true;
 		this.referenceService.goToRouter("home/dam/manage");
@@ -655,6 +753,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.oauthToken = this.tempr;
         this.damUploadPostDto.cloudContent = true;
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
+        this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
       }
     
     
@@ -856,6 +955,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.damUploadPostDto.downloadLink = null;
            this.damUploadPostDto.oauthToken = null;
            this.damUploadPostDto.source= 'webcam';
+           this.isVideoAsset = true;
            
            (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
            (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
@@ -895,6 +995,53 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.hideSaveDiscard = true;
            $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
        }
+       
+       isVideo(filename: any) {
+           const parts = filename.split('.');
+           const ext = parts[parts.length - 1];
+           switch (ext.toLowerCase()) {
+               case 'm4v':
+               case 'mkv':
+               case 'avi':
+               case 'mpg':
+               case 'mp4':
+               case 'flv':
+               case 'mov':
+               case 'wmv':
+               case 'divx':
+               case 'f4v':
+               case 'mpeg':
+               case 'vob':
+               case 'xvid':
+                   // etc
+                   return true;
+           }
+           return false;
+       }
     
+       trimVideoTitle(title: string) {
+    	      try {
+               if (title.length > 30) {
+                   const fileTitleStart = title.substr(0, 25);
+                   const fileTitleend = title.slice(-5);
+                   return fileTitleStart + '...' + fileTitleend;
+               } else {
+                   return title;
+               }
+    	      } catch (error) { this.xtremandLogger.error('Error in upload video, trimVideoTitle method' + error); }
+
+    	    }
+       
+       removefileUploadVideo() {
+           this.formData.delete("uploadedFile");
+           this.uploadedAssetName = "";
+           /*
+           this.uploadedCloudAssetName = "";
+           this.customResponse = new CustomResponse();
+           this.damUploadPostDto = new DamUploadPostDto();*/
+           this.showVideoPreview = false;
+           this.fileSize = 0;
+           this.isDisable = false;
+       }
   
 }
