@@ -217,10 +217,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		/************XNFR-83******************/
 		module.isAgency = roleDisplayDto.agency;
 		module.isAgencyTeamMember = roleDisplayDto.agencyTeamMember;
-		module.isAgencyAndPartner = roleDisplayDto.agencyAndPartner;
-		module.isAgencyAndPartnerTeamMember = roleDisplayDto.agencyAndPartnerTeamMember;
 		module.isAgencySuperVisor = roleDisplayDto.agencySuperVisor;
-		module.isAgencyCompany = module.isAgency || module.isAgencyTeamMember || module.isAgencyAndPartner || module.isAgencyAndPartnerTeamMember;
+		module.isAgencyCompany = module.isAgency || module.isAgencyTeamMember;
 	}
 
 	setContentMenu(data: any, module: any) {

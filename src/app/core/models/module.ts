@@ -96,8 +96,6 @@ export class Module {
 
     isAgency = false;
 	isAgencyTeamMember = false;
-	isAgencyAndPartner = false;
-    isAgencyAndPartnerTeamMember = false;
     isAgencySuperVisor = false;
     isAgencyCompany = false;
 

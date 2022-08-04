@@ -9,21 +9,21 @@ import { AgencyPostDto } from '../models/agency-post-dto';
 
 @Injectable()
 export class AgencyService {
-  ACCESS_TOKEN_SUFFIX_URL = "?access_token="+this.authenticationService.access_token;
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
   AGENCY_PREFIX_URL = this.authenticationService.REST_URL + "agencies";
   AGENCY_URL = this.AGENCY_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   constructor(private http: Http, private authenticationService: AuthenticationService,private referenceService:ReferenceService) { }
 
   findAll(pagination:Pagination){
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.AGENCY_URL+pageableUrl;
+    let findAllUrl = this.AGENCY_URL+this.authenticationService.access_token+pageableUrl;
     return this.http.get(findAllUrl,"")
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
 
   findAllModules(){
-    let url = this.AGENCY_PREFIX_URL+"/modules"+this.ACCESS_TOKEN_SUFFIX_URL;
+    let url = this.AGENCY_PREFIX_URL+"/modules"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.http.get(url,"")
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
@@ -38,21 +38,21 @@ export class AgencyService {
   }
 
   getById(id:number){
-    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL;
+    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.http.get(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
 
   update(agencyPostDto:AgencyPostDto){
-    let url = this.AGENCY_PREFIX_URL+"/"+agencyPostDto.id+this.ACCESS_TOKEN_SUFFIX_URL;
+    let url = this.AGENCY_PREFIX_URL+"/"+agencyPostDto.id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.http.put(url,agencyPostDto)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
 
   delete(id:number){
-    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL;
+    let url = this.AGENCY_PREFIX_URL+"/"+id+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     return this.http.delete(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
@@ -62,9 +62,9 @@ export class AgencyService {
     let companyProfileName = this.authenticationService.getSubDomain();
     let url = "";
     if(companyProfileName.length>0){
-      url = this.AGENCY_PREFIX_URL+"/"+id+"/subDomain/"+companyProfileName+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+      url = this.AGENCY_PREFIX_URL+"/"+id+"/subDomain/"+companyProfileName+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }else{
-      url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL;
+      url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }
     alert(url);
     return this.http.get(url)
@@ -76,9 +76,9 @@ export class AgencyService {
     let companyProfileName = this.authenticationService.getSubDomain();
     let url = "";
     if(companyProfileName.length>0){
-      url = this.AGENCY_PREFIX_URL+"/subDomain/"+companyProfileName+"/access"+this.ACCESS_TOKEN_SUFFIX_URL;
+      url = this.AGENCY_PREFIX_URL+"/subDomain/"+companyProfileName+"/access"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }else{
-      url = this.AGENCY_PREFIX_URL+"/access"+this.ACCESS_TOKEN_SUFFIX_URL;
+      url = this.AGENCY_PREFIX_URL+"/access"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }
     return this.http.get(url)
           .map(this.authenticationService.extractData)
