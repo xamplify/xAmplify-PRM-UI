@@ -32,7 +32,7 @@ export class AgencyService {
   save(agencyDtos:Array<AgencyPostDto>){
     let dto = {};
     dto['agencies'] = agencyDtos;
-    return this.http.post(this.AGENCY_URL,dto)
+    return this.http.post(this.AGENCY_URL+this.authenticationService.access_token,dto)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
