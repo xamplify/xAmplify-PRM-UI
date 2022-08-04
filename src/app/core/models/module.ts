@@ -94,5 +94,13 @@ export class Module {
     /*******XNFR-84*******/
     agencyAccess = false;
 
+    isAgency = false;
+	isAgencyTeamMember = false;
+	isAgencyAndPartner = false;
+    isAgencyAndPartnerTeamMember = false;
+    isAgencySuperVisor = false;
+    isAgencyCompany = false;
+
+
    
 }
