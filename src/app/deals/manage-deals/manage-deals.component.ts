@@ -235,6 +235,9 @@ export class ManageDealsComponent implements OnInit {
       //this.getVendorCounts();
       this.checkMicrosoftIntegration();  
       this.showDeals();
+      if (this.prm) {
+        this.listView = true;
+      }
     } else {
       this.showPartner();
     }

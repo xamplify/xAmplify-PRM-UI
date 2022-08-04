@@ -206,7 +206,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		alert("Microsoft")
 		this.contactService.socialProviderName = '';
 		try {
 			let queryParam: string = "";
@@ -223,7 +222,6 @@ export class VanitySocialContactsCallbackComponent implements OnInit {
 			} else if (this.router.url.includes("isalesforce-callback")) {
 				this.integrationCallback(code, "isalesforce");
 			} else if (this.router.url.includes("microsoft-callback")) {
-				alert("Microsoft")
 				this.integrationCallback(code, "microsoft");
 				
 			} else {
