@@ -93,21 +93,15 @@ export class VanityURLService {
 
 
   isVanityURLEnabled() {
-    //console.log("Router URL :" + window.location.href);
-    //console.log("Router URL :" + window.location.hostname);
-
-    //let url = "key.xamplify.com";
-    //let url = "TGAInfoSolutions.xamplify.com";
-    //let url = "analytify.xamplify.com";
-    //  let url = "tga.xamplify.com";
-   // let url = "movva.xamplify.com";
     let url =window.location.hostname;
-    //let url="JAVG.xamplify.com";
-        if (!url.includes("release") && !url.includes("192.168")) {
-      let domainName = url.split('.');
+      if (!url.includes("release") && !url.includes("192.168")) {
+      let domainName = url.split('.')[0];
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
         this.authenticationService.companyProfileName = domainName[0];
+        if(this.authenticationService.companyProfileName.length==1){
+          this.authenticationService.companyProfileName = domainName;//dev
+        }
         if (!this.authenticationService.vanityURLUserRoles) {
           let currentUser = localStorage.getItem('currentUser');
           if (currentUser) {
