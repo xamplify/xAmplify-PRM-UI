@@ -34,10 +34,10 @@
 		class="fa fa-trash-o" aria-hidden="true"></i>
 	</a> </ng-container>
 	<ng-container
-		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && hasVideoRole && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 	<a
 		*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
-		(click)="campaignRouter(asset.alias, asset.viewBy)"
+		(click)="campaignRouter(asset)"
 		data-toggle="tooltip" data-placement="top" title="Create campaign">
 		<i class="fa fa-bullhorn" aria-hidden="true"></i>
 	</a> <a class="disable"

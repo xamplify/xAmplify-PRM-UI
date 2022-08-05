@@ -16,10 +16,21 @@ export class AssetGridViewActionsComponent implements OnInit {
   @Output() assetGridViewActionsEmitter = new EventEmitter();
   @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
+  hasCampaignRole = false;
+  hasAllAccess = false;
+  loggedInUserId: number = 0;
+  
+  
+  
+  
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger) { }
+    public xtremandLogger:XtremandLogger) {
+	  this.loggedInUserId = this.authenticationService.getUserId();
+  }
 
   ngOnInit() {
+	  this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+      this.hasAllAccess = this.referenceService.hasAllAccess();
   }
 
   viewGirdHistory(asset:any){
@@ -44,6 +55,10 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   openPublishPopup(asset:any){
     this.setEventEmittersByType(asset,"publishPopup");
+  }
+  
+  campaignRouter(asset){
+	  this.setEventEmittersByType(asset,"campaign");
   }
 
   setEventEmittersByType(asset:any,type:string){

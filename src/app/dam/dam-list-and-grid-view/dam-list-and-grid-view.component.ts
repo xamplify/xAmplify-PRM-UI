@@ -67,6 +67,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	hasVideoRole = false;
     hasCampaignRole = false;
     hasAllAccess = false;
+    hasDamAccess = false;
 	@Output() newItemEvent  = new EventEmitter<any>();
 	
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
@@ -429,12 +430,15 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		let input = event;
 		let preview = input['preview'];
 		let showPublishPopup = input['publishPopup'];
+		let campaign = input['campaign'];
 		this.asset = input['asset'];
 		if (preview) {
 			this.isPreview = true;
 		} else if (showPublishPopup) {
 			this.selectedAssetId = this.asset.id;
 			this.showPublishPopup = true;
+		}else if(campaign){
+			this.campaignRouter(this.asset.alias, this.asset.viewBy);
 		}
 
 	}
