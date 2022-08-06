@@ -2894,13 +2894,17 @@ export class ReferenceService {
   /*********XNFR-83****/
   disableButton(event:any){
     event['target']['disabled'] = true;
-    event['currentTarget']['disabled'] = true;
+    if(event['currentTarget']!=null){
+      event['currentTarget']['disabled'] = true;
+    }  
   }
 
   enableButton(event:any){
     setTimeout(() => {
       event['target']['disabled'] = false;
-      event['currentTarget']['disabled'] = false;
+      if(event['currentTarget']!=null){
+        event['currentTarget']['disabled'] = false;
+      }      
      }, 500);
   }
 
