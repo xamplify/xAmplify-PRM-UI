@@ -47,12 +47,11 @@
           <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
         </div>
       </div>
-      <ng-container *ngIf="!authenticationService?.module?.isAgencyCompany">
+      <ng-container *ngIf="!authenticationService?.module?.agencyUserDashboard">
       <div class="page-bar page-bar-shadow">
           <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
           <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
           <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
-       
       </div>
       <!------------Dashbaord Button Carusel---------------------->    
       <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
@@ -248,7 +247,7 @@
         </div>
       </div>
       </ng-container>
-      <ng-container *ngIf="authenticationService?.module.isAgencyCompany">
+      <ng-container *ngIf="authenticationService?.module.agencyUserDashboard">
         <app-agency-dashboard></app-agency-dashboard>
       </ng-container>
       <app-scroll-top></app-scroll-top>

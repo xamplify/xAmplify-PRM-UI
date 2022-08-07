@@ -98,6 +98,7 @@ export class Module {
 	isAgencyTeamMember = false;
     isAgencySuperVisor = false;
     isAgencyCompany = false;
+    agencyUserDashboard = false;
 
 
    
