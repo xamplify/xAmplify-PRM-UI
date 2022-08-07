@@ -40,12 +40,12 @@
 		(click)="campaignRouter(asset)"
 		data-toggle="tooltip" data-placement="top" title="Create campaign">
 		<i class="fa fa-bullhorn" aria-hidden="true"></i>
-	</a> <a class="disable"
+	</a> <a class="disabled" 
 		*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 		data-toggle="tooltip" data-placement="top"
 		[title]="actionsDescription.video_draft"> <i
 		class="fa fa-bullhorn" aria-hidden="true"></i>
-	</a> <a class="disable"
+	</a> <a class="disabled" 
 		*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
 		data-toggle="tooltip" data-placement="top"
 		title="Unavailable for processing"> <i class="fa fa-bullhorn"

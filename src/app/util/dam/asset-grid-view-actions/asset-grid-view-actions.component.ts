@@ -2,12 +2,14 @@ import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
+import { ActionsDescription } from '../../../common/models/actions-description';
 
 declare var $,swal;
 @Component({
   selector: 'app-asset-grid-view-actions',
   templateUrl: './asset-grid-view-actions.component.html',
-  styleUrls: ['./asset-grid-view-actions.component.css']
+  styleUrls: ['./asset-grid-view-actions.component.css'],
+  providers: [ActionsDescription]
 })
 export class AssetGridViewActionsComponent implements OnInit {
 
@@ -24,7 +26,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger) {
+    public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription) {
 	  this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -67,6 +69,8 @@ export class AssetGridViewActionsComponent implements OnInit {
       input['preview'] = true;
     }else if("publishPopup"==type){
       input['publishPopup'] = true;
+    }else if("campaign"==type){
+    	input['campaign'] = true;
     }
     input['asset'] = asset;
     this.assetGridViewActionsEmitter.emit(input);
