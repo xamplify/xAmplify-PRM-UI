@@ -14,7 +14,7 @@
 		aria-hidden="true"></i>
 	</a> <a class="mMobileDisable mDisableColor"
 		*ngIf="!isPartnerView && asset?.edit" title="Edit"
-		(click)="editDetails(asset.id)"> <i
+		(click)="editDetails(asset)"> <i
 		class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon" title="Preview"
 		(click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>

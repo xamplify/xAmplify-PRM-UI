@@ -431,15 +431,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		let preview = input['preview'];
 		let showPublishPopup = input['publishPopup'];
 		let campaign = input['campaign'];
+		let edit = input['edit'];
+		let analytics = input['analytics'];
 		this.asset = input['asset'];
 		if (preview) {
-			this.isPreview = true;
+			this.preview(this.asset);
 		} else if (showPublishPopup) {
 			this.selectedAssetId = this.asset.id;
 			this.showPublishPopup = true;
 		}else if(campaign){
 			this.campaignRouter(this.asset.alias, this.asset.viewBy);
-		}
+		}else if(edit){
+            this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias);
+        }else if(analytics){
+            this.viewAnalytics(this.asset);
+        }
 
 	}
 

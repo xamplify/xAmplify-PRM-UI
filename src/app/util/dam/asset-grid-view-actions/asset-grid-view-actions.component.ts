@@ -47,8 +47,8 @@ export class AssetGridViewActionsComponent implements OnInit {
 		}
   }
 
-  editDetails(id:number){
-    this.referenceService.goToRouter("/home/dam/editDetails/"+id);
+  editDetails(asset:any){
+	  this.setEventEmittersByType(asset,"edit");
   }
 
   preview(asset:any){
@@ -71,6 +71,10 @@ export class AssetGridViewActionsComponent implements OnInit {
       input['publishPopup'] = true;
     }else if("campaign"==type){
     	input['campaign'] = true;
+    }else if("edit"==type){
+        input['edit'] = true;
+    }else if("analytics"==type){
+        input['analytics'] = true;
     }
     input['asset'] = asset;
     this.assetGridViewActionsEmitter.emit(input);
@@ -81,12 +85,8 @@ export class AssetGridViewActionsComponent implements OnInit {
   }
 
   /*********Analytics*************/
-  viewAnalytics(asset:any){
-    if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-		} else {
-			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
-		}
+  viewAnalytics(asset: any) {
+      this.setEventEmittersByType(asset, "analytics");
   }
 
   /*******View Details (Partner) ********/
