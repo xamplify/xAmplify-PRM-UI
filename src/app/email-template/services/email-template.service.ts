@@ -26,6 +26,11 @@ export class EmailTemplateService {
        }
 
     save(emailTemplate:EmailTemplate){
+        /*****XNFR-83***********/
+        let domainName = this.authenticationService.getSubDomain();
+        if(domainName.length>0){
+           emailTemplate.domainName = domainName;
+        }
         return this.http.post(this.URL+"admin/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
