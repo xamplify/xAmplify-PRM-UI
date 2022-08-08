@@ -44,4 +44,5 @@ export class EmailTemplate {
 	userId:number = 0;
 	surveyTemplate: boolean;
 	surveyCoBrandingTemplate: boolean;
+	domainName = "";
 }
