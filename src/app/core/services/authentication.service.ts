@@ -641,6 +641,7 @@ export class AuthenticationService {
 
   getModulesByUserId() {
     let userId = this.getUserId();
+    /*****XNFR-83***********/
     let domainName = this.getSubDomain();
     let url = "";
     if(domainName.length>0){

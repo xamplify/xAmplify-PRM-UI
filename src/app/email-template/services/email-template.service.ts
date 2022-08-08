@@ -39,11 +39,8 @@ export class EmailTemplateService {
 
 
     listTemplates(pagination:Pagination,userId:number){
-        console.log(pagination);
         try{
-
             userId = this.authenticationService.checkLoggedInUserId(userId);
-
             var url =this.URL+"admin/listEmailTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
             .map(this.extractData)
@@ -55,7 +52,6 @@ export class EmailTemplateService {
     }
 
     listTemplatesForVideo(pagination:Pagination,userId:number,videoId:number){
-        console.log(pagination);
         try{
             var url =this.URL+"admin/listEmailTemplates/"+userId+"/"+videoId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
@@ -75,7 +71,15 @@ export class EmailTemplateService {
     }
 
      listDefaultTemplates(userId:any){
-        return this.http.get(this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        /*****XNFR-83***********/
+        let domainName = this.authenticationService.getSubDomain();
+        let url = "";
+        if(domainName.length>0){
+            url = this.URL+"admin/listDefaultTemplates/"+userId+"/"+domainName+"?access_token="+this.authenticationService.access_token
+        }else{
+            url = this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token
+        }
+        return this.http.get(url,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
