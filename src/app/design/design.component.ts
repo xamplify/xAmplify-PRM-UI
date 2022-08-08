@@ -18,13 +18,13 @@ export class DesignComponent implements OnInit {
     landingPageDescription:string = "";
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     customResponse:CustomResponse = new CustomResponse();
-  constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,public referenceService:ReferenceService) {
-   }
+    constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,public referenceService:ReferenceService) {
+     }
 
-  ngOnInit() {
-      this.landingPageDescription = "Create custom  pages with xAmplify that convert more visitors than any other website.";
-      this.getModuleAccess();
-  }
+    ngOnInit() {
+        this.landingPageDescription = "Create custom pages with xAmplify that convert more visitors than any other website.";
+        this.getModuleAccess();
+    }
   
   getModuleAccess(){
       this.isLoading = true;
@@ -37,18 +37,13 @@ export class DesignComponent implements OnInit {
                   this.emailTemplate = response.emailTemplate;
                   this.form = response.form || this.authenticationService.module.isPrmTeamMember;
                   this.landingPage = response.landingPage;
-                  // if(!this.emailTemplate && !this.form && !this.landingPage){
-                  //     this.authenticationService.forceToLogout();
-                  // }
               }
               this.isLoading = false;
           },
           error => {
             this.isLoading = false;
-              this.logger.errorPage(error);
-          },
-          () => this.logger.info("Finished getModuleAccess()")
-      );
+            this.logger.errorPage(error);
+          });
   }
   openCreateFolderPopup(){
       this.addFolderModalPopupComponent.openPopup();

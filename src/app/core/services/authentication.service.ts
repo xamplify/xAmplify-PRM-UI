@@ -641,7 +641,14 @@ export class AuthenticationService {
 
   getModulesByUserId() {
     let userId = this.getUserId();
-    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
+    let domainName = this.getSubDomain();
+    let url = "";
+    if(domainName.length>0){
+      url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
+    }else{
+      url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
+    }
+    return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -915,5 +922,6 @@ getAssigedAgencyModules(id:number){
 getSubDomain(){
   return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
 }
+
   
 }
