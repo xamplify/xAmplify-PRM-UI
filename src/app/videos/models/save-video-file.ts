@@ -54,4 +54,6 @@ export class SaveVideoFile {
     processed:boolean;
     access:boolean;
     damId : number;
+    tagNames : string[];
+    toolTipTagNames: string = ""
  }

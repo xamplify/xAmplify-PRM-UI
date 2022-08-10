@@ -206,6 +206,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						}
 					});
 					asset.toolTipTagNames = toolTipTagNames;
+					if(asset.videoFileDTO && toolTipTagNames!=null && toolTipTagNames.length>0){
+					asset.videoFileDTO.toolTipTagNames = toolTipTagNames;
+					}
+					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
+						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
+					}
 				});
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
