@@ -21,6 +21,7 @@ declare var  $, QuickSidebar, Highcharts: any;
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
+    @Input() damId : number;
     categories: any;
     watchedFully: number;
     minutesWatchedUsers: number;
@@ -78,6 +79,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUtilService.selectedVideo = this.selectedVideo;
         if (category.includes('Q')) { category = category.substring(1, category.length); }
         this.videoUtilService.timePeriodValue = category;
+        this.videoUtilService.damId = this.damId;
         this.router.navigate(['./home/content/videos/reports']);
     }
 
