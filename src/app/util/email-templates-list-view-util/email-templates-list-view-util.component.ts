@@ -112,7 +112,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: any) => {
                     pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+                    pagination = this.pagerService.getPagedItems(pagination, data.list);
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 (error: string) => {
