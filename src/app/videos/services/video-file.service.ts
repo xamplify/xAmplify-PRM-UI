@@ -144,11 +144,12 @@ export class VideoFileService {
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
         let isChannelVideo: boolean;
-        if (this.videoType === 'myAssets') {
+        /*if (this.videoType === 'myAssets') {
             isChannelVideo = false;
         } else if (this.videoType === 'partnerVideos') {
             isChannelVideo = true;
-        }
+        }*/
+       isChannelVideo = false;
         console.log(isChannelVideo);
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
             + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id + '&isChannelVideo=' + isChannelVideo, '')
