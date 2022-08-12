@@ -1714,9 +1714,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.emailTemplateService.listTemplates(pagination, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
-                    this.campaignEmailTemplates = data.emailTemplates;
+                    this.campaignEmailTemplates = data.list;
                     pagination.totalRecords = data.totalRecords;
-                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.list);
                     if (this.emailTemplatesPagination.totalRecords == 0 && this.selectedEmailTemplateRow == 0) {
                         this.isEmailTemplate = false;
                     }
@@ -1737,9 +1737,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.emailTemplateService.listTemplatesForVideo(pagination, this.loggedInUserId, this.campaign.selectedVideoId)
             .subscribe(
                 (data: any) => {
-                    this.campaignEmailTemplates = data.emailTemplates;
+                    this.campaignEmailTemplates = data.list;
                     pagination.totalRecords = data.totalRecords;
-                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
+                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.list);
                     if (this.emailTemplatesPagination.totalRecords == 0 && this.selectedEmailTemplateRow == 0) {
                         this.isEmailTemplate = false;
                     }
@@ -1750,7 +1750,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                             this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
                             this.isEmailTemplate = true;
                         }
-
                     }
                     this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
                 },
@@ -1776,7 +1775,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: any) => {
                     reply.emailTemplatesPagination.totalRecords = data.totalRecords;
-                    reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.emailTemplates);
+                    reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.list);
                     this.filterReplyrEmailTemplateForEditCampaign(reply);
                     reply.loader = false;
                 },
@@ -1802,7 +1801,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: any) => {
                     url.emailTemplatesPagination.totalRecords = data.totalRecords;
-                    url.emailTemplatesPagination = this.pagerService.getPagedItems(url.emailTemplatesPagination, data.emailTemplates);
+                    url.emailTemplatesPagination = this.pagerService.getPagedItems(url.emailTemplatesPagination, data.list);
                     this.filterClickEmailTemplateForEditCampaign(url);
                     url.loader = false;
                 },
