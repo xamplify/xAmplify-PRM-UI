@@ -226,14 +226,6 @@
                                         <span *ngIf="emailTemplate.category?.length>20">...</span>
                                     </span>
                                 </h6>
-                                <h6 *ngIf="emailTemplate.type=='PARTNER'" translate>
-                                    Shared On <strong>
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
-                                        </app-timestamp>
-                                    </strong>
-                                    <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                        data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}</span>
-                                </h6>
                                 <h6 *ngIf="emailTemplate.type!='PARTNER'" translate>
                                     Created On <strong>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">

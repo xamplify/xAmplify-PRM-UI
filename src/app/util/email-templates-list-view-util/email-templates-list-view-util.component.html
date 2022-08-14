@@ -112,31 +112,24 @@
                                           <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" style="border: 1px solid #e0e0e0;">
                                       </td>
                                       <td>
-                                          <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
-                                              <span><strong>{{emailTemplate.name}}</strong></span>
-                                          </h4>
-                                          <h6 class="moreipsis">
-                                              <span>Folder <strong>{{emailTemplate.category}}</strong></span>
-                                          </h6>
-                                          <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                              <h6 class="moreipsis">
-                                                  <span> Shared By <strong>{{emailTemplate.vendorName}}</strong></span>
-                                              </h6>
-                                              <h6 class="moreipsis" title="{{emailTemplate.vendorOrganizationName}}">
-                                                  <span> From <strong>{{emailTemplate.vendorOrganizationName}}</strong></span>
-                                              </h6>
-                                          </ng-container>
-                                          <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                              <h6 class="moreipsis" title="{{emailTemplate.createdBy}}">
-                                                  <span>Created By <strong>{{emailTemplate.createdBy}}</strong></span>
-                                              </h6>
-                                          </ng-container>
-                                          <h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
-                                          <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                              data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}
-                                          </h5>
-                                          <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
-                                      </td>
+                                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
+                                            <span><strong>{{emailTemplate.name}}</strong></span>
+                                        </h4>
+                                        <h6 class="moreipsis">
+                                            <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
+                                        </h6>
+                                        <h6 class="moreipsis">
+                                            <span translate> Created By<strong>{{emailTemplate.createdBy}}</strong></span>
+                                        </h6>
+                                        <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
+                                            <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
+                                        </h6>
+                                        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                                        <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
+                                        <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+                                            data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
+                                        </h5>
+                                    </td>
                                       <td class="hidden-xs text-center">
                                           <h5 class="view-banner display-ib">
                                               <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other">Email
@@ -189,23 +182,16 @@
                           <img  class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
                           <img alt=""  class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                           <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
-                              {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+                              {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                           </h4>
+                          <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                          <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
                           <div>
                             <h6>
                                 <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
                                     <span *ngIf="emailTemplate.category?.length>20">...</span>
                                 </span>
                             </h6>
-                              <h6 *ngIf="emailTemplate.type=='PARTNER'">
-                                  Shared On <strong>
-                                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
-                                      </app-timestamp>
-                                  </strong>
-                                  <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                      data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
-
-                              </h6>
                               <h6 *ngIf="emailTemplate.type!='PARTNER'">
                                   Created On <strong>
                                       <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
