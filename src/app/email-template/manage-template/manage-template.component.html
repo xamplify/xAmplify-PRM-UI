@@ -144,7 +144,7 @@
                                                 <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis">
-                                                <span translate> Created By<strong>{{emailTemplate.createdBy}}</strong></span>
+                                                <span translate> Created By <strong>{{emailTemplate.createdBy}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
                                                 <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
@@ -183,8 +183,7 @@
                                                 </div>
                                                 <div class="mActionDiv">
                                                 <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                                *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-                                                    authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
+                                                *ngIf="emailTemplate?.actionDTO?.edit">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
@@ -192,8 +191,7 @@
                                                 </div>
                                                 <div class="mActionDiv">
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
-                                                *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
-                                                    authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
+                                                *ngIf="emailTemplate?.actionDTO?.delete">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
@@ -273,15 +271,13 @@
                                     <i class="fa fa-inbox" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                    *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  ||
-                                     authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
+                                *ngIf="emailTemplate?.actionDTO?.edit">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
-                                 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor || 
-                                 authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
+                                 *ngIf="emailTemplate?.actionDTO?.delete">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
