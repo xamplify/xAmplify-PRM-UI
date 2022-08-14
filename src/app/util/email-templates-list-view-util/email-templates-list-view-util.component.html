@@ -124,7 +124,9 @@
                                         <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
                                             <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
                                         </h6>
-                                        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                                        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
+                                        <i *ngIf="emailTemplate?.status=='APPROVED'" class="fa fa-check-circle success"></i>
+                                        <i *ngIf="emailTemplate?.status=='REJECTED'" class="fa fa-times-circle required"></i>
                                         <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                         <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                             data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
@@ -184,7 +186,9 @@
                           <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                           </h4>
-                          <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                          <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
+                          <i *ngIf="emailTemplate?.status=='APPROVED'" class="fa fa-check-circle success"></i>
+                          <i *ngIf="emailTemplate?.status=='REJECTED'" class="fa fa-times-circle required"></i>
                           <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
                           <div>
                             <h6>
