@@ -143,21 +143,14 @@
                                             <h6 class="moreipsis">
                                                 <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
                                             </h6>
-                                            <ng-container *ngIf="emailTemplate.agencyTemplate">
-                                                <h6 class="moreipsis">
-                                                    <span translate> Created By<strong>{{emailTemplate.createdBy}}</strong></span>
-                                                </h6>
-                                                <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
-                                                    <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
-                                                </h6>
-                                                <span class="view-banner" translate>Agency</span>
-                                            </ng-container>
-                                            <ng-container *ngIf="!emailTemplate.agencyTemplate">
-                                                <h6 class="moreipsis" title="{{emailTemplate.createdBy}}">
-                                                    <span translate>Created By <strong>{{emailTemplate.createdBy}}</strong></span>
-                                                </h6>
-                                            </ng-container>
-                                            <h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft" translate>DRAFT</h5>
+                                            <h6 class="moreipsis">
+                                                <span translate> Created By<strong>{{emailTemplate.createdBy}}</strong></span>
+                                            </h6>
+                                            <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
+                                                <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
+                                            </h6>
+                                            <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                                            <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                                 data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
                                             </h5>
@@ -223,8 +216,10 @@
                             <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
-                                {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+                                {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                             </h4>
+                            <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>Agency</span>
+                            <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
                             <div>
                                 <h6>
                                     <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
