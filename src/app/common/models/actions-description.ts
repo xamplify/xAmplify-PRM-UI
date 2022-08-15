@@ -54,6 +54,9 @@ export class ActionsDescription {
     delete_item = 'Delete';
     preview_item = 'Preview';
 
+    /****Comments****/
+    comments = "Comments";
+
 
 
     

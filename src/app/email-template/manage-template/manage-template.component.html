@@ -298,6 +298,12 @@
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
     </ng-template>
+    <!-----XNFR-83 Comments---->
+    <ng-template #commentsIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete" (click)="callCommentsComponent=true" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
+             <i class="fa fa-comment-o" aria-hidden="true"></i>
+        </a>
+    </ng-template>
 
     <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
@@ -339,3 +345,8 @@
 <ng-container *ngIf="saveAsDefaultTemplate">
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
+
+<app-comments *ngIf="callCommentsComponent" [module]="emailTemplates" [id]="selectedEmailTemplateId" (resetCommentsComponentValues)="closeModalPopUp()"></app-comments>
+
+
+

@@ -85,6 +85,9 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	loggedInAsSuperAdmin = false;
 	saveAsDefaultTemplate = false;
 	defaultTemplateInput = {};
+	/****XNFR-83*****/
+	callCommentsComponent = false;
+	selectedEmailTemplateId = 0;
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
 		private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
 		public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -593,6 +596,17 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	showSuccessMessage() {
 		this.saveAsDefaultTemplate = false;
 		this.defaultTemplateInput = {};
+	}
+
+	/*****XNFR-83*****/
+	openCommentsModalPopUp(emailTemplate:any){
+		this.callCommentsComponent = true;
+		this.selectedEmailTemplateId = emailTemplate.id;
+	}
+	
+	resetCommentsComponentValues(){
+		this.callCommentsComponent = false;
+		this.selectedEmailTemplateId =0;
 	}
 
 }

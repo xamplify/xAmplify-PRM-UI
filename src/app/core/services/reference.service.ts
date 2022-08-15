@@ -2415,7 +2415,7 @@ export class ReferenceService {
     swal(this.properties.serverErrorMessage, "", "error");
   }
 
-  showModalPopup(modalId) {
+  showModalPopup(modalId:string) {
     $(".modal .modal-body").css("overflow-y", "auto");
     $("#" + modalId).modal("show");
     $(".modal .modal-body").css("max-height", $(window).height() * 0.75);

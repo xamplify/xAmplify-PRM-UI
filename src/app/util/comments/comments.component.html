@@ -1,3 +1,87 @@
-<p>
-  comments works!
-</p>
+<!--Comments ModalPopUp------->
+<div id="commentsModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+     <!-- Modal content-->
+     <div class="modal-content"  style="overflow-x: hidden;">
+        <ngx-loading [show]="commentModalPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="modal-header">
+           <a title="Close" class="close-circle" (click)="hideRequestCommentModalPopup()">
+       <i class="fa fa-times" aria-hidden="true"></i>
+     </a>
+     <a title="Refresh" class="close-circle" (click)="listComments()">
+       <i class="fa fa-refresh" aria-hidden="true"></i>
+     </a>
+           <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
+        </div>
+        <div class="modal-body" style="max-height: 100%;">
+           <app-response-message class="pg8" [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse.isVisible">
+           </app-response-message>
+           <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
+           <ng-container *ngIf="!commentModalPopUpLoader && !commentsCustomResponse.isVisible">
+              <div class="comment-details">
+                 <div class="row mix-grid p10" style=" background: #f1f1f1; ">
+                    <div class="col-md-2" >
+                       <div class="frame">
+                          <img style="height: 80px;width: 80px;" class="img-circle" src="{{companyAndUserAndModuleDetailsDto?.companyLogo}}" alt="">
+                       </div>
+                    </div>
+                    <div class="col-md-10" style="text-align: left;">
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.companyName}}">
+                             <span><strong>Company Name </strong></span>: {{companyAndUserAndModuleDetailsDto?.companyName | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.companyName?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.createdBy?.length>0">
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdBy}}">
+                             <span><strong>Name </strong></span>: {{{{companyAndUserAndModuleDetailsDto?.createdBy}} | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.emailId}}">
+                             <span><strong>Email Id </strong></span>: {{selectedRequestDetails[2] | slice:0:30}}
+                             <span *ngIf="selectedRequestDetails[2]?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.emailId}}">
+                             <span><strong>Created On </strong></span>: {{companyAndUserAndModuleDetailsDto?.emailId | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.emailId?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.status}}">
+                             <span><strong>Status</strong></span>: <span class="label label-warning"><strong>{{companyAndUserAndModuleDetailsDto?.status}}</strong></span> 
+                          </h5>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="comment-area comment-div" id="comments-div">
+                 <ul class="comment-section" *ngFor="let c of comments" style="margin: 0px">
+                    <li [attr.class]="c.companyId!=loggedInUserCompanyId ? 'comment author-comment':'comment user-comment'" style="width: 135%;">
+                       <div class="info">
+                          <a title="{{c?.displayName}}">{{c?.displayName| slice:0:30}}<span *ngIf="c?.displayName?.length>30">...</span></a>
+                          <span *ngIf="c?.createdTime">
+                             <app-timestamp-new [dateAndTime]="c.createdTime"> </app-timestamp-new>
+                          </span>
+                       </div>
+                       <a class="avatar none">
+                       <img src="{{c?.profilePicturePath}}" width="35" alt="Profile Avatar" />
+                       </a>
+                       <p>{{c?.comment}}</p>
+                    </li>
+                 </ul>
+              </div>
+              <div class="write-new comment-text-area">
+                 <textarea placeholder="Write your comment here"  [(ngModel)]="mdfRequestCommentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(mdfRequestCommentDto)"></textarea>
+                 <div>
+                    <button (click)="saveComment()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+                 </div>
+              </div>
+           </ng-container>
+        </div>
+     </div>
+  </div>
+</div>
