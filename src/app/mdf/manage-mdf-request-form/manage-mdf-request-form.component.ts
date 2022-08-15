@@ -185,7 +185,6 @@ goToTimeLine(formData:any){
 }
 
 showRequestCommentPopup(formData:any){
-   
     $('#requestCommentModalPopup').modal('show');
     this.startLoaders();
     let values = formData['values'];

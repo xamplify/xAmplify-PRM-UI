@@ -35,7 +35,6 @@ export class CommentsComponent implements OnInit, OnDestroy {
   @Output() commentsEventEmitter = new EventEmitter();
   companyAndUserAndModuleDetailsDto:any;
   commentDto:CommentDto = new CommentDto();
-  invalidComment = false;
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -60,8 +59,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
         this.commentModalPopUpLoader = false;
       },error=>{
         this.commentModalPopUpLoader = false;
+        this.closeModalPopUp();
+        this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
-
+        
       });
   }
 
@@ -69,4 +70,14 @@ export class CommentsComponent implements OnInit, OnDestroy {
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
     this.commentsEventEmitter.emit();
   }
+
+  validateComment(commentDto:CommentDto){
+    let comment = $.trim(commentDto.comment);
+    if(comment!=undefined && comment!="" && comment.length>0){
+        this.commentDto.invalidComment = false;
+    }else{
+        this.commentDto.invalidComment = true;
+    }
+}
+
 }
