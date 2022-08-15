@@ -928,9 +928,9 @@ getSubDomain(){
 getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
   let url = "";
   if("emailTemplates"==moduleType){
-    url = this.REST_URL +"email-template";
+    url+= this.REST_URL +"email-template";
   }
-  url ="/companyAndUserDetails/"+id+"?access_token=" + this.access_token;
+  url+="/companyAndUserDetails/"+id+"?access_token=" + this.access_token;
   return this.http.get(url)
   .map(this.extractData)
   .catch(this.handleError);

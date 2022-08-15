@@ -5,7 +5,7 @@
      <div class="modal-content"  style="overflow-x: hidden;">
         <ngx-loading [show]="commentModalPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-header">
-           <a title="Close" class="close-circle" (click)="hideRequestCommentModalPopup()">
+           <a title="Close" class="close-circle" (click)="closeModalPopUp()">
        <i class="fa fa-times" aria-hidden="true"></i>
      </a>
      <a title="Refresh" class="close-circle" (click)="listComments()">
@@ -32,25 +32,24 @@
                              <span *ngIf="companyAndUserAndModuleDetailsDto?.companyName?.length>30">..</span>
                           </h5>
                        </div>
-                       <div *ngIf="companyAndUserAndModuleDetailsDto?.createdBy?.length>0">
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.createdBy!=companyAndUserAndModuleDetailsDto?.emailId">
                           <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdBy}}">
-                             <span><strong>Name </strong></span>: {{{{companyAndUserAndModuleDetailsDto?.createdBy}} | slice:0:30}}
-                             <span *ngIf="companyAndUserAndModuleDetailsDto?.length>30">..</span>
+                             <span><strong>Name </strong></span>: {{companyAndUserAndModuleDetailsDto?.createdBy | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.createdBy?.length>30">..</span>
                           </h5>
                        </div>
                        <div>
                           <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.emailId}}">
-                             <span><strong>Email Id </strong></span>: {{selectedRequestDetails[2] | slice:0:30}}
-                             <span *ngIf="selectedRequestDetails[2]?.length>30">..</span>
-                          </h5>
-                       </div>
-                       <div>
-                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.emailId}}">
-                             <span><strong>Created On </strong></span>: {{companyAndUserAndModuleDetailsDto?.emailId | slice:0:30}}
+                             <span><strong>Email Id </strong></span>: {{companyAndUserAndModuleDetailsDto?.emailId | slice:0:30}}
                              <span *ngIf="companyAndUserAndModuleDetailsDto?.emailId?.length>30">..</span>
                           </h5>
                        </div>
                        <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdDate}}">
+                             <span><strong>Created On </strong></span>: {{companyAndUserAndModuleDetailsDto?.createdDate}}
+                          </h5>
+                       </div>
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.status!='-'">
                           <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.status}}">
                              <span><strong>Status</strong></span>: <span class="label label-warning"><strong>{{companyAndUserAndModuleDetailsDto?.status}}</strong></span> 
                           </h5>
@@ -75,9 +74,9 @@
                  </ul>
               </div>
               <div class="write-new comment-text-area">
-                 <textarea placeholder="Write your comment here"  [(ngModel)]="mdfRequestCommentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(mdfRequestCommentDto)"></textarea>
+                 <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
                  <div>
-                    <button (click)="saveComment()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+                    <button (click)="save()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
                  </div>
               </div>
            </ng-container>

@@ -2421,7 +2421,7 @@ export class ReferenceService {
     $(".modal .modal-body").css("max-height", $(window).height() * 0.75);
   }
 
-  closeModalPopup(modalId) {
+  closeModalPopup(modalId:string) {
     $("#" + modalId).modal("hide");
   }
 

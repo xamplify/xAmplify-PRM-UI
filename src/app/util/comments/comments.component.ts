@@ -16,6 +16,7 @@ import { HttpRequestLoader } from "../../core/models/http-request-loader";
 import { Router } from "@angular/router";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "app/common/models/custom-response";
+import { CommentDto } from "app/common/models/comment-dto";
 
 declare var $: any, swal: any;
 @Component({
@@ -27,12 +28,14 @@ declare var $: any, swal: any;
 export class CommentsComponent implements OnInit, OnDestroy {
   comments: Array<any> = new Array<any>();
   commentsCustomResponse: CustomResponse = new CustomResponse();
-  commentModalPopUpLoader: HttpRequestLoader = new HttpRequestLoader();
+  commentModalPopUpLoader:boolean;
   commentsModalPopUpId = "commentsModalPopUp";
   @Input() moduleType:string = "";
   @Input() id:number = 0;
-  @Output() commentsEventEmitter:any;
+  @Output() commentsEventEmitter = new EventEmitter();
   companyAndUserAndModuleDetailsDto:any;
+  commentDto:CommentDto = new CommentDto();
+  invalidComment = false;
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -48,23 +51,22 @@ export class CommentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    alert("Comments Compoennt");
     this.referenceService.showModalPopup(this.commentsModalPopUpId);
-    this.referenceService.loading(this.commentModalPopUpLoader,true);
+    this.commentModalPopUpLoader = true;
     this.authenticationService.getCompanyAndUserAndModuleDetails(this.moduleType,this.id)
     .subscribe( 
       response=>{
-        this.referenceService.loading(this.commentModalPopUpLoader,false);
         this.companyAndUserAndModuleDetailsDto = response.data;
+        this.commentModalPopUpLoader = false;
       },error=>{
-        this.referenceService.loading(this.commentModalPopUpLoader,false);
+        this.commentModalPopUpLoader = false;
       },()=>{
 
       });
   }
 
   closeModalPopUp(){
-    this.commentsEventEmitter.emit();
     this.referenceService.closeModalPopup(this.commentsModalPopUpId);
+    this.commentsEventEmitter.emit();
   }
 }

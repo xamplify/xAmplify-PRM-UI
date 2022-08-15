@@ -365,7 +365,6 @@ body {
 		top: -22px !important;
 	}
 	.mActionAlign {
-		/* white-space: pre-line!important; */
 		line-height: 2px;
 		text-align: center !important;
 	}
@@ -383,4 +382,8 @@ body {
 	.mPadAction {
 		padding-left: 35px !important;
 	}
+}
+
+.icons-width{
+	width: 220px;
 }

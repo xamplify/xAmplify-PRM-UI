@@ -599,11 +599,6 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	}
 
 	/*****XNFR-83*****/
-	openCommentsModalPopUp(emailTemplate:any){
-		this.callCommentsComponent = true;
-		this.selectedEmailTemplateId = emailTemplate.id;
-	}
-	
 	resetCommentsComponentValues(){
 		this.callCommentsComponent = false;
 		this.selectedEmailTemplateId =0;

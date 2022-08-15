@@ -144,7 +144,7 @@
                                           </app-timestamp>
                                       </td>
                                       <!---Actions----->
-                                      <td style="width: 14%" class="mActionAlign">
+                                      <td class="mActionAlign icons-width">
                                         <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
                                             <div class="mActionDiv">
                                                 <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
@@ -154,6 +154,9 @@
                                             </div>
                                             <div class="mActionDiv">
                                                 <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            </div>
+                                            <div class="mActionDiv">
+                                                <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                             </div>
                                         </div>
                                     </td>
@@ -229,6 +232,7 @@
                             <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                             <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                             <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                            <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                         </div>
                       </div>
                   </div>
@@ -266,6 +270,12 @@
         <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </ng-template>
+    <!-----XNFR-83 Comments---->
+    <ng-template #commentsIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete" (click)="callCommentsComponent=true;selectedEmailTemplateId=emailTemplate.id" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
+             <i class="fa fa-comment-o" aria-hidden="true"></i>
+        </a>
+    </ng-template>
     <!-----XNFR-83 Delete---->
     <ng-template #deleteIcon let-emailTemplate="emailTemplate">
         <a class="delete-icon"  id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
@@ -273,13 +283,6 @@
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
     </ng-template>
-    <!-----XNFR-83 Comments---->
-    <ng-template #commentsIcon let-emailTemplate="emailTemplate">
-        <a *ngIf="!emailTemplate.draft" (click)="openCommentsModalPopUp(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
-             <i class="fa fa-comment-o" aria-hidden="true"></i>
-        </a>
-    </ng-template>
-
   <div class="modal fade right" id="show_email_template_preivew" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog modal-lg modal-template" style="right:0">
           <div class="modal-content">
@@ -318,4 +321,6 @@
   <ng-container *ngIf="saveAsDefaultTemplate">
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
     </ng-container>
+    <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
   <app-scroll-top></app-scroll-top>
+
