@@ -3,4 +3,5 @@ export class CommentDto {
 	comment:string = "";
 	commentedBy:number = 0;
 	invalidComment = true;
+	moduleType = "";
 }

@@ -76,7 +76,7 @@
               <div class="write-new comment-text-area">
                  <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
                  <div>
-                    <button (click)="save()" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+                    <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
                  </div>
               </div>
            </ng-container>

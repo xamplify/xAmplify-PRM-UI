@@ -50,8 +50,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.referenceService.showModalPopup(this.commentsModalPopUpId);
     this.commentModalPopUpLoader = true;
+    this.commentDto.id = this.id;
+    this.commentDto.moduleType = this.moduleType;
+    this.referenceService.showModalPopup(this.commentsModalPopUpId);
     this.authenticationService.getCompanyAndUserAndModuleDetails(this.moduleType,this.id)
     .subscribe( 
       response=>{
@@ -78,6 +80,22 @@ export class CommentsComponent implements OnInit, OnDestroy {
     }else{
         this.commentDto.invalidComment = true;
     }
+}
+
+save(event:any){
+  this.commentsCustomResponse = new CustomResponse();
+  this.referenceService.disableButton(event);
+  this.commentModalPopUpLoader = true;
+  this.authenticationService.saveComment(this.commentDto).
+  subscribe(
+    response=>{
+      this.commentModalPopUpLoader = false;
+      this.commentsCustomResponse = new CustomResponse('ERROR',response.message,true);
+    },error=>{
+      this.commentModalPopUpLoader = false;
+      this.referenceService.enableButton(event);
+      this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    });
 }
 
 }

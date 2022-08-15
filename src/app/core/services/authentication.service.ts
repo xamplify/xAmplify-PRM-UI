@@ -23,6 +23,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+import { CommentDto } from 'app/common/models/comment-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -926,12 +927,16 @@ getSubDomain(){
 
 /*********XNFR-83***************Comments*******/
 getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
-  let url = "";
-  if("emailTemplates"==moduleType){
-    url+= this.REST_URL +"email-template";
-  }
-  url+="/companyAndUserDetails/"+id+"?access_token=" + this.access_token;
+  let url = this.REST_URL +"comments/companyAndUserDetails/"+moduleType+"/"+id+"?access_token=" + this.access_token;
   return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+saveComment(commentDto:CommentDto){
+  commentDto.commentedBy = this.getUserId();
+  let url = this.REST_URL +"comments?access_token=" + this.access_token;
+  return this.http.post(url,commentDto)
   .map(this.extractData)
   .catch(this.handleError);
 }

@@ -426,6 +426,9 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		} else if (!isVideoTemplate) {
 			this.pagination.filterBy = "RegularEmail";
 		}
+		if(this.selectedTemplateTypeIndex==13){
+			this.pagination.filterBy = this.properties.agency;
+		}
 		this.listEmailTemplates(this.pagination);
 	}
 
