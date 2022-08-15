@@ -183,7 +183,7 @@
                                                 </div>
                                                 <div class="mActionDiv">
                                                 <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                                *ngIf="emailTemplate?.actionDTO?.edit">
+                                                *ngIf="emailTemplate?.editAndDelete">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
@@ -191,7 +191,7 @@
                                                 </div>
                                                 <div class="mActionDiv">
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
-                                                *ngIf="emailTemplate?.actionDTO?.delete">
+                                                *ngIf="emailTemplate?.editAndDelete">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
@@ -271,13 +271,13 @@
                                     <i class="fa fa-inbox" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                *ngIf="emailTemplate?.actionDTO?.edit">
+                                *ngIf="emailTemplate?.editAndDelete">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
-                                 *ngIf="emailTemplate?.actionDTO?.delete">
+                                 *ngIf="emailTemplate?.editAndDelete">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </div>
