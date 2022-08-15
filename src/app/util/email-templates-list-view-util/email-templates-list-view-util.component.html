@@ -143,27 +143,20 @@
                                           <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                           </app-timestamp>
                                       </td>
-                                      <td style="width: 14%">
-                                          <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet':'actions-block override-actions'">
-                                            <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </a>                                
-                                              <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
-                                                  <i class="fa fa-inbox" aria-hidden="true"></i>
-                                              </a>
-                                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                              *ngIf="emailTemplate?.editAndDelete">
-                                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                              </a>
-                                              <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> 
-                                                  <i class="fa fa-eye" aria-hidden="true"></i>
-                                              </a>
-                                              <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
-                                              *ngIf="emailTemplate?.editAndDelete">
-                                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                              </a>
-                                          </div>
-                                      </td>
+                                      <!---Actions----->
+                                      <td style="width: 14%" class="mActionAlign">
+                                        <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
+                                            <div class="mActionDiv">
+                                                <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            </div>
+                                            <div class="mActionDiv">
+                                                <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            </div>
+                                            <div class="mActionDiv">
+                                                <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            </div>
+                                        </div>
+                                    </td>
                                   </tr>
                               </tbody>
                           </table>
@@ -231,25 +224,12 @@
                               </ng-container>
 
                           </div>
-                          <div class="bar">
-                            <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                            </a> 
-                              <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
-                                  <i class="fa fa-inbox" aria-hidden="true"></i>
-                              </a>
-                              <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                              *ngIf="emailTemplate?.editAndDelete">
-                                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                              </a>
-                              <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
-                                   <i class="fa fa-eye" aria-hidden="true"></i>
-                              </a>
-                              <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
-                              *ngIf="emailTemplate?.editAndDelete">
-                                  <i class="fa fa-trash-o" aria-hidden="true"></i>
-                              </a>
-                          </div>
+                           <!---Actions----->
+                           <div class="bar">
+                            <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                            <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                            <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                        </div>
                       </div>
                   </div>
               </div>
@@ -267,6 +247,32 @@
           </div>
       </div>
   </div>
+
+    <!-----XNFR-83 Spam Check & Copy---->
+    <ng-template #spamCheckAndCopyIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+        <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
+            <i class="fa fa-inbox" aria-hidden="true"></i>
+        </a>      
+    </ng-template>
+    <!-----XNFR-83 Edit---->
+    <ng-template #editIcon let-emailTemplate="emailTemplate">
+        <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
+        *ngIf="emailTemplate?.editAndDelete">
+            <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+        </a>
+        <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+    </ng-template>
+    <!-----XNFR-83 Delete---->
+    <ng-template #deleteIcon let-emailTemplate="emailTemplate">
+        <a class="delete-icon"  id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
+        *ngIf="emailTemplate?.editAndDelete">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+    </ng-template>
 
   <div class="modal fade right" id="show_email_template_preivew" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog modal-lg modal-template" style="right:0">

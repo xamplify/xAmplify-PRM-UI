@@ -1693,3 +1693,12 @@ strong {
   background-color: #f1f1f1 !important;
 }
 
+/***15/08/2022***/
+.fa-trash-o{
+  color: #cb5a5e !important;
+}
+
+.bar a.delete-icon{
+  border: 1px solid #cb5a5e !important;
+}
+
