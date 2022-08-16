@@ -152,8 +152,15 @@
                                                 <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
                                             </h6>
                                             <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-                                            <i *ngIf="emailTemplate?.status=='APPROVED'" class="fa fa-check-circle success"></i>
-                                            <i *ngIf="emailTemplate?.status=='REJECTED'" class="fa fa-times-circle required"></i>
+                                            <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
+                                                <span class="view-banner-agency"  
+                                                        [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
+                                                                    'bgc-red': emailTemplate?.status==='REJECTED',
+                                                                    'bgc-orange':emailTemplate?.status==='REQUESTED'}" translate>
+                                                    {{emailTemplate?.status}}
+                                                </span>
+                                             
+                                            </ng-container>
                                             <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                                 data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
@@ -173,7 +180,7 @@
                                             </app-timestamp>
                                         </td>
                                         <!---Actions----->
-                                        <td class="mActionAlign icons-width">
+                                        <td class="mActionAlign">
                                             <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
                                                 <div class="mActionDiv">
                                                     <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
@@ -279,6 +286,7 @@
         </div>
     </div>
 
+    <!----Actions----->
     <!-----XNFR-83 Spam Check & Copy---->
     <ng-template #spamCheckAndCopyIcon let-emailTemplate="emailTemplate">
         <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
@@ -300,7 +308,7 @@
      <!-----XNFR-83 Comments---->
      <ng-template #commentsIcon let-emailTemplate="emailTemplate">
         <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete" (click)="callCommentsComponent=true;selectedEmailTemplateId=emailTemplate.id" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
-             <i class="fa fa-comment-o" aria-hidden="true"></i>
+             <i class="fa fa-commenting-o" aria-hidden="true"></i>
         </a>
     </ng-template>
     <!-----XNFR-83 Delete---->
@@ -310,6 +318,9 @@
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
     </ng-template>
+     
+    <!----Actions----->
+
     <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">

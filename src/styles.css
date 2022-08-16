@@ -1622,6 +1622,7 @@ strong {
 .bgc-green {
   background-color: green !important;
 }
+
 /***08 Jun 2022*****/
 .h220 {
   height: 220px !important;
@@ -1700,5 +1701,14 @@ strong {
 
 .bar a.delete-icon{
   border: 1px solid #cb5a5e !important;
+}
+
+/***16/08/20222***/
+.bgc-red {
+  background-color: red !important;
+}
+
+.bgc-orange {
+  background-color: #f76c1a !important;
 }
 

@@ -56,6 +56,7 @@ export class ActionsDescription {
 
     /****Comments****/
     comments = "Comments";
+    changeStatus = "Change Status";
 
 
 
