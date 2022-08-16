@@ -794,7 +794,11 @@
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-
+                                    <!--Start Custom Skin Tab-->
+                                    <!--End custom skin tab-->
+                                     <div class="ta-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
+                                        <app-custom-skin></app-custom-skin>
+                                     </div>
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">

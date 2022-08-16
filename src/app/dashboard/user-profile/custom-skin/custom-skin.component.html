@@ -1,0 +1,104 @@
+<p>
+  custom-skin works!
+</p>
+
+      <div class="modal-content mPad">
+          <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <div class="modal-header">
+              <button type="button"  class="close-circle">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+              <h4 class="modal-title text-left">Change Your Custom Skin</h4>
+          </div>
+          <div class="modal-body">
+              <div class="col-md-12 col-lg-12 pl0 pr0">
+                <div class="form-group">
+                  <label>Module Name</label>
+                  <select class='select-option' required [(ngModel)]='moduleStatusString' (ngModelChange)='onOptionsSelected($event)'>
+                    <option  *ngFor='let moduleStatusString of moduleStatusList' [value]="moduleStatusString">{{option}}</option>
+                </select>
+                      <!-- <input class="form-control" [value]="moduleStatusString" [(ngModel)]="moduleStatusString" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(moduleStatusString,'moduleStatusString')" maxlength="7" />
+                      <span class="input-group-addon color-pick" [(colorPicker)]="form.moduleStatusString" [style.background]="form.moduleStatusString" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'moduleStatusString')" [cpPosition]="'bottom'" readonly></span>
+                  -->
+                </div>
+                  <div class="row">
+                      <div class="col-md-12 col-lg-12 pl0 pr0">
+                          <div class="row">
+                              <div class="col-md-6 col-lg-6">
+                                  <div class="form-group">
+                                    <label>Text Color</label>
+                                        <input class="form-control" [value]="textColor" [(ngModel)]="textColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(textColor,'textColor')" maxlength="7" />
+                                        <span class="input-group-addon color-pick" [(colorPicker)]="form.textColor" [style.background]="form.textColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'textColor')" [cpPosition]="'bottom'" readonly></span>
+                                   
+                                  </div>
+                              </div>
+                              <div class="col-md-6 col-lg-6">
+                                  <div class="form-group">
+                                      <label>Icon Color</label>
+                                      <input class="form-control" [value]="iconColor" [(ngModel)]="iconColor" style="padding-left: 40px;" (input)="checkValidColorCode(iconColor,'iconColor')" maxlength="7" />
+                                      <span class="input-group-addon color-pick" [(colorPicker)]="form.iconColor" [style.background]="form.iconColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'iconColor')" [cpPosition]="'bottom'"
+                                          readonly></span>
+                                  </div>
+                              </div>
+                             
+                          </div>
+                      </div>
+                      <div class="col-md-12 col-lg-12 pl0 pr0">
+                          <div class="row">
+                              <div class="col-md-6 col-lg-6">
+                                  <div class="form-group">
+                                      <label>Background Color</label>
+                                      <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor')" maxlength="7" />
+                                      <span class="input-group-addon color-pick" [(colorPicker)]="form.backgroundColor" [style.background]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'bottom'"
+                                          readonly></span>
+                                  </div>
+                              </div>
+                             
+                              <div class="row">
+                                  <div class="col-md-6 col-lg-6">
+                                      <span  class="required" style="padding-left: 40px;"></span>
+                                  </div>
+                                  <div class="col-md-6 col-lg-6">
+                                      <span  class="required" style="padding-left: 40px;"></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12 col-lg-12 pl0 pr0">
+                          <div class="row">
+                              <div class="col-md-6 col-lg-6">
+                                  <div class="form-group">
+                                      <label>Button Background Color</label>
+                                      <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;"  maxlength="7" />
+                                      <span class="input-group-addon color-pick-1" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
+                                          readonly></span>
+                                  </div>
+                              </div>
+                              <div class="col-md-6 col-lg-6">
+                                  <div class="form-group">
+                                      <label>Button Value Color</label>
+                                      <input class="form-control" [value]="buttonValueColor" [(ngModel)]="buttonValueColor" style="padding-left: 40px;" maxlength="7" />
+                                      <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonValueColor" [style.background]="form.buttonValueColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')" [cpPosition]="'bottom'"
+                                          readonly></span>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-6 col-lg-6">
+                                      <span  class="required" style="padding-left: 40px;"></span>
+                                  </div>
+                                  <div class="col-md-6 col-lg-6">
+                                      <span  class="required" style="padding-left: 40px;"></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                     
+                   
+                  
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <!-- <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button> -->
+          </div>
+      </div>
