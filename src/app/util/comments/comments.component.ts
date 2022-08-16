@@ -35,6 +35,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   @Output() commentsEventEmitter = new EventEmitter();
   companyAndUserAndModuleDetailsDto:any;
   commentDto:CommentDto = new CommentDto();
+  loggedInUserId = 0;
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -44,7 +45,9 @@ export class CommentsComponent implements OnInit, OnDestroy {
     public router: Router,
     public logger: XtremandLogger,
     public properties: Properties
-  ) {}
+  ) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+  }
   ngOnDestroy(): void {
     this.closeModalPopUp();
   }
@@ -64,7 +67,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         this.closeModalPopUp();
         this.referenceService.showSweetAlertServerErrorMessage();
       },()=>{
-        
+        this.findComments();
       });
   }
 
@@ -89,13 +92,27 @@ save(event:any){
   this.authenticationService.saveComment(this.commentDto).
   subscribe(
     response=>{
-      this.commentModalPopUpLoader = false;
-      this.commentsCustomResponse = new CustomResponse('ERROR',response.message,true);
+      this.findComments();
     },error=>{
       this.commentModalPopUpLoader = false;
       this.referenceService.enableButton(event);
       this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
     });
+}
+
+findComments(){
+  this.commentsCustomResponse = new CustomResponse();
+  this.commentModalPopUpLoader = true;
+  this.authenticationService.findComments(this.commentDto.moduleType,this.commentDto.id).
+  subscribe(
+    response=>{
+      this.comments = response.data;
+      this.commentModalPopUpLoader = false;
+    },error=>{
+      this.commentModalPopUpLoader = false;
+      this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    }
+  );
 }
 
 }

@@ -928,10 +928,9 @@ getSubDomain(){
 /*********XNFR-83***************Comments*******/
 getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
   let url = this.REST_URL +"comments/companyAndUserDetails/"+moduleType+"/"+id+"?access_token=" + this.access_token;
-  return this.http.get(url)
-  .map(this.extractData)
-  .catch(this.handleError);
+  return this.callGetMethod(url);
 }
+
 
 saveComment(commentDto:CommentDto){
   commentDto.commentedBy = this.getUserId();
@@ -939,6 +938,19 @@ saveComment(commentDto:CommentDto){
   return this.http.post(url,commentDto)
   .map(this.extractData)
   .catch(this.handleError);
+}
+
+findComments(moduleName:string,id:number){
+  let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+
+
+private callGetMethod(url: string) {
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
 }
 
   
