@@ -48,9 +48,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
     showForms: boolean = false;
-
+    showCommentsIcon = false;
+    callCommentsComponent = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
+        this.showCommentsIcon = this.refService.getCurrentRouteUrl().indexOf("/edit")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;

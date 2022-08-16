@@ -27,13 +27,19 @@
                           <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>  
-                        <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
-                        <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
+                        <ng-container *ngIf="loadTemplate">
+                            <app-preview-popup #previewPopUpComponent *ngIf="showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
+                            <app-merge-tags  [input]="mergeTagsInput"></app-merge-tags>
+                            <button *ngIf="showCommentsIcon" class="btn btn-primary float-right mb10 mr10" (click)="callCommentsComponent=true">
+                                <i class="fa fa-comment-o"></i>
+                            </button>
+                        </ng-container>
                         <div id="bee-plugin-container"></div>
                     </div>
                 </div>
             </div>
         </div>
     </ng-container>
+    <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="emailTemplateService.emailTemplate.id" (commentsEventEmitter)="callCommentsComponent=false"></app-comments>
     <app-scroll-top></app-scroll-top>
 </div>
