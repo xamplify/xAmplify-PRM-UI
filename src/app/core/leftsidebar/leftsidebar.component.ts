@@ -44,7 +44,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	sharedLeads: boolean;
 	lms: any;
 	playbook: boolean;
+	backgroundColor: any;
 	customNamePartners = "Partners";
+	
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -58,6 +60,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 	ngOnInit() {
 		this.findMenuItems();
+		this.tileColor();
 	}
 	
 
@@ -358,5 +361,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	startLoader(){
 		this.loading = true;
 	}
-
+	tileColor(){
+		this.backgroundColor = '#f1d43b';
+	}
 }

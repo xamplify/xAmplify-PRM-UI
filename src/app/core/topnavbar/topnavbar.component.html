@@ -62,13 +62,13 @@
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
-                            <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
-                            <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <button  class="customSkin" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button class="customs"  [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                             <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
                     <li class="btnShare" style="margin-top: 17px;margin-right: 5px;" *ngIf="authenticationService?.module?.hasSocialStatusRole">
-                        <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
+                        <button class="btn btn-primary custom" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs" translate>Update Status</span>
 							<i class="fa fa-share" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>

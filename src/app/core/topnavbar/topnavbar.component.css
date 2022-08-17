@@ -173,3 +173,19 @@ margin: 0 auto;
     left: -20px;
   }
 }
+/* :host{
+  font-style: Arial;
+} */
+.custom{
+  background-color: #f1d43b !important;
+  color: red !important;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.customs{
+  background-color: pink !important;
+  color:black !important;
+}
+.customSkin{
+  background-color: orange !important;
+  color:black !important;
+}
