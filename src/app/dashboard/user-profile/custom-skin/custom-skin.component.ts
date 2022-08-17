@@ -25,13 +25,12 @@ export class CustomSkinComponent implements OnInit {
   buttonBackgroundColor:string;
   buttonValueColor:string;
   moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR"];
+  //moduleStatusString:string;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService) { }
 
   ngOnInit() {
   }
-  onOptionsSelected(event){
-    console.log(event); //option value will be sent as event
-   }
+  
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
         if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {

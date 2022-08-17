@@ -759,4 +759,11 @@ export class DashboardService {
        .map(this.extractData)
        .catch(this.handleError);
         }
+
+        getCustomSkinColor(userId:number,type:any){
+            const url = this.authenticationService.REST_URL+ 'custom/skin/get/'+ 1 +'/'+ type +'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+        }
 }

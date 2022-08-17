@@ -78,6 +78,7 @@ import { MarketingRoleRequestsComponent } from './marketing-role-requests/market
 import { HorizontalBatChartComponent } from './dashboard-analytics-components/horizontal-bat-chart/horizontal-bat-chart.component';
 import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-components/highlevel-analytics-detail-reports/highlevel-analytics-detail-reports.component';
 import { DonutPieChartComponent } from './dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
+import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
 
 
 @NgModule({
@@ -132,6 +133,7 @@ import { DonutPieChartComponent } from './dashboard-analytics-components/donut-p
         HorizontalBatChartComponent,
         HighlevelAnalyticsDetailReportsComponent,
         DonutPieChartComponent,
+        CustomSkinComponent,
         
        
 

@@ -11,17 +11,18 @@
               <h4 class="modal-title text-left">Change Your Custom Skin</h4>
           </div>
           <div class="modal-body">
-              <div class="col-md-12 col-lg-12 pl0 pr0">
-                <div class="form-group">
-                  <label>Module Name</label>
-                  <select class='select-option' required [(ngModel)]='moduleStatusString' (ngModelChange)='onOptionsSelected($event)'>
-                    <option  *ngFor='let moduleStatusString of moduleStatusList' [value]="moduleStatusString">{{option}}</option>
-                </select>
-                      <!-- <input class="form-control" [value]="moduleStatusString" [(ngModel)]="moduleStatusString" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(moduleStatusString,'moduleStatusString')" maxlength="7" />
-                      <span class="input-group-addon color-pick" [(colorPicker)]="form.moduleStatusString" [style.background]="form.moduleStatusString" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'moduleStatusString')" [cpPosition]="'bottom'" readonly></span>
-                  -->
-                </div>
+              <div class="col-md-12 col-lg-12">
                   <div class="row">
+                    <div class="col-md-12 col-lg-12 pl0 pr0">
+                    <div class="form-group">
+                        <label>Module Name : </label>
+                        <select class="form-control" [(ngModel)]="form.moduleStatusString"
+                         [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let moduleType of moduleStatusList"
+                            [value]="moduleType">{{moduleType}}</option>
+                    </select>
+                      </div>
+                    </div>
                       <div class="col-md-12 col-lg-12 pl0 pr0">
                           <div class="row">
                               <div class="col-md-6 col-lg-6">
@@ -53,23 +54,22 @@
                                           readonly></span>
                                   </div>
                               </div>
+                              <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Font Family</label>
+                                    <input class="form-control" [value]="fontFamily" [(ngModel)]="form.fontFamily" style="margin-bottom: 10px;" maxlength="7" />
+                                   
+                                </div>
+                            </div>
                              
-                              <div class="row">
-                                  <div class="col-md-6 col-lg-6">
-                                      <span  class="required" style="padding-left: 40px;"></span>
-                                  </div>
-                                  <div class="col-md-6 col-lg-6">
-                                      <span  class="required" style="padding-left: 40px;"></span>
-                                  </div>
-                              </div>
                           </div>
                       </div>
                       <div class="col-md-12 col-lg-12 pl0 pr0">
                           <div class="row">
                               <div class="col-md-6 col-lg-6">
                                   <div class="form-group">
-                                      <label>Button Background Color</label>
-                                      <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;"  maxlength="7" />
+                                      <label>Button  Color</label>
+                                      <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonColor" style="padding-left: 40px;"  maxlength="7" />
                                       <span class="input-group-addon color-pick-1" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
                                           readonly></span>
                                   </div>
@@ -82,21 +82,44 @@
                                           readonly></span>
                                   </div>
                               </div>
-                              <div class="row">
-                                  <div class="col-md-6 col-lg-6">
-                                      <span  class="required" style="padding-left: 40px;"></span>
-                                  </div>
-                                  <div class="col-md-6 col-lg-6">
-                                      <span  class="required" style="padding-left: 40px;"></span>
-                                  </div>
-                              </div>
+                             
                           </div>
                       </div>
-                     
-                   
-                  
-                  </div>
+                      <div class="col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6" style="padding-left:0px;">
+                                <div class="form-group">
+                                    <label>Text Content</label>
+                                    <input class="form-control" placeholder="text Content" [(ngModel)]="form.textContent"   maxlength="7" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label>Font Size</label>
+                                    <input class="form-control" placeholder="fontSize px" [(ngModel)]="form.fontSize"  maxlength="7" />
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6" style="padding-left:0px;">
+                                <div class="form-group">
+                                    <label>Default Skin</label>
+                                    <select class="form-control" [(ngModel)]="form.defaultSkin"
+                                     [ngModelOptions]="{standalone: true}"
+                                    placeholder="--select one--">
+                                    <option [value]="true">True</option>
+                                    <option [value]="false">False</option>
+                                </select>                               
+                             </div>
+                            </div>
+                           
+                        </div>
+                    </div>
               </div>
+              <button type="submit">Save</button>
           </div>
           <div class="modal-footer">
               <!-- <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button> -->
