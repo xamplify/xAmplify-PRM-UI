@@ -62,8 +62,8 @@
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
-                            <button  class="customSkin" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
-                            <button class="customs"  [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <button  [ngStyle] = "{'background-color': cskin.backgroundColor}" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button   [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                             <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>

@@ -20,6 +20,7 @@ import { tap, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
 
 @Component({
   selector: 'app-topnavbar',
@@ -54,6 +55,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInFromAdminSection = false;
   dashboardTypes = [];
   loadTopNavBar = false;
+  result:any;
+  companyId : number;
+  customSkin;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -61,6 +65,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
+    this.companyId = this.refService.companyId;
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -232,6 +237,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
+     this.getTopNavigationColor(this.companyId);
+     console.log(this.companyId)
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -448,5 +455,18 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
     this.refService.goToRouter("/home/dashboard/add-company-profile");
   }
 }
+
+cskin:CustomSkin = new CustomSkin();
+  getTopNavigationColor(companyId:any){
+    this.companyId = this.refService.companyId;
+    alert(this.companyId);
+    this.dashboardService.getTopNavigationBarCustomSkin(companyId).subscribe(
+      (response) =>{
+   //  this.result  = response.data;
+     this.cskin = response.data
+     console.log(this.cskin);
+      }
+    )
   
+  }
 }
