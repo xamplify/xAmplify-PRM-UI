@@ -5,4 +5,5 @@ export class AgencyContentStatusDto {
     updatedBy:number;
     status:string;
     callComponent = false;
+    name = "";
 }

@@ -373,6 +373,6 @@
 
 <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
 
-<app-change-agency-content-status *ngIf="agencyContentStatusDto.callComponent" [agencyContentStatusDto]="agencyContentStatusDto" (agencyContentStatusEventEmitter)="resetAgencyContentStatusComponentValues()"></app-change-agency-content-status>
+<app-change-agency-content-status *ngIf="agencyContentStatusDto.callComponent" [agencyContentStatusDto]="agencyContentStatusDto" (agencyContentStatusEventEmitter)="resetAgencyContentStatusComponentValues($event)"></app-change-agency-content-status>
 
 
