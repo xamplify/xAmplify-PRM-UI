@@ -159,7 +159,7 @@
                                                                     'bgc-orange':emailTemplate?.status==='REQUESTED'}" translate>
                                                     {{emailTemplate?.status}}
                                                 </span>
-                                             
+                                            
                                             </ng-container>
                                             <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
@@ -190,6 +190,9 @@
                                                 </div>
                                                 <div class="mActionDiv">
                                                     <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                                </div>
+                                                <div class="mActionDiv">
+                                                    <ng-template [ngTemplateOutlet]="updateStatusIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                                 <div class="mActionDiv">
                                                     <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
@@ -311,6 +314,13 @@
              <i class="fa fa-commenting-o" aria-hidden="true"></i>
         </a>
     </ng-template>
+     <!-----XNFR-83 Update Status---->
+     <ng-template #updateStatusIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete && emailTemplate?.agencyTemplate"
+             (click)="setAgencyContentStatusComponentValues(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.changeStatus}}">
+             <i class="fa fa-toggle-on" aria-hidden="true"></i>
+        </a>
+    </ng-template>
     <!-----XNFR-83 Delete---->
     <ng-template #deleteIcon let-emailTemplate="emailTemplate">
         <a class="delete-icon" id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
@@ -320,7 +330,6 @@
     </ng-template>
      
     <!----Actions----->
-
     <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -364,5 +373,6 @@
 
 <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
 
+<app-change-agency-content-status *ngIf="agencyContentStatusDto.callComponent" [agencyContentStatusDto]="agencyContentStatusDto" (agencyContentStatusEventEmitter)="resetAgencyContentStatusComponentValues()"></app-change-agency-content-status>
 
 

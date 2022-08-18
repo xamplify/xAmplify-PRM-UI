@@ -1,3 +1,5 @@
+import { AgencyContentStatusDto } from './../../common/models/agency-content-status-dto';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { Component, OnInit, OnDestroy, Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -55,8 +57,6 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		{ 'name': 'Sort By', 'value': '' },
 		{ 'name': 'Name (A-Z)', 'value': 'name-ASC' },
 		{ 'name': 'Name (Z-A)', 'value': 'name-DESC' },
-		// { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
-		// { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
 		{ 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
 		{ 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
 	];
@@ -88,6 +88,8 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	/****XNFR-83*****/
 	callCommentsComponent = false;
 	selectedEmailTemplateId = 0;
+	callAgencyContentStatusComponent = false;
+	agencyContentStatusDto:AgencyContentStatusDto = new AgencyContentStatusDto();
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
 		private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
 		public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -605,6 +607,18 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	resetCommentsComponentValues(){
 		this.callCommentsComponent = false;
 		this.selectedEmailTemplateId =0;
+	}
+	/*****XNFR-83*****/
+	setAgencyContentStatusComponentValues(emailTemplate:any){
+		this.agencyContentStatusDto.callComponent = true;
+		this.agencyContentStatusDto.id = emailTemplate.id;
+		this.agencyContentStatusDto.moduleType = this.properties.emailTemplates;
+		this.agencyContentStatusDto.status = emailTemplate.status;
+	}
+	/*****XNFR-83*****/
+	resetAgencyContentStatusComponentValues(){
+		this.agencyContentStatusDto = new AgencyContentStatusDto();
+	
 	}
 
 }

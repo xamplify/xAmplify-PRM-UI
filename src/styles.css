@@ -1712,3 +1712,7 @@ strong {
   background-color: #f76c1a !important;
 }
 
+.border-top-none{
+  border-top:none !important;
+}
+

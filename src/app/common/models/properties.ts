@@ -241,6 +241,10 @@ export class Properties {
 	defaultClass: string = this.formGroupClass;
 	formSubmissionFailed = "Form submission failed!";
 
+	/***module names ****/
+	emailTemplates = "emailTemplates";
+	campaigns = "campaigns";
+
 
 
 

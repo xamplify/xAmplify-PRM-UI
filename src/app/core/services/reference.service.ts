@@ -2908,4 +2908,8 @@ export class ReferenceService {
      }, 500);
   }
 
+
+  showServerErrorCustomResponse(){
+    return new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+  }
 }

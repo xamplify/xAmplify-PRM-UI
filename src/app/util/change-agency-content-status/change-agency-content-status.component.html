@@ -1,0 +1,29 @@
+<!-- Change Agency Content Status -->
+<div class="modal fade right" id="changeAgencyContentStatusModalPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <a class="close-circle" data-dismiss="modal" (click)="closeModalPopUp()">
+                 <i class="fa fa-times" aria-hidden="true"></i></a>
+              <h4 class="modal-title" id="myModalLabel" translate>Change Status</h4>
+          </div>
+          <div class="modal-body">
+              <div id="modal-content">
+                <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
+                  <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
+                    <select class="form-control" [(ngModel)]="agencyContentStatusDto.status">
+                        <option  *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
+                            {{templateStatus}}
+                        </option> 
+                    </select>
+              </div>
+              <div class="modal-footer border-top-none" *ngIf="!loader">
+                  <button type="button" class="btn btn-default" (click)="closeModalPopUp()" translate>Cancel</button>
+                  <button type="button" class="btn btn-primary" (click)="updateStatus()" translate>Go</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- <app-confirm-sweet-alert-util *ngIf="isUpdateAgencyTemplateStatus" [parameterDto]="templateStautsChangeSweetAlertParameterDto" (notifyComponent)="updateAgencyTemplateStatus($event)"></app-confirm-sweet-alert-util> -->
