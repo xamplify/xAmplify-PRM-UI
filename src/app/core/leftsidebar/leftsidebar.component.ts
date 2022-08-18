@@ -11,6 +11,7 @@ import { UtilService } from '../../core/services/util.service';
 import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
 import { Module } from '../models/module';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
 
 declare var window,$: any;
 
@@ -46,7 +47,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	playbook: boolean;
 	backgroundColor: any;
 	customNamePartners = "Partners";
-	
+	userId: number;
+
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -55,12 +57,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.sourceType = this.authenticationService.getSource();
 		this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal();
 		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
+		this.userId = this.authenticationService.getUserId();
 	}
 
 
 	ngOnInit() {
 		this.findMenuItems();
-		this.tileColor();
+		this.tileColor(this.userId);
 	}
 	
 
@@ -361,7 +364,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	startLoader(){
 		this.loading = true;
 	}
-	tileColor(){
-		this.backgroundColor = '#f1d43b';
-	}
+	skin:CustomSkin = new CustomSkin();
+	tileColor(userId:number){
+		this.dashBoardService.getTopNavigationBarCustomSkin(userId).subscribe(
+			(response) =>{
+		   let cskinMap  = response.data;
+		   this.skin  = cskinMap.LEFT_SIDE_MENU;
+		}
+		)
+	  
+	  }
 }

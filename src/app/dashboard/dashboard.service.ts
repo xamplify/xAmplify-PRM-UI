@@ -761,7 +761,7 @@ export class DashboardService {
         }
         
           getTopNavigationBarCustomSkin(companyId:number){
-            const url = this.authenticationService.REST_URL + '/custom/skin/find/'+companyId+'?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'custom/skin/find/'+companyId+'?access_token=' + this.authenticationService.access_token;
             return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);

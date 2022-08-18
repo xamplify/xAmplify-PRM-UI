@@ -3,34 +3,4 @@ a.disabled {
    cursor: not-allowed;
 }
 .emailTempCss { width:259px; }
-.sudha{
-   background-color: brown !important;
-   color: yellow !important;
-   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-.icon-home{
-   color: black !important;
-}
-.partner{
-   background-color: skyblue !important;
-   color: red !important;
-   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-.color{
-   color: yellow !important;
-}
-.onboardPartner{
-   background-color: pink !important;
-   color: red !important;
-}
-.managePartner{
-   background-color: yellow !important;
-   color: orange !important;
 
-}
-.userColor{
-   color: black !important;
-}
-.listColor{
-   color: black !important;
-}

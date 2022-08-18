@@ -56,7 +56,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   dashboardTypes = [];
   loadTopNavBar = false;
   result:any;
-  companyId : number;
+  userId : number;
   customSkin;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -65,7 +65,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
-    this.companyId = this.refService.companyId;
+    this.userId = this.authenticationService.getUserId();
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -229,6 +229,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   ngOnDestroy(){
     this.isShowCKeditor = false;
+    
     $('#requestForVendor').modal('hide');
   }
   ngOnInit() {
@@ -237,8 +238,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
-     this.getTopNavigationColor(this.companyId);
-     console.log(this.companyId)
+     this.getTopNavigationColor(this.userId);
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -456,15 +456,13 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
   }
 }
 
-cskin:CustomSkin = new CustomSkin();
-  getTopNavigationColor(companyId:any){
-    this.companyId = this.refService.companyId;
-    alert(this.companyId);
-    this.dashboardService.getTopNavigationBarCustomSkin(companyId).subscribe(
+ 
+ cskin:CustomSkin = new CustomSkin();
+  getTopNavigationColor(userId:number){
+    this.dashboardService.getTopNavigationBarCustomSkin(userId).subscribe(
       (response) =>{
-   //  this.result  = response.data;
-     this.cskin = response.data
-     console.log(this.cskin);
+     let cskinMap  = response.data;
+     this.cskin = cskinMap.TOP_NAVIGATION_BAR;
       }
     )
   
