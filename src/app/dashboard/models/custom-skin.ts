@@ -9,11 +9,11 @@ export class CustomSkin {
 	updatedDate:any;
 	companyId:number;
 	textColor = "";
-	fontSize = "";
+	buttonBorderColor = "";
 	fontFamily = "";
 	iconColor = "";
 	textContent = "";
-	moduleStatusString= "";
+	moduleTypeString= "";
 	defaultSkin = false;
 
 }

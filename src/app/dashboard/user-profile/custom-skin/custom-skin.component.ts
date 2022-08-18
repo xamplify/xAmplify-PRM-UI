@@ -14,20 +14,21 @@ declare var $ : any;
 export class CustomSkinComponent implements OnInit {
   form :CustomSkin = new CustomSkin();
   isValidBackgroundColor= true;
-  isValidLabelColor= true;
   isValidButtonValueColor= true;
-  isValidTitleColor= true;
+  isValidTextColor= true;
   isValidBorderColor= true;
-  isValidPageBackgroundColor= true; 
-  isValidColorCode = true;
+  isValidButtonBorderColor= true; 
+  isValidIconColor = true;
   isValidButtonColor = true;
   valueRange: number;
   backgroundColor :string;
   iconColor :string;
   textColor:string;
-  buttonBackgroundColor:string;
+  buttonBorderColor:string;
   buttonValueColor:string;
+  buttonColor :string;
   loggedInUserId:any;
+  isValidColorCode = true;
   moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR"];
   //moduleStatusString:string;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
@@ -41,7 +42,7 @@ export class CustomSkinComponent implements OnInit {
   saveCustomSkin(form:CustomSkin){
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
-    this.form.companyId = this.referenceService.companyId
+    this.form.companyId = this.loggedInUserId;
    this.dashboardService.saveCustomSkin(form).subscribe(
     (data:any)=> 
     console.log(data.data)
@@ -62,9 +63,9 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
   if (type === "backgroundColor") {
       this.form.backgroundColor = colorCode;
       this.isValidBackgroundColor = true;
-  } else if (type === "fontSize") {
-      this.form.fontSize = colorCode;
-      this.isValidLabelColor = true;
+  } else if (type === "butttonBorderColor") {
+      this.form.buttonBorderColor = colorCode;
+      this.isValidBorderColor = true;
   } else if (type === "buttonColor") {
       this.form.buttonColor = colorCode;
       this.isValidButtonColor = true;
@@ -73,18 +74,15 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
       this.isValidButtonValueColor = true;
   } else if (type === "textColor") {
       this.form.textColor = colorCode;
-      this.isValidTitleColor = true;
+      this.isValidTextColor = true;
   } else if (type === "iconColor") {
       this.form.iconColor = colorCode;
-      this.isValidBorderColor = true;
-  } else if (type === "fontFamily") {
-      this.form.fontFamily = colorCode;
-      this.isValidPageBackgroundColor = true;
+      this.isValidIconColor = true;
   } 
   this.checkValideColorCodes();
 }
 checkValideColorCodes(){
-  if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTitleColor) {
+  if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor) {
       this.isValidColorCode = true;
   }
 }
@@ -101,11 +99,14 @@ private addColorCodeErrorMessage(type: string) {
       this.isValidButtonValueColor = false;
   } else if (type === "textColor") {
       this.form.textColor = "";
-      this.isValidTitleColor = false;
+      this.isValidTextColor = false;
   } else if (type === "iconColor") {
       this.form.iconColor = "";
       this.isValidBorderColor = false;
-  } 
+  } else if (type === "buttonBorderColor"){
+    this.form.buttonBorderColor = "";
+    this.isValidBorderColor = false;
+  }
 }
 changeControllerColor(event: any, form: CustomSkin, type: string) {
   try {
@@ -118,9 +119,9 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
       } else if (type === "iconColor") {
           this.iconColor = event;
           form.iconColor = event;
-          this.isValidLabelColor = true;
+          this.isValidIconColor = true;
       } else if (type === "buttonColor") {
-          this.buttonBackgroundColor = event;
+          this.buttonColor = event;
           form.buttonColor = event
           this.isValidButtonColor = true;
       } else if (type === "buttonValueColor") {
@@ -130,8 +131,12 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
       } else if (type === "textColor") {
           this.textColor = event;
           form.textColor = event;
-          this.isValidTitleColor = true;
-      } 
+          this.isValidTextColor = true;
+      } else if( type === "buttonBorderColor"){
+        this.buttonBorderColor = event;
+        form.buttonBorderColor = event;
+        this.isValidButtonBorderColor = true;
+      }
   } catch (error) { console.log(error); }
   this.checkValideColorCodes();
 }
