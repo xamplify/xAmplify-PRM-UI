@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 declare var $ : any;
@@ -10,7 +13,6 @@ declare var $ : any;
 })
 export class CustomSkinComponent implements OnInit {
   form :CustomSkin = new CustomSkin();
-  isValidButtonBackgroundColor= true;
   isValidBackgroundColor= true;
   isValidLabelColor= true;
   isValidButtonValueColor= true;
@@ -18,19 +20,33 @@ export class CustomSkinComponent implements OnInit {
   isValidBorderColor= true;
   isValidPageBackgroundColor= true; 
   isValidColorCode = true;
+  isValidButtonColor = true;
   valueRange: number;
   backgroundColor :string;
   iconColor :string;
   textColor:string;
   buttonBackgroundColor:string;
   buttonValueColor:string;
+  loggedInUserId:any;
   moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR"];
   //moduleStatusString:string;
-  constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService) { }
+  constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
+    public dashboardService: DashboardService,public authenticationService:AuthenticationService,
+    public referenceService: ReferenceService) {
+        this.loggedInUserId = this.authenticationService.getUserId(); 
+     }
 
   ngOnInit() {
   }
-  
+  saveCustomSkin(form:CustomSkin){
+    this.form.createdBy = this.loggedInUserId;
+    this.form.updatedBy = this.loggedInUserId;
+    this.form.companyId = this.referenceService.companyId
+   this.dashboardService.saveCustomSkin(form).subscribe(
+    (data:any)=> 
+    console.log(data.data)
+   )
+  }
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
         if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
@@ -51,7 +67,7 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
       this.isValidLabelColor = true;
   } else if (type === "buttonColor") {
       this.form.buttonColor = colorCode;
-      this.isValidButtonBackgroundColor = true;
+      this.isValidButtonColor = true;
   } else if (type === "buttonValueColor") {
       this.form.buttonValueColor = colorCode;
       this.isValidButtonValueColor = true;
@@ -68,7 +84,7 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
   this.checkValideColorCodes();
 }
 checkValideColorCodes(){
-  if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonBackgroundColor && this.isValidButtonValueColor && this.isValidTitleColor && this.isValidBorderColor && this.isValidPageBackgroundColor) {
+  if (this.isValidBackgroundColor && this.isValidLabelColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTitleColor) {
       this.isValidColorCode = true;
   }
 }
@@ -79,7 +95,7 @@ private addColorCodeErrorMessage(type: string) {
       this.isValidBackgroundColor = false;
   }  else if (type === "buttonColor") {
       this.form.buttonColor = "";
-      this.isValidButtonBackgroundColor = false;
+      this.isValidButtonColor = false;
   } else if (type === "buttonValueColor") {
       this.form.buttonValueColor = "";
       this.isValidButtonValueColor = false;
@@ -106,7 +122,7 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
       } else if (type === "buttonColor") {
           this.buttonBackgroundColor = event;
           form.buttonColor = event
-          this.isValidButtonBackgroundColor = true;
+          this.isValidButtonColor = true;
       } else if (type === "buttonValueColor") {
           this.buttonValueColor = event;
           form.buttonValueColor = event;

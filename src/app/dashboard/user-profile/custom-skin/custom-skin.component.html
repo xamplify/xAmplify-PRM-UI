@@ -69,8 +69,8 @@
                               <div class="col-md-6 col-lg-6">
                                   <div class="form-group">
                                       <label>Button  Color</label>
-                                      <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonColor" style="padding-left: 40px;"  maxlength="7" />
-                                      <span class="input-group-addon color-pick-1" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
+                                      <input class="form-control" [value]="buttonColor" [(ngModel)]="buttonColor" style="padding-left: 40px;"  maxlength="7" />
+                                      <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
                                           readonly></span>
                                   </div>
                               </div>
@@ -119,7 +119,7 @@
                         </div>
                     </div>
               </div>
-              <button type="submit">Save</button>
+              <button type="submit" (click) ="saveCustomSkin(form)">Save</button>
           </div>
           <div class="modal-footer">
               <!-- <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button> -->

@@ -766,4 +766,10 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
           }
+          saveCustomSkin(custom:any){
+            const url = this.authenticationService.REST_URL+ 'custom/skin/save?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url,custom)
+            .map(this.extractData)
+            .catch(this.handleError);
+        }
 }
