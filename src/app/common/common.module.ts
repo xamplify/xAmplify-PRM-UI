@@ -119,7 +119,6 @@ import { DisplayDateAndTimeComponent } from './display-date-and-time/display-dat
 import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-details-modal-popup/edit-campaign-details-modal-popup.component';
 import { OneClickLaunchPartnerPreviewComponent } from 'app/util/one-click-launch-partner-preview/one-click-launch-partner-preview.component';
 import { CommentsComponent } from 'app/util/comments/comments.component';
-import { ChangeAgencyContentStatusComponent } from 'app/util/change-agency-content-status/change-agency-content-status.component';
 
 
 @NgModule({
@@ -143,7 +142,7 @@ import { ChangeAgencyContentStatusComponent } from 'app/util/change-agency-conte
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,ChangeAgencyContentStatusComponent],
+		CommentsComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -165,7 +164,7 @@ import { ChangeAgencyContentStatusComponent } from 'app/util/change-agency-conte
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,ChangeAgencyContentStatusComponent]
+		CommentsComponent]
 
 
 

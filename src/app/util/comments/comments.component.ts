@@ -102,8 +102,11 @@ save(event:any){
   subscribe(
     response=>{
       this.commentDto.comment = "";
+      if(response.statusCode==201){
+
+      }
       this.loadComments();
-      this.referenceService.enableButton(event);
+      //this.referenceService.enableButton(event);
     },error=>{
       this.commentModalPopUpLoader = false;
       this.referenceService.enableButton(event);

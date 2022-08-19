@@ -193,9 +193,6 @@
                                                     <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                                 <div class="mActionDiv">
-                                                    <ng-template [ngTemplateOutlet]="updateStatusIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                </div>
-                                                <div class="mActionDiv">
                                                     <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                             </div>
@@ -322,13 +319,6 @@
              <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
         </a>
     </ng-template>
-     <!-----XNFR-83 Update Status---->
-     <ng-template #updateStatusIcon let-emailTemplate="emailTemplate">
-        <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete && emailTemplate?.agencyTemplate"
-             (click)="setAgencyContentStatusComponentValues(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.changeStatus}}">
-             <i class="fa fa-toggle-on" aria-hidden="true"></i>
-        </a>
-    </ng-template>
     <!-----XNFR-83 Delete---->
     <ng-template #deleteIcon let-emailTemplate="emailTemplate">
         <a class="delete-icon" id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
@@ -381,6 +371,5 @@
 
 <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
 
-<app-change-agency-content-status *ngIf="agencyContentStatusDto.callComponent" [agencyContentStatusDto]="agencyContentStatusDto" (agencyContentStatusEventEmitter)="resetAgencyContentStatusComponentValues($event)"></app-change-agency-content-status>
 
 
