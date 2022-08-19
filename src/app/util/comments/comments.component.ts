@@ -62,6 +62,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     .subscribe( 
       response=>{
         this.companyAndUserAndModuleDetailsDto = response.data;
+        this.commentDto.statusInString  = this.companyAndUserAndModuleDetailsDto.status;
         this.commentModalPopUpLoader = false;
       },error=>{
         this.commentModalPopUpLoader = false;

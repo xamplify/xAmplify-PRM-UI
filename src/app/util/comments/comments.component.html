@@ -46,16 +46,17 @@
                        </div>
                        <div>
                           <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdDate}}">
-                             <span><strong>Created On </strong></span>: {{companyAndUserAndModuleDetailsDto?.createdDate}}
+                             <span><strong>Created On </strong></span>:
+                             <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.createdDate"></app-display-date-and-time>
                           </h5>
                        </div>
-                       <div *ngIf="companyAndUserAndModuleDetailsDto?.status!='-'">
-                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.status}}">
+                       <div *ngIf="commentDto?.statusInString!='-'">
+                          <h5 class="mt10 mb0"  title="{{commentDto?.statusInString}}">
                              <span><strong>Status</strong></span>:
                              <span class="label label-warning" style="display: none;">
-                                <strong>{{companyAndUserAndModuleDetailsDto?.status}}</strong>
+                                <strong>{{commentDto?.statusInString}}</strong>
                               </span> 
-                                <select class="form-control dropdown-custom-properties" [(ngModel)]="companyAndUserAndModuleDetailsDto.status">
+                                <select class="form-control dropdown-custom-properties" [(ngModel)]="commentDto.statusInString">
                                  <option  *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
                                      {{templateStatus}}
                                  </option> 

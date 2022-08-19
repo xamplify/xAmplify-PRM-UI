@@ -4,4 +4,5 @@ export class CommentDto {
 	commentedBy:number = 0;
 	invalidComment = true;
 	moduleType = "";
+	statusInString = "";
 }
