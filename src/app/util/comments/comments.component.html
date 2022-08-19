@@ -1,6 +1,6 @@
 <!--Comments ModalPopUp------->
 <div id="commentsModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-css" role="document">
+  <div class="modal-dialog modal-css modal-dialog-scrollable" role="document">
      <!-- Modal content-->
      <div class="modal-content"  style="overflow-x: hidden;">
         <ngx-loading [show]="commentModalPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -13,7 +13,7 @@
             </a>
            <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
         </div>
-        <div class="modal-body" style="max-height: 100%;">
+        <div class="modal-body">
            <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
            <ng-container *ngIf="!commentModalPopUpLoader">
               <div class="comment-details">
@@ -98,15 +98,19 @@
                     </li>
                  </ul>
               </div>
-              <div class="write-new comment-text-area">
-                 <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
-                 <div>
-                    <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
-                 </div>
-              </div>
            </ng-container>
+        </div>
+         <!---Footer-->
+        <div class="modal-footer">
+         <div class="write-new comment-text-area" style="margin-top: -10px !important;">
+            <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
+            <div>
+               <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+            </div>
+         </div>
         </div>
      </div>
   </div>
 </div>
-<app-scroll-top></app-scroll-top>
+
+

@@ -906,8 +906,7 @@ footer a.tz:after {
 }
 
 .comment-div {
-    max-height: 400px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
