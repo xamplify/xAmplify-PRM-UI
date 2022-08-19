@@ -20,14 +20,15 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from '../../core/services/util.service';
 import { Properties } from 'app/common/models/properties';
-
-declare var $, swal: any;
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+declare var $:any, swal: any;
 
 @Component({
 	selector: 'app-manage-template',
 	templateUrl: './manage-template.component.html',
 	styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-	providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties]
+	providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties,
+		FontAwesomeClassName]
 })
 export class ManageTemplateComponent implements OnInit, OnDestroy {
 	isPreview = false;
@@ -94,7 +95,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
 		public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
 		public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, 
-		public utilService: UtilService,public properties:Properties) {
+		public utilService: UtilService,public properties:Properties,public fontAwesomeClassName:FontAwesomeClassName) {
 		this.refService.renderer = this.renderer;
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();

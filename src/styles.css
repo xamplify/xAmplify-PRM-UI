@@ -1716,3 +1716,9 @@ strong {
   border-top:none !important;
 }
 
+/***19/08/2022****/
+.dropdown-custom-properties{
+  display: inline-block !important;
+  width: 50% !important;
+}
+

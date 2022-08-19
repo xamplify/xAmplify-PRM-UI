@@ -36,6 +36,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   companyAndUserAndModuleDetailsDto:any;
   commentDto:CommentDto = new CommentDto();
   loggedInUserId = 0;
+  templateStatusArray = ['CREATED','APPROVED','REJECTED'];
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,

@@ -51,7 +51,15 @@
                        </div>
                        <div *ngIf="companyAndUserAndModuleDetailsDto?.status!='-'">
                           <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.status}}">
-                             <span><strong>Status</strong></span>: <span class="label label-warning"><strong>{{companyAndUserAndModuleDetailsDto?.status}}</strong></span> 
+                             <span><strong>Status</strong></span>:
+                             <span class="label label-warning" style="display: none;">
+                                <strong>{{companyAndUserAndModuleDetailsDto?.status}}</strong>
+                              </span> 
+                                <select class="form-control dropdown-custom-properties" [(ngModel)]="companyAndUserAndModuleDetailsDto.status">
+                                 <option  *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
+                                     {{templateStatus}}
+                                 </option> 
+                             </select>
                           </h5>
                        </div>
                     </div>
