@@ -477,7 +477,7 @@ tr.highlight {
 }
 
 .white {
-  color: #fff;
+  color: #fff !important;
 }
 
 .align-middle {
@@ -1720,5 +1720,42 @@ strong {
 .dropdown-custom-properties{
   display: inline-block !important;
   width: 50% !important;
+}
+
+.view-banner-agency {
+	background-color: #00a6e8;
+	color: #fff;
+	padding: 3px 6px 3px 6px;
+	text-align: center;
+	font-size: 10px;
+	border-radius: 3px;
+	font-weight: 600;
+}
+
+.view-banner-hidden {
+	color: #f1f1f1;
+}
+
+.view-banner-green {
+	background-color: #60bb23;
+	color: white;
+	padding: 6px;
+	text-align: center;
+	width: 175px;
+	border-radius: 3px;
+}
+
+.view-banner-draft {
+	background-color: #f76c1a;
+	color: #fff;
+	padding: 3px 6px 3px 6px;
+	text-align: center;
+	font-size: 10px;
+	border-radius: 3px;
+	font-weight: 600;
+}
+
+.fs-13px{
+  font-size: 13px !important;
 }
 

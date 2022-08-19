@@ -39,6 +39,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   loggedInUserId = 0;
   templateStatusArray = ['CREATED','APPROVED','REJECTED'];
   isStatusUpdated = false;
+  showStatusDropDown = false;
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
