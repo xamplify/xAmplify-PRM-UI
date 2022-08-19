@@ -33,7 +33,7 @@
         </a>
         <!-- END PAGE ACTIONS -->
         <!-- BEGIN PAGE TOP -->
-        <div class="page-top">
+        <div class="page-top" [ngStyle] = "{'background-color': cskin.backgroundColor}">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- SEARCH IS HIDDEN -->
             <form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
@@ -62,8 +62,8 @@
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
-                            <button [ngStyle] = "{'background-color': cskin.buttonColor, 'font-family': cskin.fontFamily, 'color': cskin.buttonValueColor}" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
-                            <button [ngStyle] = "{'background-color': cskin.buttonColor, 'color': cskin.iconColor}" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <button [ngStyle] = "{'background-color': cskin.buttonColor, 'font-family': cskin.fontFamily, 'color': cskin.buttonValueColor, 'border-color': cskin.buttonBorderColor}" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button [ngStyle] = "{'background-color': cskin.buttonColor, 'color': cskin.iconColor, 'border-color': cskin.buttonBorderColor}" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                             <i class="fa fa-line-chart"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
