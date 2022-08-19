@@ -369,7 +369,8 @@
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
 
-<app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
+<app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" 
+(commentsEventEmitter)="resetCommentsComponentValues()" (statusUpdatedEventEmitter)="refreshTemplates()"></app-comments>
 
 
 

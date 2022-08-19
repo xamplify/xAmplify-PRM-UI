@@ -618,11 +618,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		this.agencyContentStatusDto.status = emailTemplate.status;
 	}
 	/*****XNFR-83*****/
-	resetAgencyContentStatusComponentValues(event:boolean){
-		if(event){
-			this.listEmailTemplates(this.pagination);
-		}
-		this.agencyContentStatusDto = new AgencyContentStatusDto();
+	refreshTemplates(){
+		this.listEmailTemplates(this.pagination);
 	}
-
 }

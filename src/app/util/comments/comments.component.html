@@ -14,8 +14,6 @@
            <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
         </div>
         <div class="modal-body" style="max-height: 100%;">
-           <app-response-message class="pg8" [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse.isVisible">
-           </app-response-message>
            <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
            <ng-container *ngIf="!commentModalPopUpLoader">
               <div class="comment-details">
@@ -68,6 +66,7 @@
                                  </option> 
                              </select>
                           </h5>
+                          <span *ngIf="isStatusUpdated" class="success"><strong>Status Updated Successfully</strong></span>
                        </div>
                     </div>
                  </div>

@@ -33,10 +33,12 @@ export class CommentsComponent implements OnInit, OnDestroy {
   @Input() moduleType:string = "";
   @Input() id:number = 0;
   @Output() commentsEventEmitter = new EventEmitter();
+  @Output()statusUpdatedEventEmitter = new EventEmitter();
   companyAndUserAndModuleDetailsDto:any;
   commentDto:CommentDto = new CommentDto();
   loggedInUserId = 0;
   templateStatusArray = ['CREATED','APPROVED','REJECTED'];
+  isStatusUpdated = false;
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -95,19 +97,23 @@ export class CommentsComponent implements OnInit, OnDestroy {
 }
 
 save(event:any){
-  this.commentsCustomResponse = new CustomResponse();
+  this.isStatusUpdated = false;
   this.referenceService.disableButton(event);
   this.commentModalPopUpLoader = true;
   this.authenticationService.saveComment(this.commentDto).
   subscribe(
     response=>{
       this.commentDto.comment = "";
+      this.commentDto.invalidComment = true;
       if(response.statusCode==201){
-
+        this.referenceService.scrollSmoothToTop();
+        this.isStatusUpdated = true;
+        this.commentsCustomResponse = new CustomResponse('SUCCESS',"Status updated successfully",true);
+        this.statusUpdatedEventEmitter.emit();
       }
       this.loadComments();
-      //this.referenceService.enableButton(event);
     },error=>{
+      this.isStatusUpdated = false;
       this.commentModalPopUpLoader = false;
       this.referenceService.enableButton(event);
       this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
