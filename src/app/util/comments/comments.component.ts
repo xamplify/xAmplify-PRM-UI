@@ -54,6 +54,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadComments();
+  }
+
+  loadComments(){
     this.commentModalPopUpLoader = true;
     this.commentDto.id = this.id;
     this.commentDto.moduleType = this.moduleType;
@@ -63,6 +67,9 @@ export class CommentsComponent implements OnInit, OnDestroy {
       response=>{
         this.companyAndUserAndModuleDetailsDto = response.data;
         this.commentDto.statusInString  = this.companyAndUserAndModuleDetailsDto.status;
+        if(this.commentDto.statusInString!=this.templateStatusArray[0] && this.templateStatusArray.length==3){
+          this.templateStatusArray.shift();
+        }
         this.commentModalPopUpLoader = false;
       },error=>{
         this.commentModalPopUpLoader = false;
@@ -94,7 +101,9 @@ save(event:any){
   this.authenticationService.saveComment(this.commentDto).
   subscribe(
     response=>{
-      this.findComments();
+      this.commentDto.comment = "";
+      this.loadComments();
+      this.referenceService.enableButton(event);
     },error=>{
       this.commentModalPopUpLoader = false;
       this.referenceService.enableButton(event);

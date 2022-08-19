@@ -45,11 +45,17 @@
                           </h5>
                        </div>
                        <div>
-                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdDate}}">
+                          <h5 class="mt10 mb0">
                              <span><strong>Created On </strong></span>:
-                             <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.createdDate"></app-display-date-and-time>
+                             <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.createdDateInUTCString"></app-display-date-and-time>
                           </h5>
                        </div>
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.status!='CREATED'">
+                        <h5 class="mt10 mb0">
+                           <span><strong>{{companyAndUserAndModuleDetailsDto?.status}} On </strong></span>:
+                           <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.updatedDateInUTCString"></app-display-date-and-time>
+                        </h5>
+                     </div>
                        <div *ngIf="commentDto?.statusInString!='-'">
                           <h5 class="mt10 mb0"  title="{{commentDto?.statusInString}}">
                              <span><strong>Status</strong></span>:
