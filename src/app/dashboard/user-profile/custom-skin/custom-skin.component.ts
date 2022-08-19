@@ -29,7 +29,7 @@ export class CustomSkinComponent implements OnInit {
   buttonColor :string;
   loggedInUserId:any;
   isValidColorCode = true;
-  moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR"];
+  moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER"];
   //moduleStatusString:string;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
@@ -47,6 +47,21 @@ export class CustomSkinComponent implements OnInit {
     (data:any)=> 
     console.log(data.data)
    )
+  }
+  type1:any;
+  onChange(type:any){
+    this.type1 = type;
+    this.getDefaultSkin(this.form.moduleTypeString);
+  }
+  getDefaultSkin(type:any){
+    this.dashboardService.getDefaulSkinBYType(this.loggedInUserId,type).subscribe(
+        (data:any) =>{
+           this.form = data.data;
+           this.iconColor = this.form.iconColor;
+           alert(this.form);
+           console.log(this.form)
+        }
+    )
   }
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
