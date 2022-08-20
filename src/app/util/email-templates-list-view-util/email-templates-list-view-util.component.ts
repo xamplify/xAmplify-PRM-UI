@@ -17,14 +17,14 @@ import { SortOption } from '../../core/models/sort-option';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { UtilService } from '../../core/services/util.service';
 import { Properties } from 'app/common/models/properties';
-
-declare var $, swal: any;
+import { FontAwesomeClassName } from './../../common/models/font-awesome-class-name';
+declare var $:any, swal: any;
 
 @Component({
     selector: 'app-email-templates-list-view-util',
     templateUrl: './email-templates-list-view-util.component.html',
     styleUrls: ['./email-templates-list-view-util.component.css', '../../email-template/manage-template/manage-template.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties,FontAwesomeClassName]
 })
 export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     isPreview = false;
@@ -54,8 +54,6 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
         { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
-        // { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
-        // { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
         { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
@@ -91,7 +89,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
         public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, 
-        public utilService: UtilService,public properties:Properties) {
+        public utilService: UtilService,public properties:Properties,public fontAwesomeClassName:FontAwesomeClassName) {
         this.refService.renderer = this.renderer;
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.loggedInUserId = this.authenticationService.getUserId();
