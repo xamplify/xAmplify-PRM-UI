@@ -461,10 +461,21 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 				(data: any) => {
 					let body = emailTemplate.body;
 					let self = this;
-					$.each(data, function(index, value) {
-						body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-					});
-					body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+					if(self.authenticationService.module.isAgencyCompany){
+						$.each(data, function (_index:number, value:any) {
+							body = body.replace(value, self.authenticationService.v_companyLogoImagePath);
+						});
+					}
+					if(!self.authenticationService.module.isAgencyCompany){
+						$.each(data, function (_index:number, value:any) {
+							body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+						});
+					}
+					if(self.authenticationService.module.isAgencyCompany){
+						body = body.replace("https://xamp.io/vod/replace-company-logo.png",  self.authenticationService.v_companyLogoImagePath);
+					}else{
+						body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+					}
 					let emailTemplateName = emailTemplate.name;
 					if (emailTemplateName.length > 50) {
 						emailTemplateName = emailTemplateName.substring(0, 50) + "...";
