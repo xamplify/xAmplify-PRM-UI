@@ -1,6 +1,6 @@
 <ng-container *ngIf="!isSuperAdmin">
   <div class="page-sidebar-wrapper" *ngIf="authenticationService?.user?.hasCompany">
-    <div class="page-sidebar navbar-collapse collapse" [ngStyle] = "{'background-color': skin.backgroundColor,  'border-color': skin.buttonBorderColor}" >
+    <div class="page-sidebar navbar-collapse collapse" [ngStyle] = "{'background-color': skin.backgroundColor}" >
       <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader"></app-lefside-navigation-loader>
       <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && menuItemError">
           <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
@@ -242,7 +242,7 @@
 
           <!-------Configuration-------->
           <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
-            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin.backgroundColor, 'color': skin.textColor, 'font-family': skin.fontFamily, 'border-color': skin.buttonBorderColor}" [routerLink]="['/home/dashboard/myprofile']" >
+            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin.backgroundColor, 'color': skin.textColor, 'font-family': skin.fontFamily, 'border-top': '1px solid' + skin.buttonBorderColor}" [routerLink]="['/home/dashboard/myprofile']" >
                 <i class="fa fa-cog" [ngStyle] = "{'color': skin.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Configuration</span>
                 <span class="selected"></span>

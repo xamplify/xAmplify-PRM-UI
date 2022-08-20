@@ -57,7 +57,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   loadTopNavBar = false;
   result:any;
   userId : number;
-  customSkin;
+  cskin:CustomSkin = new CustomSkin();
+
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -238,7 +239,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
-     this.getTopNavigationColor(this.userId);
+      this.getTopNavigationColor(this.userId);
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -457,7 +458,7 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
 }
 
  
- cskin:CustomSkin = new CustomSkin();
+
   getTopNavigationColor(userId:number){
     this.dashboardService.getTopNavigationBarCustomSkin(userId).subscribe(
       (response) =>{

@@ -48,7 +48,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	backgroundColor: any;
 	customNamePartners = "Partners";
 	userId: number;
-
+	skin:CustomSkin = new CustomSkin();
+	
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -364,7 +365,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	startLoader(){
 		this.loading = true;
 	}
-	skin:CustomSkin = new CustomSkin();
+	
 	tileColor(userId:number){
 		this.dashBoardService.getTopNavigationBarCustomSkin(userId).subscribe(
 			(response) =>{
