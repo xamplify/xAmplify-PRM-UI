@@ -86,8 +86,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 (data: any) => {
                     self.categoryNames = data.data;
                 },
-                error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getCategoryNamesByUserId()"));
+                error => {
+                     this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error);
+                 });
 
 
             var request = function (method, url, data, type, callback) {

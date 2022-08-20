@@ -124,7 +124,13 @@ export class EmailTemplateService {
     }
 
     getAvailableNames(userId:number){
-        return this.http.get(this.URL+"admin/listEmailTemplateNames/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        let companyProfileName = this.authenticationService.getSubDomain();
+        let url = this.URL+"admin/listEmailTemplateNames/"+userId;
+        if(companyProfileName.length>0){
+            url+="/domainName/"+companyProfileName;
+        }
+        alert(url);
+        return this.http.get(url+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
