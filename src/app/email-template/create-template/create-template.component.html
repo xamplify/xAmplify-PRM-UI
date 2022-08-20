@@ -31,7 +31,7 @@
                             <app-preview-popup #previewPopUpComponent *ngIf="showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
                             <app-merge-tags  [input]="mergeTagsInput"></app-merge-tags>
                             <button *ngIf="showCommentsIcon" class="btn btn-primary float-right mb10 mr10" (click)="callCommentsComponent=true">
-                                <i class="fa fa-comment-o"></i>
+                                <i class="{{fontAwesomeClassName?.comments}}"></i>
                             </button>
                         </ng-container>
                         <div id="bee-plugin-container"></div>

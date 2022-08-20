@@ -14,13 +14,15 @@ import { Pagination } from '../../core/models/pagination';
 import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
-declare var BeePlugin, swal, $: any;
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+
+declare var BeePlugin:any, swal:any, $: any;
 
 @Component({
     selector: 'app-create-template',
     templateUrl: './create-template.component.html',
     styleUrls: ['./create-template.component.css'],
-    providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption]
+    providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption,FontAwesomeClassName]
 })
 export class CreateTemplateComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -51,7 +53,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     showCommentsIcon = false;
     callCommentsComponent = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
-        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
+        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
+        private route: ActivatedRoute,public fontAwesomeClassName:FontAwesomeClassName) {
         this.showCommentsIcon = this.refService.getCurrentRouteUrl().indexOf("/edit")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
