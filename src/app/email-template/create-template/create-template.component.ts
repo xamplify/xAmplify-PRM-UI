@@ -235,12 +235,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             mergeTags = this.refService.addMergeTags(mergeTags,false,event);
             if (self.refService.companyId != undefined && self.refService.companyId > 0) {
                 var beeUserId = "bee-" + self.refService.companyId;
+                if(self.authenticationService.module.isAgencyCompany){
+                    beeUserId = "bee-"+this.authenticationService.vendorCompanyId;
+                 }
                 var roleHash = self.authenticationService.vendorRoleHash;
                 var beeConfig = {
                     uid: beeUserId,
                     container: 'bee-plugin-container',
                     autosave: 15,
-                    //language: 'en-US',
                     language: this.authenticationService.beeLanguageCode,
                     mergeTags: mergeTags,
                     roleHash: roleHash,
@@ -282,10 +284,21 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                 function (template: any) {
                                     if (emailTemplateService.emailTemplate != undefined) {
                                         var body = emailTemplateService.emailTemplate.jsonBody;
-                                        $.each(self.companyProfileImages, function (index, value) {
-                                            body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-                                        });
-                                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                        if(self.authenticationService.module.isAgencyCompany){
+                                            $.each(self.companyProfileImages, function (index:number, value:any) {
+                                                body = body.replace(value, self.authenticationService.v_companyLogoImagePath);
+                                            });
+                                        }
+                                        if(!self.authenticationService.module.isAgencyCompany){
+                                            $.each(self.companyProfileImages, function (index:number, value:any) {
+                                                body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                            });
+                                        }
+                                        if(self.authenticationService.module.isAgencyCompany){
+                                            body = body.replace("https://xamp.io/vod/replace-company-logo.png",  self.authenticationService.v_companyLogoImagePath);
+                                        }else{
+                                            body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                        }
                                         self.emailTemplate.jsonBody = body;
                                         var jsonBody = JSON.parse(body);
                                         bee.load(jsonBody);
@@ -421,9 +434,13 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     }
 
     updateCompanyLogo(emailTemplate: EmailTemplate) {
-        emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+        let replacableImagePath = this.authenticationService.MEDIA_URL + this.refService.companyProfileImage;
+        if(this.authenticationService.module.isAgencyCompany){
+            replacableImagePath =  this.authenticationService.v_companyLogoImagePath;
+        }
+        emailTemplate.jsonBody = emailTemplate.jsonBody.replace(replacableImagePath, "https://xamp.io/vod/replace-company-logo.png");
         if (emailTemplate.body != undefined) {
-            emailTemplate.body = emailTemplate.body.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+            emailTemplate.body = emailTemplate.body.replace(replacableImagePath, "https://xamp.io/vod/replace-company-logo.png");
         }
     }
 
