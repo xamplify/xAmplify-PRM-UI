@@ -66,14 +66,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
             this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-
+            /********Template Names************/
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
                     names = data;
                 },
                 error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAvailableNames()"));
-
+            /********Company Profile Images************/
             emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
                 (data: any) => {
                     self.companyProfileImages = data;
@@ -81,7 +81,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 error => { this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAllCompanyProfileImages()"));
 
-
+            /********Folder Names************/
             authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
                 (data: any) => {
                     self.categoryNames = data.data;
@@ -143,24 +143,22 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 }
                 if (!isDefaultTemplate) {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                     /*******XNFR-83*****/
-                    if(!authenticationService.module.isAgencyCompany){
-                        var dropDown = '<div class="form-group">';
-                        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                        dropDown += '<select class="form-control" id="category-dropdown">';
-                        $.each(self.categoryNames, function (_index: number, category: any) {
-                            let categoryId = category.id;
-                            if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
-                                dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
-                            } else {
-                                dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                            }
-                        });
-                        dropDown += '</select>';
-                        dropDown += '</div><br>';
-                        buttons.append(dropDown);
-                    }
+                    var dropDown = '<div class="form-group">';
+                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                    dropDown += '<select class="form-control" id="category-dropdown">';
+                    $.each(self.categoryNames, function (_index: number, category: any) {
+                        let categoryId = category.id;
+                        if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
+                            dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
+                        } else {
+                            dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                        }
+                    });
+                    dropDown += '</select>';
+                    dropDown += '</div><br>';
+                    buttons.append(dropDown);
                     buttons.append(self.createButton('Save As', function () {
                         self.clickedButtonName = "SAVE_AS";
                         self.saveTemplate();
@@ -172,22 +170,20 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         self.clickedButtonName = "CANCEL";
                         swal.close();
                     }));
-                    swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
+                    swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
                 } else {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                     /*******XNFR-83*****/
-                    if(!authenticationService.module.isAgencyCompany){
-                        var dropDown = '<div class="form-group">';
-                        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                        dropDown += '<select class="form-control" id="category-dropdown">';
-                        $.each(self.categoryNames, function (_index: number, category: any) {
-                            dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                        });
-                        dropDown += '</select>';
-                        dropDown += '</div><br>';
-                        buttons.append(dropDown);
-                    }
+                    var dropDown = '<div class="form-group">';
+                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                    dropDown += '<select class="form-control" id="category-dropdown">';
+                    $.each(self.categoryNames, function (_index: number, category: any) {
+                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                    });
+                    dropDown += '</select>';
+                    dropDown += '</div><br>';
+                    buttons.append(dropDown);
                     buttons.append(self.createButton('Save', function () {
                         self.clickedButtonName = "SAVE";
                         self.saveTemplate();
@@ -199,7 +195,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         title: title,
                         html: buttons,
                         showConfirmButton: false,
-                        showCancelButton: false
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
                 }
                 $('#templateNameId').on('input', function (event) {

@@ -232,7 +232,12 @@ export class AuthenticationService {
   }
 
   getCategoryNamesByUserId(userId: number) {
-    return this.http.get(this.REST_URL + 'category/listAllCategoryNamesByLoggedInUserId/' + userId + '?access_token=' + this.access_token)
+    let companyProfileName = this.getSubDomain();
+        let url = this.REST_URL+"category/listAllCategoryNamesByLoggedInUserId/"+userId;
+        if(companyProfileName.length>0){
+            url+="/domainName/"+companyProfileName;
+        }
+    return this.http.get(url + '?access_token=' + this.access_token)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
