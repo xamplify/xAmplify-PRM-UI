@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Renderer, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -503,6 +502,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
 	resetCommentsComponentValues(){
 		this.callCommentsComponent = false;
 		this.selectedEmailTemplateId =0;
+	}
+    /*****XNFR-83*****/
+	refreshTemplates(){
+		this.listEmailTemplates(this.pagination);
 	}
 
 }

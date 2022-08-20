@@ -84,6 +84,7 @@
               </app-landing-page-loader>
               <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
               <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
+              <!----List View----->
               <section *ngIf="modulesDisplayType.isListView ">
                   <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                       <div class="table-responsive">
@@ -116,7 +117,7 @@
                                             <span><strong>{{emailTemplate.name}}</strong></span>
                                         </h4>
                                         <h6 class="moreipsis">
-                                            <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
+                                            <span translate> Folder <strong>{{emailTemplate.category}}</strong></span>
                                         </h6>
                                         <h6 class="moreipsis">
                                             <span translate> Created By <strong>{{emailTemplate.createdBy}}</strong></span>
@@ -124,9 +125,7 @@
                                         <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
                                             <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
                                         </h6>
-                                        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-                                        <i *ngIf="emailTemplate?.status=='APPROVED'" class="fa fa-check-circle success"></i>
-                                        <i *ngIf="emailTemplate?.status=='REJECTED'" class="fa fa-times-circle required"></i>
+                                         <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                         <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                         <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                             data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
@@ -166,7 +165,7 @@
                       </div>
                   </ng-container>
               </section>
-
+              <!--Grid View-->
               <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                   <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                       <div class="grid-box">
@@ -180,10 +179,7 @@
                           <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                           </h4>
-                          <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-                          <i *ngIf="emailTemplate?.status=='APPROVED'" class="fa fa-check-circle success"></i>
-                          <i *ngIf="emailTemplate?.status=='REJECTED'" class="fa fa-times-circle required"></i>
-                          <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
+                          <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                           <div>
                             <h6>
                                 <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
@@ -270,10 +266,10 @@
         <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
     </ng-template>
-    <!-----XNFR-83 Comments---->
+   <!-----XNFR-83 Comments---->
     <ng-template #commentsIcon let-emailTemplate="emailTemplate">
         <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete" (click)="callCommentsComponent=true;selectedEmailTemplateId=emailTemplate.id" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
-             <i class="fa fa-comment-o" aria-hidden="true"></i>
+            <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
         </a>
     </ng-template>
     <!-----XNFR-83 Delete---->
@@ -282,6 +278,19 @@
         *ngIf="emailTemplate?.editAndDelete">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
+    </ng-template>
+     <!-----XNFR-83 Agency Icon---->
+     <ng-template #agencyIcon let-emailTemplate="emailTemplate">
+        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
+        <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
+        <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
+            <span class="view-banner-agency"  
+                    [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
+                                'bgc-red': emailTemplate?.status==='REJECTED',
+                                'bgc-orange':emailTemplate?.status==='CREATED'}" translate>
+                {{emailTemplate?.status}}
+            </span>
+        </ng-container>
     </ng-template>
   <div class="modal fade right" id="show_email_template_preivew" data-keyboard="false" data-backdrop="static">
       <div class="modal-dialog modal-lg modal-template" style="right:0">
@@ -320,7 +329,8 @@
   </div>
   <ng-container *ngIf="saveAsDefaultTemplate">
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
-    </ng-container>
-    <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" (commentsEventEmitter)="resetCommentsComponentValues()"></app-comments>
+  </ng-container>
+    <app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" 
+    (commentsEventEmitter)="resetCommentsComponentValues()" (statusUpdatedEventEmitter)="refreshTemplates()"></app-comments>
   <app-scroll-top></app-scroll-top>
 

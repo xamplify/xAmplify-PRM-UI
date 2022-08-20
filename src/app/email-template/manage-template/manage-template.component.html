@@ -143,7 +143,7 @@
                                                 <span><strong>{{emailTemplate.name}}</strong></span>
                                             </h4>
                                             <h6 class="moreipsis">
-                                                <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
+                                                <span translate> Folder <strong>{{emailTemplate.category}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis">
                                                 <span translate> Created By <strong>{{emailTemplate.createdBy}}</strong></span>
@@ -151,17 +151,7 @@
                                             <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
                                                 <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
                                             </h6>
-                                            <!--Agency & Template Status Banners-->
-                                            <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-                                            <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
-                                                <span class="view-banner-agency"  
-                                                        [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
-                                                                    'bgc-red': emailTemplate?.status==='REJECTED',
-                                                                    'bgc-orange':emailTemplate?.status==='CREATED'}" translate>
-                                                    {{emailTemplate?.status}}
-                                                </span>
-                                            </ng-container>
-
+                                            <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                             <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                                 data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
@@ -218,18 +208,7 @@
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                             </h4>
-                            
-                            <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-                            <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
-                            <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
-                                <span class="view-banner-agency"  
-                                        [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
-                                                    'bgc-red': emailTemplate?.status==='REJECTED',
-                                                    'bgc-orange':emailTemplate?.status==='CREATED'}" translate>
-                                    {{emailTemplate?.status}}
-                                </span>
-                            </ng-container>
-
+                            <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                             <div>
                                 <h6>
                                     <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
@@ -325,6 +304,19 @@
         *ngIf="emailTemplate?.editAndDelete">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
+    </ng-template>
+    <!-----XNFR-83 Agency Icon---->
+    <ng-template #agencyIcon let-emailTemplate="emailTemplate">
+        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
+        <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
+        <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
+            <span class="view-banner-agency"  
+                    [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
+                                'bgc-red': emailTemplate?.status==='REJECTED',
+                                'bgc-orange':emailTemplate?.status==='CREATED'}" translate>
+                {{emailTemplate?.status}}
+            </span>
+        </ng-container>
     </ng-template>
      
     <!----Actions----->

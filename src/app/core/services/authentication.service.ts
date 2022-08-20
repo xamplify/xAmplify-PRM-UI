@@ -1,4 +1,3 @@
-import { AgencyContentStatusDto } from './../../common/models/agency-content-status-dto';
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -946,17 +945,6 @@ findComments(moduleName:string,id:number){
   let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
   return this.callGetMethod(url);
 }
-
-/*********XNFR-83************/
-updateAgencyContentStatus(agencyContentStatusDto:AgencyContentStatusDto){
-  agencyContentStatusDto.updatedBy = this.getUserId();
-  let url = this.REST_URL +"agencyContent/"+agencyContentStatusDto.id+"?access_token=" + this.access_token;
-  return this.http.put(url,agencyContentStatusDto)
-  .map(this.extractData)
-  .catch(this.handleError);
-
-}
-
 
 
 private callGetMethod(url: string) {
