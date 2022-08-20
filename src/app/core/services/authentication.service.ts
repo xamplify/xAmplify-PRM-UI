@@ -116,7 +116,7 @@ export class AuthenticationService {
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
-
+  vendorCompanyId = 0;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -588,6 +588,7 @@ export class AuthenticationService {
     module.isMarketingCompany = false;
     module.isPrmCompany = false;
     module = new Module();
+    this.vendorCompanyId = 0;
     this.setUserLoggedIn(false);
   }
 

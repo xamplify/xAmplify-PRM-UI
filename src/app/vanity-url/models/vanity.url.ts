@@ -7,4 +7,5 @@ export class VanityURL{
     companyFavIconPath:string;
     loginScreenDirection:string;
     enableVanityURL:boolean;
+    companyId:number = 0;
 }
