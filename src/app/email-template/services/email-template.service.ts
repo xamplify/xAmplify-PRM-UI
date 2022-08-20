@@ -129,14 +129,18 @@ export class EmailTemplateService {
         if(companyProfileName.length>0){
             url+="/domainName/"+companyProfileName;
         }
-        alert(url);
         return this.http.get(url+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
 
     getAllCompanyProfileImages(userId:number){
-        return this.http.get(this.URL+"admin/listAllCompanyProfileImages/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        let companyProfileName = this.authenticationService.getSubDomain();
+        let url = this.URL+"admin/listAllCompanyProfileImages/"+userId;
+        if(companyProfileName.length>0){
+            url+="/domainName/"+companyProfileName;
+        }
+        return this.http.get(url+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }

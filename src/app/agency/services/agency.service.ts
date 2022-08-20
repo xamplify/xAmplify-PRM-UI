@@ -66,7 +66,6 @@ export class AgencyService {
     }else{
       url = this.AGENCY_PREFIX_URL+"/"+id+"/emailInvitation"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
     }
-    alert(url);
     return this.http.get(url)
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
