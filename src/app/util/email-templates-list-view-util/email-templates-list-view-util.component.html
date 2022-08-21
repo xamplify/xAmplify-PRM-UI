@@ -282,7 +282,7 @@
      <!-----XNFR-83 Agency Icon---->
      <ng-template #agencyIcon let-emailTemplate="emailTemplate">
         <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
-        <span *ngIf="!emailTemplate.agencyTemplate" class="view-banner-hidden" translate>Own</span>
+        <span *ngIf="!emailTemplate.agencyTemplate && modulesDisplayType.isGridView" class="view-banner-hidden" translate>Own</span>
         <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
             <span class="view-banner-agency"  
                     [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
