@@ -28,9 +28,13 @@ export class CustomSkinComponent implements OnInit {
   buttonValueColor:string;
   buttonColor :string;
   loggedInUserId:any;
+  fontFamily:string;
   isValidColorCode = true;
+  sucess:boolean = false;
   moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER"];
   //moduleStatusString:string;
+  fontStyles : string[] =["serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
+                           "ui-sans-serif","ui-monospace","'Open Sans', sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService) {
@@ -44,8 +48,10 @@ export class CustomSkinComponent implements OnInit {
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
    this.dashboardService.saveCustomSkin(form).subscribe(
-    (data:any)=> 
+    (data:any)=> {
     console.log(data.data)
+    this.sucess = true;
+    }
    )
   }
   type1:any;
@@ -53,12 +59,20 @@ export class CustomSkinComponent implements OnInit {
     this.type1 = type;
     this.getDefaultSkin(this.form.moduleTypeString);
   }
+  close(){
+    this.sucess = false;
+  }
   getDefaultSkin(type:any){
     this.dashboardService.getDefaulSkinBYType(this.loggedInUserId,type).subscribe(
         (data:any) =>{
            this.form = data.data;
            this.iconColor = this.form.iconColor;
-           alert(this.form);
+           this.backgroundColor = this.form.backgroundColor;
+           this.textColor = this.form.textColor;
+           this.buttonBorderColor = this.form.buttonBorderColor;
+           this.buttonColor = this.form.buttonColor;
+           this.buttonValueColor = this.form.buttonValueColor;
+           this.fontFamily = this.form.fontFamily
            console.log(this.form)
         }
     )
@@ -150,7 +164,7 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
       } else if( type === "buttonBorderColor"){
         this.buttonBorderColor = event;
         form.buttonBorderColor = event;
-        this.isValidButtonBorderColor = true;
+        this.isValidBorderColor = true;
       }
   } catch (error) { console.log(error); }
   this.checkValideColorCodes();

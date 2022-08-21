@@ -1,3 +1,14 @@
+
+<div class="modal-header" *ngIf="sucess">
+    <div class="alert alert-success" *ngIf="sucess"role="alert">
+        Successfully saved..
+        <button type="button" (click)="close()" class="close-circle">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+    
+    <h4 class="modal-title text-left">Change Your Custom Skin</h4>
+</div> 
 <div class="modal-content mPad">
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-header">
@@ -9,10 +20,9 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 pl0 pr0">
                     <div class="form-group">
-                        <label>Module Name : </label>
+                        <label>Module Type : </label>
                         <select class="form-control" (change)= "onChange(this)" [(ngModel)]="form.moduleTypeString"
                          [ngModelOptions]="{standalone: true}" >
-                         <option [ngValue]="undefined" disabled selected> Select Preferred module </option> 
                          <option *ngFor="let moduleType of moduleStatusList"
                             [value]="moduleType">{{moduleType}}</option>
                         </select>
@@ -30,9 +40,6 @@
                         <input class="form-control" [value]="iconColor" [(ngModel)]="iconColor" style="padding-left: 40px;" (input)="checkValidColorCode(iconColor,'iconColor')" maxlength="7" />
                         <span class="input-group-addon color-pick" [(colorPicker)]="form.iconColor" [style.background]="form.iconColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'iconColor')" [cpPosition]="'bottom'"
                             readonly></span>
-                            <!-- <div *ngIf="form.iconColor" class="alert alert-danger">
-                                {{ form.iconColor }}</div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6">
@@ -50,13 +57,17 @@
                 <div class="col-md-6 col-lg-6">
                     <div class="form-group">
                         <label>Font Family</label>
-                        <input class="form-control" [value]="fontFamily" [(ngModel)]="form.fontFamily" (input)="checkValidColorCode(fontFamily,'fontFamily')"style="margin-bottom: 10px;" maxlength="7" />
+                        <select class="form-control" [value]= "fontFamily" [(ngModel)]="form.fontFamily"
+                         [ngModelOptions]="{standalone: true}" >
+                         <option *ngFor="let style of fontStyles"
+                            [value]="style">{{style}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6">
                     <div class="form-group">
                         <label>Button Border Color</label>
-                        <input class="form-control" placeholder="" [(ngModel)]="form.buttonBorderColor" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
+                        <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="buttonBorderColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
                         <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'bottom'"
                               readonly></span>
                     </div>
@@ -121,6 +132,6 @@
                 </div>
             </div>
         </div>
-        <button class="btn green-haze" type="submit" (click) ="saveCustomSkin(form)">Save</button>
     </div>
+    <button class="btn green-haze" type="submit" (click) ="saveCustomSkin(form)">Save</button>
 </div>
