@@ -28,9 +28,12 @@ declare var $: any, swal: any;
 })
 export class CommentsComponent implements OnInit, OnDestroy {
   comments: Array<any> = new Array<any>();
+  statusTimeLineHistory:Array<any> = new Array<any>();
   commentsCustomResponse: CustomResponse = new CustomResponse();
   commentModalPopUpLoader:boolean;
+  historyPopUpLoader:boolean;
   commentsModalPopUpId = "commentsModalPopUp";
+  historyModalPopUpId = "historyModalPopUp";
   @Input() moduleType:string = "";
   @Input() id:number = 0;
   @Output() commentsEventEmitter = new EventEmitter();
@@ -141,13 +144,21 @@ findComments(){
 }
 
 openTemplateStatusHistoryPopUp(agencyEmailTemplateId:number){
+  this.referenceService.showModalPopup(this.historyModalPopUpId);
+  this.historyPopUpLoader = true;
   this.authenticationService.findHistory(agencyEmailTemplateId,this.roles.emailTemplateId).subscribe(
     response=>{
-      alert(response.statusCode);
+      this.statusTimeLineHistory = response.data;
+      this.historyPopUpLoader = false;
     },error=>{
-        this.referenceService.showSweetAlertErrorMessage("Unable to find history.Please contact admin.");
+      this.historyPopUpLoader = false;
+      this.referenceService.showSweetAlertErrorMessage("Unable to find history.Please contact admin.");
     }
   );
+}
+
+closeHistoryModalPopUp(){
+  this.referenceService.closeModalPopup(this.historyModalPopUpId);
 }
 
 }

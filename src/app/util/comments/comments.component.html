@@ -119,4 +119,55 @@
   </div>
 </div>
 
+<!--History ModalPopUp-->
+<div id="historyModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document">
+      <!-- Modal content-->
+      <div class="modal-content"  style="overflow-x: hidden;">
+         <ngx-loading [show]="historyPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+            <a title="Close" class="close-circle" (click)="closeHistoryModalPopUp()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+             </a>
+             <a title="Refresh" class="close-circle mr5" (click)="findHistory()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+             </a>
+            <h4 class="modal-title" style="font-weight: 600;" translate>History</h4>
+         </div>
+         <div class="modal-body">
+            <app-modal-popup-loader *ngIf="historyPopUpLoader"></app-modal-popup-loader>
+            <div class="row">
+               <div class="timeline">
+                   <div class="line text-muted"></div>
+                   <article *ngFor="let timeLine of statusTimeLineHistory" class="panel panel-default panel-outline">
+                       <div class="panel-heading icon">
+                           <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
+                       </div>
+                       <div class="panel-body pt0">
+                        <p>
+                           <strong style="color:#65b6e4;">{{timeLine?.statusUpdatedBy}}</strong>
+                           changed the status to 
+                           <span  class="view-banner-agency"  
+                           [ngClass]="{'bgc-green': timeLine?.status==='APPROVED', 
+                                       'bgc-red': timeLine?.status==='REJECTED',
+                                       'bgc-orange':timeLine?.status==='CREATED'}" translate>
+                                       <strong>{{timeLine?.status}}</strong> 
+                           </span>
+                           <strong class="ml5">On
+                              <app-display-date-and-time [dateAndTimeUTCString]="timeLine?.statusUpdatedOnUTCString"></app-display-date-and-time>
+                           </strong> 
+                        </p>    
+                       </div>
+                   </article>
+               </div>
+           </div>
+         </div>
+          <!---Footer-->
+         <div class="modal-footer" [hidden]="commentModalPopUpLoader">
+            <button  (click)="closeHistoryModalPopUp()" class="btn btn-default float-right">Cancel</button>
+       </div>
+      </div>
+   </div>
+ </div>
+
 
