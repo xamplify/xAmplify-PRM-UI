@@ -918,7 +918,7 @@ previewTeamMemberGroup(id:number){
   .map(this.extractData)
   .catch(this.handleError);
 }
-
+/*********XNFR-83************/
 getAssigedAgencyModules(id:number){
   const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
   return this.http.get(url)
@@ -926,7 +926,7 @@ getAssigedAgencyModules(id:number){
   .catch(this.handleError);
 }
 
-
+/*********XNFR-83************/
 getSubDomain(){
   return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
 }
@@ -949,6 +949,12 @@ saveComment(commentDto:CommentDto){
 /*********XNFR-83************/
 findComments(moduleName:string,id:number){
   let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/*********XNFR-83************/
+findHistory(id:number,moduleId:number){
+  let url = this.REST_URL +"comments/agencyContentStatusHistory/id/"+id+"/moduleId/"+moduleId+"?access_token=" + this.access_token;
   return this.callGetMethod(url);
 }
 

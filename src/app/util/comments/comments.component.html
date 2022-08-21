@@ -55,7 +55,7 @@
                         </h5>
                      </div>
                        <div *ngIf="commentDto?.statusInString!='-'">
-                          <h5 class="mt10 mb0"  title="{{commentDto?.statusInString}}">
+                          <h5 class="mt10 mb0">
                              <span><strong>Status</strong></span>:
                              <span *ngIf="!showStatusDropDown" class="view-banner-agency"  
                               [ngClass]="{'bgc-green': commentDto?.statusInString==='APPROVED', 
@@ -73,8 +73,11 @@
                                  <option  *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
                                      {{templateStatus}}
                                  </option> 
-                             </select>&nbsp;
-                             <span *ngIf="isStatusUpdated" class="success"><strong>Status Updated Successfully</strong></span>
+                             </select>
+                             <span title="View History" class="view-banner-agency ml10" (click)="openTemplateStatusHistoryPopUp(companyAndUserAndModuleDetailsDto.agencyEmailTemplateId)">
+                                <a class="white"><i class="fa fa-history"></i></a>
+                             </span>
+                             <span *ngIf="isStatusUpdated" class="success ml5"><strong>Status Updated Successfully</strong></span>
                           </h5>
                        </div>
                     </div>
@@ -101,11 +104,12 @@
            </ng-container>
         </div>
          <!---Footer-->
-        <div class="modal-footer">
+        <div class="modal-footer" [hidden]="commentModalPopUpLoader">
          <div class="write-new comment-text-area" style="margin-top: -10px !important;">
             <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
             <div>
                <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+               <button  (click)="closeModalPopUp()" class="btn btn-default comment mr10">Cancel</button>
             </div>
          </div>
         </div>

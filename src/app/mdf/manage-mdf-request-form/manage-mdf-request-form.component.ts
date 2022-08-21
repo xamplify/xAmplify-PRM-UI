@@ -203,10 +203,7 @@ listComments(){
             comment.displayTime = new Date(comment.commentedOnInUTCString);
         });
         this.stopLoaders();
-        let self = this;
-        setTimeout(function(){
-            self.gotoBottom();
-        },250); 
+        this.referenceService.scrollToModalPopUpBottomByDivId("comments-div");
      }, error => {
          this.logger.error(error);
          this.stopLoaders();

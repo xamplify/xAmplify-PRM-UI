@@ -2912,4 +2912,10 @@ export class ReferenceService {
   showServerErrorCustomResponse(){
     return new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
   }
+
+  scrollToModalPopUpBottomByDivId(divId:string){
+    setTimeout(function(){
+      $("#"+divId).animate({ scrollTop: $('#'+divId).prop("scrollHeight")}, 1000);
+  },250); 
+  }
 }

@@ -17,6 +17,7 @@ import { Router } from "@angular/router";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "app/common/models/custom-response";
 import { CommentDto } from "app/common/models/comment-dto";
+import { Roles } from './../../core/models/roles';
 
 declare var $: any, swal: any;
 @Component({
@@ -40,6 +41,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   templateStatusArray = ['CREATED','APPROVED','REJECTED'];
   isStatusUpdated = false;
   showStatusDropDown = false;
+  roles:Roles = new Roles();
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -129,9 +131,20 @@ findComments(){
     response=>{
       this.comments = response.data;
       this.commentModalPopUpLoader = false;
+      this.referenceService.scrollToModalPopUpBottomByDivId('comments-div');
     },error=>{
       this.commentModalPopUpLoader = false;
       this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    }
+  );
+}
+
+openTemplateStatusHistoryPopUp(agencyEmailTemplateId:number){
+  this.authenticationService.findHistory(agencyEmailTemplateId,this.roles.emailTemplateId).subscribe(
+    response=>{
+      alert(response.statusCode);
+    },error=>{
+        this.referenceService.showSweetAlertErrorMessage("Unable to find history.Please contact admin.");
     }
   );
 }
