@@ -2,7 +2,7 @@
 <div id="commentsModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-css modal-dialog-scrollable" role="document">
      <!-- Modal content-->
-     <div class="modal-content"  style="overflow-x: hidden;">
+     <div class="modal-content" id="comments-modal-content"  style="overflow-x: hidden;">
         <ngx-loading [show]="commentModalPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-header">
            <a title="Close" class="close-circle" (click)="closeModalPopUp()">
@@ -13,7 +13,7 @@
             </a>
            <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="comments-modal-body">
            <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
            <ng-container *ngIf="!commentModalPopUpLoader">
               <div class="comment-details">
@@ -112,7 +112,9 @@
                <button  (click)="closeModalPopUp()" class="btn btn-default comment mr10">Cancel</button>
             </div>
          </div>
-        </div>
+         
+      </div>
+       
      </div>
   </div>
 </div>

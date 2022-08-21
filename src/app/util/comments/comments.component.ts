@@ -131,7 +131,8 @@ findComments(){
     response=>{
       this.comments = response.data;
       this.commentModalPopUpLoader = false;
-      this.referenceService.scrollToModalPopUpBottomByDivId('comments-div');
+      this.referenceService.scrollToModalPopUpBottomByDivId('comments-modal-body');
+      this.referenceService.scrollToModalPopUpBottomByDivId('comments-modal-content');
     },error=>{
       this.commentModalPopUpLoader = false;
       this.commentsCustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
