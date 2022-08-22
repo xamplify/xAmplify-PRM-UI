@@ -6,8 +6,6 @@
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
     </div>
-    
-    <h4 class="modal-title text-left">Change Your Custom Skin</h4>
 </div> 
 <div class="modal-content mPad">
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -67,9 +65,9 @@
                 <div class="col-md-6 col-lg-6">
                     <div class="form-group">
                         <label>Button Border Color</label>
-                        <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="buttonBorderColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
-                        <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'bottom'"
-                              readonly></span>
+                        <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
+                        <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'bottom'" readonly>
+                        </span>
                     </div>
                 </div> 
             </div>
@@ -133,5 +131,8 @@
             </div>
         </div>
     </div>
-    <button class="btn green-haze" type="submit" (click) ="saveCustomSkin(form)">Save</button>
+    <div class="modal-footer">
+        <button type="submit" [disabled]="!isValidColorCode" class="btn green-haze" (click) ="saveCustomSkin(form)" id="full-screen">Continue</button>
+    </div>
+    <!-- <button class="btn green-haze" type="submit" (click) ="saveCustomSkin(form)">Save</button> -->
 </div>
