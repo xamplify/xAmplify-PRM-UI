@@ -428,6 +428,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		}
 		if(this.selectedTemplateTypeIndex==13){
 			this.pagination.filterBy = this.properties.agency;
+			this.pagination.emailTemplateType = EmailTemplateType.NONE;
 		}
 		this.listEmailTemplates(this.pagination);
 	}

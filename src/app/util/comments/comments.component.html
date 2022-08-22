@@ -62,7 +62,7 @@
                                           'bgc-red': commentDto?.statusInString==='REJECTED',
                                           'bgc-orange':commentDto?.statusInString==='CREATED'}" translate>
                                           <strong>{{commentDto?.statusInString}}</strong> 
-                                <a class="white" *ngIf="!authenticationService?.module?.isAgencyCompany">
+                                <a class="white" *ngIf="!authenticationService?.module?.isAgencyCompany && status!='APPROVED'">
                                    <i class="fa fa-edit fs-13px" (click)="showStatusDropDown=true"></i></a>          
                                </span>
                                 <select *ngIf="showStatusDropDown"  [(ngModel)]="commentDto.statusInString" (ngModelChange)="showStatusDropDown=false"
@@ -164,7 +164,7 @@
          </div>
           <!---Footer-->
          <div class="modal-footer" [hidden]="commentModalPopUpLoader">
-            <button  (click)="closeHistoryModalPopUp()" class="btn btn-default float-right">Cancel</button>
+            <button  (click)="closeHistoryModalPopUp()" class="btn btn-default float-right">Close</button>
        </div>
       </div>
    </div>

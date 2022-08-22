@@ -42,6 +42,8 @@
                                 <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder && !authenticationService?.module?.isMarketingCompany"
                                     [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>Survey Co-Branding
                                 </li>
+                                <li class="filter" (click)="filterTemplates('AGENCY',false,13)" *ngIf="campaignAccess.agency" [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex"  translate>{{properties?.agency}}
+                                </li>
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
                           </div>

@@ -246,6 +246,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
                 this.campaignAccess.socialCampaign = data.social;
                 this.campaignAccess.eventCampaign = data.event;
                 this.campaignAccess.formBuilder = data.form;
+                this.campaignAccess.agency = data.agency;
             });
     }
     getCompanyIdByUserId() {
@@ -383,6 +384,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
 		} else if (!isVideoTemplate) {
             this.pagination.filterBy = "RegularEmail";
         }
+        if(this.selectedTemplateTypeIndex==13){
+			this.pagination.filterBy = this.properties.agency;
+			this.pagination.emailTemplateType = EmailTemplateType.NONE;
+		}
         this.listEmailTemplates(this.pagination);
     }
 
@@ -416,10 +421,21 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
                 (data: any) => {
                     let body = emailTemplate.body;
                     let self = this;
-                    $.each(data, function (index, value) {
-                        body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-                    });
-                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    if(self.authenticationService.module.isAgencyCompany){
+						$.each(data, function (_index:number, value:any) {
+							body = body.replace(value, self.authenticationService.v_companyLogoImagePath);
+						});
+					}
+					if(!self.authenticationService.module.isAgencyCompany){
+						$.each(data, function (_index:number, value:any) {
+							body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+						});
+					}
+					if(self.authenticationService.module.isAgencyCompany){
+						body = body.replace("https://xamp.io/vod/replace-company-logo.png",  self.authenticationService.v_companyLogoImagePath);
+					}else{
+						body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+					}
                     let emailTemplateName = emailTemplate.name;
                     if (emailTemplateName.length > 50) {
                         emailTemplateName = emailTemplateName.substring(0, 50) + "...";

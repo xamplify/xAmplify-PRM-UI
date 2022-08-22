@@ -19,7 +19,7 @@ import { CustomResponse } from "app/common/models/custom-response";
 import { CommentDto } from "app/common/models/comment-dto";
 import { Roles } from './../../core/models/roles';
 
-declare var $: any, swal: any;
+declare var $: any;
 @Component({
   selector: "app-comments",
   templateUrl: "./comments.component.html",
@@ -45,6 +45,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   isStatusUpdated = false;
   showStatusDropDown = false;
   roles:Roles = new Roles();
+  status:string="";
   constructor(
     public referenceService: ReferenceService,
     private route: ActivatedRoute,
@@ -75,6 +76,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
       response=>{
         this.companyAndUserAndModuleDetailsDto = response.data;
         this.commentDto.statusInString  = this.companyAndUserAndModuleDetailsDto.status;
+        this.status = this.commentDto.statusInString;
         if(this.commentDto.statusInString!=this.templateStatusArray[0] && this.templateStatusArray.length==3){
           this.templateStatusArray.shift();
         }
