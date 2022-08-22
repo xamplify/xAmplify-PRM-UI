@@ -263,6 +263,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 				this.campaignAccess.socialCampaign = data.social;
 				this.campaignAccess.eventCampaign = data.event;
 				this.campaignAccess.formBuilder = data.form;
+				this.campaignAccess.agency = data.agency;
 			});
 	}
 	getCompanyIdByUserId() {
