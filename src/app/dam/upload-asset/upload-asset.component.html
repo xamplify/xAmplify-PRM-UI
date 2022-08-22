@@ -131,7 +131,7 @@
                               <button class="btn btn-primary" style="color:#fff" translate>Browse</button>
                               <br><br>
                               <span *ngIf="uploadedAssetName?.length>0">
-                                <strong>File Name : {{uploadedAssetName}}</strong>
+                                <strong>File Name : {{uploadedAssetName | slice: 0: 23}}</strong>
                               </span>
                               <span *ngIf="uploadedAssetName?.length==0">
                                 <strong>No File Selected</strong>
@@ -166,7 +166,7 @@
           </div>
           <!-- <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6> -->
                               <span *ngIf="uploadedCloudAssetName?.length>0">
-                                <strong>File Name : {{uploadedCloudAssetName}}</strong>
+                                <strong>File Name : {{uploadedCloudAssetName | slice: 0: 23}}</strong>
                               </span>
                               <span *ngIf="uploadedCloudAssetName?.length==0">
                                 <strong>No File Selected</strong>
