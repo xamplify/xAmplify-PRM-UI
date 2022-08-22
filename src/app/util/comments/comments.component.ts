@@ -145,10 +145,14 @@ findComments(){
   );
 }
 
-openTemplateStatusHistoryPopUp(agencyEmailTemplateId:number){
+openTemplateStatusHistoryPopUp(){
   this.referenceService.showModalPopup(this.historyModalPopUpId);
+  this.refreshTimeLineHistory();
+}
+
+refreshTimeLineHistory(){
   this.historyPopUpLoader = true;
-  this.authenticationService.findHistory(agencyEmailTemplateId,this.roles.emailTemplateId).subscribe(
+  this.authenticationService.findHistory(this.companyAndUserAndModuleDetailsDto.agencyEmailTemplateId,this.roles.emailTemplateId).subscribe(
     response=>{
       this.statusTimeLineHistory = response.data;
       this.historyPopUpLoader = false;

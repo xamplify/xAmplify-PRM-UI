@@ -74,7 +74,7 @@
                                      {{templateStatus}}
                                  </option> 
                              </select>
-                             <span title="View History" class="view-banner-agency ml10" (click)="openTemplateStatusHistoryPopUp(companyAndUserAndModuleDetailsDto.agencyEmailTemplateId)">
+                             <span title="View History" class="view-banner-agency ml10" (click)="openTemplateStatusHistoryPopUp()">
                                 <a class="white"><i class="fa fa-history"></i></a>
                              </span>
                              <span *ngIf="isStatusUpdated" class="success ml5"><strong>Status Updated Successfully</strong></span>
@@ -129,7 +129,7 @@
             <a title="Close" class="close-circle" (click)="closeHistoryModalPopUp()">
                 <i class="fa fa-times" aria-hidden="true"></i>
              </a>
-             <a title="Refresh" class="close-circle mr5" (click)="findHistory()">
+             <a title="Refresh" class="close-circle mr5" (click)="refreshTimeLineHistory()">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
              </a>
             <h4 class="modal-title" style="font-weight: 600;" translate>History</h4>
