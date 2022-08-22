@@ -958,6 +958,12 @@ findHistory(id:number,moduleId:number){
   return this.callGetMethod(url);
 }
 
+/****XNFR-83****/
+findCampaignAccessDataByDomainName(domainName:string){
+  let url = this.REST_URL +"admin/campaignAccess/domainName/"+domainName+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
 
 private callGetMethod(url: string) {
   return this.http.get(url)

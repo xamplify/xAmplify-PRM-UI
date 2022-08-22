@@ -256,15 +256,29 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchTemplates(); } }
 	getOrgCampaignTypes() {
-		this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
-			data => {
-				this.campaignAccess.videoCampaign = data.video;
-				this.campaignAccess.emailCampaign = data.regular;
-				this.campaignAccess.socialCampaign = data.social;
-				this.campaignAccess.eventCampaign = data.event;
-				this.campaignAccess.formBuilder = data.form;
-				this.campaignAccess.agency = data.agency;
-			});
+		let domainName = this.authenticationService.getSubDomain();
+		if(domainName.length>0){
+			this.authenticationService.findCampaignAccessDataByDomainName(domainName)
+			.subscribe(
+				response => {
+					let campaignAccess = response.data;
+					this.campaignAccess.videoCampaign = campaignAccess.video;
+					this.campaignAccess.emailCampaign = campaignAccess.regular;
+					this.campaignAccess.socialCampaign = campaignAccess.social;
+					this.campaignAccess.eventCampaign = campaignAccess.event;
+					this.campaignAccess.formBuilder = campaignAccess.form;
+				});
+		}else{
+			this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
+				data => {
+					this.campaignAccess.videoCampaign = data.video;
+					this.campaignAccess.emailCampaign = data.regular;
+					this.campaignAccess.socialCampaign = data.social;
+					this.campaignAccess.eventCampaign = data.event;
+					this.campaignAccess.formBuilder = data.form;
+					this.campaignAccess.agency = data.agency;
+				});
+		}	
 	}
 	getCompanyIdByUserId() {
 		try {

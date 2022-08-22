@@ -138,7 +138,7 @@
          </div>
          <div class="modal-body">
             <app-modal-popup-loader *ngIf="historyPopUpLoader"></app-modal-popup-loader>
-            <div class="row">
+            <div class="row" *ngIf="!historyPopUpLoader">
                <div class="timeline">
                    <div class="line text-muted"></div>
                    <article *ngFor="let timeLine of statusTimeLineHistory" class="panel panel-default panel-outline">
