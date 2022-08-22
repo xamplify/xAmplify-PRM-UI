@@ -171,7 +171,7 @@
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
@@ -268,12 +268,13 @@
 														<div class="actions-block override-actions custom-width-icon">
 															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
 																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
-															</a>
-															 <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
-																(click)="editDetails(asset.id)"> <i
-																class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 															</a> 
-															<a title="Preview" (click)="preview(asset)"> <i
+															<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit" (click)="addOrEdit(asset.id)"> 
+																<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+															</a> 
+															<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+															</a> <a title="Preview" (click)="preview(asset)"> <i
 																class="fa fa-eye" aria-hidden="true"></i>
 															</a> 
 															<a title="Publish" (click)="openPublishPopup(asset.id)">
@@ -425,7 +426,7 @@
 									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 									aria-hidden="true"></i>
 								</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"
-									(click)="editDetails(asset.id, asset?.assetType, asset.alias)">
+									(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate)">
 									 <i class="fa fa-edit mDisableColor"
 									aria-hidden="true"></i>
 								</a> <a title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i

@@ -317,6 +317,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	listAssetsHistory(pagination: Pagination) {
 		pagination.companyId = this.loggedInUserCompanyId;
+		pagination.userId = this.loggedInUserId;
 		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
@@ -414,8 +415,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         }
     }
 
-    editDetails(id: number, assetType: string, alias:string) {
-        if (this.isVideo(assetType)) {
+    editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
+        if (!beeTemplate && this.isVideo(assetType)) {
             this.showEditVideo(alias, id);
         } else {
             this.loading = true;
@@ -448,7 +449,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}else if(campaign){
 			this.campaignRouter(this.asset.alias, this.asset.viewBy);
 		}else if(edit){
-            this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias);
+            this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate);
         }else if(analytics){
             this.viewAnalytics(this.asset);
         }
