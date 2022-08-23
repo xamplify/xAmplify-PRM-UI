@@ -1,4 +1,5 @@
 
+<div class="modal-header" *ngIf="authenticationService.isSuperAdmin">
 <div class="modal-header" *ngIf="sucess">
     <div class="alert alert-success" *ngIf="sucess"role="alert">
         Successfully saved..
@@ -7,7 +8,7 @@
         </button>
     </div>
 </div> 
-<div class="modal-content mPad">
+<div class="modal-content mPad" >
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="modal-header">
         <h4 class="modal-title text-left">Change Your Custom Skin</h4>
@@ -96,6 +97,30 @@
         </div>
         <!--End top navigation bar-->
         <!-- FOOTER-->
+        <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+            <div class="row">
+
+                <div class="col-md-6 col-lg-6"  *ngIf = "form.moduleTypeString === 'FOOTER'">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 pl0 pr0">
+                            <label>Show Footer :</label>
+                        </div>
+                        <div class="col-md-6 col-lg-6 pl0">
+                            <div class="switch">
+                                <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round-flat" [checked]="form.showFooter" type="checkbox" (change)="showFooterChange()">
+                                <label for="cmn-toggle-5"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div *ngIf="form.showFooter" class="col-md-6 col-lg-6 pl0">
+                    <div class="form-group" style="margin-bottom: 0px!important;">
+                        <label>Add Footer</label>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+      
         <div class="col-md-12 col-lg-12" >
             <div class="row">
                 <div class="col-md-6 col-lg-6" style="padding-left:0px;" *ngIf = "form.moduleTypeString === 'FOOTER'">
@@ -132,7 +157,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="submit" [disabled]="!isValidColorCode" class="btn green-haze" (click) ="saveCustomSkin(form)" id="full-screen">Continue</button>
+        <button  [disabled]="!form" class="btn green-haze" (click) ="saveCustomSkin(form)" id="full-screen">Save</button>
     </div>
     <!-- <button class="btn green-haze" type="submit" (click) ="saveCustomSkin(form)">Save</button> -->
+</div>
 </div>

@@ -1698,6 +1698,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showTeamMemberGroups = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName =="custom-skin"){
+			this.ngxloading = true;
+			this.showTeamMemberGroups = false;
+			this.activeTabHeader = this.properties.customSkin;
+
 		}else if(this.activeTabName == "notifyPartners"){
 			this.ngxloading = true;
 			this.showNotifyPartnersOption = false;

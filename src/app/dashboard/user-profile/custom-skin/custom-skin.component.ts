@@ -1,8 +1,10 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
@@ -32,18 +34,26 @@ export class CustomSkinComponent implements OnInit {
   fontFamily:string;
   isValidColorCode = true;
   sucess:boolean = false;
-  moduleStatusList: string[] =["LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
-  //moduleStatusString:string;
+  ckeConfig: any;
+  moduleStatusList: string[] =["--Select Type--","LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
+  isLoggedInFromAdminSection = false;
+  loading = false;
   fontStyles : string[] =["serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","'Open Sans', sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
-    public referenceService: ReferenceService) {
-        this.loggedInUserId = this.authenticationService.getUserId(); 
+    public referenceService: ReferenceService,
+    public ustilService: UtilService,public router: Router) {
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal()
      }
 
   ngOnInit() {
+    this.form.moduleTypeString = this.moduleStatusList[0];
   }
+  showFooterChange() {
+    this.form.showFooter = !this.form.showFooter;
+  } 
   saveCustomSkin(form:CustomSkin){
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
@@ -52,6 +62,7 @@ export class CustomSkinComponent implements OnInit {
     (data:any)=> {
     console.log(data.data)
     this.sucess = true;
+    this.router.navigate(['/home/dashboard/myprofile']);
     }
    )
   }

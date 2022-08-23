@@ -15,5 +15,6 @@ export class CustomSkin {
 	textContent = "";
 	moduleTypeString= "";
 	defaultSkin = false;
+	showFooter = false;
 
 }
