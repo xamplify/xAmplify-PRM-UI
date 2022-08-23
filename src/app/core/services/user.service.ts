@@ -299,6 +299,8 @@ export class UserService {
     }
 
     saveOrUpdateCategory(category: any) {
+        let domainName = this.authenticationService.getSubDomain();
+        category['domainName'] = domainName;
         let url = this.CATEGORIES_URL + "save";
         if (category.id > 0) {
             url = this.CATEGORIES_URL + "update";
