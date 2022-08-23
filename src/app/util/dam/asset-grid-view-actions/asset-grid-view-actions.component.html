@@ -18,13 +18,13 @@
 		class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon" title="Preview"
 		(click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView" title="Publish"
+	</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
 		(click)="openPublishPopup(asset)"> <i class="fa fa-share"
 		aria-hidden="true"></i>
 	</a> <a *ngIf="!isPartnerView" title="Download"
 		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
 		aria-hidden="true"></i>
-	</a> <a title="View Analytics" (click)="viewAnalytics(asset)"> <i
+	</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 		class="fa fa-line-chart" aria-hidden="true"></i>
 	</a> <a *ngIf="isPartnerView" title="View Details"
 		(click)="viewDetails(asset)"> <i class="fa fa-eye"

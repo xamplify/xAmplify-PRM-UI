@@ -191,7 +191,7 @@
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT'" title="Publish" (click)="openPublishPopup(asset.id)">
+										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
 										</a>
 										</div> 
@@ -199,7 +199,7 @@
 										<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
 											 <i class="fa fa-download"	aria-hidden="true"></i>
 										</a> 
-										<a title="View Analytics" (click)="viewAnalytics(asset)">
+										<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 											<i class="fa fa-line-chart" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="isPartnerView" title="View Details"
@@ -283,7 +283,7 @@
 															<a title="Download" (click)="openPopup(asset)"> <i
 																class="fa fa-download" aria-hidden="true"></i>
 															</a> 
-															<a title="View Analytics" (click)="viewAnalytics(asset)">
+															<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 																<i class="fa fa-line-chart" aria-hidden="true"></i>
 															</a> 
 															<a title="Delete" (click)="confirmDelete(asset)"> <i
@@ -431,12 +431,12 @@
 									aria-hidden="true"></i>
 								</a> <a title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
 									class="fa fa-eye" aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT'" title="Publish"
+								</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
 									(click)="openPublishPopup(asset.id)"> <i
 									class="fa fa-share" aria-hidden="true"></i>
 								</a> <a *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)"> <i
 									class="fa fa-download" aria-hidden="true"></i>
-								</a> <a title="View Analytics" (click)="viewAnalytics(asset)"> <i
+								</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 									class="fa fa-line-chart" aria-hidden="true"></i>
 								</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete" class="delete"
 									(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
