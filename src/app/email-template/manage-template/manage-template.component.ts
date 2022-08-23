@@ -267,6 +267,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 					this.campaignAccess.socialCampaign = campaignAccess.social;
 					this.campaignAccess.eventCampaign = campaignAccess.event;
 					this.campaignAccess.formBuilder = campaignAccess.form;
+					this.campaignAccess.agency = campaignAccess.agency;
 				});
 		}else{
 			this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
