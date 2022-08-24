@@ -38,7 +38,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
  private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
- private router: Router, public properties: Properties, private videoFileService : VideoFileService) {
+ private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -48,6 +48,8 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.damId = parseInt(this.route.snapshot.params['damId']);
     this.referenceService.loading(this.listLoader, true);
     this.getCompanyId();
+    this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
+    this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));
     if (this.videoFileService.campaignReport) {
     	this.campaignReport = true;
         this.selectedVideo = this.videoFileService.saveVideoFile;

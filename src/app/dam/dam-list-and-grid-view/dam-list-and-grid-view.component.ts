@@ -82,6 +82,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		localStorage.removeItem('campaignReport');
+		localStorage.removeItem('saveVideoFile');
 		this.callInitMethods();
 		this.videoFileService.campaignReport = false;
 	}
@@ -391,6 +393,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
                                 this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
                                 this.videoFileService.campaignReport = true;
+                                localStorage.setItem('campaignReport', 'true');
+                                localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
                                 this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
                             } else {
                                 this.authenticationService.forceToLogout();
