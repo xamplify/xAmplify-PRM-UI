@@ -6,6 +6,7 @@ import { ReferenceService } from "./reference.service";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
+import { SocialContact } from "app/contacts/models/social-contact";
 
 @Injectable()
 export class IntegrationService {
@@ -76,6 +77,28 @@ export class IntegrationService {
     
     checkSfCustomFields(userId: number) {
         return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + userId + "/checkCustomFields?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getContacts(type: string): Observable<any> {
+        this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type);
+        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveContacts(contacts: SocialContact): Observable<any> {
+        this.logger.info(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token);
+        var requestoptions = new RequestOptions({
+            body: contacts,
+        })
+        var headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        var options = {
+            headers: headers
+        };
+        return this._http.post(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
     }

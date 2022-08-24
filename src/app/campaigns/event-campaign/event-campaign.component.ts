@@ -249,6 +249,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     TO_PARTNER_MESSAGE: string = "";
     THROUGH_PARTNER_MESSAGE: string= "";
     endDatePickr: any;
+    showMicrosoftAuthenticationForm: boolean = false;
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -2868,13 +2869,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 this.checkMarketoCredentials();
             } else if (crmName == 'hubspot') {
                 this.checkingHubSpotContactsAuthentication();
+            } else if (crmName == 'microsoft') {
+                this.checkingMicrosoftAuthentication();
             } else if (crmName == 'salesforce') {
                 this.checkSalesforceIntegration();
             }
 
             //this.pushToCRM.push(crmName);
         } else {
-            if (crmName == 'marketo' || crmName == 'hubspot' || crmName == 'salesforce') {
+            if (crmName == 'marketo' || crmName == 'hubspot' || crmName == 'salesforce' || crmName == 'microsoft' ) {
                 this.eventCampaign.pushToCRM = this.eventCampaign.pushToCRM.filter(e => e !== crmName);
             }
             console.log(this.eventCampaign.pushToCRM);
@@ -2882,6 +2885,27 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
 
         this.validatePushToCRM();
     }
+    
+    checkingMicrosoftAuthentication() {
+        this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.eventCampaign.pushToCRM.push('microsoft');
+                this.validatePushToCRM();
+            }
+            else {
+                this.showMicrosoftAuthenticationForm = true;
+            }
+        }, (error: any) => {
+            console.error(error, "Error in Microsoft checkingMicrosoftAuthentication()");
+        }, () => console.log("Microsoft Configuration Checking done"));
+    }
+
+    closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
 
     checkSalesforceIntegration(): any {
         //  if(!this.isOrgAdminOrOrgAdminTeamMember){

@@ -607,6 +607,7 @@ export class AuthenticationService {
   }
 
   logout(): void {
+   $("body").addClass("logout-loader");
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
@@ -619,8 +620,12 @@ export class AuthenticationService {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
+          let self = this;
           if(this.envService.CLIENT_URL=="http://localhost:4200/"){
-            this.router.navigate(['/']);
+            setTimeout(() => {
+              self.router.navigate(['/']);
+              $("body").removeClass("logout-loader");
+            }, 1500);
           }else{
             window.location.href = this.envService.CLIENT_URL+"login";
           }

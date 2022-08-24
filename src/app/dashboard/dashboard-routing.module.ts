@@ -59,7 +59,8 @@ const routes: Routes = [
   {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
   {path:'spf', component:SpfComponent},
   {path:'workflow-analytics',component:AdminReportCampaignWorkflowAnalyticsComponent},
-  {path:'edit-module-names/:companyId',component:EditModuleNameComponent}
+  {path:'edit-module-names/:companyId',component:EditModuleNameComponent},
+  { path: 'microsoft-callback',component:SocialContactsCallbackComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

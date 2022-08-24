@@ -83,6 +83,7 @@ export class Campaign {
 	pushToMarketo = false;
 	pushToHubspot = false;
 	pushToSalesforce = false;
+    pushToMicrosoft = false;
     pushToMarketingAutomation = false;
     ownCampaignLeadAndDeal = false;
     showRegisterLeadButton = false;
@@ -99,4 +100,6 @@ export class Campaign {
     oneClickLaunch = false;
     partnershipId = 0;
     oneClickLaunchCampaignRedistributed = false;
+    oneClickLaunchCondition = false;
+    pushToCRM = [];
 }

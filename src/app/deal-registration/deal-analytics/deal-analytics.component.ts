@@ -26,7 +26,7 @@ declare var $, Highcharts: any;
 @Component({
   selector: 'app-deal-analytics',
   templateUrl: './deal-analytics.component.html',
-  styleUrls: ['../../campaigns/analytics/analytics.component.css']
+  styleUrls: ['../../campaigns/analytics/detailed-campaign-analytics/detailed-campaign-analytics.component.css']
 })
 export class DealAnalyticsComponent implements OnInit
 {

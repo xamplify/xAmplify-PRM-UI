@@ -40,10 +40,12 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   selectedListId = 0;
   showExpandButton = false;
   expandedUserList: any;
+  colspanValue = 2;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
+	this.pagination.campaignId = this.campaignId;
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
   }
@@ -113,12 +115,21 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 			this.referenceService.loading(this.shareLeadsLoader, true);
 			this.shareLeadsPagination.partnerCompanyId = partner.partnerCompanyId;
 			this.shareLeadsPagination.partnershipId = partner.partnershipId;
+			this.shareLeadsPagination.headerCheckBoxChecked = this.selectedPartnershipId==partner.partnershipId;
 			this.findShareLeads(this.shareLeadsPagination);
 		}
 	}
 
+	
+
 	findShareLeads(pagination:Pagination){
 		this.referenceService.loading(this.shareLeadsLoader, true);
+		let searchKey = $.trim(pagination.searchKey);
+		if(searchKey!=null && searchKey!=undefined && searchKey.length>0){
+			this.colspanValue= 3;
+		}else{
+			this.colspanValue = 2;
+		}
 		pagination.channelCampaign = true;
 		pagination.campaignId = this.campaignId;
 		this.showExpandButton = $.trim(pagination.searchKey).length>0;
@@ -132,7 +143,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 				let items = $.grep(this.selectedShareLeadsListIds, function (element: any) {
 					return $.inArray(element, shareLeadsListIds) !== -1;
 				});
-				if (items.length == shareLeadsListIds.length && shareLeadsListIds.length > 0) {
+				if (items.length == shareLeadsListIds.length && shareLeadsListIds.length > 0 && this.shareLeadsPagination.headerCheckBoxChecked) {
 					this.isHeaderCheckBoxChecked = true;
 				} else {
 					this.isHeaderCheckBoxChecked = false;

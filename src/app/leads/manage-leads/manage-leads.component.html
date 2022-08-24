@@ -170,6 +170,13 @@
                         </button>
                       </a>
 
+                      <a *ngIf="isVendorVersion && syncMicrosoft" (click)="syncLeadsWithMicrosoft()">
+                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                          title="Synchronize with Microsoft Dynamics" translate>
+                          <i class="fa fa-refresh" aria-hidden="true"></i> Microsoft Dynamics
+                        </button>
+                      </a>
+
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">

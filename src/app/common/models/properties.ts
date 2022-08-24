@@ -204,6 +204,7 @@ export class Properties {
 	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
+	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
 
 	teamMemberGroups = 'Team Member Groups';
 
@@ -218,14 +219,17 @@ export class Properties {
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
 
 	/***One-Click Launch Error Messages */
-	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list";
-	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list";
+	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
+	oneClickLaunchRedistributeAccessRemovedErrorMessage = "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
 	oneClickLaunchAccessErrorMessage = "Edit Campaign is not available because your account no longer has One-Click Launch access";
 	oneClickLaunchCampaignExpiredMessage = "Because the campaign has expired, it cannot be redistributed";
 	oneClickLaunchCampaignRedistributedErrorMessage = "If the campaign has already been redistributed, please use the redistribute option to relaunch it";
 	copyCampaignOneClickLaunchErrorMessage = "Copy Campaign is no longer available because your account's One-Click Launch access has been disabled";
 	emptyOneClickLaunchCampaignErrorMessage = "You cannot redistribute the campaign because the vendor deleted the shared list associated with it";
-
+	/****XNFR-131****/
+	partnerTeamMemberGroupSelectionSweetAlertMessage = "The selected Team Member Group will be applied and saved to all rows.";
+	/***XNFR-128***/
+	downloadRequestNotificationMessage = "We are processing your download request.We will send an email once it is completed.";
 
 
 

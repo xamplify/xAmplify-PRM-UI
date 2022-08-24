@@ -321,9 +321,15 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     showEditTemplateMessageDiv = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     endDatePickr: any;
+
+    showMicrosoftAuthenticationForm: boolean = false;
     /***XNFR-125****/
     oneClickLaunch = false;
     selectedPartnershipId = 0;
+    oneClickLaunchToolTip = "";
+    invalidShareLeadsSelection = false;
+    invalidShareLeadsSelectionErrorMessage = "";
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -389,6 +395,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             if (this.campaign.pushToHubspot) {
                 this.pushToCRM.push('hubspot');
+            }
+            if (this.campaign.pushToMicrosoft) {
+                this.pushToCRM.push('microsoft');
             }
 
             this.userListDTOObj = this.campaignService.campaign.userLists;
@@ -824,6 +833,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
+        this.oneClickLaunchToolTip = "Send a campaign that your "+this.authenticationService.partnerModule.customName+" can redistribute with one click";
         if ('landingPage' == this.campaignType) {
             this.TO_PARTNER_MESSAGE = "To "+this.authenticationService.partnerModule.customName+": Share a private page";
             this.THROUGH_PARTNER_MESSAGE = "Through "+this.authenticationService.partnerModule.customName+": Share a public page";
@@ -2460,9 +2470,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         if (!this.hasInternalError && this.router.url != "/login") {
             if (!this.isReloaded) {
                 if (!this.isLaunched) {
-                    // if(this.isAdd){
-                    //     this.saveCampaignOnDestroy();
-                    // }else{
                     let self = this;
                     swal({
                         title: 'Are you sure?',
@@ -2476,14 +2483,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
                     }).then(function () {
                         self.saveCampaignOnDestroy();
-                        /*self.getRepliesData();
-                        self.getOnClickData();*/
-                    }, function (dismiss) {
+                    }, function (dismiss:any) {
                         if (dismiss == 'cancel') {
                             self.reInitialize();
                         }
                     })
-                    // }
                 }
             }
         }
@@ -2932,6 +2936,13 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.isLaunched = true;
                                 this.reInitialize();
                                 this.router.navigate(["/home/campaigns/manage"]);
+                            }else if(response.statusCode==2020){
+                                this.selectedContactListIds = [];
+                                this.selectedPartnershipId = 0;
+                                this.isContactList = false;
+                                this.resetActive(null, 60, 'step-4');
+                                this.invalidShareLeadsSelection = true;
+                                this.invalidShareLeadsSelectionErrorMessage = response.message;
                             } else {
                                 this.invalidScheduleTime = true;
                                 this.invalidScheduleTimeError = response.message;
@@ -3282,6 +3293,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             }
             else if (crmName == 'salesforce') {
                 this.checkSalesforceIntegration();
+            } else if (crmName == 'microsoft') {
+                this.checkingMicrosoftAuthentication();
             }
 
             //this.pushToCRM.push(crmName);
@@ -3639,6 +3652,27 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.campaign.endDate = undefined;
     }
 
+    checkingMicrosoftAuthentication() {
+        this.integrationService.checkConfigurationByType('microsoft').subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.pushToCRM.push('microsoft');
+                this.validatePushToCRM();
+            }
+            else {
+                this.showMicrosoftAuthenticationForm = true;
+            }
+        }, (error: any) => {
+            console.error(error, "Error in Microsoft checkingMicrosoftAuthentication()");
+        }, () => console.log("Microsoft Configuration Checking done"));
+    }
+
+    closeMicrosoftForm (event: any) {
+		if (event === "0") {
+			this.showMicrosoftAuthenticationForm = false;
+		}		
+	}
+
     /***XNFR-125*****/
     getSelectedPartnerCompanyIdAndShareLeads(event:any){
         this.selectedPartnershipId = event['selectedPartnershipId'];
@@ -3646,6 +3680,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
     }
 
-    
+
 }
 

@@ -10,4 +10,7 @@ export class CampaignDetailsDto {
     emailNotification = false;
     userId = 0;
     id = 0;
+    oneClickLaunch = false;
+    channelCampaign = false;
+    oneClickLaunchChannelCampaign = false;
 }

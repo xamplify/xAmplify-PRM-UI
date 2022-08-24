@@ -268,7 +268,6 @@ export class ContactService {
             headers: headers
         };
         var url = this.contactsUrl + contactListId + "/update?" + 'userId=' + this.authenticationService.getUserId() + "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token=" + this.authenticationService.access_token;
-        this.logger.info(users);
         return this._http.post(url, options, requestoptions)
             .map(this.extractData)
             .catch(this.handleError);
@@ -438,6 +437,12 @@ export class ContactService {
 
     vanityConfigSalesForce() {
         return this._http.get(this.authenticationService.REST_URL + 'isalesforce/' + localStorage.getItem('vanityUserId') + "/authorize")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    vanityConfigMicrosoft() {
+        return this._http.get(this.authenticationService.REST_URL + 'microsoft/' + localStorage.getItem('vanityUserId') + "/authorize" )
             .map(this.extractData)
             .catch(this.handleError);
     }

@@ -427,7 +427,10 @@ Page Footer
 Boby
 ****/
 body {
-  background-color: #2a3f54;
+  background-color: #F1F3FA;
+  background-image: url(../../../../images/loading.gif);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 body.page-boxed {

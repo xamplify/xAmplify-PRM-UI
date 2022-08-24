@@ -246,9 +246,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showNotifyPartnersOption = false;
 	excludeUserLoader: HttpRequestLoader = new HttpRequestLoader();
 	excludeDomainLoader: HttpRequestLoader = new HttpRequestLoader();
+	microsoftRibbonText: string;
+	microsoftRedirectURL: any;
 	isUpgrading = false;
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	isUpgradedRequestSubmitted = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -471,6 +474,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				else if (e.data == 'isSalesForceAuth') {
 					localStorage.setItem('isSalesForceAuth', 'yes');
 				}
+				else if (e.data == 'isMicrosoftAuth') {
+					localStorage.setItem('isMicrosoftAuth', 'yes');
+				}
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
@@ -546,8 +552,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngAfterViewChecked() {
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
+		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		localStorage.removeItem('isHubSpotAuth');
 		localStorage.removeItem('isSalesForceAuth');
+		localStorage.removeItem('isMicrosoftAuth');
 
 		if (tempCheckHubSpotAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
@@ -556,6 +564,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/home/dashboard/myprofile']);
 		}
 		else if (tempCheckSalesForceAuth == 'yes') {
+			this.referenceService.integrationCallBackStatus = true;
+			localStorage.removeItem("userAlias");
+			localStorage.removeItem("currentModule");
+			this.router.navigate(['/home/dashboard/myprofile']);
+		}
+		else if (tempCheckMicrosoftAuth == 'yes') {
 			this.referenceService.integrationCallBackStatus = true;
 			localStorage.removeItem("userAlias");
 			localStorage.removeItem("currentModule");
@@ -1589,6 +1603,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.sfRibbonText = "configure";
 			this.logger.error(error, "Error in checkIntegrations()");
 		}, () => this.logger.log("Integration Configuration Checking done"));
+
+		this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.microsoftRibbonText = "configured";
+			}
+			else {
+				this.microsoftRibbonText = "configure";
+			}
+			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+				this.microsoftRedirectURL = response.data.redirectUrl;
+			}
+		}, error => {
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkIntegrations() for microsoft");
+		}, () => this.logger.log("Microsoft Integration Configuration Checking done"));
 	}
 
 	configmarketo() {
@@ -1715,6 +1745,39 @@ configHubSpot() {
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;
+		}
+	}
+
+	configureMicrosoft() {
+		this.integrationTabIndex = 3;
+		//let providerName = 'microsoft';
+		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+	}
+
+	closeMicrosoftForm(event: any) {
+		if (event === "0")
+			this.integrationTabIndex = 0;
+	}
+
+	configureCRM(providerName: string, crmRedirectURL: any) {
+		if (this.loggedInThroughVanityUrl) {
+			let currentUser = localStorage.getItem('currentUser');
+            const encodedData = window.btoa(currentUser);
+            const encodedUrl = window.btoa(crmRedirectURL);
+            let vanityUserId = JSON.parse(currentUser)['userId'];
+            let url = null;
+			if (crmRedirectURL) {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
+			} else {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+			}
+            
+            var x = screen.width / 2 - 700 / 2;
+            var y = screen.height / 2 - 450 / 2;
+            window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+		}
+		else if (crmRedirectURL !== undefined && crmRedirectURL !== '') {
+			window.location.href = crmRedirectURL;
 		}
 	}
 

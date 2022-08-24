@@ -172,7 +172,7 @@
 									<div class="portlet-title" translate>Import {{checkingContactTypeName}}s from the cloud:</div>
 									<div class="portlet-body">
 										<div class="row">
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
 												<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
 												 [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}" src="assets/images/crm/sf.png" class="salesForceImageClass"
@@ -190,7 +190,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
 												<a *ngIf="googleImageBlur" id="googleContact_button" style="background-color: white" (click)="googleContacts()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}" src="assets/images/crm/google.png"
 													 class="googleImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Google account"
@@ -207,7 +207,7 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
 												<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png"
@@ -231,7 +231,7 @@
 													</a>
 												</div> -->
 											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
 												<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
@@ -256,7 +256,7 @@
 												</div> -->
 											</div>
 
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
 												<a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
 												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
@@ -280,19 +280,22 @@
 													</a>
 												</div> -->
 											</div>
-											
-											<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-												<a id="microsoftContact_button"
-													style="background-color: white"> <img
-													src="assets/images/crm/dynamicsCmgSoon.png"
-													class="imageClass imageblur mdImageClass" data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Microsoft CRM account"
-													height="86" width="90" style="margin-bottom: 18px"
-													>
-													<header style="color: blue">Get MicrosoftContacts</header>
-												</a>
-											</div> -->
 
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8" style="margin-top: 10px;">
+												<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button" style="background-color: white" (click)="checkingMicrosoftContactsAuthentication()"
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}" src="assets/images/crm/microsoft.png"
+													 class="microsoftImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Microsoft Dynamics account"
+													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/microsoft.png';">
+												</a>
+												<a *ngIf="microsoftDynamicsImageNormal" id="MicrosoftContact_buttonNormal" style="background-color: white" (click)="checkingMicrosoftContactsAuthentication()"
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}" src="assets/images/crm/microsoft.png"
+													 class="microsoftImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your Microsoft Dynamics account"
+													 height="86" width="90">
+												</a>												
+											</div>
+											
 										</div>
 										<div class="clearfix"></div>
 
@@ -603,28 +606,28 @@
 													<th translate>FIRST NAME</th>
 													<th translate>LAST NAME</th>
 													<th *ngIf="selectedAddContactsOption === 5"  translate>COMPANY</th>
-													<th *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"></th>
+													<th *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10"></th>
 												</tr>
 											</thead>
 											<tbody>
 											<ng-container *ngFor="let user of pagedItems;let i = index">
 												<tr>
-													<td align="center" *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
+													<td align="center" *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
 														 class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}"
 														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,user.company,user.contactCompany,$event)"
 														/>
 													</td>
-													<td align="center" *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
+													<td align="center" *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
 														 class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}"
 														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightMarketoRow(user)" />
 													</td>
-													<td *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9">{{user.emailId}}</td>
-													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td>
+													<td *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10">{{user.emailId}}</td>
+													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10">{{user.email}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
 													<td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
 													<!--<td>{{user.contactCompany}}</td> -->
-													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">
+													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10">
 														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span> <span *ngIf="user.isShowDetails" translate>Less</span>
 															</button>
@@ -1177,6 +1180,12 @@
 		</div>
 	</div>
 </div>
+
+<div *ngIf="showMicrosoftAuthenticationForm">
+    <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
+</div>
+
+
 
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"

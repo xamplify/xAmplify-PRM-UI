@@ -57,6 +57,7 @@ export class PieChartAnalyticsComponent implements OnInit {
       this.loader = false;
     } else {
       this.leads();
+      this.loader = false;
     }
   }
   click() {

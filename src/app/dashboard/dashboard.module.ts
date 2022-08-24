@@ -64,21 +64,21 @@ import { AdminPartnerCompaniesComponent } from './admin-partner-companies/admin-
 import { RecentLoggedInUsersComponent } from './recent-logged-in-users/recent-logged-in-users.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { UnsubscribeReasonsComponent } from './unsubscribe-reasons/unsubscribe-reasons.component';
-import { Top4AssetsComponent } from './dashboard-analytics-components/top-4-assets/top-4-assets.component';
 import { CustomizeTop4Component } from './dashboard-analytics-components/customize-top-4/customize-top-4.component';
-import { Top4TracksAndPlayBooksComponent } from './dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
 import { VendorInvitationReportComponent } from './vendor-invitation-report/vendor-invitation-report.component';
 import { ManageTeamMemberGroupComponent } from './manage-team-member-group/manage-team-member-group.component';
 import { NotifyPartnersComponent } from './notify-partners/notify-partners.component';
 import { ShowPrmContentComponent } from './dashboard-analytics-components/show-prm-content/show-prm-content.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
 import { FunnelChartAnalyticsComponent } from './dashboard-analytics-components/funnel-chart-analytics/funnel-chart-analytics.component';
+import { MicrosoftAuthenticationComponent } from './microsoft-authentication/microsoft-authentication.component';
 import { PieChartAnalyticsComponent } from './dashboard-analytics-components/pie-chart-analytics/pie-chart-analytics.component';
 import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-components/pie-chart-statistics-bar-graph/pie-chart-statistics-bar-graph.component';
 import { MarketingRoleRequestsComponent } from './marketing-role-requests/marketing-role-requests.component';
 import { HorizontalBatChartComponent } from './dashboard-analytics-components/horizontal-bat-chart/horizontal-bat-chart.component';
 import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-components/highlevel-analytics-detail-reports/highlevel-analytics-detail-reports.component';
 import { DonutPieChartComponent } from './dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
+
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -119,9 +119,7 @@ import { DonutPieChartComponent } from './dashboard-analytics-components/donut-p
         RecentLoggedInUsersComponent,
         AdminReportCampaignWorkflowAnalyticsComponent,
         UnsubscribeReasonsComponent,
-        Top4AssetsComponent,
         CustomizeTop4Component,
-        Top4TracksAndPlayBooksComponent,
         VendorInvitationReportComponent,
         ManageTeamMemberGroupComponent,
         NotifyPartnersComponent,

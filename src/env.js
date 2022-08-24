@@ -61,4 +61,5 @@
 
 	// Whether or not to enable debug mode
 	window.__env.enableDebug = false;
+
 }(this));

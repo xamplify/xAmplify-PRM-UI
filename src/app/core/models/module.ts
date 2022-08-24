@@ -89,5 +89,7 @@ export class Module {
     companyProfileCreated = false;
     loginAs = false;
 
+    prmDashboard = false;
+
    
 }

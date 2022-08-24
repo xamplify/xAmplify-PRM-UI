@@ -5,3 +5,7 @@
 .invalid{
     color: red;
 }
+
+.custom-full-width{
+    width: 100% !important;
+}

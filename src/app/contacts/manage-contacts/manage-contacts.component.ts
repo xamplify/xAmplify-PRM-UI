@@ -645,7 +645,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
-		else if (contactList.socialNetwork == 'HUBSPOT') {
+		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT') {
 			this.contactListIdForSyncLocal = contactList.id;
             this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
@@ -711,6 +711,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						swal.close();
 						if (data.statusCode == 402) {
 							this.customResponse = new CustomResponse('INFO', data.message, true);
+						} else if (data.statusCode == 401) {
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
 						} else {
 							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
 							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
@@ -2046,7 +2048,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             data => {
                 this.loading = false;
                 if (data.access) {
-                    if (data.statusCode == 401) {
+                    if (data.statusCode == 401 || data.statusCode == 402) {
                     	this.disableSave = false;
                     	this.saveAsError = data.message;
                     } else if (data.statusCode == 200) {
@@ -2055,7 +2057,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     	this.cleareDefaultConditions();
                         this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                         this.loadContactLists(this.pagination);
-                    }
+                    } 
                 } else {
                     this.authenticationService.forceToLogout();
                 }
@@ -2275,12 +2277,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		let tempCheckGoogleAuth = localStorage.getItem('isGoogleAuth');
 		let tempCheckSalesForceAuth = localStorage.getItem('isSalesForceAuth');
 		let tempCheckHubSpotAuth = localStorage.getItem('isHubSpotAuth');
+		let tempCheckMicrosoftAuth = localStorage.getItem('isMicrosoftAuth');
 		let tempValidationMessage : string = '';
         tempValidationMessage = localStorage.getItem('validationMessage');
 
 		localStorage.removeItem('isGoogleAuth');
 		localStorage.removeItem('isSalesForceAuth');
 		localStorage.removeItem('isHubSpotAuth');
+		localStorage.removeItem('isMicrosoftAuth');
 		localStorage.removeItem('isZohoAuth');
 		localStorage.removeItem('validationMessage');
 
@@ -2301,7 +2305,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.router.navigate(['/home/contacts/add']);
 			tempCheckHubSpotAuth = 'no';
 		}
-		
+		else if (tempCheckMicrosoftAuth == 'yes' && !this.isPartner) {
+			//this.router.navigate(['/home/contacts/add']);
+			this.syncronizeContactList( this.socialContact);
+			tempCheckMicrosoftAuth = 'no';
+		}
 		else if (tempIsZohoSynchronization == 'yes' && !this.isPartner) {
 			this.syncronizeContactList( this.socialContact);
             tempCheckSalesForceAuth = 'no';
@@ -2313,11 +2321,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	ngOnInit() {
 		let moduleId =this.route.snapshot.params['id'];
 		if(moduleId != undefined){
-		 if(moduleId == 'all'){
 		     this.loadContactsByType(moduleId)
-		 }else{
-             this.loadContactsByType(moduleId)
-		 }
 		}
 		this.callInitMethods();
 	}
@@ -2405,6 +2409,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	                }
 	                else if (e.data == 'isHubSpotAuth') {
 	                    localStorage.setItem('isHubSpotAuth', 'yes');
+	                }
+					else if (e.data == 'isMicrosoftAuth') {
+	                    localStorage.setItem('isMicrosoftAuth', 'yes');
 	                }
 	                else if (e.data == 'isZohoAuth') {
 	                    localStorage.setItem('isZohoAuth', 'yes');

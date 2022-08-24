@@ -296,7 +296,7 @@
                                             </ng-container>
 
                                             <!--One Click Launch-->
-                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && oneClickLaunch">
+                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && oneClickLaunch && campaignType!='landingPage'">
                                                 <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -305,7 +305,7 @@
                                                     <span class="info-color-xampc">
                                                         <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
-                                                            title="One-click Launch"></i>
+                                                            title="{{oneClickLaunchToolTip}}"></i>
                                                     </span>
                                                 </div>
                                             </div>
@@ -398,7 +398,7 @@
                                             </div>
 
                                             <!--Notify Me When-->
-                                            <div class="form-group" *ngIf="campaign.emailNotification">
+                                            <div class="form-group" *ngIf="campaign.emailNotification &&!campaign?.oneClickLaunch">
                                                 <label class="control-label col-sm-4" translate>Notify Me When</label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
@@ -484,7 +484,7 @@
 
                                                 <div class="col-sm-5 " *ngIf="isPushToCrm" style="display: table-caption;">
                                                     <div class="row ">
-                                                        <div div class="col-md-6" *ngIf="enableLeads">
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="  cenetered-block1">
                                                                 <div class="">
                                                                     <label class="customcheck">
@@ -499,7 +499,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div div class="col-md-6" *ngIf="enableLeads">
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
                                                             <div class="cenetered-block1">
                                                                 <div class="">
                                                                     <label class="customcheck">
@@ -513,8 +513,21 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-
-
+                                                        </div>
+                                                        <div div class="col-md-4" *ngIf="enableLeads">
+                                                            <div class="cenetered-block1">
+                                                                <div class="">
+                                                                    <label class="customcheck">
+                                                                        <input type="checkbox" [checked]="campaign.pushToMicrosoft"
+                                                                            (click)="pushToCrmRequest('microsoft', $event)">
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
+                                                                    <img class="image-size" src="assets/images/crm/microsoft-crm.png" alt="">
+                                                                    <div>
+                                                                        <h5 class="hidden-xs mr-2" translate>Microsoft Dynamics</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         
                                                     </div>
@@ -971,18 +984,13 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-                                                <div class="alert alert-success" *ngIf="selectedContactListIds?.length>0">
-                                                    <ng-container *ngIf="selectedContactListIds?.length==1">
-                                                        {{selectedContactListIds?.length}} row is selected
-                                                    </ng-container>
-                                                    <ng-container *ngIf="selectedContactListIds?.length>1">
-                                                        {{selectedContactListIds?.length}} rows are selected
-                                                    </ng-container>
+                                                <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                                    Selected Rows : {{selectedContactListIds?.length}}
                                                 </div>
                                             <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0" aria-describedby="contactandpartnerstable">
                                                 <tr>
                                                     <th colspan="5" scope="row">
-                                                        <div class="alert alert-info">
+                                                        <div class="alert alert-info text-center">
                                                             <strong>{{emptyContactListMessage}}</strong>
                                                         </div>
                                                     </th>
@@ -1036,6 +1044,7 @@
                                                                     <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
                                                                   </td>
                                                                   <td style="text-align: left;">
                                                                     <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
@@ -1103,6 +1112,9 @@
 
                             <!--Partner Companies & Unshared Share Lists-->
                             <div class="row pb10 portlet light" id="one-click-launch-list-selection" *ngIf="campaign.oneClickLaunch">
+                                <div class="alert alert-danger" *ngIf="invalidShareLeadsSelection">
+                                    <strong>{{invalidShareLeadsSelectionErrorMessage}}</strong>
+                                </div>
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
                              </div>   
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
@@ -1610,7 +1622,7 @@
                                                                 <ng-container *ngIf="emailReceiversCountError">
                                                                     <span id="red-font" translate>Something went wrong.Please contact admin</span>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!emailReceiversCountError">
+                                                                <ng-container *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
                                                                     <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                                                                     <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
                                                                 </ng-container>
@@ -2562,6 +2574,11 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Microsoft Authentication -->
+<div *ngIf="showMicrosoftAuthenticationForm">
+    <app-microsoft-authentication-popup (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
 </div>
 
 <div class="modal fade right" id="email_spam_check" *ngIf="emailTemplate" data-backdrop="static" data-keyboard="false">

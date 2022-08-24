@@ -2584,7 +2584,7 @@ export class ReferenceService {
       showConfirmButton: false,
       imageUrl: "assets/images/loader.gif",
       allowOutsideClick: false,
-      allowEscapeKey : false,
+      allowEscapeKey: false,
     });
   }
   showSweetAlertProceesor(title: string) {
@@ -2617,77 +2617,40 @@ export class ReferenceService {
   }
 
   /*******CheckBox Code**********/
-  highlightRowOnRowCick(
-    trId: string,
-    tableId: string,
-    checkBoxName: string,
-    selectedCheckBoxIds: any,
-    parnterGroupsHeaderCheckBox: string,
-    selectedCheckBoxValue: any,
-    event: any
-  ) {
+  highlightRowOnRowCick(trId: string,tableId: string,checkBoxName: string,selectedCheckBoxIds: any,parnterGroupsHeaderCheckBox: string,
+    selectedCheckBoxValue: any,event: any) {
     trId = trId + "-" + selectedCheckBoxValue;
     let isChecked = $("#" + selectedCheckBoxValue).is(":checked");
     if (isChecked) {
       $("#" + selectedCheckBoxValue).prop("checked", false);
       $(trId).removeClass("row-selected");
-      selectedCheckBoxIds.splice(
-        $.inArray(selectedCheckBoxValue, selectedCheckBoxIds),
-        1
-      );
+      selectedCheckBoxIds.splice($.inArray(selectedCheckBoxValue, selectedCheckBoxIds),1);
     } else {
       $("#" + selectedCheckBoxValue).prop("checked", true);
       $(trId).addClass("row-selected");
       selectedCheckBoxIds.push(selectedCheckBoxValue);
     }
-    this.checkOrUnCheckHeaderCheckBox(
-      tableId,
-      checkBoxName,
-      parnterGroupsHeaderCheckBox
-    );
+    this.checkOrUnCheckHeaderCheckBox(tableId,checkBoxName,parnterGroupsHeaderCheckBox);
     event.stopPropagation();
   }
 
-  checkOrUnCheckHeaderCheckBox(
-    tableId: string,
-    checkBoxName: string,
-    parnterGroupsHeaderCheckBox: string
-  ) {
+  checkOrUnCheckHeaderCheckBox(tableId: string,checkBoxName: string,parnterGroupsHeaderCheckBox: string) {
     var trLength = $("#" + tableId + " tbody tr").length;
-    var selectedRowsLength = $(
-      '[name="' + checkBoxName + '[]"]:checked'
-    ).length;
-    $("#" + parnterGroupsHeaderCheckBox).prop(
-      "checked",
-      trLength == selectedRowsLength
-    );
+    var selectedRowsLength = $('[name="' + checkBoxName + '[]"]:checked').length;
+    $("#" + parnterGroupsHeaderCheckBox).prop("checked",trLength == selectedRowsLength);
   }
 
-  highlightRowByCheckBox(
-    trId: string,
-    tableId: string,
-    checkBoxName: string,
-    selectedCheckBoxIds: any,
-    parnterGroupsHeaderCheckBox: string,
-    checkBoxValue: any,
-    event: any
-  ) {
-    let isChecked = $("#" + checkBoxValue).is(":checked");
-    if (isChecked) {
-      $(trId).addClass("row-selected");
-      selectedCheckBoxIds.push(checkBoxValue);
-    } else {
-      $(trId).removeClass("row-selected");
-      selectedCheckBoxIds.splice(
-        $.inArray(checkBoxValue, selectedCheckBoxIds),
-        1
-      );
-    }
-    this.checkOrUnCheckHeaderCheckBox(
-      tableId,
-      checkBoxName,
-      parnterGroupsHeaderCheckBox
-    );
+  highlightRowByCheckBox(trId: string,tableId: string,checkBoxName: string,selectedCheckBoxIds: any,parnterGroupsHeaderCheckBox: string,
+    checkBoxValue: any,event: any) {
+      let isChecked = $("#" + checkBoxValue).is(":checked");
+      if (isChecked) {
+        $(trId).addClass("row-selected");
+        selectedCheckBoxIds.push(checkBoxValue);
+      } else {
+        $(trId).removeClass("row-selected");
+        selectedCheckBoxIds.splice($.inArray(checkBoxValue, selectedCheckBoxIds),1);
+      }
+    this.checkOrUnCheckHeaderCheckBox(tableId,checkBoxName,parnterGroupsHeaderCheckBox);
   }
 
   selectOrUnselectAllOfTheCurrentPage(
@@ -2877,10 +2840,12 @@ export class ReferenceService {
     } else if (moment.tz.guess() != undefined) {
       timeZoneId = moment.tz.guess();
     }
-	return timeZoneId;
+    return timeZoneId;
   }
-/*****XNFR-125******/
-  closeSweetAlert(){
+  /*****XNFR-125******/
+  closeSweetAlert() {
     swal.close();
   }
+
+  
 }
