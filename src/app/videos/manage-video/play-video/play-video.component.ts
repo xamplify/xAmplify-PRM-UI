@@ -31,8 +31,8 @@ declare const $, videojs: any;
     providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
-    @Input() totalRecords: number;
-    @Input() selectedVideo: SaveVideoFile;
+    /*@Input()*/ totalRecords: number;
+/*@Input()*/ selectedVideo: SaveVideoFile;
     embedModelVideo: SaveVideoFile;
     allVideos: Array<SaveVideoFile>;
     user: User = new User();
@@ -86,6 +86,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         else if(window.innerWidth <= 992) {  this.videoWidth = '360px';}
         else {  this.videoWidth = '360px';}
         //vjs-user-inactive
+        this.selectedVideo = this.videoFileService.saveVideoFile;
     }
     checkCallToActionAvailable() {
         if (this.selectedVideo.startOfVideo && this.selectedVideo.callACtion) {

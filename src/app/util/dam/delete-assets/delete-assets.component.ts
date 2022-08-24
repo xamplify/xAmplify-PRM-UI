@@ -59,11 +59,10 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 			.subscribe(
 				(response: any) => {
 					if (response.statusCode === 200) {
-						this.deleteAssetSuccessEmitter.emit();
+						this.deleteAssetSuccessEmitter.emit(response);
 					} else {
 						this.deleteAssetFailEmitter.emit(response.message);						
 					}
-					
 				},
 				(_error: string) => {
 					this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);

@@ -16,7 +16,7 @@ import { ContentManageComponent } from './content-manage/content-manage.componen
 @NgModule({
   imports: [SharedModule, VideosRoutingModule, CommonComponentModule],
   declarations: [ManageVideoComponent, UploadVideoComponent,
-    EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent, ChartReportComponent, ContentManageComponent],
+    /*EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent,*/ ChartReportComponent, ContentManageComponent],
   providers: [VideoBaseReportService]
 
 })

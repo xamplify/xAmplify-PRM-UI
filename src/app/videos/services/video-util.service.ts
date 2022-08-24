@@ -5,6 +5,7 @@ declare var $: any;
 
 @Injectable()
 export class VideoUtilService {
+	 damId: number = 0;
     videoTempDefaultSettings: DefaultVideoPlayer;
     selectedVideoId: number;
     videoViewsData: any;

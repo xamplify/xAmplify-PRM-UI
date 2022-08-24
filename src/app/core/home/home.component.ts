@@ -297,6 +297,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaulgVideoMethodCalled = true;
             this.getTeamMembersDetails();
             this.getPartnerCampaignsNotifications();
+            this.getCategorisService();
           }
          this.vanityURLService.isVanityURLEnabled();  
          this.getCompanyId();    
