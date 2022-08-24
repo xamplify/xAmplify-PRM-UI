@@ -225,7 +225,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.playbookAccess = data.playbook;
 		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
 		if (data.content) {
-			this.contentDivs.push(module.isVideo);
+			//this.contentDivs.push(module.isVideo);
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);

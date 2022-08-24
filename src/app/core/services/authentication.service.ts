@@ -132,10 +132,22 @@ export class AuthenticationService {
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
-    }else{
-      console.log("dev keys are used");
+    }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
+      console.log("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageQAClientId;
+      this.beePageClientSecret = this.envService.beePageQAClientSecret;
+    }else if(this.SERVER_URL=="https://release.xamp.io/" && this.APP_URL=="https://xtremand.com/"){
+      console.log("Release keys are used");
+      this.clientId = this.envService.beeTemplateReleaseClientId;
+      this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
+      this.beePageClientId = this.envService.beePageReleaseClientId;
+      this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
+    }else{
+      console.log("dev keys are used");
+      this.clientId = this.envService.beeTemplateDevClientId;
+      this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
       this.beePageClientSecret = this.envService.beePageDevClientSecret;
     }
@@ -455,6 +467,16 @@ export class AuthenticationService {
       }
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
+  isMarketingPartner() {
+	    try {
+	      const roleNames = this.getRoles();
+	      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    } catch (error) { this.xtremandLogger.log('error' + error); }
+	  }
   isTeamMember() {
     try {
       const roleNames = this.getRoles();

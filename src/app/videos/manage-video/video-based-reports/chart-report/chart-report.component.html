@@ -2,9 +2,19 @@
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
-			<li><a (click)="goToMangeVideos()">Manage Videos</a> <i class="fa fa-angle-right"></i> </li>
+			<li><a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>  
+			<li><a (click)="goToDam()" translate>DAM</a><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+			<ng-container >
+            <li><a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+       </ng-container>
+       <li><a translate> Reports</a></li>
+			
+			
+			<!-- <li><a (click)="goToMangeVideos()">Manage Videos</a> <i class="fa fa-angle-right"></i> </li>
 			<li><a (click)="goBackToLastPage()">Reports - video statistics</a> <i class="fa fa-angle-right"></i></li>
-			<li><a>Reports</a> </li>
+			<li><a>Reports</a> </li> -->
 		</ul>
 	</div>
 	<div class="portlet light" style="min-height: 268px;">

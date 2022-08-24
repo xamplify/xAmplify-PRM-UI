@@ -12,4 +12,10 @@ export class DamUploadPostDto {
     validName = false;
     validDescription = false;
     
+    //
+    downloadLink : string = null;
+    oauthToken : string = null;
+    fileName : string = null;
+    cloudContent : boolean=false;
+    source: string = "";
 }

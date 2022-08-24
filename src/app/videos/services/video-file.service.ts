@@ -37,6 +37,7 @@ export class VideoFileService {
     videoFileSweetAlertMessage: boolean;
     contentRedirect = false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
+    campaignReport : boolean = false;
     constructor(public envService: EnvService, private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }
@@ -90,12 +91,12 @@ export class VideoFileService {
         if (this.authenticationService.isOnlyPartner()) {
             url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
         } else {
-            if (this.videoType === 'myVideos') {
+           url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
+            /*if (this.videoType === 'myAssets') {
                 url = this.URL + 'loadVideos/'+this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             } else if (this.videoType === 'partnerVideos') {
                 url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
-            }
-            else { console.log('load videos not called'); }
+            }*/
         }
         console.log(url);
         return this.http.post(url, pagination)
@@ -142,15 +143,15 @@ export class VideoFileService {
         .catch(this.handleError);
     }
     getShortnerUrlAlias(viewBy: string, alias: string) {
-        let isChannelVideo: boolean;
-        if (this.videoType === 'myVideos') {
+        
+        /*let isChannelVideo: boolean;
+         if (this.videoType === 'myAssets') {
             isChannelVideo = false;
         } else if (this.videoType === 'partnerVideos') {
             isChannelVideo = true;
-        }
-        console.log(isChannelVideo);
+        }*/
         return this.http.get(this.authenticationService.REST_URL + 'videos/shortener-url-alias?viewBy=' + viewBy
-            + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id + '&isChannelVideo=' + isChannelVideo, '')
+            + '&videoAlias=' + alias + '&userId=' + this.authenticationService.user.id + '&isChannelVideo=false', '')
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -355,4 +356,13 @@ export class VideoFileService {
             return Observable.throw(error);
         }
     }
+    
+    updateVideoContent(videoFile: SaveVideoFile) {
+    	let requestParam =  'userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
+        let url = this.authenticationService.REST_URL ;
+        return this.http.post(url + "dam/update-video?" +requestParam, videoFile)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 }

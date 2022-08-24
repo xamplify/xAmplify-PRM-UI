@@ -54,3 +54,10 @@
         border: 1px solid #888!important;
     }
     }
+    
+  a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    text-decoration: underline;
+}  
+    
