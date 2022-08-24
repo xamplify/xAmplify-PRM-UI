@@ -23,6 +23,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+import { CommentDto } from 'app/common/models/comment-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -115,6 +116,7 @@ export class AuthenticationService {
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
+  vendorCompanyId = 0;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -242,7 +244,12 @@ export class AuthenticationService {
   }
 
   getCategoryNamesByUserId(userId: number) {
-    return this.http.get(this.REST_URL + 'category/listAllCategoryNamesByLoggedInUserId/' + userId + '?access_token=' + this.access_token)
+    let companyProfileName = this.getSubDomain();
+        let url = this.REST_URL+"category/listAllCategoryNamesByLoggedInUserId/"+userId;
+        if(companyProfileName.length>0){
+            url+="/domainName/"+companyProfileName;
+        }
+    return this.http.get(url + '?access_token=' + this.access_token)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
@@ -603,6 +610,7 @@ export class AuthenticationService {
     module.isMarketingCompany = false;
     module.isPrmCompany = false;
     module = new Module();
+    this.vendorCompanyId = 0;
     this.setUserLoggedIn(false);
   }
 
@@ -662,7 +670,15 @@ export class AuthenticationService {
 
   getModulesByUserId() {
     let userId = this.getUserId();
-    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
+    /*****XNFR-83***********/
+    let domainName = this.getSubDomain();
+    let url = "";
+    if(domainName.length>0){
+      url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
+    }else{
+      url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
+    }
+    return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -775,7 +791,6 @@ export class AuthenticationService {
   authorizeUrl(url: string) {
     let angularUrlInput = {};
     let browserUrl = window.location.hostname;
-    //let browserUrl = "tga.xamplify.com";
     if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
       let domainName = browserUrl.split('.');
       if (domainName.length > 2) {
@@ -918,6 +933,65 @@ isPartnershipOnlyWithPrm(){
     .catch(this.handleError);
 }
 
-  
+
+previewTeamMemberGroup(id:number){
+  const url = this.REST_URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+/*********XNFR-83************/
+getAssigedAgencyModules(id:number){
+  const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+/*********XNFR-83************/
+getSubDomain(){
+  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
+}
+
+/*********XNFR-83************/
+getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
+  let url = this.REST_URL +"comments/companyAndUserDetails/"+moduleType+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/*********XNFR-83************/
+saveComment(commentDto:CommentDto){
+  commentDto.commentedBy = this.getUserId();
+  let url = this.REST_URL +"comments?access_token=" + this.access_token;
+  return this.http.post(url,commentDto)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+/*********XNFR-83************/
+findComments(moduleName:string,id:number){
+  let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/*********XNFR-83************/
+findHistory(id:number,moduleId:number){
+  let url = this.REST_URL +"comments/agencyContentStatusHistory/id/"+id+"/moduleId/"+moduleId+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/****XNFR-83****/
+findCampaignAccessDataByDomainName(domainName:string){
+  let url = this.REST_URL +"admin/campaignAccess/domainName/"+domainName+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+
+private callGetMethod(url: string) {
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
   
 }

@@ -183,9 +183,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           const currentUser = localStorage.getItem( 'currentUser' );
           this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
           this.loggedInUserId = this.authenticationService.getUserId();
-        this.getDefaultPage(this.loggedInUserId);
-        this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
-        this.getWelcomePageItems();
+          this.getDefaultPage(this.loggedInUserId);
+          this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
+          this.getWelcomePageItems();
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }

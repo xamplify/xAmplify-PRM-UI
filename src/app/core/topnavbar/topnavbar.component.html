@@ -17,11 +17,6 @@
                 <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/xamplify-logo.png';"  />
                 <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/xamplify-logo.png';" />
             </div>
-            <!--  -->
-            <!-- <a [routerLink]="refService.homeRouter">
-                <img *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
-                <img *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" (error)="errorImage($event)" alt="logo" class="logo-default" />
-            </a> -->
             <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
                 <i class="fa fa-bars" style="font-size: 21px;" aria-hidden="true"></i>
             </div>

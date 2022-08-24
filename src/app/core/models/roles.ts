@@ -19,4 +19,7 @@ export class Roles {
   vendorTierRole = 'ROLE_VENDOR_TIER';
   prmRole = 'ROLE_PRM';
   shareLeadsRole = 'ROLE_SHARE_LEADS';
+
+  /*****************RoleIds********/
+  emailTemplateId = 7;
 }

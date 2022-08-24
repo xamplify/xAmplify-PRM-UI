@@ -134,37 +134,37 @@
                                                                <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
                                                          </div>
                                                          </ng-container>
-                                                    <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
-                                                   <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
-                                                   <ng-container *ngIf="!teamMembersLoader.isLoading">
-                                                   <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
-                                                      <thead>
-                                                            <tr>
-                                                            <th scope="row" class="text-center">
-                                                               <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
-                                                            </th>
-                                                            <th scope="row">Entity Info</th>
-                                                            </tr>
-                                                         </thead>
-                                                         <tbody>
-                                                            <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)" >
-                                                               <td class="text-center">
-                                                                  <input type="checkbox" id="{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
-                                                               </td>
-                                                               <td>
-                                                                  <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
-                                                                  </app-user-info>
-                                                               </td>
-                                                            </tr>
-                                                         </tbody>
-                                                      </table>
-                                                      </ng-container>
-                                                      <!---Pagination-->
-                                                      <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
-                                                         <strong>No Data Found.</strong>
+                                                         <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
+                                                         <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
+                                                         <ng-container *ngIf="!teamMembersLoader.isLoading">
+                                                         <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
+                                                            <thead>
+                                                                  <tr>
+                                                                  <th scope="row" class="text-center">
+                                                                     <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
+                                                                  </th>
+                                                                  <th scope="row">Entity Info</th>
+                                                                  </tr>
+                                                               </thead>
+                                                               <tbody>
+                                                                  <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)" >
+                                                                     <td class="text-center">
+                                                                        <input type="checkbox" id="{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
+                                                                     </td>
+                                                                     <td>
+                                                                        <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
+                                                                        </app-user-info>
+                                                                     </td>
+                                                                  </tr>
+                                                               </tbody>
+                                                            </table>
+                                                            </ng-container>
+                                                            <!---Pagination-->
+                                                            <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
+                                                               <strong>No Data Found.</strong>
+                                                            </div>
+                                                         </div>
                                                       </div>
-                                                   </div>
-                                                   </div>
                                                    </td>
                                                 </tr>
                                                 </ng-container>

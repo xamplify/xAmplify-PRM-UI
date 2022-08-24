@@ -19,7 +19,6 @@
                  <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li style="color: #808080" *ngIf="!authenticationService.isOnlyPartner()" translate>Manage Templates</li>
-            <li style="color: #808080" *ngIf="authenticationService.isOnlyPartner()" translate>View Templates</li>
         </ul>
     </div>
     <div class="mTopAlert" style="position: relative; top: -10px">
@@ -32,7 +31,6 @@
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
@@ -54,6 +52,8 @@
                                     <li class="filter" (click)="filterTemplates('SURVEY',false,11)" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder" translate>Survey
                                     </li>
                                     <li class="filter" (click)="filterTemplates('SURVEY_CO_BRANDING',false,12)" *ngIf="campaignAccess.formBuilder && !authenticationService?.module?.isMarketingCompany" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex"  translate>Survey Co-Branding
+                                    </li>
+                                    <li class="filter" (click)="filterTemplates('AGENCY',false,13)" *ngIf="campaignAccess.agency" [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex"  translate>{{properties?.agency}}
                                     </li>
                                     <li class="filter" style="display: none;" translate>Own Template</li>
                                 </ul>
@@ -110,7 +110,8 @@
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
                 <app-error-pages *ngIf="httpRequestLoader.isServerError "></app-error-pages>
-                <section *ngIf="modulesDisplayType.isListView ">
+                <!----List View----->
+                <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">
                             <table class='table tgrid table-hover table-sm' id="manage-email-template-list" *ngIf="pagination.pagedItems?.length>0" aria-describedby="manageTemplates">
@@ -142,26 +143,19 @@
                                                 <span><strong>{{emailTemplate.name}}</strong></span>
                                             </h4>
                                             <h6 class="moreipsis">
-                                                <span translate>Folder <strong>{{emailTemplate.category}}</strong></span>
+                                                <span translate> Folder <strong>{{emailTemplate.category}}</strong></span>
                                             </h6>
-                                            <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                <h6 class="moreipsis">
-                                                    <span translate> Shared By <strong>{{emailTemplate.vendorName}}</strong></span>
-                                                </h6>
-                                                <h6 class="moreipsis" title="{{emailTemplate.vendorOrganizationName}}">
-                                                    <span translate> From <strong>{{emailTemplate.vendorOrganizationName}}</strong></span>
-                                                </h6>
-                                            </ng-container>
-                                            <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                <h6 class="moreipsis" title="{{emailTemplate.createdBy}}">
-                                                    <span translate>Created By <strong>{{emailTemplate.createdBy}}</strong></span>
-                                                </h6>
-                                            </ng-container>
-                                            <h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft" translate>DRAFT</h5>
+                                            <h6 class="moreipsis">
+                                                <span translate> Created By <strong>{{emailTemplate.createdBy}}</strong></span>
+                                            </h6>
+                                            <h6 class="moreipsis" title="{{emailTemplate.companyName}}">
+                                                <span translate> From <strong>{{emailTemplate.companyName}}</strong></span>
+                                            </h6>
+                                            <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            <span class="view-banner-draft" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                                 data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
                                             </h5>
-                                            <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'" translate>PARTNER</h5>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <div class="text-center">
@@ -176,31 +170,20 @@
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                             </app-timestamp>
                                         </td>
-                                        <td style="width: 14%" class="mActionAlign">
+                                        <!---Actions----->
+                                        <td class="mActionAlign">
                                             <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
                                                 <div class="mActionDiv">
-                                                <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </a>
-                                                <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
-                                                    <i class="fa fa-inbox" aria-hidden="true"></i>
-                                                </a>
+                                                    <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                                 <div class="mActionDiv">
-                                                <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                                *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-                                                    authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
-                                                    <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
-                                                </a>
-                                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
+                                                    <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                                 <div class="mActionDiv">
-                                                <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
-                                                *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
-                                                    authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                </a>
+                                                    <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                                </div>
+                                                <div class="mActionDiv">
+                                                    <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 </div>
                                             </div>
                                         </td>
@@ -211,6 +194,7 @@
                     </ng-container>
                 </section>
 
+                 <!--Grid View---->   
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box">
@@ -222,21 +206,14 @@
                             <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
-                                {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+                                {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span>
                             </h4>
+                            <ng-template [ngTemplateOutlet]="agencyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                             <div>
                                 <h6>
                                     <span translate>Folder <strong>{{emailTemplate.category | slice:0:20}}</strong>
                                         <span *ngIf="emailTemplate.category?.length>20">...</span>
                                     </span>
-                                </h6>
-                                <h6 *ngIf="emailTemplate.type=='PARTNER'" translate>
-                                    Shared On <strong>
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
-                                        </app-timestamp>
-                                    </strong>
-                                    <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                        data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}</span>
                                 </h6>
                                 <h6 *ngIf="emailTemplate.type!='PARTNER'" translate>
                                     Created On <strong>
@@ -259,9 +236,6 @@
                                 <div class="ribbon draft" *ngIf="emailTemplate.draft">
                                     <span  translate>DRAFT</span>
                                 </div>
-                                <div class="ribbon active" *ngIf="emailTemplate.type=='PARTNER'">
-                                    <span translate>PARTNER</span>
-                                </div>
                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                     <h6 title="{{emailTemplate.vendorName}}" translate>
                                         By <strong *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</strong>
@@ -274,29 +248,17 @@
                                 </ng-container>
 
                             </div>
+                             <!---Actions----->
                             <div class="bar">
-                                <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </a>
-                                <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
-                                    <i class="fa fa-inbox" aria-hidden="true"></i>
-                                </a>
-                                <a (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
-                                    *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  ||
-                                     authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </a>
-                                <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
-                                </a>
-                                <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
-                                 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor || 
-                                 authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </a>
+                                <ng-template [ngTemplateOutlet]="spamCheckAndCopyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                <ng-template [ngTemplateOutlet]="commentsIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listEmailTemplates($event)" [hidden]="httpRequestLoader.isLoading">
@@ -307,11 +269,57 @@
                         <strong translate>No Templates Found</strong>
                     </div>
                 </ng-container>
-
             </div>
         </div>
     </div>
 
+    <!----Actions----->
+    <!-----XNFR-83 Spam Check & Copy---->
+    <ng-template #spamCheckAndCopyIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+        <a (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
+            <i class="fa fa-inbox" aria-hidden="true"></i>
+        </a>      
+    </ng-template>
+    <!-----XNFR-83 Edit---->
+    <ng-template #editIcon let-emailTemplate="emailTemplate">
+        <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
+        *ngIf="emailTemplate?.editAndDelete">
+            <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+        </a>
+        <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+    </ng-template>
+     <!-----XNFR-83 Comments---->
+     <ng-template #commentsIcon let-emailTemplate="emailTemplate">
+        <a *ngIf="!emailTemplate.draft && emailTemplate?.editAndDelete" (click)="callCommentsComponent=true;selectedEmailTemplateId=emailTemplate.id" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.comments}}">
+             <i class="{{fontAwesomeClassName.comments}}" aria-hidden="true"></i>
+        </a>
+    </ng-template>
+    <!-----XNFR-83 Delete---->
+    <ng-template #deleteIcon let-emailTemplate="emailTemplate">
+        <a class="delete-icon" id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
+        *ngIf="emailTemplate?.editAndDelete">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </a>
+    </ng-template>
+    <!-----XNFR-83 Agency Icon---->
+    <ng-template #agencyIcon let-emailTemplate="emailTemplate">
+        <span *ngIf="emailTemplate.agencyTemplate" class="view-banner-agency" translate>{{properties?.agency}}</span>
+        <span *ngIf="!emailTemplate.agencyTemplate && modulesDisplayType.isGridView" class="view-banner-hidden" translate>Own</span>
+        <ng-container *ngIf="!emailTemplate.draft && emailTemplate?.agencyTemplate">
+            <span class="view-banner-agency"  
+                    [ngClass]="{'bgc-green': emailTemplate?.status==='APPROVED', 
+                                'bgc-red': emailTemplate?.status==='REJECTED',
+                                'bgc-orange':emailTemplate?.status==='CREATED'}" translate>
+                {{emailTemplate?.status}}
+            </span>
+        </ng-container>
+    </ng-template>
+     
+    <!----Actions----->
     <div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -350,5 +358,11 @@
     <app-scroll-top></app-scroll-top>
 </div>
 <ng-container *ngIf="saveAsDefaultTemplate">
-<app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
+    <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
+
+<app-comments *ngIf="callCommentsComponent" [moduleType]="'emailTemplates'" [id]="selectedEmailTemplateId" 
+(commentsEventEmitter)="resetCommentsComponentValues()" (statusUpdatedEventEmitter)="refreshTemplates()"></app-comments>
+
+
+
