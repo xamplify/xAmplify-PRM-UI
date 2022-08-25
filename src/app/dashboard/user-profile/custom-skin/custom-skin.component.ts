@@ -44,7 +44,7 @@ export class CustomSkinComponent implements OnInit {
   isLoggedInFromAdminSection = false;
   loading = false;
   activeTabName: string = "";
-  fontStyles : string[] =["serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
+  fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","'Open Sans', sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
@@ -56,6 +56,7 @@ export class CustomSkinComponent implements OnInit {
 
   ngOnInit() {
     this.form.moduleTypeString = this.moduleStatusList[0];
+    this.form.fontFamily = this.fontStyles[0];
   }
   tabIndex = 1;
   activeTabNav(activateTab:any){

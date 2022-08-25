@@ -187,7 +187,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
         this.getWelcomePageItems();
-        this.getCustomColor();
+        //this.getCustomColor();
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
