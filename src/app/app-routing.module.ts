@@ -43,6 +43,7 @@ import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
 import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
+import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },

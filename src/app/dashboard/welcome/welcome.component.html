@@ -28,10 +28,10 @@
              </h4>
       </div>
     </div>
-    <div class="page-bar p0" [hidden]="ngxLoading">
+    <div class="page-bar p0" [hidden]="ngxLoading" [ngStyle]="{'background-color':skin.divBgColor}">
       <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
         <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
-          <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+          <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow" [ngStyle]="{'color':skin.headerTextColor}">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
         </div>
         <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
           <div style="display: flex;">
@@ -45,7 +45,7 @@
         <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
     </div>
-    <div class="page-bar page-bar-shadow">
+    <div class="page-bar page-bar-shadow" [ngStyle]="{'background-color':skin.divBgColor}">
       <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
       <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
       <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>

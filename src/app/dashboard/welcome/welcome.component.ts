@@ -12,6 +12,7 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
+import { CustomSkin } from '../models/custom-skin';
 
 declare var $:any;
 
@@ -186,6 +187,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
         this.getWelcomePageItems();
+        this.getCustomColor();
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
@@ -245,6 +247,16 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       }else{
         this.referenceService.goToRouter(url);
       }
+    }
+    skin:CustomSkin = new CustomSkin();
+    getCustomColor(){
+      this.dashboardService.getTopNavigationBarCustomSkin(this.loggedInUserId).subscribe(
+        (data) =>{
+          let skinMap = data.data;
+          this.skin = skinMap.MAIN_CONTENT;
+          console.log(this.skin);
+        }
+      )
     }
   
 }

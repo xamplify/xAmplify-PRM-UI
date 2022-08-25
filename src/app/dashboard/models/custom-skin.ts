@@ -16,5 +16,7 @@ export class CustomSkin {
 	moduleTypeString= "";
 	defaultSkin = false;
 	showFooter = false;
+	divBgColor="";
+	headerTextColor="";
 
 }

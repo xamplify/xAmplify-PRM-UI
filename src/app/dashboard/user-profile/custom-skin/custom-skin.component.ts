@@ -17,6 +17,8 @@ declare var $ : any;
 })
 export class CustomSkinComponent implements OnInit {
   form :CustomSkin = new CustomSkin();
+  isValidDivBgColor = true;
+  isValidHeaderTextColor =true;
   isValidBackgroundColor= true;
   isValidButtonValueColor= true;
   isValidTextColor= true;
@@ -25,6 +27,8 @@ export class CustomSkinComponent implements OnInit {
   isValidButtonColor = true;
   valueRange: number;
   backgroundColor :string;
+  divBgColor:string;
+  headerTextColor:string;
   iconColor :string;
   textColor:string;
   buttonBorderColor:string;
@@ -35,9 +39,11 @@ export class CustomSkinComponent implements OnInit {
   isValidColorCode = true;
   sucess:boolean = false;
   ckeConfig: any;
+  lableForBgColor:string ="Background Color";
   moduleStatusList: string[] =["--Select Type--","LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
   isLoggedInFromAdminSection = false;
   loading = false;
+  activeTabName: string = "";
   fontStyles : string[] =["serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","'Open Sans', sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
@@ -50,6 +56,19 @@ export class CustomSkinComponent implements OnInit {
 
   ngOnInit() {
     this.form.moduleTypeString = this.moduleStatusList[0];
+  }
+  tabIndex = 1;
+  activeTabNav(activateTab:any){
+  this.activeTabName = activateTab;
+  if(this.activeTabName == "home"){
+    this.tabIndex =1;
+  }else if(this.activeTabName == "header"){
+    this.tabIndex = 2;
+  }else if(this.activeTabName == "leftmenu"){
+    this.tabIndex = 3;
+  }else if(this.activeTabName == "pagecontent"){
+    this.tabIndex = 4;
+  }
   }
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
@@ -80,12 +99,16 @@ export class CustomSkinComponent implements OnInit {
            let skinMap = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
             this.form = skinMap.TOP_NAVIGATION_BAR
+            this.lableForBgColor = "Header Background Color";
            }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
             this.form = skinMap.LEFT_SIDE_MENU;
+            this.lableForBgColor = "Tiles Background Color"
            }else if(this.form.moduleTypeString === "FOOTER"){
             this.form = skinMap.FOOTER;
+            this.lableForBgColor = "Footer Backgroound Color"
            } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
             this.form = skinMap.MAIN_CONTENT;
+            this.lableForBgColor = "MainContent Background Color"
            }
            this.iconColor = this.form.iconColor;
            this.backgroundColor = this.form.backgroundColor;
@@ -94,6 +117,8 @@ export class CustomSkinComponent implements OnInit {
            this.buttonColor = this.form.buttonColor;
            this.buttonValueColor = this.form.buttonValueColor;
            this.fontFamily = this.form.fontFamily
+           this.divBgColor = this.form.divBgColor;
+           this.headerTextColor = this.form.headerTextColor;
            console.log(this.form)
         }
     )
@@ -113,7 +138,13 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
   if (type === "backgroundColor") {
       this.form.backgroundColor = colorCode;
       this.isValidBackgroundColor = true;
-  } else if (type === "butttonBorderColor") {
+  }else if(type === "divBgColor"){
+    this.form.divBgColor = colorCode;
+    this.isValidDivBgColor = true;
+  }else if(type === "headerTextColor"){
+    this.form.headerTextColor = colorCode;
+    this.isValidHeaderTextColor = true;
+  }else if (type === "butttonBorderColor") {
       this.form.buttonBorderColor = colorCode;
       this.isValidButtonBorderColor= true;
   } else if (type === "buttonColor") {
@@ -141,6 +172,13 @@ private addColorCodeErrorMessage(type: string) {
   if (type === "backgroundColor") {
       this.form.backgroundColor = "";
       this.isValidBackgroundColor = false;
+  }
+  else if(type === "divBgColor"){
+    this.form.divBgColor = "";
+    this.isValidDivBgColor = false;
+  }else if(type === "headerTextColor"){
+    this.form.headerTextColor = "";
+    this.isValidHeaderTextColor = false;
   }  else if (type === "buttonColor") {
       this.form.buttonColor = "";
       this.isValidButtonColor = false;
@@ -166,7 +204,16 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
           this.backgroundColor = event;
           form.backgroundColor = event;
           this.isValidBackgroundColor = true;
-      } else if (type === "iconColor") {
+      }else if(type === "divBgColor"){
+        this.divBgColor = event;
+        form.divBgColor = event;
+        this.isValidDivBgColor = true;
+      }else if(type === "headerTextColor"){
+        form.headerTextColor = event;
+        this.headerTextColor = event;
+        this.isValidHeaderTextColor = true;
+      }
+       else if (type === "iconColor") {
           this.iconColor = event;
           form.iconColor = event;
           this.isValidIconColor = true;
