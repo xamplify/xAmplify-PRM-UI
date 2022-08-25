@@ -28,6 +28,11 @@
                   aria-hidden="true" style="padding-right: 7px;"></i>
                   <span>{{userDefaultPage.responseMessage}}</span>
               </h4>
+    </div>
+    <div class="page-bar p0" [hidden]="ngxLoading" [ngStyle]="{'background-color':skin.divBgColor}">
+      <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
+        <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
+          <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow" [ngStyle]="{'color':skin.headerTextColor}">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
         </div>
       </div>
       <div class="page-bar p0" [hidden]="ngxLoading">
@@ -48,11 +53,13 @@
         </div>
       </div>
       <ng-container *ngIf="!authenticationService?.module?.agencyUserDashboard">
-      <div class="page-bar page-bar-shadow">
-          <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
-          <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
-          <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
-      </div>
+    
+    <div class="page-bar page-bar-shadow" [ngStyle]="{'background-color':skin.divBgColor}">
+      <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
+      <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
+      <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
+    </div>
+
       <!------------Dashbaord Button Carusel---------------------->    
       <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
       <app-vendor-activity-analytics></app-vendor-activity-analytics>

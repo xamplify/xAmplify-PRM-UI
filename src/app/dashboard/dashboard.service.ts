@@ -759,4 +759,23 @@ export class DashboardService {
        .map(this.extractData)
        .catch(this.handleError);
         }
+        /** XNFR-134 */
+          getTopNavigationBarCustomSkin(companyId:number){
+            const url = this.authenticationService.REST_URL + 'custom/skin/find/'+companyId+'?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+          }
+          saveCustomSkin(custom:any){
+            const url = this.authenticationService.REST_URL+ 'custom/skin/save?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url,custom)
+            .map(this.extractData)
+            .catch(this.handleError);
+        }
+        getDefaulSkinBYType(userId:number,type:string){
+            const url = this.authenticationService.REST_URL + 'custom/skin/get/'+ userId +'/'+type+'?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+          }
 }

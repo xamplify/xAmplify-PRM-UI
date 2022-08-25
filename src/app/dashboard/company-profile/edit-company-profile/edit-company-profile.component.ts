@@ -162,6 +162,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     isAspectRatio = false;
     aspectRatioValue = '4/3';
     isFromAdminPanel = false;
+    isCustmSkin = false;
     userAlias:any;
     @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
     fetchResult = new Subject<string>();
@@ -183,6 +184,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     allLoginScreenDirectionsList:string[] = [];  
     prm = false;  
     vendorTier = false;
+    tabIndex =1;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1651,4 +1653,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
         }
       }
+      /** XNFR-134 ***** */
+      saveCustom(){
+        this.tabIndex =2;
+      }
+      close(){
+        this.tabIndex = 1;
+        this.router.navigate(['home/dashboard/edit-company-profile'])
+      }
+      portletBody = "modal fade";
+      addBlurClass() {
+        $('#exampleModal').removeClass(this.portletBody);
+    }
 }

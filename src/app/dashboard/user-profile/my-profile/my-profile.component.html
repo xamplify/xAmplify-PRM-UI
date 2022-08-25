@@ -190,6 +190,10 @@
                             authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
+                             <!-- <li   [ngClass]="{'active-tab': activeTabName == 'custom-skin'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
+                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
+                            <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'custom-skin'}" (click)="activateTab('custom-skin');clearCustomResponse()">{{properties.customSkin | translate}}</a>
+                            </li> -->
                         </ng-container>
                         </ul>
                     </div>
@@ -794,7 +798,12 @@
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-
+                                    <!--Start Custom Skin Tab-->
+                                    <!--End custom skin tab-->
+                                     <!-- <div class="ta-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
+                                        <app-custom-skin></app-custom-skin>
+                                     </div> -->
+                                     
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
