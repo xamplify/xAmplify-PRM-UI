@@ -21,6 +21,7 @@ declare var  $, QuickSidebar, Highcharts: any;
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
+    @Input() damId : number;
     categories: any;
     watchedFully: number;
     minutesWatchedUsers: number;
@@ -78,6 +79,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUtilService.selectedVideo = this.selectedVideo;
         if (category.includes('Q')) { category = category.substring(1, category.length); }
         this.videoUtilService.timePeriodValue = category;
+        this.videoUtilService.damId = this.damId;
         this.router.navigate(['./home/content/videos/reports']);
     }
 
@@ -645,6 +647,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             (result: any) => {
                 if (result.access) {
                     console.log(result);
+                    result.data.forEach((element, index) => {
+                        if(element.time){ element.time = new Date(element.utcTimeString);}
+                      });
                     this.watchedFullyTotalReportList = result.data;
                     this.downloadLogs();
                 } else {
@@ -660,6 +665,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             (result: any) => {
                 if (result.access) {
                     console.log(result);
+                    result.data.forEach((element, index) => { if (element.date) { element.date = new Date(element.utcTimeString); } });
                     this.totalUsersWatched = result.data;
                     this.downloadLogs();
                 } else {
@@ -677,6 +683,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             data => {
                 if (data.access) {
                     console.log(data);
+                    data.data.forEach((element) => { if (element.date) { element.date = new Date(element.utcTimeString); } });
                     this.userMinutesWatchedTotalList = data.data;
                     this.downloadLogs();
                 } else {
@@ -788,7 +795,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             if (this.downloadTypeName === 'minetesWatched') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
                 let hours = this.referenceService.formatAMPM(date);
-                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + date;
+                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
                 object["Minutes watched"] = this.downloadCsvList[i].minutesWatched;
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
@@ -796,8 +803,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             else if (this.downloadTypeName === 'watchedFully') {
                 object["Email Id"] = this.downloadCsvList[i].name;
                 object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-                let hours = this.referenceService.formatAMPM(date);
-                object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                let hours = this.referenceService.formatAMPM(time);
+                object["Date and Time"] = time.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
                 object["Device"] = this.downloadCsvList[i].device;
                 object["Location"] = this.downloadCsvList[i].location;
             }

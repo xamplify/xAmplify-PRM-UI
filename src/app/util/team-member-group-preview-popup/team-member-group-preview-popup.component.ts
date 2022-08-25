@@ -1,8 +1,7 @@
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Component, OnInit,Input,EventEmitter,Output } from '@angular/core';
-import { TeamMemberService } from 'app/team/services/team-member.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
-
 declare var $: any;
 @Component({
   selector: 'app-team-member-group-preview-popup',
@@ -15,29 +14,57 @@ export class TeamMemberGroupPreviewPopupComponent implements OnInit {
   emptyModules = false;
   @Input() teamMemberGroupId:number;
   @Output() previewGroupPopupEventEmitter = new EventEmitter();
-  constructor(public teamMemberService:TeamMemberService,public logger:XtremandLogger,public referenceService:ReferenceService) { }
+  @Input() agencyId:number;
+  constructor(public authenticationService:AuthenticationService,public logger:XtremandLogger,public referenceService:ReferenceService,
+    public authencticationService:AuthenticationService) { }
 
   ngOnInit() {
-    this.previewModules(this.teamMemberGroupId);
+    this.previewModules();
   }
 
-  previewModules(teamMemberGroupId:number){
+  previewModules(){
     this.modulesLoader = true;
     this.emptyModules = false;
     this.defaultModules = [];
     $('#preview-team-member-popup').modal('show');
-    this.teamMemberService.previewTeamMemberGroup(teamMemberGroupId).subscribe(
+    if(this.teamMemberGroupId!=undefined && this.teamMemberGroupId>0){
+      this.findTeamMemberGroupModules();
+    }else{
+      this.findAgencyModules();
+    }
+    
+  }
+
+  private findAgencyModules() {
+    this.authenticationService.getAssigedAgencyModules(this.agencyId).
+      subscribe(
+        response => {
+          this.defaultModules = response.data;
+          this.emptyModules = this.defaultModules.length == 0;
+          this.modulesLoader = false;
+        }, error => {
+          this.addHttpError(error);
+        }
+      );
+  }
+
+  private findTeamMemberGroupModules() {
+    this.authenticationService.previewTeamMemberGroup(this.teamMemberGroupId).subscribe(
       response => {
-       this.defaultModules = response.data.teamMemberModuleDTOs;
-       this.emptyModules = this.defaultModules.length==0;
-       this.modulesLoader = false;
-      }, error => {
-        this.logger.log(error);
+        this.defaultModules = response.data.teamMemberModuleDTOs;
+        this.emptyModules = this.defaultModules.length == 0;
         this.modulesLoader = false;
-        $('#preview-team-member-popup').modal('hide');
-        this.referenceService.showSweetAlertServerErrorMessage();
+      }, error => {
+        this.addHttpError(error);
       }
     );
+  }
+
+  private addHttpError(error: any) {
+    this.logger.log(error);
+    this.modulesLoader = false;
+    $('#preview-team-member-popup').modal('hide');
+    this.referenceService.showSweetAlertServerErrorMessage();
   }
 
   hidePopup(){

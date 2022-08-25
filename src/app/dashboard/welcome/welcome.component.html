@@ -12,44 +12,54 @@
      box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
  }
  </style>
+
+
  <div class="page-content" *ngIf="!showDealForm">
-  <div *ngIf="showSandboxText" class="alert alert-info">
-    <strong>{{properties?.sandboxText}}</strong>
-  </div>
-    <div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
-      <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
-               'alert-danger': userDefaultPage.responseType == 'ERROR'}">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null"><span aria-hidden="true">&times;</span></button>
-              <h4 class="flex" style="padding-top: 10px;">
-                <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
-               'fa-exclamation': userDefaultPage.responseType == 'ERROR'}"
-                aria-hidden="true" style="padding-right: 7px;"></i>
-                <span>{{userDefaultPage.responseMessage}}</span>
-             </h4>
+      <div *ngIf="showSandboxText" class="alert alert-info">
+        <strong>{{properties?.sandboxText}}</strong>
       </div>
+      <div class="page-bar p0" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
+        <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
+                'alert-danger': userDefaultPage.responseType == 'ERROR'}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="userDefaultPage.responseType = null"><span aria-hidden="true">&times;</span></button>
+                <h4 class="flex" style="padding-top: 10px;">
+                  <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
+                'fa-exclamation': userDefaultPage.responseType == 'ERROR'}"
+                  aria-hidden="true" style="padding-right: 7px;"></i>
+                  <span>{{userDefaultPage.responseMessage}}</span>
+              </h4>
     </div>
     <div class="page-bar p0" [hidden]="ngxLoading" [ngStyle]="{'background-color':skin.divBgColor}">
       <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
         <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
           <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow" [ngStyle]="{'color':skin.headerTextColor}">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
         </div>
-        <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
-          <div style="display: flex;">
-            <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-            <div>
-              <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
-                size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
+      </div>
+      <div class="page-bar p0" [hidden]="ngxLoading">
+        <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
+          <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
+            <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
+          </div>
+          <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+            <div style="display: flex;">
+              <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+              <div>
+                <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
+                  size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
+              </div>
             </div>
           </div>
+          <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
         </div>
-        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
-    </div>
+      <ng-container *ngIf="!authenticationService?.module?.agencyUserDashboard">
+    
     <div class="page-bar page-bar-shadow" [ngStyle]="{'background-color':skin.divBgColor}">
       <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
       <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
       <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
     </div>
+
       <!------------Dashbaord Button Carusel---------------------->    
       <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
       <app-vendor-activity-analytics></app-vendor-activity-analytics>
@@ -57,193 +67,197 @@
       <div style="position: relative; top:-10px;">
       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !welcomePageItemsLoader "></app-response-message>
       </div>
-    <div class="page-bar page-bar-shadow" *ngIf="!authenticationService?.module?.contentLoader &&!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible && showDiv">
-     <div class="col-xs-12">
-       <!--Partners-->
-       <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">
-       <div class="flex">
-         <div  class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
-              <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>
-                {{authenticationService?.partnerModule?.customName | slice:0:15}}
-                <span *ngIf="authenticationService?.partnerModule?.customName?.length>15">...</span>
-              </h1>
-              <p class="left-side">{{welcome_text.contacts}}</p>
-              <div class="text-left">
-                <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block">
-           <img src="../../assets/images/welcome/img-partners.png" alt="" style="max-width: 100%; height: 200px;margin: -24px 61px;">
-         </div>
-        </div>
-        <div class="divider"></div>
-       </ng-container>
-        <!--Content-->
-        <ng-container *ngIf="welcomePageItems?.showContent">
+      <div class="page-bar page-bar-shadow" *ngIf="!authenticationService?.module?.contentLoader &&!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !welcomePageItemsLoader && !customResponse.isVisible && showDiv">
+      <div class="col-xs-12">
+        <!--Partners-->
+        <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">
         <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='left'">
-           <img alt="First slide [900x500]" style="height: 200px;"
-           data-src="holder.js/900x500/auto/#777:#555/text:First slide"
-           src="../../../assets/images/welcome/img-videos.png"
-           data-holder-rendered="true">
-         </div>
-          <div class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
-              <h1 style="color: #76c9ff;text-align: left" translate>Content</h1>
-              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
-              <div style="text-align: left">
-                <button class="btn btn-xs color2" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')" translate>Tell me how</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='right'">
-           <img alt="First slide [900x500]" style="height: 200px;"
-           data-src="holder.js/900x500/auto/#777:#555/text:First slide"
-           src="../../../assets/images/welcome/img-videos.png"
-           data-holder-rendered="true">
-         </div>
-         </div>
-         <div class="divider"></div>
-         </ng-container>
-         <!--Contacts---->
-         <ng-container *ngIf="welcomePageItems?.showContacts">
-          <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='left'">
-            <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px;" alt="">
-          </div>
-          <div class="col-sm-6 col-xs-12 block" style="right: -46px;">
-            <div class="text-block">
-              <h1 style="color: #00B3B3;text-align: left;" translate>contacts</h1>
-              <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
-              <div style="text-align: left;">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='right'">
-            <img src="../../../assets/images/welcome/img-partners.png"  alt="" style="max-width: 100%;height: 200px;margin: -24px 61px;">
-          </div>
-        </div>
-        <div class="divider"></div>
-         </ng-container>
-        <!----Templates----->
-        <ng-container *ngIf="welcomePageItems?.showTemplates">
-        <div class="flex">
-        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='left'">
-            <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
-          </div>
-          <div class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
-              <h1 class="text-left" style="color: #FBB23E" translate>Templates</h1>
-              <p class="left-side">{{welcome_text.templates}}</p>
-              <div class="text-left">
-                <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='right'" >
-           <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
-         </div>
-        </div>
-        <div class="divider"></div>
-        </ng-container>
-        <!----Campaigns----->
-        <ng-container *ngIf="welcomePageItems?.showCampaigns">
-            <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
-              <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
-            </div>
-              <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
-                <div class="text-block">
-                  <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
-                  <p class="left-side">{{welcome_text.campaigns}}</p>
-                  <div class="text-left">
-                    <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
-                  </div>
+          <div  class="col-sm-6 col-xs-12 block">
+              <div class="text-block">
+                <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>
+                  {{authenticationService?.partnerModule?.customName | slice:0:15}}
+                  <span *ngIf="authenticationService?.partnerModule?.customName?.length>15">...</span>
+                </h1>
+                <p class="left-side">{{welcome_text.contacts}}</p>
+                <div class="text-left">
+                  <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
+                  <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
                 </div>
               </div>
-              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
-                <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
-              </div>
             </div>
-            <div class="divider"></div>
-        </ng-container>
-        <!--Team Members------>
-        <ng-container *ngIf="welcomePageItems?.showTeamMembers">
-        <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='left'" >
-              <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
-            </div>
-            <div class="col-sm-6 col-xs-12 block">
-                  <div class="text-block">
-                    <h1 class="text-left" style="color: #00B3B3" translate>Team members</h1>
-                    <p class="left-side">Add team members to make content and campaign management a group effort</p>
-                    <div class="text-left">
-                      <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
-                      <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
-                  <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
-                </div>
+            <div class="col-sm-6 col-xs-12 block image-block">
+            <img src="../../assets/images/welcome/img-partners.png" alt="" style="max-width: 100%; height: 200px;margin: -24px 61px;">
+          </div>
           </div>
           <div class="divider"></div>
         </ng-container>
-          <!---Social Accounts-->
-          <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
-        <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
-            <img class="" style="float: left !important; " alt="" src="../../../assets/images/welcome/img-social.png">
+          <!--Content-->
+          <ng-container *ngIf="welcomePageItems?.showContent">
+          <div class="flex">
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='left'">
+            <img alt="First slide [900x500]" style="height: 200px;"
+            data-src="holder.js/900x500/auto/#777:#555/text:First slide"
+            src="../../../assets/images/welcome/img-videos.png"
+            data-holder-rendered="true">
           </div>
-          <div class="col-sm-6 col-xs-12 block" style="position: relative; right: -40px;">
-            <div class="text-block">
-              <h1 class="text-left" style="color: #76C9FF" translate>Social Accounts</h1>
-              <p class="left-side">{{welcome_text.socialMedia}}</p>
-              <div class="text-left">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='right'">
-            <img  src="../../../assets/images/welcome/img-social.png" alt=""  style="height: 208px;;">
-          </div>
-        </div>
-        <div class="divider"></div>
-        </ng-container>
-        <!---Analytics---->
-        <ng-container *ngIf="welcomePageItems?.showAnalytics">
-            <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
-                <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
-              </div>
-              <div class="col-sm-6 col-xs-12 block">
-                <div class="text-block">
-                  <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
-                  <p class="left-side">{{welcome_text.analytics}}</p>
-                  <div  class="text-left">
-                    <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
-                  </div>
+            <div class="col-sm-6 col-xs-12 block">
+              <div class="text-block">
+                <h1 style="color: #76c9ff;text-align: left" translate>Content</h1>
+                <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
+                <div style="text-align: left">
+                  <button class="btn btn-xs color2" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
+                  <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')" translate>Tell me how</button>
                 </div>
               </div>
-              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
-                <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
+            </div>
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='right'">
+            <img alt="First slide [900x500]" style="height: 200px;"
+            data-src="holder.js/900x500/auto/#777:#555/text:First slide"
+            src="../../../assets/images/welcome/img-videos.png"
+            data-holder-rendered="true">
+          </div>
+          </div>
+          <div class="divider"></div>
+          </ng-container>
+          <!--Contacts---->
+          <ng-container *ngIf="welcomePageItems?.showContacts">
+            <div class="flex">
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='left'">
+              <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px;" alt="">
+            </div>
+            <div class="col-sm-6 col-xs-12 block" style="right: -46px;">
+              <div class="text-block">
+                <h1 style="color: #00B3B3;text-align: left;" translate>contacts</h1>
+                <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
+                <div style="text-align: left;">
+                  <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
+                  <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
+                </div>
               </div>
             </div>
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='right'">
+              <img src="../../../assets/images/welcome/img-partners.png"  alt="" style="max-width: 100%;height: 200px;margin: -24px 61px;">
+            </div>
+          </div>
+          <div class="divider"></div>
+          </ng-container>
+          <!----Templates----->
+          <ng-container *ngIf="welcomePageItems?.showTemplates">
+          <div class="flex">
+          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='left'">
+              <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
+            </div>
+            <div class="col-sm-6 col-xs-12 block">
+              <div class="text-block">
+                <h1 class="text-left" style="color: #FBB23E" translate>Templates</h1>
+                <p class="left-side">{{welcome_text.templates}}</p>
+                <div class="text-left">
+                  <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
+                  <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='right'" >
+            <img style="height: 200px;" alt="" src="../../../assets/images/welcome/img-templates.png">
+          </div>
+          </div>
+          <div class="divider"></div>
+          </ng-container>
+          <!----Campaigns----->
+          <ng-container *ngIf="welcomePageItems?.showCampaigns">
+              <div class="flex">
+              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
+                <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
+              </div>
+                <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
+                  <div class="text-block">
+                    <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
+                    <p class="left-side">{{welcome_text.campaigns}}</p>
+                    <div class="text-left">
+                      <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
+                      <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
+                  <img src="../../../assets/images/welcome/img-campaigns.png" alt="" style="height: 203px;float: right;margin-top: -18px;">
+                </div>
+              </div>
+              <div class="divider"></div>
+          </ng-container>
+          <!--Team Members------>
+          <ng-container *ngIf="welcomePageItems?.showTeamMembers">
+          <div class="flex">
+              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='left'" >
+                <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
+              </div>
+              <div class="col-sm-6 col-xs-12 block">
+                    <div class="text-block">
+                      <h1 class="text-left" style="color: #00B3B3" translate>Team members</h1>
+                      <p class="left-side">Add team members to make content and campaign management a group effort</p>
+                      <div class="text-left">
+                        <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
+                        <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
+                    <img src="../../../assets/images/welcome/img-members.png" alt="" style="max-width: 100%;height: 202px;margin-top: -10px;">
+                  </div>
+            </div>
             <div class="divider"></div>
-        </ng-container>
+          </ng-container>
+            <!---Social Accounts-->
+            <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
+          <div class="flex">
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
+              <img class="" style="float: left !important; " alt="" src="../../../assets/images/welcome/img-social.png">
+            </div>
+            <div class="col-sm-6 col-xs-12 block" style="position: relative; right: -40px;">
+              <div class="text-block">
+                <h1 class="text-left" style="color: #76C9FF" translate>Social Accounts</h1>
+                <p class="left-side">{{welcome_text.socialMedia}}</p>
+                <div class="text-left">
+                  <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
+                  <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='right'">
+              <img  src="../../../assets/images/welcome/img-social.png" alt=""  style="height: 208px;;">
+            </div>
+          </div>
+          <div class="divider"></div>
+          </ng-container>
+          <!---Analytics---->
+          <ng-container *ngIf="welcomePageItems?.showAnalytics">
+              <div class="flex">
+              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
+                  <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
+                </div>
+                <div class="col-sm-6 col-xs-12 block">
+                  <div class="text-block">
+                    <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
+                    <p class="left-side">{{welcome_text.analytics}}</p>
+                    <div  class="text-left">
+                      <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
+                      <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
+                  <img src="../../../assets/images/welcome/analytics.png" alt="" style="height: 200px;">
+                </div>
+              </div>
+              <div class="divider"></div>
+          </ng-container>
+        </div>
       </div>
-    </div>
-    <app-scroll-top></app-scroll-top>
+      </ng-container>
+      <ng-container *ngIf="authenticationService?.module.agencyUserDashboard">
+        <app-agency-dashboard></app-agency-dashboard>
+      </ng-container>
+      <app-scroll-top></app-scroll-top>
  </div>
 
  <!-- Deal Form-->

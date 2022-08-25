@@ -59,3 +59,30 @@ position: relative;
 z-index: 99;
 top: 6px;
 }
+.published{
+  background-color: green !important;
+}
+
+.view-banner{
+   margin-top: 7px;
+   margin-left:0px;
+   background-color: #00a6e8;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    width: 125px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tag {
+  font-size: 12px;
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  margin: 2px 2px 2px 0px;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: inline;
+}

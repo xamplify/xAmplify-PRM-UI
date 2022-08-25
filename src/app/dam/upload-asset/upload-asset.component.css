@@ -196,3 +196,41 @@ width:150%;
     width:250%;
   }
 }
+
+.box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
+
+.customDisableCss {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+@media only screen and (max-width:600px){
+  #my-video{  height:160px; width: 287px }
+}
+@media only screen and (min-width:768px){
+  #my-video{  height:160px; width: 217px; }
+}
+@media only screen and (min-width:992px){
+  #my-video{  height:160px; width:290px;}
+}
+#myVideo{  background-color: #5fdbf5; width: 100%; height: 350px;}
+
+.customDisableCss {
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loaderSymbol{ height: 63px;color: black; border-color: #000000; background: #dff0d8;}
+@media only screen and (max-width:600px){
+.loaderSymbol{ height: 130px;color: black; border-color: #000000; background: #dff0d8;}
+}
+
+.loader-image-tag {
+  width: 64px;
+  top: -16px;
+  left: -18px;
+  position: relative;
+}
+

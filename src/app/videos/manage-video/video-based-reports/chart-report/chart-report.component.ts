@@ -33,6 +33,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   downloadCsvList: any;
   viewsBarData: any;
   loading = false;
+  damId: number = 0;
   constructor(public referenceService: ReferenceService, public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
     public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService,
     public authenticationService: AuthenticationService) {
@@ -41,6 +42,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     this.videoViewsData = this.videoUtilService.videoViewsData;
     this.timePeriod = this.videoUtilService.timePeriod;
     this.timePeriodValue = this.videoUtilService.timePeriodValue;
+    this.damId = this.videoUtilService.damId;
     for (let i = 0; i < this.videoUtilService.sortMonthDates.length; i++) {
       if (this.videoUtilService.timePeriod === this.videoUtilService.sortMonthDates[i].value) {
         this.daySort = this.videoUtilService.sortMonthDates[i];
@@ -210,10 +212,21 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   } catch(error){this.xtremandLogger.log('error in ngonit'+error); }
   }
   ngOnDestroy() {
-    try{
-    if (!this.checkVideo) {
-      this.videoUtilService.selectedVideo = null;
-    }
-  } catch(error){this.xtremandLogger.log('error in ngOnDestroy'+error); }
+      try {
+          if (!this.checkVideo) {
+              this.videoUtilService.selectedVideo = null;
+          }
+      } catch (error) { this.xtremandLogger.log('error in ngOnDestroy' + error); }
   }
+  
+  goToDam() {
+      this.loading = true;
+      this.referenceService.goToRouter("/home/dam/manage");
+  }
+
+  goBack() {
+      this.loading = true;
+      this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + this.damId);
+	}
+  
 }

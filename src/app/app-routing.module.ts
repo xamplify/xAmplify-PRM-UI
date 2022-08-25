@@ -96,6 +96,9 @@ export const routes: Routes = [
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
 			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: false } },
 			{ path: 'select-modules', component: SelectContentModulesComponent },
+			/*******XNFR-83*******/
+			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: false } },
+			/*******XNFR-83*******/
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},

@@ -19,8 +19,14 @@ export class EnvService {
   clientId = "";
   clientSecret = "";
 
+  beeTemplateDevClientId = "";
+  beeTemplateDevClientSecret = "";
+
   beeTemplateQAClientId = "";
   beeTemplateQAClientSecret = "";
+
+  beeTemplateReleaseClientId = "";
+  beeTemplateReleaseClientSecret = "";
 
   vendorRoleHash = "";
   partnerRoleHash = "";
@@ -33,8 +39,14 @@ export class EnvService {
   beePageDevClientId = "";
   beePageDevClientSecret = "";
 
+  beePageQAClientId = "";
+  beePageQAClientSecret = "";
+
   beePageProdClientId = "";
   beePageProdClientSecret = "";
+
+  beePageReleaseClientId = "";
+  beePageReleaseClientSecret = "";
 
 
   /******Auto Reload Configurations */

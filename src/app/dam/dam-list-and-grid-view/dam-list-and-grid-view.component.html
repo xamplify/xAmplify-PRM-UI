@@ -57,8 +57,24 @@
 						</div>
 					</div>
 				</div>
+							<!-- // -->
+			       <!-- <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="!isPartnerView && (authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()
+			       || authenticationService.isMarketingPartner() || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember
+			       || authenticationService.isMarketingAndPartnerTeamMember)">
+                   <ul class="mix-filter">
+                      <li class="filter" (click)="listAssetsByType('myAssets')" [class.selectedtype]="videoFileService.videoType === 'myAssets'">
+                          My Assets
+                      </li>
+                      <li class="filter" (click)="listAssetsByType('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
+                        Partner Assets
+                    </li>
+                    </ul>
+                  </div> -->
+			<!-- // -->
+				
+				
 			</div>
-
+			
 			<app-list-loader
 				*ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
 			<app-grid-loader
@@ -72,34 +88,38 @@
 						aria-describedby="manageAssetTables">
 						<thead>
 							<tr>
-								<th colspan="2" style="width: 45%" id="border-bottom"><span
-									class="gridHeader" translate>Asset Details </span></th>
+								<!-- <th colspan="2" style="width: 45%" id="border-bottom"><span
+									class="gridHeader" translate>Asset Details </span></th> -->
+									<th style="width:45%" translate>Asset Details</th>
 								<th class="text-center" style="width: 5%;" scope="row" translate>Type</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="isPartnerView">Published On</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="!isPartnerView">Created On</th>
-								<th class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
+								<th  class="text-center" id="min-width" style="width: 30%;" translate>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							<ng-container
 								*ngFor="let asset of pagination.pagedItems ;let i =index">
 							<tr>
-								<td style="width: 10%;">
+							 <td *ngIf="(!isPartnerView && asset.videoId)">
+                        <app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo(asset.id, $event)"></app-video-thumbnail>
+                        </td>
+                        <td  *ngIf="!asset.videoId || isPartnerView" >
 									<div class="thumbnail-wrapper">
 										<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
 											alt="Image Not Found">
 									</div>
-								</td>
-								<td>
+							
+							<div class="title-div" style="width: 35%;">
 									<h4 class="moreipsis mt5 mb5 f-w-600"
 										title="{{asset?.assetName}}">
-										<span><strong>{{asset?.assetName}}</strong></span>
+										<span><strong>{{asset?.assetName | slice: 0: 23}}</strong></span>
 									</h4>
 									<h6 class="moreipsis" title="{{asset?.displayName}}">
 										<span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
-										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName}}</strong></span>
+										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName | slice: 0: 23}}</strong></span>
 									</h6>
 									<h6 class="moreipsis"
 										*ngIf="!isPartnerView && asset?.beeTemplate">
@@ -131,11 +151,13 @@
 										</ng-container>
 									</h6>
 									<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
+									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
+									</div>
 								</td>
 								<td class="text-center">{{asset?.assetType}}</td>
 								<td class="text-center"><app-timestamp
 										[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-								<td class="mAlignView">
+								<td class="mAlignView" >
 									<div
 										[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
 										<ng-container *ngIf="asset?.status=='COMPLETED'">
@@ -149,15 +171,27 @@
 										<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a> 
-										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id)">
+										<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
 											 <i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 										</a>
 										</div>
+										<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+                                        <a *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+                                          <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                                        </a>
+
+                                       <a class="disable" *ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+                                         <i class="fa fa-bullhorn" aria-hidden="true" ></i>
+                                       </a>
+                                       <a class="disable" *ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+                                         <i class="fa fa-bullhorn" aria-hidden="true" ></i>
+                                       </a>
+                                       </ng-container>
 										<div class="mActionAlign"> 
 										<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 											 <i	class="fa fa-eye" aria-hidden="true"></i>
 										</a> 
-										<a *ngIf="!isPartnerView" title="Publish" (click)="openPublishPopup(asset.id)">
+										<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
 											 <i	class="fa fa-share" aria-hidden="true"></i>
 										</a>
 										</div> 
@@ -165,7 +199,7 @@
 										<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
 											 <i class="fa fa-download"	aria-hidden="true"></i>
 										</a> 
-										<a title="View Analytics" (click)="viewAnalytics(asset)">
+										<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 											<i class="fa fa-line-chart" aria-hidden="true"></i>
 										</a> 
 										<a *ngIf="isPartnerView" title="View Details"
@@ -174,7 +208,7 @@
 										</a>
 										</div>
 										<div class="mActionAlign2">
-										<a *ngIf="!isPartnerView && asset?.delete " title="Delete"
+										<a *ngIf="!isPartnerView && asset?.delete" title="Delete"
 											(click)="confirmDelete(asset)"> 
 											<i class="fa fa-trash-o" aria-hidden="true"></i>
 										</a>
@@ -234,12 +268,13 @@
 														<div class="actions-block override-actions custom-width-icon">
 															<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
 																class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
-															</a>
-															 <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
-																(click)="editDetails(asset.id)"> <i
-																class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 															</a> 
-															<a title="Preview" (click)="preview(asset)"> <i
+															<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit" (click)="addOrEdit(asset.id)"> 
+																<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+															</a> 
+															<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+															</a> <a title="Preview" (click)="preview(asset)"> <i
 																class="fa fa-eye" aria-hidden="true"></i>
 															</a> 
 															<a title="Publish" (click)="openPublishPopup(asset.id)">
@@ -248,7 +283,7 @@
 															<a title="Download" (click)="openPopup(asset)"> <i
 																class="fa fa-download" aria-hidden="true"></i>
 															</a> 
-															<a title="View Analytics" (click)="viewAnalytics(asset)">
+															<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 																<i class="fa fa-line-chart" aria-hidden="true"></i>
 															</a> 
 															<a title="Delete" (click)="confirmDelete(asset)"> <i
@@ -390,20 +425,20 @@
 								<a class="mMobileDisable" *ngIf="asset?.beeTemplate" title="Design"
 									(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 									aria-hidden="true"></i>
-								</a> <a class="mMobileDisable" *ngIf="!isPartnerView" title="Edit"
-									(click)="editDetails(asset.id)">
+								</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"
+									(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate)">
 									 <i class="fa fa-edit mDisableColor"
 									aria-hidden="true"></i>
-								</a> <a title="Preview" (click)="preview(asset)"> <i
+								</a> <a title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
 									class="fa fa-eye" aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Publish"
+								</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
 									(click)="openPublishPopup(asset.id)"> <i
 									class="fa fa-share" aria-hidden="true"></i>
-								</a> <a title="Download" (click)="openPopup(asset)"> <i
+								</a> <a *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)"> <i
 									class="fa fa-download" aria-hidden="true"></i>
-								</a> <a title="View Analytics" (click)="viewAnalytics(asset)"> <i
+								</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 									class="fa fa-line-chart" aria-hidden="true"></i>
-								</a> <a *ngIf="!isPartnerView" title="Delete" class="delete"
+								</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete" class="delete"
 									(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 									aria-hidden="true"></i>
 								</a>
@@ -447,8 +482,7 @@
 <!--Delete Asset-->
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter()" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
-	 (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>

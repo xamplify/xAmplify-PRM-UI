@@ -14,13 +14,15 @@ import { Pagination } from '../../core/models/pagination';
 import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
-declare var BeePlugin, swal, $: any;
+import { FontAwesomeClassName } from 'app/common/models/font-awesome-class-name';
+
+declare var BeePlugin:any, swal:any, $: any;
 
 @Component({
     selector: 'app-create-template',
     templateUrl: './create-template.component.html',
     styleUrls: ['./create-template.component.css'],
-    providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption]
+    providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption,FontAwesomeClassName]
 })
 export class CreateTemplateComponent implements OnInit, OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -48,9 +50,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
     showForms: boolean = false;
-
+    showCommentsIcon = false;
+    callCommentsComponent = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
-        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
+        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
+        private route: ActivatedRoute,public fontAwesomeClassName:FontAwesomeClassName) {
+        this.showCommentsIcon = this.refService.getCurrentRouteUrl().indexOf("/edit")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
@@ -61,14 +66,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
             this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-
+            /********Template Names************/
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
                     names = data;
                 },
                 error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAvailableNames()"));
-
+            /********Company Profile Images************/
             emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
                 (data: any) => {
                     self.companyProfileImages = data;
@@ -76,13 +81,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 error => { this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAllCompanyProfileImages()"));
 
-
+            /********Folder Names************/
             authenticationService.getCategoryNamesByUserId(self.loggedInUserId).subscribe(
                 (data: any) => {
                     self.categoryNames = data.data;
                 },
-                error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
-                () => this.logger.info("Finished getCategoryNamesByUserId()"));
+                error => {
+                     this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error);
+                 });
 
 
             var request = function (method, url, data, type, callback) {
@@ -137,7 +143,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 }
                 if (!isDefaultTemplate) {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                    /*******XNFR-83*****/
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown += '<select class="form-control" id="category-dropdown">';
@@ -152,7 +159,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                     dropDown += '</select>';
                     dropDown += '</div><br>';
                     buttons.append(dropDown);
-
                     buttons.append(self.createButton('Save As', function () {
                         self.clickedButtonName = "SAVE_AS";
                         self.saveTemplate();
@@ -164,12 +170,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         self.clickedButtonName = "CANCEL";
                         swal.close();
                     }));
-
-
-                    swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
+                    swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
                 } else {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                    /*******XNFR-83*****/
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown += '<select class="form-control" id="category-dropdown">';
@@ -179,7 +184,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                     dropDown += '</select>';
                     dropDown += '</div><br>';
                     buttons.append(dropDown);
-
                     buttons.append(self.createButton('Save', function () {
                         self.clickedButtonName = "SAVE";
                         self.saveTemplate();
@@ -191,7 +195,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         title: title,
                         html: buttons,
                         showConfirmButton: false,
-                        showCancelButton: false
+                        showCancelButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
                 }
                 $('#templateNameId').on('input', function (event) {
@@ -229,12 +235,14 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             mergeTags = this.refService.addMergeTags(mergeTags,false,event);
             if (self.refService.companyId != undefined && self.refService.companyId > 0) {
                 var beeUserId = "bee-" + self.refService.companyId;
+                if(self.authenticationService.module.isAgencyCompany){
+                    beeUserId = "bee-"+this.authenticationService.vendorCompanyId;
+                 }
                 var roleHash = self.authenticationService.vendorRoleHash;
                 var beeConfig = {
                     uid: beeUserId,
                     container: 'bee-plugin-container',
                     autosave: 15,
-                    //language: 'en-US',
                     language: this.authenticationService.beeLanguageCode,
                     mergeTags: mergeTags,
                     roleHash: roleHash,
@@ -276,10 +284,21 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                 function (template: any) {
                                     if (emailTemplateService.emailTemplate != undefined) {
                                         var body = emailTemplateService.emailTemplate.jsonBody;
-                                        $.each(self.companyProfileImages, function (index, value) {
-                                            body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-                                        });
-                                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                        if(self.authenticationService.module.isAgencyCompany){
+                                            $.each(self.companyProfileImages, function (index:number, value:any) {
+                                                body = body.replace(value, self.authenticationService.v_companyLogoImagePath);
+                                            });
+                                        }
+                                        if(!self.authenticationService.module.isAgencyCompany){
+                                            $.each(self.companyProfileImages, function (index:number, value:any) {
+                                                body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                            });
+                                        }
+                                        if(self.authenticationService.module.isAgencyCompany){
+                                            body = body.replace("https://xamp.io/vod/replace-company-logo.png",  self.authenticationService.v_companyLogoImagePath);
+                                        }else{
+                                            body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                                        }
                                         self.emailTemplate.jsonBody = body;
                                         var jsonBody = JSON.parse(body);
                                         bee.load(jsonBody);
@@ -415,9 +434,13 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     }
 
     updateCompanyLogo(emailTemplate: EmailTemplate) {
-        emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+        let replacableImagePath = this.authenticationService.MEDIA_URL + this.refService.companyProfileImage;
+        if(this.authenticationService.module.isAgencyCompany){
+            replacableImagePath =  this.authenticationService.v_companyLogoImagePath;
+        }
+        emailTemplate.jsonBody = emailTemplate.jsonBody.replace(replacableImagePath, "https://xamp.io/vod/replace-company-logo.png");
         if (emailTemplate.body != undefined) {
-            emailTemplate.body = emailTemplate.body.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+            emailTemplate.body = emailTemplate.body.replace(replacableImagePath, "https://xamp.io/vod/replace-company-logo.png");
         }
     }
 

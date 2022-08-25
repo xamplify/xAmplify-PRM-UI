@@ -13,7 +13,7 @@ import { Roles } from '../../core/models/roles';
 import { Module } from '../models/module';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 
-declare var window,$: any;
+declare var window:any, $: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -152,6 +152,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.loginAs = data.loginAs;
 					/*****XNFR-130*****/
 					this.authenticationService.module.prmDashboard = data.prmDashboard;
+					/*******XNFR-83*******/
+					this.authenticationService.module.agencyAccess = data.agencyAccess;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -219,6 +221,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
+		/************XNFR-83******************/
+		module.isAgency = roleDisplayDto.agency;
+		module.isAgencyTeamMember = roleDisplayDto.agencyTeamMember;
+		module.isAgencySuperVisor = roleDisplayDto.agencySuperVisor;
+		module.isAgencyCompany = module.isAgency || module.isAgencyTeamMember;
+		module.agencyUserDashboard = roleDisplayDto.agencyUserDashboard;
 	}
 
 	setContentMenu(data: any, module: any) {
@@ -232,7 +240,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.playbookAccess = data.playbook;
 		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
 		if (data.content) {
-			this.contentDivs.push(module.isVideo);
+			//this.contentDivs.push(module.isVideo);
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);

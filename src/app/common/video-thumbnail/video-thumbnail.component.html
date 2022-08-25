@@ -43,6 +43,28 @@
       <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
     </h6>
       <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
+      <h6 *ngIf="published" class="view-banner published" translate>Published</h6>
+      <!-- tags start -->
+<h6 style="padding-top: 5px;">
+				<ng-container *ngIf="videoFile.tagNames?.length > 0">
+				<div class="tag" title="{{videoFile.tagNames[0]}}">
+					<ng-container *ngIf="videoFile.tagNames?.length == 1">{{videoFile.tagNames[0]}}
+					</ng-container>
+					<ng-container *ngIf="videoFile.tagNames?.length > 1">{{videoFile.tagNames[0]
+					| slice:0:15}} <span *ngIf="videoFile.tagNames[0]?.length>15">..</span>
+					</ng-container>
+				</div>
+				<ng-container *ngIf="videoFile.tagNames.length > 1">
+				<div class="tag" title="{{videoFile.tagNames[1]}}">
+					{{videoFile.tagNames[1] | slice:0:15}} <span
+						*ngIf="videoFile.tagNames[1]?.length>15">..</span>
+				</div>
+				</ng-container> <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots"
+					data-toggle="tooltip" data-placement="top"
+					title="{{videoFile.toolTipTagNames}}">...</span>
+					</ng-container>
+			</h6> 
+			<!-- tags end --> 
   </a>
 </div>
 </div>
