@@ -63,7 +63,7 @@
                         <div style="position: relative; top: -10px">
                             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                         </div>
-                        <div *ngIf="selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12" style="width: 100%;padding-left: 15px;" class="row">
+                        <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0" style="width: 100%;padding-left: 15px;" class="row">
                             <label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
 									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
@@ -74,7 +74,9 @@
                                 <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
                             </div>
                         </div>
-
+                        <div class="col-md-3 col-sm-4 col-xs-12" *ngIf="filteredEmailTemplates?.length == 0">
+                            No Templates Available
+                        </div>
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
                             <div class="grid-box">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
