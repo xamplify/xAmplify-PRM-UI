@@ -20,6 +20,7 @@ import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DownloadRequestDto } from 'app/util/models/download-request-dto';
+import { CustomSkin } from '../models/custom-skin';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -75,6 +76,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    downloadRequestButtonClicked = false;
    duplicateRequest = false;
    showSweetAlert = false;
+   skin:CustomSkin = new CustomSkin();
+   userId: number;
+
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
@@ -89,6 +93,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
 }
 
   ngOnInit() {
+    this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
         this.vendorCompanyProfileName = companyProfileName;
@@ -483,5 +488,15 @@ showCampaignDetails(campaign:any){
         }
         this.showSweetAlert = false;
     }
-
+    
+    getMainContent(userId:number){
+        this.dashBoardService.getTopNavigationBarCustomSkin(userId).subscribe(
+          (response) =>{
+           let cskinMap  = response.data;
+           this.skin  = cskinMap.MAIN_CONTENT;
+           console.log(this.skin);
+        }
+        )
+        
+      }
 }
