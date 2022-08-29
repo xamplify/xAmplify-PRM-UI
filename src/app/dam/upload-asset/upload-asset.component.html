@@ -98,7 +98,7 @@
 									<button class="text-center" style="background-color:white; cursor:default">
 											<span *ngIf="processing"><i class="glyphicon glyphicon-ok"></i></span>
 										</button> 
-									<button [disabled]="processing==true" type="button" class="btn btn-danger btn-sm" (click)="removefileUploadVideo()" translate>
+									<button [disabled]="processing==true || isDisableForm" type="button" class="btn btn-danger btn-sm" (click)="removefileUploadVideo()" translate>
 											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
                 </div>
