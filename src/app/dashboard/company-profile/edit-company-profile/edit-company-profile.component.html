@@ -388,6 +388,12 @@
 											<td><input type="checkbox" [(ngModel)]="campaignAccess.agency"
 													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
+										<!-- XNFR-134 -->
+										<tr>
+											<th scope="row">Custom Skin Settings</th>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
+													[ngModelOptions]="{standalone: true}"></td>
+										</tr>
 										</table>
 									</div>
 									<div class="modal-footer">
@@ -739,7 +745,7 @@
 							<!-- -End Of Panel -->
 						</div>
 						</div>
-						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;" id="customskin" *ngIf="tabIndex==2">
+						<!-- <div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;" id="customskin" *ngIf="tabIndex==2">
 							<div class="portlet light mPad" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;" >
 								<div class="portlet-title">
 									<h4  class="pull-left m10 ">
@@ -752,7 +758,7 @@
 									<app-custom-skin></app-custom-skin>
                                 </div>
 							</div>
-						</div>
+						</div> -->
 						<!-- End of col-xs-6 -->
 					</div>
 

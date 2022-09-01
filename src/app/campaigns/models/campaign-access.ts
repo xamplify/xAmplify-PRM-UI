@@ -33,4 +33,5 @@ export class CampaignAccess {
   dataShare = false;
   oneClickLaunch = false;
   agency = false;
+  customSkinSettings = false;
 }

@@ -110,6 +110,7 @@ export class AuthenticationService {
   mdfAccessAsPartner = false;
   opportunitiesAccessAsPartner = false;
   unauthorized = false;
+  customSkinSettings = false;
   moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
   partnerModule:ModuleCustomName = new ModuleCustomName();
   beeHostApi = "";
