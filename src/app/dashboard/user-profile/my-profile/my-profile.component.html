@@ -100,6 +100,10 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
+                            <li *ngIf="customSkinSettingOption"  [ngClass]="{'active': activeTabName == 'customskin'}">
+                                <a (click)="activateTab('customskin');clearCustomResponse()" translate>
+                                    {{properties.customskin | translate}} </a>
+                            </li>
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
@@ -1111,6 +1115,7 @@
                                     
                                     </div>
                                     <!-- END Categories TAB -->
+                                    <app-custom-skin class="tab-pane" [ngClass]="{'active': activeTabName == 'customskin'}"></app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>

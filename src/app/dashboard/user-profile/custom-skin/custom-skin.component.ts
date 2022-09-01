@@ -1,6 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -43,9 +44,11 @@ export class CustomSkinComponent implements OnInit {
   moduleStatusList: string[] =["--Select Type--","LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
   isLoggedInFromAdminSection = false;
   loading = false;
-  activeTabName: string = "";
+  activeTabName: string = "header";
+  showFooter:boolean;
+  customResponse: CustomResponse = new CustomResponse();
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
-                           "ui-sans-serif","ui-monospace","'Open Sans', sans-serif"]
+                           "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -55,61 +58,79 @@ export class CustomSkinComponent implements OnInit {
      }
 
   ngOnInit() {
-    this.form.moduleTypeString = this.moduleStatusList[0];
-    this.form.fontFamily = this.fontStyles[0];
+        this.activeTabNav(this.activeTabName);
   }
-  tabIndex = 1;
+
+  
+  clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
   this.activeTabName = activateTab;
-  if(this.activeTabName == "home"){
-    this.tabIndex =1;
-  }else if(this.activeTabName == "header"){
-    this.tabIndex = 2;
+  
+  if(this.activeTabName == "header"){
+    this.form.moduleTypeString = this.moduleStatusList[2];
   }else if(this.activeTabName == "leftmenu"){
-    this.tabIndex = 3;
+    this.form.moduleTypeString = this.moduleStatusList[1];
   }else if(this.activeTabName == "pagecontent"){
-    this.tabIndex = 4;
+    this.form.moduleTypeString = this.moduleStatusList[4];
+  }else if (this.activeTabName == "footer"){
+    this.form.moduleTypeString = this.moduleStatusList[3];
   }
+   this.getDefaultSkin();
   }
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
+    this.showFooter = !this.form.showFooter;
+    this.form.defaultSkin = false;
   } 
+  message:string="";
   saveCustomSkin(form:CustomSkin){
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
+   
+    // if(this.form.defaultSkin === true){
+    //   this.form.defaultSkin = true;
+    // }else{
+    // this.form.defaultSkin = false;
+    // this.form.showFooter = this.showFooter;
+    // }
+    //this.showFooterChange()
    this.dashboardService.saveCustomSkin(form).subscribe(
     (data:any)=> {
     console.log(data.data)
     this.sucess = true;
+    this.message = "saved sucessfully";
     this.router.navigate(['/home/dashboard/myprofile']);
     }
    )
   }
-  type1:any;
-  onChange(type:any){
-    this.type1 = type;
-    this.getDefaultSkin();
+  saveDefaultSkin(form:CustomSkin){
+    this.form.createdBy = this.loggedInUserId;
+    this.form.updatedBy = this.loggedInUserId;
+    this.form.companyId = this.loggedInUserId;
+    this.form.defaultSkin = !this.form.defaultSkin;
+    this.dashboardService.saveCustomSkin(form).subscribe(
+      (data:any)=> {
+      console.log(data.data)
+      this.sucess = true;
+      this.message = "saved sucessfully";
+      this.router.navigate(['/home/dashboard/myprofile']);
+      }
+     )
   }
-  close(){
-    this.sucess = false;
-  }
+  
   getDefaultSkin(){
     this.dashboardService.getTopNavigationBarCustomSkin(this.loggedInUserId).subscribe(
         (data:any) =>{
            let skinMap = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-            this.form = skinMap.TOP_NAVIGATION_BAR
-            this.lableForBgColor = "Header Background Color";
+            this.form = skinMap.TOP_NAVIGATION_BAR;
            }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
             this.form = skinMap.LEFT_SIDE_MENU;
-            this.lableForBgColor = "Tiles Background Color"
            }else if(this.form.moduleTypeString === "FOOTER"){
             this.form = skinMap.FOOTER;
-            this.lableForBgColor = "Footer Backgroound Color"
            } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
             this.form = skinMap.MAIN_CONTENT;
-            this.lableForBgColor = "MainContent Background Color"
            }
            this.iconColor = this.form.iconColor;
            this.backgroundColor = this.form.backgroundColor;
