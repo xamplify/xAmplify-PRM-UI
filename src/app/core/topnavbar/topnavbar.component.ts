@@ -61,7 +61,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   cskin:CustomSkin = new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 
-
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -71,9 +70,14 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     const userName = this.authenticationService.user.emailId;
     this.userId = this.authenticationService.getUserId();
     /*** XNFR-134** */
-    this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-    this.vanityLoginDto.vanityUrlFilter =true;
     this.vanityLoginDto.userId = this.userId;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {

@@ -64,6 +64,8 @@ export class CustomSkinComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
       this.vanityLoginDto.vanityUrlFilter = true;
       this.vanityLogin = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
     }
      }
 
@@ -91,6 +93,7 @@ export class CustomSkinComponent implements OnInit {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
   } 
+
   message:string="";
   saveSkin(form:CustomSkin){
     this.form.createdBy = this.loggedInUserId;
@@ -110,7 +113,6 @@ export class CustomSkinComponent implements OnInit {
    this.saveSkin(form);
   }
   saveDefaultSkin(form:CustomSkin){
-    
     this.form.defaultSkin = true;
     this.saveSkin(form);
   }

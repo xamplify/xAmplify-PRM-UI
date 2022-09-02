@@ -63,9 +63,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
 		/*** XNFR-134***/
 		this.userId = this.authenticationService.getUserId();
-		this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-		this.vanityLoginDto.vanityUrlFilter = true;
 		this.vanityLoginDto.userId = this.userId;
+		let companyProfileName = this.authenticationService.companyProfileName;
+		if (companyProfileName !== undefined && companyProfileName !== "") {
+		  this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+		  this.vanityLoginDto.vanityUrlFilter = true;
+		}else{
+		  this.vanityLoginDto.vanityUrlFilter = false;
+		}
 	}
 
 

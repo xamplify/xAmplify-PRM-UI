@@ -13,20 +13,25 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class CustomCopyrightComponent implements OnInit {
 
-  loogedUserId:number;
+  loggedUserId:number;
   footerContent:string;
   apiCalled: boolean = false
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   constructor(public dashboardService:DashboardService, public authService : AuthenticationService,
     public properties: Properties) { 
-     this.loogedUserId = this.authService.getUserId();
-     this.vanityLoginDto.vendorCompanyProfileName = this.authService.companyProfileName;
-     this.vanityLoginDto.vanityUrlFilter = true;
-     this.vanityLoginDto.userId = this.loogedUserId;
+     this.loggedUserId = this.authService.getUserId();
+     this.vanityLoginDto.userId = this.loggedUserId;
+     let companyProfileName = this.authService.companyProfileName;
+     if (companyProfileName !== undefined && companyProfileName !== "") {
+       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+       this.vanityLoginDto.vanityUrlFilter = true;
+     }else{
+       this.vanityLoginDto.vanityUrlFilter = false;
+     }
     }
 
   ngOnInit() {
-    this.getFooterSkin(this.loogedUserId)
+    this.getFooterSkin(this.loggedUserId)
   }
   readCustomMessage(){
     if (this.authService.v_companyName && this.skin.defaultSkin ) {
