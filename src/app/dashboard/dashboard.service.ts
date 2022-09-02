@@ -760,9 +760,9 @@ export class DashboardService {
        .catch(this.handleError);
         }
         /** XNFR-134 */
-          getTopNavigationBarCustomSkin(companyId:number){
-            const url = this.authenticationService.REST_URL + 'custom/skin/find/'+companyId+'?access_token=' + this.authenticationService.access_token;
-            return this.http.get(url)
+          getTopNavigationBarCustomSkin(vanityLoginDto:VanityLoginDto){
+            const url = this.authenticationService.REST_URL + 'custom/skin/find/?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url,vanityLoginDto)
             .map(this.extractData)
             .catch(this.handleError);
           }

@@ -100,7 +100,16 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                            <li *ngIf="customSkinSettingOption"  [ngClass]="{'active': activeTabName == 'customskin'}">
+                            <li *ngIf="customSkinSettingOption && ((hasAllAccess || 
+                            hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                             || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                             !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                              authenticationService.superiorRole != 'Partner') 
+                              || (!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                              authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
+                              || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember)) 
+                              || (!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                              authenticationService.isVendor() || authenticationService.isVendorPartner()))"  [ngClass]="{'active': activeTabName == 'customskin'}">
                                 <a (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>

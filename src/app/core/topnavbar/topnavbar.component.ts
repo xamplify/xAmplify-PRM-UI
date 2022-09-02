@@ -21,6 +21,7 @@ import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 @Component({
   selector: 'app-topnavbar',
@@ -58,6 +59,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   result:any;
   userId : number;
   cskin:CustomSkin = new CustomSkin();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -67,6 +70,10 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     this.userId = this.authenticationService.getUserId();
+    /*** XNFR-134** */
+    this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+    this.vanityLoginDto.vanityUrlFilter =true;
+    this.vanityLoginDto.userId = this.userId;
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -460,7 +467,7 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
  
 
   getTopNavigationColor(userId:number){
-    this.dashboardService.getTopNavigationBarCustomSkin(userId).subscribe(
+    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
       (response) =>{
      let cskinMap  = response.data;
      this.cskin = cskinMap.TOP_NAVIGATION_BAR;

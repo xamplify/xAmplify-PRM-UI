@@ -8,6 +8,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { TabHeadingDirective } from 'ngx-bootstrap';
 declare var $ : any;
@@ -40,10 +41,12 @@ export class CustomSkinComponent implements OnInit {
   isValidColorCode = true;
   sucess:boolean = false;
   ckeConfig: any;
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   lableForBgColor:string ="Background Color";
   moduleStatusList: string[] =["--Select Type--","LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
   isLoggedInFromAdminSection = false;
   loading = false;
+  vanityLogin = false;
   activeTabName: string = "header";
   showFooter:boolean;
   customResponse: CustomResponse = new CustomResponse();
@@ -53,12 +56,19 @@ export class CustomSkinComponent implements OnInit {
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
     public ustilService: UtilService,public router: Router) {
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal()
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal()
+    this.vanityLoginDto.userId = this.loggedInUserId;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+      this.vanityLogin = true;
+    }
      }
 
   ngOnInit() {
-        this.activeTabNav(this.activeTabName);
+    this.activeTabNav(this.activeTabName);
   }
 
   
@@ -80,35 +90,12 @@ export class CustomSkinComponent implements OnInit {
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
-    this.form.defaultSkin = false;
   } 
   message:string="";
-  saveCustomSkin(form:CustomSkin){
+  saveSkin(form:CustomSkin){
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
-   
-    // if(this.form.defaultSkin === true){
-    //   this.form.defaultSkin = true;
-    // }else{
-    // this.form.defaultSkin = false;
-    // this.form.showFooter = this.showFooter;
-    // }
-    //this.showFooterChange()
-   this.dashboardService.saveCustomSkin(form).subscribe(
-    (data:any)=> {
-    console.log(data.data)
-    this.sucess = true;
-    this.message = "saved sucessfully";
-    this.router.navigate(['/home/dashboard/myprofile']);
-    }
-   )
-  }
-  saveDefaultSkin(form:CustomSkin){
-    this.form.createdBy = this.loggedInUserId;
-    this.form.updatedBy = this.loggedInUserId;
-    this.form.companyId = this.loggedInUserId;
-    this.form.defaultSkin = !this.form.defaultSkin;
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       console.log(data.data)
@@ -118,9 +105,18 @@ export class CustomSkinComponent implements OnInit {
       }
      )
   }
+  saveCustomSkin(form:CustomSkin){
+    this.form.defaultSkin = false;
+   this.saveSkin(form);
+  }
+  saveDefaultSkin(form:CustomSkin){
+    
+    this.form.defaultSkin = true;
+    this.saveSkin(form);
+  }
   
   getDefaultSkin(){
-    this.dashboardService.getTopNavigationBarCustomSkin(this.loggedInUserId).subscribe(
+    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
         (data:any) =>{
            let skinMap = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){

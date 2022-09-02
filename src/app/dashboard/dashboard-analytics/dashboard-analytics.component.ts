@@ -85,6 +85,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
+    /***XNFR-134***/
+    this.vanityLoginDto.vanityUrlFilter = true;
+    this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
     this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
@@ -490,7 +493,7 @@ showCampaignDetails(campaign:any){
     }
     
     getMainContent(userId:number){
-        this.dashBoardService.getTopNavigationBarCustomSkin(userId).subscribe(
+        this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
           (response) =>{
            let cskinMap  = response.data;
            this.skin  = cskinMap.MAIN_CONTENT;

@@ -219,7 +219,7 @@
 								style="padding-left: 0px;margin-left: -33px;">
 								<div class="portlet light main-content"
 									style="display: flex; justify-content: center;" [ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">
-                  <h6 style="margin:auto ;" [ngStyle]="{'color':form.textColor}">Page
+                  <h6 style="margin:auto ;" [ngStyle]="{'color':form.headerTextColor}">Page
 									Content</h6>
                 </div>
 							</div>
@@ -407,7 +407,7 @@
               <div class="form-group">
                   <label>Border Color</label>
                   <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
-                  <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'bottom'" readonly>
+                  <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'top'" readonly>
                   </span>
               </div>
           </div> 
