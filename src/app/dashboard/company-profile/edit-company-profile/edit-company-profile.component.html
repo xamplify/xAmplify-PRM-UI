@@ -149,9 +149,9 @@
 										<h5>{{authenticationService.user.emailId}}</h5>
 										</ng-container>
 										<!-- modal pop up-->
-                                       <button type="button" class="btn btn-primary" (click)="saveCustom()"  data-target="#customskin">
+                                       <!-- <button type="button" class="btn btn-primary" (click)="saveCustom()"  data-target="#customskin">
 	                                    Change Your Custom Skin
-                                       </button>
+                                       </button> -->
 										<ng-container *ngIf="isFromAdminPanel">
 										<h4 [title]="companyProfile.firstName+companyProfile.lastName"
 											class="control-label">
@@ -404,7 +404,7 @@
 							</div>
 							</div>
 						</div>
-						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;" *ngIf="tabIndex == 1">
+						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;">
 							<!-- ---Start Of Admin Panel -->
 							<div class="portlet light"
 							style="padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea!important;padding-bottom: 48px!important;">
@@ -745,21 +745,7 @@
 							<!-- -End Of Panel -->
 						</div>
 						</div>
-						<!-- <div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;" id="customskin" *ngIf="tabIndex==2">
-							<div class="portlet light mPad" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;" >
-								<div class="portlet-title">
-									<h4  class="pull-left m10 ">
-										Change Your Custom Skin</h4>
-										<button class="close-circle" (click)="close()" type="button" style="margin-top: 9px;margin-right: 10px;">
-											<i  aria-hidden="true" class="fa fa-times"></i>
-										</button>
-								</div>
-								<div class="portlet-body clearfix" style="padding:12px 12px!important">
-									<app-custom-skin></app-custom-skin>
-                                </div>
-							</div>
-						</div> -->
-						<!-- End of col-xs-6 -->
+						
 					</div>
 
 				</form>

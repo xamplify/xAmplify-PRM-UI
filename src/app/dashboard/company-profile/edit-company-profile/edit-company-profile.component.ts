@@ -184,7 +184,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     allLoginScreenDirectionsList:string[] = [];  
     prm = false;  
     vendorTier = false;
-    tabIndex =1;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1654,13 +1653,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
       }
       /** XNFR-134 ***** */
-      saveCustom(){
-        this.tabIndex =2;
-      }
-      close(){
-        this.tabIndex = 1;
-        this.router.navigate(['home/dashboard/edit-company-profile'])
-      }
+      
       portletBody = "modal fade";
       addBlurClass() {
         $('#exampleModal').removeClass(this.portletBody);

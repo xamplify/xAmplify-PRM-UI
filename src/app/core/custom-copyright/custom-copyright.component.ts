@@ -47,7 +47,7 @@ export class CustomCopyrightComponent implements OnInit {
         let skinMap = data.data;
         this.skin = skinMap.FOOTER;
         this.footerContent = this.skin.textContent;
-        this.readCustomMessage();
+        //this.readCustomMessage();
       }
     )
   }

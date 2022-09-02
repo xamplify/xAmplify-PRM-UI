@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -11,13 +11,14 @@ import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { TabHeadingDirective } from 'ngx-bootstrap';
-declare var $ : any;
+declare var $ : any,CKEDITOR: any;
 @Component({
   selector: 'app-custom-skin',
   templateUrl: './custom-skin.component.html',
   styleUrls: ['./custom-skin.component.css']
 })
 export class CustomSkinComponent implements OnInit {
+  @ViewChild("myckeditor") ckeditor: any;
   form :CustomSkin = new CustomSkin();
   isValidDivBgColor = true;
   isValidHeaderTextColor =true;
@@ -40,6 +41,7 @@ export class CustomSkinComponent implements OnInit {
   fontFamily:string;
   isValidColorCode = true;
   sucess:boolean = false;
+  name = 'ng2-ckeditor';
   ckeConfig: any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   lableForBgColor:string ="Background Color";
@@ -49,6 +51,7 @@ export class CustomSkinComponent implements OnInit {
   vanityLogin = false;
   activeTabName: string = "header";
   showFooter:boolean;
+  footerContent:any;
   customResponse: CustomResponse = new CustomResponse();
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
@@ -67,10 +70,12 @@ export class CustomSkinComponent implements OnInit {
     }else{
       this.vanityLoginDto.vanityUrlFilter = false;
     }
+    
      }
 
   ngOnInit() {
     this.activeTabNav(this.activeTabName);
+    
   }
 
   
@@ -99,6 +104,8 @@ export class CustomSkinComponent implements OnInit {
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
+    
+    
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       console.log(data.data)
