@@ -26,11 +26,6 @@ export class EmailTemplateService {
        }
 
     save(emailTemplate:EmailTemplate){
-        /*****XNFR-83***********/
-        let domainName = this.authenticationService.getSubDomain();
-        if(domainName.length>0){
-           emailTemplate.domainName = domainName;
-        }
         return this.http.post(this.URL+"admin/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);
@@ -44,10 +39,11 @@ export class EmailTemplateService {
 
 
     listTemplates(pagination:Pagination,userId:number){
+        console.log(pagination);
         try{
+
             userId = this.authenticationService.checkLoggedInUserId(userId);
-            let domainName = this.authenticationService.getSubDomain();
-            pagination.vendorCompanyProfileName = domainName;
+
             var url =this.URL+"admin/listEmailTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
             .map(this.extractData)
@@ -59,6 +55,7 @@ export class EmailTemplateService {
     }
 
     listTemplatesForVideo(pagination:Pagination,userId:number,videoId:number){
+        console.log(pagination);
         try{
             var url =this.URL+"admin/listEmailTemplates/"+userId+"/"+videoId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
@@ -78,15 +75,7 @@ export class EmailTemplateService {
     }
 
      listDefaultTemplates(userId:any){
-        /*****XNFR-83***********/
-        let domainName = this.authenticationService.getSubDomain();
-        let url = "";
-        if(domainName.length>0){
-            url = this.URL+"admin/listDefaultTemplates/"+userId+"/"+domainName+"?access_token="+this.authenticationService.access_token
-        }else{
-            url = this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token
-        }
-        return this.http.get(url,"")
+        return this.http.get(this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
@@ -124,23 +113,13 @@ export class EmailTemplateService {
     }
 
     getAvailableNames(userId:number){
-        let companyProfileName = this.authenticationService.getSubDomain();
-        let url = this.URL+"admin/listEmailTemplateNames/"+userId;
-        if(companyProfileName.length>0){
-            url+="/domainName/"+companyProfileName;
-        }
-        return this.http.get(url+"?access_token="+this.authenticationService.access_token,"")
+        return this.http.get(this.URL+"admin/listEmailTemplateNames/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
 
     getAllCompanyProfileImages(userId:number){
-        let companyProfileName = this.authenticationService.getSubDomain();
-        let url = this.URL+"admin/listAllCompanyProfileImages/"+userId;
-        if(companyProfileName.length>0){
-            url+="/domainName/"+companyProfileName;
-        }
-        return this.http.get(url+"?access_token="+this.authenticationService.access_token,"")
+        return this.http.get(this.URL+"admin/listAllCompanyProfileImages/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
