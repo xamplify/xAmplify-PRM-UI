@@ -85,11 +85,11 @@ span.ui-column-resizer {
 }
 
 .required {
-	color: red;
+	color: red !important;
 }
 
 .success {
-	color: green;
+	color: green !important;
 }
 
 .add-button-xamplify {

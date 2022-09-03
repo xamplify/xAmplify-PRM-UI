@@ -173,3 +173,10 @@ margin: 0 auto;
     left: -20px;
   }
 }
+/* :host{
+  font-style: Arial;
+} */
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+}

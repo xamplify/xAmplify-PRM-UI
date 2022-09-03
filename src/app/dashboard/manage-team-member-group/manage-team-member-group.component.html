@@ -74,31 +74,31 @@
         <input *ngIf="groupDto?.previewGroup" disabled  type="text" placeholder="Name" [(ngModel)]="groupDto.name"  [ngModelOptions]="{standalone: true}" class="form-control"/>
         <span class="required" *ngIf="groupDto?.dupliateNameErrorMessage?.length>0">{{groupDto?.dupliateNameErrorMessage}}</span>
       </div>
-  <div class="form-group">
-    <label class="control-label" translate>Select Modules</label>
-    <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
-  </div>
-  <div  class="table-responsive">
-    <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
-      <tr *ngFor="let defaultModule of defaultModules;let i = index">
-        <th scope="row" class="fstcw-tm">
-          <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-          {{defaultModule?.moduleName}}
-          <br>
-        </th>
-        <td>
-          <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-          </switch>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div id="right">
-    <button *ngIf="!groupDto?.previewGroup"  type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
-    <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
-  </div>
-  </form>
+      <div class="form-group">
+        <label class="control-label" translate>Select Modules</label>
+        <span class="required" *ngIf="!groupDto?.previewGroup">*</span>
+      </div>
+      <div  class="table-responsive">
+        <table style="width:100%" class='table tgrid table-hover' aria-describedby="Module-Table">
+          <tr *ngFor="let defaultModule of defaultModules;let i = index">
+            <th scope="row" class="fstcw-tm">
+              <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+              {{defaultModule?.moduleName}}
+              <br>
+            </th>
+            <td>
+              <switch [disabled]="groupDto?.previewGroup"  [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+              [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+              </switch>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="right">
+        <button *ngIf="!groupDto?.previewGroup"  type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
+        <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
+      </div>
+    </form>
   </div>
 </div>
 

@@ -17,11 +17,12 @@ import { CKEditorModule } from "ng2-ckeditor";
 import { SelectContentModulesComponent } from './select-content-modules/select-content-modules.component';
 import { Top4AssetsComponent } from '../dashboard/dashboard-analytics-components/top-4-assets/top-4-assets.component';
 import { Top4TracksAndPlayBooksComponent } from '../dashboard/dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
+import { CustomCopyrightComponent } from './custom-copyright/custom-copyright.component';
 
 @NgModule({
 	imports: [CKEditorModule, CommonModule, RouterModule, SharedModule, SlimLoadingBarModule.forRoot()],
 	declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent, SelectContentModulesComponent,
-					Top4AssetsComponent,Top4TracksAndPlayBooksComponent],
+					Top4AssetsComponent,Top4TracksAndPlayBooksComponent, CustomCopyrightComponent],
 	exports: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent,
 				Top4AssetsComponent,Top4TracksAndPlayBooksComponent],
 	providers: [AuthGuard, SlimLoadingBarService,AuthGuardService]

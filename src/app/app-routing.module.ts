@@ -43,6 +43,7 @@ import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-
 import { LogoutComponent } from 'app/authentication/logout/logout.component';
 import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
+import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -95,6 +96,9 @@ export const routes: Routes = [
 			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
 			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: false } },
 			{ path: 'select-modules', component: SelectContentModulesComponent },
+			/*******XNFR-83*******/
+			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: false } },
+			/*******XNFR-83*******/
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},
