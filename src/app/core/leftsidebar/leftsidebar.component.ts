@@ -164,8 +164,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.loginAs = data.loginAs;
 					/*****XNFR-130*****/
 					this.authenticationService.module.prmDashboard = data.prmDashboard;
-					/*******XNFR-83*******/
-					this.authenticationService.module.agencyAccess = data.agencyAccess;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -233,12 +231,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
-		/************XNFR-83******************/
-		module.isAgency = roleDisplayDto.agency;
-		module.isAgencyTeamMember = roleDisplayDto.agencyTeamMember;
-		module.isAgencySuperVisor = roleDisplayDto.agencySuperVisor;
-		module.isAgencyCompany = module.isAgency || module.isAgencyTeamMember;
-		module.agencyUserDashboard = roleDisplayDto.agencyUserDashboard;
 	}
 
 	setContentMenu(data: any, module: any) {
