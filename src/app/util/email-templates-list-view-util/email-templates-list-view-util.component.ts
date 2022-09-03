@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Renderer, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -16,15 +17,14 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SortOption } from '../../core/models/sort-option';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { UtilService } from '../../core/services/util.service';
-import { Properties } from 'app/common/models/properties';
-import { FontAwesomeClassName } from './../../common/models/font-awesome-class-name';
-declare var $:any, swal: any;
+
+declare var $, swal: any;
 
 @Component({
     selector: 'app-email-templates-list-view-util',
     templateUrl: './email-templates-list-view-util.component.html',
     styleUrls: ['./email-templates-list-view-util.component.css', '../../email-template/manage-template/manage-template.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties,FontAwesomeClassName]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption]
 })
 export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     isPreview = false;
@@ -54,6 +54,8 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
         { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+        // { 'name': 'Company Name (A-Z)', 'value': 'company-ASC' },
+        // { 'name': 'Company Name (Z-A)', 'value': 'company-DESC' },
         { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
@@ -83,13 +85,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     loggedInAsSuperAdmin = false;
     saveAsDefaultTemplate = false;
     defaultTemplateInput = {};
-    callCommentsComponent = false;
-    selectedEmailTemplateId = 0;
     constructor(private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-        public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, 
-        public utilService: UtilService,public properties:Properties,public fontAwesomeClassName:FontAwesomeClassName) {
+        public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, public utilService: UtilService) {
         this.refService.renderer = this.renderer;
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -113,7 +112,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: any) => {
                     pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.list);
+                    pagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 (error: string) => {
@@ -238,31 +237,16 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
 
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchTemplates(); } }
     getOrgCampaignTypes() {
-		let domainName = this.authenticationService.getSubDomain();
-		if(domainName.length>0){
-			this.authenticationService.findCampaignAccessDataByDomainName(domainName)
-			.subscribe(
-				response => {
-					let campaignAccess = response.data;
-					this.campaignAccess.videoCampaign = campaignAccess.video;
-					this.campaignAccess.emailCampaign = campaignAccess.regular;
-					this.campaignAccess.socialCampaign = campaignAccess.social;
-					this.campaignAccess.eventCampaign = campaignAccess.event;
-					this.campaignAccess.formBuilder = campaignAccess.form;
-                    this.campaignAccess.agency = campaignAccess.agency;
-				});
-		}else{
-			this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
-				data => {
-					this.campaignAccess.videoCampaign = data.video;
-					this.campaignAccess.emailCampaign = data.regular;
-					this.campaignAccess.socialCampaign = data.social;
-					this.campaignAccess.eventCampaign = data.event;
-					this.campaignAccess.formBuilder = data.form;
-					this.campaignAccess.agency = data.agency;
-				});
-		}	
-	}
+        this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
+            data => {
+                console.log(data);
+                this.campaignAccess.videoCampaign = data.video;
+                this.campaignAccess.emailCampaign = data.regular;
+                this.campaignAccess.socialCampaign = data.social;
+                this.campaignAccess.eventCampaign = data.event;
+                this.campaignAccess.formBuilder = data.form;
+            });
+    }
     getCompanyIdByUserId() {
         try {
             this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
@@ -398,10 +382,6 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
 		} else if (!isVideoTemplate) {
             this.pagination.filterBy = "RegularEmail";
         }
-        if(this.selectedTemplateTypeIndex==13){
-			this.pagination.filterBy = this.properties.agency;
-			this.pagination.emailTemplateType = EmailTemplateType.NONE;
-		}
         this.listEmailTemplates(this.pagination);
     }
 
@@ -435,21 +415,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
                 (data: any) => {
                     let body = emailTemplate.body;
                     let self = this;
-                    if(self.authenticationService.module.isAgencyCompany){
-						$.each(data, function (_index:number, value:any) {
-							body = body.replace(value, self.authenticationService.v_companyLogoImagePath);
-						});
-					}
-					if(!self.authenticationService.module.isAgencyCompany){
-						$.each(data, function (_index:number, value:any) {
-							body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-						});
-					}
-					if(self.authenticationService.module.isAgencyCompany){
-						body = body.replace("https://xamp.io/vod/replace-company-logo.png",  self.authenticationService.v_companyLogoImagePath);
-					}else{
-						body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
-					}
+                    $.each(data, function (index, value) {
+                        body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
+                    });
+                    body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
                     let emailTemplateName = emailTemplate.name;
                     if (emailTemplateName.length > 50) {
                         emailTemplateName = emailTemplateName.substring(0, 50) + "...";
@@ -525,15 +494,5 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
         this.saveAsDefaultTemplate = false;
         this.defaultTemplateInput = {};
     }
-
-    /*****XNFR-83*****/
-	resetCommentsComponentValues(){
-		this.callCommentsComponent = false;
-		this.selectedEmailTemplateId =0;
-	}
-    /*****XNFR-83*****/
-	refreshTemplates(){
-		this.listEmailTemplates(this.pagination);
-	}
 
 }
