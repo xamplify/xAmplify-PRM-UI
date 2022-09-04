@@ -1714,9 +1714,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.emailTemplateService.listTemplates(pagination, this.loggedInUserId)
             .subscribe(
                 (data: any) => {
-                    this.campaignEmailTemplates = data.list;
+                    this.campaignEmailTemplates = data.emailTemplates;
                     pagination.totalRecords = data.totalRecords;
-                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.list);
+                    this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, data.emailTemplates);
                     if (this.emailTemplatesPagination.totalRecords == 0 && this.selectedEmailTemplateRow == 0) {
                         this.isEmailTemplate = false;
                     }
