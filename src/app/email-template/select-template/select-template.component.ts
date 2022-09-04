@@ -656,6 +656,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         this.selectAllTemplates = false;
         this.selectedTemplateTypeIndex = 12;
         this.selectedThirdPartyIntegration = "hubspot";
+        this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.hubSpotService.getHubSpotTemplates().subscribe(data => {
             let response = data.data;
             this.hubSpotEmailTemplates = response.templates;
@@ -665,7 +666,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     template.body = template.content;
                     template.subject = "assets/images/bee-template/imported-hubspot.jpg";
                 });
-                this.filteredEmailTemplates = new Array<EmailTemplate>();
+                
                 for (var i = 0; i < response.templates.length; i++) {
                     var isHubSpotTemplate = this.hubSpotEmailTemplates[i].hubSpotTemplate;
                     if (isHubSpotTemplate) {
