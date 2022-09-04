@@ -69,13 +69,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
 
     }
     ngOnInit() {
-        this.emailTemplateService.azugaRestApi().subscribe(
-            response=>{
-                console.log(response);
-            },error=>{
-                console.log(error);
-            }
-        );
         try {
             this.listDefaultTemplates();
         }

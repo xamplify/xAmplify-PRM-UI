@@ -219,14 +219,6 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
 
-    azugaRestApi(){
-        const headers = new Headers();
-        headers.set("x-api-key", "le3s6fztqr4l3d8qYH7I835LYTtILhoHSKVK2VIf")
-        let url = "https://api2.azuga.com/prm/511/devices/1059";
-        return this.http.get(url,{headers:headers})
-        .map(this.extractData)
-        .catch(this.handleError);
-      }
 
     private extractData( res: Response ) {
         let body = res.json();
