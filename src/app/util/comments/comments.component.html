@@ -1,0 +1,175 @@
+<!--Comments ModalPopUp------->
+<div id="commentsModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css modal-dialog-scrollable" role="document">
+     <!-- Modal content-->
+     <div class="modal-content" id="comments-modal-content"  style="overflow-x: hidden;">
+        <ngx-loading [show]="commentModalPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="modal-header">
+           <a title="Close" class="close-circle" (click)="closeModalPopUp()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+            <a title="Refresh" class="close-circle mr5" (click)="findComments()">
+               <i class="fa fa-refresh" aria-hidden="true"></i>
+            </a>
+           <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
+        </div>
+        <div class="modal-body" id="comments-modal-body">
+           <app-modal-popup-loader *ngIf="commentModalPopUpLoader"></app-modal-popup-loader>
+           <ng-container *ngIf="!commentModalPopUpLoader">
+              <div class="comment-details">
+                 <div class="row mix-grid p10" style=" background: #f1f1f1; ">
+                    <div class="col-md-2" >
+                       <div class="frame">
+                          <img style="height: 80px;width: 80px;" class="img-circle" src="{{companyAndUserAndModuleDetailsDto?.companyLogo}}" alt="">
+                       </div>
+                    </div>
+                    <div class="col-md-10" style="text-align: left;">
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.companyName}}">
+                             <span><strong>Company Name </strong></span>: {{companyAndUserAndModuleDetailsDto?.companyName | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.companyName?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.createdBy!=companyAndUserAndModuleDetailsDto?.emailId">
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.createdBy}}">
+                             <span><strong>Name </strong></span>: {{companyAndUserAndModuleDetailsDto?.createdBy | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.createdBy?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div>
+                          <h5 class="mt10 mb0"  title="{{companyAndUserAndModuleDetailsDto?.emailId}}">
+                             <span><strong>Email Id </strong></span>: {{companyAndUserAndModuleDetailsDto?.emailId | slice:0:30}}
+                             <span *ngIf="companyAndUserAndModuleDetailsDto?.emailId?.length>30">..</span>
+                          </h5>
+                       </div>
+                       <div>
+                          <h5 class="mt10 mb0">
+                             <span><strong>Created On </strong></span>:
+                             <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.createdDateInUTCString"></app-display-date-and-time>
+                          </h5>
+                       </div>
+                       <div *ngIf="companyAndUserAndModuleDetailsDto?.status!='CREATED' && companyAndUserAndModuleDetailsDto?.status!='-'">
+                        <h5 class="mt10 mb0">
+                           <span><strong>{{companyAndUserAndModuleDetailsDto?.status}} On </strong></span>:
+                           <app-display-date-and-time [dateAndTimeUTCString]="companyAndUserAndModuleDetailsDto?.updatedDateInUTCString"></app-display-date-and-time>
+                        </h5>
+                     </div>
+                       <div *ngIf="commentDto?.statusInString!='-'">
+                          <h5 class="mt10 mb0">
+                             <span><strong>Status</strong></span>:
+                             <span *ngIf="!showStatusDropDown" class="view-banner-agency"  
+                              [ngClass]="{'bgc-green': commentDto?.statusInString==='APPROVED', 
+                                          'bgc-red': commentDto?.statusInString==='REJECTED',
+                                          'bgc-orange':commentDto?.statusInString==='CREATED'}" translate>
+                                          <strong>{{commentDto?.statusInString}}</strong> 
+                                <a class="white" *ngIf="!authenticationService?.module?.isAgencyCompany && status!='APPROVED'">
+                                   <i class="fa fa-edit fs-13px" (click)="showStatusDropDown=true"></i></a>          
+                               </span>
+                                <select *ngIf="showStatusDropDown"  [(ngModel)]="commentDto.statusInString" (ngModelChange)="showStatusDropDown=false"
+                                class="view-banner-agency"  
+                                    [ngClass]="{'bgc-green': commentDto?.statusInString==='APPROVED', 
+                                          'bgc-red': commentDto?.statusInString==='REJECTED',
+                                          'bgc-orange':commentDto?.statusInString==='CREATED'}">
+                                 <option  *ngFor="let templateStatus of templateStatusArray" [ngValue]="templateStatus">
+                                     {{templateStatus}}
+                                 </option> 
+                             </select>
+                             <span title="View History" class="view-banner-agency ml10" (click)="openTemplateStatusHistoryPopUp()">
+                                <a class="white"><i class="fa fa-history"></i></a>
+                             </span>
+                             <span *ngIf="isStatusUpdated" class="success ml5"><strong>Status Updated Successfully</strong></span>
+                          </h5>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <div class="comment-area comment-div" id="comments-div">
+                 <ul class="comment-section" *ngFor="let comment of comments" style="margin: 0px">
+                    <li [attr.class]="comment.commentedByUserId!=loggedInUserId ? 'comment author-comment':'comment user-comment'" style="width: 135%;">
+                       <div class="info">
+                          <a title="{{comment?.commentedBy}}">{{comment?.commentedBy| slice:0:30}}
+                             <span *ngIf="comment?.commentedBy?.length>30">...</span>
+                           </a>
+                          <span *ngIf="comment?.commentedOn">
+                             <app-timestamp-new [dateAndTime]="comment.commentedOn"> </app-timestamp-new>
+                          </span>
+                       </div>
+                       <a class="avatar none">
+                       <img onerror="this.src='assets/images/icon-user-default.png';" src="{{comment?.commentedUserProfilePicture}}" width="35" alt="Profile Avatar" />
+                       </a>
+                       <p>{{comment?.comment}}</p>
+                    </li>
+                 </ul>
+              </div>
+           </ng-container>
+        </div>
+         <!---Footer-->
+        <div class="modal-footer" [hidden]="commentModalPopUpLoader">
+         <div class="write-new comment-text-area" style="margin-top: -10px !important;">
+            <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
+            <div>
+               <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
+               <button  (click)="closeModalPopUp()" class="btn btn-default comment mr10">Cancel</button>
+               <button  (click)="findComments()" class="btn btn-default comment mr10">Refresh</button>
+
+            </div>
+         </div>
+         
+      </div>
+       
+     </div>
+  </div>
+</div>
+
+<!--History ModalPopUp-->
+<div id="historyModalPopUp" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document">
+      <!-- Modal content-->
+      <div class="modal-content"  style="overflow-x: hidden;">
+         <ngx-loading [show]="historyPopUpLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+            <a title="Close" class="close-circle" (click)="closeHistoryModalPopUp()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+             </a>
+             <a title="Refresh" class="close-circle mr5" (click)="refreshTimeLineHistory()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+             </a>
+            <h4 class="modal-title" style="font-weight: 600;" translate>History</h4>
+         </div>
+         <div class="modal-body">
+            <app-modal-popup-loader *ngIf="historyPopUpLoader"></app-modal-popup-loader>
+            <div class="row" *ngIf="!historyPopUpLoader">
+               <div class="timeline">
+                   <div class="line text-muted"></div>
+                   <article *ngFor="let timeLine of statusTimeLineHistory" class="panel panel-default panel-outline">
+                       <div class="panel-heading icon">
+                           <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
+                       </div>
+                       <div class="panel-body pt0">
+                        <p>
+                           <strong style="color:#65b6e4;">{{timeLine?.statusUpdatedBy}}</strong>
+                           changed the status to 
+                           <span  class="view-banner-agency"  
+                           [ngClass]="{'bgc-green': timeLine?.status==='APPROVED', 
+                                       'bgc-red': timeLine?.status==='REJECTED',
+                                       'bgc-orange':timeLine?.status==='CREATED'}" translate>
+                                       <strong>{{timeLine?.status}}</strong> 
+                           </span>
+                           <strong class="ml5">On
+                              <app-display-date-and-time [dateAndTimeUTCString]="timeLine?.statusUpdatedOnUTCString"></app-display-date-and-time>
+                           </strong> 
+                        </p>    
+                       </div>
+                   </article>
+               </div>
+           </div>
+         </div>
+          <!---Footer-->
+         <div class="modal-footer" [hidden]="commentModalPopUpLoader">
+            <button  (click)="closeHistoryModalPopUp()" class="btn btn-default float-right">Close</button>
+       </div>
+      </div>
+   </div>
+ </div>
+
+

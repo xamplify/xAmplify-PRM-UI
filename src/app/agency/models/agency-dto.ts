@@ -1,0 +1,29 @@
+import { XamplifyModuleDto } from "app/core/models/xamplify-module-dto";
+import { Properties } from "app/common/models/properties";
+
+export class AgencyDto {
+    id = 0;
+    firstName = "";
+    lastName = "";
+    agencyName = "";
+    companyName = "";
+    emailId = "";
+    enabled:boolean = true;
+    xamplifyModules:XamplifyModuleDto = new XamplifyModuleDto();
+    userId = 0;
+    moduleIds = [];
+    /******Form Related****/
+    properties:Properties = new Properties();
+    emaillIdDivClass: string = this.properties.defaultClass;
+    validEmailId = false;
+    emailIdErrorMessage = "";
+    invalidModuleIdsErrorMessage = "";
+    agencyNameDivClass: string = this.properties.defaultClass;
+    agencyNameErrorMessage = "";
+    validAgencyName = false;
+    validForm = false;
+    expand = false;
+    module:any;
+    modules:Array<any> = new Array<any>();
+    
+}

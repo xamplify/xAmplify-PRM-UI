@@ -79,7 +79,7 @@
 					<div class="row">
 						<div class="col-sm-3 col-xs-12 mPad1" style="padding-right: 0px">
 							<div class="image blur-content" id="image-blur-content-div">
-								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;">
+								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;" >
 									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
 										<label class="control-label">Upload Logo</label>
 										<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
@@ -148,6 +148,10 @@
 										</h4>
 										<h5>{{authenticationService.user.emailId}}</h5>
 										</ng-container>
+										<!-- modal pop up-->
+                                       <!-- <button type="button" class="btn btn-primary" (click)="saveCustom()"  data-target="#customskin">
+	                                    Change Your Custom Skin
+                                       </button> -->
 										<ng-container *ngIf="isFromAdminPanel">
 										<h4 [title]="companyProfile.firstName+companyProfile.lastName"
 											class="control-label">
@@ -213,6 +217,7 @@
 
 									</div>
 								</div>
+								
 							</div>
 							<!-- ---------------Module Access ---------->
 							<div class="portlet light"  *ngIf="isFromAdminPanel" style="border-radius: 4px!important;border: 1px solid #eaeaea!important;">
@@ -377,12 +382,17 @@
 											<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
 													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
+										<!-- XNFR-134 -->
+										<tr>
+											<th scope="row">Custom Skin Settings</th>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
+													[ngModelOptions]="{standalone: true}"></td>
+										</tr>
 										</table>
 									</div>
 									<div class="modal-footer">
-										<button type="button" id="module-access-button"
-											(click)="updateAccess()" disabled="disabled"
-											class="btn green-haze" translate>Save</button>
+										<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn green-haze"
+											translate>Save</button>
 									</div>
 								</div>
 							</div>
@@ -729,7 +739,7 @@
 							<!-- -End Of Panel -->
 						</div>
 						</div>
-						<!-- End of col-xs-6 -->
+						
 					</div>
 
 				</form>

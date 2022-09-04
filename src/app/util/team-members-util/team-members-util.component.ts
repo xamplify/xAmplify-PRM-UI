@@ -20,7 +20,7 @@ import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 
-declare var $, swal: any;
+declare var $:any, swal: any;
 @Component({
   selector: 'app-team-members-util',
   templateUrl: './team-members-util.component.html',
@@ -722,9 +722,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
           this.isUploadCsv = false;
         }
-
       }
-
     }
   }
 

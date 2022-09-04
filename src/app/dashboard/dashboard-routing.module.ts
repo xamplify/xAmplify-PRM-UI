@@ -27,6 +27,7 @@ import { DetailedDashboardComponent } from './detailed-dashboard/detailed-dashbo
 import { SpfComponent } from './spf/spf.component';
 import { AdminReportCampaignWorkflowAnalyticsComponent } from './admin-report-campaign-workflow-analytics/admin-report-campaign-workflow-analytics.component';
 import { EditModuleNameComponent } from './edit-module-name/edit-module-name.component';
+import { CustomSkinComponent } from "./user-profile/custom-skin/custom-skin.component";
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: "vanity/:vendorCompanyProfileName", component: DashboardAnalyticsComponent },
   { path: "table_advance", component: TableAdvanceComponent },
   { path: "myprofile", component: MyProfileComponent },
+  { path: "customskin", component: CustomSkinComponent },
   { path: "views_report", component: ViewsReportComponent },
   { path: "extrafaq", component: ExtraFaqComponent },
   { path: "welcome", component: WelcomeComponent },

@@ -231,6 +231,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	csvUserPagination: Pagination = new Pagination();
 	csvDomainPagination: Pagination = new Pagination();
 	excludeUsersOrDomains = false;
+	customSkinSettingOption = false;
 	modalpopuploader = false;
 	isUpdateUser = false;
 	/*******************VANITY******************* */
@@ -491,6 +492,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.ngxloading = true;
 		this.dashBoardService.getModulesAccessByUserId().subscribe(result => {
 			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
+			this.customSkinSettingOption = result.customSkinSettings;
 			this.ngxloading = false;
 		  }, _error => {
 			this.ngxloading = false;
@@ -1668,7 +1670,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
-		} else if (this.activeTabName == "exclude") {
+		} else if(this.activeTabName == "customskin"){
+			this.activeTabHeader = this.properties.customskin;
+		}else if (this.activeTabName == "exclude") {
             this.activeTabHeader = this.properties.exclude;
             this.excludeUserPagination= new Pagination();
             this.excludeUserPagination.pageIndex = 1;
