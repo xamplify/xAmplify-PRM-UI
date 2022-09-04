@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from "@angular/router";
 import { DevicesInfoComponent } from 'app/azuga/devices-info/devices-info.component';
 export const routes: Routes = [
-  { path: "", redirectTo: "device", pathMatch: "full" },
-	{ path: "device", component: DevicesInfoComponent },
+  { path: "", redirectTo: "devices", pathMatch: "full" },
+	{ path: "devices", component: DevicesInfoComponent },
 ];
 
 @NgModule({

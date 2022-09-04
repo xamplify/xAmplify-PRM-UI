@@ -10,7 +10,6 @@ import { AzugaService } from '../service/azuga.service';
 export class DevicesInfoComponent implements OnInit {
 
   constructor(public azugaService:AzugaService,public referenceService:ReferenceService,public authenticationService:AuthenticationService) {
-    alert("here");
    }
 
   ngOnInit() {
