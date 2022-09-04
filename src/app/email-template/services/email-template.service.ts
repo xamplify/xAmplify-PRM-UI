@@ -39,11 +39,8 @@ export class EmailTemplateService {
 
 
     listTemplates(pagination:Pagination,userId:number){
-        console.log(pagination);
         try{
-
             userId = this.authenticationService.checkLoggedInUserId(userId);
-
             var url =this.URL+"admin/listEmailTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
             .map(this.extractData)
@@ -55,7 +52,6 @@ export class EmailTemplateService {
     }
 
     listTemplatesForVideo(pagination:Pagination,userId:number,videoId:number){
-        console.log(pagination);
         try{
             var url =this.URL+"admin/listEmailTemplates/"+userId+"/"+videoId+"?access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
@@ -222,6 +218,15 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    azugaRestApi(){
+        const headers = new Headers();
+        headers.set("x-api-key", "le3s6fztqr4l3d8qYH7I835LYTtILhoHSKVK2VIf")
+        let url = "https://api2.azuga.com/prm/511/devices/1059";
+        return this.http.get(url,{headers:headers})
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
 
     private extractData( res: Response ) {
         let body = res.json();
