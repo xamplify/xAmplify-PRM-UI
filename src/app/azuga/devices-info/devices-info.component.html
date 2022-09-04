@@ -1,0 +1,21 @@
+<div class="page-content">
+  <div class="page-bar" style="border-radius: 3px !important; border: 1px solid #e0e0e0 !important;">
+    <ul class="page-breadcrumb">
+        <li *ngIf="!authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+             <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="authenticationService.isSuperAdmin()">
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li style="color: #808080">
+            <a  translate>Devices Info</a>
+             <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+    </ul>
+</div>
+  <p>This is Azuga Component</p>
+</div>

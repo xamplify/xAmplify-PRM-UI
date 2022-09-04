@@ -44,7 +44,7 @@ import { LogoutComponent } from 'app/authentication/logout/logout.component';
 import {SelectContentModulesComponent} from 'app/core/select-content-modules/select-content-modules.component';
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
 import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
-
+import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
@@ -99,6 +99,7 @@ export const routes: Routes = [
 			/*******XNFR-83*******/
 			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: false } },
 			/*******XNFR-83*******/
+			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: false } },
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},

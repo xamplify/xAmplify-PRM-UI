@@ -52,7 +52,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	/*** XNFR-134***/
 	skin:CustomSkin = new CustomSkin();
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-
+	showResellar = false;
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -71,6 +71,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}else{
 		  this.vanityLoginDto.vanityUrlFilter = false;
 		}
+		const currentUser = localStorage.getItem( 'currentUser' );
+		if (currentUser) {
+			const userName = JSON.parse( currentUser )['userName'];
+			this.showResellar = "bob@xtremand.com"==userName;
+		}
+
 	}
 
 
