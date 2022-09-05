@@ -61,9 +61,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
               } else { 
                 this.referenceService.goToRouter(this.addCompanyProfileUrl)
              }
-            }else if(url.includes("/home/design/add") || url.includes("/home/azuga/devices")){
+            }else if(url.includes("/home/design/add")){
                 return true;
-            }else if(url.includes("/home/select-modules")){
+            }else if(url.includes("/home/azuga/devices")){
+                let condition = "bob@xtremand.com"==userName;
+               if(condition){
+                   return true;
+               }else{
+                    this.goToAccessDenied(url);
+               }
+            }
+            else if(url.includes("/home/select-modules")){
                 return true;
             }else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);
