@@ -1,62 +1,184 @@
 <style>
-.disabled {
-	pointer-events: none;
-	cursor: default;
-}
+	.disabled {
+		pointer-events: none;
+		cursor: default;
+	}
 </style>
 <div class="page-content">
 	<div class="my-container">
-		<ngx-loading [show]="loading"
-			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home" aria-hidden="true"></i>
-				 <a	[routerLink]="referenseService.homeRouter">Home</a>
-				  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+				<a [routerLink]="referenseService.homeRouter">Home</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
 			<li><a>Your Vendors</a></li>
 		</ul>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-		<div class="custome-response-css">
-		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-		</div>
+			<div class="custome-response-css">
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+				</app-response-message>
+			</div>
 			<div class="page-bar" style="padding: 10px; border: 1px solid #CCC;">
 				<div>
-					<div>
-						<div class="row">
-							<div class="col-xs-12 col-sm-4 col-md-4"
-								*ngFor="let vendorReport of vendorDetails">
-								<a
-									class="dashboard-stat dashboard-stat-lighter dashboard-stat blue vendor-shadow"
-									[class.disabled]="!vendorReport.campaignsCount"
-									(click)="navigateToVendorCampaigns(vendorReport)">
-									<div class="visual">
-										<img style="width: 100px; height: 66px;"
-											src="{{vendorReport.companyLogo}}"
-											(error)="errorHandler($event)" alt="">
-									</div>
-									<div class="details">
-										<div class="number black">{{vendorReport.campaignsCount}}</div>
-										<div [title]="vendorReport.companyName" class="desc black">
-											{{vendorReport.companyName | slice:0:25}}<span
-												*ngIf="vendorReport.companyName?.length>25">..</span>
+
+					<div class="row">
+						<div class="col-12 col-sm-12 col-md-4 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
+							<div class="card">
+								<div class="card-header bg-card-header p-3 px-3">
+									<div class="flex-row d-flex">
+										<div class="col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
+											<div class="card p-3 mb-2" style="background-color:#eee; border-radius: 5px;">
+												<img style="width: 160px; height: 60px;"
+													src="{{vendorReport.companyLogo}}"
+													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
+											</div>											
 										</div>
-									</div> <span id="permhref" class="morePadding"> <a
-										class="more"> Detailed view 
-										<i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-									</a>
-								</span>
-								</a>
+										<div class="col-6 col-lg-auto text-center text-lg-end pt10">
+											<h3 class="mt-0 justify-content-end d-flex">
+												<b>{{vendorReport.campaignsCount}}</b></h3>
+											<h5 class="mt-0 justify-content-end d-flex">Campaigns</h5>
+										</div>
+									</div>
+								</div>
+								<div class="card-body p-0">
+									<div class="flex-row pl10 cname">
+										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0"
+											(click)="navigateToVendorCampaigns(vendorReport)">
+											<b>{{vendorReport?.companyName | slice:0:35}}</b>
+											<span *ngIf="vendorReport?.companyName?.length>35">...</span>
+										</h4>										
+									</div>
+									<div class="flex-row">
+										<div class="col-12">
+											<table class="table">
+												<tbody>
+													<tr class="card-tr">
+														<td>
+															<span class="">
+																<img alt="" class="img-circle" src="{{vendorReport.vendorProfileImage}}" (error)="userProfileErrorHandler($event)" />
+															</span>
+														</td>
+														<td>
+															<div class="text-size">
+																<b>{{vendorReport?.vendorDisplayName | slice:0:20}}
+																	<span *ngIf="vendorReport?.vendorDisplayName?.length>20">...</span>
+																</b>
+															</div>
+															<div class="text-size mb-0">{{vendorReport?.vendorEmailId | slice:0:20}}
+																<span *ngIf="vendorReport?.vendorEmailId?.length>20">...</span>
+															</div>
+															<span *ngIf="vendorReport.vendorPhone" class="phone">
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.vendorPhone | slice:0:20}}
+																	<span *ngIf="vendorReport?.vendorPhone?.length>20">...</span>
+															</span>
+														</td>
+														<td>
+															<h6 class="vendor-badge">
+																<b>Vendor</b>
+															</h6>															
+														</td>
+													</tr>
+													<tr class="card-tr">
+														<td>
+															<span class="">
+																<img alt="" class="img-circle" src="{{vendorReport?.vendorAdminProfileImage}}" (error)="userProfileErrorHandler($event)" />
+															</span>
+														</td>
+														<td>
+															<div class="text-size">
+																<b>{{vendorReport?.vendorAdminDisplayName | slice:0:20}}
+																	<span *ngIf="vendorReport?.vendorAdminDisplayName?.length>20">...</span></b>
+															</div>
+															<div class="text-size mb-0">{{vendorReport?.vendorAdminEmailId | slice:0:20}}
+																<span *ngIf="vendorReport?.vendorAdminEmailId?.length>20">...</span>
+															</div>
+															<span *ngIf="vendorReport?.vendorAdminPhone" class="phone">
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.vendorAdminPhone| slice:0:20}}
+																	<span *ngIf="vendorReport?.vendorAdminPhone?.length>20">...</span>
+															</span>
+														</td>
+														<td>
+															<h6 class="vendor-badge">
+																<b>Vendor Manager</b>
+															</h6>															
+														</td>
+													</tr>
+													<tr class="card-tr">
+														<td>
+															<span class="">
+																<img alt="" class="img-circle" src="{{vendorReport.partnerProfileImage}}" (error)="userProfileErrorHandler($event)" />
+															</span>
+														</td>
+														<td>
+															<div class="text-size">
+																<b>{{vendorReport?.partnerDisplayName | slice:0:20}}
+																	<span *ngIf="vendorReport?.partnerDisplayName?.length>20">...</span>
+																</b>
+															</div>
+															<div class="text-size mb-0">{{vendorReport?.partnerEmailId | slice:0:20}}
+																<span *ngIf="vendorReport?.partnerEmailId?.length>20">...</span>
+															</div>
+															<span *ngIf="vendorReport.partnerPhone" class="phone">
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.partnerPhone | slice:0:20}}
+																	<span *ngIf="vendorReport?.partnerPhone?.length>20">...</span>
+															</span>															
+														</td>
+														<td>
+															<h6 class="partner-badge">
+																<b>Partner</b>
+															</h6>															
+														</td>
+													</tr>													
+													<tr class="card-tr">
+														<td>
+															<span class="">
+																<img alt="" class="img-circle" src="{{vendorReport.partnerAdminProfileImage}}" (error)="userProfileErrorHandler($event)" />
+															</span>
+														</td>
+														<td>
+															<div class="text-size">
+																<b>{{vendorReport?.partnerAdminDisplayName | slice:0:20}}
+																	<span *ngIf="vendorReport?.partnerAdminDisplayName?.length>20">...</span></b>
+															</div>
+															<div class="text-size mb-0">{{vendorReport?.partnerAdminEmailId | slice:0:20}}
+																<span *ngIf="vendorReport?.partnerAdminEmailId?.length>20">...</span>
+															</div>
+															<span *ngIf="vendorReport?.partnerAdminPhone" class="phone">
+																<i aria-hidden="true" class="fa fa-phone"
+																	style="padding-right: 4px;"></i>{{vendorReport?.partnerAdminPhone| slice:0:20}}
+																	<span *ngIf="vendorReport?.partnerAdminPhone?.length>20">...</span>
+															</span>
+														</td>
+														<td>
+															<h6 class="partner-badge">
+																<b>Partner Manager</b>
+															</h6>															
+														</td>
+													</tr>													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
+					</div>
+					<div>
 
+					<div class="pt10">
 						<app-pagination [pagination]="pagination" [type]="'vendorReports'"
-							(notifyParent)="setPage($event)"
-							(notifyParentDropDown)="onChangeAllVendors($event)"></app-pagination>
-
+							(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllVendors($event)">
+						</app-pagination>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -64,6 +186,3 @@
 	</div>
 	<app-scroll-top></app-scroll-top>
 </div>
-
-
-

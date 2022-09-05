@@ -200,6 +200,9 @@
                                     </li>
                                 </ng-container>
                             </ng-container>
+                            <li *ngIf="(authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
+                                <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors</a>
+                            </li>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out

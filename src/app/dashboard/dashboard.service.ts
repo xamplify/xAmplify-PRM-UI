@@ -778,4 +778,12 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
           }
+
+        getVendors(pagination: Pagination) {
+            const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+    
+        }
 }
