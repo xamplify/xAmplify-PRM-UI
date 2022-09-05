@@ -18,6 +18,14 @@
                 <span class="selected"></span>
             </a>
           </li>
+          <!--Reseller Portal-->
+          <li *ngIf="showResellar" [ngClass]="{'active': location.path().includes('reseller')}">
+            <a  (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./azuga']">
+                <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
+                <span class="title" translate>Reseller Portal</span>                    
+                <span class="selected"></span>
+            </a>
+          </li>
 
           <!--Partners-->
           <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
@@ -231,7 +239,7 @@
           </li> 
 
 
-          <!--------Team------ -->
+          <!--------Team------->
           <li *ngIf="menuItem?.team || isLoggedInAsTeamMember"  [ngClass]="{'active': location.path().includes('team')}">
               <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./team/add-team']" >
                   <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
