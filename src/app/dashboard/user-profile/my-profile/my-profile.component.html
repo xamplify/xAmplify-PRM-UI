@@ -100,7 +100,7 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                            <li *ngIf="customSkinSettingOption"  [ngClass]="{'active': activeTabName == 'customskin'}">
+                            <li *ngIf="customSkinSettingOption && !authenticationService.isOnlyPartner()"  [ngClass]="{'active': activeTabName == 'customskin'}">
                                 <a (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
