@@ -202,15 +202,43 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
       this.isValidIconColor = true;
   } 
   this.checkValideColorCodes();
+  this.disabledSaveButton();
+}
+
+disabledSaveButton(){
+    if(this.activeTabName ==='leftmenu'){
+      if(this.form.backgroundColor === this.form.textColor){
+        this.isValid = true;
+      }else if(this.form.backgroundColor===this.form.iconColor){
+        this.isValid = true;
+      }else{
+        this.isValid = false;
+      }
+    }
+    if(this.activeTabName === 'footer'){
+      if(this.form.textColor === this.form.backgroundColor){
+        this.isValid = true;
+      }else{
+        this.isValid = false;
+      }
+    }
+
+    if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
+      this.isValidColorCode = true;
+  }
 }
 checkValideColorCodes(){
   if(this.form.backgroundColor=== this.form.buttonColor){
     this.isValid = true; 
     }else if(this.form.buttonValueColor === this.form.buttonColor){
       this.isValid = true;
-    }else{
+    }else if(this.form.iconColor === this.form.buttonColor){
+      this.isValid = true;
+    }
+      else{
       this.isValid = false;
     }
+    
   if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
   }
@@ -284,6 +312,7 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
       }
   } catch (error) { console.log(error); }
   this.checkValideColorCodes();
+  this.disabledSaveButton();
 }
 
 
