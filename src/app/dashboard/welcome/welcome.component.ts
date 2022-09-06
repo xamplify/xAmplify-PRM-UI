@@ -12,6 +12,8 @@ import { VideoFileService } from '../../videos/services/video-file.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
+import { CustomSkin } from '../models/custom-skin';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 
 declare var $:any;
@@ -76,6 +78,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     showDealForm: boolean = false;
     dealResponse:CustomResponse = new CustomResponse();
     showSandboxText = false;
+    vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+    skin:CustomSkin = new CustomSkin();
+
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -84,6 +89,13 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         public sanitizer:DomSanitizer, public videoFileService: VideoFileService,
         private dashboardService:DashboardService,public envService:EnvService
     ) {
+      let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
        this.sourceType = this.authenticationService.getSource();
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
@@ -93,7 +105,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.hasEmailTemplateRole = this.referenceService.hasRole(this.referenceService.roles.emailTemplateRole);
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
-
+        this.loggedInUserId = this.authenticationService.getUserId();
 
         if(authenticationService.module.isVendor || authenticationService.isAddedByVendor){
             this.contactOrPartnerLink =  "/home/partners/manage";
@@ -250,15 +262,13 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
     // for main content
 
-    // skin:CustomSkin = new CustomSkin();
-    // getCustomColor(){
-    //   this.dashboardService.getTopNavigationBarCustomSkin(this.loggedInUserId).subscribe(
-    //     (data) =>{
-    //       let skinMap = data.data;
-    //       this.skin = skinMap.MAIN_CONTENT;
-    //       console.log(this.skin);
-    //     }
-    //   )
-    // }
+    getCustomColor(loggedInUserId:number){
+      this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+        (data) =>{
+          let skinMap = data.data;
+          this.skin = skinMap.MAIN_CONTENT;
+        }
+      )
+    }
   
 }
