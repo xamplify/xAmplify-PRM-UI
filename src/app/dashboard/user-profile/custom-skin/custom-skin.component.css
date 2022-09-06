@@ -241,7 +241,6 @@ LEGEND {
     position: relative;
     left: -4px;
     color: #bd1d1d;
-    bottom: 22px;
 }
 
 .full {
@@ -618,7 +617,7 @@ label {
 
 @media only screen and (min-width:768px){
 .col-sm-8{
-    width: 76.666667%;
+    width: 120%;
 } 
 }
 .override-actions {
@@ -1579,7 +1578,7 @@ div.switch5>input.switch:focus~label:before {
 
 .active {
     background-color: #008fd5;
-    margin-left: 4px;
+    margin-left: 2px;
     margin-right: 0px;
     color: black !important;
 }
@@ -1595,7 +1594,7 @@ div.switch5>input.switch:focus~label:before {
     font-weight: 500;
     color: white !important;
     background-color: blue;
-    border-bottom: 2px solid #5b9bd1;
+    border-bottom: 0px solid #5b9bd1;
     margin-left: -2px;
 }
 
@@ -1619,14 +1618,18 @@ div.switch5>input.switch:focus~label:before {
 
 .left-left {
     writing-mode: vertical-lr;
-    width: 65%;
+    width: 100%;
     transform: rotate(180deg);
     height: 85px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 11px;
 }
 
 .main-content {
     height: 85px;
     color:black !important;
+    font-family:"Open Sans", sans-serif ;
+    font-size: 12px;
     /* display: flex;
     justify-content:center; */
 }
@@ -1635,6 +1638,7 @@ div.switch5>input.switch:focus~label:before {
     display: inline-block;
     width: 60px;
     height: 40px;
+    top:-4px;
   }
   
   .switch input { 

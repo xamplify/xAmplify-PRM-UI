@@ -267,8 +267,15 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
+                                    <!-- <span class="caption-subject font-blue-madison bold"  *ngIf="activeTabName== 'customskin' ">
+                                        
+                                    </span> -->
                                 </div>
                             </div>
+                            <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
+                                Custom Skin Setting helps to change your application colors like background color ,icon color, text color, button color etc.
+                                Based on selecting color in below tab.
+                              </div>
                             <div class="portlet-body clearfix">
                                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                                 </app-response-message>
