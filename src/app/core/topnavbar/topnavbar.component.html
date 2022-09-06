@@ -64,7 +64,7 @@
                     </li>
                    
                     <li class="btnShare"  style="margin-top: 17px;margin-right: 5px;" *ngIf="authenticationService?.module?.hasSocialStatusRole">
-                        <button class="btn btn custom"  [ngStyle] = "{'background-color': cskin?.buttonColor, 'font-family': cskin?.fontFamily, 'color': cskin?.buttonValueColor}" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
+                        <button class="btn btn custom"  [ngStyle] = "{'background-color': cskin?.buttonColor, 'font-family': cskin?.fontFamily, 'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs"  translate>Update Status</span>
 							<i class="fa fa-share" [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor}"  button data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
