@@ -60,6 +60,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   userId : number;
   cskin:CustomSkin = new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  showMyVendors: boolean = false;
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -216,23 +217,25 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }catch(error) {this.logger.error('error'+error); }
   }
 
-
-
-
-  getRoles(){
-      this.userService.getRoles(this.authenticationService.getUserId())
+  getRoles() {
+    this.userService.getRoles(this.authenticationService.getUserId())
       .subscribe(
-      response => {
-           if(response.statusCode==200){
-              this.authenticationService.loggedInUserRole = response.data.role;
-              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-              this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole =="Partner" && this.authenticationService.isPartnerTeamMember==false;
-           }else{
-               this.authenticationService.loggedInUserRole = 'User';
-           }
-      },
-      error => this.logger.errorPage(error),
-      () => this.logger.log('Finished')
+        response => {
+          if (response.statusCode == 200) {
+            this.authenticationService.loggedInUserRole = response.data.role;
+            this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+            this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
+            let superiorRole = response.data.superiorRole;
+            if ((this.authenticationService.module.isCompanyPartner || superiorRole.includes('Partner'))
+              && this.authenticationService.user.hasCompany) {
+              this.showMyVendors = true;
+            }
+          } else {
+            this.authenticationService.loggedInUserRole = 'User';
+          }
+        },
+        error => this.logger.errorPage(error),
+        () => this.logger.log('Finished')
       );
   }
 

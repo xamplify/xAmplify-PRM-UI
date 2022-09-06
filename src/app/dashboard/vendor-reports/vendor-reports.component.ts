@@ -66,12 +66,14 @@ export class VendorReportsComponent implements OnInit {
 
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
-    this.vendorReports();
+    //this.vendorReports();
+    this.getVendors();
   }
 
   onChangeAllVendors(event: Pagination) {
     this.pagination = event;
-    this.vendorReports();
+    //this.vendorReports();
+    this.getVendors();
   }
 
   navigateToVendorCampaigns(venderReport: any) {

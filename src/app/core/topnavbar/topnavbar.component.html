@@ -200,7 +200,7 @@
                                     </li>
                                 </ng-container>
                             </ng-container>
-                            <li *ngIf="(authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
+                            <li *ngIf="showMyVendors">
                                 <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors</a>
                             </li>
                             <li class="divider"></li>

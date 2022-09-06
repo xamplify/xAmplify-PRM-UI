@@ -1,22 +1,20 @@
 
-<div class="modal-header" *ngIf="sucess">
-  <div class="alert alert-success" *ngIf="sucess"role="alert">
-      {{message}}
-      <button type="button" (click)="close()" class="close-circle">
-          <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-  </div>
-</div> 
+<div class="alert alert-danger" *ngIf="statusCode==500"  role="alert">
+  {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="col-md-12 col-lg-12">
   <div class="portlet light">
-    <div class="form-group">
       <label>Description</label>
-      <textarea>Hiii</textarea>
+      <div class="portlet body">
+        Custom Skin Setting helps to change your application colors like background color ,icon color, text color, button color etc.
+        Based on selecting color in below tab.
+      </div>
 
     </div>
   </div>
-
-</div>
 <div class="page-breadcrumb">
 	<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
 		<!-- <li [ngClass]="{'active': activeTabName == 'home'}"><a class="text-white"
@@ -65,9 +63,9 @@
 									class="input-group-addon color-pick"
 									[(colorPicker)]="form.iconColor"
 									[style.background]="form.iconColor" [cpWidth]="'200px'"
-									[cpHeight]="'100px'"
+									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'iconColor')"
-									[cpPosition]="'bottom'" readonly></span>
+									[cpPosition]="'top'" readonly></span>
 							</div>
             </div>
             <div class="col-md-12 col-lg-12">
@@ -186,7 +184,7 @@
 									class="input-group-addon color-pick"
 									[(colorPicker)]="form.iconColor"
 									[style.background]="form.iconColor" [cpWidth]="'200px'"
-									[cpHeight]="'100px'"
+									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'iconColor')"
 									[cpPosition]="'bottom'" readonly></span>
 							</div>
@@ -343,9 +341,9 @@
 									class="input-group-addon color-pick"
 									[(colorPicker)]="form.iconColor"
 									[style.background]="form.iconColor" [cpWidth]="'200px'"
-									[cpHeight]="'100px'"
+									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'iconColor')"
-									[cpPosition]="'center'" readonly></span>
+									[cpPosition]="'top'" readonly></span>
 							</div>
 						</div>
 						<!-- Text Color-->
@@ -360,7 +358,7 @@
 									[style.background]="form.textColor" [cpWidth]="'200px'"
 									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'textColor')"
-									[cpPosition]="'bottom'" readonly> </span>
+									[cpPosition]="'top'" readonly> </span>
 							</div>
 						</div>
 						<!-- End Text Color-->
@@ -441,7 +439,7 @@
 						<div class="form-group">
 							<label>Text Color</label> 
               <input class="form-control" [value]="textColor" [(ngModel)]="form.textColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(textColor,'textColor')" maxlength="7" />
-              <span class="input-group-addon color-pick" [(colorPicker)]="form.textColor" [style.background]="form.textColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'textColor')" [cpPosition]="'bottom'" readonly>
+              <span class="input-group-addon color-pick" [(colorPicker)]="form.textColor" [style.background]="form.textColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'textColor')" [cpPosition]="'top'" readonly>
               </span>						
             </div>
 					</div>
@@ -528,12 +526,12 @@
             </div>
           <div class="col-xs-12">
             <div *ngIf="form.showFooter" class="col-xs-12 col-md-12 col-lg-12 pl0 pr0" style="margin-top:5px;">
-              <ckeditor [(ngModel)]="form.textContent" #myckeditor [config]="ckeConfig" debounce="500">
+              <ckeditor  [(ngModel)]="form.textContent" #myckeditor [config]="ckeConfig" debounce="500" maxlength="250"  (input)="characterSize()">
               </ckeditor>
           </div>
           </div>
         
-          <div class="col-md-12">
+          <div class="col-md-12" style="margin-bottom: 18px;">
             <button type="button" class="btn btn-primary" (click)="saveCustomSkin(form)">Save</button>
             <button type="button" class="btn btn-secondary" (click)="saveDefaultSkin(form)">User Default Setting</button>
             </div>
