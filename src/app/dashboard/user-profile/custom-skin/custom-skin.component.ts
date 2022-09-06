@@ -54,6 +54,7 @@ export class CustomSkinComponent implements OnInit {
   footerContent:any;
   charactersLeft = 250;
   statusCode :any;
+  isValid = false;
   customResponse: CustomResponse = new CustomResponse();
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
@@ -130,13 +131,7 @@ export class CustomSkinComponent implements OnInit {
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
-    if((this.form.backgroundColor != this.form.buttonColor) || 
-    (this.form.buttonValueColor != this.form.buttonColor) || (this.form.backgroundColor != this.form.buttonValueColor)){
-   this.saveSkin(form);
-    }else{
-      this.statusCode = 400;
-      this.message="please make a change of color of this feild already applied for above field ";
-    }
+    this.saveSkin(form);
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
@@ -209,6 +204,13 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
   this.checkValideColorCodes();
 }
 checkValideColorCodes(){
+  if(this.form.backgroundColor=== this.form.buttonColor){
+    this.isValid = true; 
+    }else if(this.form.buttonValueColor === this.form.buttonColor){
+      this.isValid = true;
+    }else{
+      this.isValid = false;
+    }
   if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
   }
