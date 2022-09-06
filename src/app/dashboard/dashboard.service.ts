@@ -786,4 +786,10 @@ export class DashboardService {
                 .catch(this.handleError);
     
         }
+
+        getVendorCount(vanityLoginDto: VanityLoginDto) {
+            return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+               .map(this.extractData)
+               .catch(this.handleError);
+        }
 }

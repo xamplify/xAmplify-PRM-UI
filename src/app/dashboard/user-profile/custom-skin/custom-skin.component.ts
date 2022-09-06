@@ -52,6 +52,8 @@ export class CustomSkinComponent implements OnInit {
   activeTabName: string = "header";
   showFooter:boolean;
   footerContent:any;
+  charactersLeft = 250;
+  statusCode :any;
   customResponse: CustomResponse = new CustomResponse();
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
@@ -104,20 +106,37 @@ export class CustomSkinComponent implements OnInit {
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
-    
-    
+    if(CKEDITOR!=undefined){
+      for (var instanceName in CKEDITOR.instances) {
+          CKEDITOR.instances[instanceName].updateElement();
+          this.form.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       console.log(data.data)
       this.sucess = true;
       this.message = "saved sucessfully";
       this.router.navigate(['/home/dashboard/myprofile']);
+      },
+     error =>{
+      if(this.form.textContent.length > 225){
+        this.message = "opps something wrong!";
+      }else{
+      this.message = "opps something worng!";
       }
-     )
+      this.statusCode = 500;
+     })
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
+    if((this.form.backgroundColor != this.form.buttonColor) || 
+    (this.form.buttonValueColor != this.form.buttonColor) || (this.form.backgroundColor != this.form.buttonValueColor)){
    this.saveSkin(form);
+    }else{
+      this.statusCode = 400;
+      this.message="please make a change of color of this feild already applied for above field ";
+    }
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
