@@ -52,6 +52,8 @@ export class CustomSkinComponent implements OnInit {
   activeTabName: string = "header";
   showFooter:boolean;
   footerContent:any;
+  charactersLeft = 250;
+  statusCode :any;
   customResponse: CustomResponse = new CustomResponse();
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
@@ -112,8 +114,15 @@ export class CustomSkinComponent implements OnInit {
       this.sucess = true;
       this.message = "saved sucessfully";
       this.router.navigate(['/home/dashboard/myprofile']);
+      },
+     error =>{
+      if(this.form.textContent.length > 255){
+        this.message = "footer content length  is greathan (255)";
+      }else{
+      this.message = "someting went worng!";
       }
-     )
+      this.statusCode = 500;
+     })
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
