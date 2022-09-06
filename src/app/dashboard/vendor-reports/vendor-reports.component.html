@@ -24,16 +24,15 @@
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 				</app-response-message>
 			</div>
-			<div class="page-bar" style="padding: 10px; border: 1px solid #CCC;">
+			<div class="page-bar" style="padding: 10px 25px 10px 25px; border: 1px solid #CCC;">
 				<div>
-
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-4 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
 							<div class="card">
 								<div class="card-header bg-card-header p-3 px-3 head-cursor" (click)="navigateToVendorCampaigns(vendorReport)">
 									<div class="flex-row d-flex">
 										<div class="col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
-											<div class="card p-3 mb-2" style="background-color:#eee; border-radius: 5px;">
+											<div class="card p-3 mb-2 clogo" style="background-color:#eee; border-radius: 5px;">
 												<img style="width: 160px; height: 60px;"
 													src="{{vendorReport.companyLogo}}"
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">

@@ -94,6 +94,11 @@ label {
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: 0.25rem;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 8%), -5px -6px 10px 0 rgb(253 253 253 / 90%);
+    background-image: linear-gradient(to top, #f1f2f5, rgba(255, 255, 255, 0)), linear-gradient(to bottom, #f6f6f9, #f6f6f9);
+    border: 1px solid #eeeef0;
+    margin-bottom: 18px;
 }
 
 .justify-content-end {
@@ -118,8 +123,10 @@ label {
     border-top: 1px solid #ddd;
 }
 
-.bg-card-header {
+.bg-card-header {    
     background-color: #c1d5e7;
+    box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 8%), -5px -6px 10px 0 rgb(253 253 253 / 90%);
+    border-radius: 10px 10px 0px 0px;
 }
 
 .card-tr {
@@ -154,4 +161,10 @@ label {
 
 .head-cursor {
     cursor: pointer;
+}
+
+.clogo {
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0px !important;
 }
