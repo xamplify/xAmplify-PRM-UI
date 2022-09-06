@@ -106,8 +106,12 @@ export class CustomSkinComponent implements OnInit {
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
-    
-    
+    if(CKEDITOR!=undefined){
+      for (var instanceName in CKEDITOR.instances) {
+          CKEDITOR.instances[instanceName].updateElement();
+          this.form.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       console.log(data.data)
@@ -116,17 +120,23 @@ export class CustomSkinComponent implements OnInit {
       this.router.navigate(['/home/dashboard/myprofile']);
       },
      error =>{
-      if(this.form.textContent.length > 255){
-        this.message = "footer content length  is greathan (255)";
+      if(this.form.textContent.length > 225){
+        this.message = "opps something wrong!";
       }else{
-      this.message = "someting went worng!";
+      this.message = "opps something worng!";
       }
       this.statusCode = 500;
      })
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
+    if((this.form.backgroundColor != this.form.buttonColor) || 
+    (this.form.buttonValueColor != this.form.buttonColor) || (this.form.backgroundColor != this.form.buttonValueColor)){
    this.saveSkin(form);
+    }else{
+      this.statusCode = 400;
+      this.message="please make a change of color of this feild already applied for above field ";
+    }
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;

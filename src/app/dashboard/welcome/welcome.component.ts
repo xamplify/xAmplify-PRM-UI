@@ -80,6 +80,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     showSandboxText = false;
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
     skin:CustomSkin = new CustomSkin();
+    userId: number;
 
     constructor(
         private userService: UserService,
@@ -199,7 +200,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
         this.getWelcomePageItems();
-        //this.getCustomColor();
+        this.getMainContent(this.userId);
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
@@ -260,15 +261,17 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.referenceService.goToRouter(url);
       }
     }
-    // for main content
+   
 
-    getCustomColor(loggedInUserId:number){
+    getMainContent(userId:number){
       this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-        (data) =>{
-          let skinMap = data.data;
-          this.skin = skinMap.MAIN_CONTENT;
-        }
+        (response) =>{
+         let cskinMap  = response.data;
+         this.skin  = cskinMap.MAIN_CONTENT;
+         console.log(this.skin);
+      }
       )
+      
     }
   
 }

@@ -61,6 +61,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   cskin:CustomSkin = new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   showMyVendors: boolean = false;
+  vendorCount: any = 0;
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -235,8 +236,23 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           }
         },
         error => this.logger.errorPage(error),
-        () => this.logger.log('Finished')
+        () => {
+          this.logger.log('Finished')
+          if (this.showMyVendors) {
+            this.getVendorCount();
+          }
+        }
       );
+  }
+
+  getVendorCount() {
+    this.dashboardService.getVendorCount(this.vanityLoginDto).subscribe(
+      (response) =>{
+        if (response.statusCode == 200) {
+          this.vendorCount = response.data;
+        }     
+      }
+    )
   }
 
   onRightClick(event){
