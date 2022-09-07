@@ -12,6 +12,9 @@
          </li>
          <li>
             <a (click)="goToDam()" translate>DAM</a></li>
+            <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
+            <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
+            
       </ul>
       <!-- <div  id="right">
          <button id="uploadDamButton" *ngIf="!isPartnerView" class="btn btn-primary" (click)="goToUploadComponent()"  translate>
@@ -21,6 +24,11 @@
      </div> -->
    </div>
    <!---Component Comes here-->
-   <app-dam-list-and-grid-view></app-dam-list-and-grid-view>
+   <app-dam-list-and-grid-view *ngIf="manageDam" (newItemEvent)="setManageDam($event)"> </app-dam-list-and-grid-view>
+   
+   <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)" ></app-edit-video> 
+   
+   <app-play-video *ngIf="playVideo"></app-play-video>
+   
    </div>
    

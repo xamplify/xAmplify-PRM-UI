@@ -25,9 +25,6 @@ export const routes: Routes = [
 	{path:"select",component:SelectUploadTypeComponent},
 	{path:"history/:assetId",component:ShowHistoryComponent},
 	{path:"shared/view/:assetId",component:ViewDamComponent}
-
-
-
 ];
 
 @NgModule({

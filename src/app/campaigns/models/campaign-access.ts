@@ -32,4 +32,6 @@ export class CampaignAccess {
   survey  = false;
   dataShare = false;
   oneClickLaunch = false;
+  agency = false;
+  customSkinSettings = false;
 }

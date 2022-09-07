@@ -1,6 +1,6 @@
 <ng-container *ngIf="!isSuperAdmin">
   <div class="page-sidebar-wrapper" *ngIf="authenticationService?.user?.hasCompany">
-    <div class="page-sidebar navbar-collapse collapse">
+    <div class="page-sidebar navbar-collapse collapse" [ngStyle] = "{'background-color': skin.backgroundColor}" >
       <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader"></app-lefside-navigation-loader>
       <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && menuItemError">
           <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
@@ -12,31 +12,30 @@
 
           <!---Account Dashboard-->
           <li *ngIf="menuItem?.accountDashboard" [ngClass]="{'active': location.path().includes('dashboard')}">
-            <a (click)="startLoader()" [routerLink]="['/home/dashboard/default']" >
-                <i class="icon-home" aria-hidden="true"></i>
+            <a  (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/dashboard/default']">
+                <i class="icon-home" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Account Dashboard</span>                    
                 <span class="selected"></span>
             </a>
           </li>
-
           <!--Partners-->
           <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
-            <a href="javascript:;" (click)="openOrCloseTabs('partners')">
-                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+            <a href="javascript:;" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" class="partner" (click)="openOrCloseTabs('partners')">
+                <i class="fa fa-handshake-o"  [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>{{customNamePartners}}</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
             </a>
             <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
               <li>
-                  <a (click)="startLoader()" [routerLink]="['./partners/add']" >
-                      <i class="fa fa-users" aria-hidden="true"></i>
+                  <a class="onboardPartner" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="startLoader()" [routerLink]="['./partners/add']" >
+                      <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                       <span class="title" translate>Onboarding {{customNamePartners}}</span>
                   </a>
               </li>
               <li>
-                  <a (click)="startLoader()" [routerLink]="['./partners/manage']" >
-                      <i class="fa fa-list" aria-hidden="true"></i>
+                  <a class="managePartner" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="startLoader()" [routerLink]="['./partners/manage']" >
+                      <i class="fa fa-list" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                       <span class="title" translate>Manage {{customNamePartners}}</span>
                   </a>
               </li>
@@ -46,8 +45,8 @@
           <!--Content-->
           <li *ngIf="menuItem?.content"  [ngClass]="{'active': location.path().includes('select-modules') || location.path().includes('content') || location.path().includes('dam') 
                   || location.path().includes('tracks') || location.path().includes('playbook') }">
-            <a (click)="startLoader()" [routerLink]="['/home/select-modules']" >
-              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/select-modules']" (onChange)="tileColor()">
+              <i class="fa fa-cloud-upload" aria-hidden="true" [ngStyle] = "{'color': skin?.iconColor}"></i>
               <span class="title">Content</span>
               <span class="selected"></span>
             </a>
@@ -55,22 +54,22 @@
 
           <!--Contacts-->
           <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
-          <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
-              <i class="fa fa-id-card" aria-hidden="true"></i>
+          <a href="javascript:;" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="openOrCloseTabs('contacts')">
+              <i class="fa fa-id-card" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
               <span class="title" translate>Contacts</span>
-              <span class="arrow "></span>
+              <span class="arrow"></span>
               <span class="selected"></span>
           </a>
           <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
               <li>
-                  <a (click)="startLoader()" [routerLink]="['./contacts/add']" >
-                      <i class="fa fa-users" aria-hidden="true"></i>
+                  <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./contacts/add']" >
+                      <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                       <span class="title" translate>Add Contacts</span>
                   </a>
               </li>
               <li>
-                  <a (click)="startLoader()" [routerLink]="['./contacts/manage']" >
-                      <i class="fa fa-list" aria-hidden="true"></i>
+                  <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./contacts/manage']" >
+                      <i class="fa fa-list" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                       <span class="title" translate>Manage Contacts</span>
                   </a>
               </li>
@@ -88,22 +87,22 @@
 
           <!--Share Leads-->
           <li *ngIf="menuItem?.shareLeads" [ngClass]="{'active': location.path().includes('assignleads')}">
-          <a href="javascript:;" (click)="openOrCloseTabs('assignleads')"> 
-            <i class="fa fa-id-badge" aria-hidden="true"></i> 
+          <a href="javascript:;" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="openOrCloseTabs('assignleads')"> 
+            <i class="fa fa-id-badge" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i> 
             <span class="title"	translate>Share Leads</span>
             <span class="arrow "></span> 
             <span	class="selected"></span>
           </a>
           <ul class="sub-menu" [ngStyle]="{'display': assignLeads? 'block': 'none' }">
             <li>
-              <a (click)="startLoader()" [routerLink]="['./assignleads/add']" > 
-                <i class="fa fa-users" aria-hidden="true"></i>
+              <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily,'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./assignleads/add']" > 
+                <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                  <span class="title" translate>Add Leads</span>
               </a>
             </li>
             <li>
-              <a (click)="startLoader()"  [routerLink]="['./assignleads/manage']" > 
-                <i class="fa fa-list" aria-hidden="true"></i> 
+              <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./assignleads/manage']" > 
+                <i class="fa fa-list" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i> 
                 <span class="title"  translate>Manage Leads</span>
               </a>
             </li>
@@ -112,8 +111,8 @@
 
           <!--Shared Leads-->
           <li *ngIf="menuItem?.sharedLeads"	[ngClass]="{'active': location.path().includes('sharedleads')}">
-              <a (click)="startLoader()" [routerLink]="['./sharedleads/manage']" >
-              <i class="fa fa-id-badge"aria-hidden="true"></i> 
+              <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./sharedleads/manage']" >
+              <i class="fa fa-id-badge" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i> 
               <span class="title" translate>Shared Leads</span>
               <span class="selected"></span>
               </a>
@@ -121,8 +120,8 @@
 
           <!--Pages--->
           <li *ngIf="menuItem?.pagesAccessAsPartner"	[ngClass]="{'active': location.path().includes('pages/partner') ||location.path().includes('forms/partner') }">
-              <a (click)="startLoader()" [routerLink]="['./pages/partner']" > 
-                <i class="fa fa-wpforms" aria-hidden="true"></i> 
+              <a (click)="startLoader()" [ngStyle] = "{'background-color':  skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./pages/partner']" > 
+                <i class="fa fa-wpforms" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i> 
                 <span class="title" translate>Pages</span>
                 <span class="selected"></span>
               </a>
@@ -132,8 +131,8 @@
           <li  *ngIf="menuItem?.design" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') || 
               (location.path().includes('forms') && !location.path().includes('forms/partner') && !location.path().includes('forms/clpf') && !location.path().includes('/analytics/cfa') )
                ||(location.path().includes('pages') && !location.path().includes('pages/partner')) && !location.path().includes('campaign')  }">
-            <a (click)="startLoader()" [routerLink]="['./design/add']" >
-                <i class="fa fa-paint-brush" aria-hidden="true"></i>
+            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./design/add']" >
+                <i class="fa fa-paint-brush" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Design</span>
                 <span class="selected"></span>
             </a>
@@ -142,8 +141,8 @@
           <!---Campaigns---->
           <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner" [ngClass]="{'active':(location.path().includes('campaigns') || 
                     location.path().includes('campaign') || location.path().includes('clpf') || location.path().includes('/analytics/cfa'))}">
-            <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
-                <i class="fa fa-bullhorn" aria-hidden="true"></i>
+            <a href="javascript:;" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="openOrCloseTabs('campaigns')">
+                <i class="fa fa-bullhorn" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Campaign</span>
                 <span class="arrow "></span>
                 <span class="selected"></span>
@@ -151,24 +150,24 @@
             <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
                 <!--Redistribute Campaign-->
                 <li *ngIf="menuItem?.campaignAccessAsPartner">
-                  <a (click)="startLoader()" [routerLink]="['./campaigns/partner/all']" >
-                    <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                  <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./campaigns/partner/all']" >
+                    <i class="fa fa-bullhorn" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                     <span class="title" translate>Redistribute Campaign</span>
                   </a>
                 </li>
 
                 <!--Create Campaign-->
                 <li *ngIf="menuItem?.campaign">
-                    <a (click)="startLoader()" [routerLink]="['./campaigns/select']" >
-                        <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                    <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./campaigns/select']" >
+                        <i class="fa fa-bullhorn" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                         <span class="title" translate>Create Campaign</span>
                     </a>
                 </li>
 
                 <!--Manage Campaigns-->
                 <li>
-                    <a (click)="startLoader()" [routerLink]="['./campaigns/manage']" >
-                      <i class="fa fa-list" aria-hidden="true"></i>
+                    <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./campaigns/manage']" >
+                      <i class="fa fa-list" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                       <span class="title" translate>Manage Campaigns</span>
                     </a>
                 </li>
@@ -188,8 +187,8 @@
           <!-- ------Oppportunities----- -->
           <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') 
                   && !location.path().includes('shared')) }">
-            <a href="javascript:;" (click)="openOrCloseTabs('deal')">
-                <i class="fa fa-money" aria-hidden="true"></i>
+            <a href="javascript:;" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" (click)="openOrCloseTabs('deal')">
+                <i class="fa fa-money" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Opportunities</span>
                 <span class="arrow"></span>
                 <span class="selected"></span>
@@ -197,15 +196,15 @@
             <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }">
                 <!--Manage Leads-->
                 <li>
-                    <a (click)="startLoader()" [routerLink]="['/home/leads/']" >
-                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/leads/']" >
+                        <i class="fa fa-user-circle" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                         <span class="title" translate>Manage Leads</span>
                     </a>
                 </li>
                 <!--Manage Deals-->
                 <li>
-                    <a (click)="startLoader()" [routerLink]="['/home/deal/']" >
-                        <i class="fa fa-tags" aria-hidden="true"></i>
+                    <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/deal/']" >
+                        <i class="fa fa-tags" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                         <span class="title" translate>Manage Deals</span>
                     </a>
                 </li>
@@ -214,27 +213,27 @@
 
           <!-- ------Social Feeds / Rss Feeds------ -->
           <li  *ngIf="menuItem?.socialFeeds || menuItem?.socialFeedsAccessAsPartner" [ngClass]="{'active': location.path().includes('rss')}">
-            <a (click)="startLoader()" [routerLink]="['/home/rss/']" >
-             <i class="fa fa-rss" aria-hidden="true"></i>
+            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/rss/']" >
+             <i class="fa fa-rss" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
              <span class="title">Social Feeds</span>
              <span class="selected"></span>
             </a>
           </li> 
 
           <!--------MDF------ -->
-          <li *ngIf="menuItem?.mdf || menuItem?.mdfAccessAsPartner" [ngClass]="{'active': location.path().includes('mdf') }">
-            <a (click)="startLoader()"  [routerLink]="['/home/mdf/select']" >
-              <i class="fa fa-dollar" aria-hidden="true"></i>
+          <li *ngIf="menuItem?.mdf || menuItem?.mdfAccessAsPartner" [ngClass]="{'active': location.path().includes('mdf') }" >
+            <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/mdf/select']" >
+              <i class="fa fa-dollar" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
               <span class="title">MDF</span>
               <span class="selected"></span>
             </a>
           </li> 
 
 
-          <!--------Team------ -->
+          <!--------Team------->
           <li *ngIf="menuItem?.team || isLoggedInAsTeamMember"  [ngClass]="{'active': location.path().includes('team')}">
-              <a (click)="startLoader()"  [routerLink]="['./team/add-team']" >
-                  <i class="fa fa-users" aria-hidden="true"></i>
+              <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./team/add-team']" >
+                  <i class="fa fa-users" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                   <span class="title" translate>Team</span>
                   <span class="selected"></span>
               </a>
@@ -242,8 +241,8 @@
 
           <!-------Configuration-------->
           <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
-            <a (click)="startLoader()"  [routerLink]="['/home/dashboard/myprofile']" >
-                <i class="fa fa-cog" aria-hidden="true"></i>
+            <a (click)="startLoader()"  [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor, 'font-family': skin?.fontFamily, 'border-top': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['/home/dashboard/myprofile']" >
+                <i class="fa fa-cog" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                 <span class="title" translate>Configuration</span>
                 <span class="selected"></span>
             </a>

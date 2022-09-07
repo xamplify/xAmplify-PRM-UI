@@ -292,7 +292,7 @@ export class AddCustomFeedsComponent implements OnInit {
   /*****************LOAD VIDEOS WITH PAGINATION START *****************/
   listVideos(videosPagination: Pagination) {
     this.paginationType = 'updatestatusvideos';
-    this.videoFileService.videoType = 'myVideos';
+    //this.videoFileService.videoType = 'myAssets';
     this.videoFileService.loadVideoFiles(videosPagination)
       .subscribe((result: any) => {
         if (result.totalRecords > 0) {

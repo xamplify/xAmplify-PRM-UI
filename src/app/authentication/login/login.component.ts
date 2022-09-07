@@ -239,7 +239,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
-            this.vanityURLEnabled = result.enableVanityURL;               
+            this.vanityURLEnabled = result.enableVanityURL;  
+            this.authenticationService.vendorCompanyId = result.companyId;       
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
             if(!this.vanityURLEnabled){

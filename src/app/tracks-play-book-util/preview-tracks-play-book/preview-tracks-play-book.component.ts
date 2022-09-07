@@ -227,6 +227,10 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         this.showFilePreview = true;
         this.fileType = "video/mp4";
         this.isVideo = true;
+        //let videoUrl = assetDetails.assetPath;
+        //videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf('.'));
+        //videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
       } else if (this.imageTypes.includes(assetType)) {
         this.showFilePreview = true;
         this.isImage = true;
@@ -256,11 +260,15 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   downloadAsset(assetDetails: any) {
-    if (!assetDetails.beeTemplate) {
-      window.open(assetDetails.assetPath, '_blank');
-      this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
-    } else {
-      this.downloadBeeTemplate(assetDetails);
+      if (!assetDetails.beeTemplate && assetDetails.assetType == 'mp4') {
+          let videoUrl = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
+          window.open(assetDetails.assetPath, '_blank');
+          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
+      } else if (!assetDetails.beeTemplate) {
+          window.open(assetDetails.assetPath, '_blank');
+          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
+      } else {
+          this.downloadBeeTemplate(assetDetails);
     }
   }
 

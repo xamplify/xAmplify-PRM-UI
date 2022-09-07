@@ -5,4 +5,5 @@ export class AssetDetailsViewDto {
     displayTime:Date;
     publishedTimeInUTCString = "";
     thumbnailPath = "";
+    damId:number;
 }

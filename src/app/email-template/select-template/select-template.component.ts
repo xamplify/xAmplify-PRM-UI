@@ -334,9 +334,15 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.emailTemplateService.getById(template.id)
                 .subscribe(
                     (data: any) => {
-                        if (this.refService.companyProfileImage != undefined) {
-                            data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                        if(this.authenticationService.module.isAgencyCompany){
+                            data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.v_companyLogoImagePath);
+                        }else{
+                            if (this.refService.companyProfileImage != undefined) {
+                                data.jsonBody = data.jsonBody.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                            }
                         }
+
+                        
                         this.emailTemplateService.emailTemplate = data;
                         this.emailTemplateService.isNewTemplate = true;
                         this.router.navigate(["/home/emailtemplates/create"]);
@@ -650,6 +656,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         this.selectAllTemplates = false;
         this.selectedTemplateTypeIndex = 12;
         this.selectedThirdPartyIntegration = "hubspot";
+        this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.hubSpotService.getHubSpotTemplates().subscribe(data => {
             let response = data.data;
             this.hubSpotEmailTemplates = response.templates;
@@ -659,7 +666,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     template.body = template.content;
                     template.subject = "assets/images/bee-template/imported-hubspot.jpg";
                 });
-                this.filteredEmailTemplates = new Array<EmailTemplate>();
+                
                 for (var i = 0; i < response.templates.length; i++) {
                     var isHubSpotTemplate = this.hubSpotEmailTemplates[i].hubSpotTemplate;
                     if (isHubSpotTemplate) {

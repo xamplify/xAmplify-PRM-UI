@@ -1,0 +1,6 @@
+
+<div class="portlet light" style="margin-bottom: 0px;" *ngIf= "skin.showFooter" [ngStyle]="{'background-color':skin.backgroundColor ,'font-family':skin.fontFamily,'color':skin.textColor ,'border-color':'2px solid'+skin.buttonBorderColor}" [ngClass]="(authService.loginScreenDirection === 'Center')?'copyright-css': (authService.loginScreenDirection === 'Left')?'copyright-css-left':'copyright-css-right'" >
+    <a  href="{{footerContent}}" target="_blank">
+        <p [ngStyle]="{'color':skin.textColor}">{{footerContent}}</p> </a>
+				<!-- <a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a> -->
+</div>

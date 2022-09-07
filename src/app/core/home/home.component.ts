@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-
 import { ReferenceService } from "../services/reference.service";
 import { UserService } from "../services/user.service";
 import { AuthenticationService } from "../services/authentication.service";
@@ -9,7 +8,6 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Roles } from '../../core/models/roles';
 import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
-import { TeamMember } from "app/team/models/team-member";
 import { Title }     from '@angular/platform-browser';
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 
@@ -95,7 +93,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
                 const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
-              this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
+                this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
             }
           }
         },
@@ -108,7 +106,6 @@ export class HomeComponent implements OnInit {
     }
   }
   saveVideoBrandLog(companyLogoPath, logoLink) {
-    console.log("");
   }
   getCompanyId() {
     try {
@@ -142,7 +139,6 @@ export class HomeComponent implements OnInit {
       this.userService.getEventAccessTab(url)
           .subscribe(
               data => {
-                  console.log(data);
                   this.referenceService.eventCampaignTabAccess = data.event;
                   this.referenceService.socialCampaignTabAccess = data.social;
               },
@@ -158,7 +154,6 @@ export class HomeComponent implements OnInit {
       .subscribe(
       response => {
            if(response.statusCode==200){
-             console.log(response)
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
@@ -205,7 +200,6 @@ export class HomeComponent implements OnInit {
   }
   
   checkEnableLeads(){
-    console.log(this.authenticationService.loggedInUserRole != "Team Member")
     if(this.authenticationService.loggedInUserRole != "Team Member"){
       const url = "admin/get-company-id/" + this.userId + "?access_token=" + this.token;
       this.referenceService.getHomeCompanyIdByUserId( url )
@@ -217,9 +211,6 @@ export class HomeComponent implements OnInit {
              if(!this.authenticationService.enableLeads){
                 this.checkEnableLeadsForPartner();
              }
-            
-              
-              console.log( data )
           } );
 
       } )
@@ -230,7 +221,6 @@ export class HomeComponent implements OnInit {
               (result: any) => {
                 if (result !== "") {  this.referenceService.companyId = result;
                   this.dealsService.getVendorLeadServices(this.authenticationService.user.id,this.referenceService.companyId).subscribe(response=>{
-                    console.log(response)
                     this.authenticationService.enableLeads =response.data;
                     if(!this.authenticationService.enableLeads){
                       this.checkEnableLeadsForPartner();
@@ -260,7 +250,6 @@ export class HomeComponent implements OnInit {
             (result: any) => {
               if (result !== "") {  this.referenceService.companyId = result;
                 this.dealsService.getPartnerLeadServices(this.authenticationService.user.id,this.referenceService.companyId).subscribe(response=>{
-                  console.log(response)
                   this.authenticationService.enableLeads =response.data;
                 })
               }
@@ -297,6 +286,7 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaulgVideoMethodCalled = true;
             this.getTeamMembersDetails();
             this.getPartnerCampaignsNotifications();
+            this.getCategorisService();
           }
          this.vanityURLService.isVanityURLEnabled();  
          this.getCompanyId();    

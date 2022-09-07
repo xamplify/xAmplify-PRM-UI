@@ -28,6 +28,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
     addCompanyProfileUrl = "/home/dashboard/add-company-profile";
+    /*******XNFR-83*******/
+    agencyUrl = 'agency';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -61,7 +63,15 @@ export class AuthGuard implements CanActivate, CanActivateChild {
              }
             }else if(url.includes("/home/design/add")){
                 return true;
-            }else if(url.includes("/home/select-modules")){
+            }else if(url.includes("/home/azuga/devices")){
+                let condition = "bob@xtremand.com"==userName;
+               if(condition){
+                   return true;
+               }else{
+                    this.goToAccessDenied(url);
+               }
+            }
+            else if(url.includes("/home/select-modules")){
                 return true;
             }else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);
@@ -197,6 +207,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          if(url.indexOf(this.playbookUrl)>-1){
             return this.authorizeUrl(roles, url, this.playbookUrl);
          }
+         /*******XNFR-83*******/
+         if(url.indexOf(this.agencyUrl)>-1){
+            return this.authorizeUrl(roles, url, this.agencyUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -239,7 +253,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.formBaseUrl){
             role = this.roles.formRole;
          }
-        if ( urlType === this.landingPagesUrl ) {
+        if (urlType === this.landingPagesUrl ) {
             role = this.roles.landingPageRole;
         }
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
@@ -285,6 +299,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else if(urlType==this.lmsUrl){
             return true;
         } else if(urlType==this.playbookUrl){
+            return true;
+        }
+        /*******XNFR-83*******/
+        else if(urlType==this.agencyUrl){
             return true;
         }
         else if(urlType==this.landingPagesUrl){

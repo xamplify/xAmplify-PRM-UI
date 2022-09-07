@@ -53,4 +53,7 @@ export class SaveVideoFile {
     uploadedUserName:string = "";
     processed:boolean;
     access:boolean;
+    damId : number;
+    tagNames : string[];
+    toolTipTagNames: string = ""
  }

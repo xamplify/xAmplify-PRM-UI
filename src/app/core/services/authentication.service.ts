@@ -23,6 +23,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+import { CommentDto } from 'app/common/models/comment-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -109,12 +110,14 @@ export class AuthenticationService {
   mdfAccessAsPartner = false;
   opportunitiesAccessAsPartner = false;
   unauthorized = false;
+  customSkinSettings = false;
   moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
   partnerModule:ModuleCustomName = new ModuleCustomName();
   beeHostApi = "";
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
+  vendorCompanyId = 0;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -132,10 +135,22 @@ export class AuthenticationService {
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
-    }else{
-      console.log("dev keys are used");
+    }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
+      console.log("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageQAClientId;
+      this.beePageClientSecret = this.envService.beePageQAClientSecret;
+    }else if(this.SERVER_URL=="https://release.xamp.io/" && this.APP_URL=="https://xtremand.com/"){
+      console.log("Release keys are used");
+      this.clientId = this.envService.beeTemplateReleaseClientId;
+      this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
+      this.beePageClientId = this.envService.beePageReleaseClientId;
+      this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
+    }else{
+      console.log("dev keys are used");
+      this.clientId = this.envService.beeTemplateDevClientId;
+      this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
       this.beePageClientSecret = this.envService.beePageDevClientSecret;
     }
@@ -230,7 +245,8 @@ export class AuthenticationService {
   }
 
   getCategoryNamesByUserId(userId: number) {
-    return this.http.get(this.REST_URL + 'category/listAllCategoryNamesByLoggedInUserId/' + userId + '?access_token=' + this.access_token)
+        let url = this.REST_URL+"category/listAllCategoryNamesByLoggedInUserId/"+userId;
+     return this.http.get(url + '?access_token=' + this.access_token)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
@@ -455,6 +471,16 @@ export class AuthenticationService {
       }
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
+  isMarketingPartner() {
+	    try {
+	      const roleNames = this.getRoles();
+	      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    } catch (error) { this.xtremandLogger.log('error' + error); }
+	  }
   isTeamMember() {
     try {
       const roleNames = this.getRoles();
@@ -581,6 +607,7 @@ export class AuthenticationService {
     module.isMarketingCompany = false;
     module.isPrmCompany = false;
     module = new Module();
+    this.vendorCompanyId = 0;
     this.setUserLoggedIn(false);
   }
 
@@ -640,7 +667,15 @@ export class AuthenticationService {
 
   getModulesByUserId() {
     let userId = this.getUserId();
-    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
+    /*****XNFR-83***********/
+    let domainName = this.getSubDomain();
+    let url = "";
+    if(domainName.length>0){
+      url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
+    }else{
+      url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
+    }
+    return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -753,7 +788,6 @@ export class AuthenticationService {
   authorizeUrl(url: string) {
     let angularUrlInput = {};
     let browserUrl = window.location.hostname;
-    //let browserUrl = "tga.xamplify.com";
     if (!browserUrl.includes("release") && !browserUrl.includes("192.168")) {
       let domainName = browserUrl.split('.');
       if (domainName.length > 2) {
@@ -896,6 +930,65 @@ isPartnershipOnlyWithPrm(){
     .catch(this.handleError);
 }
 
-  
+
+previewTeamMemberGroup(id:number){
+  const url = this.REST_URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+/*********XNFR-83************/
+getAssigedAgencyModules(id:number){
+  const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
+  return this.http.get(url)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+/*********XNFR-83************/
+getSubDomain(){
+  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
+}
+
+/*********XNFR-83************/
+getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
+  let url = this.REST_URL +"comments/companyAndUserDetails/"+moduleType+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/*********XNFR-83************/
+saveComment(commentDto:CommentDto){
+  commentDto.commentedBy = this.getUserId();
+  let url = this.REST_URL +"comments?access_token=" + this.access_token;
+  return this.http.post(url,commentDto)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+/*********XNFR-83************/
+findComments(moduleName:string,id:number){
+  let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/*********XNFR-83************/
+findHistory(id:number,moduleId:number){
+  let url = this.REST_URL +"comments/agencyContentStatusHistory/id/"+id+"/moduleId/"+moduleId+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+/****XNFR-83****/
+findCampaignAccessDataByDomainName(domainName:string){
+  let url = this.REST_URL +"admin/campaignAccess/domainName/"+domainName+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+
+private callGetMethod(url: string) {
+  return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
   
 }

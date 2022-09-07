@@ -10,10 +10,10 @@
 /* CSS Added Nagesh */
 .btn-header{
 padding: 7px 15px;
-    margin-right: -15px;
-    position: relative;
-    border-radius: 3px !important;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+    margin-right: -15px; 
+     position: relative; 
+     border-radius: 3px !important; 
+     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     background-color: #00a6e8;
     color: white;
 }
@@ -171,5 +171,14 @@ margin: 0 auto;
   }
   .btnShare{
     left: -20px;
+   
   }
+}
+/* :host{
+  font-style: Arial;
+} */
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
 }

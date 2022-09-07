@@ -2415,13 +2415,13 @@ export class ReferenceService {
     swal(this.properties.serverErrorMessage, "", "error");
   }
 
-  showModalPopup(modalId) {
+  showModalPopup(modalId:string) {
     $(".modal .modal-body").css("overflow-y", "auto");
     $("#" + modalId).modal("show");
     $(".modal .modal-body").css("max-height", $(window).height() * 0.75);
   }
 
-  closeModalPopup(modalId) {
+  closeModalPopup(modalId:string) {
     $("#" + modalId).modal("hide");
   }
 
@@ -2848,4 +2848,74 @@ export class ReferenceService {
   }
 
   
+  /****XNFR-83***/
+  getSuccessOrErrorClassName(condition:boolean){
+    return condition ? this.properties.successClass : this.properties.errorClass;
+  } 
+
+  getPagebleUrl(pagination:Pagination){
+    let page = pagination.pageIndex;
+    let size = pagination.maxResults;
+    let searchKey = $.trim(pagination.searchKey)!=null ? $.trim(pagination.searchKey) :"";
+    let sortColumn = $.trim(pagination.sortcolumn)!=null ? $.trim(pagination.sortcolumn):"";
+    let sortOrder = $.trim(pagination.sortingOrder)!=null ? $.trim(pagination.sortingOrder):"";
+    let sort = sortColumn.length>0 && sortOrder.length>0 ? sortColumn+","+sortOrder:"";
+    let sortParam = sort.length>0 ? "&sort="+sort:"";
+    let searchParam = searchKey.length>0 ? "&search="+searchKey:"";
+    return $.trim("&page="+page+"&size="+size+sortParam+searchParam);
+  }
+  
+  downloadCsvTemplate(url:string){
+    window.location.href = this.authenticationService.REST_URL +url+"?access_token=" + this.authenticationService.access_token;
+  }
+
+  showHttpErrorMessage(error: any){
+    this.scrollSmoothToTop();
+    let statusCode = JSON.parse(error['status']);
+    let message = this.properties.serverErrorMessage;
+    if (statusCode == 409 || statusCode == 400) {
+      let errorResponse = JSON.parse(error['_body']);
+      message = errorResponse['message'];
+    }
+    return message;
+  }
+
+  addLoader(divId:string){
+    this.scrollSmoothToTop();
+    $('#'+divId).addClass('download-loader');
+    
+  }
+  removeLoader(divId:string){
+    this.scrollSmoothToTop();
+    setTimeout(() => {
+      $('#'+divId).removeClass('download-loader');
+    }, 500);
+  }
+  /*********XNFR-83****/
+  disableButton(event:any){
+    event['target']['disabled'] = true;
+    if(event['currentTarget']!=null){
+      event['currentTarget']['disabled'] = true;
+    }  
+  }
+
+  enableButton(event:any){
+    setTimeout(() => {
+      event['target']['disabled'] = false;
+      if(event['currentTarget']!=null){
+        event['currentTarget']['disabled'] = false;
+      }      
+     }, 500);
+  }
+
+
+  showServerErrorCustomResponse(){
+    return new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+  }
+
+  scrollToModalPopUpBottomByDivId(divId:string){
+    setTimeout(function(){
+      $("#"+divId).animate({ scrollTop: $('#'+divId).prop("scrollHeight")}, 1000);
+  },250); 
+  }
 }

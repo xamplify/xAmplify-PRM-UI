@@ -12,7 +12,7 @@
      box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
  }
  </style>
- <div class="page-content" *ngIf="!showDealForm">
+ <div class="page-content" *ngIf="!showDealForm" [ngStyle]="{'background-color':skin?.backgroundColor}">
   <div *ngIf="showSandboxText" class="alert alert-info">
     <strong>{{properties?.sandboxText}}</strong>
   </div>

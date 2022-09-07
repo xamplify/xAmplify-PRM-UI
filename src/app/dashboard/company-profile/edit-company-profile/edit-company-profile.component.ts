@@ -162,6 +162,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     isAspectRatio = false;
     aspectRatioValue = '4/3';
     isFromAdminPanel = false;
+    isCustmSkin = false;
     userAlias:any;
     @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
     fetchResult = new Subject<string>();
@@ -1651,4 +1652,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
         }
       }
+      /** XNFR-134 ***** */
+      
+      portletBody = "modal fade";
+      addBlurClass() {
+        $('#exampleModal').removeClass(this.portletBody);
+    }
 }

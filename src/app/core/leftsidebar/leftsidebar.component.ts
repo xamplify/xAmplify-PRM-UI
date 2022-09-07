@@ -11,8 +11,10 @@ import { UtilService } from '../../core/services/util.service';
 import { MenuItem } from '../models/menu-item';
 import { Roles } from '../../core/models/roles';
 import { Module } from '../models/module';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
-declare var window,$: any;
+declare var window:any, $: any;
 
 @Component({
 	selector: 'app-leftsidebar',
@@ -44,7 +46,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	sharedLeads: boolean;
 	lms: any;
 	playbook: boolean;
+	backgroundColor: any;
 	customNamePartners = "Partners";
+	userId: number;
+	/*** XNFR-134***/
+	skin:CustomSkin = new CustomSkin();
+	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+	showResellar = false;
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -53,11 +61,28 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.sourceType = this.authenticationService.getSource();
 		this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal();
 		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
+		/*** XNFR-134***/
+		this.userId = this.authenticationService.getUserId();
+		this.vanityLoginDto.userId = this.userId;
+		let companyProfileName = this.authenticationService.companyProfileName;
+		if (companyProfileName !== undefined && companyProfileName !== "") {
+		  this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+		  this.vanityLoginDto.vanityUrlFilter = true;
+		}else{
+		  this.vanityLoginDto.vanityUrlFilter = false;
+		}
+		const currentUser = localStorage.getItem( 'currentUser' );
+		if (currentUser) {
+			const userName = JSON.parse( currentUser )['userName'];
+			this.showResellar = "bob@xtremand.com"==userName;
+		}
+
 	}
 
 
 	ngOnInit() {
 		this.findMenuItems();
+		this.customSkinLeftMenu();
 	}
 	
 
@@ -225,7 +250,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.playbookAccess = data.playbook;
 		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
 		if (data.content) {
-			this.contentDivs.push(module.isVideo);
+			//this.contentDivs.push(module.isVideo);
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
@@ -358,5 +383,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	startLoader(){
 		this.loading = true;
 	}
-
+	
+	customSkinLeftMenu(){
+		this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+			(response) =>{
+		   let cskinMap  = response.data;
+		   this.skin  = cskinMap.LEFT_SIDE_MENU;
+		}
+		)
+	  
+	  }
 }

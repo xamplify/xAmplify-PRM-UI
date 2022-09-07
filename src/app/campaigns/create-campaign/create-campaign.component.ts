@@ -1750,7 +1750,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                             this.selectedEmailTemplateRow = filteredEmailTemplateIds[0];
                             this.isEmailTemplate = true;
                         }
-
                     }
                     this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
                 },

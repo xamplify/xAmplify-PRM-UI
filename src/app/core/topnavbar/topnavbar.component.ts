@@ -20,6 +20,8 @@ import { tap, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 @Component({
   selector: 'app-topnavbar',
@@ -54,6 +56,13 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInFromAdminSection = false;
   dashboardTypes = [];
   loadTopNavBar = false;
+  result:any;
+  userId : number;
+  cskin:CustomSkin = new CustomSkin();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  showMyVendors: boolean = false;
+  vendorCount: any = 0;
+
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
@@ -61,6 +70,16 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
+    this.userId = this.authenticationService.getUserId();
+    /*** XNFR-134** */
+    this.vanityLoginDto.userId = this.userId;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
@@ -199,24 +218,41 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }catch(error) {this.logger.error('error'+error); }
   }
 
-
-
-
-  getRoles(){
-      this.userService.getRoles(this.authenticationService.getUserId())
+  getRoles() {
+    this.userService.getRoles(this.authenticationService.getUserId())
       .subscribe(
-      response => {
-           if(response.statusCode==200){
-              this.authenticationService.loggedInUserRole = response.data.role;
-              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-              this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole =="Partner" && this.authenticationService.isPartnerTeamMember==false;
-           }else{
-               this.authenticationService.loggedInUserRole = 'User';
-           }
-      },
-      error => this.logger.errorPage(error),
-      () => this.logger.log('Finished')
+        response => {
+          if (response.statusCode == 200) {
+            this.authenticationService.loggedInUserRole = response.data.role;
+            this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+            this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
+            let superiorRole = response.data.superiorRole;
+            if ((this.authenticationService.module.isCompanyPartner || superiorRole.includes('Partner'))
+              && this.authenticationService.user.hasCompany) {
+              this.showMyVendors = true;
+            }
+          } else {
+            this.authenticationService.loggedInUserRole = 'User';
+          }
+        },
+        error => this.logger.errorPage(error),
+        () => {
+          this.logger.log('Finished')
+          if (this.showMyVendors) {
+            this.getVendorCount();
+          }
+        }
       );
+  }
+
+  getVendorCount() {
+    this.dashboardService.getVendorCount(this.vanityLoginDto).subscribe(
+      (response) =>{
+        if (response.statusCode == 200) {
+          this.vendorCount = response.data;
+        }     
+      }
+    )
   }
 
   onRightClick(event){
@@ -224,6 +260,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   ngOnDestroy(){
     this.isShowCKeditor = false;
+    
     $('#requestForVendor').modal('hide');
   }
   ngOnInit() {
@@ -232,6 +269,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
+      this.getTopNavigationColor(this.userId);
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -448,5 +486,16 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
     this.refService.goToRouter("/home/dashboard/add-company-profile");
   }
 }
+
+ 
+
+  getTopNavigationColor(userId:number){
+    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+      (response) =>{
+     let cskinMap  = response.data;
+     this.cskin = cskinMap.TOP_NAVIGATION_BAR;
+      }
+    )
   
+  }
 }
