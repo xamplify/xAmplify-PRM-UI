@@ -200,7 +200,7 @@
                                     </li>
                                 </ng-container>
                             </ng-container>
-                            <li *ngIf="showMyVendors">
+                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService.module.isCompanyPartner || superiorRole.indexOf('Partner') > -1)">
                                 <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                             </li>
                             <li class="divider"></li>
