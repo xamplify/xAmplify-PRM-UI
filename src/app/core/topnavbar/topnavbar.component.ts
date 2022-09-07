@@ -62,6 +62,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   showMyVendors: boolean = false;
   vendorCount: any = 0;
+  superiorRole: string = "";
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -226,11 +227,16 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
             this.authenticationService.loggedInUserRole = response.data.role;
             this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
             this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
-            let superiorRole = response.data.superiorRole;
-            if ((this.authenticationService.module.isCompanyPartner || superiorRole.includes('Partner'))
-              && this.authenticationService.user.hasCompany) {
-              this.showMyVendors = true;
+            this.superiorRole = response.data.superiorRole;
+            if (this.superiorRole == undefined || this.superiorRole == null) {
+              this.superiorRole = "";
             }
+            // alert(this.authenticationService.module.loggedInThroughOwnVanityUrl);
+            // if (this.authenticationService.user.hasCompany && !this.authenticationService.module.loggedInThroughOwnVanityUrl && (this.authenticationService.module.isCompanyPartner || superiorRole.includes('Partner'))
+            // ) {
+
+            //   this.showMyVendors = true;
+            // }
           } else {
             this.authenticationService.loggedInUserRole = 'User';
           }
@@ -238,12 +244,10 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         error => this.logger.errorPage(error),
         () => {
           this.logger.log('Finished')
-          if (this.showMyVendors) {
-            if (this.vanityLoginDto.vanityUrlFilter) {
-              this.vendorCount = 1;
-            } else {
-              this.getVendorCount();
-            }            
+          if (this.vanityLoginDto.vanityUrlFilter) {
+            this.vendorCount = 1;
+          } else {
+            this.getVendorCount();
           }
         }
       );
