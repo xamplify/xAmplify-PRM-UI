@@ -107,6 +107,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.referenceService.hasRole(this.referenceService.roles.statsRole);
         this.hasSocialStatusRole = this.referenceService.hasRole(this.referenceService.roles.socialShare);
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.vanityLoginDto.userId = this.loggedInUserId;
 
         if(authenticationService.module.isVendor || authenticationService.isAddedByVendor){
             this.contactOrPartnerLink =  "/home/partners/manage";
