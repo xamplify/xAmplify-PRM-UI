@@ -947,7 +947,7 @@ getAssigedAgencyModules(id:number){
 
 /*********XNFR-83************/
 getSubDomain(){
-  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
+  return "";
 }
 
 /*********XNFR-83************/
