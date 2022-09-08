@@ -29,7 +29,7 @@
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-4 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
 							<div class="card">
-								<div class="card-header bg-card-header p-3 px-3 head-cursor" (click)="navigateToVendorCampaigns(vendorReport)">
+								<div class="card-header bg-card-header p-3 px-3 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
 									<div class="flex-row d-flex">
 										<div class="col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
 											<div class="card p-3 mb-2 clogo" style="background-color:#eee; border-radius: 5px;">
@@ -46,9 +46,9 @@
 									</div>
 								</div>
 								<div class="card-body p-0">
-									<div class="flex-row pl10 head-cursor">
+									<div class="flex-row pl10 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
 										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0"
-											(click)="navigateToVendorCampaigns(vendorReport)">
+											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
 											<b>{{vendorReport?.companyName | slice:0:35}}</b>
 											<span *ngIf="vendorReport?.companyName?.length>35">...</span>
 										</h4>										

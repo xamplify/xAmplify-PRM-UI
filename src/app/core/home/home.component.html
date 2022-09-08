@@ -1,7 +1,7 @@
 <app-topnavbar [model]="referenceService.topNavBarUserDetails"></app-topnavbar>
 <div class="page-container">
   <app-leftsidebar></app-leftsidebar>
-  <div class="page-content-wrapper">
+  <div class="page-content-wrapper" [ngStyle]="{'background-color': skin?.backgroundColor}">
     <router-outlet></router-outlet>
     <!-- <app-bottomnavbar></app-bottomnavbar> -->
   </div>
