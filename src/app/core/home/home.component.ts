@@ -10,6 +10,10 @@ import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
 import { Title }     from '@angular/platform-browser';
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
+import { CustomSkin } from "app/dashboard/models/custom-skin";
+import { DashboardService } from "app/dashboard/dashboard.service";
+import { VanityLoginDto } from "app/util/models/vanity-login-dto";
+
 
 
 declare var $: any;
@@ -28,6 +32,9 @@ export class HomeComponent implements OnInit {
   token: any;
   loggedInThroughVanityUrl = false;
   loader = false;
+  skin:CustomSkin = new CustomSkin();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
+  loggedInUserId: number;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -37,10 +44,21 @@ export class HomeComponent implements OnInit {
     private router: Router,
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
-    private vanityURLService:VanityURLService
+    private vanityURLService:VanityURLService,
+    public dashBoardService:DashboardService
   ) {
     this.loggedInThroughVanityUrl =  this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
+    /**** XNFR-134 ****/
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.vanityLoginDto.userId = this.loggedInUserId;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
   }
 
   isAuthorized(): boolean {
@@ -293,5 +311,16 @@ export class HomeComponent implements OnInit {
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  
+  }
+  /*** XNFR-134 ***/
+  getMainContent(userId:number){
+    this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+      (response) =>{
+       let cskinMap  = response.data;
+       this.skin  = cskinMap.MAIN_CONTENT;
+       console.log(this.skin);
+    }
+    )
+    
   }
 }

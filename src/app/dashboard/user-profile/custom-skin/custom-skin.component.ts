@@ -8,6 +8,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { TabHeadingDirective } from 'ngx-bootstrap';
@@ -15,7 +17,8 @@ declare var $ : any,CKEDITOR: any;
 @Component({
   selector: 'app-custom-skin',
   templateUrl: './custom-skin.component.html',
-  styleUrls: ['./custom-skin.component.css']
+  styleUrls: ['./custom-skin.component.css'],
+  providers: [EmailTemplate]
 })
 export class CustomSkinComponent implements OnInit {
   @ViewChild("myckeditor") ckeditor: any;
@@ -73,12 +76,16 @@ export class CustomSkinComponent implements OnInit {
     }else{
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-    
+   
      }
 
   ngOnInit() {
     this.activeTabNav(this.activeTabName);
-    
+    try {
+      this.ckeConfig = {
+          allowedContent: true,
+      };
+  } catch ( errr ) { }
   }
 
   
@@ -110,7 +117,7 @@ export class CustomSkinComponent implements OnInit {
     if(CKEDITOR!=undefined){
       for (var instanceName in CKEDITOR.instances) {
           CKEDITOR.instances[instanceName].updateElement();
-          this.form.textContent = CKEDITOR.instances[instanceName].getData();
+          form.textContent = CKEDITOR.instances[instanceName].getData();
       }
     }
     this.dashboardService.saveCustomSkin(form).subscribe(
@@ -121,12 +128,7 @@ export class CustomSkinComponent implements OnInit {
       this.router.navigate(['/home/dashboard/myprofile']);
       },
      error =>{
-      if(this.form.textContent.length > 225){
-        this.message = "opps something wrong!";
-      }else{
-      this.message = "opps something worng!";
-      }
-      this.statusCode = 500;
+      
      })
   }
   saveCustomSkin(form:CustomSkin){
@@ -159,6 +161,7 @@ export class CustomSkinComponent implements OnInit {
            this.buttonValueColor = this.form.buttonValueColor;
            this.fontFamily = this.form.fontFamily
            this.divBgColor = this.form.divBgColor;
+           this.footerContent = this.form.textContent;
            this.headerTextColor = this.form.headerTextColor;
            console.log(this.form)
         }
@@ -234,8 +237,7 @@ checkValideColorCodes(){
       this.isValid = true;
     }else if(this.form.iconColor === this.form.buttonColor){
       this.isValid = true;
-    }
-      else{
+    }else{
       this.isValid = false;
     }
     

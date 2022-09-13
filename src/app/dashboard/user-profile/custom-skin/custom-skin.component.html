@@ -1,14 +1,18 @@
 
-<div class="alert alert-danger" *ngIf="statusCode==500"  role="alert">
-  {{message}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div> <div *ngIf="statusCode==400 || statusCode==400" class="alert alert-danger">
-  {{ message }}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button> 
+<div class="alert alert-danger" *ngIf="statusCode==500" role="alert">
+	{{message}}
+	<button type="button" class="close" data-dismiss="alert"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div *ngIf="statusCode==400 || statusCode==400"
+	class="alert alert-danger">
+	{{ message }}
+	<button type="button" class="close" data-dismiss="alert"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
 </div>
 <div class="page-breadcrumb">
 	<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
@@ -16,46 +20,51 @@
 			[ngClass]="{'active-tab-anchor-text': activeTabName == 'home'}"
 			(click)="activeTabNav('home');clearCustomResponse()" selected="true">General
 				Settings</a></li> -->
-		<li [ngClass]="{'active': activeTabName == 'header'}"><a class="text-white"
+		<li [ngClass]="{'active': activeTabName == 'header'}"><a
+			class="text-white"
 			[ngClass]="{'active-tab-anchor-text': activeTabName == 'header'}"
-			(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
-		<li [ngClass]="{'active': activeTabName == 'leftmenu'}">
-      <a class="text-white"
+			(click)="activeTabNav('header');clearCustomResponse()"
+			selected="true">Header</a></li>
+		<li [ngClass]="{'active': activeTabName == 'leftmenu'}"><a
+			class="text-white"
 			[ngClass]="{'active-tab-anchor-text': activeTabName == 'leftmenu'}"
 			(click)="activeTabNav('leftmenu');clearCustomResponse()">Left
 				Menu</a></li>
-		<li [ngClass]="{'active': activeTabName == 'footer'}"><a class="text-white"
+		<li [ngClass]="{'active': activeTabName == 'footer'}"><a
+			class="text-white"
 			[ngClass]="{'active-tab-anchor-text': activeTabName == 'footer'}"
 			(click)="activeTabNav('footer');clearCustomResponse()">Footer</a></li>
-      <li [ngClass]="{'active': activeTabName == 'pagecontent'}"><a class="text-white"
-        [ngClass]="{'active-tab-anchor-text': activeTabName == 'pagecontent'}"
-        (click)="activeTabNav('pagecontent');clearCustomResponse()">Page Content</a></li>
+		<li [ngClass]="{'active': activeTabName == 'pagecontent'}"><a
+			class="text-white"
+			[ngClass]="{'active-tab-anchor-text': activeTabName == 'pagecontent'}"
+			(click)="activeTabNav('pagecontent');clearCustomResponse()">Page
+				Content</a></li>
 	</ul>
 </div>
 <div class="portlet-body clearfix">
 	<div class="tab-content">
-	
-		<div class="tab-pane" [ngClass]="{'active': activeTabName == 'header'}">
+
+		<div class="tab-pane"
+			[ngClass]="{'active': activeTabName == 'header'}">
 			<div class="portlet light col-xs-12">
-        <div class="row" style="padding: 10px 10px 0px 10px;">
-          <div class="col-md-6 col-lg-6" style="padding: 0px;">
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+				<div class="row" style="padding: 10px 10px 0px 10px;">
+					<div class="col-md-6 col-lg-6" style="padding: 0px;">
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Font Family</label> <select class="form-control"
 									[value]="fontFamily" [(ngModel)]="form.fontFamily"
 									[ngModelOptions]="{standalone: true}">
 									<option *ngFor="let style of fontStyles" [value]="style">{{style}}</option>
 								</select>
 							</div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+						</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Icon Color</label> <input class="form-control"
 									[value]="iconColor" [(ngModel)]="iconColor"
 									style="padding-left: 40px;"
 									(input)="checkValidColorCode(iconColor,'iconColor')"
-									maxlength="7">
-                   <span
+									maxlength="7"> <span
 									class="input-group-addon color-pick"
 									[(colorPicker)]="form.iconColor"
 									[style.background]="form.iconColor" [cpWidth]="'200px'"
@@ -63,14 +72,14 @@
 									(colorPickerChange)="changeControllerColor($event,form,'iconColor')"
 									[cpPosition]="'top'" readonly></span>
 							</div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+						</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Button Value Color</label> <input class="form-control"
 									[value]="buttonValueColor" [(ngModel)]="buttonValueColor"
 									style="padding-left: 40px;"
-									(input)="checkValidColorCode(buttonValueColor,'buttonValueColor')" >
-                  
+									(input)="checkValidColorCode(buttonValueColor,'buttonValueColor')">
+
 								<span class="input-group-addon color-pick"
 									[(colorPicker)]="form.buttonValueColor"
 									[style.background]="form.buttonValueColor" [cpWidth]="'200px'"
@@ -78,101 +87,110 @@
 									(colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')"
 									[cpPosition]="'top'" readonly></span>
 							</div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 10px;">
-            <div class="portlet light" style="margin-top: 5px; background: #f1f3fa;">
-						<div class="portlet light" style="text-align: center;" [ngStyle]="{'background-color':form.backgroundColor,'color':form.buttonValueColor,'font-family':form.fontFamily}">
-							Header</div>
-						<div class="row" style="display: flex;">
-							<div class="col-xs-6 col-sm-2 col-lg-2"
-								style="text-align: center;padding-right: 6px;">
-								<div class="portlet light left-left box-center">Left Menu</div>
-							</div>
-							<div class="col-xs-6 col-sm-10 col-lg-10"
-								style="padding-left: 0px;">
-								<div class="portlet light main-content"
-									style="display: flex; justify-content: center;">
-                  <h6 style="margin:auto ;font-size: 12px;font-family:Open Sans, sans-serif">Page
-									Content</h6>
-                </div>
-							</div>
 						</div>
-						<div class="col-xs-16 col-sm-16 col-lg-16"
-							style="text-align: center;">
-							<div class="portlet light" style="margin-bottom:0px; font-family:Open Sans, sans-serif;
-                  font-size: 12px">Footer</div>
-						</div>
-            </div>
 					</div>
-      </div>
-      <!-- <div class="col-xs-12"> -->
-      <div class="row" style="padding: 10px 10px;">
-        <div class="col-md-6 col-lg-6">
-          <div class="form-group">
-            <label>Background Color</label> <input class="form-control"
-              [value]="backgroundColor" [(ngModel)]="backgroundColor"
-              style="margin-bottom: 10px; padding-left: 40px;"
-              (input)="checkValidColorCode(backgroundColor,'backgroundColor')"
-              maxlength="7" /> 
-              <span class="input-group-addon color-pick"
-              [(colorPicker)]="form.backgroundColor"
-              [style.background]="form.backgroundColor" [cpWidth]="'200px'"
-              [cpHeight]="'265px'"
-              (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
-              [cpPosition]="'top'" readonly></span>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6">	
-          <div class="form-group">
-          <label>Button Color</label> 
-          <input class="form-control"
-            [value]="buttonColor" [(ngModel)]="buttonColor"
-            style="padding-left: 40px;"
-            (input)="checkValidColorCode(buttonColor,'buttonColor')"
-            maxlength="7" /> 
-            <span class="input-group-addon color-pick"
-            [(colorPicker)]="form.buttonColor"
-            [style.background]="form.buttonColor" [cpWidth]="'200px'"
-            [cpHeight]="'265px'"
-            (colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
-            [cpPosition]="'top'" readonly></span>
-        </div>
-      </div>
+					<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 10px;">
+						<div class="portlet light"
+							style="margin-top: 5px; background: #f1f3fa;">
+							<div class="portlet light" style="text-align: center;"
+								[ngStyle]="{'background-color':form.backgroundColor,'color':form.buttonValueColor,'font-family':form.fontFamily}">
+								Header</div>
+							<div class="row" style="display: flex;">
+								<div class="col-xs-6 col-sm-2 col-lg-2"
+									style="text-align: center; padding-right: 6px;">
+									<div class="portlet light left-left box-center">Left Menu</div>
+								</div>
+								<div class="col-xs-6 col-sm-10 col-lg-10"
+									style="padding-left: 0px;">
+									<div class="portlet light main-content"
+										style="display: flex; justify-content: center;">
+										<h6
+											style="margin: auto; font-size: 12px; font-family: Open Sans, sans-serif">Page
+											Content</h6>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-16 col-sm-16 col-lg-16"
+								style="text-align: center;">
+								<div class="portlet light"
+									style="margin-bottom: 0px; font-family: Open Sans, sans-serif; font-size: 12px">Footer</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-xs-12"> -->
+				<div class="row" style="padding: 10px 10px;">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Background Color</label> <input class="form-control"
+								[value]="backgroundColor" [(ngModel)]="backgroundColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(backgroundColor,'backgroundColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.backgroundColor"
+								[style.background]="form.backgroundColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
+								[cpPosition]="'top'" readonly></span>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Button Color</label> <input class="form-control"
+								[value]="buttonColor" [(ngModel)]="buttonColor"
+								style="padding-left: 40px;"
+								(input)="checkValidColorCode(buttonColor,'buttonColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.buttonColor"
+								[style.background]="form.buttonColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
+								[cpPosition]="'top'" readonly></span>
+						</div>
+					</div>
 
-        </div>
-      <!-- </div> -->
-        <div class="row" style="padding: 10px 10px;">
-          <div class="col-md-6 col-lg-6">
-            <div class="form-group">
-              <label>Button Border Color</label>
-              <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')"  maxlength="7" />
-              <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'top'" readonly>
-              </span>
-          </div>
-          </div>
-        </div>
-      <div class="col-md-6 col-lg-6" style="padding :10px 10px ">
-        <button  type="button" [disabled]="isValid" class="btn btn-primary"  (click)="saveCustomSkin(form)">Save</button>
-        <button type="button" class="btn btn-secondary" (click)="saveDefaultSkin(form)">User Default Setting</button>
-        </div>
-      </div>
-    </div>
-    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'pagecontent'}">
-      <div class="portlet light col-xs-12">
-        <div class="row" style="padding:10px 10px 0px 10px;">
-          <div class="col-md-6 col-lg-6" style="padding: 0px;">
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+				</div>
+				<!-- </div> -->
+				<div class="row" style="padding: 10px 10px;">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Button Border Color</label> <input class="form-control"
+								[value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.buttonBorderColor"
+								[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
+								[cpPosition]="'top'" readonly> </span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-6" style="padding: 10px 10px">
+					<button type="button" [disabled]="isValid" class="btn btn-primary"
+						(click)="saveCustomSkin(form)">Save</button>
+					<button type="button" class="btn btn-secondary"
+						(click)="saveDefaultSkin(form)">User Default Setting</button>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane"
+			[ngClass]="{'active': activeTabName == 'pagecontent'}">
+			<div class="portlet light col-xs-12">
+				<div class="row" style="padding: 10px 10px 0px 10px;">
+					<div class="col-md-6 col-lg-6" style="padding: 0px;">
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Font Family</label> <select class="form-control"
 									[value]="fontFamily" [(ngModel)]="form.fontFamily"
 									[ngModelOptions]="{standalone: true}">
 									<option *ngFor="let style of fontStyles" [value]="style">{{style}}</option>
 								</select>
 							</div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+						</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Icon Color</label> <input class="form-control"
 									[value]="iconColor" [(ngModel)]="form.iconColor"
 									style="padding-left: 40px;"
@@ -185,9 +203,9 @@
 									(colorPickerChange)="changeControllerColor($event,form,'iconColor')"
 									[cpPosition]="'bottom'" readonly></span>
 							</div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
+						</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
 								<label>Button Value Color</label> <input class="form-control"
 									[value]="buttonValueColor" [(ngModel)]="form.buttonValueColor"
 									style="padding-left: 40px;"
@@ -199,120 +217,141 @@
 									(colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')"
 									[cpPosition]="'top'" readonly></span>
 							</div>
-            </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-lg-6" style="padding:10px;">
-            <div class="portlet light" style="margin-top:5px; background:#f1f3fa;">
-						<div class="portlet light" style="text-align: center;">
-							Header</div>
-						<div class="row" style="display: flex;">
-							<div class="col-xs-6 col-sm-2 clo-lg-2"
-								style="text-align: center;padding-right: 6px;">
-								<div class="portlet light left-left box-center" >Left Menu</div>
-							</div>
-							<div class="col-xs-6 col-sm-10 clo-lg-10"
-								style="padding-left: 0px;">
-								<div class="portlet light main-content"
-									style="display: flex; justify-content: center;" [ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">
-                  <h6 style="margin:auto ;" [ngStyle]="{'color':form.headerTextColor}">Page
-									Content</h6>
-                </div>
-							</div>
 						</div>
-						<div class="col-xs-16 col-sm-16 col-lg-16"
-							style="text-align: center;">
-							<div class="portlet light" style="margin-bottom: 0px;">Footer</div>
-						</div>
-            </div>
 					</div>
-      </div>
-      <div class="row" style="padding:10px">
-        <div class="col-md-6 col-lg-6">
-          <div class="form-group">
-            <label>Background Color</label> <input class="form-control"
-              [value]="backgroundColor" [(ngModel)]="form.backgroundColor"
-              style="margin-bottom: 10px; padding-left: 40px;"
-              (input)="checkValidColorCode(backgroundColor,'backgroundColor')"
-              maxlength="7" /> <span class="input-group-addon color-pick"
-              [(colorPicker)]="form.backgroundColor"
-              [style.background]="form.backgroundColor" [cpWidth]="'200px'"
-              [cpHeight]="'265px'"
-              (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
-              [cpPosition]="'top'" readonly></span>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6">	
-          <div class="form-group">
-          <label>Button Color</label> 
-          <input class="form-control"
-            [value]="buttonColor" [(ngModel)]="form.buttonColor"
-            style="padding-left: 40px;"
-            (input)="checkValidColorCode(buttonColor,'buttonColor')"
-            maxlength="7" /> 
-            <span class="input-group-addon color-pick"
-            [(colorPicker)]="form.buttonColor"
-            [style.background]="form.buttonColor" [cpWidth]="'200px'"
-            [cpHeight]="'265px'"
-            (colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
-            [cpPosition]="'top'" readonly></span>
-        </div>
-      </div>
-        </div>
-        <div class="row" style="padding:10px;">
-          <div class="col-md-6 col-lg-6">
-            <div class="form-group">
-              <label>Button Border Color</label>
-              <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
-              <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'top'" readonly>
-              </span>
-          </div>
-          </div>
-          <div class="col-md-6 col-lg-6">
-							<div class="form-group">
-								<label>Text Color</label> <input class="form-control"
-									[value]="textColor" [(ngModel)]="textColor"
-									style="margin-bottom: 10px; padding-left: 40px;"
-									(input)="checkValidColorCode(textColor,'textColor')"
-									maxlength="7" /> <span class="input-group-addon color-pick"
-									[(colorPicker)]="form.textColor"
-									[style.background]="form.textColor" [cpWidth]="'200px'"
-									[cpHeight]="'265px'"
-									(colorPickerChange)="changeControllerColor($event,form,'textColor')"
-									[cpPosition]="'top'" readonly> </span>
+					<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 10px;">
+						<div class="portlet light"
+							style="margin-top: 5px; background: #f1f3fa;">
+							<div class="portlet light" style="text-align: center;">
+								Header</div>
+							<div class="row" style="display: flex;">
+								<div class="col-xs-6 col-sm-2 clo-lg-2"
+									style="text-align: center; padding-right: 6px;">
+									<div class="portlet light left-left box-center">Left
+										Menu</div>
+								</div>
+								<div class="col-xs-6 col-sm-10 clo-lg-10"
+									style="padding-left: 0px;">
+									<div class="portlet light main-content"
+										style="display: flex; justify-content: center;"
+										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">
+										<h6 style="margin: auto;"
+											[ngStyle]="{'color':form.headerTextColor}">Page Content</h6>
+									</div>
+								</div>
 							</div>
-          </div>
-        </div>
-  
-        <div class="row" style="padding:10px;">
-          <div class="col-md-6 col-lg-6">
-            <div class="form-group">
-                <label>Div Background Color</label>
-                <input class="form-control" [value]="divBgColor" [(ngModel)]="form.divBgColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(divBgColor,'divBgColor')" maxlength="7" />
-                <span class="input-group-addon color-pick" [(colorPicker)]="form.divBgColor" [style.background]="form.divBgColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'divBgColor')" [cpPosition]="'top'" readonly>
-                </span>
-            </div>
-        </div> 
-        <div class="col-md-6 col-lg-6">
-          <div class="form-group">
-            <label>Title Text Color</label>
-            <input class="form-control" [value]="headerTextColor" [(ngModel)]="form.headerTextColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(headerTextColor,'headerTextColor')" maxlength="7" />
-            <span class="input-group-addon color-pick" [(colorPicker)]="form.headerTextColor" [style.background]="form.headerTextColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'headerTextColor')" [cpPosition]="'top'" readonly>
-            </span>
-        </div>
-        </div>
-        </div>
+							<div class="col-xs-16 col-sm-16 col-lg-16"
+								style="text-align: center;">
+								<div class="portlet light" style="margin-bottom: 0px;">Footer</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="padding: 10px">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Background Color</label> <input class="form-control"
+								[value]="backgroundColor" [(ngModel)]="form.backgroundColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(backgroundColor,'backgroundColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.backgroundColor"
+								[style.background]="form.backgroundColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
+								[cpPosition]="'top'" readonly></span>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Button Color</label> <input class="form-control"
+								[value]="buttonColor" [(ngModel)]="form.buttonColor"
+								style="padding-left: 40px;"
+								(input)="checkValidColorCode(buttonColor,'buttonColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.buttonColor"
+								[style.background]="form.buttonColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
+								[cpPosition]="'top'" readonly></span>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="padding: 10px;">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Button Border Color</label> <input class="form-control"
+								[value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.buttonBorderColor"
+								[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
+								[cpPosition]="'top'" readonly> </span>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Text Color</label> <input class="form-control"
+								[value]="textColor" [(ngModel)]="textColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(textColor,'textColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.textColor"
+								[style.background]="form.textColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'textColor')"
+								[cpPosition]="'top'" readonly> </span>
+						</div>
+					</div>
+				</div>
 
-      <div class="col-md-6 col-lg-6">
-        <button type="button" class="btn btn-primary" (click)="saveCustomSkin(form)">Save</button>
-        <button type="button" class="btn btn-secondary" (click)="saveDefaultSkin(form)">User Default Setting</button>
-        </div>
-      </div>
-    </div>
+				<div class="row" style="padding: 10px;">
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Div Background Color</label> <input class="form-control"
+								[value]="divBgColor" [(ngModel)]="form.divBgColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(divBgColor,'divBgColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.divBgColor"
+								[style.background]="form.divBgColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'divBgColor')"
+								[cpPosition]="'top'" readonly> </span>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<div class="form-group">
+							<label>Title Text Color</label> <input class="form-control"
+								[value]="headerTextColor" [(ngModel)]="form.headerTextColor"
+								style="margin-bottom: 10px; padding-left: 40px;"
+								(input)="checkValidColorCode(headerTextColor,'headerTextColor')"
+								maxlength="7" /> <span class="input-group-addon color-pick"
+								[(colorPicker)]="form.headerTextColor"
+								[style.background]="form.headerTextColor" [cpWidth]="'200px'"
+								[cpHeight]="'265px'"
+								(colorPickerChange)="changeControllerColor($event,form,'headerTextColor')"
+								[cpPosition]="'top'" readonly> </span>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-lg-6">
+					<button type="button" class="btn btn-primary"
+						(click)="saveCustomSkin(form)">Save</button>
+					<button type="button" class="btn btn-secondary"
+						(click)="saveDefaultSkin(form)">User Default Setting</button>
+				</div>
+			</div>
+		</div>
 		<div class="tab-pane"
 			[ngClass]="{'active': activeTabName == 'leftmenu'}">
 			<div class="portlet light col-xs-12">
-				<div class="row" style="padding:10px 10px 0px 10px;">
-					<div class="col-md-6 col-lg-6" style="padding:0px;">
+				<div class="row" style="padding: 10px 10px 0px 10px;">
+					<div class="col-md-6 col-lg-6" style="padding: 0px;">
 						<!--Font Family-->
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
@@ -369,130 +408,156 @@
 									[cpPosition]="'top'" readonly></span>
 							</div>
 						</div>
-          
+
 					</div>
-					<div class="col-xs-12 col-sm-6 col-lg-6" style="padding:10px;">
-            <div class="portlet light" style="margin-top: 5px; background: #f1f3fa;">
-						<div class="portlet light" style="text-align: center;">
-							Header</div>
-						<div class="row" style="display: flex;">
-							<div class="col-xs-6 col-sm-2 col-lg-2"
-								style="text-align: center;padding-right: 6px;">
-								<div class="portlet light left-left box-center" [ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Left Menu</div>
+					<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 10px;">
+						<div class="portlet light"
+							style="margin-top: 5px; background: #f1f3fa;">
+							<div class="portlet light" style="text-align: center;">
+								Header</div>
+							<div class="row" style="display: flex;">
+								<div class="col-xs-6 col-sm-2 col-lg-2"
+									style="text-align: center; padding-right: 6px;">
+									<div class="portlet light left-left box-center"
+										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Left
+										Menu</div>
+								</div>
+								<div class="col-xs-6 col-sm-10 col-lg-10"
+									style="padding-left: 0px;">
+									<div class="portlet light main-content"
+										style="display: flex; justify-content: center;">
+										<h6 style="margin: auto;">Page Content</h6>
+									</div>
+								</div>
 							</div>
-							<div class="col-xs-6 col-sm-10 col-lg-10"
-								style="padding-left: 0px;">
-								<div class="portlet light main-content"
-									style="display: flex; justify-content: center;">
-                  <h6 style="margin:auto ;">Page
-									Content</h6>
-                </div>
+							<div class="col-xs-16 col-sm-16 col-lg-16"
+								style="text-align: center;">
+								<div class="portlet light" style="margin-bottom: 0px;">Footer</div>
 							</div>
 						</div>
-						<div class="col-xs-16 col-sm-16 col-lg-16"
-							style="text-align: center;">
-							<div class="portlet light" style="margin-bottom:0px;">Footer</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
+								<label>Border Color</label> <input class="form-control"
+									[value]="buttonBorderColor"
+									[(ngModel)]="form.buttonBorderColor"
+									style="margin-bottom: 10px; padding-left: 40px;"
+									(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')"
+									maxlength="7" /> <span class="input-group-addon color-pick"
+									[(colorPicker)]="form.buttonBorderColor"
+									[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
+									[cpHeight]="'265px'"
+									(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
+									[cpPosition]="'top'" readonly> </span>
+							</div>
 						</div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-              <div class="form-group">
-                  <label>Border Color</label>
-                  <input class="form-control" [value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')" maxlength="7" />
-                  <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonBorderColor" [style.background]="form.buttonBorderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')" [cpPosition]="'top'" readonly>
-                  </span>
-              </div>
-          </div> 
 					</div>
 
 				</div>
-        <div class="col-md-6 col-lg-6">
-          <button type="button" [disabled]="isValid" class="btn btn-primary" (click)="saveCustomSkin(form)">Save</button>
-          <button type="button" class="btn btn-secondary" (click)="saveDefaultSkin(form)">User Default Setting</button>
-          </div>
+				<div class="col-md-6 col-lg-6">
+					<button type="button" [disabled]="isValid" class="btn btn-primary"
+						(click)="saveCustomSkin(form)">Save</button>
+					<button type="button" class="btn btn-secondary"
+						(click)="saveDefaultSkin(form)">User Default Setting</button>
+				</div>
 			</div>
 		</div>
 
 		<div class="tab-pane"
 			[ngClass]="{'active': activeTabName == 'footer'}">
-        <div class="portlet light col-xs-12">
-          <div class="row" style="padding:10px 10px;">
-            <div class="col-md-6 col-lg-6" style="padding:0px">
-              <div class="col-md-12 col-lg-12" style="margin-top: 20px;">
-                <div class="col-md-6 col-lg-4"style="padding:0px;">
-                  <label>Show Footer :</label>
-              </div>
-              <div class="col-md-6 col-lg-6" style="padding:0px;">
-                  <div class="switch" >
-                      <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" [checked]="form.showFooter" (change)="showFooterChange()">
-                      <label for="cmn-toggle-4"></label>
-                  </div>
-              </div>
-              </div>
-          <div class="col-md-12 col-lg-12">
-						<div class="form-group">
-							<label>Text Color</label> 
-              <input class="form-control" [value]="textColor" [(ngModel)]="textColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(textColor,'textColor')" maxlength="7" />
-              <span class="input-group-addon color-pick" [(colorPicker)]="form.textColor" [style.background]="form.textColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'textColor')" [cpPosition]="'top'" readonly>
-              </span>						
-            </div>
-					</div>
-          <div class="col-md-12 col-lg-12">
-            <div class="form-group">
-              <label>Background Color</label>
-              <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor')" maxlength="7" />
-              <span class="input-group-addon color-pick" [(colorPicker)]="form.backgroundColor" [style.background]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'top'"
-                  readonly></span>
-          </div>
-          </div>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-lg-6">
-            <div class="portlet light" style="margin-top: 5px; background: #f1f3fa;">
-						<div class="portlet light" style="text-align: center;">
-							Header</div>
-						<div class="row" style="display: flex;">
-							<div class="col-xs-6 col-sm-2 col-lg-2"
-								style="text-align: center;padding-right: 6px;">
-								<div class="portlet light left-left box-center" >Left Menu</div>
+			<div class="portlet light col-xs-12">
+				<div class="row" style="padding: 10px 10px;">
+					<div class="col-md-6 col-lg-6" style="padding: 0px">
+						<div class="col-md-12 col-lg-12" style="margin-top: 20px;">
+							<div class="col-md-6 col-lg-4" style="padding: 0px;">
+								<label>Show Footer :</label>
 							</div>
-							<div class="col-xs-6 col-sm-10 col-lg-10"
-								style="padding-left: 0px;">
-								<div class="portlet light main-content"
-									style="display: flex; justify-content: center;">
-                  <h6 style="margin:auto ;">Page
-									Content</h6>
-                </div>
+							<div class="col-md-6 col-lg-6" style="padding: 0px;">
+								<div class="switch">
+									<input id="cmn-toggle-4"
+										class="cmn-toggle cmn-toggle-round-flat" type="checkbox"
+										[checked]="form.showFooter" (change)="showFooterChange()">
+									<label for="cmn-toggle-4"></label>
+								</div>
 							</div>
 						</div>
-						<div class="col-xs-16 col-sm-16 col-lg-16"
-							style="text-align: center;">
-							<div class="portlet light"style="margin-bottom: 0px;" [ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Footer</div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
+								<label>Text Color</label> <input class="form-control"
+									[value]="textColor" [(ngModel)]="textColor"
+									style="margin-bottom: 10px; padding-left: 40px;"
+									(input)="checkValidColorCode(textColor,'textColor')"
+									maxlength="7" /> <span class="input-group-addon color-pick"
+									[(colorPicker)]="form.textColor"
+									[style.background]="form.textColor" [cpWidth]="'200px'"
+									[cpHeight]="'265px'"
+									(colorPickerChange)="changeControllerColor($event,form,'textColor')"
+									[cpPosition]="'top'" readonly> </span>
+							</div>
 						</div>
-            </div>
+						<div class="col-md-12 col-lg-12">
+							<div class="form-group">
+								<label>Background Color</label> <input class="form-control"
+									[value]="backgroundColor" [(ngModel)]="backgroundColor"
+									style="margin-bottom: 10px; padding-left: 40px;"
+									(input)="checkValidColorCode(backgroundColor,'backgroundColor')"
+									maxlength="7" /> <span class="input-group-addon color-pick"
+									[(colorPicker)]="form.backgroundColor"
+									[style.background]="form.backgroundColor" [cpWidth]="'200px'"
+									[cpHeight]="'265px'"
+									(colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
+									[cpPosition]="'top'" readonly></span>
+							</div>
+						</div>
 					</div>
-          </div>
-          <div class="col-xs-12">
-            <div class="row">
-              <div class="col-md-6 col-lg-6">
-                <div class="form-group">
-                  <label>Font Family</label>
-                  <select class="form-control" [value]= "fontFamily" [(ngModel)]="form.fontFamily"
-                   [ngModelOptions]="{standalone: true}" >
-                   <option *ngFor="let style of fontStyles"
-                      [value]="style">{{style}}</option>
-                  </select>
-              </div>
-              </div>
-              <div class="col-md-6 col-lg-6">
-                <!-- <div class="form-group">
+					<div class="col-xs-12 col-sm-6 col-lg-6">
+						<div class="portlet light"
+							style="margin-top: 5px; background: #f1f3fa;">
+							<div class="portlet light" style="text-align: center;">
+								Header</div>
+							<div class="row" style="display: flex;">
+								<div class="col-xs-6 col-sm-2 col-lg-2"
+									style="text-align: center; padding-right: 6px;">
+									<div class="portlet light left-left box-center">Left
+										Menu</div>
+								</div>
+								<div class="col-xs-6 col-sm-10 col-lg-10"
+									style="padding-left: 0px;">
+									<div class="portlet light main-content"
+										style="display: flex; justify-content: center;">
+										<h6 style="margin: auto;">Page Content</h6>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-16 col-sm-16 col-lg-16"
+								style="text-align: center;">
+								<div class="portlet light" style="margin-bottom: 0px;"
+									[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Footer</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<div class="row">
+						<div class="col-md-6 col-lg-6">
+							<div class="form-group">
+								<label>Font Family</label> <select class="form-control"
+									[value]="fontFamily" [(ngModel)]="form.fontFamily"
+									[ngModelOptions]="{standalone: true}">
+									<option *ngFor="let style of fontStyles" [value]="style">{{style}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6 col-lg-6">
+							<!-- <div class="form-group">
                   <label>Background Color</label>
                   <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor')" maxlength="7" />
                   <span class="input-group-addon color-pick" [(colorPicker)]="form.backgroundColor" [style.background]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'top'"
                       readonly></span>
               </div> -->
-              </div>
-            </div>
-          </div>
-          <!-- <div class="col-xs-12">
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-xs-12">
             <div class="row">
               <div class="col-md-6 col-lg-6">
 
@@ -514,31 +579,34 @@
               </div>
             </div>
           </div> -->
-          <div class="col-md-6 col-lg-12">
-            <label>Footer Content</label>
-            <p class="text-area-css">Max characters 225</p>
-            </div>
-          <div class="col-xs-12">
-            <div *ngIf="form.showFooter" class="col-xs-12 col-md-12 col-lg-12 pl0 pr0" style="margin-top:5px;">
-              <ckeditor  [(ngModel)]="form.textContent" #myckeditor [config]="ckeConfig" debounce="500" maxlength="250"  (input)="characterSize()">
-              </ckeditor>
-          </div>
-          </div>
-        
-          <div class="col-md-12" style="padding: 15px;">
-            <button type="button"  [disabled]="isValid"  class="btn btn-primary" (click)="saveCustomSkin(form)">Save
-            </button>
-            <button type="button" class="btn btn-secondary" (click)="saveDefaultSkin(form)">User Default Setting</button>
-            </div>
-            <!-- <span *ngIf="isValid" style="color:red ;">please check two colors are same make you sure change any one color. </span> -->
-            <!-- <div *ngIf="isValid" class="alert alert-danger">
+				<div class="col-md-6 col-lg-12">
+					<label>Footer Content</label>
+					<p class="text-area-css">Max characters 225</p>
+				</div>
+				<div class="col-xs-12">
+					<div *ngIf="form.showFooter"
+						class="col-xs-12 col-md-12 col-lg-12 pl0 pr0"
+						style="margin-top: 5px;">
+						<ckeditor [(ngModel)]="form.textContent" #myckeditor
+							[config]="ckeConfig" debounce="500"> </ckeditor>
+					</div>
+				</div>
+
+				<div class="col-md-12" style="padding: 15px;">
+					<button type="button" [disabled]="isValid" class="btn btn-primary"
+						(click)="saveCustomSkin(form)">Save</button>
+					<button type="button" class="btn btn-secondary"
+						(click)="saveDefaultSkin(form)">User Default Setting</button>
+				</div>
+				<!-- <span *ngIf="isValid" style="color:red ;">please check two colors are same make you sure change any one color. </span> -->
+				<!-- <div *ngIf="isValid" class="alert alert-danger">
               please check two colors are same,please change any one color.
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button> 
             </div> -->
-        </div>
 			</div>
+		</div>
 
 	</div>
 </div>
