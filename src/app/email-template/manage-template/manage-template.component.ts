@@ -157,22 +157,10 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 
 	}
 
-	getSelectedEmailTemplate(text: any) {
-		try {
-			this.selectedTemplate = text;
-			this.getAllFilteredResults(this.pagination);
-		} catch (error) {
-			this.refService.showError(error, "getSelectedEmailTemplate", "ManageTemplatesComponent");
-		}
-
-	}
-
-
 	getAllFilteredResults(pagination: Pagination) {
 		try {
 			this.pagination.pageIndex = 1;
 			this.pagination.searchKey = this.searchKey;
-			this.pagination.filterBy = this.selectedTemplate.value;
 			let sortedValue = this.selectedSortedOption.value;
 			if (sortedValue != "") {
 				let options: string[] = sortedValue.split("-");
