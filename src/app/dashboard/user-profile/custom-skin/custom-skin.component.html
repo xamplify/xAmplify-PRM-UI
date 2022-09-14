@@ -1,4 +1,4 @@
-
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="alert alert-danger" *ngIf="statusCode==500"  role="alert">
   {{message}}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -12,10 +12,6 @@
 </div>
 <div class="page-breadcrumb">
 	<ul class="nav nav-pills" style="border-bottom: 2px solid #2b5ec4;">
-		<!-- <li [ngClass]="{'active': activeTabName == 'home'}"><a class="text-white"
-			[ngClass]="{'active-tab-anchor-text': activeTabName == 'home'}"
-			(click)="activeTabNav('home');clearCustomResponse()" selected="true">General
-				Settings</a></li> -->
 		<li [ngClass]="{'active': activeTabName == 'header'}"><a class="text-white"
 			[ngClass]="{'active-tab-anchor-text': activeTabName == 'header'}"
 			(click)="activeTabNav('header');clearCustomResponse()" selected="true">Header</a></li>
