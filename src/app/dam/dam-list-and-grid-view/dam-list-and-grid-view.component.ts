@@ -82,13 +82,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		localStorage.removeItem('campaignReport');
-		localStorage.removeItem('saveVideoFile');
 		this.callInitMethods();
 		this.videoFileService.campaignReport = false;
 	}
 
 	callInitMethods() {
+		localStorage.removeItem('campaignReport');
+        localStorage.removeItem('saveVideoFile');
+        localStorage.removeItem('assetName');
 		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
         this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
         this.hasAllAccess = this.referenceService.hasAllAccess();
@@ -376,6 +377,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
     viewAnalytics(asset: any) {
         this.loading = true;
+        localStorage.setItem('assetName', asset.assetName);
         let isVideo = this.isVideo(asset.assetType);
         if (isVideo) {
         	   if (this.isPartnerView) {
