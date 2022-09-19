@@ -15,7 +15,6 @@ import { DashboardService } from "app/dashboard/dashboard.service";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 
 
-
 declare var $: any;
 
 @Component({
@@ -41,6 +40,7 @@ export class HomeComponent implements OnInit {
     public userService: UserService,
     public dealsService:DealRegistrationService,
     public xtremandLogger: XtremandLogger,
+    public dashBoardService:DashboardService,
     private router: Router,
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
@@ -307,12 +307,12 @@ export class HomeComponent implements OnInit {
             this.getCategorisService();
           }
          this.vanityURLService.isVanityURLEnabled();  
-         this.getCompanyId();    
+         this.getCompanyId();  
+         this.getMainContent(this.userId);  
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  
   }
-  /*** XNFR-134 ***/
   getMainContent(userId:number){
     this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
       (response) =>{
