@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit {
     public userService: UserService,
     public dealsService:DealRegistrationService,
     public xtremandLogger: XtremandLogger,
-    public dashBoardService:DashboardService,
     private router: Router,
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
