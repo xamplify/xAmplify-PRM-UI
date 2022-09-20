@@ -356,7 +356,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if (columnName == "assetName") {
 			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName) != undefined && $.trim(this.damUploadPostDto.assetName).length > 0;
 		} else if (columnName == "description") {
-			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description) != undefined && $.trim(this.damUploadPostDto.description).length > 0 && $.trim(this.damUploadPostDto.description).length < 5000;
+		    let plainDescription1 = this.damUploadPostDto.description.trim().replace(/<[^>]+>/g, '');
+		    let plainDescription = plainDescription1.trim().split("&nbsp;").join("");
+			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description) != undefined && plainDescription.length>0 && $.trim(this.damUploadPostDto.description).length > 0 && $.trim(this.damUploadPostDto.description).length < 5000;
 			this.updateDescriptionErrorMessage();
 		}
 		this.validateAllFields();
