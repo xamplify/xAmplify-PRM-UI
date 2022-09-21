@@ -21,6 +21,7 @@ import { EnvService } from 'app/env.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import { CustomSkin } from '../models/custom-skin';
+import { VideoFileService } from '../../videos/services/video-file.service';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -78,10 +79,13 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    showSweetAlert = false;
    skin:CustomSkin = new CustomSkin();
    userId: number;
+    editVideo : boolean = false;
+   playVideo : boolean = false;
 
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
-    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
+    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService,
+    public videoFileService: VideoFileService) {
 
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
@@ -101,6 +105,9 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
 }
 
   ngOnInit() {
+    localStorage.removeItem('assetName');
+    localStorage.removeItem('campaignReport');
+    localStorage.removeItem('saveVideoFile');
     this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
@@ -507,4 +514,31 @@ showCampaignDetails(campaign:any){
         )
         
       }
+      setManageDam(event: any) {
+        let input = event;
+        let editVideo = input['editVideo'];
+        let playVideo = input['playVideo'];
+        if (editVideo) {
+            this.editVideo = editVideo;
+            this.videoFileService.saveVideoFile = input['videoFile'];
+            this.videoFileService.actionValue = 'Update';
+        } else if (playVideo) {
+          this.playVideo = playVideo;
+            this.videoFileService.saveVideoFile = input['videoFile'];
+            this.videoFileService.actionValue = 'Update';
+        }
+    }
+   
+    update(videoFile: any) {
+        if (videoFile != null) {
+            this.referenceService.isAssetDetailsUpldated = true;
+        }
+        this.referenceService.goToRouter("home/dam/manage");
+    }
+   
+    goToDam() {
+        this.referenceService.goToRouter("/home/dam/manage");
+    }
+      
+      
 }

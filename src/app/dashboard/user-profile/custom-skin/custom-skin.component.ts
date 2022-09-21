@@ -8,14 +8,18 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
-import { TabHeadingDirective } from 'ngx-bootstrap';
+import { Properties } from 'app/common/models/properties';
+
 declare var $ : any,CKEDITOR: any;
 @Component({
   selector: 'app-custom-skin',
   templateUrl: './custom-skin.component.html',
-  styleUrls: ['./custom-skin.component.css']
+  styleUrls: ['./custom-skin.component.css'],
+  providers: [EmailTemplate,Properties]
 })
 export class CustomSkinComponent implements OnInit {
   @ViewChild("myckeditor") ckeditor: any;
@@ -56,14 +60,15 @@ export class CustomSkinComponent implements OnInit {
   statusCode :any;
   isValid = false;
   customResponse: CustomResponse = new CustomResponse();
+  ngxloading = false;
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
-    public ustilService: UtilService,public router: Router) {
+    public ustilService: UtilService,public router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal()
+    this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal();
     this.vanityLoginDto.userId = this.loggedInUserId;
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
@@ -73,19 +78,23 @@ export class CustomSkinComponent implements OnInit {
     }else{
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-    
+   
      }
 
   ngOnInit() {
     this.activeTabNav(this.activeTabName);
-    
+    try {
+      this.ckeConfig = {
+          allowedContent: true,
+      };
+  } catch ( errr ) { }
   }
 
   
   clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
+    this.ngxloading = true;
   this.activeTabName = activateTab;
-  
   if(this.activeTabName == "header"){
     this.form.moduleTypeString = this.moduleStatusList[2];
   }else if(this.activeTabName == "leftmenu"){
@@ -104,30 +113,33 @@ export class CustomSkinComponent implements OnInit {
 
   message:string="";
   saveSkin(form:CustomSkin){
+    this.ngxloading = true;
+    this.message = ""; 
     this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.form.companyId = this.loggedInUserId;
     if(CKEDITOR!=undefined){
       for (var instanceName in CKEDITOR.instances) {
           CKEDITOR.instances[instanceName].updateElement();
-          this.form.textContent = CKEDITOR.instances[instanceName].getData();
+          form.textContent = CKEDITOR.instances[instanceName].getData();
       }
     }
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
-      console.log(data.data)
       this.sucess = true;
-      this.message = "saved sucessfully";
+      this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
       this.router.navigate(['/home/dashboard/myprofile']);
       },
      error =>{
+      this.referenceService.scrollSmoothToTop();
       if(this.form.textContent.length > 225){
-        this.message = "opps something wrong!";
+        this.message = this.properties.serverErrorMessage;
       }else{
-      this.message = "opps something worng!";
+        this.message = this.properties.serverErrorMessage;
       }
       this.statusCode = 500;
-     })
+      this.ngxloading = false;
+     });
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
@@ -139,7 +151,9 @@ export class CustomSkinComponent implements OnInit {
   }
   
   getDefaultSkin(){
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+    this.ngxloading = true;
+    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)
+    .subscribe(
         (data:any) =>{
            let skinMap = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
@@ -159,10 +173,13 @@ export class CustomSkinComponent implements OnInit {
            this.buttonValueColor = this.form.buttonValueColor;
            this.fontFamily = this.form.fontFamily
            this.divBgColor = this.form.divBgColor;
+           this.footerContent = this.form.textContent;
            this.headerTextColor = this.form.headerTextColor;
-           console.log(this.form)
-        }
-    )
+           this.ngxloading =false;
+        },error=>{
+          this.ngxloading =false;
+          this.message = this.properties.serverErrorMessage;
+        });
   }
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
@@ -234,8 +251,7 @@ checkValideColorCodes(){
       this.isValid = true;
     }else if(this.form.iconColor === this.form.buttonColor){
       this.isValid = true;
-    }
-      else{
+    }else{
       this.isValid = false;
     }
     

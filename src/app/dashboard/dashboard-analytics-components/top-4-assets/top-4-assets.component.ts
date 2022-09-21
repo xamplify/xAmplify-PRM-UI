@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -9,6 +9,9 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DamService } from 'app/dam/services/dam.service';
 import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { UserService } from 'app/core/services/user.service';
 
 
 declare var $:any,swal: any;
@@ -16,7 +19,7 @@ declare var $:any,swal: any;
   selector: 'app-top-4-assets',
   templateUrl: './top-4-assets.component.html',
   styleUrls: ['./top-4-assets.component.css'],
-  providers: [Properties, DamService]
+  providers: [Properties, DamService, VideoFileService, UserService]
 })
 export class Top4AssetsComponent implements OnInit {
   loggedInUserId: number = 0;
@@ -26,6 +29,7 @@ export class Top4AssetsComponent implements OnInit {
   loggedInUserCompanyId: any;
   @Input() isPartnerView = false;
   @Input() hideRowClass = false;
+  @Output() newItemEvent  = new EventEmitter<any>();
   title = "Assets";
   manageAssetsText = "Click here to manage assets";
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
@@ -37,7 +41,8 @@ export class Top4AssetsComponent implements OnInit {
   selectedAssetId: number;
   showPdfModalPopup: boolean;
   deleteAsset = false;
-  constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService) {
+  constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService,
+  			  public videoFileService: VideoFileService, public userService:UserService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -165,25 +170,113 @@ export class Top4AssetsComponent implements OnInit {
 		}
   }
 
-  editDetails(id:number){
-    this.loading = true;
-    this.referenceService.goToRouter("/home/dam/editDetails/"+id);
- }
-
-
-
-assetGridViewActionsEmitter(event:any){
-  let input =event;
-  let preview = input['preview'];
-  let showPublishPopup = input['publishPopup'];
-  this.asset = input['asset'];
-  if(preview){
-    this.isPreview = true;
-  }else if(showPublishPopup){
-    this.selectedAssetId = this.asset.id;
-    this.showPublishPopup = true;
+editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
+      if (!beeTemplate && this.isVideo(assetType)) {
+          this.showEditVideo(alias, id);
+      } else {
+          this.loading = true;
+          this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+      }
+  }
+assetGridViewActionsEmitter(event: any) {
+      let input = event;
+      let preview = input['preview'];
+      let showPublishPopup = input['publishPopup'];
+      let campaign = input['campaign'];
+      let edit = input['edit'];
+      let analytics = input['analytics'];
+      this.asset = input['asset'];
+      if (preview) {
+          this.preview(this.asset);
+      } else if (showPublishPopup) {
+          this.selectedAssetId = this.asset.id;
+          this.showPublishPopup = true;
+      }else if(campaign){
+          this.campaignRouter(this.asset.alias, this.asset.viewBy);
+      }else if(edit){
+          this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate);
+      }else if(analytics){
+          this.viewAnalytics(this.asset);
+      }
   }
   
+  preview(asset: any) {
+      if (this.isVideo(asset.assetType)) {
+          this.showPlayVideo(asset.id, asset.videoFileDTO);
+      } else {
+          this.isPreview = true;
+          this.asset = asset;
+      }
+  }
+ 
+  showPlayVideo(id: number, videoFile: SaveVideoFile) {
+      try {
+          this.videoFileService.getVideo(videoFile.alias, 'DRAFT')
+              .subscribe((editVideoFile: SaveVideoFile) => {
+                  if (editVideoFile.access) {
+                      if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                          editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                      }
+                      editVideoFile.damId = id;
+                      this.videoFileService.saveVideoFile = editVideoFile;
+                      this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                      this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                      this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+                      this.videoFileService.actionValue = 'Update';
+                      let input = {};
+                      input['playVideo'] = true;
+                      input['videoFile'] = editVideoFile;
+                      this.newItemEvent.emit(input);
+                  } else {
+                      this.authenticationService.forceToLogout();
+                  }
+              },
+              (error: any) => {
+                  this.xtremandLogger.error('Error In: showPlayVideo():' + error);
+                  this.xtremandLogger.errorPage(error);
+              }
+              );
+      } catch (error) {
+          this.xtremandLogger.error('error' + error);
+      }
+  }
+  
+  getDefaultVideoSettings(){this.userService.getVideoDefaultSettings().subscribe((data) =>{ this.referenceService.defaultPlayerSettings = data;});}
+
+showEditVideo(alias:string, id: number) {
+if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){
+this.getDefaultVideoSettings();
+}
+try{
+this.videoFileService.getVideo(alias, 'DRAFT').subscribe((editVideoFile: SaveVideoFile) => {
+if(editVideoFile.access){
+this.xtremandLogger.log('enter the show edit vidoe method');
+if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+}
+editVideoFile.damId = id;
+this.videoFileService.saveVideoFile = editVideoFile;
+this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+this.xtremandLogger.log('show edit vidoe object :');
+this.xtremandLogger.log(this.videoFileService.saveVideoFile);
+this.videoFileService.actionValue = 'Update';
+let input = {};
+input['editVideo'] = true;
+input['videoFile'] = editVideoFile;
+this.newItemEvent.emit(input);
+}else{
+this.authenticationService.forceToLogout();
+}
+},
+(error: any) => {
+this.xtremandLogger.error('Error In: show edit videos ():' + error);
+this.xtremandLogger.errorPage(error);
+}
+);
+}catch(error){
+this.xtremandLogger.error('error'+error);
+}
 }
 
 previewAssetPopupEmitter(){
@@ -233,5 +326,96 @@ deleteAssetCancelEmitter(){
   this.asset = {};
 }  
 
+viewAnalytics(asset: any) {
+    localStorage.setItem('assetName', asset.assetName);
+    this.loading = true;
+    let isVideo = this.isVideo(asset.assetType);
+    if (isVideo) {
+           if (this.isPartnerView) {
+            this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+        } else {
+            try {
+                this.videoFileService.getVideo(asset.alias, 'DRAFT')
+                    .subscribe((editVideoFile: SaveVideoFile) => {
+                        if (editVideoFile.access) {
+                            if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                                editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                            }
+                            editVideoFile.damId = asset.id;
+                            this.videoFileService.saveVideoFile = editVideoFile;
+                            this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                            this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                            this.videoFileService.campaignReport = true;
+                            localStorage.setItem('campaignReport', 'true');
+                            localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
+                            this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+                        } else {
+                            this.authenticationService.forceToLogout();
+                        }
+                    },
+                    (error: any) => {
+                        this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                        this.xtremandLogger.errorPage(error);
+                    }
+                    );
+            } catch (error) {
+                this.xtremandLogger.error('error' + error);
+            }
+        }
+    } else {
+        if (this.isPartnerView) {
+            this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+
+        } else {
+            this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+        }
+    }
+}
+
+campaignRouter(alias:string, viewBy:string) {
+    try{
+     this.xtremandLogger.log('ManageVideoComponent campaign router:');
+     this.videoFileService.getVideo(alias, viewBy)
+         .subscribe((videoFile: SaveVideoFile) => {
+             if(videoFile.access){
+             console.log(videoFile);
+             this.referenceService.campaignVideoFile = videoFile;
+             this.referenceService.selectedCampaignType = 'video';
+             this.referenceService.isCampaignFromVideoRouter = true;
+            // this.router.navigateByUrl('/home/campaigns/create');
+             this.referenceService.goToRouter('/home/campaigns/create');
+             }else{
+                 this.authenticationService.forceToLogout();
+             }
+         },
+         (error: string) => {
+             this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+             this.xtremandLogger.errorPage(error);
+         });
+       }catch(error){ this.xtremandLogger.error('error'+error);}
+ }
+
+isVideo(filename: any) {
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    switch (ext.toLowerCase()) {
+        case 'm4v':
+        case 'mkv':
+        case 'avi':
+        case 'mpg':
+        case 'mp4':
+        case 'flv':
+        case 'mov':
+        case 'wmv':
+        case 'divx':
+        case 'f4v':
+        case 'mpeg':
+        case 'vob':
+        case 'xvid':
+            // etc
+            return true;
+    }
+    return false;
+}
 
 }

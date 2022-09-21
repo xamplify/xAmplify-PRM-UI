@@ -26,9 +26,9 @@
         </ng-container>
       </tbody>
     </table>
-    <!---Pagination-->
+    <!---Pagination-->   
     <div *ngIf="usersPagination.totalRecords==0 && !usersLoader.isLoading" class="alert alert-info">
-      <strong>No Data Found.</strong>
+      <strong>{{emptyListMessage}}</strong>
     </div>
     <div [hidden]="usersLoader.isLoading ||usersPagination.pagedItems.length==0 " class="pg8">
       <app-pagination [pagination]="usersPagination" (notifyParent)="setUsersPage($event)"
@@ -36,7 +36,8 @@
     </div>
   </div>
 
+  
   <div *ngIf="!usersLoader.isLoading && usersSortOption.totalRecords==0" class="alert alert-info">
-    <strong translate>No Data Found.</strong>
+    <strong translate>{{emptyListMessage}}</strong>
   </div>
 </div>
