@@ -23,6 +23,7 @@ import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 import { HomeComponent } from '../../../core/home/home.component';
 import { Properties } from 'app/common/models/properties';
+import { UserService } from '../../../core/services/user.service';
 
 declare var videojs, QuickSidebar,$: any;
 
@@ -145,7 +146,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   itemOfTags = [];
   isProcessed = true;
   
-  constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
+  constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
       public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public properties: Properties,public embedModalComponent:EmbedModalComponent) {
@@ -180,7 +181,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
       this.defaultSaveImagePath = this.saveVideoFile.imagePath;
       this.selectedImagePath = this.saveVideoFile.imagePath;
-      this.callAction = this.videoUtilService.setCalltoAction(this.callAction,this.authenticationService.user);
+      this.callAction = this.setCalltoAction(this.callAction);
       this.callAction.isFistNameChecked = this.saveVideoFile.name;
       this.callAction.isSkipChecked = this.saveVideoFile.skip;
       this.is360Value = this.value360 = this.saveVideoFile.is360video;
@@ -1434,4 +1435,23 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.p-video').remove();
       this.tempVideoFile = null;
   }
+  
+    setCalltoAction(callAction):CallAction{
+            let currentUser = new User(); 
+            this.userService.getFirstNameLastNameAndEmailIdByUserId(this.authenticationService.user.id)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            currentUser = response.data;
+                            callAction.email_id = currentUser.emailId;
+      						callAction.firstName = currentUser.firstName;
+      						callAction.lastName = currentUser.lastName;
+                        }                        
+                    },
+                    (error: any) => {
+                    },
+                    () => this.xtremandLogger.info('Finished getFirstNameLastNameAndEmailIdByUserId()')
+                );
+                return callAction;
+    }
 }
