@@ -487,5 +487,10 @@ export class UserService {
         
     }
     
+    getFirstNameLastNameAndEmailIdByUserId(userId: number) {
+        return this.http.get(this.URL + "getFirstNameLastNameAndEmailIdByUserId/"+userId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 }
