@@ -30,7 +30,7 @@ readDir(path.join(__dirname, '../xtremandApp'))
       let matchHash = mainBundleFile.match(mainBundleRegexp);
       // if it has a hash in it's name, mark it down
       if (matchHash.length > 1 && !!matchHash[1]) {
-        mainHash = matchHash[1];
+        mainHash = matchHash[1]+"_"+new Date().getTime();
       }
     }else{
     	console.error("No Main Bundle Hash");
