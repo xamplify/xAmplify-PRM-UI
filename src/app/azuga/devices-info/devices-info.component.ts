@@ -20,6 +20,7 @@ export class DevicesInfoComponent implements OnInit {
   reAssignDataLoader = false;
   selectedDeviceInfo:any;
   customResponse:CustomResponse = new CustomResponse();
+  validForm = true;
   constructor(public azugaService:AzugaService,public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public xtremandLogger:XtremandLogger,public properties:Properties) {
    }
@@ -45,6 +46,8 @@ export class DevicesInfoComponent implements OnInit {
 
   openReAssignModalPopUp(deviceInfo:any){
     this.selectedDeviceInfo = deviceInfo;
+    $('#fromCustomerId').val(1059);
+    $('#toCustomerId').val(2175);
     $('#reassign-data-modal-popup').modal('show');
   }
 
@@ -55,21 +58,36 @@ export class DevicesInfoComponent implements OnInit {
     this.selectedDeviceInfo = {};
   }
 
+  validateForm(inputId:string){
+    let value = $('#'+inputId).val();
+    return value!=undefined && value>0;
+  }
+
   transferData(){
+    this.referenceService.scrollToModalBodyTopByClass();
     this.customResponse = new CustomResponse();
-    this.reAssignDataLoader = true;
-    this.azugaService.moveDevicesData().subscribe(
-      response=>{
-        let statusCode = response.statusCode;
-        if(statusCode==200){
-          this.customResponse = new CustomResponse('SUCCESS',"Request to moving data is accepted and being is processed",true);
-        }else{
+    let validFromCustomerId = this.validateForm('fromCustomerId');
+    let validToCustomerId = this.validateForm('toCustomerId');
+    let validForm = validToCustomerId && validFromCustomerId;
+    if(validForm){
+      this.reAssignDataLoader = true;
+      this.azugaService.moveDevicesData().subscribe(
+        response=>{
+          let statusCode = response.statusCode;
+          if(statusCode==200){
+            this.hideReAssignDataModalPopUp();
+            this.referenceService.showSweetAlertSuccessMessage("Request to moving data is accepted and is being processed");
+          }else{
+            this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+          }
+          this.reAssignDataLoader = false;
+        },error=>{
           this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
         }
-        this.reAssignDataLoader = false;
-      },error=>{
-        this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
-      }
-    );
+      );
+    }else{
+      this.customResponse = new CustomResponse('ERROR',"Please Enter Valid Input",true);
+    }
+    
   }
 }
