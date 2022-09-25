@@ -18,4 +18,11 @@ export class AzugaService {
           .map(this.authenticationService.extractData)
           .catch(this.authenticationService.handleError);
   }
+
+  moveDevicesData(){
+    let url = this.AZUGA_PREFIX_URL+"/moveDevicesData"+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+    return this.http.get(url,"")
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
+  }
 }
