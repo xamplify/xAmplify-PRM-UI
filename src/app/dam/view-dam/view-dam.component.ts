@@ -29,6 +29,7 @@ export class ViewDamComponent implements OnInit {
   selectedAsset: any;
   selectedAssetId: any;
   download = false;
+  showDownload = true;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
     public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) { }
@@ -119,11 +120,13 @@ export class ViewDamComponent implements OnInit {
 			);
 	}
 	downloadContent(){
+	    this.showDownload = false;
 		this.download = true;
 	}
 
 	downloadAssetPopupEventEmitter(){
 		this.download =false;
+		this.showDownload = true;
 	}
 
 }

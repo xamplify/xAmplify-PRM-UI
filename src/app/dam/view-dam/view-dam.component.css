@@ -22,3 +22,5 @@
     max-height: 100%;
     max-width: 100%;
 }
+
+a.disabled{pointer-events:none;cursor:not-allowed}
