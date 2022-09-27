@@ -252,7 +252,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
 	goToManageDam() {
 		this.ngxloading = true;
-		this.referenceService.goToRouter("home/dam/manage");
+      if (this.isPartnerView) {
+      			this.referenceService.goToRouter("/home/dam/shared");
+          }else{		
+				this.referenceService.goToRouter("home/dam/manage");
+		}
 	}
 	
 	goToSelect(){
