@@ -57,22 +57,6 @@
 						</div>
 					</div>
 				</div>
-							<!-- // -->
-			       <!-- <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="!isPartnerView && (authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()
-			       || authenticationService.isMarketingPartner() || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember
-			       || authenticationService.isMarketingAndPartnerTeamMember)">
-                   <ul class="mix-filter">
-                      <li class="filter" (click)="listAssetsByType('myAssets')" [class.selectedtype]="videoFileService.videoType === 'myAssets'">
-                          My Assets
-                      </li>
-                      <li class="filter" (click)="listAssetsByType('partnerVideos')" [class.selectedtype]="videoFileService.videoType === 'partnerVideos'">
-                        Partner Assets
-                    </li>
-                    </ul>
-                  </div> -->
-			<!-- // -->
-				
-				
 			</div>
 			
 			<app-list-loader
@@ -88,9 +72,7 @@
 						aria-describedby="manageAssetTables">
 						<thead>
 							<tr>
-								<!-- <th colspan="2" style="width: 45%" id="border-bottom"><span
-									class="gridHeader" translate>Asset Details </span></th> -->
-									<th style="width:45%" translate>Asset Details</th>
+								<th style="width:45%" translate>Asset Details</th>
 								<th class="text-center" style="width: 5%;" scope="row" translate>Type</th>
 								<th class="text-center" style="width: 10%" scope="row" translate
 									*ngIf="isPartnerView">Published On</th>
@@ -117,6 +99,12 @@
 										title="{{asset?.assetName}}">
 										<span><strong>{{asset?.assetName | slice: 0: 23}}</strong></span>
 									</h4>
+									<!-- XNFR-169 -->
+									<h6 class="moreipsis">
+										<span translate> Folder <strong title="{{asset?.categoryName}}">{{asset?.categoryName | slice: 0: 23}}</strong>
+											<span *ngIf="asset?.categoryName?.length>23">..</span>
+										</span>
+									</h6>
 									<h6 class="moreipsis" title="{{asset?.displayName}}">
 										<span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
 										<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName | slice: 0: 23}}</strong></span>
@@ -151,7 +139,9 @@
 										</ng-container>
 									</h6>
 									<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
-									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</span>
+									
+									<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
+
 									</div>
 								</td>
 								<td class="text-center">{{asset?.assetType}}</td>
@@ -328,6 +318,12 @@
 							</h4>
 							<div>
 								<span class="view-banner-dam">{{asset?.assetType}}</span>
+								<!-- XNFR-169 -->
+								<h6 class="moreipsis">
+									<span translate> Folder <strong title="{{asset?.categoryName}}">{{asset?.categoryName | slice: 0: 23}}</strong>
+										<span *ngIf="asset?.categoryName?.length>23">..</span>
+									</span>
+								</h6>
 								<h6 translate>
 									<span *ngIf="isPartnerView">Published On</span> <span
 										*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
