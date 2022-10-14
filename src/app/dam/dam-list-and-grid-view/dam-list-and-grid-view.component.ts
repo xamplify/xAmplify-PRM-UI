@@ -69,6 +69,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     hasAllAccess = false;
     hasDamAccess = false;
 	@Output() newItemEvent  = new EventEmitter<any>();
+	@Input() folderListViewCategoryId=0;
 	/********XNFR-169******/
 	roles:Roles = new Roles();
 	categoryId = 0;

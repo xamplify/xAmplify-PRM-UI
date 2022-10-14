@@ -11,7 +11,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
-
+import { Roles } from 'app/core/models/roles';
 declare var $: any;
 @Component({
   selector: 'app-folder-type-view-util',
@@ -27,13 +27,16 @@ export class FolderTypeViewUtilComponent implements OnInit {
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
   categorySortOption: SortOption = new SortOption();
-  folderViewType = "Folder-Grid";
+  folderViewType = "";
+  roles:Roles = new Roles();
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
     public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.folderViewType = this.route.snapshot.params['viewType'];
+    alert(this.folderViewType);
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.findAllCategories(this.pagination);
   }
@@ -101,5 +104,21 @@ export class FolderTypeViewUtilComponent implements OnInit {
   setViewType(viewType:string){
     this.referenceService.goToManageDam(viewType);
   }
+
+  viewFolderItems(category:any,selectedIndex:number){
+    $.each(this.pagination.pagedItems, function (index:number, row:any) {
+        if (selectedIndex != index) {
+          row.expanded = false;
+        }
+      });
+      category.expanded = !category.expanded;  
+      $('.child-row-list-view').css("background-color", "#fff");          
+    if (category.expanded) {
+        //this.folderListViewInput['categoryId'] = category.id;
+        $('#folder-row-' + selectedIndex).css("background-color", "#d3d3d357");
+    } else {
+        $('#folder-row-' + selectedIndex).css("background-color", "#fff");
+    }
+}
 
 }
