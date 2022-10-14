@@ -2939,11 +2939,13 @@ export class ReferenceService {
     return categoryType;
   }
 
-  goToManageDam(viewType:string) {
-    this.router.navigate(["/home/dam/manage/"+viewType]);
+  goToManageAssets(viewType:string,isPartnerView:boolean) {
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+viewType]);
   }
 
-  goToManageDamByCategoryId(folderViewType:string,listViewType:string,categoryId:number) {
-    this.router.navigate(["/home/dam/manage/"+folderViewType+"/"+listViewType+"/"+categoryId]);
+  goToManageAssetsByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean) {
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+folderViewType+"/"+listViewType+"/"+categoryId]);
   }
 }

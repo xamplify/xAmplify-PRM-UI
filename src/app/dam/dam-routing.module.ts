@@ -15,6 +15,7 @@ export const routes: Routes = [
 	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	{ path: "shared", component: ManageDamComponent },
 	{ path: "shared/:viewType", component: ManageDamComponent },
+	{ path: "shared/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	{ path: "add", component: AddDamComponent },
 	{ path: "upload", component: UploadAssetComponent },
 	{ path: "editDetails/:id", component: UploadAssetComponent },

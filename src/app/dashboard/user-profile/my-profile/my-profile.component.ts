@@ -2265,6 +2265,12 @@ configSalesforce() {
 				this.router.navigate(['/home/pages/manage/' + categoryId]);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
+			}else if("Asset Library"==type){
+				this.router.navigate(['/home/dam/manage/fg/l/' + categoryId]);
+			}else if("Track Builder"==type){
+				this.router.navigate(['/home/dam/manage/fg/l/' + categoryId]);
+			}else if("Play Book"==type){
+				this.router.navigate(['/home/dam/manage/fg/l/' + categoryId]);
 			}
 		}
 

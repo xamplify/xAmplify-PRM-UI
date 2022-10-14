@@ -97,12 +97,12 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
-    this.referenceService.goToManageDamByCategoryId("fg","l",categoryId);
+    this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,false);
   }
 
   setViewType(viewType:string){
     if(this.folderViewType!=viewType){
-      this.referenceService.goToManageDam(viewType);
+      this.referenceService.goToManageAssets(viewType,false);
     }
   }
 
@@ -115,7 +115,6 @@ export class FolderTypeViewUtilComponent implements OnInit {
       category.expanded = !category.expanded;  
       $('.child-row-list-view').css("background-color", "#fff");          
     if (category.expanded) {
-        //this.folderListViewInput['categoryId'] = category.id;
         $('#folder-row-' + selectedIndex).css("background-color", "#d3d3d357");
     } else {
         $('#folder-row-' + selectedIndex).css("background-color", "#fff");

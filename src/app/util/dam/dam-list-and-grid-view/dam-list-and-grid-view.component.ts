@@ -136,30 +136,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/********XNFR-169******/
 	setViewType(viewType: string) {
 		if(this.viewType!=viewType){
-			if (this.isPartnerView) {
-				this.referenceService.goToRouter("/home/dam/shared/" + viewType);
+			if (this.folderListView) {
+				let gridView = "g" == viewType;
+				this.modulesDisplayType.isGridView = gridView;
+				this.modulesDisplayType.isListView = !gridView;
 			} else {
-				this.setViewTypeForVendorAdminCompanies(viewType);
-			}
-		}
-	}
-	/********XNFR-169******/
-	private setViewTypeForVendorAdminCompanies(viewType: string) {
-		if (this.folderListView) {
-			let gridView = "g" == viewType;
-			this.modulesDisplayType.isGridView = gridView;
-			this.modulesDisplayType.isListView = !gridView;
-		} else {
-			if (this.folderViewType != undefined && viewType != "fg") {
-				this.referenceService.goToManageDamByCategoryId("fg", viewType, this.categoryId);
-			} else {
-				this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+				if (this.folderViewType != undefined && viewType != "fg") {
+					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
+				} else {
+					this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+				}
 			}
 		}
 	}
 
 	startLoaders() {
-		this.loading = true;
 		this.referenceService.loading(this.listLoader, true);
 	}
 
@@ -349,7 +340,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listAssetsHistory(pagination: Pagination) {
 		pagination.companyId = this.loggedInUserCompanyId;
 		pagination.userId = this.loggedInUserId;
-		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
