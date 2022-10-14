@@ -11,10 +11,10 @@
                       <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('g')">
                           <i  class="fa fa-th-large p10" aria-hidden="true"></i>
                       </span>
-                      <span class="btn btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='fg'" (click)="folderViewType='fg';setViewType('fg')"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
+                      <span class="btn btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='fg'" (click)="setViewType('fg')"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
                           <i class="fa fa-folder p10"  aria-hidden="true"></i>
                       </span>
-                      <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='fl'"  (click)="folderViewType='fl';setViewType('fl')" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
+                      <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='fl'"  (click)="setViewType('fl')" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
                           <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
                       </span>
                   </ng-container>
@@ -86,7 +86,7 @@
   </div>
 
    <!-----------------------Folder List View----------------------------------------->
-   <div class="table-responsive" *ngIf="folderViewType=='fl'">
+   <div class="table-responsive overflow-x-hidden" *ngIf="folderViewType=='fl'">
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
     <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
         <thead>

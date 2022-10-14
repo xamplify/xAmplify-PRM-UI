@@ -1753,3 +1753,7 @@ strong {
   font-size: 13px !important;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+

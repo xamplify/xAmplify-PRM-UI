@@ -101,7 +101,9 @@ export class FolderTypeViewUtilComponent implements OnInit {
   }
 
   setViewType(viewType:string){
-    this.referenceService.goToManageDam(viewType);
+    if(this.folderViewType!=viewType){
+      this.referenceService.goToManageDam(viewType);
+    }
   }
 
   viewFolderItems(category:any,selectedIndex:number){

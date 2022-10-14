@@ -135,10 +135,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/********XNFR-169******/
 	setViewType(viewType: string) {
-		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/shared/" + viewType);
-		} else {
-			this.setViewTypeForVendorAdminCompanies(viewType);
+		if(this.viewType!=viewType){
+			if (this.isPartnerView) {
+				this.referenceService.goToRouter("/home/dam/shared/" + viewType);
+			} else {
+				this.setViewTypeForVendorAdminCompanies(viewType);
+			}
 		}
 	}
 	/********XNFR-169******/
@@ -211,7 +213,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.loading(this.listLoader, false);
 	}
 	listAssets(pagination: Pagination) {
-		this.referenceService.goToTop();
+		if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
 		this.startLoaders();
 		pagination.categoryId = this.categoryId;
 		this.damService.list(pagination).subscribe((result: any) => {
