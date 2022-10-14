@@ -71,6 +71,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	@Output() newItemEvent  = new EventEmitter<any>();
 	/********XNFR-169******/
 	roles:Roles = new Roles();
+	categoryId = 0;
+	showUpArrowButton = false;
+	folderViewType = "";
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -96,13 +99,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
 		this.viewType = this.route.snapshot.params['viewType'];
+		this.categoryId = this.route.snapshot.params['categoryId'];
+		this.folderViewType = this.route.snapshot.params['folderViewType'];
+		this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-			if (this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView) {
-				this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, 'l');
-			}
 		}
 		if (this.referenceService.isCreated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
@@ -127,7 +130,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.isPartnerView) {
 			this.referenceService.goToRouter("/home/dam/shared/" + viewType);
 		} else {
-			this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+			if(this.folderViewType!=undefined && viewType!="fg"){
+				this.referenceService.goToManageDamByCategoryId("fg",viewType,this.categoryId);
+			}else{
+				this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+			}
+			
 		}
 
 	}
@@ -163,7 +171,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.pagination.userId = this.loggedInUserId;
-							//this.pagination.type = this.videoFileService.videoType;
 							this.listAssets(this.pagination);
 						}
 					}
@@ -190,6 +197,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listAssets(pagination: Pagination) {
 		this.referenceService.goToTop();
 		this.startLoaders();
+		pagination.categoryId = this.categoryId;
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;

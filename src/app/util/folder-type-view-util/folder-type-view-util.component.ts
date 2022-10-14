@@ -10,7 +10,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
-import { Roles } from 'app/core/models/roles';
+import { ModulesDisplayType } from '../models/modules-display-type';
 
 declare var $: any;
 @Component({
@@ -22,6 +22,7 @@ declare var $: any;
 export class FolderTypeViewUtilComponent implements OnInit {
 
   @Input() moduleId:number;
+  @Input()modulesDisplayType:ModulesDisplayType;
   @Output() folderViewTypeEventEmitter = new EventEmitter();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   customResponse:CustomResponse = new CustomResponse();
@@ -94,7 +95,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
-    alert("Clicked");
+    this.referenceService.goToManageDamByCategoryId("fg","l",categoryId);
   }
 
   setViewType(viewType:string){

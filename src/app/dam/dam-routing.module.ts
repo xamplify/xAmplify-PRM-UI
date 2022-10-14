@@ -12,6 +12,7 @@ import { ViewDamComponent } from './view-dam/view-dam.component';
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
 	{ path: "manage/:viewType", component: ManageDamComponent },
+	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	{ path: "shared", component: ManageDamComponent },
 	{ path: "shared/:viewType", component: ManageDamComponent },
 	{ path: "add", component: AddDamComponent },

@@ -2514,6 +2514,12 @@ export class ReferenceService {
       modulesDisplayType.isFolderGridView = true;
       modulesDisplayType.isFolderListView = false;
     }
+    else if("fl"==viewType){
+      modulesDisplayType.isListView = false;
+      modulesDisplayType.isGridView = false;
+      modulesDisplayType.isFolderGridView = false;
+      modulesDisplayType.isFolderListView = true;
+    }
     return modulesDisplayType;
   }
 
@@ -2935,5 +2941,9 @@ export class ReferenceService {
 
   goToManageDam(viewType:string) {
     this.router.navigate(["/home/dam/manage/"+viewType]);
+  }
+
+  goToManageDamByCategoryId(folderViewType:string,listViewType:string,categoryId:number) {
+    this.router.navigate(["/home/dam/manage/"+folderViewType+"/"+listViewType+"/"+categoryId]);
   }
 }

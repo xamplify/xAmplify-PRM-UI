@@ -4,4 +4,5 @@ export class ModulesDisplayType {
 	isFolderListView = false;
 	isFolderGridView = false;
 	defaultDisplayType = "LIST";
+	
 }
