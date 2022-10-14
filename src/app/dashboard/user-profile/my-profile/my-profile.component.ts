@@ -2243,7 +2243,6 @@ configSalesforce() {
 					this.categoryPreviewItem.items = response.data;
 					this.categoryPreviewItem.categoryId = category.id;
 					this.categoryPreviewItem.categoryName = category.name;
-					console.log(this.categoryPreviewItem);
 					this.referenceService.stopLoader(this.folderPreviewLoader);
 				},
 				(error: string) => {
