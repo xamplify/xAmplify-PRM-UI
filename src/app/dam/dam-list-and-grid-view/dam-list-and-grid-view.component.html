@@ -415,9 +415,7 @@
 
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView">
-
-				<p>This is Folder List View</p>
-				<app-category-folder-view-util ></app-category-folder-view-util>
+				<app-folder-type-view-util [moduleId]="roles.damId"></app-folder-type-view-util>
 			</div>
 
 

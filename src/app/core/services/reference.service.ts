@@ -15,7 +15,6 @@ import { Timezone } from "../../core/models/timezone";
 import { Ng2DeviceService } from "ng2-device-detector";
 import { EmailTemplate } from "../../email-template/models/email-template";
 import { Campaign } from "../../campaigns/models/campaign";
-import { environment } from "environments/environment";
 import { CampaignAccess } from "app/campaigns/models/campaign-access";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "../../common/models/custom-response";
@@ -23,6 +22,7 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
+
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
@@ -2922,5 +2922,18 @@ export class ReferenceService {
     setTimeout(function(){
       $("#"+divId).animate({ scrollTop: $('#'+divId).prop("scrollHeight")}, 1000);
   },250); 
+  }
+
+  /*******XNFR-169*******/
+  getCategoryType(moduleId:number){
+    let categoryType = "";
+    if(this.roles.damId==moduleId){
+      categoryType = "DAM";
+    }
+    return categoryType;
+  }
+
+  goToManageDam(viewType:string) {
+    this.router.navigate(["/home/dam/manage/"+viewType]);
   }
 }

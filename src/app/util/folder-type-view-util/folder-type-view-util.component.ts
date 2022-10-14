@@ -1,15 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Router,ActivatedRoute } from '@angular/router';
+import { SortOption } from '../../core/models/sort-option';
+import { PagerService } from '../../core/services/pager.service';
+import { ReferenceService } from '../../core/services/reference.service';
+import { UserService } from '../../core/services/user.service';
+import { Pagination } from '../../core/models/pagination';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CustomResponse } from '../../common/models/custom-response';
+import { UtilService } from 'app/core/services/util.service';
+import { Roles } from 'app/core/models/roles';
 
+declare var $: any;
 @Component({
   selector: 'app-folder-type-view-util',
   templateUrl: './folder-type-view-util.component.html',
-  styleUrls: ['./folder-type-view-util.component.css']
+  styleUrls: ['./folder-type-view-util.component.css'],
+  providers: [Pagination, HttpRequestLoader, SortOption]
 })
 export class FolderTypeViewUtilComponent implements OnInit {
 
-  constructor() { }
+  @Input() moduleId:number;
+  @Output() folderViewTypeEventEmitter = new EventEmitter();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  customResponse:CustomResponse = new CustomResponse();
+  categorySortOption: SortOption = new SortOption();
+  folderViewType = "Folder-Grid";
+  constructor(private router: Router,
+    private pagerService: PagerService, public referenceService: ReferenceService,
+    public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
+    public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+    this.findAllCategories(this.pagination);
+  }
+
+  findAllCategories(pagination:Pagination){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    pagination.companyId = this.referenceService.companyId;
+    pagination.userId = this.authenticationService.getUserId();
+    this.authenticationService.setVanityUrlFilter(pagination);
+    this.userService.getCategories(this.pagination)
+            .subscribe(
+                response => {
+                    this.customResponse = new CustomResponse();
+                    const data = response.data;
+                    pagination.totalRecords = data.totalRecords;
+                    this.categorySortOption.totalRecords = data.totalRecords;
+                    $.each(data.categories, function (_index: number, category: any) {
+                        category.displayTime = new Date(category.createdTimeInString);
+                    });
+                    pagination = this.pagerService.getPagedItems(pagination, data.categories);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.logger.errorPage(error);
+                });
+  }
+
+  /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+      this.categorySortOption.formsSortOption = text;
+      this.getAllCategoryFilteredResults(this.pagination);
+  }
+
+
+  /*************************Search********************** */
+  searchCategories() {
+      this.getAllCategoryFilteredResults(this.pagination);
+  }
+
+  paginationDropdown(items: any) {
+      this.categorySortOption.itemsSize = items;
+      this.getAllCategoryFilteredResults(this.pagination);
+  }
+
+  /************Page************** */
+  setPage(event: any) {
+      this.pagination.pageIndex = event.page;
+      this.findAllCategories(this.pagination);
+  }
+
+  getAllCategoryFilteredResults(pagination: Pagination) {
+      pagination.pageIndex = 1;
+      pagination.searchKey = this.categorySortOption.searchKey;
+      pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, pagination);
+      this.findAllCategories(pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
+
+  viewItemsByCategoryId(categoryId:number) {
+    alert("Clicked");
+  }
+
+  setViewType(viewType:string){
+    this.referenceService.goToManageDam(viewType);
   }
 
 }

@@ -22,4 +22,5 @@ export class Roles {
 
   /*****************RoleIds********/
   emailTemplateId = 7;
+  damId = 22;
 }
