@@ -262,7 +262,7 @@
 							<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor box-shadow mHeight">
 									<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
-										alt="{{asset?.assetName}}">
+										alt="Image Not Found">
 									<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>

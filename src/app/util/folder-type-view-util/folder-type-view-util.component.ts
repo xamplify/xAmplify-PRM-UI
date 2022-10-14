@@ -29,10 +29,14 @@ export class FolderTypeViewUtilComponent implements OnInit {
   categorySortOption: SortOption = new SortOption();
   folderViewType = "";
   roles:Roles = new Roles();
+  isPartnerView = false;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-    public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { }
+    public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { 
+      this.isPartnerView = this.router.url.indexOf("dam/shared")>-1; 
+
+    }
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
@@ -43,6 +47,10 @@ export class FolderTypeViewUtilComponent implements OnInit {
   findAllCategories(pagination:Pagination){
     this.referenceService.startLoader(this.httpRequestLoader);
     pagination.companyId = this.referenceService.companyId;
+    if(this.isPartnerView){
+      pagination.partnerCompanyId = pagination.companyId;
+      pagination.partnerView  = this.isPartnerView;
+    }
     pagination.userId = this.authenticationService.getUserId();
     this.authenticationService.setVanityUrlFilter(pagination);
     this.userService.getCategories(this.pagination)
@@ -97,12 +105,12 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
-    this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,false);
+    this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
   }
 
   setViewType(viewType:string){
     if(this.folderViewType!=viewType){
-      this.referenceService.goToManageAssets(viewType,false);
+      this.referenceService.goToManageAssets(viewType,this.isPartnerView);
     }
   }
 
