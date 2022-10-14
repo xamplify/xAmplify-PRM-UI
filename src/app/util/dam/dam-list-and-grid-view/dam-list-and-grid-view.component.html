@@ -444,6 +444,7 @@
 	</app-delete-assets>
 </ng-container>
 
+<!--Page Bar Option-->
 <ng-template #damHeaderOptions>
 	<div class="portlet-title mb10">
 		<div class="row">
@@ -455,7 +456,7 @@
 							<span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
 								<i class="fa fa-th-large p10" aria-hidden="true"></i>
 							</span>
-							 <ng-container *ngIf="!showUpArrowButton">
+							 <ng-container *ngIf="!showUpArrowButton && !folderListView">
 								<span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"  (click)="setViewType('fg')">
 									<i  class="fa fa-folder p10" aria-hidden="true"></i>
 								</span>

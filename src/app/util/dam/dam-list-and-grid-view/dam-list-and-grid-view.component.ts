@@ -1,28 +1,28 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { DamService } from '../services/dam.service';
+import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
 /*****Common Imports**********************/
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
-import { SortOption } from '../../core/models/sort-option';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { UtilService } from '../../core/services/util.service';
+import { SortOption } from 'app/core/models/sort-option';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { UtilService } from 'app/core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
-import { Properties } from '../../common/models/properties';
+import { Properties } from 'app/common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
+import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { VanityLoginDto } from '../../util/models/vanity-login-dto';
-import { SaveVideoFile } from '../../videos/models/save-video-file';
-import { VideoFileService } from '../../videos/services/video-file.service';
-import { UserService } from '../../core/services/user.service';
-import { VideoUtilService } from '../../videos/services/video-util.service';
-import { ActionsDescription } from '../../common/models/actions-description';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { UserService } from 'app/core/services/user.service';
+import { VideoUtilService } from 'app/videos/services/video-util.service';
+import { ActionsDescription } from 'app/common/models/actions-description';
 import { Roles } from 'app/core/models/roles';
 declare var $, swal: any;
 @Component({
@@ -65,24 +65,25 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	showPdfModalPopup: boolean;
 	deleteAsset = false;
 	hasVideoRole = false;
-    hasCampaignRole = false;
-    hasAllAccess = false;
-    hasDamAccess = false;
+	hasCampaignRole = false;
+	hasAllAccess = false;
+	hasDamAccess = false;
 	@Output() newItemEvent  = new EventEmitter<any>();
-	@Input() folderListViewCategoryId=0;
 	/********XNFR-169******/
 	roles:Roles = new Roles();
 	categoryId = 0;
 	showUpArrowButton = false;
 	folderViewType = "";
+	@Input() folderListViewCategoryId;
+	folderListView = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
-		this.loggedInUserId = this.authenticationService.getUserId();
-		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-			this.vanityLoginDto.userId = this.loggedInUserId;
-			this.vanityLoginDto.vanityUrlFilter = true;
-		}
+      this.loggedInUserId = this.authenticationService.getUserId();
+      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this.vanityLoginDto.userId = this.loggedInUserId;
+        this.vanityLoginDto.vanityUrlFilter = true;
+      }
 	}
 
 	ngOnInit() {
@@ -91,18 +92,23 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	callInitMethods() {
-		localStorage.removeItem('campaignReport');
-        localStorage.removeItem('saveVideoFile');
-        localStorage.removeItem('assetName');
-		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
-        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-        this.hasAllAccess = this.referenceService.hasAllAccess();
+	localStorage.removeItem('campaignReport');
+    localStorage.removeItem('saveVideoFile');
+    localStorage.removeItem('assetName');
+	this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
+    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+    this.hasAllAccess = this.referenceService.hasAllAccess();
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
-		this.viewType = this.route.snapshot.params['viewType'];
-		this.categoryId = this.route.snapshot.params['categoryId'];
-		this.folderViewType = this.route.snapshot.params['folderViewType'];
-		this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+		if(this.folderListViewCategoryId!=undefined){
+			this.categoryId = this.folderListViewCategoryId;
+			this.folderListView = true;
+		}else{
+			this.viewType = this.route.snapshot.params['viewType'];
+			this.categoryId = this.route.snapshot.params['categoryId'];
+			this.folderViewType = this.route.snapshot.params['folderViewType'];
+			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+		}
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {

@@ -135,7 +135,7 @@
                     <td colspan="5">
                         <ng-container *ngIf="category.expanded">
                             <ng-container *ngIf="moduleId==roles.damId">
-                               <p>This is Dam</p>
+                               <app-dam-list-and-grid-view [folderListViewCategoryId]="category.id"></app-dam-list-and-grid-view>
                             </ng-container>
                         </ng-container>
                     </td>
