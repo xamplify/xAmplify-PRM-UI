@@ -2508,6 +2508,11 @@ export class ReferenceService {
       modulesDisplayType.isGridView = true;
       modulesDisplayType.isFolderGridView = false;
       modulesDisplayType.isFolderListView = false;
+    }else if("fg"==viewType){
+      modulesDisplayType.isListView = false;
+      modulesDisplayType.isGridView = false;
+      modulesDisplayType.isFolderGridView = true;
+      modulesDisplayType.isFolderListView = false;
     }
     return modulesDisplayType;
   }

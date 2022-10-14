@@ -78,7 +78,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
-		//this.videoFileService.videoType ='myAssets';
 	}
 
 	ngOnInit() {
@@ -98,6 +97,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.viewType = this.route.snapshot.params['viewType'];
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
+			alert(this.viewType);
 		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 			if (this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView) {
@@ -615,10 +615,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     }
 
     showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {
-        // this.manageVideos = manageVideos;
-        
-       // this.playVideo = playVideo;
-        //this.campaignReport = campaignReport;
         this.newItemEvent.emit(false);
     }
 
@@ -653,7 +649,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.pagination.type = videoType;
-        //this.videoFileService.videoType =videoType;
         this.pagination.userId = this.loggedInUserId;
         this.sortOption.searchKey = null;
         this.pagination.searchKey = this.sortOption.searchKey;
@@ -670,7 +665,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 //this.referenceService.videoType =  this.videoFileService.videoType;
                  this.router.navigateByUrl('/home/campaigns/create');
                  }else{
                      this.authenticationService.forceToLogout();
