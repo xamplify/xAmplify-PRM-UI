@@ -58,6 +58,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
  categoryNames: any;
  filteredCategoryNames: any;
  showFolderDropDown = false;
+ selectedCategoryId = 0;
   constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient, public userService: UserService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -125,6 +126,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.damPostDto.tagIds = dam.tagIds;
           }
           this.damPostDto.categoryId = dam.categoryId;
+          this.selectedCategoryId = dam.categoryId;
         } else {
           this.goToManageSectionWithError();
         }
@@ -205,25 +207,31 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
   
   saveOrUpdate(saveAs:boolean) {
-    this.getCkEditorData();
-    this.nameErrorMessage = "";
     this.customResponse = new CustomResponse();
-    this.modalPopupLoader = true;
-    this.damPostDto.createdBy = this.loggedInUserId;
-    if (this.isPartnerView) {
-      this.updatePublishedAsset();
-    } else {
-      if (!this.isAdd && !saveAs) {
-        this.damPostDto.id = this.assetId;
-      }
-      this.damService.save(this.damPostDto).subscribe((result: any) => {
-        this.hidePopup();
-        this.referenceService.isCreated = true;
-        this.referenceService.goToRouter("/home/dam/manage");
-        this.modalPopupLoader = false;
-      }, error => {
-        this.showErrorMessageOnSaveOrUpdate(error);
-      });
+    if(!saveAs && this.selectedCategoryId!=this.damPostDto.categoryId){
+      this.referenceService.scrollToModalBodyTopByClass();
+      this.customResponse = new CustomResponse('ERROR','Folder cannot be changed for history templates',true);
+    }else{
+      this.getCkEditorData();
+      this.nameErrorMessage = "";
+      this.modalPopupLoader = true;
+      this.damPostDto.createdBy = this.loggedInUserId;
+      if (this.isPartnerView) {
+        this.updatePublishedAsset();
+      } else {
+        if (!this.isAdd && !saveAs) {
+          this.damPostDto.id = this.assetId;
+        }
+        this.damService.save(this.damPostDto).subscribe((result: any) => {
+          this.hidePopup();
+          this.referenceService.isCreated = true;
+          this.referenceService.goToRouter("/home/dam/manage");
+          this.modalPopupLoader = false;
+        }, error => {
+          this.showErrorMessageOnSaveOrUpdate(error);
+        });
+    }
+    
     }
 
 
