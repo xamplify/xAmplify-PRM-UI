@@ -92,12 +92,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	callInitMethods() {
-	localStorage.removeItem('campaignReport');
-    localStorage.removeItem('saveVideoFile');
-    localStorage.removeItem('assetName');
-	this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
-    this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-    this.hasAllAccess = this.referenceService.hasAllAccess();
+		localStorage.removeItem('campaignReport');
+		localStorage.removeItem('saveVideoFile');
+		localStorage.removeItem('assetName');
+		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
+		this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+		this.hasAllAccess = this.referenceService.hasAllAccess();
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
 		if(this.folderListViewCategoryId!=undefined){
@@ -113,6 +113,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
 			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+			if(this.modulesDisplayType.isFolderListView){
+				this.referenceService.goToManageAssets("fl",this.isPartnerView);
+			}else if(this.modulesDisplayType.isFolderGridView){
+				this.referenceService.goToManageAssets("fg",this.isPartnerView);
+			}
 		}
 		if (this.referenceService.isCreated) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
