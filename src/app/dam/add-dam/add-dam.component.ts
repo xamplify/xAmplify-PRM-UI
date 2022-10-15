@@ -54,7 +54,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
 	@ViewChild("ckeditor") ckeditor: any;
   isCkeditorLoaded: boolean = false;
   descriptionErrorMessage: string;
-
+ /***XNFR-169*****/
+ categoryNames: any;
+ filteredCategoryNames: any;
+ showFolderDropDown = false;
   constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient, public userService: UserService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -69,6 +72,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.isAdd = false;
         this.modalTitle = "Update Details";
         this.saveOrUpdateButtonText = "Update";
+        this.listCategories();
         this.getById();
       } else {
         this.goToManageSectionWithError();
@@ -77,6 +81,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.isAdd = true;
       this.modalTitle = "Add Details";
       this.saveOrUpdateButtonText = "Save";
+      this.listCategories();
       this.httpClient.get("assets/config-files/bee-default-asset.json").subscribe(data => {
         this.jsonBody = JSON.stringify(data);
         this.beeContainerInput['jsonBody'] = this.jsonBody;
@@ -346,6 +351,25 @@ getCkEditorData() {
     this.damPostDto.description = CKEDITOR.instances[instanceName].getData();
   }
   }
+}
+
+/*****************List Categories*******************/
+listCategories() {
+  this.ngxloading = true;
+  this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+    (data: any) => {
+      this.categoryNames = data.data;
+      this.filteredCategoryNames = this.categoryNames;
+      this.ngxloading = false;
+      this.showFolderDropDown = true;
+    },
+    error => {
+      this.ngxloading = false;
+      this.showFolderDropDown = true;
+    });
+}
+getSelectedCategoryId(categoryId:number){
+    this.damPostDto.categoryId = categoryId;
 }
 
 }

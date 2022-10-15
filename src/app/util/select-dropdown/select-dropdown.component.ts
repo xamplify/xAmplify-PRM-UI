@@ -17,13 +17,8 @@ export class SelectDropdownComponent implements OnInit {
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
-    if(this.defaultOption!=""){
-
-    }else{
-      let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
-      this.defaultOption = names[0];
-    }
-    
+    let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
+    this.defaultOption = names[0];
   }
 
   filterDropDownData(inputElement: any) {
