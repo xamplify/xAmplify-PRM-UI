@@ -208,9 +208,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
   
   saveOrUpdate(saveAs:boolean) {
     this.customResponse = new CustomResponse();
-    if(!saveAs && this.selectedCategoryId!=this.damPostDto.categoryId){
+    if(!saveAs && this.selectedCategoryId!=this.damPostDto.categoryId && !this.isAdd){
       this.referenceService.scrollToModalBodyTopByClass();
-      this.customResponse = new CustomResponse('ERROR','Folder cannot be changed for history templates',true);
+      this.customResponse = new CustomResponse('ERROR','Folder name cannot be changed for history templates',true);
     }else{
       this.getCkEditorData();
       this.nameErrorMessage = "";
