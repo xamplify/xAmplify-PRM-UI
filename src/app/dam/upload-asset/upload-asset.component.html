@@ -205,7 +205,7 @@
                                 <span class="required">*</span>
                               </label>
                               <div class="col-sm-10" *ngIf="showFolderDropDown">
-                                <app-select-dropdown  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+                                <app-select-dropdown [categoryId]="damUploadPostDto.categoryId"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
                               </div>
                             </div>
                           </div>

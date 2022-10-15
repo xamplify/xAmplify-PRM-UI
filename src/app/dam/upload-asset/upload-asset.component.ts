@@ -105,7 +105,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isVideoAsset : boolean = false;
     /***XNFR-169*****/
     categoryNames: any;
-    filteredCategoryNames: any;
     showFolderDropDown = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -427,9 +426,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.referenceService.goToTop();
         this.clearErrors();
         this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-        console.log(this.damUploadPostDto);
         this.isDisableForm = true;
-        
         if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
             swal({
                 text: 'Thanks for waiting while we retrieve your video from '+this.damUploadPostDto.source,
@@ -611,7 +608,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     } else {
       this.damUploadPostDto.tagIds.splice(index, 1);
     }
-    console.log(this.damUploadPostDto.tagIds)
   }
 
   addTag() {
@@ -674,7 +670,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           this.handleAuthResult.bind(this));
   }
   handleAuthResult(authResult: any) {
-      console.log('close window google drive');
       const self = this;
       if (authResult && !authResult.error) {
           this.tempr = authResult.access_token;
@@ -725,7 +720,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           const self = this;
           const options = {
               success: function(files: any) {
-                  console.log(files[0].name);
                   self.setCloudContentValues(files[0].name, files[0].link);
               },
               cancel: function() {
@@ -938,7 +932,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
                 self.stop();
                 self.rageDisabled = false;
-                console.log('finished recording: ', self.player.recordedData);
                 self.recordedVideo = self.player.recordedData;
             });
         }
@@ -964,7 +957,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.closeModalId = false;
            this.textAreaDisable = false; // not using ,need to check
            this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
-           console.log(this.recordedVideo);
            this.formData.delete("uploadedFile");
            this.uploadedAssetName  = "";
            this.uploadedCloudAssetName = "";
@@ -1071,7 +1063,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
       (data: any) => {
         this.categoryNames = data.data;
-        this.filteredCategoryNames = this.categoryNames;
         this.loading = false;
         this.showFolderDropDown = true;
       },
