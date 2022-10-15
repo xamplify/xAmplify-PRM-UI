@@ -124,6 +124,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
           } else {
             this.damPostDto.tagIds = dam.tagIds;
           }
+          this.damPostDto.categoryId = dam.categoryId;
         } else {
           this.goToManageSectionWithError();
         }
@@ -273,7 +274,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
  listTags(pagination: Pagination) {
   pagination.userId = this.loggedInUserId;
   pagination.maxResults = 0;
-  let self = this;
   this.referenceService.startLoader(this.tagsLoader);
   this.userService.getTagsSearchTagName(pagination)
     .subscribe(
@@ -321,7 +321,6 @@ updateSelectedTags(tag: Tag, checked: boolean) {
   } else {
     this.damPostDto.tagIds.splice(index, 1);
   }
-  console.log(this.damPostDto.tagIds)
 }
 
 addTag() {
@@ -359,7 +358,10 @@ listCategories() {
   this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
     (data: any) => {
       this.categoryNames = data.data;
-      this.filteredCategoryNames = this.categoryNames;
+      if(this.isAdd){
+        let category = this.categoryNames[0];
+        this.damPostDto.categoryId = category['id'];
+    }
       this.ngxloading = false;
       this.showFolderDropDown = true;
     },

@@ -1063,6 +1063,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
       (data: any) => {
         this.categoryNames = data.data;
+        if(this.isAdd){
+            let category = this.categoryNames[0];
+            this.damUploadPostDto.categoryId = category['id'];
+        }
         this.loading = false;
         this.showFolderDropDown = true;
       },
