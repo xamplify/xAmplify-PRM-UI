@@ -78,12 +78,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	folderListView = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.vanityLoginDto.userId = this.loggedInUserId;
-        this.vanityLoginDto.vanityUrlFilter = true;
-      }
+		this.loggedInUserId = this.authenticationService.getUserId();
+		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+			this.vanityLoginDto.userId = this.loggedInUserId;
+			this.vanityLoginDto.vanityUrlFilter = true;
+		}
 	}
 
 	ngOnInit() {
@@ -244,8 +244,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	listPublishedAssets(pagination: Pagination) {
-		this.referenceService.goToTop();
+		if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
 		this.startLoaders();
+		pagination.categoryId = this.categoryId;
 		this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;

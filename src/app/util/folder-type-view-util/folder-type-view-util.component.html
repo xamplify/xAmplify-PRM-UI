@@ -20,8 +20,8 @@
                   </ng-container>
                   <div class="inputs float-right custom-flex">
                       <div id="left">
-                          <select class="form-control" [(ngModel)]="categorySortOption.selectedCategoryDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                              <option *ngFor="let option of categorySortOption.categorySortDropDownOptions"
+                          <select class="form-control" [(ngModel)]="categorySortOption.selectedTeamMemberGroupSortDropDown" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                              <option *ngFor="let option of categorySortOption.teamMemberGroupDropDownOptions"
                                   [ngValue]="option">
                                   {{option.name}}</option>
                           </select>

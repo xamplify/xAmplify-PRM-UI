@@ -99,7 +99,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   getAllCategoryFilteredResults(pagination: Pagination) {
       pagination.pageIndex = 1;
       pagination.searchKey = this.categorySortOption.searchKey;
-      pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, pagination);
+      pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedTeamMemberGroupSortDropDown, pagination);
       this.findAllCategories(pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
