@@ -112,11 +112,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
-			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-			if(this.modulesDisplayType.isFolderListView){
-				this.referenceService.goToManageAssets("fl",this.isPartnerView);
-			}else if(this.modulesDisplayType.isFolderGridView){
-				this.referenceService.goToManageAssets("fg",this.isPartnerView);
+			if(this.categoryId==undefined || this.categoryId==0){
+				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+				if(this.modulesDisplayType.isFolderListView){
+					this.referenceService.goToManageAssets("fl",this.isPartnerView);
+				}else if(this.modulesDisplayType.isFolderGridView){
+					this.referenceService.goToManageAssets("fg",this.isPartnerView);
+				}
 			}
 		}
 		if (this.referenceService.isCreated) {
