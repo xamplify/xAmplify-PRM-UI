@@ -116,7 +116,6 @@
                         <div class="mb-padding" *ngIf="isAdd">
                           <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
                                 class="required">*</span></strong></span>
-<!-- // -->
 <div class="row">
       
   <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
@@ -164,7 +163,6 @@
 						 onMouseOut="this.style.opacity= 0.7">
 						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px" translate>GoogleDrive</div>
           </div>
-          <!-- <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6> -->
                               <span *ngIf="uploadedCloudAssetName?.length>0">
                                 <strong>File Name : {{uploadedCloudAssetName | slice: 0: 23}}</strong>
                               </span>
@@ -197,6 +195,17 @@
                                 <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"
                                   [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
                                 <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <!---XNFR-169-->
+                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" translate>Folder
+                                <span class="required">*</span>
+                              </label>
+                              <div class="col-sm-10">
+                                <app-select-dropdown [(ngModel)]="damUploadPostDto.categoryId" *ngIf="showFolderDropDown" [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
                               </div>
                             </div>
                           </div>

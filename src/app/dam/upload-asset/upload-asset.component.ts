@@ -98,19 +98,18 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     processing : boolean = false;
     videoPreviewPath: SafeUrl;
     showVideoPreview : boolean = false;
-   // inputVideofile : File = null;
     fileSize : number = 0;
     progress: number = 0;
     isDisable: boolean = false;
     isDisableForm: boolean = false;
     isVideoAsset : boolean = false;
-    	
+    /***XNFR-169*****/
+    categoryNames: any;
+    filteredCategoryNames: any;
+    showFolderDropDown = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
-		
-		//this.isChecked = false;
-       // this.isDisable = false;
         this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -119,11 +118,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.testSpeedshow = true;
         this.testSpeeddisabled = true;
         this.hideSaveDiscard = true;
-        //this.isFileProgress = false;
         this.textAreaDisable = true;
         this.maxTimeDuration = 3400; // record video time
-        //this.maxVideoSize = 800; // upload video size in MB's
-        
 		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
 		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
 		 $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
@@ -154,6 +150,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.listTags(new Pagination());
+        /****XNFR-169*****/
+        this.listCategories();
 	}
 
 	ngOnDestroy(): void {
@@ -226,10 +224,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	            this.uploadedCloudAssetName = "";
 	            this.damUploadPostDto.source = "";
 	            this.customResponse = new CustomResponse();
-				//
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
-				//this.damUploadPostDto = new DamUploadPostDto();
 				this.damUploadPostDto.cloudContent = false;
 				this.damUploadPostDto.fileName = this.uploadedAssetName;
 	            this.damUploadPostDto.downloadLink = null;
@@ -1070,6 +1066,23 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            $('#uploadedAsset').val("");
            this.validateAllFields();
        }
-  
+
+/*****************List Categories*******************/
+  listCategories() {
+    this.loading = true;
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+      (data: any) => {
+        this.categoryNames = data.data;
+        this.filteredCategoryNames = this.categoryNames;
+        this.loading = false;
+        this.showFolderDropDown = true;
+      },
+      error => {
+        this.loading = false;
+        this.showFolderDropDown = true;
+      });
+  }
+  getSelectedCategoryId(categoryId:number){
+      this.damUploadPostDto.categoryId = categoryId;
+  }
 }
-;
