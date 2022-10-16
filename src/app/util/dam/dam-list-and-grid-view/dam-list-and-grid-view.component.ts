@@ -114,10 +114,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
 				if(this.modulesDisplayType.isFolderListView){
-					this.referenceService.goToManageAssets("fl",this.isPartnerView);
+					this.viewType = "fl";
+					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
 				}else if(this.modulesDisplayType.isFolderGridView){
-					this.referenceService.goToManageAssets("fg",this.isPartnerView);
+					this.viewType = "fg";
+					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
 				}
 			}
 		}
@@ -325,7 +328,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
-			//this.pagination.type = this.videoFileService.videoType;
 			this.listAssets(this.pagination);
 		}
 
@@ -436,9 +438,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         } else {
             if (this.isPartnerView) {
                 this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-
             } else {
-                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+				if(this.categoryId>0){
+					if(this.folderListViewCategoryId!=undefined){
+						this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType);
+					}else{
+						this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType+"/"+this.categoryId+"/"+this.folderViewType);
+					}
+				}else{
+					this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType);
+				}
             }
         }
     }

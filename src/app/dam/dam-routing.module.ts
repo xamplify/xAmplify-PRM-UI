@@ -23,6 +23,8 @@ export const routes: Routes = [
 	{ path: "editp/:id", component: AddDamComponent },
 	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: "partnerAnalytics/:damId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
+	{ path: "partnerAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },
 	{path:"select",component:SelectUploadTypeComponent},
 	{path:"history/:assetId",component:ShowHistoryComponent},

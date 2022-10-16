@@ -35,11 +35,17 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   statusCode = 200;
   selectedVideo: SaveVideoFile;
   campaignReport : boolean = false;
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
- private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
- private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
+              private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
+              public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.viewType = this.route.snapshot.params['viewType'];
+		this.categoryId = this.route.snapshot.params['categoryId'];
+		this.folderViewType = this.route.snapshot.params['folderViewType'];
   }
 
   ngOnInit() {
@@ -158,7 +164,12 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   goBack() {
     this.loading = true;
-    this.referenceService.goToRouter("/home/dam/manage");
+    if(this.categoryId!=undefined && this.categoryId>0){
+      this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);
+    }else{
+      this.referenceService.goToManageAssets(this.viewType,false);
+    }
+    
   }
 
   refreshPage() {
