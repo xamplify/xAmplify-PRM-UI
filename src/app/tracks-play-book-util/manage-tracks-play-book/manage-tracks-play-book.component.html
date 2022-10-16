@@ -90,9 +90,9 @@
                                         <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" translate>
                                             <span><strong>{{learningTrack.title}}</strong></span>
                                         </h4>
-                                        <h6 class="moreipsis" title="{{learningTrack.category.name}}">
+                                        <h6 class="moreipsis" title="{{learningTrack?.category?.name}}">
                                             <span translate> Folder
-                                                <strong>{{learningTrack.category.name}}</strong></span>
+                                                <strong>{{learningTrack?.category?.name}}</strong></span>
                                         </h6>
                                         <h6 class="moreipsis" title="{{learningTrack.createdByName}}">
                                             <span translate> Created By
@@ -204,9 +204,9 @@
                                 <span *ngIf="learningTrack.progress == undefined">0%</span>
                                 <br>
                             </div>
-                            <h6 class="track-info-grid" title="{{learningTrack.category.name}}" translate>
-                                Folder <strong>{{learningTrack.category.name | slice:0:17}}</strong>
-                                <span *ngIf="learningTrack.category.name?.length>17">..</span>
+                            <h6 class="track-info-grid" title="{{learningTrack?.category?.name}}" translate>
+                                Folder <strong>{{learningTrack?.category?.name | slice:0:17}}</strong>
+                                <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                             </h6>
                             <h6 class="track-info-grid" translate>
                                 Created On <strong>
