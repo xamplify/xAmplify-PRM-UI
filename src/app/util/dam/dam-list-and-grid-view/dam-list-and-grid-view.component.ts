@@ -421,7 +421,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 this.videoFileService.campaignReport = true;
                                 localStorage.setItem('campaignReport', 'true');
                                 localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-                                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+                                this.navigateToPartnerAnalytics(asset.id);
                             } else {
                                 this.authenticationService.forceToLogout();
                             }
@@ -439,18 +439,22 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
             if (this.isPartnerView) {
                 this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
             } else {
-				if(this.categoryId>0){
-					if(this.folderListViewCategoryId!=undefined){
-						this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType);
-					}else{
-						this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType+"/"+this.categoryId+"/"+this.folderViewType);
-					}
-				}else{
-					this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id+"/"+this.viewType);
-				}
+				this.navigateToPartnerAnalytics(asset.id);
             }
         }
     }
+
+	private navigateToPartnerAnalytics(id: number) {
+		if (this.categoryId > 0) {
+			if (this.folderListView) {
+				this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/fl");
+			} else {
+				this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/" + this.viewType + "/" + this.categoryId + "/" + this.folderViewType);
+			}
+		} else {
+			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/" + this.viewType);
+		}
+	}
 
     editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
         if (!beeTemplate && this.isVideo(assetType)) {
