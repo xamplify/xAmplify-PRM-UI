@@ -47,11 +47,9 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
+                <app-grid-loader  *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView ">
                 </app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView">
-                </app-grid-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
@@ -293,7 +291,7 @@
             </div>
              <!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-				<app-folder-type-view-util [moduleId]="roles.learningTrackId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+				<app-folder-type-view-util [moduleId]="moduleId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
 			</div>
         </div>
         <!-- END PAGE CONTENT-->

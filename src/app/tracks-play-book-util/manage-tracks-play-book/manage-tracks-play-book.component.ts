@@ -46,6 +46,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   folderListView = false;
   viewType: string;
   tracksModule:boolean = false;
+  moduleId:number = 0;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -55,6 +56,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
+    this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
     if(this.folderListViewCategoryId!=undefined){
@@ -72,13 +74,12 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				if(this.modulesDisplayType.isFolderListView){
-					this.referenceService.goToManageAssets("fl",this.isPartnerView);
+					this.referenceService.goToManageTracksOrPlayBooks("fl",this.isPartnerView,this.tracksModule);
 				}else if(this.modulesDisplayType.isFolderGridView){
-					this.referenceService.goToManageAssets("fg",this.isPartnerView);
+					this.referenceService.goToManageTracksOrPlayBooks("fg",this.isPartnerView,this.tracksModule);
 				}
 			}
 		}
-
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     if (this.referenceService.isCreated) {

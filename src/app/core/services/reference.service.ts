@@ -2935,6 +2935,10 @@ export class ReferenceService {
     let categoryType = "";
     if(this.roles.damId==moduleId){
       categoryType = "DAM";
+    }else if(this.roles.learningTrackId==moduleId){
+      categoryType="LEARNING_TRACK";
+    }else if(this.roles.playbookId==moduleId){
+      categoryType = "PLAY_BOOK";
     }
     return categoryType;
   }

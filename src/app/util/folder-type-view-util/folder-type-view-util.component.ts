@@ -34,7 +34,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
     public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { 
-      this.isPartnerView = this.router.url.indexOf("dam/shared")>-1; 
+      this.isPartnerView = this.router.url.indexOf("/shared")>-1; 
 
     }
 
@@ -105,12 +105,24 @@ export class FolderTypeViewUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
   viewItemsByCategoryId(categoryId:number) {
-    this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
+    if(this.moduleId==this.roles.damId){
+      this.referenceService.goToManageAssetsByCategoryId("fg","l",categoryId,this.isPartnerView);
+    }else if(this.moduleId==this.roles.learningTrackId){
+      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,true);
+    }else if(this.moduleId==this.roles.playbookId){
+      this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,false);
+    }
   }
 
   setViewType(viewType:string){
     if(this.folderViewType!=viewType){
-      this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+      if(this.moduleId==this.roles.damId){
+        this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+      }else if(this.moduleId==this.roles.learningTrackId){
+        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,true);
+      }else if(this.moduleId==this.roles.playbookId){
+        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,false);
+      }
     }
   }
 
