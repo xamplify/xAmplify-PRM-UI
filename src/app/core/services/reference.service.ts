@@ -2954,13 +2954,13 @@ export class ReferenceService {
   }
 
   goToManageTracksOrPlayBooks(viewType:string,isPartnerView:boolean,tracks:boolean) {
-    let moduleUrl = tracks ? "tracks":"";
+    let moduleUrl = tracks ? "tracks":"playbook";
     let urlSuffix = isPartnerView ? 'shared':'manage';
     this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+viewType]);
   }
 
   goToManageTracksOrPlayBooksByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean,tracks:boolean) {
-    let moduleUrl = tracks ? "tracks":"";
+    let moduleUrl = tracks ? "tracks":"playbook";
     let urlSuffix = isPartnerView ? 'shared':'manage';
     this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+listViewType+"/"+categoryId]);
   }
