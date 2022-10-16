@@ -15,9 +15,9 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { TracksPlayBook } from '../models/tracks-play-book'
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
-import { LearningTrack } from 'app/lms/models/learningTrack';
+import { Roles } from 'app/core/models/roles';
 
-declare var swal, $: any;
+declare var swal:any, $: any;
 
 @Component({
   selector: 'app-manage-tracks-play-book',
@@ -38,7 +38,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   ngxloading = false;
   isPartnerView: boolean = false;
   @Input() type: string;
-
+  /********XNFR-169******/
+  roles:Roles = new Roles();
+  showUpArrowButton = false;
+  folderViewType = "";
+  @Input() folderListViewCategoryId:any;
+  folderListView = false;
+  viewType: string;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -48,16 +54,29 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-    if (!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView) {
-      this.setViewType("List");
-    }
-    if (this.router.url.indexOf('/manage') > -1) {
-      this.showFolderView = true;
-      this.isPartnerView = false;
-    } else {
-      this.showFolderView = false;
-      this.isPartnerView = true;
-    }
+    this.isPartnerView = this.router.url.indexOf('/shared') > -1;
+    if(this.folderListViewCategoryId!=undefined){
+			this.categoryId = this.folderListViewCategoryId;
+			this.folderListView = true;
+		}else{
+			this.viewType = this.route.snapshot.params['viewType'];
+			this.categoryId = this.route.snapshot.params['categoryId'];
+			this.folderViewType = this.route.snapshot.params['folderViewType'];
+			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+		}
+		if (this.viewType != undefined) {
+			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
+		} else {
+			if(this.categoryId==undefined || this.categoryId==0){
+				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+				if(this.modulesDisplayType.isFolderListView){
+					this.referenceService.goToManageAssets("fl",this.isPartnerView);
+				}else if(this.modulesDisplayType.isFolderGridView){
+					this.referenceService.goToManageAssets("fg",this.isPartnerView);
+				}
+			}
+		}
+
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     if (this.referenceService.isCreated) {
@@ -77,7 +96,22 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     }
     this.listLearningTracks(this.pagination);
   }
-
+/********XNFR-170******/
+setViewType(viewType: string) {
+  if(this.viewType!=viewType){
+    if (this.folderListView) {
+      let gridView = "g" == viewType;
+      this.modulesDisplayType.isGridView = gridView;
+      this.modulesDisplayType.isListView = !gridView;
+    } else {
+      if (this.folderViewType != undefined && viewType != "fg") {
+        this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
+      } else {
+        this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+      }
+    }
+  }
+}
   ngOnDestroy() {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
@@ -89,87 +123,13 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.customResponse = new CustomResponse('SUCCESS', message, true);
   }
 
-  getUpdatedValue(event: any) {
-    let viewType = event.viewType;
-    if (viewType != undefined) {
-      this.setViewType(viewType);
-    }
-  }
-
-  setViewType(viewType: string) {
-    if ("List" == viewType) {
-      this.modulesDisplayType.isListView = true;
-      this.modulesDisplayType.isGridView = false;
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      this.navigateToManageSection(viewType);
-    } else if ("Grid" == viewType) {
-      this.modulesDisplayType.isListView = false;
-      this.modulesDisplayType.isGridView = true;
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      this.navigateToManageSection(viewType);
-    } else if ("Folder-Grid" == viewType) {
-      this.modulesDisplayType.isListView = false;
-      this.modulesDisplayType.isGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      this.modulesDisplayType.isFolderGridView = true;
-      this.exportObject['type'] = 2;
-      this.exportObject['folderType'] = viewType;
-      if (this.categoryId > 0) {
-        if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-          this.router.navigateByUrl('/home/tracks/manage/');
-        } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-          this.router.navigateByUrl('/home/playbook/manage/');
-        }
-      }
-    } else if ("Folder-List" == viewType) {
-      this.modulesDisplayType.isListView = false;
-      this.modulesDisplayType.isGridView = false;
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = true;
-      this.exportObject['folderType'] = viewType;
-      this.exportObject['type'] = 2;
-    }
-  }
-
-  navigateToManageSection(viewType: string) {
-    if ("List" == viewType && (this.categoryId == undefined || this.categoryId == 0)) {
-      this.modulesDisplayType.isListView = true;
-      this.modulesDisplayType.isGridView = false;
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      this.listLearningTracks(this.pagination);
-    } else if ("Grid" == viewType && (this.categoryId == undefined || this.categoryId == 0)) {
-      this.modulesDisplayType.isGridView = true;
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      this.modulesDisplayType.isListView = false;
-      this.listLearningTracks(this.pagination);
-    } else if (this.modulesDisplayType.defaultDisplayType == "FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType == "FOLDER_LIST"
-      && (this.categoryId == undefined || this.categoryId == 0)) {
-      this.modulesDisplayType.isFolderGridView = false;
-      this.modulesDisplayType.isFolderListView = false;
-      if ("List" == viewType) {
-        this.modulesDisplayType.isGridView = false;
-        this.modulesDisplayType.isListView = true;
-      } else {
-        this.modulesDisplayType.isGridView = true;
-        this.modulesDisplayType.isListView = false;
-      }
-      this.listLearningTracks(this.pagination);
-    }
-    else if (this.router.url.endsWith('manage/')) {
-      if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-        this.router.navigateByUrl('/home/tracks/manage/');
-      } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-        this.router.navigateByUrl('/home/playbook/manage/');
-      }
-    }
-  }
-
+ 
   listLearningTracks(pagination: Pagination) {
+    if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
     this.referenceService.loading(this.httpRequestLoader, true);
+    pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
     /**********Vanity Url Filter**************** */
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -234,7 +194,6 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   getAllFilteredResults(pagination: Pagination) {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
-    //this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
     this.listLearningTracks(this.pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
