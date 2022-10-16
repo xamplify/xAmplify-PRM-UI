@@ -45,6 +45,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   @Input() folderListViewCategoryId:any;
   folderListView = false;
   viewType: string;
+  tracksModule:boolean = false;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -53,6 +54,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
     this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
     if(this.folderListViewCategoryId!=undefined){
@@ -105,9 +107,9 @@ setViewType(viewType: string) {
       this.modulesDisplayType.isListView = !gridView;
     } else {
       if (this.folderViewType != undefined && viewType != "fg") {
-        this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
+        this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", viewType, this.categoryId,this.isPartnerView,this.tracksModule);
       } else {
-        this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+        this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,this.tracksModule);
       }
     }
   }
