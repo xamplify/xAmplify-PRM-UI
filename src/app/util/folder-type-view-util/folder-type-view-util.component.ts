@@ -30,6 +30,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   folderViewType = "";
   roles:Roles = new Roles();
   isPartnerView = false;
+  type:string = "";
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -41,6 +42,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
+    this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.findAllCategories(this.pagination);
   }
 

@@ -2942,6 +2942,16 @@ export class ReferenceService {
     }
     return categoryType;
   }
+  
+  getLearningTrackOrPlayBookType(moduleId:number){
+    let categoryType = "";
+    if(this.roles.learningTrackId==moduleId){
+      categoryType="TRACK";
+    }else if(this.roles.playbookId==moduleId){
+      categoryType = "PLAYBOOK";
+    }
+    return categoryType;
+  }
 
   goToManageAssets(viewType:string,isPartnerView:boolean) {
     let urlSuffix = isPartnerView ? 'shared':'manage';

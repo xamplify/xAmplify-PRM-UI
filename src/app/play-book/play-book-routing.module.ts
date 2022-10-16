@@ -12,7 +12,11 @@ export const routes: Routes = [
   { path: "add", component: AddPlayBookComponent },
   { path: "edit/:id", component: AddPlayBookComponent },
   { path: "manage", component: ManagePlayBookComponent },
+  { path: "manage/:viewType", component: ManagePlayBookComponent },
+	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManagePlayBookComponent },
   { path: "shared", component: ManagePlayBookComponent },
+  { path: "shared/:viewType", component: ManagePlayBookComponent },
+	{ path: "shared/:folderViewType/:viewType/:categoryId", component: ManagePlayBookComponent },
   { path: 'pb/:companyId/:slug', component: PreviewPlayBookComponent },
   { path: 'analytics/:id', component: PlayBookAnalyticsComponent },
   { path: 'partnerAnalytics/:ltId/:id', component: PlayBookPartnerAnalyticsComponent }

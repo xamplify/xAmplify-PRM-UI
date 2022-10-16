@@ -138,7 +138,7 @@
                                <app-dam-list-and-grid-view [folderListViewCategoryId]="category.id"></app-dam-list-and-grid-view>
                             </ng-container>
                             <ng-container *ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
-                                <app-manage-tracks-play-book [folderListViewCategoryId]="category.id"></app-manage-tracks-play-book>
+                                <app-manage-tracks-play-book [folderListViewCategoryId]="category.id" [type]="type"></app-manage-tracks-play-book>
                              </ng-container>
                         </ng-container>
                     </td>
