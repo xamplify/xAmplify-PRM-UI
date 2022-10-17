@@ -403,8 +403,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         localStorage.setItem('assetName', asset.assetName);
         let isVideo = this.isVideo(asset.assetType);
         if (isVideo) {
-        	   if (this.isPartnerView) {
-                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+        	 if (this.isPartnerView) {
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
             } else {
                 try {
                     this.videoFileService.getVideo(asset.alias, 'DRAFT')
@@ -421,7 +421,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 localStorage.setItem('campaignReport', 'true');
                                 localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
 								/*****XNFR-169***/
-								this.navigateToParnterAnalytics(asset.id);
+								this.navigateToPartnerAnalytics(asset.id);
                             } else {
                                 this.authenticationService.forceToLogout();
                             }
@@ -436,18 +436,23 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 }
             }
         } else {
+			/*****XNFR-169***/
             if (this.isPartnerView) {
-                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
             } else {
-				/*****XNFR-169***/
-				this.navigateToParnterAnalytics(asset.id);
+				this.navigateToPartnerAnalytics(asset.id);
             }
         }
     }
 
 	/*****XNFR-169***/
-	navigateToParnterAnalytics(id:number){
+	navigateToPartnerAnalytics(id:number){
 		let url = "/home/dam/partnerAnalytics/"+id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
+
+	navigateToDamAnalyticsForPartnerLogin(id:number){
+		let url = "/home/dam/pda/" + id
 		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 

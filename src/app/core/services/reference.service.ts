@@ -2990,9 +2990,9 @@ export class ReferenceService {
   /*******XNFR-169**********/
   navigateToManageAssetsByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
     if (categoryId != undefined && categoryId > 0) {
-      this.goToManageAssetsByCategoryId(folderViewType,viewType,categoryId,false);
+      this.goToManageAssetsByCategoryId(folderViewType,viewType,categoryId,isPartnerView);
     } else {
-      this.goToManageAssets(viewType, false);
+      this.goToManageAssets(viewType, isPartnerView);
     }
   }
 }

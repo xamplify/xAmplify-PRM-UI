@@ -40,8 +40,16 @@ export class DamAnalyticsComponent implements OnInit {
   initLoader = false;
   partnerId:number = 0;
   viewOrDownloadText = "View / Download";
+  /******XNFR-169********/
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-169****/
+    this.viewType = this.route.snapshot.params['viewType'];
+		this.categoryId = this.route.snapshot.params['categoryId'];
+		this.folderViewType = this.route.snapshot.params['folderViewType'];
   }
 
   ngOnInit() {
@@ -213,7 +221,7 @@ export class DamAnalyticsComponent implements OnInit {
     if(this.router.url.indexOf("vda")>-1){
       this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+this.damId);
     }else{
-      this.referenceService.goToRouter("/home/dam/shared");
+      this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
     }
   }
   refreshPage(){
@@ -221,11 +229,7 @@ export class DamAnalyticsComponent implements OnInit {
   }
   goToDam(){
     this.loading = true;
-    if(this.vendorView){
-      this.referenceService.goToRouter("/home/dam/manage");
-    }else{
-      this.referenceService.goToRouter("/home/dam/shared");
-    }
+    this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
   }
 
 }

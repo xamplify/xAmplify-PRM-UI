@@ -3,6 +3,7 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router,ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 @Component({
 	selector: 'app-manage-dam',
@@ -20,12 +21,16 @@ export class ManageDamComponent implements OnInit {
 	viewType: string;
     categoryId: number;
     folderViewType: string;
+	modulesDisplayType = new ModulesDisplayType();
+
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
 		private router: Router,private route: ActivatedRoute) {
 		/****XNFR-169****/
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
+		this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+		this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
 	}
 
 	ngOnInit() {
@@ -39,8 +44,8 @@ export class ManageDamComponent implements OnInit {
 	}
 
 	showSuccessMessage(){
-	this.referenceService.isUploaded = true;
-   	 this.referenceService.goToRouter("/home/dam/manage");
+	 this.referenceService.isUploaded = true;
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
 
 	goToUploadComponent(){
@@ -49,15 +54,7 @@ export class ManageDamComponent implements OnInit {
 	}
 	goToDam(){
 		this.loading = true;
-		if(this.isPartnerView){
-			this.referenceService.goToRouter("/home/dam/shared");
-		}else{
-			if(this.categoryId!=undefined && this.categoryId>0){
-				this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);
-			  }else{
-				this.referenceService.goToManageAssets(this.viewType,false);
-			  }
-		}
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
 	
     setManageDam(result: any) {

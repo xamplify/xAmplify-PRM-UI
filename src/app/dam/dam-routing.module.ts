@@ -12,28 +12,35 @@ import { ViewDamComponent } from './view-dam/view-dam.component';
 export const routes: Routes = [
 	{ path: "manage", component: ManageDamComponent },
 	{ path: "manage/:viewType", component: ManageDamComponent },
+	/************XNFR-169*********/
 	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	{ path: "shared", component: ManageDamComponent },
-	/************XNFR-169*********/
 	{ path: "shared/:viewType", component: ManageDamComponent },
 	{ path: "shared/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	/****************************/
 	{ path: "add", component: AddDamComponent },
 	{ path: "upload", component: UploadAssetComponent },
-	{ path: "editDetails/:id", component: UploadAssetComponent },
 	/************XNFR-169*********/
+	{ path: "editDetails/:id", component: UploadAssetComponent },
 	{ path: "editDetails/:id/:viewType", component: UploadAssetComponent },
 	{ path: "editDetails/:id/:viewType/:categoryId/:folderViewType", component: UploadAssetComponent },
 	/*******************************/
-	{ path: "edit/:id", component: AddDamComponent },
 	/************XNFR-169*********/
+	{ path: "edit/:id", component: AddDamComponent },
 	{ path: "edit/:id/:viewType", component: AddDamComponent },
 	{ path: "edit/:id/:viewType/:categoryId/:folderViewType", component: AddDamComponent },
 	/*****************************/
-	{ path: "editp/:id", component: AddDamComponent },
-	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
-	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
 	/************XNFR-169*********/
+	{ path: "editp/:id", component: AddDamComponent },
+	{ path: "editp/:id/:viewType", component: AddDamComponent },
+	{ path: "editp/:id/:viewType/:categoryId/:folderViewType", component: AddDamComponent },
+	/*****************************/
+	/************XNFR-169*********/
+	{ path: "pda/:damPartnerId", component: DamAnalyticsComponent },
+	{ path: "pda/:damPartnerId/:viewType", component: DamAnalyticsComponent },
+	{ path: "pda/:damPartnerId/:viewType/:categoryId/:folderViewType", component: DamAnalyticsComponent },
+	/************XNFR-169*********/
+	{ path: "partnerAnalytics/:damId", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPublishedPartnersAnalyticsComponent },
 	/*****************************/
