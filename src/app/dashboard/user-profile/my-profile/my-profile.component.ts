@@ -2268,9 +2268,9 @@ configSalesforce() {
 			}else if("Asset Library"==type){
 				this.router.navigate(['/home/dam/manage/fg/l/' + categoryId]);
 			}else if("Track Builder"==type){
-				this.router.navigate(['/home/dam/manage/fg/tracks/' + categoryId]);
+				this.router.navigate(['/home/tracks/manage/fg/l/' + categoryId]);
 			}else if("Play Book"==type){
-				this.router.navigate(['/home/dam/manage/fg/playbook/' + categoryId]);
+				this.router.navigate(['/home/playbook/manage/fg/l/' + categoryId]);
 			}
 		}
 
