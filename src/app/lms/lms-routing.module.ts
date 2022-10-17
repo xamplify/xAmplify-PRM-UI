@@ -10,6 +10,8 @@ export const routes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "add", component: AddLmsComponent },
   { path: "edit/:id", component: AddLmsComponent },
+  { path: "edit/:id/:viewType", component: AddLmsComponent },
+	{ path: "edit/:id/:viewType/:categoryId/:folderViewType", component: AddLmsComponent },
   { path: "manage", component: ManageLmsComponent },
   { path: "manage/:viewType", component: ManageLmsComponent },
 	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageLmsComponent },

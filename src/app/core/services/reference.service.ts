@@ -3002,5 +3002,22 @@ export class ReferenceService {
       this.goToManageAssets(viewType, isPartnerView);
     }
   }
+
+  /*******XNFR-170**********/
+  navigateToManageTracksByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageTracksOrPlayBooksByCategoryId(folderViewType,viewType,categoryId,isPartnerView,true);
+    } else {
+      this.goToManageTracksOrPlayBooks(viewType, isPartnerView,true);
+    }
+  }
+
+  navigateToPlayBooksByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageTracksOrPlayBooksByCategoryId(folderViewType,viewType,categoryId,isPartnerView,false);
+    } else {
+      this.goToManageTracksOrPlayBooks(viewType, isPartnerView,false);
+    }
+  }
   
 }

@@ -7,7 +7,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="!isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isAdd" [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
+                <a (click)="goToManageTracks()">Manage Tracks</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isAdd">Add Tracks</a>
                 <a *ngIf="!isAdd">Edit Tracks</a>

@@ -205,9 +205,11 @@ setViewType(viewType: string) {
 
   edit(id: number) {
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      this.referenceService.goToRouter("/home/tracks/edit/" + id);
+      let url = "/home/tracks/edit/" + id;
+		  this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      this.referenceService.goToRouter("/home/playbook/edit/" + id);
+      let url = "/home/playbook/edit/" + id;
+      this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
     }
   }
 
