@@ -404,7 +404,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;
 					}
-					this.referenceService.goToRouter("home/dam/manage");
+                    /******XNFR-169*****/
+					this.goToManageDam();
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
 				} else if (result.statusCode == 404) {
@@ -503,7 +504,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	                    }else{
 	                        this.referenceService.isAssetDetailsUpldated = true;
 	                    }
-	                    this.referenceService.goToRouter("home/dam/manage");
+                        /****XNFR-169****/
+	                    this.goToManageDam();
 	                } else if (result.statusCode == 400) {
 	                    this.customResponse = new CustomResponse('ERROR', result.message, true);
 	                } else if (result.statusCode == 404) {
