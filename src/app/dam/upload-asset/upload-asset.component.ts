@@ -106,6 +106,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     /***XNFR-169*****/
     categoryNames: any;
     showFolderDropDown = false;
+    viewType: string;
+    categoryId: number;
+    folderViewType: string;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
@@ -134,7 +137,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.referenceService.isEnabledCamera = true;
         } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
             this.referenceService.cameraIsthere = true;
-             }
+        }
+        /****XNFR-169****/
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
         
 	}
 	
@@ -485,7 +492,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     }
 	
 	processVideo(result: any){
-		//let result = response.body;
 		let path : string = result.map.assetPath;
 		 this.processing = true;
 		if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
@@ -523,7 +529,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	
 	goToManageDam() {
 		this.loading = true;
-		this.referenceService.goToRouter("home/dam/manage");
+		if(this.categoryId!=undefined && this.categoryId>0){
+            this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);
+          }else{
+            this.referenceService.goToManageAssets(this.viewType,false);
+          }
 	}
 
 	clearErrors() {
@@ -548,11 +558,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 
 	closeCircle(){
-		this.loading = true;
 		if(this.isAdd){
+            this.loading = true;
 			this.referenceService.goToRouter("home/dam/select");
 		}else{
-			this.referenceService.goToRouter("home/dam/manage");
+			this.goToManageDam();
 		}
 	}
 

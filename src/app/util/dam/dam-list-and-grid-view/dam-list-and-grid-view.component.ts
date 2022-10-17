@@ -421,7 +421,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 this.videoFileService.campaignReport = true;
                                 localStorage.setItem('campaignReport', 'true');
                                 localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-                                this.navigateToPartnerAnalytics(asset.id);
+								/*****XNFR-169***/
+								this.navigateToParnterAnalytics(asset.id);
                             } else {
                                 this.authenticationService.forceToLogout();
                             }
@@ -439,29 +440,27 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
             if (this.isPartnerView) {
                 this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
             } else {
-				this.navigateToPartnerAnalytics(asset.id);
+				/*****XNFR-169***/
+				this.navigateToParnterAnalytics(asset.id);
             }
         }
     }
 
-	private navigateToPartnerAnalytics(id: number) {
-		if (this.categoryId > 0) {
-			if (this.folderListView) {
-				this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/fl");
-			} else {
-				this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/" + this.viewType + "/" + this.categoryId + "/" + this.folderViewType);
-			}
-		} else {
-			this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + id + "/" + this.viewType);
-		}
+	/*****XNFR-169***/
+	navigateToParnterAnalytics(id:number){
+		let url = "/home/dam/partnerAnalytics/"+id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
+
 
     editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
         if (!beeTemplate && this.isVideo(assetType)) {
             this.showEditVideo(alias, id);
         } else {
             this.loading = true;
-            this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+			/*****XNFR-169***/
+			let url = "/home/dam/editDetails/"+id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
         }
 	}
 

@@ -35,6 +35,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   statusCode = 200;
   selectedVideo: SaveVideoFile;
   campaignReport : boolean = false;
+  /****XNFR-169****/
   viewType: string;
   categoryId: number;
   folderViewType: string;
@@ -43,6 +44,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
               private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
               public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-169****/
     this.viewType = this.route.snapshot.params['viewType'];
 		this.categoryId = this.route.snapshot.params['categoryId'];
 		this.folderViewType = this.route.snapshot.params['folderViewType'];

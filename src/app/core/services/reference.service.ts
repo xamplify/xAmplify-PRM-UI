@@ -2974,4 +2974,16 @@ export class ReferenceService {
     let urlSuffix = isPartnerView ? 'shared':'manage';
     this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+listViewType+"/"+categoryId]);
   }
+
+  navigateToRouterByViewTypes(url:string,categoryId:number,viewType:string,folderViewType:string,folderListView:boolean){
+    if (categoryId > 0) {
+			if (folderListView) {
+				this.goToRouter(url+ "/fl");
+			} else {
+				this.goToRouter(url+ "/" + viewType + "/" + categoryId + "/" + folderViewType);
+			}
+		} else {
+			this.goToRouter(url+ "/" + viewType);
+		}
+  }
 }
