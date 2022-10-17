@@ -11,6 +11,8 @@ export const routes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "add", component: AddPlayBookComponent },
   { path: "edit/:id", component: AddPlayBookComponent },
+  { path: "edit/:id/:viewType/:categoryId/:folderViewType", component: AddPlayBookComponent },
+  { path: "edit/:id/:viewType", component: AddPlayBookComponent },
   { path: "manage", component: ManagePlayBookComponent },
   { path: "manage/:viewType", component: ManagePlayBookComponent },
 	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManagePlayBookComponent },
@@ -18,8 +20,14 @@ export const routes: Routes = [
   { path: "shared/:viewType", component: ManagePlayBookComponent },
 	{ path: "shared/:folderViewType/:viewType/:categoryId", component: ManagePlayBookComponent },
   { path: 'pb/:companyId/:slug', component: PreviewPlayBookComponent },
+  { path: 'pb/:companyId/:slug/:viewType', component: PreviewPlayBookComponent },
+  { path: 'pb/:companyId/:slug/:viewType/:categoryId/:folderViewType', component: PreviewPlayBookComponent },
   { path: 'analytics/:id', component: PlayBookAnalyticsComponent },
-  { path: 'partnerAnalytics/:ltId/:id', component: PlayBookPartnerAnalyticsComponent }
+  { path: 'analytics/:id/:viewType', component: PlayBookAnalyticsComponent },
+  { path: 'analytics/:id/:viewType/:categoryId/:folderViewType', component: PlayBookAnalyticsComponent },
+  { path: 'partnerAnalytics/:ltId/:id', component: PlayBookPartnerAnalyticsComponent },
+  { path: 'partnerAnalytics/:ltId/:id/:viewType', component: PlayBookPartnerAnalyticsComponent },
+  { path: 'partnerAnalytics/:ltId/:id/:viewType/:categoryId/:folderViewType', component: PlayBookPartnerAnalyticsComponent },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -42,6 +42,5 @@ export class LmsPartnerAnalyticsComponent implements OnInit {
       this.analyticsRouter = "/home/playbook/analytics/" + learningTrackId;
     }
     this.referenceService.navigateToRouterByViewTypes(this.analyticsRouter,this.categoryId,this.viewType,this.folderViewType,this.folderViewType=="fl");
-    //this.router.navigate([this.analyticsRouter]);
   }
 }

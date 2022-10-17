@@ -47,6 +47,5 @@ export class PreviewLmsComponent implements OnInit {
 
   goToManageSharedTracks(){
     this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,true);
-
   }
 }

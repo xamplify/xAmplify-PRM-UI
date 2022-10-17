@@ -202,17 +202,23 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   detailedAnalyticsEventHandler(keyCode: any) { if (keyCode === 13) { this.detailedAnalyticsSearch(); } }
 
   goBack() {
-    let route = "";
+    let urlSuffix = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      urlSuffix = "tracks";
       this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      urlSuffix = "playbook";
       this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     }
     if (this.learningTrackId != undefined && this.learningTrackId > 0) {
-      let url = "/home/tracks/analytics/" + this.learningTrackId;
+      let url = "/home/"+urlSuffix+"/analytics/" + this.learningTrackId;
       this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderViewType=='fl');
     } else if (this.learningTrackId == undefined || this.learningTrackId < 1) {
-      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      if(urlSuffix=="tracks"){
+        this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      }else if(urlSuffix=="playbook"){
+        this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      }
     }
   }
 
