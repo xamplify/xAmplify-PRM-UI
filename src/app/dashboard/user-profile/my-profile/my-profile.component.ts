@@ -2340,6 +2340,7 @@ configSalesforce() {
 	}
 
 	salesforceSettings() {
+		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationTabIndex = 2;
@@ -2347,6 +2348,47 @@ configSalesforce() {
 		this.listSalesforceCustomFields();
 	}
 
+	hubspotSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationTabIndex = 4;
+		this.ngxloading = true;
+		this.listExternalCustomFields('hubspot');
+	}
+
+	listExternalCustomFields(type: string) {
+		let self = this;
+		self.selectedCfIds = [];
+		self.integrationService.listExternalCustomFields(type, this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.sfCustomFieldsResponse = data.data;
+						this.sfcfMasterCBClicked = false;
+						$.each(this.sfCustomFieldsResponse, function(_index: number, customField) {
+							if (customField.selected) {
+								self.selectedCfIds.push(customField.name);
+							}
+
+							if (customField.required) {
+								self.requiredCfIds.push(customField.name);
+								if (!customField.selected) {
+									self.selectedCfIds.push(customField.name);
+								}
+							}
+						});
+						this.setSfCfPage(1);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+
+	}
 	listSalesforceCustomFields() {
 		let self = this;
 		self.selectedCfIds = [];
@@ -3483,6 +3525,11 @@ configSalesforce() {
 				this.isUpgradedRequestSubmitted = false;
 			}
 		);
+	}
+
+	closeIntegrationSetting(event: any) {
+		if (event === "0")
+			this.integrationTabIndex = 0;
 	}
 
 }

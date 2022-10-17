@@ -102,4 +102,10 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    listExternalCustomFields(type:string, userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + "/external/" + userId + "/custom-fields?access_token=" + this.authenticationService.access_token+ "&type="+type)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

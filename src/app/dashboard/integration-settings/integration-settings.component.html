@@ -1,0 +1,99 @@
+<!-- Nav tabs -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ul class="nav nav-tabs"style="margin-bottom:0px;">
+  <li><a data-toggle="tab" href="#menu1">User-info</a></li>
+  <li class="active"><a data-toggle="tab" href="#home">Custom-field</a></li>  
+</ul>
+<div class="tab-content tab-bg">
+<div id="home" class="tab-pane fade in active pt-top">
+  <form class="form-horizontal" autocomplete="off">
+      <table class="table tgrid border-none">
+         <tbody>
+            <tr>
+             <td class="border-bottom"style="width:130px;">FieldName &nbsp;<i class="fa fa-sort"></i><br><td>DataType&nbsp;<i class="fa fa-sort sort"></i></td></td>
+              <td class="border-bottom"><span>(800) 111-222</span><br><td>Phone</td></td>
+               <td class="text-center border-bottom"><input type="checkbox"  class="checkbox-size" value=""></td>  
+            </tr>
+            <tr>
+               <td class="border-bottom"style="width:130px;">FieldName &nbsp;<i class="fa fa-sort"></i><br><td>DataType&nbsp;<i class="fa fa-sort sort"></i></td></td>
+                <td class="border-bottom"><span>(800) 111-222</span><br><td>Phone</td></td>
+                 <td class="text-center border-bottom"><input type="checkbox"  class="checkbox-size" value=""></td>  
+              </tr>
+              <tr>
+               <td class="border-bottom"style="width:130px;">FieldName &nbsp;<i class="fa fa-sort"></i><br><td>DataType&nbsp;<i class="fa fa-sort sort"></i></td></td>
+                <td class="border-bottom"><span>(800) 111-222</span><br><td>Phone</td></td>
+                 <td class="text-center border-bottom"><input type="checkbox"  class="checkbox-size" value=""></td>  
+              </tr>
+              <tr>
+               <td class="border-bottom"style="width:130px;">FieldName &nbsp;<i class="fa fa-sort"></i><br><td>DataType&nbsp;<i class="fa fa-sort sort"></i></td></td>
+                <td class="border-bottom"><span>(800) 111-222</span><br><td>Phone</td></td>
+                 <td class="text-center border-bottom"><input type="checkbox"  class="checkbox-size" value=""></td>  
+              </tr>
+              <tr>
+               <td class="border-bottom"style="width:130px;">FieldName &nbsp;<i class="fa fa-sort"></i><br><td>DataType&nbsp;<i class="fa fa-sort sort"></i></td></td>
+                <td class="border-bottom"><span>(800) 111-222</span><br><td>Phone</td></td>
+                 <td class="text-center border-bottom"><input type="checkbox"  class="checkbox-size" value=""></td>  
+              </tr>
+            <!-- </ng-container> -->
+          </tbody>
+      </table>
+    </form>
+    <ul class="pagination pagination_1">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</div>
+  <div id="menu1" class="tab-pane fade pt-5">
+    <div class="profile-image-wrapper user-profile">
+      <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
+        <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
+         <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
+         </ng-template>
+      </ng-container>
+      <ng-template #showImage><img alt="" [src]="userProfileImage" class="profile-image" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"></ng-template>
+        <div id="imageSelect" class="upload-btn-wrapper upload-img" (click)="fileChangeEvent()">
+          <i class="fa fa-camera" aria-hidden="true"></i>
+        </div>
+         <div class="d-flex" style="padding-left: 10px;">
+            <h4 class="media-heading"><b>Gayatri A</b></h4>
+             <h5>gayatrilivgorg@gmail.com</h5>
+              <span>Company</span>
+         </div>
+  </div>
+  <div  align="center"class="btn-group d-flex-center" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-primary activated-btn">Activated</button>
+     <button type="button" class="btn btn-secondary unlink-btn">Unlink</button>
+  </div>
+  <div class="row m0">
+      <div class="col-md-6">
+  <div style="margin-bottom:20px"><h3>Salesforce custom fields
+      <span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
+        <a (click)="salesforceSettings()" data-toggle="tooltip"data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"style="font-size: 15px !important;"></i> Reload</a>
+      </span>
+      </h3>
+  </div>
+</div>
+<div class="col-md-6 user-search">
+      <div class="portlet-input input-inline">
+          <div class="input-icon right">
+           <input class="form-control" placeholder="Search" type="text">
+            <button class="search-box-item-click" type="submit">
+             <i aria-hidden="true" class="fa fa-search" style="color:black !important"></i>
+             </button>
+          </div>
+        </div>
+  </div>
+</div>
+<ul class="pagination pagination_1">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </div>
+</div>
+<!--Nav-end-->
