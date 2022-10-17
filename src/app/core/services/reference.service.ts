@@ -2953,26 +2953,33 @@ export class ReferenceService {
     return categoryType;
   }
 
+  getListViewAsDefault(viewType:string){
+    if(viewType==undefined){
+      viewType='l';
+    }
+    return viewType;
+  }
+
   goToManageAssets(viewType:string,isPartnerView:boolean) {
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/dam/"+urlSuffix+"/"+viewType]);
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
   }
 
   goToManageAssetsByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean) {
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/dam/"+urlSuffix+"/"+folderViewType+"/"+listViewType+"/"+categoryId]);
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
   }
 
   goToManageTracksOrPlayBooks(viewType:string,isPartnerView:boolean,tracks:boolean) {
     let moduleUrl = tracks ? "tracks":"playbook";
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+viewType]);
+    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
   }
 
   goToManageTracksOrPlayBooksByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean,tracks:boolean) {
     let moduleUrl = tracks ? "tracks":"playbook";
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+listViewType+"/"+categoryId]);
+    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
   }
 
   navigateToRouterByViewTypes(url:string,categoryId:number,viewType:string,folderViewType:string,folderListView:boolean){
@@ -2980,10 +2987,10 @@ export class ReferenceService {
 			if (folderListView) {
 				this.goToRouter(url+ "/fl");
 			} else {
-				this.goToRouter(url+ "/" + viewType + "/" + categoryId + "/" + folderViewType);
+				this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType) + "/" + categoryId + "/" + folderViewType);
 			}
 		} else {
-			this.goToRouter(url+ "/" + viewType);
+			this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType));
 		}
   }
 

@@ -300,14 +300,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
   /******XNFR-169********/
   goToManageDam() {
     this.ngxloading = true;
-    if (this.isPartnerView) {
-      this.referenceService.goToRouter("/home/dam/shared");
-    } else {
-      if (this.isAdd) {
-        this.referenceService.goToRouter("/home/dam/select");
-      } else {
-        this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-      }
+    if(this.isAdd){
+      this.goToSelect();
+    }else{
+      this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
     }
   }
 
