@@ -47,6 +47,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   viewType: string;
   tracksModule:boolean = false;
   moduleId:number = 0;
+	@Output() updatedItemsCountEmitter = new EventEmitter();
+	@Input() folderListViewExpanded = false;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -256,6 +258,7 @@ setViewType(viewType: string) {
           }
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
+          this.callFolderListViewEmitter();
         } else {
           swal("Please Contact Admin!", response.message, "error");
         }
@@ -342,5 +345,13 @@ setViewType(viewType: string) {
   refreshPage() {
     this.listLearningTracks(this.pagination);
   }
+
+  callFolderListViewEmitter(){
+		if(this.folderListView){
+			this.exportObject['categoryId'] = this.categoryId;
+      this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+      this.updatedItemsCountEmitter.emit(this.exportObject);
+		}
+	 }
 
 }

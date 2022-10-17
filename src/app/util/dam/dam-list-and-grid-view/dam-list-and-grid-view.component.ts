@@ -78,6 +78,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	folderListView = false;
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
+	@Input() folderListViewExpanded = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -132,7 +133,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
-		} else if (this.referenceService.isAssetDetailsUpldated) {
+		} else if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
 		this.getCompanyId();		
