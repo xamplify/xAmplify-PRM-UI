@@ -166,12 +166,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   goBack() {
     this.loading = true;
-    if(this.categoryId!=undefined && this.categoryId>0){
-      this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);
-    }else{
-      this.referenceService.goToManageAssets(this.viewType,false);
-    }
-    
+    this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
   }
 
   refreshPage() {

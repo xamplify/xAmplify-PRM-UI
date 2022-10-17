@@ -16,13 +16,12 @@ import { UserService } from '../../core/services/user.service';
 
 declare var $, CKEDITOR: any;
 @Component({
-  selector: 'app-add-dam',
-  templateUrl: './add-dam.component.html',
-  styleUrls: ['./add-dam.component.css'],
-  providers: [Properties, Pagination, HttpRequestLoader]
+  selector: "app-add-dam",
+  templateUrl: "./add-dam.component.html",
+  styleUrls: ["./add-dam.component.css"],
+  providers: [Properties, Pagination, HttpRequestLoader],
 })
 export class AddDamComponent implements OnInit, OnDestroy {
-
   ngxloading = false;
   jsonBody: any;
   damPostDto: DamPostDto = new DamPostDto();
@@ -44,32 +43,49 @@ export class AddDamComponent implements OnInit, OnDestroy {
   isValidDescription = false;
   beeContainerInput = {};
   tags: Array<Tag> = new Array<Tag>();
-	tagFirstColumnEndIndex: number = 0;
-	tagsListFirstColumn: Array<Tag> = new Array<Tag>();
-	tagsListSecondColumn: Array<Tag> = new Array<Tag>();
-	tagSearchKey: string = "";
-	tagsLoader: HttpRequestLoader = new HttpRequestLoader();
+  tagFirstColumnEndIndex: number = 0;
+  tagsListFirstColumn: Array<Tag> = new Array<Tag>();
+  tagsListSecondColumn: Array<Tag> = new Array<Tag>();
+  tagSearchKey: string = "";
+  tagsLoader: HttpRequestLoader = new HttpRequestLoader();
   openAddTagPopup: boolean = false;
-	ckeConfig: any;
-	@ViewChild("ckeditor") ckeditor: any;
+  ckeConfig: any;
+  @ViewChild("ckeditor") ckeditor: any;
   isCkeditorLoaded: boolean = false;
   descriptionErrorMessage: string;
- /***XNFR-169*****/
- categoryNames: any;
- filteredCategoryNames: any;
- showFolderDropDown = false;
- selectedCategoryId = 0;
-  constructor(private xtremandLogger: XtremandLogger, public router: Router, private route: ActivatedRoute, public properties: Properties, private damService: DamService, private authenticationService: AuthenticationService, public referenceService: ReferenceService, private httpClient: HttpClient, public userService: UserService) {
+  /***XNFR-169*****/
+  categoryNames: any;
+  filteredCategoryNames: any;
+  showFolderDropDown = false;
+  selectedCategoryId = 0;
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  constructor(
+    private xtremandLogger: XtremandLogger,
+    public router: Router,
+    private route: ActivatedRoute,
+    public properties: Properties,
+    private damService: DamService,
+    private authenticationService: AuthenticationService,
+    public referenceService: ReferenceService,
+    private httpClient: HttpClient,
+    public userService: UserService
+  ) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-169****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
   }
 
   ngOnInit() {
     this.ngxloading = true;
-    this.beeContainerInput['module'] = "dam";
-    if (this.router.url.indexOf('/edit') > -1) {
-      this.assetId = parseInt(this.route.snapshot.params['id']);
+    this.beeContainerInput["module"] = "dam";
+    if (this.router.url.indexOf("/edit") > -1) {
+      this.assetId = parseInt(this.route.snapshot.params["id"]);
       if (this.assetId > 0) {
-        this.isPartnerView = this.router.url.indexOf('/editp') > -1;
+        this.isPartnerView = this.router.url.indexOf("/editp") > -1;
         this.isAdd = false;
         this.modalTitle = "Update Details";
         this.saveOrUpdateButtonText = "Update";
@@ -83,16 +99,18 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.modalTitle = "Add Details";
       this.saveOrUpdateButtonText = "Save";
       this.listCategories();
-      this.httpClient.get("assets/config-files/bee-default-asset.json").subscribe(data => {
-        this.jsonBody = JSON.stringify(data);
-        this.beeContainerInput['jsonBody'] = this.jsonBody;
-        this.ngxloading = false;
-      });
+      this.httpClient
+        .get("assets/config-files/bee-default-asset.json")
+        .subscribe((data) => {
+          this.jsonBody = JSON.stringify(data);
+          this.beeContainerInput["jsonBody"] = this.jsonBody;
+          this.ngxloading = false;
+        });
     }
   }
 
   ngOnDestroy() {
-    $('#addAssetDetailsPopup').modal('hide');
+    $("#addAssetDetailsPopup").modal("hide");
     this.openAddTagPopup = false;
   }
 
@@ -102,75 +120,66 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   getById() {
-    this.damService.getById(this.assetId, this.isPartnerView).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        let dam = result.data;
-        if (dam != undefined) {
-          this.jsonBody = dam.jsonBody;
-          this.beeContainerInput['jsonBody'] = this.jsonBody;
-          this.damPostDto.name = dam.assetName;
-          this.damPostDto.description = dam.description;
-          this.name = dam.assetName;
-          this.validForm = true;
-          this.isValidName = true;
-          this.isValidDescription = true;
-          this.nameErrorMessage = "";
-          this.description = dam.description;
-          this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
-          this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
-          this.beeContainerInput['vendorCompanyLogoPath'] = this.vendorCompanyLogoPath;
-          this.beeContainerInput['partnerCompanyLogoPath'] = this.partnerCompanyLogoPath;
-          if(dam.tagIds == undefined){
-            this.damPostDto.tagIds = new Array<number>();
+    this.damService.getById(this.assetId, this.isPartnerView).subscribe(
+      (result: any) => {
+        if (result.statusCode === 200) {
+          let dam = result.data;
+          if (dam != undefined) {
+            this.jsonBody = dam.jsonBody;
+            this.beeContainerInput["jsonBody"] = this.jsonBody;
+            this.damPostDto.name = dam.assetName;
+            this.damPostDto.description = dam.description;
+            this.name = dam.assetName;
+            this.validForm = true;
+            this.isValidName = true;
+            this.isValidDescription = true;
+            this.nameErrorMessage = "";
+            this.description = dam.description;
+            this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
+            this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
+            this.beeContainerInput["vendorCompanyLogoPath"] =
+              this.vendorCompanyLogoPath;
+            this.beeContainerInput["partnerCompanyLogoPath"] =
+              this.partnerCompanyLogoPath;
+            if (dam.tagIds == undefined) {
+              this.damPostDto.tagIds = new Array<number>();
+            } else {
+              this.damPostDto.tagIds = dam.tagIds;
+            }
+            this.damPostDto.categoryId = dam.categoryId;
+            this.selectedCategoryId = dam.categoryId;
           } else {
-            this.damPostDto.tagIds = dam.tagIds;
+            this.goToManageSectionWithError();
           }
-          this.damPostDto.categoryId = dam.categoryId;
-          this.selectedCategoryId = dam.categoryId;
+          this.ngxloading = false;
         } else {
-          this.goToManageSectionWithError();
+          this.referenceService.goToPageNotFound();
         }
+      },
+      (error) => {
+        this.xtremandLogger.log(error);
         this.ngxloading = false;
-      }else{
-        this.referenceService.goToPageNotFound();
+        this.goBack();
+        this.referenceService.showSweetAlertServerErrorMessage();
       }
-    }, error => {
-      this.xtremandLogger.log(error);
-      this.ngxloading = false;
-      this.goBack();
-      this.referenceService.showSweetAlertServerErrorMessage();
-    });
-  }
-
-  goBack() {
-    this.ngxloading = true;
-    if (this.isPartnerView) {
-      this.referenceService.goToRouter("/home/dam/shared");
-    } else {
-      if(this.isAdd){
-        this.referenceService.goToRouter("/home/dam/select");
-      }else{
-        this.referenceService.goToRouter("/home/dam/manage");
-      }
-    }
+    );
   }
 
   readBeeTemplateData(event: any) {
     this.ngxloading = true;
     this.damPostDto.jsonBody = event.jsonContent;
     this.damPostDto.htmlBody = event.htmlContent;
-    if(!this.isPartnerView){
+    if (!this.isPartnerView) {
       this.listTags(new Pagination());
-      $('#addAssetDetailsPopup').modal('show');
+      $("#addAssetDetailsPopup").modal("show");
       this.ngxloading = false;
-    }else{
+    } else {
       this.saveOrUpdate(false);
     }
-   
   }
 
   hidePopup() {
-    $('#addAssetDetailsPopup').modal('hide');
+    $("#addAssetDetailsPopup").modal("hide");
     if (!this.isAdd || this.isPartnerView) {
       if ($.trim(this.damPostDto.name).length == 0) {
         this.damPostDto.name = this.name;
@@ -178,17 +187,22 @@ export class AddDamComponent implements OnInit, OnDestroy {
       if ($.trim(this.damPostDto.description).length == 0) {
         this.damPostDto.description = this.description;
       }
-      this.validateForm('name');
-      this.validateForm('description');
+      this.validateForm("name");
+      this.validateForm("description");
       this.validateFields();
     }
   }
 
-  validateForm(columnName:string){
-    if(columnName=="name"){
-      this.isValidName = $.trim(this.damPostDto.name)!=undefined && $.trim(this.damPostDto.name).length>0;
-    }else if(columnName=="description"){
-      this.isValidDescription = $.trim(this.damPostDto.description)!=undefined && $.trim(this.damPostDto.description).length>0 && $.trim(this.damPostDto.description).length < 5000;
+  validateForm(columnName: string) {
+    if (columnName == "name") {
+      this.isValidName =
+        $.trim(this.damPostDto.name) != undefined &&
+        $.trim(this.damPostDto.name).length > 0;
+    } else if (columnName == "description") {
+      this.isValidDescription =
+        $.trim(this.damPostDto.description) != undefined &&
+        $.trim(this.damPostDto.description).length > 0 &&
+        $.trim(this.damPostDto.description).length < 5000;
       this.updateDescriptionErrorMessage();
     }
     this.validateFields();
@@ -198,20 +212,29 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.validForm = this.isValidName && this.isValidDescription;
   }
 
-  updateDescriptionErrorMessage(){
-		if($.trim(this.damPostDto.description).length < 5000){
-			this.descriptionErrorMessage = "";
-		} else {
-			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
-		}
+  updateDescriptionErrorMessage() {
+    if ($.trim(this.damPostDto.description).length < 5000) {
+      this.descriptionErrorMessage = "";
+    } else {
+      this.descriptionErrorMessage =
+        "Description can't exceed 5000 characters.";
+    }
   }
-  
-  saveOrUpdate(saveAs:boolean) {
+
+  saveOrUpdate(saveAs: boolean) {
     this.customResponse = new CustomResponse();
-    if(!saveAs && this.selectedCategoryId!=this.damPostDto.categoryId && !this.isAdd){
+    if (
+      !saveAs &&
+      this.selectedCategoryId != this.damPostDto.categoryId &&
+      !this.isAdd
+    ) {
       this.referenceService.scrollToModalBodyTopByClass();
-      this.customResponse = new CustomResponse('ERROR','Folder name cannot be changed for history templates',true);
-    }else{
+      this.customResponse = new CustomResponse(
+        "ERROR",
+        "Folder name cannot be changed for history templates",
+        true
+      );
+    } else {
       this.getCkEditorData();
       this.nameErrorMessage = "";
       this.modalPopupLoader = true;
@@ -222,164 +245,197 @@ export class AddDamComponent implements OnInit, OnDestroy {
         if (!this.isAdd && !saveAs) {
           this.damPostDto.id = this.assetId;
         }
-        this.damService.save(this.damPostDto).subscribe((result: any) => {
-          this.hidePopup();
-          this.referenceService.isCreated = true;
-          this.referenceService.goToRouter("/home/dam/manage");
-          this.modalPopupLoader = false;
-        }, error => {
-          this.showErrorMessageOnSaveOrUpdate(error);
-        });
+        this.damService.save(this.damPostDto).subscribe(
+          (result: any) => {
+            this.hidePopup();
+            this.referenceService.isCreated = true;
+            this.referenceService.goToRouter("/home/dam/manage");
+            this.modalPopupLoader = false;
+          },
+          (error) => {
+            this.showErrorMessageOnSaveOrUpdate(error);
+          }
+        );
+      }
     }
-    
-    }
-
-
   }
 
   updatePublishedAsset() {
     this.damPostDto.id = this.assetId;
-    this.damService.updatePublishedAsset(this.damPostDto).subscribe((result: any) => {
-      this.hidePopup();
-      this.referenceService.isUpdated = true;
-      this.referenceService.goToRouter("/home/dam/shared");
-      this.modalPopupLoader = false;
-    }, error => {
-      this.xtremandLogger.errorPage(error);
-    });
+    this.damService.updatePublishedAsset(this.damPostDto).subscribe(
+      (result: any) => {
+        this.hidePopup();
+        this.referenceService.isUpdated = true;
+        this.referenceService.goToRouter("/home/dam/shared");
+        this.modalPopupLoader = false;
+      },
+      (error) => {
+        this.xtremandLogger.errorPage(error);
+      }
+    );
   }
 
   showErrorMessageOnSaveOrUpdate(error: any) {
     this.modalPopupLoader = false;
-    let statusCode = JSON.parse(error['status']);
+    let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
       this.validForm = false;
       this.nameErrorMessage = "Already exists";
     } else {
-      this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+      this.customResponse = new CustomResponse(
+        "ERROR",
+        this.properties.serverErrorMessage,
+        true
+      );
     }
   }
 
-  saveAs(){
+  saveAs() {
     this.referenceService.showSweetAlertInfoMessage();
   }
 
-	goToManageDam() {
-		this.ngxloading = true;
-      if (this.isPartnerView) {
-      			this.referenceService.goToRouter("/home/dam/shared");
-          }else{		
-				this.referenceService.goToRouter("home/dam/manage");
-		}
-	}
-	
-	goToSelect(){
-		this.ngxloading = true;
-		this.referenceService.goToRouter("home/dam/select");
-	}
+  goBack() {
+    this.goToManageDam();
+  }
+  /******XNFR-169********/
+  goToManageDam() {
+    this.ngxloading = true;
+    if (this.isPartnerView) {
+      this.referenceService.goToRouter("/home/dam/shared");
+    } else {
+      if (this.isAdd) {
+        this.referenceService.goToRouter("/home/dam/select");
+      } else {
+        this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+      }
+    }
+  }
 
-   /*****************List Tags*******************/
- listTags(pagination: Pagination) {
-  pagination.userId = this.loggedInUserId;
-  pagination.maxResults = 0;
-  this.referenceService.startLoader(this.tagsLoader);
-  this.userService.getTagsSearchTagName(pagination)
-    .subscribe(
-      response => {
+  goToSelect() {
+    this.ngxloading = true;
+    this.referenceService.goToRouter("home/dam/select");
+  }
+
+  /*****************List Tags*******************/
+  listTags(pagination: Pagination) {
+    pagination.userId = this.loggedInUserId;
+    pagination.maxResults = 0;
+    this.referenceService.startLoader(this.tagsLoader);
+    this.userService.getTagsSearchTagName(pagination).subscribe(
+      (response) => {
         const data = response.data;
         this.tags = data.tags;
         let length = this.tags.length;
-        if ((length % 2) == 0) {
+        if (length % 2 == 0) {
           this.tagFirstColumnEndIndex = length / 2;
-          this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex);
-          this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex);
+          this.tagsListFirstColumn = this.tags.slice(
+            0,
+            this.tagFirstColumnEndIndex
+          );
+          this.tagsListSecondColumn = this.tags.slice(
+            this.tagFirstColumnEndIndex
+          );
         } else {
           this.tagFirstColumnEndIndex = (length - (length % 2)) / 2;
-          this.tagsListFirstColumn = this.tags.slice(0, this.tagFirstColumnEndIndex + 1);
-          this.tagsListSecondColumn = this.tags.slice(this.tagFirstColumnEndIndex + 1);
+          this.tagsListFirstColumn = this.tags.slice(
+            0,
+            this.tagFirstColumnEndIndex + 1
+          );
+          this.tagsListSecondColumn = this.tags.slice(
+            this.tagFirstColumnEndIndex + 1
+          );
         }
         this.referenceService.stopLoader(this.tagsLoader);
       },
       (error: any) => {
-        this.customResponse = this.referenceService.showServerErrorResponse(this.tagsLoader);
+        this.customResponse = this.referenceService.showServerErrorResponse(
+          this.tagsLoader
+        );
         this.referenceService.stopLoader(this.tagsLoader);
       },
-      () => this.xtremandLogger.info('Finished listTags()')
+      () => this.xtremandLogger.info("Finished listTags()")
     );
-}
+  }
 
-searchTags() {
-  let pagination: Pagination = new Pagination();
-  pagination.searchKey = this.tagSearchKey;
-  this.listTags(pagination);
-}
+  searchTags() {
+    let pagination: Pagination = new Pagination();
+    pagination.searchKey = this.tagSearchKey;
+    this.listTags(pagination);
+  }
 
-tagEventHandler(keyCode: any) { if (keyCode === 13) { this.searchTags(); } }
+  tagEventHandler(keyCode: any) {
+    if (keyCode === 13) {
+      this.searchTags();
+    }
+  }
 
-updateSelectedTags(tag: Tag, checked: boolean) {
-  let index = this.damPostDto.tagIds.indexOf(tag.id);
-  if (checked == undefined) {
-    if (index > -1) {
-      this.damPostDto.tagIds.splice(index, 1);
-    } else {
+  updateSelectedTags(tag: Tag, checked: boolean) {
+    let index = this.damPostDto.tagIds.indexOf(tag.id);
+    if (checked == undefined) {
+      if (index > -1) {
+        this.damPostDto.tagIds.splice(index, 1);
+      } else {
+        this.damPostDto.tagIds.push(tag.id);
+      }
+    } else if (checked) {
       this.damPostDto.tagIds.push(tag.id);
+    } else {
+      this.damPostDto.tagIds.splice(index, 1);
     }
-  } else if (checked) {
-    this.damPostDto.tagIds.push(tag.id);
-  } else {
-    this.damPostDto.tagIds.splice(index, 1);
   }
-}
 
-addTag() {
-  this.openAddTagPopup = true;
-}
-
-resetTagValues(message: any) {
-  this.openAddTagPopup = false;
-  this.showSuccessMessage(message);
-  this.listTags(new Pagination());
-}
-
-showSuccessMessage(message: any) {
-  if (message != undefined) {
-    this.customResponse = new CustomResponse('SUCCESS', message, true);
+  addTag() {
+    this.openAddTagPopup = true;
   }
-}
 
-onReady(event: any) {
-  this.isCkeditorLoaded = true;
-}
-
-getCkEditorData() {
-  if(CKEDITOR!=undefined){
-  for (var instanceName in CKEDITOR.instances) {
-    CKEDITOR.instances[instanceName].updateElement();
-    this.damPostDto.description = CKEDITOR.instances[instanceName].getData();
+  resetTagValues(message: any) {
+    this.openAddTagPopup = false;
+    this.showSuccessMessage(message);
+    this.listTags(new Pagination());
   }
-  }
-}
 
-/*****************List Categories*******************/
-listCategories() {
-  this.ngxloading = true;
-  this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
-    (data: any) => {
-      this.categoryNames = data.data;
-      if(this.isAdd){
-        let category = this.categoryNames[0];
-        this.damPostDto.categoryId = category['id'];
+  showSuccessMessage(message: any) {
+    if (message != undefined) {
+      this.customResponse = new CustomResponse("SUCCESS", message, true);
     }
-      this.ngxloading = false;
-      this.showFolderDropDown = true;
-    },
-    error => {
-      this.ngxloading = false;
-      this.showFolderDropDown = true;
-    });
-}
-getSelectedCategoryId(categoryId:number){
+  }
+
+  onReady(event: any) {
+    this.isCkeditorLoaded = true;
+  }
+
+  getCkEditorData() {
+    if (CKEDITOR != undefined) {
+      for (var instanceName in CKEDITOR.instances) {
+        CKEDITOR.instances[instanceName].updateElement();
+        this.damPostDto.description =
+          CKEDITOR.instances[instanceName].getData();
+      }
+    }
+  }
+
+  /*****************List Categories*******************/
+  listCategories() {
+    this.ngxloading = true;
+    this.authenticationService
+      .getCategoryNamesByUserId(this.loggedInUserId)
+      .subscribe(
+        (data: any) => {
+          this.categoryNames = data.data;
+          if (this.isAdd) {
+            let category = this.categoryNames[0];
+            this.damPostDto.categoryId = category["id"];
+          }
+          this.ngxloading = false;
+          this.showFolderDropDown = true;
+        },
+        (error) => {
+          this.ngxloading = false;
+          this.showFolderDropDown = true;
+        }
+      );
+  }
+  getSelectedCategoryId(categoryId: number) {
     this.damPostDto.categoryId = categoryId;
-}
-
+  }
 }

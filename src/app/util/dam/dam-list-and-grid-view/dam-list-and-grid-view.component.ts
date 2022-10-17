@@ -376,11 +376,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	addOrEdit(id: number) {
 		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/editp/" + id);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/editp/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		} else {
-			this.referenceService.goToRouter("/home/dam/edit/" + id);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/edit/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		}
-
 	}
 
 

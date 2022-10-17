@@ -2986,4 +2986,13 @@ export class ReferenceService {
 			this.goToRouter(url+ "/" + viewType);
 		}
   }
+
+  /*******XNFR-169**********/
+  navigateToManageAssetsByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageAssetsByCategoryId(folderViewType,viewType,categoryId,false);
+    } else {
+      this.goToManageAssets(viewType, false);
+    }
+  }
 }
