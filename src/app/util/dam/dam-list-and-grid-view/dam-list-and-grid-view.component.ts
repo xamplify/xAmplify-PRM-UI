@@ -459,7 +459,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
     editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
         if (!beeTemplate && this.isVideo(assetType)) {
-            this.showEditVideo(alias, id);
+			if(this.folderListView){
+				this.referenceService.showSweetAlertInfoMessage();
+			}else{
+				this.showEditVideo(alias, id);
+			}
         } else {
             this.loading = true;
 			/*****XNFR-169***/
