@@ -1,30 +1,30 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { DamService } from '../services/dam.service';
+import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 
 /*****Common Imports**********************/
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
-import { SortOption } from '../../core/models/sort-option';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { UtilService } from '../../core/services/util.service';
+import { SortOption } from 'app/core/models/sort-option';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { UtilService } from 'app/core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
-import { Properties } from '../../common/models/properties';
+import { Properties } from 'app/common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
-import { AssetDetailsViewDto } from '../models/asset-details-view-dto';
+import { AssetDetailsViewDto } from 'app/dam/models/asset-details-view-dto';
 import { Ng2DeviceService } from 'ng2-device-detector';
-import { VanityLoginDto } from '../../util/models/vanity-login-dto';
-import { SaveVideoFile } from '../../videos/models/save-video-file';
-import { VideoFileService } from '../../videos/services/video-file.service';
-import { UserService } from '../../core/services/user.service';
-import { VideoUtilService } from '../../videos/services/video-util.service';
-import { ActionsDescription } from '../../common/models/actions-description';
-
-declare var $, swal: any;
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { UserService } from 'app/core/services/user.service';
+import { VideoUtilService } from 'app/videos/services/video-util.service';
+import { ActionsDescription } from 'app/common/models/actions-description';
+import { Roles } from 'app/core/models/roles';
+declare var $:any, swal: any;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
@@ -65,11 +65,20 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	showPdfModalPopup: boolean;
 	deleteAsset = false;
 	hasVideoRole = false;
-    hasCampaignRole = false;
-    hasAllAccess = false;
-    hasDamAccess = false;
+	hasCampaignRole = false;
+	hasAllAccess = false;
+	hasDamAccess = false;
 	@Output() newItemEvent  = new EventEmitter<any>();
-	
+	/********XNFR-169******/
+	roles:Roles = new Roles();
+	categoryId = 0;
+	showUpArrowButton = false;
+	folderViewType = "";
+	@Input() folderListViewCategoryId:any;
+	folderListView = false;
+	exportObject = {};
+	@Output() updatedItemsCountEmitter = new EventEmitter();
+	@Input() folderListViewExpanded = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -78,7 +87,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.vanityLoginDto.userId = this.loggedInUserId;
 			this.vanityLoginDto.vanityUrlFilter = true;
 		}
-		//this.videoFileService.videoType ='myAssets';
 	}
 
 	ngOnInit() {
@@ -88,20 +96,35 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	callInitMethods() {
 		localStorage.removeItem('campaignReport');
-        localStorage.removeItem('saveVideoFile');
-        localStorage.removeItem('assetName');
+		localStorage.removeItem('saveVideoFile');
+		localStorage.removeItem('assetName');
 		this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);
-        this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-        this.hasAllAccess = this.referenceService.hasAllAccess();
+		this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
+		this.hasAllAccess = this.referenceService.hasAllAccess();
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
-		this.viewType = this.route.snapshot.params['viewType'];
+		if(this.folderListViewCategoryId!=undefined){
+			this.categoryId = this.folderListViewCategoryId;
+			this.folderListView = true;
+		}else{
+			this.viewType = this.route.snapshot.params['viewType'];
+			this.categoryId = this.route.snapshot.params['categoryId'];
+			this.folderViewType = this.route.snapshot.params['folderViewType'];
+			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+		}
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
-			this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-			if (this.modulesDisplayType.isFolderGridView || this.modulesDisplayType.isFolderListView) {
-				this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, 'l');
+			if(this.categoryId==undefined || this.categoryId==0){
+				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
+				if(this.modulesDisplayType.isFolderListView){
+					this.viewType = "fl";
+					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
+				}else if(this.modulesDisplayType.isFolderGridView){
+					this.viewType = "fg";
+					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
+				}
 			}
 		}
 		if (this.referenceService.isCreated) {
@@ -110,7 +133,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
 		} else if (this.referenceService.isUploaded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
-		} else if (this.referenceService.isAssetDetailsUpldated) {
+		} else if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
 		this.getCompanyId();		
@@ -123,17 +146,24 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isAssetDetailsUpldated = false;
 	}
 
+	/********XNFR-169******/
 	setViewType(viewType: string) {
-		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/shared/" + viewType);
-		} else {
-			this.referenceService.goToRouter("/home/dam/manage/" + viewType);
+		if(this.viewType!=viewType){
+			if (this.folderListView) {
+				let gridView = "g" == viewType;
+				this.modulesDisplayType.isGridView = gridView;
+				this.modulesDisplayType.isListView = !gridView;
+			} else {
+				if (this.folderViewType != undefined && viewType != "fg") {
+					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
+				} else {
+					this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+				}
+			}
 		}
-
 	}
 
 	startLoaders() {
-		this.loading = true;
 		this.referenceService.loading(this.listLoader, true);
 	}
 
@@ -163,7 +193,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 							this.listPublishedAssets(this.pagination);
 						} else {
 							this.pagination.userId = this.loggedInUserId;
-							//this.pagination.type = this.videoFileService.videoType;
 							this.listAssets(this.pagination);
 						}
 					}
@@ -188,8 +217,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.loading(this.listLoader, false);
 	}
 	listAssets(pagination: Pagination) {
-		this.referenceService.goToTop();
+		if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
 		this.startLoaders();
+		pagination.categoryId = this.categoryId;
 		this.damService.list(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -225,8 +257,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	listPublishedAssets(pagination: Pagination) {
-		this.referenceService.goToTop();
+		if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
 		this.startLoaders();
+		pagination.categoryId = this.categoryId;
 		this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
@@ -296,7 +331,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.listPublishedAssets(this.pagination);
 		} else {
 			this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
-			//this.pagination.type = this.videoFileService.videoType;
 			this.listAssets(this.pagination);
 		}
 
@@ -321,7 +355,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	listAssetsHistory(pagination: Pagination) {
 		pagination.companyId = this.loggedInUserCompanyId;
 		pagination.userId = this.loggedInUserId;
-		this.loading = true;
 		this.referenceService.loading(this.historyLoader, true);
 		this.damService.listHistory(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
@@ -346,11 +379,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	addOrEdit(id: number) {
 		if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/editp/" + id);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/editp/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		} else {
-			this.referenceService.goToRouter("/home/dam/edit/" + id);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/edit/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		}
-
 	}
 
 
@@ -369,19 +401,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.historyPagination = new Pagination();
 	}
 
-
-
-
-
-
-
     viewAnalytics(asset: any) {
         this.loading = true;
         localStorage.setItem('assetName', asset.assetName);
         let isVideo = this.isVideo(asset.assetType);
         if (isVideo) {
-        	   if (this.isPartnerView) {
-                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
+        	 if (this.isPartnerView) {
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
             } else {
                 try {
                     this.videoFileService.getVideo(asset.alias, 'DRAFT')
@@ -397,7 +423,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                                 this.videoFileService.campaignReport = true;
                                 localStorage.setItem('campaignReport', 'true');
                                 localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
-                                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+								/*****XNFR-169***/
+								this.navigateToPartnerAnalytics(asset.id);
                             } else {
                                 this.authenticationService.forceToLogout();
                             }
@@ -412,21 +439,39 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 }
             }
         } else {
+			/*****XNFR-169***/
             if (this.isPartnerView) {
-                this.referenceService.goToRouter("/home/dam/pda/" + asset.id);
-
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
             } else {
-                this.referenceService.goToRouter("/home/dam/partnerAnalytics/" + asset.id);
+				this.navigateToPartnerAnalytics(asset.id);
             }
         }
     }
 
+	/*****XNFR-169***/
+	navigateToPartnerAnalytics(id:number){
+		let url = "/home/dam/partnerAnalytics/"+id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
+
+	navigateToDamAnalyticsForPartnerLogin(id:number){
+		let url = "/home/dam/pda/" + id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
+
+
     editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
         if (!beeTemplate && this.isVideo(assetType)) {
-            this.showEditVideo(alias, id);
+			if(this.folderListView){
+				this.referenceService.showSweetAlertInfoMessage();
+			}else{
+				this.showEditVideo(alias, id);
+			}
         } else {
             this.loading = true;
-            this.referenceService.goToRouter("/home/dam/editDetails/" + id);
+			/*****XNFR-169***/
+			let url = "/home/dam/editDetails/"+id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
         }
 	}
 
@@ -553,6 +598,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = {};
 		this.pagination.pageIndex = 1;
 		this.listAssets(this.pagination);
+		this.callFolderListViewEmitter();
 		}else if(response.statusCode==401){
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
@@ -575,7 +621,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	viewDetails(asset:any){
-		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
+		/*****XNFR-169***/
+		let url = "/home/dam/sharedp/view/"+asset.id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 	
     showEditVideo(alias:string, id: number) {
@@ -592,11 +640,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 this.videoFileService.saveVideoFile = editVideoFile;
                 this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
                 this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-                this.xtremandLogger.log('show edit vidoe object :');
-                this.xtremandLogger.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
                 this.newItemEvent.emit(false);
-                //this.showVideosPage(false, true, false, false);
                 }else{
                     this.authenticationService.forceToLogout();
                 }
@@ -615,10 +660,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     }
 
     showVideosPage(manageVideos: boolean, editVideo: boolean, playVideo: boolean, campaignReport: boolean) {
-        // this.manageVideos = manageVideos;
-        
-       // this.playVideo = playVideo;
-        //this.campaignReport = campaignReport;
         this.newItemEvent.emit(false);
     }
 
@@ -653,7 +694,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.pagination.type = videoType;
-        //this.videoFileService.videoType =videoType;
         this.pagination.userId = this.loggedInUserId;
         this.sortOption.searchKey = null;
         this.pagination.searchKey = this.sortOption.searchKey;
@@ -666,11 +706,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
          this.videoFileService.getVideo(alias, viewBy)
              .subscribe((videoFile: SaveVideoFile) => {
                  if(videoFile.access){
-                 console.log(videoFile);
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 //this.referenceService.videoType =  this.videoFileService.videoType;
                  this.router.navigateByUrl('/home/campaigns/create');
                  }else{
                      this.authenticationService.forceToLogout();
@@ -684,5 +722,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
      }
 
 
+	 callFolderListViewEmitter(){
+		if(this.folderListView){
+			this.exportObject['categoryId'] = this.categoryId;
+            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+            this.updatedItemsCountEmitter.emit(this.exportObject);
+		}
+	 }
 
 }

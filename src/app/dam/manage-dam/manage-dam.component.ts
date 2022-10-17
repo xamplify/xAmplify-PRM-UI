@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 @Component({
 	selector: 'app-manage-dam',
@@ -16,7 +17,20 @@ export class ManageDamComponent implements OnInit {
 	loading = false;
 	uploadAsset = false;
 	isPartnerView = false;
-	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
+	/******XNFR-169********/
+	viewType: string;
+    categoryId: number;
+    folderViewType: string;
+	modulesDisplayType = new ModulesDisplayType();
+
+	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
+		private router: Router,private route: ActivatedRoute) {
+		/****XNFR-169****/
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
+		this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+		this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
 	}
 
 	ngOnInit() {
@@ -30,8 +44,8 @@ export class ManageDamComponent implements OnInit {
 	}
 
 	showSuccessMessage(){
-	this.referenceService.isUploaded = true;
-    this.referenceService.goToRouter("/home/dam/manage");
+	 this.referenceService.isUploaded = true;
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
 
 	goToUploadComponent(){
@@ -40,11 +54,7 @@ export class ManageDamComponent implements OnInit {
 	}
 	goToDam(){
 		this.loading = true;
-		if(this.isPartnerView){
-			this.referenceService.goToRouter("/home/dam/shared");
-		}else{
-			this.referenceService.goToRouter("/home/dam/manage");
-		}
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
 	
     setManageDam(result: any) {
@@ -62,7 +72,7 @@ export class ManageDamComponent implements OnInit {
         if (videoFile != null) {
             this.referenceService.isAssetDetailsUpldated = true;
         }
-        this.referenceService.goToRouter("home/dam/manage");
+        this.goToDam();
     }
     
     

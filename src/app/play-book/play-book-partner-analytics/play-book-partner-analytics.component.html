@@ -7,7 +7,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <a (click)="goToManagePlayBooks()">Manage Play Books</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a (click)="routeToAnalytics()">Analytics</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>

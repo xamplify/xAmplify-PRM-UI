@@ -166,12 +166,18 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   isAssestPopUpOpen : boolean = false;
   isPreviewFromAssetPopup: boolean = false;
-
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-170****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
     this.listTags(new Pagination());
     this.listCategories();
     this.getCompanyId();
@@ -1187,7 +1193,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
-      console.log(this.tracksPlayBook)
       this.referenceService.startLoader(this.httpRequestLoader);
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
@@ -1202,9 +1207,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.referenceService.isCreated = false;
             }
             if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-              this.router.navigate(["/home/tracks/manage"]);
+              this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-              this.router.navigate(["/home/playbook/manage"]);
+              this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+
             }
           } else {
             this.referenceService.showSweetAlertErrorMessage(data.message);

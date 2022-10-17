@@ -119,7 +119,8 @@ import { DisplayDateAndTimeComponent } from './display-date-and-time/display-dat
 import { EditCampaignDetailsModalPopupComponent } from 'app/util/edit-campaign-details-modal-popup/edit-campaign-details-modal-popup.component';
 import { OneClickLaunchPartnerPreviewComponent } from 'app/util/one-click-launch-partner-preview/one-click-launch-partner-preview.component';
 import { CommentsComponent } from 'app/util/comments/comments.component';
-
+import { FolderTypeViewUtilComponent } from 'app/util/folder-type-view-util/folder-type-view-util.component';
+import { DamListAndGridViewComponent } from 'app/util/dam/dam-list-and-grid-view/dam-list-and-grid-view.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -142,7 +143,7 @@ import { CommentsComponent } from 'app/util/comments/comments.component';
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent],
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -164,7 +165,7 @@ import { CommentsComponent } from 'app/util/comments/comments.component';
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent]
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent]
 
 
 

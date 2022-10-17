@@ -7,9 +7,9 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isCreatedUser" [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
+                <a *ngIf="isCreatedUser" (click)="goToManageTracks()">Manage Tracks</a>
                 <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isCreatedUser" [routerLink]="['/home/tracks/shared']">shared Tracks</a>
+                <a *ngIf="!isCreatedUser" (click)="goToManageSharedTracks()">Shared Tracks</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>View Track</a>
             </li>

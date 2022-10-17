@@ -27,8 +27,7 @@ export class HttpService extends Http {
     this.turnOnModal();
     this.pendingRequests++;
     return observable
-      .do((res: Response) => {
-        console.log("http service:"+res);
+      .do((_res: Response) => {
       }, (err: any) => {
         let status = err['status'];
         if(status==0 && !this.router.url.includes('/login') && !this.router.url.includes('https://pro.ip-api.com')){

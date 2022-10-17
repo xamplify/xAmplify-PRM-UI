@@ -784,3 +784,8 @@ input:checked + .slider-new:before {
   padding-bottom:10px;
   padding-top:10px
 }
+
+/*****XNFR-169****/
+.module-icon-cw{
+  width: 158px !important;
+}

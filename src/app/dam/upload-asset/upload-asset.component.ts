@@ -98,19 +98,20 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     processing : boolean = false;
     videoPreviewPath: SafeUrl;
     showVideoPreview : boolean = false;
-   // inputVideofile : File = null;
     fileSize : number = 0;
     progress: number = 0;
     isDisable: boolean = false;
     isDisableForm: boolean = false;
     isVideoAsset : boolean = false;
-    	
+    /***XNFR-169*****/
+    categoryNames: any;
+    showFolderDropDown = false;
+    viewType: string;
+    categoryId: number;
+    folderViewType: string;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
-		
-		//this.isChecked = false;
-       // this.isDisable = false;
         this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -119,11 +120,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.testSpeedshow = true;
         this.testSpeeddisabled = true;
         this.hideSaveDiscard = true;
-        //this.isFileProgress = false;
         this.textAreaDisable = true;
         this.maxTimeDuration = 3400; // record video time
-        //this.maxVideoSize = 800; // upload video size in MB's
-        
 		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
 		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
 		 $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
@@ -139,7 +137,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.referenceService.isEnabledCamera = true;
         } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
             this.referenceService.cameraIsthere = true;
-             }
+        }
+        /****XNFR-169****/
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
         
 	}
 	
@@ -154,6 +156,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.listTags(new Pagination());
+        /****XNFR-169*****/
+        this.listCategories();
 	}
 
 	ngOnDestroy(): void {
@@ -226,10 +230,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	            this.uploadedCloudAssetName = "";
 	            this.damUploadPostDto.source = "";
 	            this.customResponse = new CustomResponse();
-				//
 				this.formData.append("uploadedFile", file, file['name']);
 				this.uploadedAssetName = file['name'];
-				//this.damUploadPostDto = new DamUploadPostDto();
 				this.damUploadPostDto.cloudContent = false;
 				this.damUploadPostDto.fileName = this.uploadedAssetName;
 	            this.damUploadPostDto.downloadLink = null;
@@ -393,8 +395,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.clearErrors();
 		this.formLoader = true;
 		this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-		console.log(this.damUploadPostDto);
-
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
@@ -404,7 +404,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;
 					}
-					this.referenceService.goToRouter("home/dam/manage");
+                    /******XNFR-169*****/
+					this.goToManageDam();
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
 				} else if (result.statusCode == 404) {
@@ -433,9 +434,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.referenceService.goToTop();
         this.clearErrors();
         this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
-        console.log(this.damUploadPostDto);
         this.isDisableForm = true;
-        
         if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
             swal({
                 text: 'Thanks for waiting while we retrieve your video from '+this.damUploadPostDto.source,
@@ -494,7 +493,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     }
 	
 	processVideo(result: any){
-		//let result = response.body;
 		let path : string = result.map.assetPath;
 		 this.processing = true;
 		if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
@@ -506,7 +504,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	                    }else{
 	                        this.referenceService.isAssetDetailsUpldated = true;
 	                    }
-	                    this.referenceService.goToRouter("home/dam/manage");
+                        /****XNFR-169****/
+	                    this.goToManageDam();
 	                } else if (result.statusCode == 400) {
 	                    this.customResponse = new CustomResponse('ERROR', result.message, true);
 	                } else if (result.statusCode == 404) {
@@ -531,8 +530,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 	
 	goToManageDam() {
+        /********XNFR-169*********/
 		this.loading = true;
-		this.referenceService.goToRouter("home/dam/manage");
+        this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
 	}
 
 	clearErrors() {
@@ -557,11 +557,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 
 	closeCircle(){
-		this.loading = true;
 		if(this.isAdd){
+            this.loading = true;
 			this.referenceService.goToRouter("home/dam/select");
 		}else{
-			this.referenceService.goToRouter("home/dam/manage");
+			this.goToManageDam();
 		}
 	}
 
@@ -617,7 +617,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     } else {
       this.damUploadPostDto.tagIds.splice(index, 1);
     }
-    console.log(this.damUploadPostDto.tagIds)
   }
 
   addTag() {
@@ -680,7 +679,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           this.handleAuthResult.bind(this));
   }
   handleAuthResult(authResult: any) {
-      console.log('close window google drive');
       const self = this;
       if (authResult && !authResult.error) {
           this.tempr = authResult.access_token;
@@ -731,7 +729,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
           const self = this;
           const options = {
               success: function(files: any) {
-                  console.log(files[0].name);
                   self.setCloudContentValues(files[0].name, files[0].link);
               },
               cancel: function() {
@@ -944,7 +941,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 $('.vjs-volume-panel .vjs-control .vjs-volume-panel-horizontal').css('cssText', 'display:none !important');
                 self.stop();
                 self.rageDisabled = false;
-                console.log('finished recording: ', self.player.recordedData);
                 self.recordedVideo = self.player.recordedData;
             });
         }
@@ -970,7 +966,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.closeModalId = false;
            this.textAreaDisable = false; // not using ,need to check
            this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
-           console.log(this.recordedVideo);
            this.formData.delete("uploadedFile");
            this.uploadedAssetName  = "";
            this.uploadedCloudAssetName = "";
@@ -1070,6 +1065,26 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            $('#uploadedAsset').val("");
            this.validateAllFields();
        }
-  
+
+/*****************List Categories*******************/
+  listCategories() {
+    this.loading = true;
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+      (data: any) => {
+        this.categoryNames = data.data;
+        if(this.isAdd){
+            let category = this.categoryNames[0];
+            this.damUploadPostDto.categoryId = category['id'];
+        }
+        this.loading = false;
+        this.showFolderDropDown = true;
+      },
+      error => {
+        this.loading = false;
+        this.showFolderDropDown = true;
+      });
+  }
+  getSelectedCategoryId(categoryId:number){
+      this.damUploadPostDto.categoryId = categoryId;
+  }
 }
-;

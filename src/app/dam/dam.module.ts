@@ -7,7 +7,6 @@ import { DamRoutingModule } from './dam-routing.module';
 import { ManageDamComponent } from './manage-dam/manage-dam.component';
 import {DamService} from './services/dam.service';
 import { AddDamComponent } from './add-dam/add-dam.component';
-import { DamListAndGridViewComponent } from './dam-list-and-grid-view/dam-list-and-grid-view.component';
 import { PublishedDamListComponent } from './published-dam-list/published-dam-list.component';
 import { UploadAssetComponent } from './upload-asset/upload-asset.component';
 import { DamAnalyticsComponent } from './dam-analytics/dam-analytics.component';
@@ -18,13 +17,12 @@ import { ViewDamComponent } from './view-dam/view-dam.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { VideoBasedReportsComponent } from '../videos/manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from '../videos/services/video-base-report.service';
-//import { PlayVideoComponent } from '../videos/manage-video/play-video/play-video.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
-  declarations: [ManageDamComponent, AddDamComponent, DamListAndGridViewComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
+  declarations: [ManageDamComponent, AddDamComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
                   VideoBasedReportsComponent],
   providers: [DamService, VideoBaseReportService]
 })

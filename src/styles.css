@@ -1753,3 +1753,17 @@ strong {
   font-size: 13px !important;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.message-class{
+  position: relative; 
+  top: -10px;
+}
+
+.message-class-folder-list{
+  position: relative; 
+  top: -7px;
+}
+

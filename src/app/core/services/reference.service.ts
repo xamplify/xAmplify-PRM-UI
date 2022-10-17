@@ -15,7 +15,6 @@ import { Timezone } from "../../core/models/timezone";
 import { Ng2DeviceService } from "ng2-device-detector";
 import { EmailTemplate } from "../../email-template/models/email-template";
 import { Campaign } from "../../campaigns/models/campaign";
-import { environment } from "environments/environment";
 import { CampaignAccess } from "app/campaigns/models/campaign-access";
 import { Properties } from "../../common/models/properties";
 import { CustomResponse } from "../../common/models/custom-response";
@@ -23,6 +22,7 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
+
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
@@ -2508,6 +2508,17 @@ export class ReferenceService {
       modulesDisplayType.isGridView = true;
       modulesDisplayType.isFolderGridView = false;
       modulesDisplayType.isFolderListView = false;
+    }else if("fg"==viewType){
+      modulesDisplayType.isListView = false;
+      modulesDisplayType.isGridView = false;
+      modulesDisplayType.isFolderGridView = true;
+      modulesDisplayType.isFolderListView = false;
+    }
+    else if("fl"==viewType){
+      modulesDisplayType.isListView = false;
+      modulesDisplayType.isGridView = false;
+      modulesDisplayType.isFolderGridView = false;
+      modulesDisplayType.isFolderListView = true;
     }
     return modulesDisplayType;
   }
@@ -2918,4 +2929,95 @@ export class ReferenceService {
       $("#"+divId).animate({ scrollTop: $('#'+divId).prop("scrollHeight")}, 1000);
   },250); 
   }
+
+  /*******XNFR-169*******/
+  getCategoryType(moduleId:number){
+    let categoryType = "";
+    if(this.roles.damId==moduleId){
+      categoryType = "DAM";
+    }else if(this.roles.learningTrackId==moduleId){
+      categoryType="LEARNING_TRACK";
+    }else if(this.roles.playbookId==moduleId){
+      categoryType = "PLAY_BOOK";
+    }
+    return categoryType;
+  }
+  
+  getLearningTrackOrPlayBookType(moduleId:number){
+    let categoryType = "";
+    if(this.roles.learningTrackId==moduleId){
+      categoryType="TRACK";
+    }else if(this.roles.playbookId==moduleId){
+      categoryType = "PLAYBOOK";
+    }
+    return categoryType;
+  }
+
+  getListViewAsDefault(viewType:string){
+    if(viewType==undefined){
+      viewType='l';
+    }
+    return viewType;
+  }
+
+  goToManageAssets(viewType:string,isPartnerView:boolean) {
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  goToManageAssetsByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean) {
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
+  }
+
+  goToManageTracksOrPlayBooks(viewType:string,isPartnerView:boolean,tracks:boolean) {
+    let moduleUrl = tracks ? "tracks":"playbook";
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  goToManageTracksOrPlayBooksByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean,tracks:boolean) {
+    let moduleUrl = tracks ? "tracks":"playbook";
+    let urlSuffix = isPartnerView ? 'shared':'manage';
+    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
+  }
+
+  navigateToRouterByViewTypes(url:string,categoryId:number,viewType:string,folderViewType:string,folderListView:boolean){
+    if (categoryId > 0) {
+			if (folderListView) {
+				this.goToRouter(url+ "/fl");
+			} else {
+				this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType) + "/" + categoryId + "/" + folderViewType);
+			}
+		} else {
+			this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType));
+		}
+  }
+
+  /*******XNFR-169**********/
+  navigateToManageAssetsByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageAssetsByCategoryId(folderViewType,viewType,categoryId,isPartnerView);
+    } else {
+      this.goToManageAssets(viewType, isPartnerView);
+    }
+  }
+
+  /*******XNFR-170**********/
+  navigateToManageTracksByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageTracksOrPlayBooksByCategoryId(folderViewType,viewType,categoryId,isPartnerView,true);
+    } else {
+      this.goToManageTracksOrPlayBooks(viewType, isPartnerView,true);
+    }
+  }
+
+  navigateToPlayBooksByViewType(folderViewType:string,viewType:string,categoryId:number,isPartnerView:boolean){
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageTracksOrPlayBooksByCategoryId(folderViewType,viewType,categoryId,isPartnerView,false);
+    } else {
+      this.goToManageTracksOrPlayBooks(viewType, isPartnerView,false);
+    }
+  }
+  
 }

@@ -801,12 +801,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'watchedFully') {
-                object["Email Id"] = this.downloadCsvList[i].name;
+                object["Email Id"] = this.downloadCsvList[i].emailId;
                 object["Campaign Name"] = this.downloadCsvList[i].campaignName;
                 let hours = this.referenceService.formatAMPM(time);
                 object["Date and Time"] = time.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-                object["Device"] = this.downloadCsvList[i].device;
-                object["Location"] = this.downloadCsvList[i].location;
+                object["Device"] = this.downloadCsvList[i].deviceType;
+                object["Location"] = this.downloadCsvList[i].city + ' ' + this.downloadCsvList[i].state + ' ' + this.downloadCsvList[i].country;
             }
             else if (this.downloadTypeName === 'worldMapData') {
                 object["Email Id"] = this.downloadCsvList[i].emailId;
