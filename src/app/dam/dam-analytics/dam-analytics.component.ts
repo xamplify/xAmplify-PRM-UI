@@ -44,12 +44,16 @@ export class DamAnalyticsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  folderListView = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-169****/
     this.viewType = this.route.snapshot.params['viewType'];
 		this.categoryId = this.route.snapshot.params['categoryId'];
 		this.folderViewType = this.route.snapshot.params['folderViewType'];
+    if(this.folderViewType=="fl"){
+			this.folderListView = true;
+		}
   }
 
   ngOnInit() {
@@ -219,7 +223,7 @@ export class DamAnalyticsComponent implements OnInit {
   goBack(){
     this.loading = true;
     if(this.router.url.indexOf("vda")>-1){
-      this.referenceService.goToRouter("/home/dam/partnerAnalytics/"+this.damId);
+      this.referenceService.navigateToRouterByViewTypes("/home/dam/partnerAnalytics/"+this.damId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
     }else{
       this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,!this.vendorView);
     }

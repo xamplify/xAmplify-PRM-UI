@@ -3002,4 +3002,5 @@ export class ReferenceService {
       this.goToManageAssets(viewType, isPartnerView);
     }
   }
+  
 }

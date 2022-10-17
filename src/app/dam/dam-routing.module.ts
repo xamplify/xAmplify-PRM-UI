@@ -44,7 +44,11 @@ export const routes: Routes = [
 	{ path: "partnerAnalytics/:damId/:viewType", component: DamPublishedPartnersAnalyticsComponent },
 	{ path: "partnerAnalytics/:damId/:viewType/:categoryId/:folderViewType", component: DamPublishedPartnersAnalyticsComponent },
 	/*****************************/
+	/************XNFR-169*********/
 	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },
+	{ path: "vda/:damId/:damPartnerId/:partnerId/:viewType", component: DamAnalyticsComponent },
+	{ path: "vda/:damId/:damPartnerId/:partnerId/:viewType/:categoryId/:folderViewType", component: DamAnalyticsComponent },
+	/*****************************/
 	{path:"select",component:SelectUploadTypeComponent},
 	{path:"history/:assetId",component:ShowHistoryComponent},
 	/*********XNFR-169***********/

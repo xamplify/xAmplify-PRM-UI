@@ -39,7 +39,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
-  
+  folderListView = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
               private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
               public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
@@ -48,6 +48,9 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.viewType = this.route.snapshot.params['viewType'];
 		this.categoryId = this.route.snapshot.params['categoryId'];
 		this.folderViewType = this.route.snapshot.params['folderViewType'];
+    if(this.folderViewType=="fl"){
+			this.folderListView = true;
+		}
   }
 
   ngOnInit() {
@@ -175,7 +178,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   viewDetailedAnalytics(partner: any) {
     this.loading = true;
-    this.referenceService.goToRouter("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId);
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
   getSelectedIndex(index: any) {
