@@ -54,13 +54,19 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   formBackgroundImage = "";
   pageBackgroundColor = "";
   formError = false;
-
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,private formService: FormService,
     private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.notifyAnalyticsRouter = new EventEmitter<any>();
+    /****XNFR-170****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
   }
 
   ngOnInit() {
@@ -97,9 +103,6 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
-          // pagination.pagedItems.forEach((value) => {
-          //   value['expanded'] = false;
-          // });
           this.referenceService.stopLoader(this.httpRequestLoader);
           this.initLoader = false;
         } else {
@@ -143,7 +146,6 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   getAllFilteredResults(pagination: Pagination) {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
-    //this.pagination = this.utilService.sortOptionValues(this.formSortOption.formsSortOption, this.pagination);
     this.getPartnerAnalytics(this.pagination);
   }
 
@@ -177,11 +179,6 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
 
   /********************Pagaination&Search Code*****************/
 
-  /*************************Sort********************** */
-  // detailedAnalyticsSortBy(text: any) {
-  //   this.sortOption.formsSortOption = text;
-  //   this.getAllDetailedAnalyticsFilteredResults(this.detailedAnalyticsPagination);
-  // }
 
 
   /*************************Search********************** */
@@ -189,10 +186,6 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
     this.getAllDetailedAnalyticsFilteredResults(this.detailedAnalyticsPagination);
   }
 
-  // paginationDetailedAnalyticsDropdown(items: any) {
-  //   this.sortOption.itemsSize = items;
-  //   this.getAllDetailedAnalyticsFilteredResults(this.detailedAnalyticsPagination);
-  // }
 
   /************Page************** */
   setDetailedAnalyticsPage(event: any) {
@@ -203,25 +196,24 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   getAllDetailedAnalyticsFilteredResults(pagination: Pagination) {
     this.detailedAnalyticsPagination.pageIndex = 1;
     this.detailedAnalyticsPagination.searchKey = this.detailedAnalyticsSortOption.searchKey;
-    //this.pagination = this.utilService.sortOptionValues(this.formSortOption.formsSortOption, this.pagination);
     this.getPartnerDetailedAnalytics(this.detailedAnalyticsPagination);
   }
 
   detailedAnalyticsEventHandler(keyCode: any) { if (keyCode === 13) { this.detailedAnalyticsSearch(); } }
 
   goBack() {
-    let route = "home/tracks/";
+    let route = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      route = "home/tracks/";
+      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      route = "home/playbook/";
+      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     }
     if (this.learningTrackId != undefined && this.learningTrackId > 0) {
-      route = route + "analytics/" + this.learningTrackId;
+      let url = "/home/tracks/analytics/" + this.learningTrackId;
+      this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderViewType=='fl');
     } else if (this.learningTrackId == undefined || this.learningTrackId < 1) {
-      route = route + "manage";
+      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     }
-    this.router.navigate([route]);
   }
 
   refreshPage() {
@@ -229,17 +221,6 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   }
 
   viewAnalytics(partner: any, selectedIndex: number) {
-    // console.log(partner.expand)
-    // this.analyticsPagination = new Pagination();
-    // $.each(this.pagination.pagedItems, function (index, row) {
-    //   if (selectedIndex != index) {
-    //     row.expanded = false;
-    //   }
-    // });
-    // partner.expanded = !partner.expanded;
-    // if (partner.expanded) {
-    //   this.listDetailedAnalytics(this.analyticsPagination);
-    // }
     this.selectedPartnerId = partner.id;
     this.getPartnerDetailedAnalytics(this.detailedAnalyticsPagination);
     $('#analytics-list').modal('show');
