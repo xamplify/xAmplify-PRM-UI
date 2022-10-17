@@ -528,6 +528,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 	
 	goToManageDam() {
+        /********XNFR-169*********/
 		this.loading = true;
 		if(this.categoryId!=undefined && this.categoryId>0){
             this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);

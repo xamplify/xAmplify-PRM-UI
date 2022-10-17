@@ -626,8 +626,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                 this.videoFileService.saveVideoFile = editVideoFile;
                 this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
                 this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-                this.xtremandLogger.log('show edit vidoe object :');
-                this.xtremandLogger.log(this.videoFileService.saveVideoFile);
                 this.videoFileService.actionValue = 'Update';
                 this.newItemEvent.emit(false);
                 }else{

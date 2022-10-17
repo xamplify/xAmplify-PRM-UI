@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute} from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 
 @Component({
@@ -16,7 +16,16 @@ export class ManageDamComponent implements OnInit {
 	loading = false;
 	uploadAsset = false;
 	isPartnerView = false;
-	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
+	/******XNFR-169********/
+	viewType: string;
+    categoryId: number;
+    folderViewType: string;
+	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
+		private router: Router,private route: ActivatedRoute) {
+		/****XNFR-169****/
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
 	}
 
 	ngOnInit() {
@@ -31,7 +40,7 @@ export class ManageDamComponent implements OnInit {
 
 	showSuccessMessage(){
 	this.referenceService.isUploaded = true;
-    this.referenceService.goToRouter("/home/dam/manage");
+   	 this.referenceService.goToRouter("/home/dam/manage");
 	}
 
 	goToUploadComponent(){
@@ -43,7 +52,11 @@ export class ManageDamComponent implements OnInit {
 		if(this.isPartnerView){
 			this.referenceService.goToRouter("/home/dam/shared");
 		}else{
-			this.referenceService.goToRouter("/home/dam/manage");
+			if(this.categoryId!=undefined && this.categoryId>0){
+				this.referenceService.goToManageAssetsByCategoryId(this.folderViewType,this.viewType,this.categoryId,false);
+			  }else{
+				this.referenceService.goToManageAssets(this.viewType,false);
+			  }
 		}
 	}
 	
@@ -62,7 +75,7 @@ export class ManageDamComponent implements OnInit {
         if (videoFile != null) {
             this.referenceService.isAssetDetailsUpldated = true;
         }
-        this.referenceService.goToRouter("home/dam/manage");
+        this.goToDam();
     }
     
     
