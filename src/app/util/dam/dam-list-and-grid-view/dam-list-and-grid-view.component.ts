@@ -76,6 +76,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	folderViewType = "";
 	@Input() folderListViewCategoryId:any;
 	folderListView = false;
+	exportObject = {};
+	@Output() updatedItemsCountEmitter = new EventEmitter();
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public videoUtilService:VideoUtilService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -595,6 +597,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = {};
 		this.pagination.pageIndex = 1;
 		this.listAssets(this.pagination);
+		this.callFolderListViewEmitter();
 		}else if(response.statusCode==401){
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
@@ -718,5 +721,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
      }
 
 
+	 callFolderListViewEmitter(){
+		if(this.folderListView){
+			this.exportObject['categoryId'] = this.categoryId;
+            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+            this.updatedItemsCountEmitter.emit(this.exportObject);
+		}
+	 }
 
 }

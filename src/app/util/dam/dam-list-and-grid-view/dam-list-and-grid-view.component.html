@@ -1,4 +1,4 @@
-<div style="position: relative; top: -10px;">
+<div [className]="folderListView ? 'message-class-folder-list':'message-class'">
 	<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ngx-loading [show]="loading"
@@ -6,7 +6,6 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light clearfix mDamResponse" style="min-height: 644px;">
-
 			<!--List View / Grid View-->
 			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">

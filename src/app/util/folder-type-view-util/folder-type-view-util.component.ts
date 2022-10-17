@@ -143,4 +143,13 @@ export class FolderTypeViewUtilComponent implements OnInit {
     }
 }
 
+getUpdatedItemsCount(event:any){
+  let categoryId = event['categoryId'];
+  let itemsCount = event['itemsCount'];
+  if(itemsCount>0){
+      itemsCount = itemsCount-1;
+  }
+  $('#count-'+this.moduleId+"-"+categoryId).text(itemsCount);
+}
+
 }

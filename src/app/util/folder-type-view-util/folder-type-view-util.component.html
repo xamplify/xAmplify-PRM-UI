@@ -127,7 +127,7 @@
                     </td>
                     <td class="text-center">
                         <div  class="override-actions">
-                            <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
+                            <span id="count-{{moduleId}}-{{category.id}}"><b>{{category.count}}</b></span>
                         </div> 
                     </td>
                 </tr>
@@ -135,10 +135,10 @@
                     <td colspan="5">
                         <ng-container *ngIf="category.expanded">
                             <ng-container *ngIf="moduleId==roles.damId">
-                               <app-dam-list-and-grid-view [folderListViewCategoryId]="category.id"></app-dam-list-and-grid-view>
+                               <app-dam-list-and-grid-view [folderListViewCategoryId]="category.id" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
                             </ng-container>
                             <ng-container *ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
-                                <app-manage-tracks-play-book [folderListViewCategoryId]="category.id" [type]="type"></app-manage-tracks-play-book>
+                                <app-manage-tracks-play-book [folderListViewCategoryId]="category.id" [type]="type" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
                              </ng-container>
                         </ng-container>
                     </td>
