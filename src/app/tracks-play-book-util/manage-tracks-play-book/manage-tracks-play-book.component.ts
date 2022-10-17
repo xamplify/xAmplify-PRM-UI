@@ -331,17 +331,18 @@ setViewType(viewType: string) {
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
       route = "/home/playbook/pb/" + tracksPlayBook.createdByCompanyId + "/" + tracksPlayBook.slug;
     }
-    this.referenceService.goToRouter(route);
+    this.referenceService.navigateToRouterByViewTypes(route,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+
   }
 
   viewAnalytics(tracksPlayBook: TracksPlayBook) {
-    let route = "/home/tracks/analytics/" + tracksPlayBook.id;
+    let route = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       route = "/home/tracks/analytics/" + tracksPlayBook.id;
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
       route = "/home/playbook/analytics/" + tracksPlayBook.id;
     }
-    this.referenceService.goToRouter(route);
+    this.referenceService.navigateToRouterByViewTypes(route,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
   refreshPage() {

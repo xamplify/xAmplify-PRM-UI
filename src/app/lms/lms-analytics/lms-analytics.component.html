@@ -7,7 +7,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a [routerLink]="['/home/tracks/manage']">Manage Tracks</a>
+                <a (click)="goToManageTracks()">Manage Tracks</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>Analytics</a>
             </li>

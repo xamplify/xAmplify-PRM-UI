@@ -19,7 +19,7 @@ export class AddLmsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   constructor(public referenceService: ReferenceService, private router: Router,private route: ActivatedRoute) {
-    /****XNFR-169****/
+    /****XNFR-170****/
     this.viewType = this.route.snapshot.params["viewType"];
     this.categoryId = this.route.snapshot.params["categoryId"];
     this.folderViewType = this.route.snapshot.params["folderViewType"];
