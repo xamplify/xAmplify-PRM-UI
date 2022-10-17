@@ -99,8 +99,10 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   /*******View Details (Partner) ********/
   viewDetails(asset:any){
-    this.referenceService.goToRouter('/home/dam/shared/view/'+asset.id);
-  }
+	/*****XNFR-169***/
+	let url = "/home/dam/sharedp/view/"+asset.id;
+	this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
 
   /*******Delete Asset ********/
   confirmDelete(asset:any){

@@ -47,7 +47,10 @@ export const routes: Routes = [
 	{ path: "vda/:damId/:damPartnerId/:partnerId", component: DamAnalyticsComponent },
 	{path:"select",component:SelectUploadTypeComponent},
 	{path:"history/:assetId",component:ShowHistoryComponent},
-	{path:"shared/view/:assetId",component:ViewDamComponent}
+	/*********XNFR-169***********/
+	{path:"sharedp/view/:assetId",component:ViewDamComponent},
+	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
+	{ path: "sharedp/view/:assetId/:viewType/:categoryId/:folderViewType", component: ViewDamComponent },
 ];
 
 @NgModule({

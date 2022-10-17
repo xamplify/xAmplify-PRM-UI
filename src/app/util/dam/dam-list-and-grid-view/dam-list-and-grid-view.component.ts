@@ -452,7 +452,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	navigateToDamAnalyticsForPartnerLogin(id:number){
-		let url = "/home/dam/pda/" + id
+		let url = "/home/dam/pda/" + id;
 		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 
@@ -613,7 +613,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	viewDetails(asset:any){
-		this.referenceService.goToRouter("/home/dam/shared/view/"+asset.id);
+		/*****XNFR-169***/
+		let url = "/home/dam/sharedp/view/"+asset.id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 	}
 	
     showEditVideo(alias:string, id: number) {
