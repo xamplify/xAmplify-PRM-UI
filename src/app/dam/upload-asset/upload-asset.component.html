@@ -26,11 +26,12 @@
           </ul>
         </div>
         <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
-          <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
+          <div class="cf-padding-dam">
             <a class="close-circle" (click)="closeCircle()"  title="Close">
-            <i class="fa fa-times" aria-hidden="true"></i>
-            </a> 
-          </div>
+              <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+            <button class="add-button-xamplify mr5"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>
         </div>
       </div>
     </div>
@@ -471,3 +472,4 @@
 		</div>
 	</div>
 	<!-- record video modal popup end  -->
+  <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>

@@ -16,9 +16,10 @@ import { UserService } from '../../core/services/user.service';
 import { VideoFileService } from '../../videos/services/video-file.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { HttpClient,HttpEventType,HttpResponse} from "@angular/common/http";
+import { HttpEventType,HttpResponse} from "@angular/common/http";
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
-declare var $, swal, CKEDITOR: any, gapi, google, Dropbox, BoxSelect, videojs: any;
+declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
 @Component({
 	selector: 'app-upload-asset',
@@ -109,6 +110,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     viewType: string;
     categoryId: number;
     folderViewType: string;
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
@@ -1087,4 +1089,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
   getSelectedCategoryId(categoryId:number){
       this.damUploadPostDto.categoryId = categoryId;
   }
+
+  openCreateFolderPopup(){
+    this.addFolderModalPopupComponent.openPopup();
+}
+
+showFolderCreatedSuccessMessage(message:any){
+   this.showFolderDropDown = false; 
+   this.customResponse = new CustomResponse('SUCCESS',message, true);
+   this.listCategories();
+}
 }
