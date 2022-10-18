@@ -442,7 +442,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
-    //pagination.type = 'myAssets';
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -578,6 +577,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.categoryNames = data.data;
         this.filteredCategoryNames = this.categoryNames;
+        if(this.isAdd){
+          this.folderName = this.filteredCategoryNames[0]['name'];
+        }
         this.referenceService.stopLoader(this.httpRequestLoader);
       },
       error => {
