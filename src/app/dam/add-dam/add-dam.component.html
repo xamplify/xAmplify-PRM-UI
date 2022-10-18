@@ -42,8 +42,12 @@
       <div class="modal-content">
         <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="modal-header">
-              <a class="close-circle" (click)="hidePopup()">
-                <i class="fa fa-times" aria-hidden="true"></i></a>
+                <div class="cf-padding-dam">
+                  <a class="close-circle" (click)="hidePopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                  <button class="add-button-xamplify mr5" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+              </div>
               <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
           </div>
           <div class="modal-body">
@@ -176,4 +180,6 @@
   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
   </app-add-tags-util>
 </div>
+
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
  

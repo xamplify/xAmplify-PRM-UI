@@ -13,6 +13,7 @@ import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
+import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 declare var $, CKEDITOR: any;
 @Component({
@@ -61,6 +62,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -434,4 +436,14 @@ export class AddDamComponent implements OnInit, OnDestroy {
   getSelectedCategoryId(categoryId: number) {
     this.damPostDto.categoryId = categoryId;
   }
+
+  openCreateFolderPopup(){
+    this.addFolderModalPopupComponent.openPopup();
+}
+
+showFolderCreatedSuccessMessage(message:any){
+   this.showFolderDropDown = false; 
+   this.customResponse = new CustomResponse('SUCCESS',message, true);
+   this.listCategories();
+}
 }
