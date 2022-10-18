@@ -92,9 +92,9 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
       }
       this.showMessageOnTop(this.message);
     } else if (this.referenceService.isUpdated) {
-      if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
+      if ((this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) && !this.folderListViewExpanded) {
         this.message = "Track updated successfully";
-      } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
+      } else if ((this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) && !this.folderListViewExpanded) {
         this.message = "Play Book updated successfully";
       }
       this.showMessageOnTop(this.message);
