@@ -579,6 +579,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         this.filteredCategoryNames = this.categoryNames;
         if(this.isAdd){
           this.folderName = this.filteredCategoryNames[0]['name'];
+          this.tracksPlayBook.categoryId = this.filteredCategoryNames[0]['id'];
         }
         this.referenceService.stopLoader(this.httpRequestLoader);
       },
