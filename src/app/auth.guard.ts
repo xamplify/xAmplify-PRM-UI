@@ -280,7 +280,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 hasFormAccess = campaignAccessDto.formBuilder;
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
-                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1 
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.emailTemplateRole)>-1 
                             || roles.indexOf(this.roles.prmRole)>-1 || isMarketing; 
             let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
             if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
@@ -313,7 +313,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 hasLandingPageAccess = campaignAccessDto.landingPage;
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
-                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.emailTemplateRole)>-1
                             || roles.indexOf(this.roles.prmRole)>-1 || isMarketing;  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
