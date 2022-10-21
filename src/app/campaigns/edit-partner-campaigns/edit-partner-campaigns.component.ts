@@ -924,7 +924,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.replies = campaign.campaignReplies;
             for ( var i = 0; i < this.replies.length; i++ ) {
                 let reply = this.replies[i];
-                if ( reply.actionId != 23 &&  reply.actionId != 22 && reply.actionId!=33) {
+                if ( reply.actionId != 23 &&  reply.actionId != 22) {
                     reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes( reply.replyTimeInHoursAndMinutes );
                     if ( $.trim( reply.subject ).length == 0 ) {
                         reply.subject = campaign.subjectLine;
