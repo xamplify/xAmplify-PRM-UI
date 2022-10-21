@@ -1432,6 +1432,7 @@
 						<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
 						<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
 						<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
+						<option [value]="16" [selected]="reply.actionId ==33">Send follow-up email</option>
 						<option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
 						<option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
 						<option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
