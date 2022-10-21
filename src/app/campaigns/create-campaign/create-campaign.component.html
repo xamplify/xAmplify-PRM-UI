@@ -1754,6 +1754,10 @@
                                                                                 [selected]="reply.actionId ==16" translate>
                                                                                 Send immediately after email is opened
                                                                             </option>
+                                                                            <option [value]="33"
+                                                                            [selected]="reply.actionId ==33" translate>
+                                                                            Send follow-up email
+                                                                        </option>
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
                                                                                 *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
