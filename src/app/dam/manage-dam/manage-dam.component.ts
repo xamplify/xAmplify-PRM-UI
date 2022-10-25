@@ -36,7 +36,9 @@ export class ManageDamComponent implements OnInit {
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
 		this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-		this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
+        if(this.viewType==undefined){
+            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
+        }
 		this.videoId = this.route.snapshot.params['videoId'];
 		this.damId = this.route.snapshot.params['damId'];
 	}
@@ -101,7 +103,7 @@ export class ManageDamComponent implements OnInit {
 
 	showSuccessMessage(){
 	 this.referenceService.isUploaded = true;
-		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
+	 this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
 
 	goToUploadComponent(){
