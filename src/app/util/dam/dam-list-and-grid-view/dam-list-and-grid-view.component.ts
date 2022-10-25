@@ -522,7 +522,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/*****Preview Asset******* */
     preview(asset: any) {
         if (this.isVideo(asset.assetType)) {
-            this.router.navigate(["/home/dam/previewVideo/"+asset.videoId+"/"+asset.id]);
+			let url = "/home/dam/previewVideo/"+asset.videoId+"/"+asset.id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
         } else {
             this.isPreview = true;
             this.asset = asset;

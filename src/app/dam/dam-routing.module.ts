@@ -19,10 +19,10 @@ export const routes: Routes = [
 	{ path: "previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
 	{ path: "previewVideo/:videoId/:damId/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	/************XNFR-169*********/
-	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
+	{ path: "manage/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	{ path: "shared", component: ManageDamComponent },
 	{ path: "shared/:viewType", component: ManageDamComponent },
-	{ path: "shared/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
+	{ path: "shared/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	/****************************/
 	{ path: "add", component: AddDamComponent },
 	{ path: "upload", component: UploadAssetComponent },

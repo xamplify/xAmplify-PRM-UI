@@ -2967,7 +2967,8 @@ export class ReferenceService {
 
   goToManageAssetsByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean) {
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/dam/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
+    this.router.navigate(["/home/dam/"+urlSuffix+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId+"/"+folderViewType]);
+
   }
 
   goToManageTracksOrPlayBooks(viewType:string,isPartnerView:boolean,tracks:boolean) {
@@ -2979,7 +2980,7 @@ export class ReferenceService {
   goToManageTracksOrPlayBooksByCategoryId(folderViewType:string,listViewType:string,categoryId:number,isPartnerView:boolean,tracks:boolean) {
     let moduleUrl = tracks ? "tracks":"playbook";
     let urlSuffix = isPartnerView ? 'shared':'manage';
-    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+folderViewType+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId]);
+    this.router.navigate(["/home/"+moduleUrl+"/"+urlSuffix+"/"+this.getListViewAsDefault(listViewType)+"/"+categoryId+"/"+folderViewType]);
   }
 
   navigateToRouterByViewTypes(url:string,categoryId:number,viewType:string,folderViewType:string,folderListView:boolean){
@@ -2987,7 +2988,7 @@ export class ReferenceService {
 			if (folderListView) {
 				this.goToRouter(url+ "/fl");
 			} else {
-				this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType) + "/" + categoryId + "/" + folderViewType);
+        this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType) + "/" + categoryId + "/" + folderViewType);
 			}
 		} else {
 			this.goToRouter(url+ "/" + this.getListViewAsDefault(viewType));
