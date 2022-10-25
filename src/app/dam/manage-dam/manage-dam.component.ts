@@ -7,6 +7,7 @@ import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { UserService } from 'app/core/services/user.service';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { VideoFileEventEmitter } from '../models/video-file-event-emitter';
 
 @Component({
 	selector: 'app-manage-dam',
@@ -112,11 +113,15 @@ export class ManageDamComponent implements OnInit {
 		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,this.isPartnerView);
 	}
     
-    update(videoFile: any) {
+    update(videoFileEventEmitter: VideoFileEventEmitter) {
+        let videoFile = videoFileEventEmitter.videoFile;
         if (videoFile != null) {
             this.referenceService.isAssetDetailsUpldated = true;
         }
-        this.goToDam();
+        let folderViewType = videoFileEventEmitter.folderViewType;
+        let viewType = videoFileEventEmitter.viewType;
+        let categoryId = videoFileEventEmitter.categoryId;
+        this.referenceService.navigateToManageAssetsByViewType(folderViewType,viewType,categoryId,this.isPartnerView);
     }
     
     

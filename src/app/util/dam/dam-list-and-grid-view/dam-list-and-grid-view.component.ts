@@ -465,15 +465,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 
     editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean, videoId:number) {
+		this.loading = true;
         if (!beeTemplate && this.isVideo(assetType)) {
-			if(this.folderListView){
-				this.referenceService.showSweetAlertInfoMessage();
-			}else{
-				let url = "/home/dam/editVideo/"+videoId+"/"+id;
-				this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-			}
+			let url = "/home/dam/editVideo/"+videoId+"/"+id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
         } else {
-            this.loading = true;
 			/*****XNFR-169***/
 			let url = "/home/dam/editDetails/"+id;
 			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);

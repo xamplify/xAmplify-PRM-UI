@@ -14,10 +14,10 @@ export const routes: Routes = [
 	{ path: "manage/:viewType", component: ManageDamComponent },
 	{ path: "editVideo/:videoId/:damId", component: ManageDamComponent },
 	{ path: "editVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
-	{ path: "editVideo/:videoId/:damId/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
+	{ path: "editVideo/:videoId/:damId/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	{ path: "previewVideo/:videoId/:damId", component: ManageDamComponent },
 	{ path: "previewVideo/:videoId/:damId/:viewType", component: ManageDamComponent },
-	{ path: "previewVideo/:videoId/:damId/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
+	{ path: "previewVideo/:videoId/:damId/:viewType/:categoryId/:folderViewType", component: ManageDamComponent },
 	/************XNFR-169*********/
 	{ path: "manage/:folderViewType/:viewType/:categoryId", component: ManageDamComponent },
 	{ path: "shared", component: ManageDamComponent },
