@@ -18,7 +18,7 @@
       </ul>
    </div>
    <!---Component Comes here-->
-   <app-dam-list-and-grid-view *ngIf="manageDam && !edit && !playVideo" ></app-dam-list-and-grid-view>
+   <app-dam-list-and-grid-view *ngIf="manageDam && !editVideo && !playVideo" ></app-dam-list-and-grid-view>
    
    <app-edit-video *ngIf="editVideo && !manageDam" (notifyParent)="update($event)" ></app-edit-video> 
    
