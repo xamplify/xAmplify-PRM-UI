@@ -37,7 +37,7 @@
 										*ngFor="let asset of pagination.pagedItems ;let i =index">
 									<tr>
 									<td *ngIf="(!isPartnerView && asset.videoId)">
-								<app-video-thumbnail class="pull-left" [videoFile]="asset.videoFileDTO" [published]="asset?.published" (notifyParent)="showPlayVideo(asset.id, $event)"></app-video-thumbnail>
+								<app-video-thumbnail class="pull-left" [damId]="asset.id" [videoFile]="asset.videoFileDTO" [published]="asset?.published"></app-video-thumbnail>
 								</td>
 								<td  *ngIf="!asset.videoId || isPartnerView" >
 											<div class="thumbnail-wrapper">
@@ -110,7 +110,7 @@
 												<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
 													<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 												</a> 
-												<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+												<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
 													<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 												</a>
 												</div>

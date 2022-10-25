@@ -12,6 +12,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { UserService } from 'app/core/services/user.service';
+import { Router } from '@angular/router';
 
 
 declare var $:any,swal: any;
@@ -42,7 +43,7 @@ export class Top4AssetsComponent implements OnInit {
   showPdfModalPopup: boolean;
   deleteAsset = false;
   constructor(public properties: Properties, public damService: DamService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,private pagerService: PagerService,
-  			  public videoFileService: VideoFileService, public userService:UserService) {
+  			  public videoFileService: VideoFileService, public userService:UserService, private router: Router) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -170,9 +171,9 @@ export class Top4AssetsComponent implements OnInit {
 		}
   }
 
-editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean) {
+editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean, videoId:number) {
       if (!beeTemplate && this.isVideo(assetType)) {
-          this.showEditVideo(alias, id);
+      this.router.navigate(["/home/dam/editVideo/"+videoId+"/"+id]);      
       } else {
           this.loading = true;
           this.referenceService.goToRouter("/home/dam/editDetails/" + id);
@@ -194,7 +195,7 @@ assetGridViewActionsEmitter(event: any) {
       }else if(campaign){
           this.campaignRouter(this.asset.alias, this.asset.viewBy);
       }else if(edit){
-          this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate);
+          this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
       }else if(analytics){
           this.viewAnalytics(this.asset);
       }
@@ -202,82 +203,12 @@ assetGridViewActionsEmitter(event: any) {
   
   preview(asset: any) {
       if (this.isVideo(asset.assetType)) {
-          this.showPlayVideo(asset.id, asset.videoFileDTO);
+         this.router.navigate(["/home/dam/previewVideo/"+asset.videoId+"/"+asset.id]);
       } else {
           this.isPreview = true;
           this.asset = asset;
       }
   }
- 
-  showPlayVideo(id: number, videoFile: SaveVideoFile) {
-      try {
-          this.videoFileService.getVideo(videoFile.alias, 'DRAFT')
-              .subscribe((editVideoFile: SaveVideoFile) => {
-                  if (editVideoFile.access) {
-                      if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
-                          editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
-                      }
-                      editVideoFile.damId = id;
-                      this.videoFileService.saveVideoFile = editVideoFile;
-                      this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
-                      this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-                      this.xtremandLogger.log(this.videoFileService.saveVideoFile);
-                      this.videoFileService.actionValue = 'Update';
-                      let input = {};
-                      input['playVideo'] = true;
-                      input['videoFile'] = editVideoFile;
-                      this.newItemEvent.emit(input);
-                  } else {
-                      this.authenticationService.forceToLogout();
-                  }
-              },
-              (error: any) => {
-                  this.xtremandLogger.error('Error In: showPlayVideo():' + error);
-                  this.xtremandLogger.errorPage(error);
-              }
-              );
-      } catch (error) {
-          this.xtremandLogger.error('error' + error);
-      }
-  }
-  
-  getDefaultVideoSettings(){this.userService.getVideoDefaultSettings().subscribe((data) =>{ this.referenceService.defaultPlayerSettings = data;});}
-
-showEditVideo(alias:string, id: number) {
-if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){
-this.getDefaultVideoSettings();
-}
-try{
-this.videoFileService.getVideo(alias, 'DRAFT').subscribe((editVideoFile: SaveVideoFile) => {
-if(editVideoFile.access){
-this.xtremandLogger.log('enter the show edit vidoe method');
-if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
-editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
-}
-editVideoFile.damId = id;
-this.videoFileService.saveVideoFile = editVideoFile;
-this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
-this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-this.xtremandLogger.log('show edit vidoe object :');
-this.xtremandLogger.log(this.videoFileService.saveVideoFile);
-this.videoFileService.actionValue = 'Update';
-let input = {};
-input['editVideo'] = true;
-input['videoFile'] = editVideoFile;
-this.newItemEvent.emit(input);
-}else{
-this.authenticationService.forceToLogout();
-}
-},
-(error: any) => {
-this.xtremandLogger.error('Error In: show edit videos ():' + error);
-this.xtremandLogger.errorPage(error);
-}
-);
-}catch(error){
-this.xtremandLogger.error('error'+error);
-}
-}
 
 previewAssetPopupEmitter(){
   this.isPreview = false;
