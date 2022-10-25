@@ -13,22 +13,26 @@ import { Router } from '@angular/router';
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
   @Input() published: boolean ;
+  @Input() damId : number;
   @Output() notifyParent: EventEmitter<any>;
   isCreate: boolean;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
     this.notifyParent = new EventEmitter<any>();
     this.isCreate = (this.router.url.includes('/home/campaigns/create') || this.router.url.includes('/home/campaigns/edit')) ? true: false;
- 
   }
 
   showPlayVideo(videoFile){
-     if(!this.authenticationService.isSuperAdmin() && videoFile.processed){
+     if(!this.authenticationService.isSuperAdmin() && videoFile.processed && !this.isCreate){
+     this.router.navigate(["/home/dam/previewVideo/"+videoFile.id+"/"+this.damId]);
+     }else if(this.isCreate){
       this.notifyParent.emit(videoFile);
      }
   }
 
   titleClickVideo(videoFile){
     if(!this.authenticationService.isSuperAdmin() && videoFile.processed && !this.isCreate){
+      this.router.navigate(["/home/dam/previewVideo/"+videoFile.id+"/"+this.damId]);
+     }else if(this.isCreate){
       this.notifyParent.emit(videoFile);
      }
   }
