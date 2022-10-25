@@ -89,8 +89,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.callInitMethods();
-		this.videoFileService.campaignReport = false;
+		let isEditVideo = this.router.url.indexOf('/editVideo')>-1;
+		let isPreviewVideo = this.router.url.indexOf('/previewVideo')>-1;
+		if(!isEditVideo && !isPreviewVideo){
+			this.callInitMethods();
+			this.videoFileService.campaignReport = false;
+		}
+		
 	}
 
 	callInitMethods() {
@@ -464,7 +469,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if(this.folderListView){
 				this.referenceService.showSweetAlertInfoMessage();
 			}else{
-			 this.router.navigate(["/home/dam/editVideo/"+videoId+"/"+id]);
+				let url = "/home/dam/editVideo/"+videoId+"/"+id;
+				this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 			}
         } else {
             this.loading = true;

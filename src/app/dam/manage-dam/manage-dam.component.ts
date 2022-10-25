@@ -55,7 +55,9 @@ export class ManageDamComponent implements OnInit {
     
 
     getVideo(videoId:number, damId: number, actionType : string) {
-        if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ this.getDefaultVideoSettings(); }
+        if(this.referenceService.defaultPlayerSettings!=undefined && this.referenceService.defaultPlayerSettings.playerColor===undefined){ 
+            this.getDefaultVideoSettings(); 
+        }
         try{
         this.videoFileService.getVideoById(videoId, 'DRAFT')
             .subscribe((editVideoFile: SaveVideoFile) => {

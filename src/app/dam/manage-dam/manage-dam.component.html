@@ -18,11 +18,11 @@
       </ul>
    </div>
    <!---Component Comes here-->
-   <app-dam-list-and-grid-view *ngIf="manageDam" ></app-dam-list-and-grid-view>
+   <app-dam-list-and-grid-view *ngIf="manageDam && !edit && !playVideo" ></app-dam-list-and-grid-view>
    
-   <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)" ></app-edit-video> 
+   <app-edit-video *ngIf="editVideo && !manageDam" (notifyParent)="update($event)" ></app-edit-video> 
    
-   <app-play-video *ngIf="playVideo"></app-play-video>
+   <app-play-video *ngIf="playVideo && !manageDam"></app-play-video>
    
    </div>
    
