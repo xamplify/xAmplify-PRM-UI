@@ -150,6 +150,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  categoryNames: any;
+  showFolderDropDown = false;
+  folderId:number = 0;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -160,6 +163,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.categoryId = this.route.snapshot.params['categoryId'];
       this.folderViewType = this.route.snapshot.params['folderViewType'];
       this.saveVideoFile = this.videoFileService.saveVideoFile;
+      this.folderId = this.saveVideoFile.folderId;
       this.tempVideoFile = this.videoFileService.saveVideoFile;
       this.tempControllerColor = this.tempVideoFile.controllerColor;
       this.tempPlayerColor = this.tempVideoFile.playerColor;
@@ -238,8 +242,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
           fileItem.withCredentials = false;
-        //  this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
-          console.log(this.brandLogoUrl);
           this.showError = false;
           this.fileLogoSelected(fileItem._file);
           this.videoLogoUploader.queue[0].upload();
@@ -247,7 +249,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
           if(JSON.parse(response).message === null){ } else {
           this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
-          console.log(response);
           }
       }
       this.notifyParent = new EventEmitter<VideoFileEventEmitter>();
@@ -992,7 +993,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               }
           }
           this.itemOfTags = newTags;
-          console.log(this.itemOfTags);
           const otherTags = newTags.map(v => v.toLowerCase());
           var uniqueNames = [];
           $.each(otherTags, function(i, el){
@@ -1010,21 +1010,38 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     try{
       this.getDefaultPlayerSettings();
-     // this.removeVideoTitlesWhiteSpaces();
       this.loadRangeDisable = true;
       $('#overlay-modal').hide();
-      console.log('EditVideoComponent ngOnit: ');
       this.categories = this.referenceService.refcategories;
       this.saveVideoFile.categories = this.categories;
       this.settingImageGifPaths();
       this.buildForm();
       this.defaultImagePaths();
       this.defaultGifPaths();
+      /****XNFR-169*****/
+      this.listCategories();
       } catch (error) {
           this.clientError = true;
           console.log('error' + error);
       }
   }
+
+  listCategories() {
+    this.authenticationService.getCategoryNamesByUserId(this.authenticationService.getUserId()).subscribe(
+      (data: any) => {
+        this.categoryNames = data.data;
+        this.showFolderDropDown = true;
+      },
+      error => {
+        this.showFolderDropDown = true;
+      });
+  }
+
+  getSelectedCategoryId(categoryId:number){
+    this.folderId = categoryId;
+}
+
+
   ngAfterViewInit() {
       $('#edit_video_player').empty();
       $('#newPlayerVideo').empty();
@@ -1243,7 +1260,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'brandingLogoUri': [this.saveVideoFile.brandingLogoUri],
           'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri],
           'companyName': [this.saveVideoFile.companyName],
-          'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo]
+          'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo],
       });
       this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
       this.onValueChanged();
@@ -1320,11 +1337,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               }
           }
           this.saveVideoFile.tags = this.newTags;
-          console.log(this.saveVideoFile.tags);
           this.saveVideoFile.title = titleUpdatedValue;
           this.saveVideoFile.description = descriptionData;
           this.saveVideoFile.imagePath = this.defaultSaveImagePath;
-          this.xtremandLogger.log('image path ' + this.defaultImagePath);
           this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
           this.saveVideoFile.imageFile = null;
           if (this.videoFileService.actionValue === 'Save') {
@@ -1335,7 +1350,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.setShowSaveUpdateValues(false, true);
           }
           this.saveVideoFile.callACtion = this.enableCalltoAction;
-          this.xtremandLogger.info(this.saveVideoFile);
+          this.saveVideoFile.folderId = this.folderId;
           return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
             	  if(result.access){
