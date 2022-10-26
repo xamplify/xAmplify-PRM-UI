@@ -38,7 +38,6 @@ export class ShowHistoryComponent implements OnInit {
 	showPdfModalPopup: boolean;
 	deleteAsset: boolean;
 	assetsLoader: boolean;
-	//
 	isPartnerView = false;
 	categoryId = 0;
 	viewType: string;
@@ -54,6 +53,10 @@ export class ShowHistoryComponent implements OnInit {
 
 	ngOnInit() {
 		this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);
+		/****XNFR-169****/
+		this.viewType = this.activatedRoute.snapshot.params['viewType'];
+		this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
+		this.folderViewType = this.activatedRoute.snapshot.params['folderViewType'];
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.referenceService.loading(this.historyLoader, true);
 		if (this.assetId > 0) {
@@ -147,7 +150,7 @@ export class ShowHistoryComponent implements OnInit {
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
 
 	goToDam(){
-		this.referenceService.goToRouter("/home/dam/manage/g");
+		this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
 	}
 
 	refreshList(){

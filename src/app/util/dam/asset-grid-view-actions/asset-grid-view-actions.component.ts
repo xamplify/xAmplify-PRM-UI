@@ -44,7 +44,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   }
 
   viewGirdHistory(asset:any){
-    this.referenceService.goToRouter("/home/dam/history/"+asset.id);
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/history/"+asset.id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
   addOrEdit(id: number) {

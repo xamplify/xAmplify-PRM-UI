@@ -57,6 +57,8 @@ export const routes: Routes = [
 	/*****************************/
 	{path:"select",component:SelectUploadTypeComponent},
 	{path:"history/:assetId",component:ShowHistoryComponent},
+	{path:"history/:assetId/:viewType",component:ShowHistoryComponent},
+	{ path: "history/:assetId/:viewType/:categoryId/:folderViewType", component: ShowHistoryComponent },
 	/*********XNFR-169***********/
 	{path:"sharedp/view/:assetId",component:ViewDamComponent},
 	{ path: "sharedp/view/:assetId/:viewType", component: ViewDamComponent },
