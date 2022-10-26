@@ -129,6 +129,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 		window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
 		$('#downloadPdfModalPopup').modal('hide');
 		self.modalPopupLoader = false;
+		swal.close();
 		this.downloadAssetPopupEventEmitter.emit();
 
 	}
