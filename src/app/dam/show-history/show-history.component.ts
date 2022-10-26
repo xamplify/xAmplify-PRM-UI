@@ -11,6 +11,8 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { SortOption } from '../../core/models/sort-option';
+import { VideoFileService } from 'app/videos/services/video-file.service';
+import { SaveVideoFile } from 'app/videos/models/save-video-file';
 
 declare var $: any;
 
@@ -36,9 +38,19 @@ export class ShowHistoryComponent implements OnInit {
 	showPdfModalPopup: boolean;
 	deleteAsset: boolean;
 	assetsLoader: boolean;
+	//
+	isPartnerView = false;
+	categoryId = 0;
+	viewType: string;
+	folderViewType = "";
+	folderListView = false;
+	assets: Array<any> = new Array<any>();
+	@Output() updatedItemsCountEmitter = new EventEmitter();
+	exportObject = {};
+		
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
 		public referenceService: ReferenceService, public utilService: UtilService, public pagerService: PagerService, private router: Router,
-		public activatedRoute: ActivatedRoute, public sortOption: SortOption) { }
+		public activatedRoute: ActivatedRoute, public sortOption: SortOption, public videoFileService: VideoFileService, public listLoader: HttpRequestLoader) { }
 
 	ngOnInit() {
 		this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);
@@ -141,20 +153,29 @@ export class ShowHistoryComponent implements OnInit {
 	refreshList(){
 		this.listAssetsHistory(this.pagination);
 	}
-
-	assetGridViewActionsEmitter(event:any){
-		let input =event;
+	  
+	  	assetGridViewActionsEmitter(event: any) {
+		let input = event;
 		let preview = input['preview'];
 		let showPublishPopup = input['publishPopup'];
+		let campaign = input['campaign'];
+		let edit = input['edit'];
+		let analytics = input['analytics'];
 		this.asset = input['asset'];
-		if(preview){
-		  this.isPreview = true;
-		}else if(showPublishPopup){
-		  this.selectedAssetId = this.asset.id;
-		  this.showPublishPopup = true;
-		}
-		
-	  }
+		if (preview) {
+			this.preview(this.asset);
+		} else if (showPublishPopup) {
+			this.selectedAssetId = this.asset.id;
+			this.showPublishPopup = true;
+		}else if(campaign){
+			this.campaignRouter(this.asset.alias, this.asset.viewBy);
+		}else if(edit){
+            this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
+        }else if(analytics){
+            this.viewAnalytics(this.asset);
+        }
+
+	}
 	  
 	  previewAssetPopupEmitter(){
 		this.isPreview = false;
@@ -185,25 +206,208 @@ export class ShowHistoryComponent implements OnInit {
 		this.asset = event;
 	  }
 	  
-	  deleteAssetSuccessEmitter(){
-		this.customResponse = new CustomResponse('SUCCESS',this.asset.assetName+" Deleted Successfully",true);
+	  deleteAssetSuccessEmitter(response:any) {
+		if(response.statusCode==200){
+		this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
 		this.deleteAsset = false;
-		this.assetsLoader = false;
+		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
-		this.listAssetsHistory(this.pagination);
-	  }
+		this.listAssets(this.pagination);
+		this.callFolderListViewEmitter();
+		}else if(response.statusCode==401){
+			this.customResponse = new CustomResponse('ERROR', response.message, true);
+		}
+	}
+
+	deleteAssetFailEmitter(message: any) {
+		this.customResponse = new CustomResponse('ERROR', message, true);
+		this.deleteAsset = false;
+		this.referenceService.loading(this.listLoader, false);
+		this.asset = {};		
+	}
 	  
-	  deleteAssetLoaderEmitter(){
-		this.assetsLoader = true;
-	  }
+	deleteAssetLoaderEmitter() {
+		this.referenceService.loading(this.listLoader, true);
+	}
 	  
-	  deleteAssetCancelEmitter(){
+	deleteAssetCancelEmitter() {
 		this.deleteAsset = false;
 		this.asset = {};
-	  }  
+	}  
 	  
+	   preview(asset: any) {
+        if (this.isVideo(asset.assetType)) {
+			let url = "/home/dam/previewVideo/"+asset.videoId+"/"+asset.id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+        } else {
+            this.isPreview = true;
+            this.asset = asset;
+        }
+	}
+	
+	campaignRouter(alias:string, viewBy:string) {
+        try{
+         this.xtremandLogger.log('ManageVideoComponent campaign router:');
+         this.videoFileService.getVideo(alias, viewBy)
+             .subscribe((videoFile: SaveVideoFile) => {
+                 if(videoFile.access){
+                 this.referenceService.campaignVideoFile = videoFile;
+                 this.referenceService.selectedCampaignType = 'video';
+                 this.referenceService.isCampaignFromVideoRouter = true;
+                 this.router.navigateByUrl('/home/campaigns/create');
+                 }else{
+                     this.authenticationService.forceToLogout();
+                 }
+             },
+             (error: string) => {
+                 this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+                 this.xtremandLogger.errorPage(error);
+             });
+           }catch(error){ this.xtremandLogger.error('error'+error);}
+     }
+     
+       editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean, videoId:number) {
+		this.loading = true;
+        if (!beeTemplate && this.isVideo(assetType)) {
+			let url = "/home/dam/editVideo/"+videoId+"/"+id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+        } else {
+			/*****XNFR-169***/
+			let url = "/home/dam/editDetails/"+id;
+			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+        }
+	}
+	
+	    viewAnalytics(asset: any) {
+        this.loading = true;
+        localStorage.setItem('assetName', asset.assetName);
+        let isVideo = this.isVideo(asset.assetType);
+        if (isVideo) {
+        	 if (this.isPartnerView) {
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
+            } else {
+                try {
+                    this.videoFileService.getVideo(asset.alias, 'DRAFT')
+                        .subscribe((editVideoFile: SaveVideoFile) => {
+                            if (editVideoFile.access) {
+                                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+                                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+                                }
+                                editVideoFile.damId = asset.id;
+                                this.videoFileService.saveVideoFile = editVideoFile;
+                                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+                                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+                                this.videoFileService.campaignReport = true;
+                                localStorage.setItem('campaignReport', 'true');
+                                localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
+								/*****XNFR-169***/
+								this.navigateToPartnerAnalytics(asset.id);
+                            } else {
+                                this.authenticationService.forceToLogout();
+                            }
+                        },
+                        (error: any) => {
+                            this.xtremandLogger.error('Error In: show edit videos ():' + error);
+                            this.xtremandLogger.errorPage(error);
+                        }
+                        );
+                } catch (error) {
+                    this.xtremandLogger.error('error' + error);
+                }
+            }
+        } else {
+			/*****XNFR-169***/
+            if (this.isPartnerView) {
+                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
+            } else {
+				this.navigateToPartnerAnalytics(asset.id);
+            }
+        }
+    }
+    
+    	navigateToPartnerAnalytics(id:number){
+		let url = "/home/dam/partnerAnalytics/"+id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
 
-
-
+	navigateToDamAnalyticsForPartnerLogin(id:number){
+		let url = "/home/dam/pda/" + id;
+		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
+	
+	    isVideo(filename: any) {
+        const parts = filename.split('.');
+        const ext = parts[parts.length - 1];
+        switch (ext.toLowerCase()) {
+            case 'm4v':
+            case 'mkv':
+            case 'avi':
+            case 'mpg':
+            case 'mp4':
+            case 'flv':
+            case 'mov':
+            case 'wmv':
+            case 'divx':
+            case 'f4v':
+            case 'mpeg':
+            case 'vob':
+            case 'xvid':
+                // etc
+                return true;
+        }
+        return false;
+    }
+    
+    	listAssets(pagination: Pagination) {
+		if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
+		this.startLoaders();
+		pagination.categoryId = this.categoryId;
+		this.damService.list(pagination).subscribe((result: any) => {
+			if (result.statusCode === 200) {
+				let data = result.data;
+				pagination.totalRecords = data.totalRecords;
+				this.assets = data.assets;
+				$.each(data.assets, function (_index: number, asset: any) {
+					asset.displayTime = new Date(asset.createdDateInUTCString);
+					let toolTipTagNames: string = "";
+					asset.tagNames.sort();
+					$.each(asset.tagNames, function (index, tagName) {
+						if (index > 1) {
+							if (toolTipTagNames.length > 0) {
+								toolTipTagNames = toolTipTagNames + ", " + tagName;
+							} else {
+								toolTipTagNames = tagName;
+							}
+						}
+					});
+					asset.toolTipTagNames = toolTipTagNames;
+					if(asset.videoFileDTO && toolTipTagNames!=null && toolTipTagNames.length>0){
+					asset.videoFileDTO.toolTipTagNames = toolTipTagNames;
+					}
+					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
+						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
+					}
+				});
+				pagination = this.pagerService.getPagedItems(pagination, data.assets);
+			}
+			this.stopLoaders();
+		}, error => {
+			this.stopLoadersAndShowError(error);
+		});
+	}
+	
+		 callFolderListViewEmitter(){
+		if(this.folderListView){
+			this.exportObject['categoryId'] = this.categoryId;
+            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+            this.updatedItemsCountEmitter.emit(this.exportObject);
+		}
+	 }
+	 
+	 startLoaders() {
+		this.referenceService.loading(this.listLoader, true);
+	}
 }
