@@ -99,7 +99,7 @@
 												[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 										<td class="mAlignView" >
 											<div
-												[className]="asset?.history ? 'actions-block override-actions mActionWidth ActionAlign':'actions-block override-actions custom-width-icon mActionWidth ActionAlign'" >
+												[className]="asset?.history ? 'actions-block override-actions min-width-thtwpx ActionAlign':'actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign'" >
 												<ng-container *ngIf="asset?.status=='COMPLETED'">
 												<div class="mActionAlign ActionButtonPad">	
 												<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit" title="History"	(click)="expandHistory(asset,i)"> 
@@ -180,7 +180,7 @@
 														<tr
 															*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 															id="history-tr">
-															<td style="width: 10%;">
+															<td style="width: 12%;">
 																<div class="thumbnail-wrapper">
 																	<img class="custom-image-css"
 																		src="{{asset?.thumbnailPath}}" alt="Image Not Found">
@@ -192,6 +192,9 @@
 																	<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 																	<span *ngIf="asset?.assetName?.length>25">...</span>
 																</h4>
+																<h6 class="moreipsis" title="{{asset?.categoryName}}">
+																	<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+																</h6>
 																<h6 class="moreipsis" title="{{asset?.displayName}}">
 																	<span translate> Created By <strong>{{asset?.displayName}}</strong></span>
 																</h6>
@@ -265,16 +268,9 @@
 									<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>
-										<br>
 									</h4>
 									<div>
 										<span class="view-banner-dam">{{asset?.assetType}}</span>
-										<!-- XNFR-169 -->
-											<h6 class="moreipsis">
-												<span translate> Folder <strong title="{{asset?.categoryName}}">{{asset?.categoryName | slice: 0: 23}}</strong>
-													<span *ngIf="asset?.categoryName?.length>23">..</span>
-												</span>
-											</h6>
 										<h6 translate>
 											<span *ngIf="isPartnerView">Published On</span> <span
 												*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
@@ -286,7 +282,9 @@
 											By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
 												*ngIf="asset?.displayName?.length>17">..</span>
 										</h6>
-										
+										<h6 class="moreipsis" title="{{asset?.categoryName}}">
+											<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+										</h6>
 										<h6 class="moreipsis"
 											*ngIf="!isPartnerView && asset?.beeTemplate">
 											<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
@@ -344,7 +342,9 @@
 								<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 									{{asset?.assetName | slice:0:25}} <span
 										*ngIf="asset?.assetName?.length>25">...</span><br>
-									<br>
+								</h4>
+								<h4 class="moreipsis" title="{{asset?.categoryName}}">
+									<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
 								</h4>
 								<h4>Version {{asset?.versionInString}}</h4>
 								<div>
