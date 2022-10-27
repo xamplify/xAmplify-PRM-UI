@@ -142,7 +142,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
             this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
             this.beeContainerInput["vendorCompanyLogoPath"] =
-              this.vendorCompanyLogoPath;
+            this.vendorCompanyLogoPath;
             this.beeContainerInput["partnerCompanyLogoPath"] =
               this.partnerCompanyLogoPath;
             if (dam.tagIds == undefined) {
@@ -152,6 +152,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             }
             this.damPostDto.categoryId = dam.categoryId;
             this.selectedCategoryId = dam.categoryId;
+            this.showFolderDropDown = true;
           } else {
             this.goToManageSectionWithError();
           }
@@ -229,19 +230,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
   saveOrUpdate(saveAs: boolean) {
     this.customResponse = new CustomResponse();
-    if (
-      !saveAs &&
-      this.selectedCategoryId != this.damPostDto.categoryId &&
-      !this.isAdd
-    ) {
-      this.referenceService.scrollToModalBodyTopByClass();
-      this.customResponse = new CustomResponse(
-        "ERROR",
-        "Folder name cannot be changed for history templates",
-        true
-      );
-    } else {
-      this.getCkEditorData();
+    this.getCkEditorData();
       this.nameErrorMessage = "";
       this.modalPopupLoader = true;
       this.damPostDto.createdBy = this.loggedInUserId;
@@ -255,7 +244,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
           (result: any) => {
             this.hidePopup();
             this.referenceService.isCreated = true;
-            this.referenceService.goToRouter("/home/dam/manage");
+            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             this.modalPopupLoader = false;
           },
           (error) => {
@@ -263,7 +252,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
           }
         );
       }
-    }
   }
 
   updatePublishedAsset() {
@@ -272,7 +260,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       (result: any) => {
         this.hidePopup();
         this.referenceService.isUpdated = true;
-        this.referenceService.goToRouter("/home/dam/shared");
+        this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
         this.modalPopupLoader = false;
       },
       (error) => {
@@ -288,11 +276,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       this.validForm = false;
       this.nameErrorMessage = "Already exists";
     } else {
-      this.customResponse = new CustomResponse(
-        "ERROR",
-        this.properties.serverErrorMessage,
-        true
-      );
+      this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
     }
   }
 
@@ -427,9 +411,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
           if (this.isAdd) {
             let category = this.categoryNames[0];
             this.damPostDto.categoryId = category["id"];
+            this.showFolderDropDown = true;
           }
           this.ngxloading = false;
-          this.showFolderDropDown = true;
         },
         (error) => {
           this.ngxloading = false;
