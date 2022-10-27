@@ -387,6 +387,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
 	uploadOrUpdate() {
 		this.getCkEditorData();
+        this.customResponse = new CustomResponse();
 		this.referenceService.goToTop();
 		if(this.isAdd){
 			this.referenceService.showSweetAlertProcessingLoader('Upload is in progress...');
@@ -423,11 +424,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				let statusCode = JSON.parse(error['status']);
 				if (statusCode == 409) {
 					this.dupliateNameErrorMessage = "Already exists";
-					this.formData.delete("damUploadPostDTO");
-				} else {
+				}else if(statusCode == 400){
+                    let message = error['error']['message'];
+                    this.customResponse = new CustomResponse('ERROR', message, true);
+                }else {
 					this.xtremandLogger.log(error);
 					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 				}
+                this.formData.delete("damUploadPostDTO");
 			});
 	}
 	
