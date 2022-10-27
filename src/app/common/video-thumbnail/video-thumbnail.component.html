@@ -12,6 +12,10 @@
     <h4 (click)="titleClickVideo(videoFile)" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 25}}
       <span *ngIf="videoFile?.title?.length>25">...</span>
     </h4>
+    <!-- XNFR-169 -->
+    <h6 class="moreipsis" *ngIf="categoryName!=undefined">
+      <span translate> Folder <strong title="{{categoryName}}">{{categoryName}}</strong></span>
+    </h6>
     <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
       <h5 [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:25}}
         <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
