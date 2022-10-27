@@ -275,7 +275,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
     if (statusCode == 409) {
       this.validForm = false;
       this.nameErrorMessage = "Already exists";
-    } else {
+    }else if(statusCode == 400){
+      this.validForm = false;
+      let message = error['error']['message'];
+      this.customResponse = new CustomResponse("ERROR",message,true);
+    }else {
       this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
     }
   }
