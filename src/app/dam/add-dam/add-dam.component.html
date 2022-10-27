@@ -82,8 +82,8 @@
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
                           style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
                         <div class="form-group" style="padding-top: 20px;">
-                          <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
-                          <div class="col-sm-8">
+                          <label class="control-label col-sm-3" translate>Description<span class="required">*</span></label>
+                          <div class="col-sm-8" *ngIf="isAddAssetDetailsPopupLoaded">
                             <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
                               (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="validateForm('description')"
                               (input)="getCkEditorData();validateForm('description')">
