@@ -62,6 +62,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isAddAssetDetailsPopupLoaded : boolean = false;
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -114,6 +115,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     $("#addAssetDetailsPopup").modal("hide");
     this.openAddTagPopup = false;
+    this.isAddAssetDetailsPopupLoaded= false;
   }
 
   goToManageSectionWithError() {
@@ -174,6 +176,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     if (!this.isPartnerView) {
       this.listTags(new Pagination());
       $("#addAssetDetailsPopup").modal("show");
+      this.isAddAssetDetailsPopupLoaded= true;
       this.ngxloading = false;
     } else {
       this.saveOrUpdate(false);
@@ -181,6 +184,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   hidePopup() {
+    this.isAddAssetDetailsPopupLoaded= false;
     $("#addAssetDetailsPopup").modal("hide");
     if (!this.isAdd || this.isPartnerView) {
       if ($.trim(this.damPostDto.name).length == 0) {
@@ -399,7 +403,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   onReady(event: any) {
-    this.isCkeditorLoaded = true;
+    this.isCkeditorLoaded = true;    
   }
 
   getCkEditorData() {
