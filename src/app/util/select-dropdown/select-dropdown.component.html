@@ -1,4 +1,4 @@
-<div class="xamplify-dropdown">
+<div class="xamplify-dropdown" *ngIf="!disabled">
   <input type="text" class="form-control text-dropdown" [(ngModel)]="defaultOption"
     (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)" readonly>
     <i class="fa fa-angle-down xamplify-dropdown-icon cursor-pointer" aria-hidden="true" (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)"></i>
@@ -15,3 +15,11 @@
     </div>
   </div>
 </div>
+
+<div class="inactive" title="Folder cannot be changed for history template">
+  <div class="xamplify-dropdown disabled-dropdown" *ngIf="disabled">
+    <input type="text" class="form-control text-dropdown" [(ngModel)]="defaultOption"   readonly>
+      <i class="fa fa-angle-down xamplify-dropdown-icon cursor-pointer" aria-hidden="true"></i>
+  </div>
+</div>
+
