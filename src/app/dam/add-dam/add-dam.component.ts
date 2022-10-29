@@ -206,11 +206,12 @@ export class AddDamComponent implements OnInit, OnDestroy {
         $.trim(this.damPostDto.name) != undefined &&
         $.trim(this.damPostDto.name).length > 0;
     } else if (columnName == "description") {
+      let trimmedDescription =  this.referenceService.getTrimmedCkEditorDescription(this.damPostDto.description);
       this.isValidDescription =
-        $.trim(this.damPostDto.description) != undefined &&
-        $.trim(this.damPostDto.description).length > 0 &&
-        $.trim(this.damPostDto.description).length < 5000;
-      this.updateDescriptionErrorMessage();
+        $.trim(trimmedDescription) != undefined &&
+        $.trim(trimmedDescription).length > 0 &&
+        $.trim(trimmedDescription).length < 5000;
+      this.updateDescriptionErrorMessage(trimmedDescription);
     }
     this.validateFields();
   }
@@ -219,12 +220,11 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.validForm = this.isValidName && this.isValidDescription;
   }
 
-  updateDescriptionErrorMessage() {
-    if ($.trim(this.damPostDto.description).length < 5000) {
+  updateDescriptionErrorMessage(description:string) {
+    if ($.trim(description).length < 5000) {
       this.descriptionErrorMessage = "";
     } else {
-      this.descriptionErrorMessage =
-        "Description can't exceed 5000 characters.";
+      this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
     }
   }
 

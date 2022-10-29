@@ -3020,5 +3020,16 @@ export class ReferenceService {
       this.goToManageTracksOrPlayBooks(viewType, isPartnerView,false);
     }
   }
+
+  validateCkEditorDescription(description:string){
+    let trimmedDescription = this.getTrimmedCkEditorDescription(description);
+		let validDescription = $.trim(trimmedDescription) != undefined && trimmedDescription.length>0 && $.trim(trimmedDescription).length > 0 && $.trim(trimmedDescription).length < 5000;
+    return validDescription;
+  }
+
+  getTrimmedCkEditorDescription(description:string){
+    description = $.trim(description).replace(/<[^>]+>/g, '').replace(/[\r\n]/gm, '').split("&nbsp;").join("");
+    return description;
+  }
   
 }
