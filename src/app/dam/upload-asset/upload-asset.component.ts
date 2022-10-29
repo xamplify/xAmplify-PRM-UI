@@ -376,7 +376,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 
 	updateDescriptionErrorMessage(){
-		if($.trim(this.damUploadPostDto.description).length < 5000){
+        let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.damUploadPostDto.description);
+		if(trimmedDescription.length < 5000){
 			this.descriptionErrorMessage = "";
 		} else {
 			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
