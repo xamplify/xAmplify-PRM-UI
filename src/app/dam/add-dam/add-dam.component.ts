@@ -240,6 +240,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
         if (!this.isAdd && !saveAs) {
           this.damPostDto.id = this.assetId;
         }
+        this.damPostDto.saveAs = saveAs;
         this.damService.save(this.damPostDto).subscribe(
           (result: any) => {
             this.hidePopup();
@@ -273,10 +274,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.modalPopupLoader = false;
     let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
-      this.validForm = false;
       this.nameErrorMessage = "Already exists";
     }else if(statusCode == 400){
-      this.validForm = false;
       let message = error['error']['message'];
       this.customResponse = new CustomResponse("ERROR",message,true);
     }else {
