@@ -62,6 +62,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  isAddAssetDetailsPopupLoaded : boolean = false;
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -114,6 +115,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     $("#addAssetDetailsPopup").modal("hide");
     this.openAddTagPopup = false;
+    this.isAddAssetDetailsPopupLoaded= false;
   }
 
   goToManageSectionWithError() {
@@ -140,7 +142,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.vendorCompanyLogoPath = dam.vendorCompanyLogo;
             this.partnerCompanyLogoPath = dam.partnerCompanyLogo;
             this.beeContainerInput["vendorCompanyLogoPath"] =
-              this.vendorCompanyLogoPath;
+            this.vendorCompanyLogoPath;
             this.beeContainerInput["partnerCompanyLogoPath"] =
               this.partnerCompanyLogoPath;
             if (dam.tagIds == undefined) {
@@ -150,6 +152,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             }
             this.damPostDto.categoryId = dam.categoryId;
             this.selectedCategoryId = dam.categoryId;
+            this.showFolderDropDown = true;
           } else {
             this.goToManageSectionWithError();
           }
@@ -174,6 +177,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     if (!this.isPartnerView) {
       this.listTags(new Pagination());
       $("#addAssetDetailsPopup").modal("show");
+      this.isAddAssetDetailsPopupLoaded= true;
       this.ngxloading = false;
     } else {
       this.saveOrUpdate(false);
@@ -181,6 +185,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   hidePopup() {
+    this.isAddAssetDetailsPopupLoaded= false;
     $("#addAssetDetailsPopup").modal("hide");
     if (!this.isAdd || this.isPartnerView) {
       if ($.trim(this.damPostDto.name).length == 0) {
@@ -201,11 +206,12 @@ export class AddDamComponent implements OnInit, OnDestroy {
         $.trim(this.damPostDto.name) != undefined &&
         $.trim(this.damPostDto.name).length > 0;
     } else if (columnName == "description") {
+      let trimmedDescription =  this.referenceService.getTrimmedCkEditorDescription(this.damPostDto.description);
       this.isValidDescription =
-        $.trim(this.damPostDto.description) != undefined &&
-        $.trim(this.damPostDto.description).length > 0 &&
-        $.trim(this.damPostDto.description).length < 5000;
-      this.updateDescriptionErrorMessage();
+        $.trim(trimmedDescription) != undefined &&
+        $.trim(trimmedDescription).length > 0 &&
+        $.trim(trimmedDescription).length < 5000;
+      this.updateDescriptionErrorMessage(trimmedDescription);
     }
     this.validateFields();
   }
@@ -214,30 +220,17 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.validForm = this.isValidName && this.isValidDescription;
   }
 
-  updateDescriptionErrorMessage() {
-    if ($.trim(this.damPostDto.description).length < 5000) {
+  updateDescriptionErrorMessage(description:string) {
+    if ($.trim(description).length < 5000) {
       this.descriptionErrorMessage = "";
     } else {
-      this.descriptionErrorMessage =
-        "Description can't exceed 5000 characters.";
+      this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
     }
   }
 
   saveOrUpdate(saveAs: boolean) {
     this.customResponse = new CustomResponse();
-    if (
-      !saveAs &&
-      this.selectedCategoryId != this.damPostDto.categoryId &&
-      !this.isAdd
-    ) {
-      this.referenceService.scrollToModalBodyTopByClass();
-      this.customResponse = new CustomResponse(
-        "ERROR",
-        "Folder name cannot be changed for history templates",
-        true
-      );
-    } else {
-      this.getCkEditorData();
+    this.getCkEditorData();
       this.nameErrorMessage = "";
       this.modalPopupLoader = true;
       this.damPostDto.createdBy = this.loggedInUserId;
@@ -247,11 +240,12 @@ export class AddDamComponent implements OnInit, OnDestroy {
         if (!this.isAdd && !saveAs) {
           this.damPostDto.id = this.assetId;
         }
+        this.damPostDto.saveAs = saveAs;
         this.damService.save(this.damPostDto).subscribe(
           (result: any) => {
             this.hidePopup();
             this.referenceService.isCreated = true;
-            this.referenceService.goToRouter("/home/dam/manage");
+            this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             this.modalPopupLoader = false;
           },
           (error) => {
@@ -259,7 +253,6 @@ export class AddDamComponent implements OnInit, OnDestroy {
           }
         );
       }
-    }
   }
 
   updatePublishedAsset() {
@@ -268,7 +261,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
       (result: any) => {
         this.hidePopup();
         this.referenceService.isUpdated = true;
-        this.referenceService.goToRouter("/home/dam/shared");
+        this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
         this.modalPopupLoader = false;
       },
       (error) => {
@@ -281,14 +274,12 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.modalPopupLoader = false;
     let statusCode = JSON.parse(error["status"]);
     if (statusCode == 409) {
-      this.validForm = false;
       this.nameErrorMessage = "Already exists";
-    } else {
-      this.customResponse = new CustomResponse(
-        "ERROR",
-        this.properties.serverErrorMessage,
-        true
-      );
+    }else if(statusCode == 400){
+      let message = error['error']['message'];
+      this.customResponse = new CustomResponse("ERROR",message,true);
+    }else {
+      this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
     }
   }
 
@@ -399,7 +390,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   }
 
   onReady(event: any) {
-    this.isCkeditorLoaded = true;
+    this.isCkeditorLoaded = true;    
   }
 
   getCkEditorData() {
@@ -423,9 +414,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
           if (this.isAdd) {
             let category = this.categoryNames[0];
             this.damPostDto.categoryId = category["id"];
+            this.showFolderDropDown = true;
           }
           this.ngxloading = false;
-          this.showFolderDropDown = true;
         },
         (error) => {
           this.ngxloading = false;

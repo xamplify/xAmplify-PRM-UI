@@ -281,3 +281,7 @@ cursor: default;
 .title-div > h5 {
   font-size: 12px;
 }
+
+.min-width-thtwpx{
+  min-width: 320px;
+}

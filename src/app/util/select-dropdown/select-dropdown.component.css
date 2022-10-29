@@ -65,3 +65,7 @@
     display: inline-block;
     background-color: #fff !important;
 }
+.disabled-dropdown{
+    pointer-events: none;
+    opacity: 0.4;
+}

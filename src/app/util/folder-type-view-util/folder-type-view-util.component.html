@@ -69,7 +69,7 @@
                           <span translate>Created On</span>
                           <span>
                               <strong>
-                                  <span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},{{category.displayTime |date:'shortTime'}}</span>
+                                  <span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},<br>{{category.displayTime |date:'shortTime'}}</span>
                                   <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
                               </strong>
                           </span>

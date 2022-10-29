@@ -18,4 +18,5 @@ export class DamUploadPostDto {
     cloudContent : boolean=false;
     source: string = "";
     categoryId:number = 0;
+    historyTemplate = false;
 }

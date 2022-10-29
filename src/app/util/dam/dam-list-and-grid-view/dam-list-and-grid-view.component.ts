@@ -78,6 +78,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();

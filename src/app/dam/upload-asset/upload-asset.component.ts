@@ -360,9 +360,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		if (columnName == "assetName") {
 			this.damUploadPostDto.validName = $.trim(this.damUploadPostDto.assetName) != undefined && $.trim(this.damUploadPostDto.assetName).length > 0;
 		} else if (columnName == "description") {
-		    let plainDescription1 = this.damUploadPostDto.description.trim().replace(/<[^>]+>/g, '').replace(/[\r\n]/gm, '');;
-		    let plainDescription = plainDescription1.trim().split("&nbsp;").join("");
-			this.damUploadPostDto.validDescription = $.trim(this.damUploadPostDto.description) != undefined && plainDescription.length>0 && $.trim(this.damUploadPostDto.description).length > 0 && $.trim(this.damUploadPostDto.description).length < 5000;
+            this.damUploadPostDto.validDescription = this.referenceService.validateCkEditorDescription(this.damUploadPostDto.description);
 			this.updateDescriptionErrorMessage();
 		}
 		this.validateAllFields();
@@ -378,7 +376,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 
 	updateDescriptionErrorMessage(){
-		if($.trim(this.damUploadPostDto.description).length < 5000){
+        let trimmedDescription = this.referenceService.getTrimmedCkEditorDescription(this.damUploadPostDto.description);
+		if(trimmedDescription.length < 5000){
 			this.descriptionErrorMessage = "";
 		} else {
 			this.descriptionErrorMessage = "Description can't exceed 5000 characters.";
@@ -387,6 +386,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 
 	uploadOrUpdate() {
 		this.getCkEditorData();
+        this.customResponse = new CustomResponse();
 		this.referenceService.goToTop();
 		if(this.isAdd){
 			this.referenceService.showSweetAlertProcessingLoader('Upload is in progress...');
@@ -423,11 +423,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				let statusCode = JSON.parse(error['status']);
 				if (statusCode == 409) {
 					this.dupliateNameErrorMessage = "Already exists";
-					this.formData.delete("damUploadPostDTO");
-				} else {
+				}else if(statusCode == 400){
+                    let message = error['error']['message'];
+                    this.customResponse = new CustomResponse('ERROR', message, true);
+                }else {
 					this.xtremandLogger.log(error);
 					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 				}
+                this.formData.delete("damUploadPostDTO");
 			});
 	}
 	
