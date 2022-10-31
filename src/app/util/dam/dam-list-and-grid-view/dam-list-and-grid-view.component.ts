@@ -141,7 +141,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded) {
 			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
 		}
-		this.getCompanyId();		
+		if(this.viewType!="fl" && this.viewType!="fg"){
+			this.getCompanyId();		
+		}
 	}
 
 	ngOnDestroy() {
