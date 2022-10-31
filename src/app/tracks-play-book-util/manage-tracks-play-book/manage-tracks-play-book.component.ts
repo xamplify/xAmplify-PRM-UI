@@ -100,7 +100,9 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
         this.showMessageOnTop(this.message);
       }
     }
-    this.listLearningTracks(this.pagination);
+    if(this.viewType!="fl" && this.viewType!="fg"){
+      this.listLearningTracks(this.pagination);
+    }
   }
 /********XNFR-170******/
 setViewType(viewType: string) {
