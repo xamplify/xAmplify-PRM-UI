@@ -181,6 +181,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             this.picker.setVisible(false);
             this.picker.dispose();
         }
+        
+        if(this.processing){
+           this.damService.ispreviousAssetIsProcessing = true;
+        }
 		
 	}
 
@@ -405,8 +409,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						this.referenceService.isUploaded = true;
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;
-					}
-                    /******XNFR-169*****/
+					}                    
 					this.goToManageDam();
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
@@ -501,16 +504,21 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		let path : string = result.map.assetPath;
 		 this.processing = true;
 		if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
+		if(this.damService.ispreviousAssetIsProcessing){
+		  this.damService.ispreviousAssetIsProcessing = false;
+		}		
 		this.damService.processVideo(this.formData, this.damUploadPostDto, path).subscribe(
 	            (result: any) => {
 	                if (result.statusCode == 200) {
+	                this.processing = false;
+	                if(!this.damService.ispreviousAssetIsProcessing){
 	                    if(this.isAdd){
 	                        this.referenceService.isUploaded = true;
 	                    }else{
 	                        this.referenceService.isAssetDetailsUpldated = true;
 	                    }
-                        /****XNFR-169****/
 	                    this.goToManageDam();
+	                    }
 	                } else if (result.statusCode == 400) {
 	                    this.customResponse = new CustomResponse('ERROR', result.message, true);
 	                } else if (result.statusCode == 404) {
