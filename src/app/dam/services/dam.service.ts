@@ -14,6 +14,7 @@ import { HttpClient, HttpRequest } from "@angular/common/http";
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/"
+  ispreviousAssetIsProcessing = false;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
   list(pagination: Pagination) {
