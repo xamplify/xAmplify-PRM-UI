@@ -414,8 +414,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
           if (this.isAdd) {
             let category = this.categoryNames[0];
             this.damPostDto.categoryId = category["id"];
-            this.showFolderDropDown = true;
           }
+          this.showFolderDropDown = true;
           this.ngxloading = false;
         },
         (error) => {
