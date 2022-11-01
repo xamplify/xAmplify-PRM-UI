@@ -2869,7 +2869,8 @@ configSalesforce() {
 	syncPipeline(pipeline: Pipeline) {
 		let self = this;
 		this.ngxloading = true;
-		this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
+		if (pipeline.integrationType === "SALESFORCE") {
+			this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
@@ -2893,6 +2894,31 @@ configSalesforce() {
 				},
 				() => { }
 			);
+		} else {
+			this.integrationService.syncPipeline(pipeline.id, this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						let message = pipeline.name + " Synchronized Successfully";
+						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
+						this.pipelinePagination.pageIndex = 1;
+						this.listAllPipelines(this.pipelinePagination);
+					} else {
+						this.closePipelineModal();
+						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+				},
+				() => { }
+			);
+
+		}
+		
 	}
 
 

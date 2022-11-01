@@ -106,7 +106,7 @@
                   <!-- right page -->
                   <div class="col-sm-6 col-xs-12">
                     <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
-                      *ngIf="!hasCampaignPipeline && !hasSfPipeline">
+                      *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
                       <label class="control-label">Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                       <select class="form-control" [(ngModel)]="lead.pipelineId" [ngModelOptions]="{standalone: true}"
                         placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">

@@ -9,9 +9,7 @@ import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
 
 @Injectable()
-export class IntegrationService {
-	
-
+export class IntegrationService {  
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
         console.log(logger);
@@ -105,6 +103,18 @@ export class IntegrationService {
 
     listExternalCustomFields(type:string, userId: number) {
         return this._http.get(this.authenticationService.REST_URL + "/external/" + userId + "/custom-fields?access_token=" + this.authenticationService.access_token+ "&type="+type)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    syncPipeline(pipelineId: number, userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `external/pipeline/sync/${userId}/${pipelineId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getActiveCRMDetails(createdForCompanyId: number, loggedInUserId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/active/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
