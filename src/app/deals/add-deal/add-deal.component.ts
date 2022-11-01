@@ -22,6 +22,7 @@ import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfiel
 import {Properties} from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -47,7 +48,7 @@ export class AddDealComponent implements OnInit {
   loggedInUserId: number;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   dealFormTitle = "Deal Details";
-  showSfForm: boolean = false;
+  showCustomForm: boolean = false;
   vendorList = new Array();
   deal: Deal = new Deal();
   lead: Lead = new Lead();
@@ -94,10 +95,11 @@ export class AddDealComponent implements OnInit {
 
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
+  activeCRMDetails: any;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
-    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService) {
+    public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -146,7 +148,8 @@ export class AddDealComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (data.statusCode == 200) {
           this.deal.createdForCompanyId = data.data;
-          this.isSalesForceEnabled();
+          //this.isSalesForceEnabled();
+          this.getActiveCRMDetails();
         }
       },
       error => {
@@ -204,7 +207,8 @@ export class AddDealComponent implements OnInit {
             self.deal.createdForCompanyId = self.lead.createdForCompanyId;
             self.createdForCompanyIdError = false;
             self.deal.associatedUserId = self.lead.associatedUserId;
-            this.isSalesForceEnabled();
+            //this.isSalesForceEnabled();
+            this.getActiveCRMDetails();
             if (self.lead.campaignId != null && self.lead.campaignId > 0) {
               self.deal.campaignId = self.lead.campaignId;
               self.deal.campaignName = self.lead.campaignName;
@@ -270,7 +274,8 @@ export class AddDealComponent implements OnInit {
             }
             self.setCloseDate(data); 
             if (self.deal.createdForCompanyId > 0) {
-              self.isSalesForceEnabled();
+              //self.isSalesForceEnabled();
+              this.getActiveCRMDetails();
             } 
           }
         },
@@ -348,12 +353,12 @@ export class AddDealComponent implements OnInit {
   }
 
   isSalesForceEnabled() {
-    this.showSfForm = false;
+    this.showCustomForm = false;
     this.dealsService.isSalesForceEnabled(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
           if (response.statusCode == 200) {
-            this.showSfForm = response.data;
+            this.showCustomForm = response.data;
           } 
         },
         error => {
@@ -361,7 +366,7 @@ export class AddDealComponent implements OnInit {
         },
         () => {          
           this.setFieldErrorStates();
-          if (!this.showSfForm) {
+          if (!this.showCustomForm) {
             this.showDefaultForm = true; 
             this.hasSfPipeline = false;                       
             if (this.edit || this.preview) {
@@ -410,8 +415,8 @@ export class AddDealComponent implements OnInit {
   onChangeCreatedFor() {
     //this.validateField('createdForCompanyId',false);
     if (this.deal.createdForCompanyId > 0) {
-      this.isSalesForceEnabled();
-                  
+      //this.isSalesForceEnabled();
+      this.getActiveCRMDetails();
     } else {
       this.showDefaultForm = false;
       this.propertiesQuestions = [];
@@ -494,7 +499,7 @@ export class AddDealComponent implements OnInit {
     var obj = [];
     let answers: DealAnswer[] = [];
 
-    if (this.showSfForm) {
+    if (this.showCustomForm) {
       this.showLoadingButton = true;
       this.setSfFormFieldValues();
     }
@@ -686,7 +691,7 @@ export class AddDealComponent implements OnInit {
 
 
   submitButtonStatus() {
-    if (this.showSfForm) {
+    if (this.showCustomForm) {
       this.opportunityAmountError = false;
       this.titleError = false;
       this.estimatedCloseDateError = false;
@@ -912,7 +917,79 @@ remove(i, id) {
       });
   this.submitButtonStatus()
 
+}
 
+getActiveCRMDetails() {
+  this.showCustomForm = false;
+  this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
+    .subscribe(
+      response => {
+        if (response.statusCode == 200) {          
+          this.activeCRMDetails = response.data;
+          if (this.activeCRMDetails.activeCRM 
+            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type)) {
+            this.showCustomForm = true;
+          }
+        } 
+      },
+      error => {
+        console.log(error);
+      },
+      () => {          
+        this.setFieldErrorStates();
+        if (!this.showCustomForm) {
+          this.showDefaultForm = true; 
+          this.activeCRMDetails.hasDealPipeline = false;                      
+          if (this.edit || this.preview) {
+            this.setProperties();
+            if (this.deal.campaignId > 0) {
+              this.getCampaignDealPipeline();
+            } else {
+              this.getPipelines();
+            }
+          } else {
+            this.getQuestions();
+            this.resetPipelines();
+          }
+          this.getDealTypes();
+        } else {          
+          this.getActiveCRMPipelines();
+        }
+      });
+}
+
+getActiveCRMPipelines() {
+  let self = this;    
+  this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, this.activeCRMDetails.type)
+    .subscribe(
+      data => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        if (data.statusCode == 200) {
+          let activeCRMPipelines:Array<any> = data.data;
+          if (activeCRMPipelines.length === 1) {
+            let activeCRMPipeline = activeCRMPipelines[0];
+            self.deal.pipelineId = activeCRMPipeline.id;
+            self.pipelineIdError = false;
+            self.stages = activeCRMPipeline.stages;
+            self.activeCRMDetails.hasDealPipeline = true;
+          } else {
+            self.deal.pipelineId = 0;
+            self.stages = [];
+            self.pipelines = activeCRMPipelines;
+            self.activeCRMDetails.hasDealPipeline = false;
+          }
+        } else if (data.statusCode == 404) {
+          self.deal.pipelineId = 0;
+          self.stages = [];
+          self.getPipelines();
+          self.activeCRMDetails.hasDealPipeline = false;
+        }
+      },
+      error => {
+        this.httpRequestLoader.isServerError = true;
+      },
+      () => { }
+    );
 }
 
 }
