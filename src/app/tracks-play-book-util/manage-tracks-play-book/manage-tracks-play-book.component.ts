@@ -59,7 +59,6 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
-    this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
     if(this.folderListViewCategoryId!=undefined){
 			this.categoryId = this.folderListViewCategoryId;
