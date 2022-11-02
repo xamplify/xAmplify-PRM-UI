@@ -92,8 +92,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.isAdd = false;
         this.modalTitle = "Update Details";
         this.saveOrUpdateButtonText = "Update";
-        this.listCategories();
         this.getById();
+        
       } else {
         this.goToManageSectionWithError();
       }
@@ -152,11 +152,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
             }
             this.damPostDto.categoryId = dam.categoryId;
             this.selectedCategoryId = dam.categoryId;
-            this.showFolderDropDown = true;
           } else {
             this.goToManageSectionWithError();
           }
-          this.ngxloading = false;
+          
         } else {
           this.referenceService.goToPageNotFound();
         }
@@ -166,6 +165,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
         this.ngxloading = false;
         this.goBack();
         this.referenceService.showSweetAlertServerErrorMessage();
+      },()=>{
+        this.listCategories();
       }
     );
   }
