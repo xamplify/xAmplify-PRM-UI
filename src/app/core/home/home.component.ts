@@ -317,7 +317,6 @@ export class HomeComponent implements OnInit {
       (response) =>{
        let cskinMap  = response.data;
        this.skin  = cskinMap.MAIN_CONTENT;
-       console.log(this.skin);
     }
     )
     

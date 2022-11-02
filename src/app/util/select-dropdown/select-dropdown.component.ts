@@ -8,17 +8,25 @@ import { ReferenceService } from '../../core/services/reference.service';
 })
 export class SelectDropdownComponent implements OnInit {
 
-  @Input()defaultOption:string = "";
+  defaultOption:string = "";
   filteredDropDownItems:Array<any> = new Array<any>();
   showFolderDropDown: boolean = false;
   @Input() dropDownItems:Array<any> = new Array<any>();
-  @Output() notifyParentComponent = new EventEmitter();
+  @Input() categoryId:number = 0;
+  @Input() disabled = false;
+  @Output() selectDropdownComponentEmitter = new EventEmitter();
   dropDownSearchValue:any;
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
-    // let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
-    // this.defaultOption = names[0];
+    if(this.categoryId!=undefined && this.categoryId!=0){
+     let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
+     this.defaultOption = selectedCategoryName['name'];
+    }else{
+      let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
+      this.defaultOption = names[0];
+    }
+    
   }
 
   filterDropDownData(inputElement: any) {
@@ -39,7 +47,7 @@ export class SelectDropdownComponent implements OnInit {
     this.defaultOption = input.name;
     this.filteredDropDownItems = this.dropDownItems;
     this.showFolderDropDown = false;
-    this.notifyParentComponent.emit(input.id);
+    this.selectDropdownComponentEmitter.emit(input.id);
   }
 
 

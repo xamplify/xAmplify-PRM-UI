@@ -7,9 +7,9 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="isCreatedUser" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <a *ngIf="isCreatedUser" (click)="goToManagePlayBooks()">Manage Play Books</a>
                 <i *ngIf="!isCreatedUser" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isCreatedUser" [routerLink]="['/home/playbook/shared']">shared Play Books</a>
+                <a *ngIf="!isCreatedUser" (click)="goToManageSharedPlayBooks()">Shared Play Books</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a>View Play Book</a>
             </li>

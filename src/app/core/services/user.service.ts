@@ -40,7 +40,6 @@ export class UserService {
     }
 
     getVideoDefaultSettings() {
-        console.log(this.authenticationService.user.roles);
         if (this.authenticationService.user.roles.length > 1) {
             return this.http.get(this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token)
                 .map(this.extractData)
@@ -63,7 +62,6 @@ export class UserService {
     }
 
     signUp(data: User) {
-        console.log(data);
         return this.http.post(this.URL + "register/signup/user?companyProfileName=" + this.authenticationService.companyProfileName, data)
             .map(this.extractData)
             .catch(this.signUpHandleError);
@@ -78,7 +76,6 @@ export class UserService {
     }
 
     updatePassword(data: any) {
-        console.log(data);
         return this.http.post(this.URL + "admin/updatePassword?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
@@ -487,5 +484,10 @@ export class UserService {
         
     }
     
+    getFirstNameLastNameAndEmailIdByUserId(userId: number) {
+        return this.http.get(this.URL + "getFirstNameLastNameAndEmailIdByUserId/"+userId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 }

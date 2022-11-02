@@ -119,6 +119,11 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
 
     listForms(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
+        /**********Vanity Url Filter**************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this.pagination.vanityUrlFilter = true;
+        }
         this.formService.list(pagination).subscribe(
             (response: any) => {
                 const data = response.data;

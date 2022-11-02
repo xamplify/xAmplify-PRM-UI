@@ -1,7 +1,5 @@
 <ng-container *ngIf="videoFile!=undefined">
 
-
-
 <div class="clearfix" >
   <div class='thumbnail-wrapper' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
     <img alt="" *ngIf="!videoFile?.processed" src="assets/images/Spinner.gif" class="loader-css">
@@ -11,28 +9,32 @@
 
 <div class="title-div">
   <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
-    <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="videoFile?.title | slice: 0: 23" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 23}}
-      <span *ngIf="videoFile?.title?.length>23">..</span>
+    <h4 (click)="titleClickVideo(videoFile)" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 25}}
+      <span *ngIf="videoFile?.title?.length>25">...</span>
     </h4>
+    <!-- XNFR-169 -->
+    <h6 class="moreipsis" *ngIf="categoryName!=undefined">
+      <span translate> Folder <strong title="{{categoryName}}">{{categoryName}}</strong></span>
+    </h6>
     <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
-      <h5 data-toggle="tooltip" data-placement="top"  [title]="videoFile.uploadedUserName | slice:0:20" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:20}}
-        <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
+      <h5 [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:25}}
+        <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
       </h5>
       <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">By
-        <span  data-toggle="tooltip" data-placement="top"  [title]="videoFile.companyName | slice:0:20" *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:20 }}
-          <span *ngIf="videoFile.companyName?.length>20">...</span>
+        <span [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:25 }}
+          <span *ngIf="videoFile.companyName?.length>25">...</span>
         </span>
-        <span  data-toggle="tooltip" data-placement="top"  [title]="videoFile.uploadedUserName | slice:0:20" *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:20}}
-          <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
+        <span [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:25}}
+          <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
         </span>
       </h5>
     </span>
     <span *ngIf="authenticationService.isOnlyPartner()"  (click)="$event.stopPropagation();showPlayVideo(videoFile)">
-      <span data-toggle="tooltip" data-placement="top"  [title]="videoFile.companyName | slice:0:20" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:20}}
-          <span *ngIf="videoFile.companyName?.length>20">...</span>
+      <span [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:25}}
+          <span *ngIf="videoFile.companyName?.length>25">...</span>
       </span>
-      <span data-toggle="tooltip" data-placement="top" [title]="videoFile.uploadedUserName | slice:0:20" *ngIf="!videoFile.companyName">By {{videoFile.uploadedUserName | slice:0:20}}
-          <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
+      <span [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">By {{videoFile.uploadedUserName | slice:0:25}}
+          <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
       </span>
     </span>
     <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
@@ -51,17 +53,15 @@
 					<ng-container *ngIf="videoFile.tagNames?.length == 1">{{videoFile.tagNames[0]}}
 					</ng-container>
 					<ng-container *ngIf="videoFile.tagNames?.length > 1">{{videoFile.tagNames[0]
-					| slice:0:15}} <span *ngIf="videoFile.tagNames[0]?.length>15">..</span>
+					| slice:0:25}} <span *ngIf="videoFile.tagNames[0]?.length>25">...</span>
 					</ng-container>
 				</div>
 				<ng-container *ngIf="videoFile.tagNames.length > 1">
 				<div class="tag" title="{{videoFile.tagNames[1]}}">
-					{{videoFile.tagNames[1] | slice:0:15}} <span
-						*ngIf="videoFile.tagNames[1]?.length>15">..</span>
+					{{videoFile.tagNames[1] | slice:0:25}} <span
+						*ngIf="videoFile.tagNames[1]?.length>25">...</span>
 				</div>
-				</ng-container> <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots"
-					data-toggle="tooltip" data-placement="top"
-					title="{{videoFile.toolTipTagNames}}">...</span>
+				</ng-container> <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots" title="{{videoFile.toolTipTagNames}}">...</span>
 					</ng-container>
 			</h6> 
 			<!-- tags end --> 

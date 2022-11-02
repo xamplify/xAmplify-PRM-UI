@@ -7,7 +7,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
                 <i *ngIf="!isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
-                <a *ngIf="!isAdd" [routerLink]="['/home/playbook/manage']">Manage Play Books</a>
+                <a *ngIf="!isAdd" (click)="goToManagePlayBooks()">Manage Play Books</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <a *ngIf="isAdd">Add Play Book</a>
                 <a *ngIf="!isAdd">Edit Play Book</a>

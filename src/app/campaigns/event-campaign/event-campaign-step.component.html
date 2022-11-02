@@ -1432,6 +1432,7 @@
 						<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
 						<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
 						<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
+						<option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
 						<option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
 						<option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
 						<option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
@@ -1441,13 +1442,13 @@
 						<option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
 					  </select>
 					</div>
-					<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30" [class.disabled]="isPreviewEvent">
+					<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33" [class.disabled]="isPreviewEvent">
 					  <div class="col-xs-12 col-sm-2">
-						<label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
+						<label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
 						  <b style="color: red">*</b>
 						  <font><b>(Minimum 1 Day)</b></font>
 						</label>
-						<label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">
+						<label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">
 						 <span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span>
 						 <span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days</span>
 						  <b style="color: red">*</b>

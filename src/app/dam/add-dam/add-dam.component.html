@@ -42,8 +42,12 @@
       <div class="modal-content">
         <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="modal-header">
-              <a class="close-circle" (click)="hidePopup()">
-                <i class="fa fa-times" aria-hidden="true"></i></a>
+                <div class="cf-padding-dam">
+                  <a class="close-circle" (click)="hidePopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </a>
+                  <button class="add-button-xamplify mr5" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+              </div>
               <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
           </div>
           <div class="modal-body">
@@ -63,13 +67,23 @@
                               </div>
                          </div>
                      </div>
+                     <!---XNFR-169-->
+                     <div class="col-md-12 col-lg-12 ">
+                      <div class="form-group">
+                          <label class="control-label col-sm-3" translate>Folder
+                              <span class="required">*</span>
+                          </label>
+                          <div class="col-sm-8" *ngIf="showFolderDropDown">
+                            <app-select-dropdown  [categoryId]="damPostDto.categoryId" [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+                           </div>
+                      </div>
+                    </div>
                      <div class="col-md-12 col-lg-12 ">
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
                           style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
                         <div class="form-group" style="padding-top: 20px;">
-                          <label class="control-label col-sm-3" translate>Description <span class="required">*</span></label>
-                          <div class="col-sm-8">
-                            <!-- <textarea class="form-control" rows="7" (input)="validateForm('description')"  placeholder="Description" maxlength="5000" [(ngModel)]="damPostDto.description"  [ngModelOptions]="{standalone: true}"></textarea> -->
+                          <label class="control-label col-sm-3" translate>Description<span class="required">*</span></label>
+                          <div class="col-sm-8" *ngIf="isAddAssetDetailsPopupLoaded">
                             <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
                               (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="validateForm('description')"
                               (input)="getCkEditorData();validateForm('description')">
@@ -166,4 +180,6 @@
   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
   </app-add-tags-util>
 </div>
+
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
  

@@ -1,0 +1,160 @@
+<!----Folder View------>
+<div>
+  <div class="portlet-title">
+      <div class="row">
+          <div class="page-toolbar col-xs-12">
+              <div class="btn-group pull-right">
+                  <ng-container class='m10'>
+                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')">
+                          <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                      </span> &nbsp;
+                      <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('g')">
+                          <i  class="fa fa-th-large p10" aria-hidden="true"></i>
+                      </span>
+                      <span class="btn btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='fg'" (click)="setViewType('fg')"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
+                          <i class="fa fa-folder p10"  aria-hidden="true"></i>
+                      </span>
+                      <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='fl'"  (click)="setViewType('fl')" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
+                          <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
+                      </span>
+                  </ng-container>
+                  <div class="inputs float-right custom-flex">
+                      <div id="left">
+                          <select class="form-control" [(ngModel)]="categorySortOption.selectedTeamMemberGroupSortDropDown" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                              <option *ngFor="let option of categorySortOption.teamMemberGroupDropDownOptions"
+                                  [ngValue]="option">
+                                  {{option.name}}</option>
+                          </select>
+                      </div>
+                      <div class="portlet-input input-inline" id="search-div">
+                          <div class="input-icon right" id="icon">
+                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="categorySortOption.searchKey" (click)="categorySortOption.searchKey='';searchCategories();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchCategories()">
+                                  <i class="fa fa-search" aria-hidden="true"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <br>
+   <!-----------------------Folder Grid View----------------------------------------->
+  <div class="row mix-grid p10" *ngIf="folderViewType=='fg'">
+      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
+      <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+      <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading"> 
+          <div class="col-xs-12 col-sm-4 col-lg-3" *ngFor="let category of pagination.pagedItems; let i= index">                
+              <div class="ffolder big gray">
+                  <div class="grid-box" style="max-height: 194px;">
+                      <div id="category-icon-div">
+                          <i class="{{category.icon}}" id="category-icon-size" aria-hidden="true"></i>
+                      </div>
+                      <h4 class="ellipsis" title="{{category.name}}">
+                          {{category.name | slice:0:22}}
+                          <span *ngIf="category.name?.length>22">...</span>
+                      </h4><br><br>
+                      <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
+                      <h6 [title]="category.createdBy" translate>By
+                          <strong>{{category.createdBy | slice:0:15}}<span
+                                  *ngIf="category.createdBy?.length>15">...</span></strong>
+                      </h6>
+                      <h6 [title]="category.companyName" translate>From
+                          <strong>{{category.companyName | slice:0:20}}<span
+                                  *ngIf="category.companyName?.length>20">...</span></strong>
+                      </h6>
+                      <h6>
+                          <span translate>Created On</span>
+                          <span>
+                              <strong>
+                                  <span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},<br>{{category.displayTime |date:'shortTime'}}</span>
+                                  <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+                              </strong>
+                          </span>
+                      </h6>
+                      <div class="bar">
+                          <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItemsByCategoryId(category.id)">
+                              <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </ng-container>
+  </div>
+
+   <!-----------------------Folder List View----------------------------------------->
+   <div class="table-responsive overflow-x-hidden" *ngIf="folderViewType=='fl'">
+    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
+        <thead>
+            <tr>
+                <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
+                    <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)"> </span>
+                    <span class="gridHeader" translate>Folder</span>
+                </th>
+                <th class="text-center" id="border-bottom" translate>Created On</th>
+                <th class="text-center" id="border-bottom" translate>Items Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
+                <tr id="folder-row-{{i}}" class="child-row-list-view">
+                    <td class="custom-icon-width">
+                        <a  (click)="$event.stopPropagation();viewFolderItems(category,i)"  title="View Items">
+                        <i class="fa" id="fa-folder-custom-size"
+                          [ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}" aria-hidden="true">
+                        </i>
+                        <i class="fa" id="fa-folder-custom-size"
+                          [ngClass]="{'fa-folder': !category.expanded, 'fa-folder-open': category.expanded}" aria-hidden="true">
+                        </i>
+                        </a>
+                    </td>
+                    <td>
+                        <h4 class="moreipsis" title="{{category.name}}">
+                            <span>{{category.name}}</span>
+                        </h4>
+                        <h6 class="moreipsis">
+                            <span translate> Created By <strong>{{category.createdBy}}</strong></span>
+                        </h6>
+                    </td>
+                    <td class="text-center">
+                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="category.displayTime">
+                        </app-timestamp>
+                        <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+                    </td>
+                    <td class="text-center">
+                        <div  class="override-actions">
+                            <span id="count-{{moduleId}}-{{category.id}}"><b>{{category.count}}</b></span>
+                        </div> 
+                    </td>
+                </tr>
+                <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
+                    <td colspan="5">
+                        <ng-container *ngIf="category.expanded">
+                            <ng-container *ngIf="moduleId==roles.damId">
+                               <app-dam-list-and-grid-view [folderListViewCategoryId]="category.id" [folderListViewExpanded]="category.expanded" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
+                            </ng-container>
+                            <ng-container *ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
+                                <app-manage-tracks-play-book [folderListViewCategoryId]="category.id" [type]="type"  [folderListViewExpanded]="category.expanded" (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
+                             </ng-container>
+                        </ng-container>
+                    </td>
+                 </tr>                   
+            </ng-container>
+        </tbody>
+    </table>
+   </div>
+
+
+  <!--Pagination-->
+  <div *ngIf="pagination.pagedItems.length !== 0" style="margin-top: 25px;">
+    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+  </div>
+  <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+    <strong translate>No Folders Found.</strong>
+  </div>
+
+  </div>

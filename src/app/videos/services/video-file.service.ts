@@ -365,4 +365,13 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     
+      getVideoById(videoId: number, viewBy: string): Observable<SaveVideoFile> {
+        this.viewBytemp = viewBy;
+        console.log(videoId);
+        const url = this.URL + 'video-by-id/' + videoId +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy + '&access_token=' + this.authenticationService.access_token;;
+        return this.http.get(url, '')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 }
