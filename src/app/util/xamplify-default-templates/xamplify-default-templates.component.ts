@@ -35,6 +35,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   }
 
   editTemplate(){
+   let self = this;
     let emailTemplate = this.xamplifyDefaultTemplate;
     if(emailTemplate.jsonBody!=undefined){
       var request = function (method, url, data, type, callback) {
@@ -44,7 +45,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
             var response = JSON.parse(req.responseText);
             callback(response);
           } else if (req.readyState === 4 && req.status !== 200) {
-            console.error('Access denied, invalid credentials. Please check you entered a valid client_id and client_secret.');
+                self.referenceService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
+
           }
         };
         req.open(method, url, true);
@@ -64,7 +66,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         req.send(data);
       };
 
-      let self = this;
+     
       var save = function (jsonContent: string, htmlContent: string) {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;

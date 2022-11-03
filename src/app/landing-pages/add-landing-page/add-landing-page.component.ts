@@ -98,6 +98,9 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 if (req.readyState === 4 && req.status === 200) {
                                     var response = JSON.parse(req.responseText);
                                     callback(response);
+                                }else if (req.readyState === 4 && req.status !== 200) {
+                                    self.ngxloading = false;
+                                    self.referenceService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
                                 }
                             };
                             req.open(method, url, true);
