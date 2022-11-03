@@ -283,6 +283,7 @@ export class AddLeadComponent implements OnInit {
     this.lead.pipelineStageId = 0;
     this.hasCampaignPipeline = false;
     this.hasSfPipeline = false;
+    this.activeCRMDetails.hasLeadPipeline = false;
     this.getPipelines();
   }
 

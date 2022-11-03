@@ -9,7 +9,8 @@ import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { SocialContact } from "app/contacts/models/social-contact";
 
 @Injectable()
-export class IntegrationService {  
+export class IntegrationService {
+    
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
         console.log(logger);
@@ -118,4 +119,10 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getactiveCRMCustomForm(companyId: any, dealId: any) {
+        return this._http.get(this.authenticationService.REST_URL + "crm/active/custom/form/" + companyId + "/" + dealId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+      }  
 }

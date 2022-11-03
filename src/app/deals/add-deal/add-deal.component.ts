@@ -410,6 +410,7 @@ export class AddDealComponent implements OnInit {
     this.deal.pipelineStageId = 0;
     this.getPipelines();
     this.hasSfPipeline = false;
+    this.activeCRMDetails.hasDealPipeline = false;
   }
 
   onChangeCreatedFor() {
@@ -781,11 +782,11 @@ setSfFormFieldValues() {
   if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
       let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
       if (formLabelDTOs.length !== 0) {
-          let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
-          let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
 
-          for (let formLabel of sfDefaultFields) {
-              if (formLabel.labelId === "Name") {
+          if (this.activeCRMDetails.type === "SALESFORCE") {
+            let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
+            for (let formLabel of sfDefaultFields) {
+              if (formLabel.labelId === "Name" ) {
                   this.deal.title = formLabel.value;
               } else if (formLabel.labelId === "Description") {
                   this.deal.description = formLabel.value;
@@ -793,7 +794,7 @@ setSfFormFieldValues() {
                   this.deal.dealType = formLabel.value;
               } else if (formLabel.labelId === "LeadSource") {
                   this.deal.leadSource = formLabel.value;
-              } else if (formLabel.labelId === "Amount") {
+              } else if (formLabel.labelId === "Amount" || formLabel.labelId === "amount") {
                   this.deal.amount = formLabel.value;
               } else if (formLabel.labelId === "CloseDate") {
                   this.deal.closeDateString = formLabel.value;
@@ -804,22 +805,18 @@ setSfFormFieldValues() {
               } else if (formLabel.labelId === "StageName") {
                   this.deal.stage = formLabel.value;
               }
-              
-              // else if (formLabel.labelId === "OrderNumber__c") {
-              //     this.deal.orderNumber = formLabel.value;
-              // } else if (formLabel.labelId === "MainCompetitors__c") {
-              //     this.dealRegistration.mainCompetitor = formLabel.value;
-              // } else if (formLabel.labelId === "CurrentGenerators__c") {
-              //     this.dealRegistration.currentGenerator = formLabel.value;
-              // } else if (formLabel.labelId === "TrackingNumber__c") {
-              //     this.dealRegistration.trackingNumber = formLabel.value;
-              // } else if (formLabel.labelId === "DeliveryInstallationStatus__c") {
-              //     this.dealRegistration.deliveryInstallationStatus = formLabel.value;
-              // }
+            }
           }
-
+          let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
           let sfCfDataList = [];
           for (let formLabel of sfCustomFields) {
+            if (formLabel.labelId === "dealname") {
+              this.deal.title = formLabel.value;
+            } else if (formLabel.labelId === "amount") {
+              this.deal.amount = formLabel.value;
+            }  else if (formLabel.labelId === "closedate") {
+              this.deal.closeDateString = formLabel.value;
+            }
               let sfCfData = new SfCustomFieldsDataDTO();
               sfCfData.sfCfLabelId = formLabel.labelId;                    
               if(formLabel.labelType === 'multiselect'){
@@ -921,7 +918,7 @@ remove(i, id) {
 
 getActiveCRMDetails() {
   this.showCustomForm = false;
-  this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
+  this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
     .subscribe(
       response => {
         if (response.statusCode == 200) {          
@@ -972,10 +969,14 @@ getActiveCRMPipelines() {
             self.pipelineIdError = false;
             self.stages = activeCRMPipeline.stages;
             self.activeCRMDetails.hasDealPipeline = true;
-          } else {
-            self.deal.pipelineId = 0;
-            self.stages = [];
+          } else {     
             self.pipelines = activeCRMPipelines;
+            for (let p of activeCRMPipelines) {
+              if (p.id == this.deal.pipelineId) {
+                self.stages = p.stages;
+                break;
+              }
+            }
             self.activeCRMDetails.hasDealPipeline = false;
           }
         } else if (data.statusCode == 404) {
