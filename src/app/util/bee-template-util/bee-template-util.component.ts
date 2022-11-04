@@ -87,7 +87,7 @@ export class BeeTemplateUtilComponent implements OnInit {
 						callback(response);
 					} else if (req.readyState === 4 && req.status !== 200) {
 						self.loading = false;
-						self.referenceService.showSweetAlertErrorMessage("Please check your internet connection/contact admin");
+						self.referenceService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
 					}
 				};
 				req.open(method, url, true);
