@@ -121,7 +121,7 @@
       <ng-container *ngIf="columnInfo.labelType=='select'">
         <select class="form-control" [(ngModel)]="columnInfo.value" [disabled]="isVendor || isPreview"
           (ngModelChange)="selectOnChangeEvent($event)">
-          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.name">
+          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.labelId">
             {{dropDownValue.name}}</option>
         </select>
       </ng-container>
