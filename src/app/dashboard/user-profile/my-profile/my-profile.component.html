@@ -456,6 +456,12 @@
                                                 <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()">
                                                     <div class="card mb-5 mb-lg-0">
                                                         <div class="card-body" style="padding:10px">
+                                                            <span *ngIf="integrateRibbonText == 'configured'" 
+                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                    <a (click)="marketoSettings()" data-toggle="tooltip"
+                                                            data-placement="top" title="Microsoft Settings"><i class="fa fa-cog"
+                                                                    style="font-size: 20px !important;"></i></a>
+                                                                </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
                                                             <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
@@ -533,7 +539,13 @@
                                             <div class="col-xs-12 integration-row">
                                                 <div class="col-lg-4">
                                                     <div class="card mb-5 mb-lg-4">
-                                                        <div class="card-body" style="padding:10px;">                                                           
+                                                        <div class="card-body" style="padding:10px;">    
+                                                            <span *ngIf="microsoftRibbonText == 'configured'" 
+                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                    <a (click)="microsoftSettings()" data-toggle="tooltip"
+                                                            data-placement="top" title="Microsoft Settings"><i class="fa fa-cog"
+                                                                    style="font-size: 20px !important;"></i></a>
+                                                                </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Microsoft</h5>
 
                                                             <div class="ribbon draft" style="left:10px">
@@ -564,11 +576,23 @@
                                         <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
                                         </app-response-message>
                                         	<div align="center" style="margin-bottom:20px"><h3>Salesforce custom fields
-                                        		<span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
-																	<a (click)="salesforceSettings()" data-toggle="tooltip"
-															data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"
-																	style="font-size: 15px !important;"></i> Reload</a>
-															</span>
+                                                <span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
+                                                    <a (click)="salesforceSettings()" data-toggle="tooltip" data-placement="top" title="Refresh Custom Fields"><i
+                                                            class="fa fa-refresh" style="font-size: 15px !important;"></i> Reload</a>
+                                                </span>
+                                                <span
+                                                    style="color: #ffffff; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px; background-color: #488fd6;"
+                                                    *ngIf="activeCRMDetails?.type != 'SALESFORCE'">
+                                                    <a (click)="activateCRM('SALESFORCE')" data-toggle="tooltip" style="color: #ffffff !important;" data-placement="top"
+                                                        title="Mark as active CRM"><i class="fa fa-check" style="font-size: 15px !important;"></i> Activate</a>
+                                                </span>
+                                                
+                                                <span
+                                                    style="color: #ffffff; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px; background-color: #29dd50;"
+                                                    *ngIf="activeCRMDetails?.activeCRM && activeCRMDetails?.type === 'SALESFORCE'">
+                                                    <a data-toggle="tooltip" style="color: #ffffff !important;" data-placement="top" title="Active CRM"><i
+                                                            class="fa fa-star" style="font-size: 15px !important;"></i> Activated</a>
+                                                </span>
 												</h3>
                                         	</div>
                                         	
@@ -643,8 +667,21 @@
                                                     <span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
                                                                         <a (click)="hubspotSettings()" data-toggle="tooltip"
                                                                 data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"
-                                                                        style="font-size: 15px !important;"></i> Reload</a>
+                                                                        style="font-size: 15px !important;"></i> Reload</a>                                                                        
                                                                 </span>
+                                                    <span style="color: #ffffff; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px; background-color: #488fd6;"
+                                                        *ngIf="activeCRMDetails?.type != 'HUBSPOT'">
+                                                                    <a (click)="activateCRM('HUBSPOT')" data-toggle="tooltip" style="color: #ffffff !important;"
+                                                                    data-placement="top" title="Mark as active CRM"><i class="fa fa-check"
+                                                                            style="font-size: 15px !important;"></i> Activate</a>
+                                                            </span>
+                                                    
+                                                    <span style="color: #ffffff; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px; background-color: #29dd50;"
+                                                        *ngIf="activeCRMDetails?.activeCRM && activeCRMDetails?.type === 'HUBSPOT'">
+                                                                <a data-toggle="tooltip" style="color: #ffffff !important;"
+                                                                data-placement="top" title="Active CRM"><i class="fa fa-star"
+                                                                        style="font-size: 15px !important;"></i> Activated</a>
+                                                        </span>
                                                     </h3>
                                                 </div>
                                                 
@@ -677,34 +714,34 @@
                                                             </table>
                                                         </form>
                                                         <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination">
-                                                <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
-                                                <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
-                                                <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a (click)="setSfCfPage(page)">{{page}}</a></li>
-                                                <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
-                                                    <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
-                                                </li>
-                                                <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
-                                                    <a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
-                                                </li>
-                                            </ul>
-                                            <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down" style="width: max-content;">
-                                                <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
-                                                    <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
-                                                </select>
-                                            </div>
-                                            <div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
-                                                <span>There are no custom fields in your Salesforce account.</span>
-                                            </div>
+                                                            <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
+                                                            <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
+                                                            <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a (click)="setSfCfPage(page)">{{page}}</a></li>
+                                                            <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+                                                                <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
+                                                            </li>
+                                                            <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+                                                                <a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
+                                                            </li>
+                                                        </ul>
+                                                        <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down" style="width: max-content;">
+                                                            <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+                                                                <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+                                                            <span>There are no custom fields in your Hubspot account.</span>
+                                                        </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-warning"
                                                             (click)="closeSfSettings()">CANCEL</button>
                                                         <button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length" 
-                                                        (click)="submitSfSettings()">Submit</button>
+                                                        (click)="saveCustomFieldsSelection('hubspot')">Submit</button>
                                                     </div>
                                             </div>
 
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [loggedInUserId]="loggedInUserId" (closeEvent)="closeIntegrationSetting($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" [circleCropperSettings]="circleCropperSettings" (closeEvent)="closeIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 

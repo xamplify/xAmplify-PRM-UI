@@ -252,6 +252,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isUpgrading = false;
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	isUpgradedRequestSubmitted = false;
+	activeCRMDetails: any;
+	integrationType: string = "";
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -416,7 +418,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.initializeForm();
-			this.checkIntegrations();
+			this.checkIntegrations();			
 			this.isPartnerSuperVisor = this.authenticationService.module.isPartnerSuperVisor;
 		} catch (error) {
 			this.hasClientErrors = true;
@@ -1561,35 +1563,32 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 	checkIntegrations(): any {
-		this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
-			if (response.statusCode == 8000) {
-				this.integrateRibbonText = "configured";
-				this.isMarketoProcess = response.data.isProcessing;
-			}
-			else {
-				this.integrateRibbonText = "configure";
 
-			}
-		}, error => {
-			this.integrateRibbonText = "configure";
-		})
-
-		this.hubSpotService.configHubSpot().subscribe(data => {
+		this.checkMarketoIntegration();
+		this.checkHubspotIntegration();
+		this.checkSalesforceIntegration();
+		this.checkMicrosoftIntegration();		
+		this.getActiveCRMDetails();
+	}
+	checkMicrosoftIntegration() {
+		this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.hubSpotRibbonText = "configured";
+				this.microsoftRibbonText = "configured";
 			}
 			else {
-				this.hubSpotRibbonText = "configure";
+				this.microsoftRibbonText = "configure";
 			}
 			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.hubSpotRedirectURL = response.data.redirectUrl;
+				this.microsoftRedirectURL = response.data.redirectUrl;
 			}
-		}, (error: any) => {
-			this.hubSpotRibbonText = "configure";
-			this.logger.error(error, "Error in HubSpot checkIntegrations()");
-		}, () => this.logger.log("HubSpot Configuration Checking done"));
+		}, error => {
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkIntegrations() for microsoft");
+		}, () => this.logger.log("Microsoft Integration Configuration Checking done"));
 
+	}
+	checkSalesforceIntegration() {
 		this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
@@ -1606,21 +1605,38 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.error(error, "Error in checkIntegrations()");
 		}, () => this.logger.log("Integration Configuration Checking done"));
 
-		this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
+	}
+	checkHubspotIntegration() {
+		this.hubSpotService.configHubSpot().subscribe(data => {
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-				this.microsoftRibbonText = "configured";
+				this.hubSpotRibbonText = "configured";
 			}
 			else {
-				this.microsoftRibbonText = "configure";
+				this.hubSpotRibbonText = "configure";
 			}
 			if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-				this.microsoftRedirectURL = response.data.redirectUrl;
+				this.hubSpotRedirectURL = response.data.redirectUrl;
+			}
+		}, (error: any) => {
+			this.hubSpotRibbonText = "configure";
+			this.logger.error(error, "Error in HubSpot checkIntegrations()");
+		}, () => this.logger.log("HubSpot Configuration Checking done"));
+
+	}
+	checkMarketoIntegration() {
+		this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
+			if (response.statusCode == 8000) {
+				this.integrateRibbonText = "configured";
+				this.isMarketoProcess = response.data.isProcessing;
+			}
+			else {
+				this.integrateRibbonText = "configure";
+
 			}
 		}, error => {
-			this.sfRibbonText = "configure";
-			this.logger.error(error, "Error in checkIntegrations() for microsoft");
-		}, () => this.logger.log("Microsoft Integration Configuration Checking done"));
+			this.integrateRibbonText = "configure";
+		})
 	}
 
 	configmarketo() {
@@ -2343,18 +2359,36 @@ configSalesforce() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
-		this.integrationTabIndex = 2;
-		this.ngxloading = true;
-		this.listSalesforceCustomFields();
+		//this.integrationTabIndex = 2;
+		this.integrationType = 'SALESFORCE';
+		this.integrationTabIndex = 5;		
+		//this.listSalesforceCustomFields();
 	}
 
 	hubspotSettings() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
-		this.integrationTabIndex = 4;
-		this.ngxloading = true;
-		this.listExternalCustomFields('hubspot');
+		this.integrationType = 'HUBSPOT';
+		this.integrationTabIndex = 5;
+		
+		//this.listExternalCustomFields('hubspot');
+	}
+
+	microsoftSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'MICROSOFT';
+		this.integrationTabIndex = 5;		
+	}
+
+	marketoSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'MARKETO';
+		this.integrationTabIndex = 5;		
 	}
 
 	listExternalCustomFields(type: string) {
@@ -2423,6 +2457,32 @@ configSalesforce() {
 
 	closeSfSettings() {
 		this.integrationTabIndex = 0;
+	}
+
+	saveCustomFieldsSelection(type: string) {
+		this.ngxloading = true;
+		let self = this;
+		this.selectedCustomFieldIds = [];
+		$('[name="sfcf[]"]:checked').each(function() {
+			var id = $(this).val();
+			console.log(id);
+			self.selectedCustomFieldIds.push(id);
+		});
+
+		this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, type)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					if (data.statusCode == 200) {
+						this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+						this.listExternalCustomFields(type);
+					}
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
 	}
 
 	submitSfSettings() {
@@ -3553,9 +3613,55 @@ configSalesforce() {
 		);
 	}
 
-	closeIntegrationSetting(event: any) {
-		if (event === "0")
-			this.integrationTabIndex = 0;
+	closeIntegrationSettings(event: any) {
+		this.integrationTabIndex = 0;	
+	}
+
+	refreshIntegrationSettings(event: any) {
+		this.checkIntegrations();
+		this.integrationTabIndex = 0;
+	}
+
+	activateCRM(type: String) {
+		try {
+			let self = this;
+			swal({
+			  title: 'Are you sure?',
+			  text: "Click Yes to mark this as your active CRM",
+			  type: 'warning',
+			  showCancelButton: true,
+			  swalConfirmButtonColor: '#54a7e9',
+			  swalCancelButtonColor: '#999',
+			  confirmButtonText: 'Yes, activate!'
+	  
+			}).then(function () {
+				let request:any = {};
+				request.userId = self.loggedInUserId;
+				request.type = type;
+				self.ngxloading = true;
+				self.integrationService.setActiveCRM(request)
+					.subscribe(
+						data => {
+							if (data.statusCode == 200) {
+								self.getActiveCRMDetails();
+							}
+						});
+			}, function (dismiss: any) {
+			  console.log('you clicked on option' + dismiss);
+			});
+		  } catch (error) {
+			this.referenceService.showServerError(this.httpRequestLoader);
+		  }		
+	}
+
+	getActiveCRMDetails() {
+		this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					this.activeCRMDetails = data.data;
+					
+				});
 	}
 
 }

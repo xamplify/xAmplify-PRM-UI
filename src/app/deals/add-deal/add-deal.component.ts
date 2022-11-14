@@ -949,8 +949,12 @@ getActiveCRMDetails() {
             this.resetPipelines();
           }
           this.getDealTypes();
-        } else {          
-          this.getActiveCRMPipelines();
+        } else { 
+          if (this.deal.campaignId > 0) {
+            this.getCampaignDealPipeline();
+          } else {
+            this.getActiveCRMPipelines();
+          }        
         }
       });
 }

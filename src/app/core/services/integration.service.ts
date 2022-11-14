@@ -10,7 +10,7 @@ import { SocialContact } from "app/contacts/models/social-contact";
 
 @Injectable()
 export class IntegrationService {
-    
+       
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
         console.log(logger);
@@ -108,6 +108,12 @@ export class IntegrationService {
             .catch(this.handleError);
     }
 
+    getIntegrationDetails(type: string, loggedInUserId: any) {
+        return this._http.get(this.authenticationService.REST_URL + `/${type}/user/info/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     syncPipeline(pipelineId: number, userId: number) {
         return this._http.get(this.authenticationService.REST_URL + `external/pipeline/sync/${userId}/${pipelineId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
@@ -120,9 +126,33 @@ export class IntegrationService {
             .catch(this.handleError);
     }
 
+    getActiveCRMDetailsByUserId(loggedInUserId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `crm/active/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getactiveCRMCustomForm(companyId: any, dealId: any) {
         return this._http.get(this.authenticationService.REST_URL + "crm/active/custom/form/" + companyId + "/" + dealId + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
       }  
+
+    syncCustomForm(userId: number, request: any, type: any) {
+        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    setActiveCRM(request: any) {
+        return this._http.post(this.authenticationService.REST_URL + `crm/active?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    unlinkCRM(userId: number, type: any) {
+        return this._http.get(this.authenticationService.REST_URL + type+"/unlink/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
