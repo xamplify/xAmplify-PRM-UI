@@ -17,4 +17,6 @@ export class Pipeline {
     isValidStage = false;
     default = false;
     salesforcePipeline = false;
+    crmPipeline = false;
+    integrationType: string = "";
 }

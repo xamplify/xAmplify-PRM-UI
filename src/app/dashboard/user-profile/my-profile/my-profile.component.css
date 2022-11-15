@@ -785,7 +785,18 @@ input:checked + .slider-new:before {
   padding-top:10px
 }
 
+
+.view-banner{
+  background-color: #f17f7f;
+   color: white;
+   padding: 4px;
+   text-align: center;
+   width: 125px;
+   margin: 0px 0px 0px 40px;
+   font-size: 11px;
+   font-weight: 600;
 /*****XNFR-169****/
 .module-icon-cw{
   width: 158px !important;
+
 }

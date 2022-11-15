@@ -18,6 +18,7 @@ import { LeadsService } from '../services/leads.service';
 import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -80,6 +81,7 @@ export class ManageLeadsComponent implements OnInit {
   statusFilter: any;
   prm: boolean;
   syncMicrosoft: boolean = false;
+  activeCRMDetails: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -211,8 +213,9 @@ export class ManageLeadsComponent implements OnInit {
     if (this.enableLeads) {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
-      this.checkSalesforceIntegration();    
-      this.checkMicrosoftIntegration();  
+      this.getActiveCRMDetails();
+      //this.checkSalesforceIntegration();    
+      //this.checkMicrosoftIntegration();  
       this.showLeads();
       if (this.prm) {
         this.listView = true;
@@ -1101,6 +1104,51 @@ export class ManageLeadsComponent implements OnInit {
       },
       ()=> { }
     ); 
+  }
+
+  getActiveCRMDetails() {
+    this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.activeCRMDetails = response.data;            
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          
+        });
+  }
+
+  syncLeadsWithActiveCRM() {
+    this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.syncLeadsWithActiveCRM(this.loggedInUserId)
+      .subscribe(
+        data => {
+          let statusCode = data.statusCode;
+          if (statusCode == 200) {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+            //this.getCounts();  
+            this.showLeads();
+          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
+          } else {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
+          }
+        },
+        error => {
+
+        },
+        () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }
+      );
   }
   
 }

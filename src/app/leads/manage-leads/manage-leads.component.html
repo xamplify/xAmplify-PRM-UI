@@ -163,6 +163,13 @@
                         </button>
                       </a>
 
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                          title="Synchronize" translate>
+                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                        </button>
+                      </a>
+
                       <a *ngIf="isVendorVersion && syncSalesForce" (click)="syncLeadsWithSalesforce()">
                         <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize with Salesforce" translate>
