@@ -34,25 +34,23 @@ export class HomeComponent implements OnInit {
   skin:CustomSkin = new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
-
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
     public userService: UserService,
     public dealsService:DealRegistrationService,
     public xtremandLogger: XtremandLogger,
-    public dashBoardService:DashboardService,
     private router: Router,
     public authenticationService: AuthenticationService,
     public videoUtilService: VideoUtilService,
-    private vanityURLService:VanityURLService
+    private vanityURLService:VanityURLService,
+    public dashBoardService:DashboardService
   ) {
     this.loggedInThroughVanityUrl =  this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
-
+    /**** XNFR-134 ****/
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
-    /***XNFR-134***/
     let companyProfileName = this.authenticationService.companyProfileName;
     if (companyProfileName !== undefined && companyProfileName !== "") {
       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
@@ -314,13 +312,11 @@ export class HomeComponent implements OnInit {
          this.xtremandLogger.error("error" + error);
        }  
   }
-
   getMainContent(userId:number){
     this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
       (response) =>{
        let cskinMap  = response.data;
        this.skin  = cskinMap.MAIN_CONTENT;
-       console.log(this.skin);
     }
     )
     

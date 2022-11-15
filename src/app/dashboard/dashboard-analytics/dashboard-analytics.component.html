@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard" [ngStyle] = "{'background-color': skin?.backgroundColor}">
+<div class="page-content" *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard" [ngStyle] = "{'background-color': skin?.backgroundColor}">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -241,8 +241,8 @@
                     authenticationService?.module?.lmsAccess ||authenticationService?.module?.lmsAccessAsPartner || authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner)">
                 </app-show-prm-content>
                 <!--Top 4 Assets--------------->
-                <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false"
-                    *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
+                <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" (newItemEvent)="setManageDam($event)"
+                    *ngIf="authenticationService?.module?.damAccess" ></app-top-4-assets>
                 <!--Top 4 Shared Assets--------------->
                 <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false"
                     *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
@@ -429,4 +429,27 @@
         </div>
     </div>
 </div>
+
 <app-confirm-sweet-alert-util *ngIf="showSweetAlert" (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
+
+<div class="page-content" *ngIf="editVideo || playVideo">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li>
+            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+<i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li>
+            <a (click)="goToDam()" translate>DAM</a></li>
+            <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
+            <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
+      </ul>
+   </div>
+<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
+<app-play-video *ngIf="playVideo"></app-play-video>
+</div>
+

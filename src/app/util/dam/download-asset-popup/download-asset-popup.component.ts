@@ -74,7 +74,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 				}
 			);
 		} else {
-			window.open(this.authenticationService.REST_URL + "dam/downloadc/" + asset.alias +"/" + asset.id + "?access_token=" + this.authenticationService.access_token);
+			window.open(this.authenticationService.REST_URL + "dam/downloadc/" + asset.alias +"/" + asset.id + "/"+ this.authenticationService.user.id+ "?access_token=" + this.authenticationService.access_token);
 		}
 		this.downloadAssetPopupEventEmitter.emit();
 	}
@@ -121,7 +121,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 				let downloadUrl = 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
 				self.downloadPdfForVendor(self, downloadUrl);
 			}
-			swal.close();
+			//swal.close();
 		}, 1500);
 	}
 
@@ -129,6 +129,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 		window.open(self.authenticationService.REST_URL + "dam/" + downloadUrl + "?access_token=" + self.authenticationService.access_token);
 		$('#downloadPdfModalPopup').modal('hide');
 		self.modalPopupLoader = false;
+		swal.close();
 		this.downloadAssetPopupEventEmitter.emit();
 
 	}
@@ -139,6 +140,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 				let param = this.getLocationDetails(response, this.selectedPdfAlias);
 				let completeUrl = this.authenticationService.REST_URL + "dam/downloadp?access_token=" + this.authenticationService.access_token;
 				this.referenceService.post(param, completeUrl);
+				swal.close();
 				this.downloadAssetPopupEventEmitter.emit();
 			}, (_error: any) => {
 				this.xtremandLogger.error("Error In Fetching Location Details");

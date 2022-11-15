@@ -55,5 +55,6 @@ export class SaveVideoFile {
     access:boolean;
     damId : number;
     tagNames : string[];
-    toolTipTagNames: string = ""
+    toolTipTagNames: string = "";
+    folderId:number = 0;
  }

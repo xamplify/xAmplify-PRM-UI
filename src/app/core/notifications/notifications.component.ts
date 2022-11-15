@@ -35,9 +35,7 @@ export class NotificationsComponent implements OnInit {
                 this.notifications = data;
                 this.setPage( 1 );
             },
-            error => console.log(error),
-            () => console.log('Finished')
-            );
+            error => console.log(error));
         }catch(error) {console.error('error'+error); }
     }
 
@@ -51,8 +49,7 @@ export class NotificationsComponent implements OnInit {
                     notification.read = true;
                 }
             },
-            error => console.log(error),
-            () => console.log('Finished')
+            error => console.log(error)
             );
         }catch(error) {console.error('error'+error); }
     }
@@ -62,8 +59,7 @@ export class NotificationsComponent implements OnInit {
             .subscribe(
             data => {
             },
-            error => console.log(error),
-            () => console.log('Finished')
+            error => console.log(error)
             );
         }catch(error) {console.error('error'+error); }
     }

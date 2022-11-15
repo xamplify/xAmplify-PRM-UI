@@ -22,4 +22,7 @@ export class Roles {
 
   /*****************RoleIds********/
   emailTemplateId = 7;
+  damId = 22;
+  learningTrackId = 23;
+  playbookId = 24;
 }

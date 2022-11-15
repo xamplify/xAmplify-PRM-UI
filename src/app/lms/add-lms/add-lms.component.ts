@@ -3,6 +3,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { Router } from '@angular/router';
 import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component';
 import { TracksPlayBookType } from '../../tracks-play-book-util/models/tracks-play-book-type.enum'
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-lms',
@@ -14,8 +15,15 @@ export class AddLmsComponent implements OnInit {
   @ViewChild('addTracksPlayBookComponent') addTracksPlayBookComponent: AddTracksPlayBookComponent;
   isAdd: boolean = true;
   type: string = TracksPlayBookType[TracksPlayBookType.TRACK];
-
-  constructor(public referenceService: ReferenceService, private router: Router) { }
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  constructor(public referenceService: ReferenceService, private router: Router,private route: ActivatedRoute) {
+    /****XNFR-170****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
+   }
 
   ngOnInit() {
     if (this.router.url.indexOf('/edit') > -1) {
@@ -23,6 +31,9 @@ export class AddLmsComponent implements OnInit {
     } else {
       this.isAdd = true;
     }
+  }
+  goToManageTracks(){
+    this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
   }
 
   openCreateFolderPopup() {

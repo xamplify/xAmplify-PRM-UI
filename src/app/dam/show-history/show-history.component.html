@@ -29,13 +29,6 @@
 				<div class="portlet-title bbnone">
 					<div class="row">
 					<div class="page-toolbar col-xs-12">
-						<div class="btn-group">
-							<!-- <h4 title="1234">
-								<strong>{{selectedAssetName | slice:0:25}}
-									<span *ngIf="selectedAssetName?.length>25">...</span>
-								</strong>
-							</h4> -->
-						</div>
 						<div class="btn-group pull-right">
 						<div class="inputs" style="float: right">
 							<a	class="close-circle ref-mar" (click)="goToDam()" title="Close"> 
@@ -76,7 +69,6 @@
 							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 								{{asset?.assetName | slice:0:25}} <span
 									*ngIf="asset?.assetName?.length>25">...</span><br>
-								<br>
 							</h4>
 							<div>
 								<span class="view-banner-dam">{{asset?.assetType}}</span>
@@ -91,7 +83,9 @@
 									By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
 										*ngIf="asset?.displayName?.length>17">..</span>
 								</h6>
-								
+								<h6 class="moreipsis" title="{{asset?.categoryName}}">
+									<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+								</h6>
 								<h6 class="moreipsis"
 									*ngIf="!isPartnerView && asset?.beeTemplate">
 									<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
@@ -150,7 +144,7 @@
 <!-----Delete-------->
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter()" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()">
+	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>

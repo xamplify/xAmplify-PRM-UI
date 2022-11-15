@@ -29,9 +29,19 @@ export class ViewDamComponent implements OnInit {
   selectedAsset: any;
   selectedAssetId: any;
   download = false;
+  showDownload = true;
+  /****XNFR-169****/
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
-    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) { }
+    public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) {
+		 /****XNFR-169****/
+		 this.viewType = this.activatedRoute.snapshot.params['viewType'];
+		 this.categoryId = this.activatedRoute.snapshot.params['categoryId'];
+		 this.folderViewType = this.activatedRoute.snapshot.params['folderViewType'];
+	 }
 
   ngOnInit() {
     this.assetId = parseInt(this.activatedRoute.snapshot.params['assetId']);
@@ -45,7 +55,7 @@ export class ViewDamComponent implements OnInit {
   
 
   closeAssetDetails(){
-    this.referenceService.goToRouter(this.referenceService.sharedDamRouter);
+	this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
   }
 
   viewDetails(id: any) {
@@ -119,11 +129,13 @@ export class ViewDamComponent implements OnInit {
 			);
 	}
 	downloadContent(){
+	    this.showDownload = false;
 		this.download = true;
 	}
 
 	downloadAssetPopupEventEmitter(){
 		this.download =false;
+		this.showDownload = true;
 	}
 
 }

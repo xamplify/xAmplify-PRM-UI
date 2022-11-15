@@ -166,12 +166,18 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   isAssestPopUpOpen : boolean = false;
   isPreviewFromAssetPopup: boolean = false;
-
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
     this.siteKey = this.envService.captchaSiteKey;
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-170****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
     this.listTags(new Pagination());
     this.listCategories();
     this.getCompanyId();
@@ -257,7 +263,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksPlayBookUtilService.getById(id).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          console.log(response.data)
           let tracksPlayBook: TracksPlayBook = response.data;
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
@@ -436,7 +441,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.userId = this.loggedInUserId;
     pagination.companyId = this.loggedInUserCompanyId;
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
-    //pagination.type = 'myAssets';
     this.referenceService.goToTop();
     this.startLoaders();
     this.damService.list(pagination).subscribe((result: any) => {
@@ -572,6 +576,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.categoryNames = data.data;
         this.filteredCategoryNames = this.categoryNames;
+        if(this.isAdd){
+          this.folderName = this.filteredCategoryNames[0]['name'];
+          this.tracksPlayBook.categoryId = this.filteredCategoryNames[0]['id'];
+        }
         this.referenceService.stopLoader(this.httpRequestLoader);
       },
       error => {
@@ -605,7 +613,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 value.choices = value.checkBoxChoices;
               }
             });
-            console.log(data.data);
             this.formError = false;
           } else {
             this.formError = true;
@@ -765,20 +772,16 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
   imageCroppedMethod(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
-    console.log(event);
   }
 
   imageLoaded() {
     this.showCropper = true;
-    console.log('Image loaded')
   }
 
   cropperReady() {
-    console.log('Cropper ready')
   }
 
   loadImageFailed() {
-    console.log('Load failed');
     this.errorUploadCropper = true;
     this.showCropper = false;
   }
@@ -792,7 +795,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   cropperSettings() {
     this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings, 130, 196, 130, false);
     this.squareCropperSettings.noFileInput = true;
-    console.log(this.authenticationService.SERVER_URL + this.form.companyLogo)
   }
 
   uploadImage() {
@@ -817,10 +819,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   updateSlug(type: string) {
     if (type == "title") {
       if (this.tracksPlayBook.id == undefined || this.tracksPlayBook.id < 1) {
-        this.tracksPlayBook.slug = this.tracksPlayBook.title.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+        this.tracksPlayBook.slug = $.trim(this.tracksPlayBook.title).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
     } else if (type == "slug") {
-      this.tracksPlayBook.slug = this.tracksPlayBook.slug.toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
+      this.tracksPlayBook.slug = $.trim(this.tracksPlayBook.slug).toLowerCase().replace(/[^a-zA-Z0-9_-]/g, '_');
     }
     this.validateSlug();
     if ((this.isAdd || (!this.isAdd && this.existingSlug !== this.tracksPlayBook.slug)) && this.isSlugValid) {
@@ -874,11 +876,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   addTags(type) {
-    console.log(this.selectedTags);
   }
 
   removeTags(type) {
-    console.log(this.selectedTags);
   }
 
   updateSelectedTags(tag: Tag, checked: boolean) {
@@ -894,22 +894,17 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else {
       this.tracksPlayBook.tagIds.splice(index, 1);
     }
-    console.log(this.tracksPlayBook.tagIds)
   }
 
   addFolder(type) {
     this.selectedFolder = new Array<any>();
     this.selectedFolder.push(type);
     this.tracksPlayBook.categoryId = type.id;
-    console.log(this.tracksPlayBook.categoryId)
-    console.log(this.selectedFolder)
   }
 
   removeFolder(type) {
     this.selectedFolder = new Array<any>();
     this.tracksPlayBook.categoryId = 0;
-    console.log(this.tracksPlayBook.categoryId)
-    console.log(this.selectedFolder)
   }
 
   validateSlugForCompany() {
@@ -937,7 +932,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     let titleObject: TracksPlayBook = new TracksPlayBook();
     let self = this;
     titleObject.userId = this.loggedInUserId;
-    titleObject.title = this.tracksPlayBook.title;
+    titleObject.title = $.trim(this.tracksPlayBook.title);
     titleObject.type = this.type;
     this.tracksPlayBookUtilService.validateTitle(titleObject).subscribe(
       (response: any) => {
@@ -956,11 +951,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateTitle() {
-    if (this.tracksPlayBook.title == undefined || this.tracksPlayBook.title.length == 0) {
+    let title = $.trim(this.tracksPlayBook.title);
+    if (title == undefined || title.length == 0) {
       this.addErrorMessage("title", "Title can not be empty");
-    } else if (this.tracksPlayBook.title != undefined && this.tracksPlayBook.title.length < 3) {
+    } else if (title != undefined && title.length < 3) {
       this.addErrorMessage("title", "Title should have atleast 3 characters");
-    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== this.tracksPlayBook.title))) {
+    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== title))) {
       this.validateTitleForCompany();
     } else {
       this.removeErrorMessage("title");
@@ -968,9 +964,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateSlug() {
-    if (this.tracksPlayBook.slug == undefined || this.tracksPlayBook.slug.length < 1) {
+    let slug = $.trim(this.tracksPlayBook.slug);
+    if (slug == undefined || slug.length < 1) {
       this.addErrorMessage("slug", "Alias can not be empty");
-    } else if (this.tracksPlayBook.slug != undefined && this.tracksPlayBook.slug.length < 3) {
+    } else if (slug != undefined && slug.length < 3) {
       this.addErrorMessage("slug", "Slug should have atleast 3 characters");
     } else {
       this.removeErrorMessage("slug");
@@ -978,7 +975,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateDescription() {
-    let description = this.tracksPlayBook.description;
+    let description = this.referenceService.getTrimmedCkEditorDescription(this.tracksPlayBook.description);
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
     } else if (description.length > 5000) {
@@ -1187,7 +1184,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       } else {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
-      console.log(this.tracksPlayBook)
       this.referenceService.startLoader(this.httpRequestLoader);
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
@@ -1202,9 +1198,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
               this.referenceService.isCreated = false;
             }
             if (this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-              this.router.navigate(["/home/tracks/manage"]);
+              this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-              this.router.navigate(["/home/playbook/manage"]);
+              this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+
             }
           } else {
             this.referenceService.showSweetAlertErrorMessage(data.message);
@@ -1427,6 +1424,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       for (var instanceName in CKEDITOR.instances) {
           CKEDITOR.instances[instanceName].updateElement();
           this.tracksPlayBook.description = CKEDITOR.instances[instanceName].getData();
+          console.log("Description"+this.tracksPlayBook.description);
       }
     }
   }

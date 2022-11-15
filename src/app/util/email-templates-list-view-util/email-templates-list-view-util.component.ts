@@ -142,22 +142,10 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
 
     }
 
-    getSelectedEmailTemplate(text: any) {
-        try {
-            this.selectedTemplate = text;
-            this.getAllFilteredResults(this.pagination);
-        } catch (error) {
-            this.refService.showError(error, "getSelectedEmailTemplate", "ManageTemplatesComponent");
-        }
-
-    }
-
-
     getAllFilteredResults(pagination: Pagination) {
         try {
             this.pagination.pageIndex = 1;
             this.pagination.searchKey = this.searchKey;
-            this.pagination.filterBy = this.selectedTemplate.value;
             let sortedValue = this.selectedSortedOption.value;
             if (sortedValue != "") {
                 let options: string[] = sortedValue.split("-");
@@ -239,7 +227,6 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     getOrgCampaignTypes() {
         this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
             data => {
-                console.log(data);
                 this.campaignAccess.videoCampaign = data.video;
                 this.campaignAccess.emailCampaign = data.regular;
                 this.campaignAccess.socialCampaign = data.social;

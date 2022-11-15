@@ -1210,7 +1210,7 @@
                                                         <tr *ngFor="let item of categoryPreviewItem.items;let i=index"  [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
                                                             <td>
                                                                 <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
-                                                                <img class="img-class-list" src="{{item.moduleIcon}}" alt="">
+                                                                <img class="img-class-list" src="{{item.moduleIcon}}" alt="Image Not Found">
                                                             </td>
                                                             <td>
                                                                 <div  class="override-actions">

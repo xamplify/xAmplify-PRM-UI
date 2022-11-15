@@ -10,7 +10,7 @@
               <i class="fa fa-angle-right" aria-hidden="true"></i>
            </li>
            <li>
-              <a [routerLink]="referenceService?.sharedDamRouter" translate>DAM</a>
+              <a (click)="closeAssetDetails()" translate>DAM</a>
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
@@ -59,7 +59,7 @@
 							<div class="grid-box box-shadow zero-margin" style="min-height: 200px;">
 								<img class="img-class mxv"
 									src="{{assetDetailsViewDto?.thumbnailPath}}"
-									alt="No Image Found"><br> <a class="btn btn-info"
+									alt="No Image Found"><br> <a class="btn btn-info" [class.disabled]= "!showDownload"
 									(click)="downloadContent()">Download</a>
 								<h4>
 									Published On :

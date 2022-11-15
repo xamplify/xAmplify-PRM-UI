@@ -3,6 +3,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { ActionsDescription } from '../../../common/models/actions-description';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $,swal;
 @Component({
@@ -21,31 +22,38 @@ export class AssetGridViewActionsComponent implements OnInit {
   hasCampaignRole = false;
   hasAllAccess = false;
   loggedInUserId: number = 0;
-  
-  
+  /****XNFR-169****/
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  @Input() folderListView = false;
   
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription) {
+    public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute) {
 	  this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-169****/
+    this.viewType = this.route.snapshot.params['viewType'];
+		this.categoryId = this.route.snapshot.params['categoryId'];
+		this.folderViewType = this.route.snapshot.params['folderViewType'];
   }
 
   ngOnInit() {
 	  this.hasCampaignRole = this.referenceService.hasRole(this.referenceService.roles.campaignRole);
-      this.hasAllAccess = this.referenceService.hasAllAccess();
+    this.hasAllAccess = this.referenceService.hasAllAccess();
   }
 
   viewGirdHistory(asset:any){
-    this.referenceService.goToRouter("/home/dam/history/"+asset.id);
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/history/"+asset.id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
-  addOrEdit(id:number){
-    if (this.isPartnerView) {
-			this.referenceService.goToRouter("/home/dam/editp/" + id);
+  addOrEdit(id: number) {
+		if (this.isPartnerView) {
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/editp/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		} else {
-			this.referenceService.goToRouter("/home/dam/edit/" + id);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/edit/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
 		}
-  }
+	}
 
   editDetails(asset:any){
 	  this.setEventEmittersByType(asset,"edit");
@@ -59,7 +67,7 @@ export class AssetGridViewActionsComponent implements OnInit {
     this.setEventEmittersByType(asset,"publishPopup");
   }
   
-  campaignRouter(asset){
+  campaignRouter(asset:any){
 	  this.setEventEmittersByType(asset,"campaign");
   }
 
@@ -91,8 +99,10 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   /*******View Details (Partner) ********/
   viewDetails(asset:any){
-    this.referenceService.goToRouter('/home/dam/shared/view/'+asset.id);
-  }
+	/*****XNFR-169***/
+	let url = "/home/dam/sharedp/view/"+asset.id;
+	this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	}
 
   /*******Delete Asset ********/
   confirmDelete(asset:any){

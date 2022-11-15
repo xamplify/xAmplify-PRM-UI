@@ -35,11 +35,22 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   statusCode = 200;
   selectedVideo: SaveVideoFile;
   campaignReport : boolean = false;
-  
+  /****XNFR-169****/
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  folderListView = false;
   constructor(private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, private damService: DamService,
- private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
- private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
+              private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, 
+              public referenceService: ReferenceService,private router: Router, public properties: Properties, public videoFileService : VideoFileService) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-169****/
+    this.viewType = this.route.snapshot.params['viewType'];
+		this.categoryId = this.route.snapshot.params['categoryId'];
+		this.folderViewType = this.route.snapshot.params['folderViewType'];
+    if(this.folderViewType=="fl"){
+			this.folderListView = true;
+		}
   }
 
   ngOnInit() {
@@ -47,6 +58,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
     this.loading = true;
     this.damId = parseInt(this.route.snapshot.params['damId']);
     this.referenceService.loading(this.listLoader, true);
+    this.selectedAssetName = localStorage.getItem('assetName');
     this.getCompanyId();
     this.videoFileService.campaignReport = localStorage.getItem('campaignReport') === 'true';
     this.videoFileService.saveVideoFile = JSON.parse(localStorage.getItem('saveVideoFile'));
@@ -86,29 +98,14 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
   }
 
   getAssetDetailsById() {
-    this.loading = true;
-    this.referenceService.loading(this.listLoader, true);
-    this.damService.getAssetDetailsById(this.damId).subscribe((result: any) => {
-      this.statusCode = result.statusCode;
-      if (this.statusCode == 200) {
-        let data = result.data;
-        this.selectedAssetName = data.assetName;
-      } else {
-        this.referenceService.goToPageNotFound();
-      }
-
-    }, error => {
-      this.loading = false;
-      this.xtremandLogger.log(error);
-      this.xtremandLogger.errorPage(error);
-    }, () => {
-      if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode == 200) {
-        this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
-        this.pagination.formId = this.damId;
-        this.pagination.userId = this.loggedInUserId;
-        this.listPartners(this.pagination);
-      }
-    });
+      this.loading = true;
+      this.referenceService.loading(this.listLoader, true);
+          if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0 && this.statusCode == 200) {
+              this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
+              this.pagination.formId = this.damId;
+              this.pagination.userId = this.loggedInUserId;
+              this.listPartners(this.pagination);
+          }
   }
 
   listPartners(pagination: Pagination) {
@@ -172,7 +169,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   goBack() {
     this.loading = true;
-    this.referenceService.goToRouter("/home/dam/manage");
+    this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
   }
 
   refreshPage() {
@@ -181,7 +178,7 @@ export class DamPublishedPartnersAnalyticsComponent implements OnInit {
 
   viewDetailedAnalytics(partner: any) {
     this.loading = true;
-    this.referenceService.goToRouter("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId);
+    this.referenceService.navigateToRouterByViewTypes("/home/dam/vda/" + this.damId + "/" + partner.damPartnerId + "/" + partner.userId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
   }
 
   getSelectedIndex(index: any) {

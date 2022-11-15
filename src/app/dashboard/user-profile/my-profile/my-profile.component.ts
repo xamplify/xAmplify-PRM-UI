@@ -2259,7 +2259,6 @@ configSalesforce() {
 					this.categoryPreviewItem.items = response.data;
 					this.categoryPreviewItem.categoryId = category.id;
 					this.categoryPreviewItem.categoryName = category.name;
-					console.log(this.categoryPreviewItem);
 					this.referenceService.stopLoader(this.folderPreviewLoader);
 				},
 				(error: string) => {
@@ -2282,6 +2281,12 @@ configSalesforce() {
 				this.router.navigate(['/home/pages/manage/' + categoryId]);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
+			}else if("Asset Library"==type){
+				this.router.navigate(['/home/dam/manage/l/'+categoryId+'/fg']);
+			}else if("Track Builder"==type){
+				this.router.navigate(['/home/tracks/manage/l/'+categoryId+'/fg']);
+			}else if("Play Book"==type){
+				this.router.navigate(['/home/playbook/manage/l/'+categoryId+'/fg']);
 			}
 		}
 

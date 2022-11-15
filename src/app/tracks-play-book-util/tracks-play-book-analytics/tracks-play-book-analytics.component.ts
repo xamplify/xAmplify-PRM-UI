@@ -32,13 +32,19 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   sortOption: SortOption = new SortOption();
   tracksPlayBook: TracksPlayBook = new TracksPlayBook();
   @Input() type: string;
-
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(private route: ActivatedRoute, private utilService: UtilService,
     private pagerService: PagerService, public authenticationService: AuthenticationService,
     public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
     private router: Router, public properties: Properties, public tracksPlayBookUtilService: TracksPlayBookUtilService, public renderer: Renderer) {
     this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
+    /****XNFR-170****/
+    this.viewType = this.route.snapshot.params["viewType"];
+    this.categoryId = this.route.snapshot.params["categoryId"];
+    this.folderViewType = this.route.snapshot.params["folderViewType"];
   }
 
 
@@ -107,7 +113,6 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   getAllFilteredResults(pagination: Pagination) {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
-    //this.pagination = this.utilService.sortOptionValues(this.formSortOption.formsSortOption, this.pagination);
     this.getAnalytics(this.pagination);
   }
 
@@ -115,9 +120,9 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
 
   goBack() {
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-      this.router.navigate(['home/tracks/manage']);
+      this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-      this.router.navigate(['home/playbook/manage']);
+      this.referenceService.navigateToPlayBooksByViewType(this.folderViewType,this.viewType,this.categoryId,false);
     }
   }
 
@@ -126,13 +131,14 @@ export class TracksPlayBookAnalyticsComponent implements OnInit {
   }
 
   viewAnalytics(company: any) {
-    let route = "home/tracks/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
+    let route = "";
     if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
       route = "home/tracks/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
     } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
       route = "home/playbook/partnerAnalytics/" + this.learningTrackId + "/" + company.id;
     }
-    this.router.navigate([route]);
+    let folderListView = this.folderViewType=="fl";
+    this.referenceService.navigateToRouterByViewTypes(route,this.categoryId,this.viewType,this.folderViewType,folderListView);
   }
 
   getSelectedIndex(index: any) {

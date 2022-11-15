@@ -22,6 +22,7 @@ export class UserlistUsersComponent implements OnInit {
 	usersSortOption: SortOption = new SortOption();
 	usersLoader: HttpRequestLoader = new HttpRequestLoader();
 	usersCustomResponse: CustomResponse = new CustomResponse();
+	emptyListMessage: string = "No Data Found.";
 
 	constructor(public referenceService: ReferenceService, private pagerService: PagerService,
 		public properties: Properties, public contactService: ContactService) { }
@@ -43,6 +44,11 @@ export class UserlistUsersComponent implements OnInit {
 					pagination.totalRecords = response.data.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, response.data.list);
 					this.usersSortOption.totalRecords = response.data.totalRecords;
+					if (pagination.totalRecords == 0) {
+						if (pagination.searchKey != "") {
+							this.emptyListMessage = "No data found for given search criteria : "+ pagination.searchKey;
+						}
+					}
 				}
 			},
 			error => {

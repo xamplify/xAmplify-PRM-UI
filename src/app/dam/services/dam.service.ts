@@ -14,6 +14,7 @@ import { HttpClient, HttpRequest } from "@angular/common/http";
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/"
+  ispreviousAssetIsProcessing = false;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
   list(pagination: Pagination) {
@@ -71,7 +72,7 @@ export class DamService {
   }
 
   getAssetDetailsById(id: number) {
-    return this.http.get(this.URL + "getAssetDetailsById/" + id + "?access_token=" + this.authenticationService.access_token)
+    return this.http.get(this.URL + "getAssetDetailsById/" + id +"/"+ this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }

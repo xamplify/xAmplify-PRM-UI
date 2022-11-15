@@ -23,6 +23,9 @@ import { DefaultVideoPlayer } from '../../models/default-video-player';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
 import { HomeComponent } from '../../../core/home/home.component';
 import { Properties } from 'app/common/models/properties';
+import { UserService } from '../../../core/services/user.service';
+import { ActivatedRoute} from '@angular/router';
+import { VideoFileEventEmitter } from 'app/dam/models/video-file-event-emitter';
 
 declare var videojs, QuickSidebar,$: any;
 
@@ -48,7 +51,7 @@ declare var videojs, QuickSidebar,$: any;
   providers: [CallActionSwitch, EmbedModalComponent,HomeComponent, Properties]
 })
 export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Output() notifyParent: EventEmitter<SaveVideoFile>;
+  @Output() notifyParent: EventEmitter<VideoFileEventEmitter>;
   saveVideoFile: SaveVideoFile;
   tempVideoFile: SaveVideoFile;
   embedModelVideo: SaveVideoFile;
@@ -144,13 +147,23 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   clientError = false;
   itemOfTags = [];
   isProcessed = true;
-  
-  constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch,
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
+  categoryNames: any;
+  showFolderDropDown = false;
+  folderId:number = 0;
+  constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
-      public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public properties: Properties,public embedModalComponent:EmbedModalComponent) {
+      public sanitizer: DomSanitizer, public videoUtilService: VideoUtilService, public properties: Properties,
+      public embedModalComponent:EmbedModalComponent,private route: ActivatedRoute) {
       try{
+      this.viewType = this.route.snapshot.params['viewType'];
+      this.categoryId = this.route.snapshot.params['categoryId'];
+      this.folderViewType = this.route.snapshot.params['folderViewType'];
       this.saveVideoFile = this.videoFileService.saveVideoFile;
+      this.folderId = this.saveVideoFile.folderId;
       this.tempVideoFile = this.videoFileService.saveVideoFile;
       this.tempControllerColor = this.tempVideoFile.controllerColor;
       this.tempPlayerColor = this.tempVideoFile.playerColor;
@@ -158,7 +171,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultSettingValue = this.saveVideoFile.defaultSetting;
       this.enableVideoControl = this.saveVideoFile.enableVideoController;
       this.editVideoTitle = this.saveVideoFile.title;
-
       if (  this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
         this.itemOfTags = this.saveVideoFile.tags;
   }
@@ -180,7 +192,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
       this.defaultSaveImagePath = this.saveVideoFile.imagePath;
       this.selectedImagePath = this.saveVideoFile.imagePath;
-      this.callAction = this.videoUtilService.setCalltoAction(this.callAction,this.authenticationService.user);
+      this.callAction = this.setCalltoAction(this.callAction);
       this.callAction.isFistNameChecked = this.saveVideoFile.name;
       this.callAction.isSkipChecked = this.saveVideoFile.skip;
       this.is360Value = this.value360 = this.saveVideoFile.is360video;
@@ -213,7 +225,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.uploader.onAfterAddingFile = (fileItem) => {
           fileItem.withCredentials = false;
-          console.log(fileItem);
           this.showError = false;
           this.ownThumbnail = false;
           this.imageUrlPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
@@ -231,8 +242,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
           fileItem.withCredentials = false;
-        //  this.brandLogoUrl = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
-          console.log(this.brandLogoUrl);
           this.showError = false;
           this.fileLogoSelected(fileItem._file);
           this.videoLogoUploader.queue[0].upload();
@@ -240,10 +249,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
           if(JSON.parse(response).message === null){ } else {
           this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
-          console.log(response);
           }
       }
-      this.notifyParent = new EventEmitter<SaveVideoFile>();
+      this.notifyParent = new EventEmitter<VideoFileEventEmitter>();
     }catch(error) { this.xtremandLogger.error('error'+error);}
   }
 
@@ -985,7 +993,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               }
           }
           this.itemOfTags = newTags;
-          console.log(this.itemOfTags);
           const otherTags = newTags.map(v => v.toLowerCase());
           var uniqueNames = [];
           $.each(otherTags, function(i, el){
@@ -1003,21 +1010,38 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     try{
       this.getDefaultPlayerSettings();
-     // this.removeVideoTitlesWhiteSpaces();
       this.loadRangeDisable = true;
       $('#overlay-modal').hide();
-      console.log('EditVideoComponent ngOnit: ');
       this.categories = this.referenceService.refcategories;
       this.saveVideoFile.categories = this.categories;
       this.settingImageGifPaths();
       this.buildForm();
       this.defaultImagePaths();
       this.defaultGifPaths();
+      /****XNFR-169*****/
+      this.listCategories();
       } catch (error) {
           this.clientError = true;
           console.log('error' + error);
       }
   }
+
+  listCategories() {
+    this.authenticationService.getCategoryNamesByUserId(this.authenticationService.getUserId()).subscribe(
+      (data: any) => {
+        this.categoryNames = data.data;
+        this.showFolderDropDown = true;
+      },
+      error => {
+        this.showFolderDropDown = true;
+      });
+  }
+
+  getSelectedCategoryId(categoryId:number){
+    this.folderId = categoryId;
+}
+
+
   ngAfterViewInit() {
       $('#edit_video_player').empty();
       $('#newPlayerVideo').empty();
@@ -1236,7 +1260,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           'brandingLogoUri': [this.saveVideoFile.brandingLogoUri],
           'brandingLogoDescUri': [this.saveVideoFile.brandingLogoDescUri],
           'companyName': [this.saveVideoFile.companyName],
-          'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo]
+          'enableVideoCobrandingLogo':[this.saveVideoFile.enableVideoCobrandingLogo],
       });
       this.videoForm.valueChanges.subscribe((data: any) => this.onValueChanged(data));
       this.onValueChanged();
@@ -1313,11 +1337,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               }
           }
           this.saveVideoFile.tags = this.newTags;
-          console.log(this.saveVideoFile.tags);
           this.saveVideoFile.title = titleUpdatedValue;
           this.saveVideoFile.description = descriptionData;
           this.saveVideoFile.imagePath = this.defaultSaveImagePath;
-          this.xtremandLogger.log('image path ' + this.defaultImagePath);
           this.saveVideoFile.gifImagePath = this.defaultGifImagePath;
           this.saveVideoFile.imageFile = null;
           if (this.videoFileService.actionValue === 'Save') {
@@ -1328,16 +1350,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               this.setShowSaveUpdateValues(false, true);
           }
           this.saveVideoFile.callACtion = this.enableCalltoAction;
-          this.xtremandLogger.info(this.saveVideoFile);
+          this.saveVideoFile.folderId = this.folderId;
           return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
             	  if(result.access){
                   if (this.saveVideoFile != null) {
                       if (result.statusCode == 200) {
                           this.saveVideoFile = result;
-                          this.notifyParent.emit(this.saveVideoFile);
+                          this.callVideoEventEmitter(this.saveVideoFile);
                           this.videoFileService.videoViewBy = 'Save';
-                          //   this.saveButtonTitle = 'Save';
                           this.isDisable = false;
                       } else if (result.statusCode == 401) {
                           this.isValidTitle = true;
@@ -1411,10 +1432,20 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.videoFileService.showUpadte = showUpadte;
   }
   cancelVideo() {
-      this.xtremandLogger.log('EditVideoComponent : cancelVideo() ');
       this.setShowSaveUpdateValues(false, false);
-      this.notifyParent.emit(null);
+      this.callVideoEventEmitter(null);
   }
+
+  callVideoEventEmitter(videoFile:any){
+      let videoFileEventEmitter = new VideoFileEventEmitter();
+      videoFileEventEmitter.videoFile = videoFile;
+      videoFileEventEmitter.categoryId = this.categoryId;
+      videoFileEventEmitter.viewType = this.viewType;
+      videoFileEventEmitter.folderViewType = this.folderViewType;
+      this.notifyParent.emit(videoFileEventEmitter);
+  }
+
+  
 
   selectedPublishToName(event: any){
       if(event === "PUBLIC"){
@@ -1434,4 +1465,23 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.p-video').remove();
       this.tempVideoFile = null;
   }
+  
+    setCalltoAction(callAction):CallAction{
+            let currentUser = new User(); 
+            this.userService.getFirstNameLastNameAndEmailIdByUserId(this.authenticationService.user.id)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            currentUser = response.data;
+                            callAction.email_id = currentUser.emailId;
+      						callAction.firstName = currentUser.firstName;
+      						callAction.lastName = currentUser.lastName;
+                        }                        
+                    },
+                    (error: any) => {
+                    },
+                    () => this.xtremandLogger.info('Finished getFirstNameLastNameAndEmailIdByUserId()')
+                );
+                return callAction;
+    }
 }

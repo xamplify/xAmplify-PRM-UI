@@ -749,9 +749,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     validateReplyInDays(reply:Reply){
-        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.replyInDays==null){
+        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.actionId!=33 && reply.replyInDays==null){
            this.addReplyDaysErrorDiv(reply);
-        }else if(reply.actionId==22 ||reply.actionId==23 ){
+        }else if(reply.actionId==22 ||reply.actionId==23 || reply.actionId==33 ){
            if(reply.replyInDays==null || reply.replyInDays==0){
                this.addReplyDaysErrorDiv(reply);
            }

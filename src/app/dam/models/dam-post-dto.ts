@@ -8,5 +8,6 @@ export class DamPostDto {
 	jsonBody:string = "";
 	createdBy:number = 0;
 	tagIds:Array<number> = new Array<number>();
+	saveAs =false;
 
 }

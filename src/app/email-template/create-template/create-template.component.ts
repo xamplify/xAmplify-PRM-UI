@@ -92,7 +92,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         var response = JSON.parse(req.responseText);
                         callback(response);
                     }else if (req.readyState === 4 && req.status !== 200) {
-                        self.refService.showSweetAlertErrorMessage("Please check your internet connection");
+                        self.refService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
                     }
                 };
                 req.open(method, url, true);
