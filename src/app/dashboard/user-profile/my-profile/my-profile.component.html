@@ -739,9 +739,9 @@
                                                         (click)="saveCustomFieldsSelection('hubspot')">Submit</button>
                                                     </div>
                                             </div>
-
+                                         <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [integrationType]="integrationType" [circleCropperSettings]="circleCropperSettings" (closeEvent)="closeIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="closeIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 

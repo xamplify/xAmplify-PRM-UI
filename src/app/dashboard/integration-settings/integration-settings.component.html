@@ -14,13 +14,8 @@
   <div id="home" class="tab-pane fade in active pt-5 ">
     <div class="user-profile">
       <div class="profile-image-wrapper">
-        <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
-          <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other"
-            [src]="circleData.image">
-          <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage"
-              [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight"
-              (error)="errorHandler($event)">
-          </ng-template>
+        <img class="profile-image" alt="No image found" onerror="this.src='assets/images/icon-user-default.png';"  [src]="integrationDetails?.externalThumbnail">
+        
         </ng-container>
 
       </div>

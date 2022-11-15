@@ -6,7 +6,6 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { CropperSettings } from 'ng2-img-cropper';
 declare var swal, $;
 
 @Component({
@@ -17,7 +16,6 @@ declare var swal, $;
 export class IntegrationSettingsComponent implements OnInit {
 
   loggedInUserId: any;
-  @Input() circleCropperSettings: CropperSettings;
   @Input() integrationType: String;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() unlinkEvent = new EventEmitter<any>();
@@ -48,7 +46,6 @@ export class IntegrationSettingsComponent implements OnInit {
    }
 
   ngOnInit() {
-    //this.checkAuthorization(); 
     this.getIntegrationDetails();
     if (this.integrationType.toLowerCase() === 'salesforce') {
       this.listSalesforceCustomFields();
@@ -341,7 +338,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				data => {
 					this.ngxloading = false;
 					if (data.statusCode == 200) {
-            this.integrationDetails = data.data;
+                     this.integrationDetails = data.data;
           }
         },
 				error => {
