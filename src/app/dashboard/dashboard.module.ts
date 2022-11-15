@@ -80,6 +80,7 @@ import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-
 import { DonutPieChartComponent } from './dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { AgencyDashboardComponent } from './agency-dashboard/agency-dashboard.component';
 import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
+import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
 
 
 
@@ -136,7 +137,8 @@ import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.comp
         HighlevelAnalyticsDetailReportsComponent,
         DonutPieChartComponent,
         AgencyDashboardComponent,
-        CustomSkinComponent
+        CustomSkinComponent,
+        IntegrationSettingsComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

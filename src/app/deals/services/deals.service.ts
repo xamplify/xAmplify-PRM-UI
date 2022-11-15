@@ -191,6 +191,11 @@ getStageNamesForCampaign(campaignId:number, userId:number){
     .catch(this.handleError);
   }
   
+  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any) {
+    return this.http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/${type}/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
   
 
 
