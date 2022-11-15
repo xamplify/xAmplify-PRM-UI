@@ -278,7 +278,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					.subscribe(
 						data => {
 							if (data.statusCode == 200) {
-								this.unlinkEvent.emit();
+								self.unlinkEvent.emit();
 							}
 						});
 			}, function (dismiss: any) {

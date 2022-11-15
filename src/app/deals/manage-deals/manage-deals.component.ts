@@ -1126,5 +1126,33 @@ export class ManageDealsComponent implements OnInit {
         });
   }
 
+  syncLeadsWithActiveCRM() {
+    this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.syncLeadsWithActiveCRM(this.loggedInUserId)
+      .subscribe(
+        data => {
+          let statusCode = data.statusCode;
+          if (statusCode == 200) {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization completed successfully", true);
+            //this.getCounts();  
+            this.showDeals();
+          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.dealsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
+          } else {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.dealsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
+          }
+        },
+        error => {
+
+        },
+        () => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+        }
+      );
+  }
 
 }
