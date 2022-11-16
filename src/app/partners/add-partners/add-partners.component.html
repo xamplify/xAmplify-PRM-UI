@@ -67,7 +67,7 @@
             </a>
         </div>
     </div>
-    <div class="portlet light">
+    
         <div class="portlet-body">
             <form #f="ngForm">
                 <div class="row">
@@ -229,7 +229,7 @@
                 </div>
             </form>
         </div>
-        <div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
+        <!-- <div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
             <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
           <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
             <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -252,7 +252,7 @@
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
 					Delete</a></li>
             </ul>
-        </div>
+        </div> -->
         <div class="col-xs-12 p0" *ngIf="referenceService.isMobileScreenSize()">
             <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
@@ -562,9 +562,9 @@
         <div class="clearfix">
             <div class="col-xs-12" [class.p0]="referenceService.isMobileScreenSize()" style="width: 103%;" [ngStyle]="{'left': !referenceService.isMobileScreenSize() ? '-18px': '-3px' }" *ngIf="selectedAddPartnerOption == 5">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet box blue">
+                <div class="portlet light">
                     <div class="portlet-title">
-                        <div class="caption" translate> 
+                        <div class="caption" translate style="padding-top: 13px !important;font-size: 20px;"> 
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List of {{authenticationService?.partnerModule?.customName}}
                         </div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
@@ -576,13 +576,37 @@
                                 </select>
                             </div>
                             <div class="portlet-input input-inline">
-                                <div class="input-icon right">
-                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                                <div class="input-icon right" style="padding-bottom: 7px;">
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
                                     <button type="submit" class="search-box-item-click" (click)="search()">
                                         <i class="fa fa-search" style="color:black !important" aria-hidden="true"></i>
                                     </button>
                                 </div>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
+                              <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                                <ng-container *ngFor="let sort of sortOptions; let i = index">
+                                  <option [ngValue]="sort">{{sort.name}}</option>
+                                </ng-container>
+                              </select>
+                            </span>
+                    
+                                <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;float: right;margin-left: 10px;border-radius: 3px !important;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }" data-toggle="dropdown">
+                            <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions <i class="fa fa-angle-down"></i></span>
+                            <span *ngIf="referenceService.isMobileScreenSize()"><i style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()" translate>Save </a></li>
+                                    <li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()" translate>Cancel </a></li>
+                                    <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(true); editContactComponent.addPartnerSave = true" translate>Save As
+                                             </a></li>
+                                    <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()" translate>Export To Excel
+                                            </a></li>
+                                    <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
+                                        Delete</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -747,15 +771,16 @@
                                     </table>
                                 </div>
                             </div>
+                            <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                         </div>
                     </div>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
-                <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
+                <!-- <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination> -->
             </div>
         </div>
         <app-scroll-top></app-scroll-top>
-    </div>
+    
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">

@@ -4899,9 +4899,12 @@ Portlets
 
 /* Light Portlet */
 .portlet.light {
-  padding: 5px 5px 10px 10px;
-  background-color: #fff;
-  border-radius: 3px !important;
+   /* padding: 5px 5px 10px 10px; */
+   background-color: #fff;
+   border-radius: 5px !important;
+   /* border: 1px solid #eeeef0 !important;
+   box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 8%), -5px -6px 10px 0 rgb(253 253 253 / 90%) !important; */
+  
 }
 .portlet.light.bordered {
   border: 1px solid #e1e1e1 !important;
