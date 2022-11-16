@@ -209,13 +209,13 @@ export class AddDealComponent implements OnInit {
             self.deal.associatedUserId = self.lead.associatedUserId;
             //this.isSalesForceEnabled();
             this.getActiveCRMDetails();
-            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-              self.deal.campaignId = self.lead.campaignId;
-              self.deal.campaignName = self.lead.campaignName;
-              this.getCampaignDealPipeline();
-            } else {
-              self.getPipelines();
-            }
+            // if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+            //   self.deal.campaignId = self.lead.campaignId;
+            //   self.deal.campaignName = self.lead.campaignName;
+            //   this.getCampaignDealPipeline();
+            // } else {
+            //   self.getPipelines();
+            // }
           }
         },
         error => {
@@ -946,7 +946,15 @@ getActiveCRMDetails() {
             }
           } else {
             this.getQuestions();
-            this.resetPipelines();
+            
+            if (this.lead.campaignId != null && this.lead.campaignId > 0) {
+              this.deal.campaignId = this.lead.campaignId;
+              this.deal.campaignName = this.lead.campaignName;
+              this.getCampaignDealPipeline();
+            } else {
+              this.resetPipelines();
+            }
+
           }
           this.getDealTypes();
         } else { 
