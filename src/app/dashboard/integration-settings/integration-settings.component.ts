@@ -278,7 +278,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					.subscribe(
 						data => {
 							if (data.statusCode == 200) {
-								this.unlinkEvent.emit();
+								self.unlinkEvent.emit();
 							}
 						});
 			}, function (dismiss: any) {
@@ -347,5 +347,43 @@ export class IntegrationSettingsComponent implements OnInit {
 				() => { }
       );
   }
+
+  checkAll(ev: any) {
+	if (ev.target.checked) {
+		$('[name="sfcf[]"]').prop('checked', true);
+		let self = this;
+		$('[name="sfcf[]"]:checked').each(function() {
+			var id = $(this).val();
+			self.selectedCfIds.push(id);
+			self.paginatedSelectedIds.push(id);
+		});
+		this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
+		this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+	} else {
+		let self = this;
+		//$( '[name="sfcf[]"]' ).prop( 'checked', false );
+
+		$('[name="sfcf[]"]').each(function() {
+			var id = $(this).val();
+			if (self.requiredCfIds.indexOf(id) == -1) {
+				$(this).prop('checked', false);
+				self.paginatedSelectedIds.splice($.inArray(id, self.paginatedSelectedIds), 1);
+			}
+
+		});
+
+		if (this.sfcfPager.maxResults == this.sfcfPager.totalItems) {
+			this.selectedCfIds = [];
+			this.paginatedSelectedIds = [];
+			//this.allselectedUsers.length = 0;
+		} else {
+			//this.paginatedSelectedIds = [];
+			let currentPageCfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+			this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
+		}
+	}
+	ev.stopPropagation();
+}
 
 }
