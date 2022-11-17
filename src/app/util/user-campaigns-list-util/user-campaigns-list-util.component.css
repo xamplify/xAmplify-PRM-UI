@@ -1,6 +1,6 @@
 #vendor-details-tile {
-    border-color: lightgrey;
-    border-style: solid;
+    border: lightgrey 1px solid;
+    /* border-style: solid; */
     height: 102px;
     border-radius: 10px;
     padding-top: 15px;
@@ -80,10 +80,12 @@ img.active {
 	color: white;
 }
 .refresh-margin{
-    margin-right: -5px !important;
+    /* margin-right: -5px !important; */
+    margin: 8px 5px 5px 5px !important;
 }
 
 @media screen and (max-width:600px){
+    
     .mheight{
     height: 350px !important;
     }
@@ -104,3 +106,22 @@ img.active {
         width:85.666667%!important;
     }
 }
+.xamp-margin-left-icon{
+    margin: 8px 5px 5px 5px !important;
+}
+@media screen and (max-width:600px){
+    .vendor_list{
+    margin-top:20px;
+}
+}
+.margin-flex{
+    margin-left: 19px;
+    padding-top: 13px;
+}
+/* .dashboard-stat{
+    margin-bottom: -5px;
+    margin-top: 9px;
+}
+.mBottom{
+    bottom: 3px!important;
+} */

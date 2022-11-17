@@ -108,3 +108,6 @@
 .mlm8{
 	margin-left: -3px;
   }
+  .portlet.light>.portlet-title>.caption{
+	padding: 5px 0 !important;
+  }

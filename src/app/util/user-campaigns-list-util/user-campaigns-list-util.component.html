@@ -10,18 +10,21 @@
     <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
       <i class="fa fa-times" aria-hidden="true"></i>
   </a>
+  <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
+   <i class="fa fa-refresh" aria-hidden="true"></i>
+</a>
  </div>
  <div class="row">
    <div class="col-md-12 col-lg-12">
-      <div class="portlet light mheight" style="height:198px;">
-         <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
+      <div class="portlet light mheight">
+         <!-- <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
             <i class="fa fa-refresh" aria-hidden="true"></i>
-        </a>
-         <div class="row" style="margin-top: 20px;">
+        </a> -->
+         <div class="row" style="margin-left: -9px;">
             <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
             <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12 mleft" style="padding-left: 24px;padding-right: 30px;">
                <div class="row">
-                  <div  id="vendor-details-tile" class="{{tileClass}} mBottom mWidth">
+                  <div  id="vendor-details-tile" class="{{tileClass}} mBottom mWidth vendor_list" style="padding-left: 19px;border-radius: 5px !important;">
                      <div class="row">
                          <div class="flex margin-flex">
                              <span class='profile'>
@@ -45,7 +48,7 @@
                              </div>
                      </div>
                   </div>
-                  <div title="{{totalCampaignsCount}}" class="{{tileClass}} mtop mWidth">
+                  <div title="{{totalCampaignsCount}}" class="{{tileClass}} pr0 mtop mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
@@ -60,7 +63,7 @@
                      </span>
                      </a>
                   </div>
-                  <div title="{{activeCampaignsCount}}" class="{{tileClass}} mWidth">
+                  <div title="{{activeCampaignsCount}}" class="{{tileClass}} pr0 mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
@@ -87,9 +90,9 @@
      <div class="clearfix">
         <div class="col-xs-12">
            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-           <div class="portlet box blue">
-              <div class="portlet-title">
-                 <div class="caption" translate>
+           <div class="portlet light">
+              <div class="portlet-title" style="padding-bottom: 8px;">
+                 <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                     Campaigns
                  </div>
@@ -103,7 +106,7 @@
                     </div>
                     <div class="portlet-input input-inline">
                        <div class="input-icon right">
-                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                          <input style="height: 34px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                        </div>
@@ -111,7 +114,7 @@
                  </div>
               </div>
               
-              <div class="portlet-body table-responsive" style="overflow: hidden;">
+              <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 2px !important;">
                <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
                   <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                   <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
@@ -119,7 +122,7 @@
               </ul> 
               <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix"  *ngIf="!listLoader.isLoading">
-                    <div class="col-xs-12" style="padding: 10px 0;">
+                    <div class="col-xs-12" style="padding: 6px 0;">
                        <div class="table-responsive">
                           <table class='table tgrid' aria-describedby="user-campaigns-list-table">
                              <thead>

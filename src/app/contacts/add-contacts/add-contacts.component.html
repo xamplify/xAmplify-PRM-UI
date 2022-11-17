@@ -118,7 +118,7 @@
 		</div>
 	</div>
 	<!-- BEGIN PAGE CONTENT-->
-	<div class="portlet light">
+	
 		<div class="portlet-body">
 			<form #f="ngForm">
 				<div class="row">
@@ -304,11 +304,11 @@
 							</div>
 						</div>
 						<!-- Contact List Name Text Box -->
-						<div class="row">
-							<div class="col-xs-12 col-md-6">
+						<div class="row portlet light m0">
+							<div class="col-xs-12 col-md-6 p0">
 								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-4 control-label" translate>{{checkingContactTypeName}} List Name*</label>
-									<div class="col-xs-12 col-sm-8">
+									<label for="name" class="col-xs-12 col-sm-3 p0 control-label" style="margin-top: 12px;" translate>{{checkingContactTypeName}} List Name*</label>
+									<div class="col-xs-12 col-sm-8" style="margin-top: 4px;">
 										<input type="text" class="form-control" id="contactListName" autocomplete="off" (ngModelChange)="changEvent($event)" required
 										 [(ngModel)]="model.contactListName" name="contactListName" (input)="validateContactName(model.contactListName)"
 										 minlength="1" maxlength="250" placeholder="List Name" #contactListName="ngModel">
@@ -327,7 +327,7 @@
 								</div>
 							</div>
 							<!--  // -->
-							<div class="col-xs-12 col-md-4" *ngIf="!assignLeads">
+							<div class="col-xs-12 col-md-4 p0" *ngIf="!assignLeads">
 							<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
 							<span style="cursor: pointer;color: #54a7e9;">
@@ -355,7 +355,7 @@
 						</div>
 							
 							<!--  // -->
-							<div class="col-xs-12 col-md-6" class="pull-right" style = "margin-right: 30px;">
+							<div class="col-xs-12 col-md-6" class="pull-right">
 								<section class="pull-right" style="margin-bottom: 10px; margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()" translate>
 										Save <i class="fa fa-save"></i>
@@ -855,7 +855,7 @@
 				</div>
 			</form>
 		</div>
-	</div>
+	
 	<!-- END PAGE CONTENT-->
 	<app-scroll-top></app-scroll-top>
 </div>

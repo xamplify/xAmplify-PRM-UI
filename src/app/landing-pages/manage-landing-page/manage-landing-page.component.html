@@ -26,9 +26,9 @@
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
-                <div class="portlet-title" style="border-bottom: none">
+                <div class="portlet-title" style="border-bottom: 1px solid #eee;padding-bottom: 5px;">
                     <div class="row">
-                        <div class="colxs-12 col-sm-12 col-md-6">
+                        <div class="colxs-12 col-sm-12 col-md-6" style="padding-left: 11px;">
                             <div>
                                 <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="padding-right: 22px;">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">

@@ -2,7 +2,7 @@
 <div>
     <div class="portlet-title">
         <div class="row">
-            <div class="page-toolbar col-xs-12">
+            <div class="page-toolbar col-xs-12" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
                     <ng-container class='m10'>
                         <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
@@ -43,6 +43,7 @@
             </div>
         </div>
     </div>
+    <div class="border-bottom"></div>
     <br>
      <!-----------------------Folder Grid View----------------------------------------->
     <div class="row mix-grid p10" *ngIf="folderViewType=='Folder-Grid'">

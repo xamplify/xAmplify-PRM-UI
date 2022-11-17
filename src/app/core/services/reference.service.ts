@@ -3028,7 +3028,14 @@ export class ReferenceService {
   }
 
   getTrimmedCkEditorDescription(description:string){
-    description = $.trim(description).replace(/<[^>]+>/g, '').replace(/[\r\n]/gm, '').split("&nbsp;").join("");
+   description = $.trim(description).split("&nbsp;").join("");
+   return description;
+  }
+
+  getCkEditorPlainDescription(description:string){
+    description = $(description).text(); // html to text        
+    description = description.replace(/\r?\n|\r/gm," "); // remove line breaks   
+    description = description.replace(/\s\s+/g, " ").trim(); // remove double spaces
     return description;
   }
   
