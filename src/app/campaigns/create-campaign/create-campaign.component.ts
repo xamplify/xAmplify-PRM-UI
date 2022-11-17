@@ -925,7 +925,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else {
                 isValid = false;
             }
+        }
 
+        if (isValid && this.campaignType != 'landingPage' && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
+            
             if (this.campaign.dealPipelineId != undefined && this.campaign.dealPipelineId > 0) {
                 isValid = true;
             } else {

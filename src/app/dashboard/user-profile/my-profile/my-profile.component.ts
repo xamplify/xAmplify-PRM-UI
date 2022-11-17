@@ -1571,7 +1571,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.integrationService.checkConfigurationByType("microsoft").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
 				this.microsoftRibbonText = "configured";
@@ -1583,13 +1585,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.microsoftRedirectURL = response.data.redirectUrl;
 			}
 		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			this.sfRibbonText = "configure";
 			this.logger.error(error, "Error in checkIntegrations() for microsoft");
 		}, () => this.logger.log("Microsoft Integration Configuration Checking done"));
 
 	}
 	checkSalesforceIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
 				this.sfRibbonText = "configured";
@@ -1601,13 +1606,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.sfRedirectURL = response.data.redirectUrl;
 			}
 		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			this.sfRibbonText = "configure";
 			this.logger.error(error, "Error in checkIntegrations()");
 		}, () => this.logger.log("Integration Configuration Checking done"));
 
 	}
 	checkHubspotIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.hubSpotService.configHubSpot().subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			let response = data;
 			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
 				this.hubSpotRibbonText = "configured";
@@ -1619,13 +1627,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.hubSpotRedirectURL = response.data.redirectUrl;
 			}
 		}, (error: any) => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			this.hubSpotRibbonText = "configure";
 			this.logger.error(error, "Error in HubSpot checkIntegrations()");
 		}, () => this.logger.log("HubSpot Configuration Checking done"));
 
 	}
 	checkMarketoIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.dashBoardService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			if (response.statusCode == 8000) {
 				this.integrateRibbonText = "configured";
 				this.isMarketoProcess = response.data.isProcessing;
@@ -1635,6 +1646,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 			}
 		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
 			this.integrateRibbonText = "configure";
 		})
 	}
