@@ -19,6 +19,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { isPrimitive } from 'util';
 
 declare var $:any, swal: any;
 @Component({
@@ -80,6 +81,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   moveToTop: boolean;
   showPartnersPopup:boolean;
   selectedTeamMemberId:number;
+  showSecondAdmin = false;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -88,6 +90,10 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
     this.isOrgAdmin = this.authenticationService.module.isOrgAdmin;
+    let isVendor = this.authenticationService.module.isVendor;
+    let isMarketing = this.authenticationService.module.isMarketing;
+    let isPrm = this.authenticationService.module.isPrm;
+    this.showSecondAdmin = this.isOrgAdmin || isVendor || isMarketing || isPrm;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;

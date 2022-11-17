@@ -110,7 +110,7 @@
             <th *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" scope="" translate>
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
-            <th id="second-admin-td" *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
+            <th id="second-admin-td" *ngIf="showSecondAdmin && isTeamMemberModule"  scope="" translate>
               <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
             </th>
             <th  scope="" translate>
@@ -149,7 +149,7 @@
             </div>
             </td>
             <!---Second Admin---->
-            <td *ngIf="isOrgAdmin && isTeamMemberModule">
+            <td *ngIf="showSecondAdmin && isTeamMemberModule">
               <div class="actions-block float-none">
                 <i  [className]="teamMember?.secondAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
               </div>
@@ -313,7 +313,7 @@
                 </div>
 
                 <!---Enable As An Admin--->
-                <div class="col-md-12 col-lg-12" *ngIf="isOrgAdmin">
+                <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Enable As An Admin</label>
                       <div class="col-sm-8">
@@ -373,7 +373,7 @@
               Team Member
           </h4>
            </th>
-           <th *ngIf="isOrgAdmin"  scope="" translate>
+           <th *ngIf="showSecondAdmin"  scope="" translate>
             <i class="fa fa-user" aria-hidden="true"></i><br>Enable As An Admin
           </th>
            <th  scope="" translate>
@@ -391,7 +391,7 @@
           </td>
           <!---Assigned Group-->
           <!-- Enable As An Admin  -->
-          <td *ngIf="isOrgAdmin" [title]="!team?.enableOption? 'This option is not available for the selected group':''">
+          <td *ngIf="showSecondAdmin" [title]="!team?.enableOption? 'This option is not available for the selected group':''">
             <switch [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
             [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus(teamMember,$event)" [disabled]="!teamMember.enableOption">
             </switch>
