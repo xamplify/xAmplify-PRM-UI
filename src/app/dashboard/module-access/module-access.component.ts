@@ -228,5 +228,9 @@ export class ModuleAccessComponent implements OnInit {
       this.scheduledCampaignsCount = 0;
     }
   }
-  
+  /** XNFR-139 ***** */
+  setMaxAdmins(){
+    let maxAdmins =  $('#maxAdmins-Edit option:selected').val();
+    this.campaignAccess.maxAdmins = maxAdmins;
+}
 }
