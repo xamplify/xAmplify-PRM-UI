@@ -161,3 +161,7 @@ h3 {
 	font-size: 16px; 
 	color: #888888;
 }
+/****** 15-11-2022 *****/
+.details{
+ right: -7px !important;
+}
