@@ -801,3 +801,7 @@ input:checked + .slider-new:before {
   width: 158px !important;
 
 }
+
+.activeCRM {
+  background-color: #d7e5ff;
+}

@@ -564,7 +564,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <!-- <option [value]="0">Select Pipeline</option> -->
                                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -578,7 +578,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <!-- <option [value]="0">Select Pipeline</option> -->
                                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
