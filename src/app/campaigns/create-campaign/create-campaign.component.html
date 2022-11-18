@@ -39,9 +39,9 @@
             </app-response-message>
         </div>
         <!-- End of Line 2 -->
-        <div class="page-bar" id="campaign-tabs">
-            <div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
-                <div style="display: flex;padding-top: 1em;">
+        <div id="campaign-tabs">
+            <div class="container" style="width: 100%;">
+                <div class="portlet light row" style="display: flex;border-radius: 7px 7px 7px 7px !important;">
                     <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
@@ -180,10 +180,10 @@
                 </div>
                 <!-- -------------------------------------Campaign Details--------------------------------------------------------- -->
                 <div class="row setup-content step activeStepInfo" id="step-2">
-                    <div class="col-xs-12">
+                    <div >
                         <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm" aria-labelledby="form-label">
-                            <div style="margin-top: 10px;">
-                                <div class="portlet box">
+                            <div class="portlet light" style="margin-top: 10px;border-radius: 7px 7px 7px 7px !important;">
+                                <div class="portlet box" style="border: none !important;">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
                                         <div class="form-body col-sm-6 col-sm-offset-3">
@@ -564,7 +564,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
-                                                        <!-- <option [value]="0">Select Pipeline</option> -->
+                                                        <option [value]="0">Select Pipeline</option>
                                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -578,7 +578,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
-                                                        <!-- <option [value]="0">Select Pipeline</option> -->
+                                                        <option [value]="0">Select Pipeline</option>
                                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -651,9 +651,11 @@
                                         <!-- END FORM-->
                                     </div>
                                 </div>
+                                <div class="page-bar" style="padding-right: 21px;box-shadow: none !important;border: none !important;">
                                 <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                                 <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                                 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                            </div>
                             </div>
                         </form>
                     </div>
@@ -944,16 +946,16 @@
                 <!-- End Of 197(Video Tab) -->
                 <!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
                 <div class="row setup-content hiddenStepInfo" id="step-4">
-                    <div class="col-xs-12">
-                        <div class="col-xs-12 mt10">
+                    <div class="col-xs-12 portlet light" style="border-radius: 5px 5px 5px 5px !important;">
+                        <div class="mt10">
                             <!---Partners/Contacts List For Through/To Campaign-->
-                            <div class="row pb10 portlet light" id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
+                            <div id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
                                 <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
                                 <app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError">
                                 </app-error-pages>
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
-                                    <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-                                        <div class="note-vid pull-left">
+                                    <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+                                        <div class="note-vid pull-left" style="padding-bottom: 4px;">
                                             <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                                 <ng-container *ngIf="contactListTabName=='Partners'">
                                                     Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
@@ -978,7 +980,7 @@
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()">
+                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;right: 0px !important;" (click)="searchContactList()">
                                                         <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
@@ -1116,22 +1118,24 @@
                                     <strong>{{invalidShareLeadsSelectionErrorMessage}}</strong>
                                 </div>
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
-                             </div>   
+                             </div> 
+                             <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;">  
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit"  class="btn btn-default btn green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
+                        </div>
                         </div>
                     </div>
                 </div>
                 <!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType!='landingPage'">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                        <div class="portlet light">
-                            <div class="input-icon right pull-right cebp">
+                    <div class="text-center" style="margin-top: 10px;">
+                        <div class="col-xs-12 portlet light" style="border-radius: 5px 5px 5px 5px !important;">
+                            <div class="input-icon right pull-right cebp" style="padding-right: 8px;">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
-                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()">
+                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()" style="right: 9px !important;">
                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                             </div>
                             <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
@@ -1353,8 +1357,10 @@
                                                 <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPaginationDropdownTemplates($event)">
                                                 </app-pagination>
                                             </div>
+                                            <div class="page-bar" style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
+                                        </div>
                                         </div>
                                     </form>
                                 </div>
@@ -1544,7 +1550,7 @@
                 <!-- End of step 5 -->
 
                 <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo" id="step-6">
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-6" style="border-radius: 5px 5px 5px 5px !important;">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
                         <strong>{{invalidScheduleTimeError}}</strong>
@@ -1556,7 +1562,7 @@
                                 <div class="row">
                                     <div class="portlet-body clearfix">
                                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-                                            <div class="portlet light clearfix" style="padding:0px">
+                                            <div class="portlet clearfix" style="padding:0px">
                                                 <div class="p0">
                                                     <div id="main_video_src" [hidden]="campaignType!='video'"></div>
                                                     <div class="pricing hover-effect" [hidden]="campaignType=='video'">
@@ -1582,7 +1588,7 @@
                                         </div>
                                         <div [attr.class]="lauchTabPreivewDivClass">
                                             <app-dashboard-loader *ngIf="emailReceiversCountLoader"></app-dashboard-loader>
-                                            <div class="portlet light border-0" *ngIf="!emailReceiversCountLoader">
+                                            <div class="portlet border-0" *ngIf="!emailReceiversCountLoader">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -1635,7 +1641,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="portlet light border-0" id="email-template-preview-div">
+                                            <div class="portlet border-0" id="email-template-preview-div">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -2415,7 +2421,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12">
-                            <div class="portlet light dashboard-stat2" style="padding-top: 2em;">
+                            <div>
                                 <div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let schedule of sheduleCampaignValues">
@@ -2465,7 +2471,7 @@
                                 </div>
 
                                 <div class="portlet-title border-none">
-                                    <div class="col-xs-12 center-block mTop">
+                                    <div class="col-xs-12 center-block mTop" style="padding-top: 6px;">
                                         <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>

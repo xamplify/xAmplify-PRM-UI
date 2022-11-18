@@ -9,7 +9,7 @@
 <div class="portlet light" id="del-profile-div">
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
-    <div class="caption">{{dealFormTitle}}</div>
+    <div class="caption" style="padding: 7px 0px 10px 5px !important;">{{dealFormTitle}}</div>
     <!-- <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'">Deal Details</div> -->
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>

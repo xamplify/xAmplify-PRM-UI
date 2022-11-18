@@ -133,7 +133,7 @@
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                <div class="page-bar m10">
+                <div class="page-bar m10" style="border-bottom:1px solid #eee;padding-bottom:7px">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
