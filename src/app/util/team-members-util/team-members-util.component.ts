@@ -19,7 +19,6 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
-import { isPrimitive } from 'util';
 
 declare var $:any, swal: any;
 @Component({
