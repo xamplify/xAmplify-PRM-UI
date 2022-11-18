@@ -70,7 +70,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   fileImportInput: any;
   csvRecords: any[];
   newlyAddedTeamMembers: any[];
-  isOrgAdmin = false;
   /******Preview Group Modules */
 
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -89,11 +88,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-    this.isOrgAdmin = this.authenticationService.module.isOrgAdmin;
+    let isOrgAdmin = this.authenticationService.module.isOrgAdmin;
     let isVendor = this.authenticationService.module.isVendor;
     let isMarketing = this.authenticationService.module.isMarketing;
     let isPrm = this.authenticationService.module.isPrm;
-    this.showSecondAdmin = this.isOrgAdmin || isVendor || isMarketing || isPrm;
+    this.showSecondAdmin = isOrgAdmin || isVendor || isMarketing || isPrm;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -457,7 +456,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   selectTeamMemberGroupId(teamMemberGroupId: any) {
     this.team.teamMemberGroupId = teamMemberGroupId;
     this.validateAddTeamMemberForm("teamMemberGroup");
-    if (this.isOrgAdmin) {
+    if (this.showSecondAdmin) {
       this.team.enableOption = false;
       this.team.secondAdmin = false;
       this.loading = true;
@@ -686,7 +685,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   validateSecondAdminOptionForCsvUsers(teamMemberGroupId: number, team: any) {
     team.teamMemberGroupId = teamMemberGroupId;
-    if (this.isOrgAdmin) {
+    if (this.showSecondAdmin) {
       team.enableOption = false;
       team.secondAdmin = false;
       this.loading = true;
