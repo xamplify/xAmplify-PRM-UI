@@ -220,15 +220,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
-            this.editTeamMember = false;
             this.referenceService.loading(this.addTeamMemberLoader, false);
             this.referenceService.goToTop();
             this.loading = false;
             if (data.statusCode == 200) {
+              this.editTeamMember = false;
               this.customResponse = new CustomResponse('SUCCESS', data.message, true);
               this.pagination = new Pagination();
               this.findAll(this.pagination);
-            } else if (data.statusCode == 403) {
+            }else if(data.statusCode==3008){
+              this.customResponse = new CustomResponse('ERROR', data.message, true);
+            }else if (data.statusCode == 403) {
+              this.editTeamMember = false;
               this.authenticationService.forceToLogout();
             }
           },
@@ -520,6 +523,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.editTeamMember = false;
     this.saveOrUpdateButtonText = "Save";
     this.refreshList();
+  }
+  
+  goToManageTeam(){
+    this.clearForm();
+    this.customResponse = new CustomResponse();
   }
 
 

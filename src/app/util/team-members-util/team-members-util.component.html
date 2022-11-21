@@ -111,7 +111,7 @@
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
             <th id="second-admin-td" *ngIf="showSecondAdmin && isTeamMemberModule"  scope="" translate>
-              <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
+              <i class="fa fa-user" aria-hidden="true"></i><br>Admin
             </th>
             <th  scope="" translate>
               <i class="fa fa-lock" aria-hidden="true"></i><br>Status
@@ -235,7 +235,7 @@
             <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle"  title="Go Back" (click)="clearForm()">
+            <a class="close-circle"  title="Go Back" (click)="goToManageTeam()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
