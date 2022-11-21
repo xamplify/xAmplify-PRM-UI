@@ -138,7 +138,7 @@
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
+                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 p0">
                     <div class="btn-group pull-right" style="width: max-content;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
@@ -492,7 +492,7 @@
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
-                                    <div class="portlet-title">
+                                    <div class="portlet-title" style="padding-bottom: 2px;">
                                       <div class="caption">
                                         <span
                                           class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>

@@ -115,7 +115,7 @@
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
+                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 p0">
                     <div class="btn-group pull-right" style="width: max-content;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
@@ -431,7 +431,7 @@
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
-                                    <div class="portlet-title">
+                                    <div class="portlet-title" style="padding-bottom: 2px">
                                       <div class="caption">
                                         <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                                       </div>
@@ -539,7 +539,7 @@
               </div>
       
               <a (click)="closeCampaignDeals()" class="pull-right close-circle"
-                style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+                style="margin: -1px 14px;padding-top: 3px;padding-left: 5px;">
                 <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
               <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
               [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
