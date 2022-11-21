@@ -89,13 +89,28 @@
           (input)="validateField(columnInfo)" [disabled]="isVendor || isPreview"></textarea>
       </ng-container>
       <!-- ---------------------------Radio Button----------------------------- -->
-      <ng-container *ngIf="columnInfo.labelType=='radio'">
+      <!-- <ng-container *ngIf="columnInfo.labelType=='radio'">
         <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
           <div class="form-check">
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                 (click)="columnInfo.value = radioButton.id"
                 [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue"
+                [disabled]="isVendor || isPreview">
+              {{radioButton.name}}
+            </label>
+          </div>
+          <br>
+        </ng-container>
+      </ng-container> -->
+
+      <ng-container *ngIf="columnInfo.labelType=='radio'">
+        <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                (click)="columnInfo.value = radioButton.labelId"
+                [checked]="radioButton.labelId === columnInfo.value || radioButton.labelId=== columnInfo.selectedValue"
                 [disabled]="isVendor || isPreview">
               {{radioButton.name}}
             </label>
