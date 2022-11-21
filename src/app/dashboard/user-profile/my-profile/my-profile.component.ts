@@ -3672,10 +3672,12 @@ configSalesforce() {
 	}
 
 	getActiveCRMDetails() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					this.activeCRMDetails = data.data;
 					
 				});

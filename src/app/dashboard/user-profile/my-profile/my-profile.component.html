@@ -492,9 +492,17 @@
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">HubSpot</h5>
 
-                                                            <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{hubSpotRibbonText}}</span>
                                                             </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
+                                                            </div>
+
+                                                            <!-- <div class="ribbon draft" style="left:10px">
+                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+                                                            </div> -->
+
                                                             <div style="height: 120px;">
                                                                 <div>
                                                                     <img src="assets/images/crm/huspot-amplify.png" style="margin-top:20px; text-align: center;width:100%">
@@ -741,7 +749,7 @@
                                             </div>
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="closeIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 
