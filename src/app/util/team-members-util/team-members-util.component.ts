@@ -78,7 +78,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   moveToTop: boolean;
   showPartnersPopup:boolean;
   selectedTeamMemberId:number;
-  showSecondAdmin = false;
+  showSecondAdmin = true;
   analyticsCountDto:AnalyticsCountDto = new AnalyticsCountDto();
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -87,11 +87,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-    let isOrgAdmin = this.authenticationService.module.isOrgAdmin;
-    let isVendor = this.authenticationService.module.isVendor;
-    let isMarketing = this.authenticationService.module.isMarketing;
-    let isPrm = this.authenticationService.module.isPrm;
-    this.showSecondAdmin = isOrgAdmin || isVendor || isMarketing || isPrm;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
