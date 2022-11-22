@@ -463,8 +463,15 @@
                                                                     style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
-                                                            <div class="ribbon draft" style="left:10px">
+                                                            <!-- <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
+                                                            </div> -->
+
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="integrateRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{integrateRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="integrateRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{integrateRibbonText}}</span>
                                                             </div>
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -481,7 +488,7 @@
                                                     </div>
                                                 </div>   
 
-                                                <div class="col-lg-4" (click)="configHubSpot()" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
@@ -492,17 +499,25 @@
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">HubSpot</h5>
 
-                                                            <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{hubSpotRibbonText}}</span>
                                                             </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
+                                                            </div>
+
+                                                            <!-- <div class="ribbon draft" style="left:10px">
+                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+                                                            </div> -->
+
                                                             <div style="height: 120px;">
                                                                 <div>
                                                                     <img src="assets/images/crm/huspot-amplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
 
-                                                            <a class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configure'" translate>configure</a>
-                                                            <a class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configured'" translate>re configure</a>
+                                                            <a (click)="configHubSpot()" class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configure'" translate>configure</a>
+                                                            <a (click)="configHubSpot()" class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configured'" translate>re configure</a>
                                                                 
                                                         </div>
                                                     </div>
@@ -519,8 +534,15 @@
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
 
-                                                            <div class="ribbon draft" style="left:10px">
+                                                            <!-- <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
+                                                            </div> -->
+
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="sfRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{sfRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="sfRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{sfRibbonText}}</span>
                                                             </div>
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -548,8 +570,15 @@
                                                                 </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Microsoft</h5>
 
-                                                            <div class="ribbon draft" style="left:10px">
+                                                            <!-- <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="microsoftRibbonText == 'configured' ? 'green':'yello'">{{microsoftRibbonText}}</span>
+                                                            </div> -->
+
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{microsoftRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="microsoftRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{microsoftRibbonText}}</span>
                                                             </div>
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -741,7 +770,7 @@
                                             </div>
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="closeIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 

@@ -378,7 +378,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			//this.allselectedUsers.length = 0;
 		} else {
 			//this.paginatedSelectedIds = [];
-			let currentPageCfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+			let currentPageCfIds = this.sfcfPagedItems.map(function (a) { if (self.requiredCfIds.indexOf(a.name) == -1) { return a.name; } });
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 			this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 		}

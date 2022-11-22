@@ -820,10 +820,13 @@ setSfFormFieldValues() {
               let sfCfData = new SfCustomFieldsDataDTO();
               sfCfData.sfCfLabelId = formLabel.labelId;                    
               if(formLabel.labelType === 'multiselect'){
+                if (formLabel.value != undefined && formLabel.value.length > 0) {
                   for (let option of formLabel.value) {
-                      sfCfData.value = sfCfData.value + option.name + ";";
+                    sfCfData.value = sfCfData.value + option.name + ";";
                   }
-                  sfCfData.value = sfCfData.value.substring(0,sfCfData.value.length-1);
+                  sfCfData.value = sfCfData.value.substring(0, sfCfData.value.length - 1);
+                }
+                  
               }else if(formLabel.labelType === 'datetime'){
                   sfCfData.value = formLabel.value;
                   sfCfData.type = formLabel.labelType;

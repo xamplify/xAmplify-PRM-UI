@@ -20,6 +20,7 @@ export class SfDealComponent implements OnInit {
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
+  @Input() activeCRM: string;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormValid: boolean = true;
@@ -32,6 +33,7 @@ export class SfDealComponent implements OnInit {
   sfFormError: string = "";
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isLoading = false;
+  
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -52,9 +54,11 @@ export class SfDealComponent implements OnInit {
       }
       
       this.isLoading = true;
-      this.getActiveCRMCustomForm();
-      //this.getSalesforceCustomForm();
-      
+      if ("SALESFORCE" === this.activeCRM) {
+        this.getSalesforceCustomForm();
+      } else {
+        this.getActiveCRMCustomForm();
+      }      
     }
   }
   
