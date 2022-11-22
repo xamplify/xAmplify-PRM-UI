@@ -565,10 +565,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     configurePipelines() {
-        this.isConfigurePipelines = !this.isConfigurePipelines;
-        if (!this.isConfigurePipelines) {
+        this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
+        if (!this.eventCampaign.configurePipelines) {
             this.eventCampaign.leadPipelineId = this.defaultLeadPipelineId;
-            this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
+            if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId === 0) {
+                this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
+            } 
         }
         this.validatePipeline();
     }
@@ -617,8 +619,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             } else {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
                                 this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                                this.defaultDealPipelineId = this.dealPipelines[0].id;                               
+                                if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId == null || this.eventCampaign.dealPipelineId === 0) {
+                                    this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
                             }
 
                         }
@@ -1535,7 +1539,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 'vanityUrlDomainName': vanityUrlDomainName,
                 'vanityUrlCampaign': vanityUrlCampaign,
                 'endDateString': eventCampaign.endDateString,
-                "clientTimeZone": eventCampaign.clientTimeZone
+                "clientTimeZone": eventCampaign.clientTimeZone,
+                'configurePipelines': eventCampaign.configurePipelines
             }
             eventCampaign = customEventCampaign;
         }
