@@ -229,7 +229,9 @@
                 </div>
             </form>
         </div>
-        <!-- <div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
+        <!-- Start Actions Button-->
+        <ng-template #actionsButton>
+        <div class="btn-group pull-right" style="padding-bottom:10px;padding-left: 10px">
             <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
           <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
             <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -252,7 +254,9 @@
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
 					Delete</a></li>
             </ul>
-        </div> -->
+        </div> 
+       </ng-template>
+       <!-- End Actions Button-->
         <div class="col-xs-12 p0" *ngIf="referenceService.isMobileScreenSize()">
             <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
@@ -291,6 +295,8 @@
                 </div>
             </div>
         </div>
+        <!-- call Actions Button here-->
+        <ng-template *ngIf="clipBoard || selectedAddPartnerOption == 2" [ngTemplateOutlet]="actionsButton"></ng-template>
 
         <div class="row" id="Gfile_preview">
             <div class="col-md-12">
@@ -584,7 +590,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="btn-group pull-right">
+                            <!-- call action button here-->
+                            <ng-template *ngIf="!clipBoard" [ngTemplateOutlet]="actionsButton"></ng-template>
+                            <!-- <div class="btn-group pull-right">
                                 <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
                               <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
                                 <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -607,7 +615,7 @@
                                     <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
                                         Delete</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="portlet-body">
