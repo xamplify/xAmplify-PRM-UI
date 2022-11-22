@@ -8,17 +8,17 @@
           </div>
           <div class="portlet-body clearfix">
               <ng-container>
-                  <app-dashboard-loader></app-dashboard-loader>
+                  <app-dashboard-loader ngIf="loader"></app-dashboard-loader>
               </ng-container>
-              <ng-container>
+              <ng-container *ngIf="!loader && statusCode!=200">
                   <div class="alert alert-danger">
-                      <strong>aa</strong>
+                      <strong>{{properties?.serverErrorMessage}}</strong>
                   </div>
               </ng-container>
-              <ng-container>
+              <ng-container *ngIf="!loader && statusCode==200">
                   <div class="col-md-12 col-lg-12">
                       <div class="row">
-                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title="1">
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title="{{total}}">
                               <div class="portlet light card-height">
                                   <div>
                                       <div class="col-xs-3 p0">
@@ -26,14 +26,14 @@
                                       </div>
                                       <div class="col-xs-9 card-align">
                                           <h3 class="number">
-                                             1
+                                             {{total}}
                                           </h3>
                                           <p class="partners-text" title="Total Admins">Total Admins</p>
                                       </div>
                                   </div>
                               </div>
                           </div>
-                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title="1">
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title="{{availed}}">
                               <div class="portlet light card-height">
                                   <div>
                                       <div class="col-xs-3 p0">
@@ -41,15 +41,14 @@
                                       </div>
                                       <div class="col-xs-9 card-align">
                                           <h3 class="number">
-                                             1
+                                            {{availed}}
                                           </h3>
-
                                           <p class="partners-text" title="Availed Admins">Availed Admins</p>
                                       </div>
                                   </div>
                               </div>
                           </div>
-                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title=" 1">
+                          <div class="col-xs-12 col-sm-6 col-md-4 pl0" title="{{available}}">
                               <div class="portlet light card-height">
                                   <div>
                                       <div class="col-xs-3 p0">
@@ -57,9 +56,8 @@
                                       </div>
                                       <div class="col-xs-9 card-align">
                                           <h3 class="number">
-                                             1
+                                             {{available}}
                                           </h3>
-
                                           <p class="partners-text" title="Available Admins">Available Admins</p>
                                       </div>
                                   </div>

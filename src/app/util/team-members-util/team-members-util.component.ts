@@ -19,6 +19,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 
 declare var $:any, swal: any;
 @Component({
@@ -28,8 +29,6 @@ declare var $:any, swal: any;
   providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions]
 })
 export class TeamMembersUtilComponent implements OnInit, OnDestroy {
-
-
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   addTeamMemberLoader: HttpRequestLoader = new HttpRequestLoader();
   teamMembers: Array<any> = new Array<any>();
@@ -80,6 +79,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showPartnersPopup:boolean;
   selectedTeamMemberId:number;
   showSecondAdmin = false;
+  analyticsCountDto:AnalyticsCountDto = new AnalyticsCountDto();
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -103,6 +103,19 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
+    
+  }
+
+  findMaximumAdminsLimitDetails(){
+    this.teamMemberService.findMaximumAdminsLimitDetails().subscribe(
+      response=>{
+        this.analyticsCountDto = response.data;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.analyticsCountDto = new AnalyticsCountDto();
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -133,7 +146,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         error => {
           this.logger.errorPage(error);
         }, () => {
-        
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.findMaximumAdminsLimitDetails();
         }
       );
   }

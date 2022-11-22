@@ -984,6 +984,8 @@ findCampaignAccessDataByDomainName(domainName:string){
 }
 
 
+
+
 private callGetMethod(url: string) {
   return this.http.get(url)
     .map(this.extractData)

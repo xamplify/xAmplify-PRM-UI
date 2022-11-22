@@ -96,6 +96,7 @@
     </div>
   </div>
   <div class="portlet-body clearfix">
+    <a *ngIf="!httpRequestLoader.isLoading"><span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span></strong></span></a>
     <div class="table-responsive">
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
       <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
@@ -363,6 +364,7 @@
 </div>
 <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
 <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
+  
   <div class="table-responsive">
     <table class="table table-striped silvertm" id="add-team-member-table"  aria-describedby="TeamMemberList">
       <thead>
