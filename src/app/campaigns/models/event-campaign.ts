@@ -79,6 +79,7 @@ export class EventCampaign {
   endDateString: string;
   clientTimeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   oneClickLaunch = false;
+  configurePipelines = false;
 
   constructor() {
     this.campaignEventMedias.push(new CampaignEventMedia());

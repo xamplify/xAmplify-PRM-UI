@@ -772,7 +772,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
                                 this.campaign.leadPipelineId = this.leadPipelines[0].id;
                                 this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                    this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
+                                
                             }
 
                         }
@@ -2254,6 +2257,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             /****XNFR-125****/
             "oneClickLaunch":this.campaign.oneClickLaunch,
             'partnershipId':this.selectedPartnershipId,
+            'configurePipelines': this.campaign.configurePipelines
         };
         return data;
     }
@@ -3280,11 +3284,15 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     configurePipelines() {
-        this.isConfigurePipelines = !this.isConfigurePipelines;
-        if (!this.isConfigurePipelines) {
+       // this.isConfigurePipelines = !this.isConfigurePipelines;
+        this.campaign.configurePipelines = !this.campaign.configurePipelines;
+        if (!this.campaign.configurePipelines) {
             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
-            this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
+                this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            } 
         }
+       // this.campaign.configurePipelines = this.isConfigurePipelines;
     }
 
     pushToCrmRequest(crmName: any, event: any) {
