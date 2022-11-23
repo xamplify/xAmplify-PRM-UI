@@ -784,11 +784,12 @@ label img {
   animation: spin 2s linear infinite;
 }
 
-div.tab {
+/* div.tab {
   overflow: hidden;
   border: 1px solid #ccc;
   background-color: #f1f1f1;
-}
+
+} */
 
 /* Style the buttons inside the tab */
 
@@ -813,6 +814,7 @@ div.tab button:hover {
 
 div.tab button.active {
   background-color: #ccc;
+  padding: 5px
 }
 
 /* Style the tab content */
@@ -1059,11 +1061,12 @@ h3 {
 }
 
 .note-vid {
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   font-weight: 500;
   margin-bottom: 10px;
   color: #00a8e7;
+  font-weight: 600;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100);
@@ -2153,4 +2156,12 @@ legend {
 .info-color-xampc {
   cursor: pointer;
   color: #54a7e9;
+}
+
+/******* 23-11-2022 ********/
+div.tab{
+  overflow: hidden;
+}
+.table-responsive{
+  padding: 10px 0px 0px 0px;
 }
