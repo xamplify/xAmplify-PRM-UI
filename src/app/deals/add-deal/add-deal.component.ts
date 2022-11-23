@@ -207,15 +207,15 @@ export class AddDealComponent implements OnInit {
             self.deal.createdForCompanyId = self.lead.createdForCompanyId;
             self.createdForCompanyIdError = false;
             self.deal.associatedUserId = self.lead.associatedUserId;
-            //this.isSalesForceEnabled();
+            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+              self.deal.campaignId = self.lead.campaignId;
+              self.deal.campaignName = self.lead.campaignName;
+             // this.getCampaignDealPipeline();
+            } else {
+              //self.getPipelines();
+            }
+            //this.isSalesForceEnabled();         
             this.getActiveCRMDetails();
-            // if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-            //   self.deal.campaignId = self.lead.campaignId;
-            //   self.deal.campaignName = self.lead.campaignName;
-            //   this.getCampaignDealPipeline();
-            // } else {
-            //   self.getPipelines();
-            // }
           }
         },
         error => {
@@ -941,23 +941,14 @@ getActiveCRMDetails() {
           this.showDefaultForm = true; 
           this.activeCRMDetails.hasDealPipeline = false;                      
           if (this.edit || this.preview) {
-            this.setProperties();
-            if (this.deal.campaignId > 0) {
-              this.getCampaignDealPipeline();
-            } else {
-              this.getPipelines();
-            }
+            this.setProperties();            
           } else {
-            this.getQuestions();
-            
-            if (this.lead.campaignId != null && this.lead.campaignId > 0) {
-              this.deal.campaignId = this.lead.campaignId;
-              this.deal.campaignName = this.lead.campaignName;
-              this.getCampaignDealPipeline();
-            } else {
-              this.resetPipelines();
-            }
-
+            this.getQuestions();                     
+          }
+          if (this.deal.campaignId > 0) {
+            this.getCampaignDealPipeline();
+          } else {
+            this.getPipelines();
           }
           this.getDealTypes();
         } else { 
@@ -967,6 +958,7 @@ getActiveCRMDetails() {
             this.getActiveCRMPipelines();
           }        
         }
+        
       });
 }
 
