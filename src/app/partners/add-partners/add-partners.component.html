@@ -229,7 +229,27 @@
                 </div>
             </form>
         </div>
-        <!-- <div class="btn-group pull-right" style="padding-bottom:10px;width:100%">
+        <!-- Save cancel button-->
+        <ng-template #saveCancel>
+            <div class="pull-right">
+                <button class="btn btn-default" (click)="saveContacts()"
+                    *ngIf="selectedAddPartnerOption != 5"
+                    style="background-color: #26a69a; color: white">
+                    <span id="save_button"
+                        translate>Save </span>
+                </button>
+                <button class="btn btn-default"
+                    style="background-color: #26a69a; color: white" (click)="cancelPartners()">
+                    <span id="cancel_button"
+                        *ngIf="selectedAddPartnerOption != 5 || clipBoard"
+                         translate>Cancel </span>
+                </button>
+            </div>
+            </ng-template>
+            <!-- End save Cancel button-->
+        <!-- Start Actions Button-->
+        <ng-template #actionsButton>
+        <div class="btn-group pull-right" style="padding-bottom:10px;padding-left: 10px">
             <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
           <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
             <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -252,7 +272,9 @@
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
 					Delete</a></li>
             </ul>
-        </div> -->
+        </div> 
+       </ng-template>
+       <!-- End Actions Button-->
         <div class="col-xs-12 p0" *ngIf="referenceService.isMobileScreenSize()">
             <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
@@ -291,11 +313,16 @@
                 </div>
             </div>
         </div>
+        <!-- call Actions Button here-->
+        <!-- <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="actionsButton"></ng-template> -->
+        
+
+        <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="saveCancel"></ng-template>
 
         <div class="row" id="Gfile_preview">
             <div class="col-md-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet box blue">
+                <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption" translate>
                             <i class="fa fa-edit"></i>File Preview
@@ -423,6 +450,7 @@
                     </div>
                     <div class="col-xs-6" style="margin-bottom: 10px">
                         <button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
+                        <!-- <ng-template [ngTemplateOutlet]="saveCancel"></ng-template> -->
                     </div>
                     <div class="col-xs-12">
                         <textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
@@ -441,7 +469,7 @@
                 <div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2 && isListLoader">
                     <app-list-loader></app-list-loader>
                 </div>
-                <div class="portlet box blue" *ngIf="newPartnerUser?.length != 0">
+                <div class="portlet light" *ngIf="newPartnerUser?.length != 0">
                     <div class="portlet-title">
                         <div class="caption" translate> 
                             <i class="fa fa-edit" style="font-size: 19px;"></i>{{authenticationService?.partnerModule?.customName}} Preview
@@ -584,7 +612,9 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="btn-group pull-right">
+                            <!-- call action button here-->
+                            <ng-template *ngIf="selectedAddPartnerOption == 5" [ngTemplateOutlet]="actionsButton"></ng-template>
+                            <!-- <div class="btn-group pull-right">
                                 <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
                               <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
                                 <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -607,7 +637,7 @@
                                     <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
                                         Delete</a></li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="portlet-body">
