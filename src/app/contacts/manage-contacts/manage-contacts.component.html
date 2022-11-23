@@ -209,7 +209,7 @@
             </div>
             <div [ngClass]="{'tabbable tabbable-custom tabbable-noborder page-bar': showListOfContactList}">
               <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
-                <div class="tab-pane active" style="border-bottom: 1px solid #eee;">
+                <div class="tab-pane active">
                   <div class="clearfix"></div>
                   <span *ngIf="iszohoAccessTokenExpired">
                     <h4>{{zohoExpiredAccessTokenMessage}}<a
@@ -287,7 +287,7 @@
                   </div>
                   <section [hidden]="!isListView"
                     *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                    <div class="table-responsive" style="margin-top: 10px">
+                    <div class="table-responsive">
                       <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                         <thead>
                           <tr>
