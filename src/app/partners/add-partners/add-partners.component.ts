@@ -968,7 +968,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			var self = this;
 			reader.onload = function (e: any) {
 				var contents = e.target.result;
-				let csvData = reader.result;
+				let csvData:any = reader.result;
 				let csvRecordsArray = csvData.split(/\r|\n/);
 				let headersRow = self.fileUtil
 					.getHeaderArray(csvRecordsArray);
@@ -1697,6 +1697,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	hideZohoAuthorisedPopup() {
 		$('#zohoShowAuthorisedPopup').modal('hide');
 		this.zohoErrorResponse = new CustomResponse();
+		this.cancelPartners()
 	}
 	authorisedZohoContacts() {
 		try {

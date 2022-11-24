@@ -229,9 +229,10 @@
                 </div>
             </form>
         </div>
+        
         <!-- Save cancel button-->
         <ng-template #saveCancel>
-            <div class="pull-right">
+            <div class=" btn-group pull-right">
                 <button class="btn btn-default" (click)="saveContacts()"
                     *ngIf="selectedAddPartnerOption != 5"
                     style="background-color: #26a69a; color: white">
@@ -245,7 +246,7 @@
                          translate>Cancel </span>
                 </button>
             </div>
-            </ng-template>
+        </ng-template>
             <!-- End save Cancel button-->
         <!-- Start Actions Button-->
         <ng-template #actionsButton>
@@ -283,6 +284,7 @@
         <div class="col-xs-12" style="padding: 0 0 10px 0">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
+        <ng-template *ngIf="!clipBoard"  [ngTemplateOutlet]="legalBasis"></ng-template>
         <div *ngIf="deleteErrorMessage" id="campaignError" class="col-xs-12 alert alert-danger alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Danger!</strong>{{Campaign}}
@@ -300,6 +302,8 @@
             </h4>
         </div>
         <!-----Legal Basis Options -->
+        <ng-template #legalBasis>
+            <div [className]="(clipBoard || selectedAddPartnerOption ==5) ? '':' col-xs-12 col-sm-12 col-md-12 col-lg-12 portlet light'">
         <div *ngIf=" (gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddPartnerOption==2)" class="col-sm-6 form-group" id="customWidth">
             <div class="form-group">
                 <label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
@@ -312,12 +316,15 @@
                     </div>
                 </div>
             </div>
+          </div>
+          <ng-template *ngIf="selectedAddPartnerOption != 5 && !clipBoard"   [ngTemplateOutlet]="saveCancel"></ng-template>
         </div>
+      </ng-template>
         <!-- call Actions Button here-->
         <!-- <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="actionsButton"></ng-template> -->
         
 
-        <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="saveCancel"></ng-template>
+        <!-- <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="saveCancel"></ng-template> -->
 
         <div class="row" id="Gfile_preview">
             <div class="col-md-12">
@@ -436,8 +443,10 @@
                 <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
+        <div class="portlet light" *ngIf="(selectedAddPartnerOption != 5 && selectedAddPartnerOption !=2) || clipBoard">
 
         <div class="row" *ngIf="clipBoard" style="margin-bottom: 15px;">
+            <ng-template [ngTemplateOutlet]="legalBasis"></ng-template>
             <div class="col-sm-12" style="padding-left:0px">
                 <h3 style="margin-left: 30px;" translate>Copy from text -- paste below</h3>
                 <div class="col-xs-12 col-sm-9">
@@ -450,7 +459,7 @@
                     </div>
                     <div class="col-xs-6" style="margin-bottom: 10px">
                         <button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
-                        <!-- <ng-template [ngTemplateOutlet]="saveCancel"></ng-template> -->
+                        <ng-template [ngTemplateOutlet]="saveCancel"></ng-template>
                     </div>
                     <div class="col-xs-12">
                         <textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
@@ -463,6 +472,7 @@
                 </div>
             </div>
         </div>
+       </div>
         <div class="clearfix">
             <div class="col-xs-12" style="width: 103%; left: -18px;" *ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
