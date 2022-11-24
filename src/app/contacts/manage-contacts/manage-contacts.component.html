@@ -211,7 +211,7 @@
             <!-- End tile here-->
             <div [ngClass]="{'tabbable tabbable-custom tabbable-noborder page-bar': showListOfContactList}">
               <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
-                <div class="tab-pane active" style="border-bottom: 1px solid #eee;">
+                <div class="tab-pane active">
                   <div class="clearfix"></div>
                   <!-- Remove Tiles here-->
                   <span *ngIf="iszohoAccessTokenExpired">
@@ -290,7 +290,7 @@
                   </div>
                   <section [hidden]="!isListView"
                     *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                    <div class="table-responsive" style="margin-top: 10px">
+                    <div class="table-responsive">
                       <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                         <thead>
                           <tr>
@@ -700,7 +700,7 @@
                   </div>
                   <div id="pagination">
                     <!--pager here  -->
-                    <app-pagination style="position:relative;top:-9px;" style="position:relative;top:-9px;"
+                    <app-pagination style="position:relative;"
                       [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
                       (notifyParent)="setPage($event)" (notifyParentDropDown)="loadContactLists($event)">
                     </app-pagination>
@@ -749,7 +749,7 @@
                   <h4 translate>No results found</h4>
                 </div>
                 <div class="portlet light" *ngIf="contactsByType.contacts?.length > 0">
-                  <div class="portlet-title">
+                  <div class="portlet-title" style="border-bottom: none;">
                     <div class="caption" style="margin-top: 5px;">
                       <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                        <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
@@ -845,7 +845,7 @@
                     </div>
                      <!-- End page-toolbar here-->
                   </div>
-                  <div class="portlet-body">
+                  <div class="portlet-body" style="padding-top: 0px;">
                     <div class="table-responsive">
                       <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading">
                       </app-loader>

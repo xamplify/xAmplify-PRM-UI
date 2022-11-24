@@ -419,7 +419,7 @@
                             </table>
                         </div>
 
-                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-top: -1px;">
                             <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setSocialPage(1)">First</a></li>
                             <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setSocialPage(pager.currentPage - 1)">Previous</a></li>
                             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a (click)="setSocialPage(page)">{{page}}</a></li>
