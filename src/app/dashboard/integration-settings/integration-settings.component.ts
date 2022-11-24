@@ -46,12 +46,7 @@ export class IntegrationSettingsComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getIntegrationDetails();
-    if (this.integrationType.toLowerCase() === 'salesforce') {
-      this.listSalesforceCustomFields();
-    } else {
-      this.listExternalCustomFields();
-    }	
+    this.getIntegrationDetails();    	
   }
 
   checkAuthorization() {
@@ -72,7 +67,8 @@ export class IntegrationSettingsComponent implements OnInit {
     );
   }
 
-  listSalesforceCustomFields() {
+	listSalesforceCustomFields() {
+		this.ngxloading = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
@@ -82,7 +78,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
-						$.each(this.sfCustomFieldsResponse, function(_index: number, customField) {
+						$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
 							if (customField.selected) {
 								self.selectedCfIds.push(customField.name);
 							}
@@ -95,9 +91,9 @@ export class IntegrationSettingsComponent implements OnInit {
 							}
 						});
 						this.setSfCfPage(1);
-          } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
-            this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
-          }
+					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
+						this.customFieldsResponse = new CustomResponse('ERROR', "We found something wrong about your Vendor's configuration. Please contact your Vendor.", true);
+					}
 				},
 				error => {
 					this.ngxloading = false;
@@ -249,12 +245,16 @@ export class IntegrationSettingsComponent implements OnInit {
 		event.stopPropagation();
 	}
 
-  reloadCustomFields() {
+	reloadCustomFields() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
-		this.customFieldsResponse.isVisible = false;		
+		this.customFieldsResponse.isVisible = false;
 		this.ngxloading = true;
-		this.listExternalCustomFields();
+		if (this.integrationType.toLowerCase() === 'salesforce') {
+			this.listSalesforceCustomFields();
+		} else {
+			this.listExternalCustomFields();
+		}
 	}
 
   unlinkCRM() {
@@ -364,23 +364,29 @@ export class IntegrationSettingsComponent implements OnInit {
 				});
 	}
 
-  getIntegrationDetails() {
-    this.ngxloading = true;
+	getIntegrationDetails() {
+		this.ngxloading = true;
 		let self = this;
 		self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
 					if (data.statusCode == 200) {
-                     this.integrationDetails = data.data;
-          }
-        },
+						this.integrationDetails = data.data;
+					}
+				},
 				error => {
 					this.ngxloading = false;
 				},
-				() => { }
-      );
-  }
+				() => { 
+					if (this.integrationType.toLowerCase() === 'salesforce') {
+						this.listSalesforceCustomFields();
+					  } else {
+						this.listExternalCustomFields();
+					  }
+				}
+			);
+	}
 
   checkAll(ev: any) {
 	if (ev.target.checked) {
@@ -412,7 +418,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			//this.allselectedUsers.length = 0;
 		} else {
 			//this.paginatedSelectedIds = [];
-			let currentPageCfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+			let currentPageCfIds = this.sfcfPagedItems.map(function (a) { if (self.requiredCfIds.indexOf(a.name) == -1) { return a.name; } });
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 			this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 		}

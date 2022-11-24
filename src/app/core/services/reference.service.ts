@@ -319,12 +319,14 @@ export class ReferenceService {
 
   removeDuplicatesFromTwoArrays(array1: any, array2: any) {
     for (var i = 0; i < array2.length; i++) {
-      var arrlen = array1.length;
-      for (var j = 0; j < arrlen; j++) {
-        if (array2[i] == array1[j]) {
-          array1 = array1.slice(0, j).concat(array1.slice(j + 1, arrlen));
-        } //if close
-      } //for close
+      if (array2[i] !== undefined) {
+        var arrlen = array1.length;
+        for (var j = 0; j < arrlen; j++) {
+          if (array2[i] == array1[j]) {
+            array1 = array1.slice(0, j).concat(array1.slice(j + 1, arrlen));
+          } //if close
+        } //for close
+      }
     } //for close
     return array1;
   }
