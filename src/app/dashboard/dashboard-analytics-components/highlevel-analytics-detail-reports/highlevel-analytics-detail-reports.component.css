@@ -31,7 +31,7 @@ a.disabled {
 }
 
 .custom-name-font{
-  font-size:11px !important;
+  font-size:9px !important;
   font-weight: 500 !important;
 }
 
@@ -41,4 +41,7 @@ a.disabled {
 }
 .more-hl-stat{
   text-transform:capitalize !important;
+}
+.details{
+  right: 5px;
 }
