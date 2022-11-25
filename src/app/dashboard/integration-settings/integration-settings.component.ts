@@ -289,7 +289,41 @@ export class IntegrationSettingsComponent implements OnInit {
 		  }
   }
 
-  activateCRM() {
+  /****Sravan******/
+  buttonName = "";
+  categoryNames = [{'id':1,'name':'Sravan'},{'id':2,'name':'Kumar'}];
+  activateCRM(){
+	  let self = this;
+	  let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
+	  let dropDown = '<div class="form-group">';
+		dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+		dropDown += '<select class="form-control" id="category-dropdown">';
+		$.each(this.categoryNames, function (_index: number, category: any) {
+			let categoryId = category.id;
+			dropDown += '<option value=' + categoryId + '>' + category.name + '</option>';
+		});
+		dropDown += '</select>';
+		dropDown += '</div><br>';
+		modalPopUp.append(dropDown);
+		modalPopUp.append(self.createButton('Save', function () {
+			self.buttonName = "SAVE";
+			//self.saveTemplate();
+		})).append(self.createButton('Cancel', function () {
+			self.buttonName = "CANCEL";
+			swal.close();
+		}));
+		swal({ title: "Title", html: modalPopUp, showConfirmButton: false, showCancelButton: false });
+  }
+
+  createButton(text, cb) {
+	if (text == "Save") {
+		return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="save">').on('click', cb);
+	} 	else {
+		return $('<input type="submit" class="btn btn-primary" value="' + text + '">').on('click', cb);
+	}
+}
+
+  activateCRMDepre() {
 		try {
 			let self = this;
 			swal({
