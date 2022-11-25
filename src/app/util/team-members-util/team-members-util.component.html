@@ -183,6 +183,11 @@
                       <i class="fa fa-sign-in gray" aria-hidden="true"></i>
                   </a>
                 </ng-container>
+                <!--Primary Admin--->
+                <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="enableAsPrimaryAdmin(teamMember)"
+                     [className]="isLoggedInAsTeamMember || teamMember.status!='APPROVE' ? 'inactive':''" >
+                  <i [className]="teamMember.status=='APPROVE' ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
+               </a>
                 <!--Edit--->
                 <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

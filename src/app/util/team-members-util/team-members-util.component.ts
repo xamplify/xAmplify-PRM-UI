@@ -878,4 +878,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
   }
 
+  /********XNFR-139*********/
+  enableAsPrimaryAdmin(teamMember:any){
+    if(teamMember.status=='APPROVE'){
+
+    }
+  }
+
 }
