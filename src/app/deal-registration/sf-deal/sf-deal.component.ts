@@ -261,4 +261,13 @@ export class SfDealComponent implements OnInit {
       }
     }
   }
+
+  numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+      return false;
+    }
+    return true;
+  }
+
 }
