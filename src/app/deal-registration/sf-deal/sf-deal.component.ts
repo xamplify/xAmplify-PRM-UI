@@ -70,12 +70,14 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
-          let selectedOptions = multiSelectObj.value.split(';');        
-          for(let option of selectedOptions){
-            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-            this.multiSelectvalueArray.push(this.optionObj);
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray;
           }
-          multiSelectObj.value = this.multiSelectvalueArray; 
         }      
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
@@ -100,12 +102,14 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
-          let selectedOptions = multiSelectObj.value.split(';');        
-          for(let option of selectedOptions){
-            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-            this.multiSelectvalueArray.push(this.optionObj);
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray;
           }
-          multiSelectObj.value = this.multiSelectvalueArray; 
         }      
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));

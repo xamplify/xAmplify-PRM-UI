@@ -683,6 +683,14 @@ export class ManageLeadsComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, false);
   }
 
+  syncLeadsAndDeals() {
+    if (this.activeCRMDetails.type === 'SALESFORCE') {
+      this.syncLeadsWithSalesforce();
+    } else {
+      this.syncLeadsWithActiveCRM();
+    }
+  }
+
   syncLeadsWithSalesforce() {
     this.leadsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
     this.referenceService.loading(this.httpRequestLoader, true);
