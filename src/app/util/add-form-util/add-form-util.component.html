@@ -43,7 +43,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
                                             <div class="caption caption-md" style="width: 100%;display: inline-flex;">
                                                 <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                                <h4 [attr.class]="formNameClass"><strong title="{{form.name}}">{{form.name}}</strong>
+                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong title="{{form.name}}">{{form.name}}</strong>
                                                 </h4>
                                                 <a *ngIf="!isMdfForm" class="icon-margin" data-toggle="tooltip" data-placement="top" title="Change Form Details"
                                                         (click)="showAddForm()">
@@ -51,7 +51,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none">
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none" style="padding-top: 8px;padding-right: 5px;">
                                             <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
                                                 (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                                             <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i

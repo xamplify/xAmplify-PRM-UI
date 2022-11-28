@@ -21,8 +21,8 @@
    <!---Tiles----->
    <div class="row">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light" style=" height:163px;">
-            <div class="row" style="margin-top: 20px;">
+         <div class="portlet light">
+            <div class="row" style="margin-right: -28px;margin-left: -22px;">
                <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
@@ -98,9 +98,9 @@
          <div class="clearfix">
             <div class="col-xs-12">
                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-               <div class="portlet box blue">
+               <div class="portlet light">
                   <div class="portlet-title">
-                     <div class="caption" translate>
+                     <div class="caption" style="padding-top: 13px !important;padding-left: 4px !important;" translate>
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage MDF Details
                      </div>
@@ -113,8 +113,8 @@
                         </select>
                         </div>
                         <div class="portlet-input input-inline">
-                           <div class="input-icon right">
-                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                           <div class="input-icon right" style="margin-bottom: 8px;">
+                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                               <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                            </div>
