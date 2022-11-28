@@ -37,6 +37,7 @@ export class ModuleAccessComponent implements OnInit {
   dnsErrorMessage = "";
   scheduledCampaignsCount: number = 0;
   showOneClickLaunchErrorMessage: boolean;
+  statusCode = 0;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -117,22 +118,27 @@ export class ModuleAccessComponent implements OnInit {
 
   updateModuleAccess(){
     this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.roleId = $('#roleId option:selected').val();
     this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
-
+      this.statusCode = result.statusCode;
+      this.customResponse = new CustomResponse('ERROR', result.message, true);
+      this.ngxLoading = false;
     }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('ERROR', "Something went wrong.", true);
     },
     ()=>{
+      if(this.statusCode==200){
         if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
         }
+      }
     }
     );
 
