@@ -80,6 +80,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   selectedTeamMemberId:number;
   showSecondAdmin = true;
   analyticsCountDto:AnalyticsCountDto = new AnalyticsCountDto();
+  showPrimaryAdminConfirmSweetAlert = false;
+  selectedPrimaryAdminTeamMemberUserId = 0;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -877,12 +879,33 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.refreshList();
     }
   }
+ /********XNFR-139*********/
+  setPrimaryAdminOptions(teamMember:any){
+    if(teamMember.status=='APPROVE'){
+      this.showPrimaryAdminConfirmSweetAlert = true;
+      this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
+    }
+  }
 
   /********XNFR-139*********/
-  enableAsPrimaryAdmin(teamMember:any){
-    if(teamMember.status=='APPROVE'){
-
+  enableAsPrimaryAdmin(event:any){
+    if (event) {
+      this.loading = true;
+      this.teamMemberService.updatePrimaryAdmin(this.selectedPrimaryAdminTeamMemberUserId).
+      subscribe(
+          response=>{
+            this.loading = false;
+            this.referenceService.showSweetAlertProceesor("Primary Admin Updated Successfully.");
+            let self = this;
+             setTimeout(function(){
+                 self.authenticationService.logout();
+             }, 3000);
+          },error=>{
+            this.logger.errorPage(error);
+          }
+      );
     }
+    this.showPrimaryAdminConfirmSweetAlert = false;
   }
 
 }

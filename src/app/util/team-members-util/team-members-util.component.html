@@ -184,7 +184,7 @@
                   </a>
                 </ng-container>
                 <!--Primary Admin--->
-                <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="enableAsPrimaryAdmin(teamMember)"
+                <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="setPrimaryAdminOptions(teamMember)"
                      [className]="isLoggedInAsTeamMember || teamMember.status!='APPROVE' ? 'inactive':''" >
                   <i [className]="teamMember.status=='APPROVE' ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
                </a>
@@ -483,5 +483,7 @@
 <!----XNFR-97----->
 <app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup($event)"></app-team-member-partners>
 
+<!----XNFR-97----->
+<app-confirm-sweet-alert-util *ngIf="showPrimaryAdminConfirmSweetAlert" (notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
 
 
