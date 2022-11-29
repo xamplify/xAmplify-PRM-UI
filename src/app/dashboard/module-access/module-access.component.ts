@@ -51,19 +51,7 @@ export class ModuleAccessComponent implements OnInit {
     this.findMaximumAdminsLimitDetails();
   }
 
-  findMaximumAdminsLimitDetails(){
-    this.ngxLoading = true;
-    this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(this.companyId).subscribe(
-      response=>{
-        this.analyticsCountDto = response.data;
-        this.ngxLoading = false;
-      },error=>{
-        this.analyticsCountDto = new AnalyticsCountDto();
-        this.ngxLoading =false;
-      }
-    );
-  }
-
+  
   getDnsConfiguredDetails(){
     this.startDnsLoader();
     this.dashboardService.getDnsConfigurationDetails(this.companyId).subscribe(result => {
@@ -255,5 +243,19 @@ export class ModuleAccessComponent implements OnInit {
   setMaxAdmins(){
     let maxAdmins =  $('#maxAdmins-Edit option:selected').val();
     this.campaignAccess.maxAdmins = maxAdmins;
+  }
+
+findMaximumAdminsLimitDetails(){
+  this.ngxLoading = true;
+  this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(this.companyId).subscribe(
+    response=>{
+      this.analyticsCountDto = response.data;
+      this.ngxLoading = false;
+    },error=>{
+      this.analyticsCountDto = new AnalyticsCountDto();
+      this.ngxLoading =false;
+    }
+  );
 }
+
 }

@@ -37,6 +37,7 @@
                  <tr>
                    <th scope="col">Company Name</th>
                    <th scope="col">Company Profile Name</th>
+                   <th scope="col">Maximum Admins</th>
                   <th id="center" scope="col">Access</th>
                  </tr>
                </thead>
@@ -48,6 +49,9 @@
                      </td>
                      <td>
                       {{partnerCompany?.companyProfileName}}
+                    </td>
+                    <td class="text-center">
+                      {{partnerCompany?.maxAdmins}}
                     </td>
                     <td id="center">
                       <a (click)="viewModules(partnerCompany)">
@@ -125,6 +129,25 @@
                   <th scope="row">Exclude Users/Domains</th>
                   <td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
                       [ngModelOptions]="{standalone: true}"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Maximum Admins
+                    <a *ngIf="!modalPopupLoader">
+                      <span>
+                        <strong>
+                          <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span>
+                        </strong>
+                      </span>
+                    </a>
+                  </th>
+                  <td style="width: 50%;">
+                    <select class="form-control" id="maxAdmins-partners-Edit" [(ngModel)]="campaignAccess.maxAdmins" (change)="setMaxAdmins()">
+                      <option value="2" [selected]="campaignAccess.maxAdmins ==2">2</option>
+                      <option value="3" [selected]="campaignAccess.maxAdmins ==3">3</option>
+                      <option value="4" [selected]="campaignAccess.maxAdmins ==4">4</option>
+                      <option value="5" [selected]="campaignAccess.maxAdmins ==5">5</option>
+                    </select>
+                  </td>
                 </tr>
               </tbody>
             </table>
