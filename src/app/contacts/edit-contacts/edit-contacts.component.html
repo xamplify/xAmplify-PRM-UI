@@ -979,7 +979,7 @@
 										List
 									</span>
 								</div>
-								<div class="btn-group pull-right" *ngIf="!sharedLeads"
+								<!-- <div class="btn-group pull-right" *ngIf="!sharedLeads"
 									style="margin-top: 4px; color: #000000;">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
@@ -991,8 +991,21 @@
 										<li *ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"><a id="export_button"
 										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 									</ul>
-								</div>
+								</div> -->
 								<div class="btn-group pull-right">
+									<div class="btn-group pull-right" *ngIf="!sharedLeads"
+									style="margin-top: 4px; color: #000000;padding-right: 8px;">
+									<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px; float:right;">
+										<i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
+										<i class="fa fa-angle-down" style="font-size:14px; float:right" aria-hidden="true"></i>
+									</span>
+									<ul class="dropdown-menu pull-right">
+										<li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+											<a id="delete_button" (click)="invalidContactsShowAlert()" translate> Delete</a></li>
+										<li *ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"><a id="export_button"
+										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
+									</ul>
+								</div>
 									<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; padding-right: 20px;"

@@ -57,8 +57,8 @@
         <div class="row">
           <div class="col-xs-12 col-md-12 col-sm-12">
             <!-- Start Tiles here-->
-            <div class="page-bar" style="padding-bottom:10px;padding-right: 15px;">
-              <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10 pr0"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+            <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;border-radius: 5px !important;">
+              <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10 pr0"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                 <button class="btn-block dashboard-stat blue"
                   [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
                   (click)="loadContactsByType('all')"
@@ -209,7 +209,7 @@
               </div>
             </div>
             <!-- End tile here-->
-            <div [ngClass]="{'tabbable tabbable-custom tabbable-noborder page-bar': showListOfContactList}">
+            <div [ngClass]="{'tabbable tabbable-custom tabbable-noborder page-bar': showListOfContactList}" style="border-radius: 5px !important;">
               <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
                 <div class="tab-pane active">
                   <div class="clearfix"></div>
@@ -817,7 +817,7 @@
                             </div>
                           </div>
                           <!-- Start setting icon here-->
-                          <div class="btn-group pull-right" style="color: #000000;padding-left: 5px; flex: none;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
+                          <div class="btn-group pull-right" style="color: #000000;padding-left: 15px; flex: none;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
                           authenticationService.isOrgAdminPartner()) && !sharedLeads">
                       <span class="dropdown-toggle" data-toggle="dropdown"

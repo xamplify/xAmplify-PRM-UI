@@ -42,13 +42,10 @@
 			<app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
 			</app-response-message>
 		</div>
-		<div class="page-bar" [hidden]="loader">
+		<div  [hidden]="loader">
 		<div [hidden]="isEditPartnerTemplate" id="event-tabs">
 		<ngx-loading [show]="completeLoader"[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-			<div class="container"
-				style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
-				<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
-				<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" style="display: flex; padding-top: 1em;">
+		<div class="portlet light" *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" style="display: flex; padding-top: 1em;">
 					<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 						style="width: 25%">
 						<div class="cenetered-block">
@@ -89,10 +86,14 @@
 							<h5 class="hidden-xs" translate>Launch</h5>
 						</div>
 					</div>
-				</div>
+				</div>	
+		<div class="portlet light container"
+				style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
+				<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
+				
 		   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="padding:10px"></app-response-message>
 				<!-- Step One code -->
-				<fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
+				<fieldset style="margin-top: 25px;border: none;" [hidden]="!detailsTab">
 				<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
 					<h4 class="pull-left f-w-600" *ngIf="!isEventUpdate" translate>Event Details</h4>
 					<h4 class="pull-left f-w-600" *ngIf="isEventUpdate" translate>Event Update</h4>
