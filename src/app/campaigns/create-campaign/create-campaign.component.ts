@@ -3717,6 +3717,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                         }, error => {
                             this.logger.error(error, "Error in salesforce checkIntegrations()");
                         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    } else {
+                        this.showConfigurePipelines = true;
+                        this.listCampaignPipelines();
                     }
                 } else {
                     this.showConfigurePipelines = true;
