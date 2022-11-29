@@ -107,7 +107,15 @@
 							</tr>
 							<!-- XNFR-139 -->
 							<tr>
-								<th scope="col">Maximum Admins</th>
+								<th scope="col">Maximum Admins
+									<a *ngIf="!ngxLoading">
+										<span>
+											<strong>
+												<span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span>
+											</strong>
+										</span>
+									</a>
+								</th>
 								<td style="width: 50%;">
 									<select class="form-control" id="maxAdmins-Edit" [(ngModel)]="campaignAccess.maxAdmins" (change)="setMaxAdmins()">
 										<option value="2" [selected]="campaignAccess.maxAdmins ==2">2</option>

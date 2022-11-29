@@ -337,6 +337,8 @@ export class TeamMemberService{
         .catch(this.handleError);
     }
 
+    
+
     /****XNFR-139*****/
     updatePrimaryAdmin(teamMemberUserId:number){
         let url = this.URL +"teamMember/updatePrimaryAdmin/"+this.authenticationService.getUserId()+"/"+teamMemberUserId+"?access_token=" + this.authenticationService.access_token;

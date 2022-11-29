@@ -8,6 +8,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
+import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 
 
 declare var $;
@@ -38,6 +39,7 @@ export class ModuleAccessComponent implements OnInit {
   scheduledCampaignsCount: number = 0;
   showOneClickLaunchErrorMessage: boolean;
   statusCode = 0;
+  analyticsCountDto: AnalyticsCountDto = new AnalyticsCountDto();
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -46,6 +48,20 @@ export class ModuleAccessComponent implements OnInit {
     this.getCompanyAndUserDetails();
     this.getModuleAccessByCompanyId();
     this.getDnsConfiguredDetails();
+    this.findMaximumAdminsLimitDetails();
+  }
+
+  findMaximumAdminsLimitDetails(){
+    this.ngxLoading = true;
+    this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(this.companyId).subscribe(
+      response=>{
+        this.analyticsCountDto = response.data;
+        this.ngxLoading = false;
+      },error=>{
+        this.analyticsCountDto = new AnalyticsCountDto();
+        this.ngxLoading =false;
+      }
+    );
   }
 
   getDnsConfiguredDetails(){
@@ -137,6 +153,7 @@ export class ModuleAccessComponent implements OnInit {
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
+          this.findMaximumAdminsLimitDetails();
         }
       }
     }
