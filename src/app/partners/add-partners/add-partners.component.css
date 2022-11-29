@@ -111,3 +111,13 @@
   .portlet.light>.portlet-title>.caption{
 	padding: 5px 0 !important;
   }
+
+  .sbi-click-child{
+    /* top:45px !important; */
+	right: 10px !important;
+  }
+  .sbi-clear-child{
+	/* top:48px !important; */
+	right: 50px !important;
+
+  }

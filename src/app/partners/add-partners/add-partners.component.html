@@ -67,7 +67,7 @@
             </a>
         </div>
     </div>
-    
+    <div class="">
         <div class="portlet-body">
             <form #f="ngForm">
                 <div class="row">
@@ -229,11 +229,13 @@
                 </div>
             </form>
         </div>
-        
-        <!-- Save cancel button-->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 portlet light" *ngIf="selectedAddPartnerOption != 5 && !clipBoard">
+            <ng-template [ngTemplateOutlet]="legalBasis"></ng-template>
+            <ng-template [ngTemplateOutlet]="saveCancel"></ng-template>
+        </div>
         <ng-template #saveCancel>
-            <div class=" btn-group pull-right">
-                <button class="btn btn-default" (click)="saveContacts()"
+        <div class="btn-group pull-right">
+            <button class="btn btn-default" (click)="saveContacts()"
                     *ngIf="selectedAddPartnerOption != 5"
                     style="background-color: #26a69a; color: white">
                     <span id="save_button"
@@ -245,24 +247,17 @@
                         *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                          translate>Cancel </span>
                 </button>
-            </div>
-        </ng-template>
-            <!-- End save Cancel button-->
-        <!-- Start Actions Button-->
+        </div>
+        </ng-template> 
+           
         <ng-template #actionsButton>
-        <div class="btn-group pull-right" style="padding-bottom:10px;padding-left: 10px">
-            <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
-          <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-            <ng-container *ngFor="let sort of sortOptions; let i = index">
-              <option [ngValue]="sort">{{sort.name}}</option>
-            </ng-container>
-          </select>
-        </span>
-
+        <div class="btn-group pull-right" style="padding-left: 10px;">
+          
             <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;float: right;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }" data-toggle="dropdown">
         <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions <i class="fa fa-angle-down"></i></span>
         <span *ngIf="referenceService.isMobileScreenSize()"><i style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
 			</button>
+        
             <ul class="dropdown-menu pull-right">
                 <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()" translate>Save </a></li>
                 <li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()" translate>Cancel </a></li>
@@ -273,18 +268,23 @@
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
 					Delete</a></li>
             </ul>
-        </div> 
-       </ng-template>
-       <!-- End Actions Button-->
-        <div class="col-xs-12 p0" *ngIf="referenceService.isMobileScreenSize()">
-            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
-            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
         </div>
-        <div class="col-xs-12" style="padding: 0 0 10px 0">
+    </ng-template>
+    <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 portlet light" *ngIf="referenceService.isMobileScreenSize()">
+        <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
+            <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+              <ng-container *ngFor="let sort of sortOptions; let i = index">
+                <option [ngValue]="sort">{{sort.name}}</option>
+              </ng-container>
+            </select>
+          </span>
+        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear sbi-clear-child" *ngIf="searchKey" (click)="searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click sbi-click-child" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+    </div> -->
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0 0 10px 0">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
-        <ng-template *ngIf="!clipBoard"  [ngTemplateOutlet]="legalBasis"></ng-template>
         <div *ngIf="deleteErrorMessage" id="campaignError" class="col-xs-12 alert alert-danger alert-dismissable">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <strong>Danger!</strong>{{Campaign}}
@@ -303,7 +303,6 @@
         </div>
         <!-----Legal Basis Options -->
         <ng-template #legalBasis>
-            <div [className]="(clipBoard || selectedAddPartnerOption ==5) ? '':' col-xs-12 col-sm-12 col-md-12 col-lg-12 portlet light'">
         <div *ngIf=" (gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddPartnerOption==2)" class="col-sm-6 form-group" id="customWidth">
             <div class="form-group">
                 <label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
@@ -316,23 +315,28 @@
                     </div>
                 </div>
             </div>
-          </div>
-          <ng-template *ngIf="selectedAddPartnerOption != 5 && !clipBoard"   [ngTemplateOutlet]="saveCancel"></ng-template>
         </div>
       </ng-template>
-        <!-- call Actions Button here-->
-        <!-- <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="actionsButton"></ng-template> -->
-        
-
-        <!-- <ng-template *ngIf="selectedAddPartnerOption != 5 || clipBoard" [ngTemplateOutlet]="saveCancel"></ng-template> -->
 
         <div class="row" id="Gfile_preview">
-            <div class="col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption" translate>
                             <i class="fa fa-edit"></i>File Preview
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-right" style="display: flex;">
+                            <span style=" float: left; width:70%;padding-right: 10px;" >
+                                <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                                  <ng-container *ngFor="let sort of sortOptions; let i = index">
+                                    <option [ngValue]="sort">{{sort.name}}</option>
+                                  </ng-container>
+                                </select>
+                              </span>
+                            <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear sbi-clear-child" *ngIf="searchKey" (click)="searchKey='';search()"></button>
+                            <button type="submit" class="search-box-item-click sbi-click-child" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -419,7 +423,7 @@
                             </table>
                         </div>
 
-                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-top: -1px;">
+                        <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
                             <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setSocialPage(1)">First</a></li>
                             <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setSocialPage(pager.currentPage - 1)">Previous</a></li>
                             <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"><a (click)="setSocialPage(page)">{{page}}</a></li>
@@ -443,8 +447,7 @@
                 <!-- END EXAMPLE TABLE PORTLET-->
             </div>
         </div>
-        <div class="portlet light" *ngIf="(selectedAddPartnerOption != 5 && selectedAddPartnerOption !=2) || clipBoard">
-
+        <div class="portlet light" *ngIf="clipBoard">
         <div class="row" *ngIf="clipBoard" style="margin-bottom: 15px;">
             <ng-template [ngTemplateOutlet]="legalBasis"></ng-template>
             <div class="col-sm-12" style="padding-left:0px">
@@ -472,7 +475,7 @@
                 </div>
             </div>
         </div>
-       </div>
+        </div>
         <div class="clearfix">
             <div class="col-xs-12" style="width: 103%; left: -18px;" *ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -601,11 +604,11 @@
             <div class="col-xs-12" [class.p0]="referenceService.isMobileScreenSize()" style="width: 103%;" [ngStyle]="{'left': !referenceService.isMobileScreenSize() ? '-18px': '-3px' }" *ngIf="selectedAddPartnerOption == 5">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet light">
-                    <div class="portlet-title" style="border-bottom:none">
-                        <div class="caption" translate style="padding-top: 13px !important;font-size: 20px;"> 
+                    <div class="portlet-title">
+                        <div class="caption" translate> 
                             <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List of {{authenticationService?.partnerModule?.customName}}
                         </div>
-                        <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
+                        <div class="inputs" align="right" style="float: right; padding: 4px">
                             <div style="float: left; margin: 0 10px;">
                                 <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
                                     <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -614,40 +617,15 @@
                                 </select>
                             </div>
                             <div class="portlet-input input-inline">
-                                <div class="input-icon right" style="padding-bottom: 7px;">
-                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
+                                <div class="input-icon right">
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
                                     <button type="submit" class="search-box-item-click" (click)="search()">
                                         <i class="fa fa-search" style="color:black !important" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
-                            <!-- call action button here-->
-                            <ng-template *ngIf="selectedAddPartnerOption == 5" [ngTemplateOutlet]="actionsButton"></ng-template>
-                            <!-- <div class="btn-group pull-right">
-                                <span style=" float: left; width:70%" *ngIf="referenceService.isMobileScreenSize()">
-                              <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-                                <ng-container *ngFor="let sort of sortOptions; let i = index">
-                                  <option [ngValue]="sort">{{sort.name}}</option>
-                                </ng-container>
-                              </select>
-                            </span>
-                    
-                                <button class="btn dropdown-toggle" id="save&delete_button" style="color: white;float: right;margin-left: 10px;border-radius: 3px !important;" [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }" data-toggle="dropdown">
-                            <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions <i class="fa fa-angle-down"></i></span>
-                            <span *ngIf="referenceService.isMobileScreenSize()"><i style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
-                                </button>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()" translate>Save </a></li>
-                                    <li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()" translate>Cancel </a></li>
-                                    <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(true); editContactComponent.addPartnerSave = true" translate>Save As
-                                             </a></li>
-                                    <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()" translate>Export To Excel
-                                            </a></li>
-                                    <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()" translate>
-                                        Delete</a></li>
-                                </ul>
-                            </div> -->
+                            <ng-template [ngTemplateOutlet]="actionsButton"></ng-template>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -656,7 +634,7 @@
                         </div>
                         <div class="clearfix">
                        <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-                            <div class="col-xs-12" style="padding: 0px 0;margin-top: -20px;">
+                            <div class="col-xs-12" style="padding: 10px 0;">
                                 <div class="alert alert-info flex" *ngIf="isLoadingList">
                                     <div class="loader" style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
                                     <h4 translate>Please wait while we process your request</h4>
@@ -811,16 +789,16 @@
                                     </table>
                                 </div>
                             </div>
-                            <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                         </div>
                     </div>
+                     <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                 </div>
                 <!-- END EXAMPLE TABLE PORTLET-->
                 <!-- <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination> -->
             </div>
         </div>
         <app-scroll-top></app-scroll-top>
-    
+    </div>
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
