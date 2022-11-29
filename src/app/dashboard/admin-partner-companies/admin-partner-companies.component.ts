@@ -151,6 +151,7 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 }
 
 findMaximumAdminsLimitDetails(partnerCompany:any){
+	$('#partner-module-access').modal('show');
 	this.modalPopupLoader = true;
 	this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(partnerCompany.companyId).subscribe(
 	  response=>{
@@ -160,12 +161,13 @@ findMaximumAdminsLimitDetails(partnerCompany:any){
 		this.analyticsCountDto = new AnalyticsCountDto();
 		this.modalPopupLoader =false;
 		this.referenceService.showSweetAlertServerErrorMessage();
+		$('#partner-module-access').modal('hide');
 	  },()=>{
 		this.selectedPartnerCompany = partnerCompany;
 		this.dnsConfigured = partnerCompany.emailDnsConfigured;
 		this.campaignAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
 		this.campaignAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
-		$('#partner-module-access').modal('show');
+		this.campaignAccess.maxAdmins = partnerCompany.maxAdmins;
 	  }
 	);
   }
