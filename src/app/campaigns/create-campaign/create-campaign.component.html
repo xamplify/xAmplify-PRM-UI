@@ -662,7 +662,7 @@
                     <div id="emailTemplateContent" style="display: none;"></div>
                 </div>
                 <!-- -------------------------------------Video Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo portlet light" id="step-3">
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-3" style="border-radius: 5px !important;">
 					<!-- <br> -->
 					<div class="col-xs-12">
 						<div class="text-center">
@@ -721,7 +721,7 @@
 											<div class="">
                                                 <div class="btn-group pull-right" style="margin: -7px;padding:10px">
                                                     <div class="inputs sort-class" style="display: flex;">
-                                                        <div>
+                                                        <div style="padding-right: 14px;">
                                                             <select class="select_filter form-control"
                                                                 data-live-search="true"
                                                                 (change)="filterCategoryVideos($event)">
@@ -1555,8 +1555,8 @@
                 <!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                        <div class="portlet light">
-                            <div class="input-icon right pull-right cebp">
+                        <div class="portlet light row" style="border-radius: 5px !important;border: none;">
+                            <div class="input-icon right pull-right cebp" style=" right: 70px;">
                                 <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput='';searchLandingPage()"></button>
                                 <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()">
