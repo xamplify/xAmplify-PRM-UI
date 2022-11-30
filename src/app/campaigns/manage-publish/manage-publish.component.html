@@ -41,132 +41,131 @@
   <ng-container *ngIf="!addWorkflows">
     <div class="row">
       <div class="col-md-12 mSlide">
-        <div class="tabbable tabbable-custom tabbable-noborder portlet light">
-          <div class="col-xs-12 mb10" style="border-bottom: 1px solid #eee;padding-bottom:4px;">
-            <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 mWid"
-              *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-              <li class="filter" (click)="filterCampaigns('NONE',0)"
-                [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
-              <li class="filter" (click)="filterCampaigns('REGULAR',1)"
-                [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign || authenticationService?.module?.deletedPartner"
-                translate>
-                Email</li>
-              <li class="filter" (click)="filterCampaigns('VIDEO',2)"
-                [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign || authenticationService?.module?.deletedPartner"
-                translate>
-                Video</li>
-              <li class="filter" (click)="filterCampaigns('SOCIAL',3)"
-                [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign || authenticationService?.module?.deletedPartner"
-                translate>
-                Social</li>
-              <li class="filter" (click)="filterCampaigns('EVENT',4)"
-                [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign || authenticationService?.module?.deletedPartner"
-                translate>Event
-              </li>
-              <li class="filter" (click)="filterCampaigns('SMS',5)"
-                [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign"
-                translate>SMS
-              </li>
-              <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)"
-                [class.campaign-type-selected]="6 == selectedCampaignTypeIndex"
-                *ngIf="campaignAccess.landingPageCampaign && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl"
-                translate>Page</li>
-              <li class="filter" (click)="filterCampaigns('SURVEY',7)"
-                [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey || authenticationService?.module?.deletedPartner"
-                translate>Survey</li>
-              <li class="filter" style="display: none;" translate>Own Template</li>
-            </ul>
-            <div class="page-toolbar col-xs-12 col-sm-12 col-md-8"
-              *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-              <div class="row">
-                <div class="btn-group col-xs-12 col-sm-4 col-md-4 p0">
-                  <div style="float: right;">
-                    <ng-container class='m10'>
-                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                        title="Calendar View">
-                        <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
-                      </span>
-                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                        title="List View" [class.disabled]="modulesDisplayType.isListView"
-                        (click)="setViewType('List')">
-                        <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                      </span>
-                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                        title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
-                        (click)="setViewType('Grid')">
-                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                      </span>
-                      <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
+        <div class="tabbable tabbable-custom tabbable-noborder">
+          <div class="tab-content">
+            <div class="page-bar m10" style="border-bottom:1px solid #eee;padding-bottom:4px;">
+              <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 mWid"
+                *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                <li class="filter" (click)="filterCampaigns('NONE',0)"
+                  [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
+                <li class="filter" (click)="filterCampaigns('REGULAR',1)"
+                  [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign || authenticationService?.module?.deletedPartner"
+                  translate>
+                  Email</li>
+                <li class="filter" (click)="filterCampaigns('VIDEO',2)"
+                  [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign || authenticationService?.module?.deletedPartner"
+                  translate>
+                  Video</li>
+                <li class="filter" (click)="filterCampaigns('SOCIAL',3)"
+                  [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign || authenticationService?.module?.deletedPartner"
+                  translate>
+                  Social</li>
+                <li class="filter" (click)="filterCampaigns('EVENT',4)"
+                  [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign || authenticationService?.module?.deletedPartner"
+                  translate>Event
+                </li>
+                <li class="filter" (click)="filterCampaigns('SMS',5)"
+                  [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign"
+                  translate>SMS
+                </li>
+                <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)"
+                  [class.campaign-type-selected]="6 == selectedCampaignTypeIndex"
+                  *ngIf="campaignAccess.landingPageCampaign && !authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl"
+                  translate>Page</li>
+                <li class="filter" (click)="filterCampaigns('SURVEY',7)"
+                  [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey || authenticationService?.module?.deletedPartner"
+                  translate>Survey</li>
+                <li class="filter" style="display: none;" translate>Own Template</li>
+              </ul>
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-8"
+                *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                <div class="row">
+                  <div class="btn-group col-xs-12 col-sm-4 col-md-4 p0">
+                    <div style="float: right;">
+                      <ng-container class='m10'>
                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                          title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
+                          title="Calendar View">
+                          <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
+                        </span>
+                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          title="List View" [class.disabled]="modulesDisplayType.isListView"
+                          (click)="setViewType('List')">
+                          <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                        </span>
+                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
+                          (click)="setViewType('Grid')">
+                          <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                        </span>
+                        <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                            title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
+                            (click)="setViewType('Folder-Grid')">
+                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                          </span>
+                          <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width"
+                            data-toggle="tooltip" data-placement="bottom" title="Folder List View"
+                            [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
+                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" />
+                          </span>
+                        </ng-container>
+                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"
+                          data-toggle="tooltip" data-placement="bottom" title="Go back"
                           (click)="setViewType('Folder-Grid')">
-                          <i class="fa fa-folder p10" aria-hidden="true"></i>
-                        </span>
-                        <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width"
-                          data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                          [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                          <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" />
-                        </span>
+                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                       </ng-container>
-                      <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"
-                        data-toggle="tooltip" data-placement="bottom" title="Go back"
-                        (click)="setViewType('Folder-Grid')">
-                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
-                    </ng-container>
-                  </div>
-                </div>
-                <div class="col-xs-5 col-sm-4 col-md-3">
-                  <div class="mSortWid" style="float: left;">
-                    <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
-                      (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                      <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
-                      </option>
-                    </select>
-
-                    <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
-                      (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                      <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
-                        {{sortOption.name}}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
-                  <div class="portlet-input input-inline" style="display: inline-flex;">
-                    <div class="input-icon campaign-search-rr mr5">
-                      <input type="text" class="form-control" [(ngModel)]="searchKey"
-                        [ngModelOptions]="{standalone: true}" placeholder="Search"
-                        (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-                        (click)="searchKey='';searchCampaigns();"></button>
-                      <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                      </button>
                     </div>
-                    <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                      title="Filter" (click)="toggleFilterOption()">
-                      <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
-                    </span>
-                    <div class="" style="padding-left: 4px;display: flex;">
-                      <a  data-placement="bottom" (click)="listCampaign(pagination)" class="btn btn-xs l-g-view" data-toggle="tooltip"
-                       title="Refresh">
-                      <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
-                    </a>
-                      <a *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
-                        class="btn btn-xs l-g-view campaign-downloading-mt" data-toggle="tooltip" data-placement="bottom"
-                        title="Download">
-                        <i _ngcontent-c17="" class="fa fa-download p10" aria-hidden="true"></i>
+                  </div>
+                  <div class="col-xs-5 col-sm-4 col-md-3">
+                    <div class="mSortWid" style="float: left;">
+                      <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                        </option>
+                      </select>
+
+                      <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
+                          {{sortOption.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
+                    <div class="portlet-input input-inline" style="display: inline-flex;">
+                      <div class="input-icon campaign-search-rr mr5">
+                        <input type="text" class="form-control" [(ngModel)]="searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="Search"
+                          (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                          (click)="searchKey='';searchCampaigns();"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        title="Filter" (click)="toggleFilterOption()">
+                        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                      </span>
+                      <div class="" style="padding-left: 4px;display: flex;">
+                        <a  data-placement="bottom" (click)="listCampaign(pagination)" class="btn btn-xs l-g-view" data-toggle="tooltip"
+                         title="Refresh">
+                        <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
                       </a>
+                        <a *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
+                          class="btn btn-xs l-g-view campaign-downloading-mt" data-toggle="tooltip" data-placement="bottom"
+                          title="Download">
+                          <i _ngcontent-c17="" class="fa fa-download p10" aria-hidden="true"></i>
+                        </a>
+                      </div>
                     </div>
-                  </div>
 
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="tab-content">
-            
             <!-- -------------------- Apply Filters Box-------------------- -->
             <div class="row"
               [hidden]="!showFilterOption || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
@@ -224,9 +223,9 @@
             </app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
             <!-----List View--------->
-            <section class=''
+            <section class='m10'
               *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-              <div class="portlet-body">
+              <div class="table-responsive">
                 <table [class.bottomTableCss]="pagination.pagedItems.length<5"
                   class='table tgrid table-hover table-sm hidden-xs' aria-describedby="campaignsListTable"
                   *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
