@@ -838,7 +838,7 @@
                                                                        <td class="mAlign">
                                                                             <div class="actions-block override-actions">                                                                                
                                                                                 <ng-container>
-                                                                                    <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with Salesforce" (click)="syncPipeline(pipeline)">
+                                                                                    <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with {{pipeline.integrationType}}" (click)="syncPipeline(pipeline)">
                                                                                         <i class="fa fa-refresh"></i>
                                                                                     </a>
                                                                                     <a data-toggle="tooltip" data-placement="top" title="View" (click)="viewPipeline(pipeline)">
