@@ -121,3 +121,10 @@
 	right: 50px !important;
 
   }
+  .portlet > .portlet-title {
+	margin-bottom: 0px;
+  }
+  
+.portlet.light .portlet-body{
+	padding-top:0px;
+}
