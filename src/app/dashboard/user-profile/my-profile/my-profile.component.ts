@@ -3687,4 +3687,19 @@ configSalesforce() {
 				});
 	}
 
+	syncPipelines() {
+		this.ngxloading = true;
+		this.integrationService.syncActiveCRMPipelines(this.loggedInUserId, this.activeCRMDetails.type.toLowerCase())
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
+					this.listAllPipelines(this.pipelinePagination);
+				}, error=>{
+					this.ngxloading = false;					
+				}
+			);
+
+	}
+
 }
