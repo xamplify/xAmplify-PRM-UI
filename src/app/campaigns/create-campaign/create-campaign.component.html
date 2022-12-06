@@ -461,7 +461,7 @@
                                             </div>
 
                                             <!--Push To Marketing Automation-->
-                                            <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
+                                            <!-- <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
                                                 <label class="control-label col-sm-4" translate>Push To Marketing Automation
                                                     </label>
                                                 <div class="col-sm-3">
@@ -532,7 +532,7 @@
                                                         
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <!--Configure Pipelines-->
                                             <div class="form-group" *ngIf="showConfigurePipelines && ((!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
@@ -542,7 +542,7 @@
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div class="col-sm-1 ui-switch-custom-div">
-                                                                <switch [status]="" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="configurePipelines()">
                                                                 </switch>
                                                             </div>
@@ -559,12 +559,12 @@
 
                                             <!--Lead Pipeline-->
                                             <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
-                                            *ngIf="isConfigurePipelines">
+                                            *ngIf="campaign.configurePipelines">
                                                 <label class="control-label col-sm-4">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <!-- <option [value]="0">Select Pipeline</option> -->
                                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -573,12 +573,12 @@
 
                                             <!--Deal Pipeline-->  
                                             <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
-                                            *ngIf="isConfigurePipelines">
+                                            *ngIf="campaign.configurePipelines">
                                                 <label class="control-label col-sm-4">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
-                                                        <option [value]="0">Select Pipeline</option>
+                                                        <!-- <option [value]="0">Select Pipeline</option> -->
                                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>

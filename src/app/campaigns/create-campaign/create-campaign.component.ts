@@ -329,6 +329,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     oneClickLaunchToolTip = "";
     invalidShareLeadsSelection = false;
     invalidShareLeadsSelectionErrorMessage = "";
+    activeCRMDetails: any;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
@@ -350,7 +351,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     this.enableLeads = data.enableLeads;
                     this.salesEnablement = data.salesEnablement;
                     this.oneClickLaunch = data.oneClickLaunch;
-                    this.isSalesforceIntegrated();
+                    this.getActiveCRMDetails();
                 });
             })
 
@@ -753,7 +754,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                             let data = response.data;
                             this.leadPipelines = data.leadPipelines;
                             this.dealPipelines = data.dealPipelines;
-                            if (!this.salesforceIntegrated) {
+                            if (!this.activeCRMDetails.activeCRM) {
                                 this.leadPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultLeadPipelineId = pipeline.id;
@@ -771,7 +772,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
                                 this.campaign.leadPipelineId = this.leadPipelines[0].id;
                                 this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                    this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
+                                
                             }
 
                         }
@@ -924,7 +928,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else {
                 isValid = false;
             }
+        }
 
+        if (isValid && this.campaignType != 'landingPage' && this.enableLeads && (this.campaign.channelCampaign || this.showMarketingAutomationOption)) {
+            
             if (this.campaign.dealPipelineId != undefined && this.campaign.dealPipelineId > 0) {
                 isValid = true;
             } else {
@@ -2250,6 +2257,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             /****XNFR-125****/
             "oneClickLaunch":this.campaign.oneClickLaunch,
             'partnershipId':this.selectedPartnershipId,
+            'configurePipelines': this.campaign.configurePipelines
         };
         return data;
     }
@@ -3276,11 +3284,15 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
 
     configurePipelines() {
-        this.isConfigurePipelines = !this.isConfigurePipelines;
-        if (!this.isConfigurePipelines) {
+       // this.isConfigurePipelines = !this.isConfigurePipelines;
+        this.campaign.configurePipelines = !this.campaign.configurePipelines;
+        if (!this.campaign.configurePipelines) {
             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
-            this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
+                this.campaign.dealPipelineId = this.defaultDealPipelineId;
+            } 
         }
+       // this.campaign.configurePipelines = this.isConfigurePipelines;
     }
 
     pushToCrmRequest(crmName: any, event: any) {
@@ -3679,6 +3691,48 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
     }
 
+    getActiveCRMDetails(): any {
+        this.refService.loading(this.pipelineLoader, true);
+        this.salesforceIntegrated = false;
+        if (this.enableLeads) {
+            this.loading = true;
+            this.integrationService.getActiveCRMDetailsByUserId(this.authenticationService.getUserId()).subscribe(data => {
+                this.activeCRMDetails = data.data;
+                if (this.activeCRMDetails.activeCRM) {
+                    if ("HUBSPOT" === this.activeCRMDetails.type) {
+                        this.showConfigurePipelines = true;
+                        this.listCampaignPipelines();
+                    } else if ("SALESFORCE" === this.activeCRMDetails.type) {
+                        this.salesforceIntegrated = true;
+                        this.listCampaignPipelines();
+                        this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                            let cfResponse = data;                            
+                            if (cfResponse.statusCode === 200) {
+                                this.showConfigurePipelines = false;
+                            } else if (cfResponse.statusCode === 400) {
+                                swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                            } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                                swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                            }
+                        }, error => {
+                            this.logger.error(error, "Error in salesforce checkIntegrations()");
+                        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    } else {
+                        this.showConfigurePipelines = true;
+                        this.listCampaignPipelines();
+                    }
+                } else {
+                    this.showConfigurePipelines = true;
+                    this.listCampaignPipelines();
+                }
+                this.refService.loading(this.pipelineLoader, false);
+            }, error => {
+                this.refService.loading(this.pipelineLoader, false);
+                this.logger.error(error, "Error in salesforce checkIntegrations()");
+            }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+        }
+        this.loading = false;
+    }
 
 }
 

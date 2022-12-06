@@ -5,6 +5,7 @@ import { ColumnInfo } from 'app/forms/models/column-info';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { FormOption } from 'app/forms/models/form-option';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 declare var $: any, swal;
 
@@ -19,6 +20,7 @@ export class SfDealComponent implements OnInit {
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
+  @Input() activeCRM: string;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormValid: boolean = true;
@@ -31,7 +33,8 @@ export class SfDealComponent implements OnInit {
   sfFormError: string = "";
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isLoading = false;
-  constructor(private contactService: ContactService, private referenceService: ReferenceService) {
+  
+  constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
   ngOnInit() {
@@ -51,59 +54,76 @@ export class SfDealComponent implements OnInit {
       }
       
       this.isLoading = true;
-      this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
-        this.showSFFormError = false; 
-        this.isLoading = false;
-        if (result.statusCode == 200) {
-          this.form = result.data;
-          let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
-          for (let multiSelectObj of allMultiSelects) {
-            let selectedOptions = multiSelectObj.value.split(';');        
-            for(let option of selectedOptions){
-              this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+      if ("SALESFORCE" === this.activeCRM) {
+        this.getSalesforceCustomForm();
+      } else {
+        this.getActiveCRMCustomForm();
+      }      
+    }
+  }
+  
+  getActiveCRMCustomForm() {
+    this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId).subscribe(result => {
+      this.showSFFormError = false; 
+      this.isLoading = false;
+      if (result.statusCode == 200) {
+        this.form = result.data;
+        let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        for (let multiSelectObj of allMultiSelects) {
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
               this.multiSelectvalueArray.push(this.optionObj);
             }
-            multiSelectObj.value = this.multiSelectvalueArray; 
-          }      
-    
-          let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
-          if (reqFieldsCheck.length === 0) {
-            this.isDealRegistrationFormValid = false;
+            multiSelectObj.value = this.multiSelectvalueArray;
           }
-        } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
-          this.showSFFormError = true;    
-          this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+        }      
+  
+        let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+        if (reqFieldsCheck.length === 0) {
+          this.isDealRegistrationFormValid = false;
         }
-        
-      }, error => {
-        console.log(error);
-      });
-    }
-    
+      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
+        this.showSFFormError = true;    
+        this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+      }
+      
+    }, error => {
+      console.log(error);
+    });
+  }
 
-    // this.contactService.displaySfForm(this.dealId).subscribe(result => {
-    //   this.form = result.data;
-    //   /*if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
-    //     this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
-    //   }*/
-
-    //   let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
-    //   for (let multiSelectObj of allMultiSelects) {
-    //     let selectedOptions = multiSelectObj.value.split(';');        
-    //     for(let option of selectedOptions){
-    //       this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-    //       this.multiSelectvalueArray.push(this.optionObj);
-    //     }
-    //     multiSelectObj.value = this.multiSelectvalueArray; 
-    //   }      
-
-    //   let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
-    //   if (reqFieldsCheck.length === 0) {
-    //     this.isDealRegistrationFormValid = false;
-    //   }
-    // }, error => {
-    //   console.log(error);
-    // });
+  getSalesforceCustomForm() {
+    this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
+      this.showSFFormError = false; 
+      this.isLoading = false;
+      if (result.statusCode == 200) {
+        this.form = result.data;
+        let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+        for (let multiSelectObj of allMultiSelects) {
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray;
+          }
+        }      
+  
+        let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+        if (reqFieldsCheck.length === 0) {
+          this.isDealRegistrationFormValid = false;
+        }
+      } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
+        this.showSFFormError = true;    
+        this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
+      }
+      
+    }, error => {
+      console.log(error);
+    });
   }
 
   validateField() {
@@ -245,4 +265,13 @@ export class SfDealComponent implements OnInit {
       }
     }
   }
+
+  numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+      return false;
+    }
+    return true;
+  }
+
 }

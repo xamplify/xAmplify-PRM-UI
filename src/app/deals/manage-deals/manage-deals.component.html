@@ -111,7 +111,7 @@
           <div class="tabbable tabbable-custom tabbable-noborder" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignDeals">
-                <div class="page-bar m10">
+                <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
@@ -135,6 +135,13 @@
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addDeal()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
+                        </button>
+                      </a>
+
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'" (click)="syncLeadsAndDeals()">
+                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                          title="Synchronize" translate>
+                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>
 

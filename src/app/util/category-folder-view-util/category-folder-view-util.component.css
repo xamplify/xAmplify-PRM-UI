@@ -133,3 +133,8 @@
     font-size: 25px;
     color: #15c1df;
 }
+.border-bottom{
+    border-bottom: 1px solid #eee;
+    top: 9px;
+    position: relative;
+}

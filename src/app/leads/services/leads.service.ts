@@ -10,6 +10,7 @@ import { DealComments } from 'app/deal-registration/models/deal-comments';
 
 @Injectable()
 export class LeadsService {
+  
   URL = this.authenticationService.REST_URL + "lead/";
   constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
@@ -103,6 +104,12 @@ export class LeadsService {
 
   syncLeadsWithMicrosoft(userId:number) {
     return this.http.get(this.authenticationService.REST_URL + `/microsoft/${userId}/leads/sync?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
+  }
+
+  syncLeadsWithActiveCRM(userId:number) {
+    return this.http.get(this.authenticationService.REST_URL + `/crm/active/leads/sync/${userId}?access_token=${this.authenticationService.access_token}`)
     .map(this.extractData)
     .catch(this.handleError);
   }
@@ -206,6 +213,12 @@ export class LeadsService {
     return this.http.post(this.URL + `/status/change?access_token=${this.authenticationService.access_token}`, lead)
    .map(this.extractData)
    .catch(this.handleError);
+  }
+
+  getCRMPipelines(createdForCompanyId: number, loggedInUserId: number, type: any) {
+    return this.http.get(this.authenticationService.REST_URL + `/pipeline/LEAD/${type}/${createdForCompanyId}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+    .map(this.extractData)
+    .catch(this.handleError);
   }
   
 }

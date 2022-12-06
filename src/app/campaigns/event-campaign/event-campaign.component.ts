@@ -250,6 +250,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     THROUGH_PARTNER_MESSAGE: string= "";
     endDatePickr: any;
     showMicrosoftAuthenticationForm: boolean = false;
+    activeCRMDetails: any;
 
     constructor(private utilService: UtilService, public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
         private contactService: ContactService, public socialService: SocialService,
@@ -287,7 +288,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response => {
             referenceService.getOrgCampaignTypes(response).subscribe(data => {
                 this.enableLeads = data.enableLeads;
-                this.isSalesforceIntegrated();
+                this.getActiveCRMDetails();
                 this.completeLoader = false;
             }, error => {
                 this.completeLoader = false;
@@ -564,10 +565,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     configurePipelines() {
-        this.isConfigurePipelines = !this.isConfigurePipelines;
-        if (!this.isConfigurePipelines) {
+        this.eventCampaign.configurePipelines = !this.eventCampaign.configurePipelines;
+        if (!this.eventCampaign.configurePipelines) {
             this.eventCampaign.leadPipelineId = this.defaultLeadPipelineId;
-            this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
+            if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId === 0) {
+                this.eventCampaign.dealPipelineId = this.defaultDealPipelineId;
+            } 
         }
         this.validatePipeline();
     }
@@ -599,7 +602,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             let data = response.data;
                             this.leadPipelines = data.leadPipelines;
                             this.dealPipelines = data.dealPipelines;
-                            if (!this.salesforceIntegrated) {
+                            if (!this.activeCRMDetails.activeCRM) {
                                 this.leadPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultLeadPipelineId = pipeline.id;
@@ -616,8 +619,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             } else {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
                                 this.eventCampaign.leadPipelineId = this.leadPipelines[0].id;
-                                this.defaultDealPipelineId = this.dealPipelines[0].id;
-                                this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                                this.defaultDealPipelineId = this.dealPipelines[0].id;                               
+                                if (this.eventCampaign.dealPipelineId == undefined || this.eventCampaign.dealPipelineId == null || this.eventCampaign.dealPipelineId === 0) {
+                                    this.eventCampaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
                             }
 
                         }
@@ -1534,7 +1539,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 'vanityUrlDomainName': vanityUrlDomainName,
                 'vanityUrlCampaign': vanityUrlCampaign,
                 'endDateString': eventCampaign.endDateString,
-                "clientTimeZone": eventCampaign.clientTimeZone
+                "clientTimeZone": eventCampaign.clientTimeZone,
+                'configurePipelines': eventCampaign.configurePipelines
             }
             eventCampaign = customEventCampaign;
         }
@@ -3156,5 +3162,45 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     clearEndDate() {
         this.endDatePickr.clear();
         this.eventCampaign.endDateString = undefined;
+    }
+
+    getActiveCRMDetails(): any {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.salesforceIntegrated = false;
+        if (this.enableLeads) {
+            this.loading = true;
+            this.integrationService.getActiveCRMDetailsByUserId(this.authenticationService.getUserId()).subscribe(data => {
+                this.activeCRMDetails = data.data;
+                if (this.activeCRMDetails.activeCRM) {
+                    if ("HUBSPOT" === this.activeCRMDetails.type) {
+                        this.showConfigurePipelines = true;
+                        this.listCampaignPipelines();
+                    } else if ("SALESFORCE" === this.activeCRMDetails.type) {
+                        this.salesforceIntegrated = true;
+                        this.listCampaignPipelines();
+                        this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                            let cfResponse = data;                            
+                            if (cfResponse.statusCode === 200) {
+                                this.showConfigurePipelines = false;
+                            } else if (cfResponse.statusCode === 400) {
+                                swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                            } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                                swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                            }
+                        }, error => {
+                            this.logger.error(error, "Error in salesforce checkIntegrations()");
+                        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+                    }
+                } else {
+                    this.showConfigurePipelines = true;
+                    this.listCampaignPipelines();
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            }, error => {
+                this.referenceService.loading(this.httpRequestLoader, false);
+                this.logger.error(error, "Error in salesforce checkIntegrations()");
+            }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+        }
+        this.loading = false;
     }
 }

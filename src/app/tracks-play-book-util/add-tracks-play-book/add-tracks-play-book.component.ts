@@ -929,6 +929,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateTitleForCompany() {
+    this.referenceService.startLoader(this.httpRequestLoader);
     let titleObject: TracksPlayBook = new TracksPlayBook();
     let self = this;
     titleObject.userId = this.loggedInUserId;
@@ -943,6 +944,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           this.removeErrorMessage("title");
         }
         this.validateAllSteps();
+        this.referenceService.stopLoader(this.httpRequestLoader);
       },
       (error: string) => {
         this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
@@ -956,7 +958,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.addErrorMessage("title", "Title can not be empty");
     } else if (title != undefined && title.length < 3) {
       this.addErrorMessage("title", "Title should have atleast 3 characters");
-    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== title))) {
+    } else if ((this.isAdd || (!this.isAdd && this.existingTitle !== title)) &&title != undefined && title.length >=3 ) {
       this.validateTitleForCompany();
     } else {
       this.removeErrorMessage("title");
