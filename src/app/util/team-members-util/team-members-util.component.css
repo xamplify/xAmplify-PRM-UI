@@ -308,7 +308,7 @@ hr {
 }
 
 .tmutttpx {
-    width: 236px !important;
+    width: 220px !important;
 }
 
 .tmu-refresh-padding {
@@ -393,4 +393,14 @@ hr {
     font-size: 16px;
     font-weight: 500;
     margin-top: 5px;
+}
+.table{
+    margin-bottom: 0px;
+}
+
+
+@media  (max-width: 1200px) {
+    .tmutttpx{
+        width:134px !important;
+    }
 }

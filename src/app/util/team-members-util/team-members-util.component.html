@@ -76,17 +76,21 @@
   <div class="portlet-title">
     <div class="row">
       <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
-    <div class="caption" translate>Team Members</div>
-    </div>
-    <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+    <div class="caption" translate>Team Members
+      <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
       <i class="fa fa-power-off" aria-hidden="true"></i> Logout
     </button>
-    <div class="col-5 col-sm-5 col-xs-5">
+    </div>
+    </div>
+    <!-- <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+      <i class="fa fa-power-off" aria-hidden="true"></i> Logout
+    </button> -->
+    <div class="col-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
       <div class="row">
         <div class="clearfix" *ngIf="isTeamMemberModule">
           <section class="clearfix">
             <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
-              <div class="col-xs-6 col-sm-4 hidden-xs pull-right">
+              <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
                 <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
                     <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
                     <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
@@ -106,7 +110,7 @@
       </div>
       <!-- close inner row-->
     </div>
-    <div class="col-4 col-xs-12 col-sm-4 pull-right">
+    <div class="col-4 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
     <div class="tools zero-padding-margin">
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
@@ -265,6 +269,9 @@
         <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
       </div>
   </div>
+</div>
+<div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+  <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
 </div>
 
   </ng-container>
