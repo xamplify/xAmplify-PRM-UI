@@ -7,10 +7,44 @@
   <app-response-message class="pg8" [customResponse]="lmsResponse" *ngIf="lmsResponse.isVisible">
   </app-response-message>
 </div>
-<div class="page-bar">
-  <div class="container"
-    style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
-    <div style="display: flex;padding-top: 1em;">
+<div>
+  <div class="portlet light" style="display: flex;padding-top: 1em;">
+    <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
+      <div class="cenetered-block">
+        <span>
+          <i class="fa fa-th-list" aria-hidden="true"></i>
+        </span>
+        <h5 class="hidden-xs" translate>Details</h5>
+      </div>
+    </div>
+    <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
+      <div class="cenetered-block">
+        <span>
+          <i class="fa fa-th-large" aria-hidden="true"></i>
+        </span>
+        <h5 class="hidden-xs" translate>Description</h5>
+      </div>
+    </div>
+    <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
+      <div class="cenetered-block">
+        <span>
+          <i class="fa fa-th-large" aria-hidden="true"></i>
+        </span>
+        <h5 class="hidden-xs" translate>Assets</h5>
+      </div>
+    </div>
+    <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
+      <div class="cenetered-block">
+        <span>
+          <i class="fa fa-users" aria-hidden="true"></i>
+        </span>
+        <h5 class="hidden-xs" translate>Share</h5>
+      </div>
+    </div>
+  </div>
+  <div class="portlet light container"
+    style="width: 100%;border-radius: 0;border-top: 0;padding-bottom: 10px;border: 1px solid #e0e0e0;">
+    <!-- <div style="display: flex;padding-top: 1em;">
       <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
         <div class="cenetered-block">
           <span>
@@ -43,7 +77,7 @@
           <h5 class="hidden-xs" translate>Share</h5>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
@@ -236,7 +270,7 @@
     <!-- step 2 -->
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
       <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="portlet light">
+      <div class="portlet light" style="border: none;">
         <div class="input-icon right pull-right cebp">
           <ul class="button-align inline">
             <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
@@ -269,10 +303,10 @@
     <!-- step 3 -->
     <div [ngClass]="{'blur-content' : showFilePreview}">
       <div *ngIf="activeTabName == 'step-3'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
-        <div class="portlet light">
+        <div class="portlet light" style="border:none">
           <div class="col-lg-12">
             <div class="page-toolbar">
-              <div class="inline mToolBarPad">
+              <div class="inline mToolBarPad" style="margin-left: -15px;">
                 <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets</button>
                 <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary"
                   (click)="openQuizPopup()">Select Quiz</button>

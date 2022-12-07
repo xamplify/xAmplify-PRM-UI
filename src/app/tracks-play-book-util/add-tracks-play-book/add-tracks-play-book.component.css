@@ -157,7 +157,7 @@
 }
 
 .portlet.box {
-    border: 1px solid #c4c1bb;
+    /* border: 1px solid #c4c1bb; */
     overflow: hidden;
     min-height: 425px;
 }
@@ -1145,3 +1145,7 @@ input.cmn-toggle-round-flat:checked+label:after {
         width:130%;
     }
 }
+.portlet.light .form .form-body {
+    padding-left: 0;
+    padding-right: 11px;
+  }

@@ -255,7 +255,7 @@
 					<section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
 						<div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 							<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
-								<div class="grid-box min-h default-cursor box-shadow mHeight">
+								<div class="grid-box min-h default-cursor mHeight">
 									<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 										alt="Image Not Found">
 									<h4 class="ellipsis overflow-hidden mt5 mb5 f-w-600" title="{{asset?.assetName}}">
