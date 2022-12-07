@@ -1907,15 +1907,14 @@
               <div class="timeline-panel">
                 <div class="timeline-heading">
                   <span class="timeline-title">
-                    <!-- {{campaign.launchTime | date: 'fullDate'}} -->
-                    <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
+                    <app-timestamp [dateAndTime]="campaign?.displayTime"> </app-timestamp>
                   </span>
                 </div>
                 <div class="timeline-body">
                   <h5><span class="f-w-600" title="{{campaign.campaignName}}">
                       {{campaign.campaignName | slice: 0: 30}}
                       <span *ngIf="campaign.campaignName?.length>30">...</span>
-                    </span> campaign Launched at {{campaign.launchTime | date: 'shortTime'}}</h5>
+                    </span> campaign Launched on <app-timestamp [dateAndTime]="campaign?.displayTime"> </app-timestamp></h5>
                   <h5>Email sent to <b>{{selectedRow.emailId}}</b></h5>
                 </div>
               </div>
