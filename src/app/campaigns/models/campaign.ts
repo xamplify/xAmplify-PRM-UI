@@ -103,4 +103,5 @@ export class Campaign {
     oneClickLaunchCondition = false;
     pushToCRM = [];
     configurePipelines = false;
+    utcTimeInString = "";
 }
