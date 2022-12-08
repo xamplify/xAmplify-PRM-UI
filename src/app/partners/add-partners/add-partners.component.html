@@ -76,7 +76,7 @@ img:hover {
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 						<div class="portlet light add-options">
-							<div class="portlet-title" translate>How would you like to
+							<div class="portlet-title" style="margin-bottom: 10px !important;" translate>How would you like to
 								add your {{authenticationService?.partnerModule?.customName}}?</div>
 							<div class="portlet-body">
 								<div class="row">
@@ -817,7 +817,7 @@ img:hover {
 				<!-- BEGIN EXAMPLE TABLE PORTLET-->
 				<div class="portlet light">
 					<div class="portlet-title" style="border-bottom: none ;">
-						<div class="caption" translate>
+						<div class="caption" style="padding-top: 11px !important;" translate>
 							<i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List
 							of {{authenticationService?.partnerModule?.customName}}
 						</div>
@@ -834,7 +834,7 @@ img:hover {
 							</div>
 							<div class="portlet-input input-inline">
 								<div class="input-icon right">
-									<input type="text" [(ngModel)]="searchKey"
+									<input type="text" style="height: 35px;" [(ngModel)]="searchKey"
 										[ngModelOptions]="{standalone: true}" class="form-control"
 										placeholder="Search" (keypress)="eventHandler($event.keyCode)">
 									<button
