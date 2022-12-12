@@ -792,4 +792,12 @@ export class DashboardService {
                .map(this.extractData)
                .catch(this.handleError);
         }
+        
+    /****XNFR-139****/
+    findMaximumAdminsLimitDetailsByCompanyId(companyId:number){
+        let url = this.authenticationService.REST_URL +"teamMember/findMaximumAdminsLimitDetailsByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

@@ -11,6 +11,7 @@ import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 
 declare var $,swal: any;
 
@@ -30,6 +31,7 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 	dnsConfigured = false;
 	modalPopupLoader = false;
 	campaignAccess:CampaignAccess = new CampaignAccess();
+	analyticsCountDto: any;
 	constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -102,11 +104,8 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 	}
 
 	viewModules(partnerCompany:any){
-		this.selectedPartnerCompany = partnerCompany;
-		this.dnsConfigured = partnerCompany.emailDnsConfigured;
-		this.campaignAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
-		this.campaignAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
-		$('#partner-module-access').modal('show');
+		this.findMaximumAdminsLimitDetails(partnerCompany);
+		
 	}
 
 	updateDnsConfiguration(companyId:number){
@@ -135,12 +134,41 @@ export class AdminPartnerCompaniesComponent implements OnInit {
 		  if(result.statusCode==200){
 			this.listAllPartners(this.pagination);
 			this.referenceService.showSweetAlertSuccessMessage('Modules Updated Successfully');
+			$('#partner-module-access').modal('hide');
 		  }else{
-			this.referenceService.showSweetAlertErrorMessage('Unable to update Modules.');
+			this.referenceService.showSweetAlertErrorMessage(result.message);
 		  }
 		}, _error => {
 			this.modalPopupLoader = false;
 			this.referenceService.showSweetAlertErrorMessage('Unable to update Modules.');
 		});
 	  }
+
+	  /** XNFR-139 ***** */
+  setMaxAdmins(){
+    let maxAdmins =  $('#maxAdmins-partners-Edit option:selected').val();
+    this.campaignAccess.maxAdmins = maxAdmins;
+}
+
+findMaximumAdminsLimitDetails(partnerCompany:any){
+	$('#partner-module-access').modal('show');
+	this.modalPopupLoader = true;
+	this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(partnerCompany.companyId).subscribe(
+	  response=>{
+		this.analyticsCountDto = response.data;
+		this.modalPopupLoader = false;
+	  },error=>{
+		this.analyticsCountDto = new AnalyticsCountDto();
+		this.modalPopupLoader =false;
+		this.referenceService.showSweetAlertServerErrorMessage();
+		$('#partner-module-access').modal('hide');
+	  },()=>{
+		this.selectedPartnerCompany = partnerCompany;
+		this.dnsConfigured = partnerCompany.emailDnsConfigured;
+		this.campaignAccess.loginAsTeamMember = partnerCompany.loginAsTeamMember;
+		this.campaignAccess.excludeUsersOrDomains = partnerCompany.excludeUsersOrDomains;
+		this.campaignAccess.maxAdmins = partnerCompany.maxAdmins;
+	  }
+	);
+  }
 }

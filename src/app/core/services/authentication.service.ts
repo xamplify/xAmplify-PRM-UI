@@ -352,12 +352,12 @@ export class AuthenticationService {
   isOnlyPartner() {
   try{
     const roleNames = this.getRoles();
-    return roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1);
+    return roleNames  && roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1
+    && roleNames.indexOf('ROLE_VENDOR')<0 &&  roleNames.indexOf('ROLE_ORG_ADMIN')<0 &&
+     roleNames.indexOf('ROLE_MARKETING')<0;
   }catch(error){
     this.xtremandLogger.log('error'+error);
   }
-
-    //return this.loggedInUserRole == "Partner" && this.isPartnerTeamMember == false; commented on 30/07/2020.
   }
 
   isOnlyUser() {
@@ -982,6 +982,8 @@ findCampaignAccessDataByDomainName(domainName:string){
   let url = this.REST_URL +"admin/campaignAccess/domainName/"+domainName+"?access_token=" + this.access_token;
   return this.callGetMethod(url);
 }
+
+
 
 
 private callGetMethod(url: string) {
