@@ -96,6 +96,7 @@
     </div>
   </div>
   <div class="portlet-body clearfix">
+    <a *ngIf="!httpRequestLoader.isLoading"><span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span></strong></span></a>
     <div class="table-responsive">
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
       <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
@@ -110,8 +111,8 @@
             <th *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" scope="" translate>
               <i class="fa fa-object-group" aria-hidden="true"></i><br>Group
             </th>
-            <th id="second-admin-td" *ngIf="isOrgAdmin && isTeamMemberModule"  scope="" translate>
-              <i class="fa fa-user" aria-hidden="true"></i><br>Second Admin
+            <th id="second-admin-td" *ngIf="showSecondAdmin && isTeamMemberModule"  scope="" translate>
+              <i class="fa fa-user" aria-hidden="true"></i><br>Admin
             </th>
             <th  scope="" translate>
               <i class="fa fa-lock" aria-hidden="true"></i><br>Status
@@ -149,7 +150,7 @@
             </div>
             </td>
             <!---Second Admin---->
-            <td *ngIf="isOrgAdmin && isTeamMemberModule">
+            <td *ngIf="showSecondAdmin && isTeamMemberModule">
               <div class="actions-block float-none">
                 <i  [className]="teamMember?.secondAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
               </div>
@@ -182,6 +183,11 @@
                       <i class="fa fa-sign-in gray" aria-hidden="true"></i>
                   </a>
                 </ng-container>
+                <!--Primary Admin--->
+                <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="setPrimaryAdminOptions(teamMember)"
+                     [className]="isLoggedInAsTeamMember || teamMember.status!='APPROVE' ? 'inactive':''" >
+                  <i [className]="teamMember.status=='APPROVE' ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
+               </a>
                 <!--Edit--->
                 <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -235,7 +241,7 @@
             <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle"  title="Go Back" (click)="clearForm()">
+            <a class="close-circle"  title="Go Back" (click)="goToManageTeam()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -313,7 +319,7 @@
                 </div>
 
                 <!---Enable As An Admin--->
-                <div class="col-md-12 col-lg-12" *ngIf="isOrgAdmin">
+                <div class="col-md-12 col-lg-12" *ngIf="showSecondAdmin">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Enable As An Admin</label>
                       <div class="col-sm-8">
@@ -363,6 +369,7 @@
 </div>
 <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
 <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
+  
   <div class="table-responsive">
     <table class="table table-striped silvertm" id="add-team-member-table"  aria-describedby="TeamMemberList">
       <thead>
@@ -373,7 +380,7 @@
               Team Member
           </h4>
            </th>
-           <th *ngIf="isOrgAdmin"  scope="" translate>
+           <th *ngIf="showSecondAdmin"  scope="" translate>
             <i class="fa fa-user" aria-hidden="true"></i><br>Enable As An Admin
           </th>
            <th  scope="" translate>
@@ -391,7 +398,7 @@
           </td>
           <!---Assigned Group-->
           <!-- Enable As An Admin  -->
-          <td *ngIf="isOrgAdmin" [title]="!team?.enableOption? 'This option is not available for the selected group':''">
+          <td *ngIf="showSecondAdmin" [title]="!team?.enableOption? 'This option is not available for the selected group':''">
             <switch [status]="teamMember.secondAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
             [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus(teamMember,$event)" [disabled]="!teamMember.enableOption">
             </switch>
@@ -476,5 +483,7 @@
 <!----XNFR-97----->
 <app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup($event)"></app-team-member-partners>
 
+<!----XNFR-97----->
+<app-confirm-sweet-alert-util *ngIf="showPrimaryAdminConfirmSweetAlert" (notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
 
 

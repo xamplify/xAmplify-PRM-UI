@@ -8,6 +8,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
+import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
 
 
 declare var $;
@@ -37,6 +38,8 @@ export class ModuleAccessComponent implements OnInit {
   dnsErrorMessage = "";
   scheduledCampaignsCount: number = 0;
   showOneClickLaunchErrorMessage: boolean;
+  statusCode = 0;
+  analyticsCountDto: AnalyticsCountDto = new AnalyticsCountDto();
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -45,8 +48,10 @@ export class ModuleAccessComponent implements OnInit {
     this.getCompanyAndUserDetails();
     this.getModuleAccessByCompanyId();
     this.getDnsConfiguredDetails();
+    this.findMaximumAdminsLimitDetails();
   }
 
+  
   getDnsConfiguredDetails(){
     this.startDnsLoader();
     this.dashboardService.getDnsConfigurationDetails(this.companyId).subscribe(result => {
@@ -117,22 +122,28 @@ export class ModuleAccessComponent implements OnInit {
 
   updateModuleAccess(){
     this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.roleId = $('#roleId option:selected').val();
     this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
-
+      this.statusCode = result.statusCode;
+      this.customResponse = new CustomResponse('ERROR', result.message, true);
+      this.ngxLoading = false;
     }, _error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('ERROR', "Something went wrong.", true);
     },
     ()=>{
+      if(this.statusCode==200){
         if(this.campaignAccess.mdf && !this.companyAndUserDetails.defaultMdfFormAvaible){
           this.addDefaultMdfForm();
         }else{
           this.showSuccessMessage();
+          this.findMaximumAdminsLimitDetails();
         }
+      }
     }
     );
 
@@ -228,5 +239,23 @@ export class ModuleAccessComponent implements OnInit {
       this.scheduledCampaignsCount = 0;
     }
   }
-  
+  /** XNFR-139 ***** */
+  setMaxAdmins(){
+    let maxAdmins =  $('#maxAdmins-Edit option:selected').val();
+    this.campaignAccess.maxAdmins = maxAdmins;
+  }
+
+findMaximumAdminsLimitDetails(){
+  this.ngxLoading = true;
+  this.dashboardService.findMaximumAdminsLimitDetailsByCompanyId(this.companyId).subscribe(
+    response=>{
+      this.analyticsCountDto = response.data;
+      this.ngxLoading = false;
+    },error=>{
+      this.analyticsCountDto = new AnalyticsCountDto();
+      this.ngxLoading =false;
+    }
+  );
+}
+
 }

@@ -329,6 +329,23 @@ export class TeamMemberService{
 			.catch(this.handleError);
 	}
 
+    /****XNFR-139****/
+    findMaximumAdminsLimitDetails(){
+        let url = this.URL +"teamMember/findMaximumAdminsLimitDetails/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    
+
+    /****XNFR-139*****/
+    updatePrimaryAdmin(teamMemberUserId:number){
+        let url = this.URL +"teamMember/updatePrimaryAdmin/"+this.authenticationService.getUserId()+"/"+teamMemberUserId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     
     private extractData(res: Response) {
         let body = res.json();

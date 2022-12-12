@@ -34,4 +34,5 @@ export class CampaignAccess {
   oneClickLaunch = false;
   agency = false;
   customSkinSettings = false;
+  maxAdmins = 2;
 }
