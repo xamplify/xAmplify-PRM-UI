@@ -120,7 +120,7 @@
                 
               </div>
               
-              <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 2px !important;">
+              <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
                <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
                   <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                   <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
@@ -128,7 +128,7 @@
               </ul>  -->
               <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix"  *ngIf="!listLoader.isLoading">
-                    <div class="col-xs-12" style="padding: 1px 0;">
+                    <div class="col-xs-12" style="padding: 0px 0;">
                        <div class="table-responsive">
                           <table class='table tgrid' aria-describedby="user-campaigns-list-table">
                              <thead>

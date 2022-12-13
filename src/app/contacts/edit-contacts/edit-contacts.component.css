@@ -117,3 +117,50 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		width: 75.333333%!important;
 	}
 }
+/* sudha sri */
+@media (max-width:600px){
+	.mb-9{
+		margin-bottom:10px;
+	}
+}
+.pr0{
+	padding-right:0px;
+}
+.pl0{
+	padding-left:0px;
+}
+@media (max-width:1440px){
+	.pr0{
+		padding-right: 0px !important;
+	}
+}
+@media (max-width:425px){
+	.pr0{
+		padding-right: 15px!important;
+	}
+	.pr15{
+		padding-right: 0px!important;
+	}
+	.pr15{
+		padding-right: 0px;
+	}
+	.pl15{
+		padding-left: 15px !important;
+	}
+}
+@media (max-width:320px){
+	.fz17{
+		font-size: 17px !important;
+	}
+}
+.mp0{
+ margin:0px !important;
+ padding:0px;
+}
+.valid-list{
+	top: -13px;
+    width: 100%;
+    left: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}

@@ -165,3 +165,19 @@ h3 {
 .details{
  right: -7px !important;
 }
+/* sudha sri */
+@media (max-width:425px){
+	.pb5{
+		padding-bottom: 5px;
+	}
+}
+@media (max-width:768px){
+	.pb6{
+		padding-bottom: 6px;
+	}
+}
+@media (max-width:425px){
+	.pl{
+		padding-left: 12px;
+	}
+}

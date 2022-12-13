@@ -8,12 +8,12 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-right: 0px;">
                         <div class="page-bar card-shadow" style="padding: 0px;">
                             <div class="col-md-12 col-lg-12"
-                                style="padding: 8px 5px 8px 10px;margin-bottom: 10px;background-color: #008fd5;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+                                style="padding: 8px 5px 8px 10px;margin-bottom: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom: 1px solid #eee;">
                                 <div class="row">
-                                    <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
+                                    <div class="col-md-6 col-lg-6 track-title" style="color: #888;" title="{{tracksPlayBook.title}}">
                                         <div class="title-class">Track's Title:</div>
                                         <a class="title padding_bottom"
-                                            style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
+                                            style="font-size: 15px; padding-top: 10px;color: #888;">{{tracksPlayBook.title}}</a>
             
                                     </div>
                                 </div>
@@ -88,13 +88,13 @@
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px;">
                                                     <div class="portlet light cphdam page-bar card-shadow">
-                                                        <div class="portlet-title" style="background: #008fd5;">
-                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="color: #fff!important;">
+                                                        <div class="portlet-title">
+                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="color: #888;">
                                                                 <a (click)="closeView()" class="pull-right close-circle" style="padding: 3.4px 4.4px; margin: 7px 0px 0px 0px;">
                                                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
                                                                 <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;" title="{{tracksPlayBook.title}}">
                                                                     <div class="title-class">Track's Title:</div>
-                                                                    <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
+                                                                    <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;color: #888;">{{tracksPlayBook.title}}</a>
                                                                 </h4>
                                                             </div>
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
@@ -136,10 +136,10 @@
                     </div>
                 </section>
                 <section class="col-xs-6 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
-                    <div class="col-md-12 col-lg-12 card-shadow"
-                        style="padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: #2a3f54;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;">
+                    <div class="col-md-12 col-lg-12"
+                        style="padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: white;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;border-bottom: 1px solid #eee;">
                         <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
-                            <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;">Content</a>
+                            <a class="title padding_bottom" style="font-size: 15px; padding-top: 10px;color: #888;">Content</a>
                         </div>
                         <!-- <div class="btn-group pull-right">
                             <ng-container class='m10'>
