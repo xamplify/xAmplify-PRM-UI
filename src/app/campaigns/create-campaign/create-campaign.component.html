@@ -41,7 +41,7 @@
         <!-- End of Line 2 -->
         <div id="campaign-tabs">
             <div class="container" style="width: 100%;">
-                <div class="portlet light row" style="display: flex;border-radius: 7px 7px 7px 7px !important;">
+                <div class="portlet light row" style="display: flex;">
                     <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
@@ -182,7 +182,7 @@
                 <div class="row setup-content step activeStepInfo" id="step-2">
                     <div >
                         <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm" aria-labelledby="form-label">
-                            <div class="portlet light" style="margin-top: 10px;border-radius: 7px 7px 7px 7px !important;">
+                            <div class="portlet light" style="margin-top: 10px;">
                                 <div class="portlet box" style="border: none !important;">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
@@ -662,7 +662,7 @@
                     <div id="emailTemplateContent" style="display: none;"></div>
                 </div>
                 <!-- -------------------------------------Video Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo portlet light" id="step-3" style="border-radius: 5px !important;">
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-3" >
 					<!-- <br> -->
 					<div class="col-xs-12">
 						<div class="text-center">
@@ -1129,7 +1129,7 @@
                 <!-- End Of 197(Video Tab) -->
                 <!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
                 <div class="row setup-content hiddenStepInfo" id="step-4">
-                    <div class="col-xs-12 portlet light" style="border-radius: 5px 5px 5px 5px !important;">
+                    <div class="col-xs-12 portlet light">
                         <div class="mt10">
                             <!---Partners/Contacts List For Through/To Campaign-->
                             <div id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
@@ -1314,7 +1314,7 @@
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType!='landingPage'">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="text-center" style="margin-top: 10px;">
-                        <div class="col-xs-12 portlet light" style="border-radius: 5px 5px 5px 5px !important;">
+                        <div class="col-xs-12 portlet light">
                             <div class="input-icon right pull-right cebp" style="padding-right: 8px;">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
@@ -1555,7 +1555,7 @@
                 <!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                        <div class="portlet light row" style="border-radius: 5px !important;border: none;">
+                        <div class="portlet light row" style="border: none;">
                             <div class="input-icon right pull-right cebp" style=" right: 70px;">
                                 <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput='';searchLandingPage()"></button>
@@ -1733,7 +1733,7 @@
                 <!-- End of step 5 -->
 
                 <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo portlet light" id="step-6" style="border-radius: 5px 5px 5px 5px !important;">
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-6">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
                         <strong>{{invalidScheduleTimeError}}</strong>

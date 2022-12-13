@@ -1977,6 +1977,8 @@ Page content
   padding: 0px;
   background-color: #ffffff;
   margin-bottom: 20px;
+  border-radius: 5px;
+  border:1px solid #ddd;
  /* -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;

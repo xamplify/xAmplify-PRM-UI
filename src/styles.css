@@ -395,7 +395,7 @@ nav a.active {
 
 .portlet.light,
 .dashboard-stat2 {
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   padding: 10px !important;
 }
 
@@ -435,7 +435,7 @@ nav a.active {
 .bootstrap-switch,
 .bootstrap-switch-handle-on,
 .bootstrap-switch-handle-off button {
-  border-radius: 0 !important;
+  /* border-radius: 0 !important; */
   webkit-border-radius: 0 !important;
 }
 

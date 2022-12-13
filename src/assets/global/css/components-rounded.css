@@ -4594,7 +4594,7 @@ Portlets
   -moz-border-radius: 0;
   -ms-border-radius: 0;
   -o-border-radius: 0;
-  border-radius: 0;
+  /* border-radius: 0; */
 }
 .portlet.portlet-fullscreen {
   z-index: 10060;
@@ -4901,7 +4901,10 @@ Portlets
 .portlet.light {
    /* padding: 5px 5px 10px 10px; */
    background-color: #fff;
-   border-radius: 5px !important;
+   /* border-radius: 5px !important; */
+   border-radius: 5px ;
+   border:1px solid #ddd;
+   /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) ; */
    /* border: 1px solid #eeeef0 !important;
    box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 8%), -5px -6px 10px 0 rgb(253 253 253 / 90%) !important; */
   

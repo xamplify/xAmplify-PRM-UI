@@ -72,7 +72,7 @@
   </div> -->
  <!---End Of Header-->
  <!--List Of Team members---->
- <div class="portlet light" style="box-shadow: none !important;">
+ <div class="portlet light">
   <div class="portlet-title" style="border-bottom: none;">
     <div class="row">
       <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
@@ -270,9 +270,9 @@
       </div>
   </div>
 </div>
-<div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+<!-- <div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
   <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
-</div>
+</div> -->
 
   </ng-container>
   <!---End Of Team Members---->
