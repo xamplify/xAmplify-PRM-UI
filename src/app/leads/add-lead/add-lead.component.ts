@@ -360,8 +360,10 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.lead = data.data; 
-            //this.isSalesForceEnabled();          
+            self.lead = data.data;  
+            if (self.lead.createdForCompanyId > 0) {
+            }
+
             this.getActiveCRMDetails(); 
           }
         },
@@ -466,7 +468,11 @@ export class AddLeadComponent implements OnInit {
               }
             } else {              
               //this.getSalesforcePipeline();
-              this.getActiveCRMPipeline();
+              if (this.lead.campaignId > 0) {
+                this.getCampaignLeadPipeline();
+              } else {
+                this.getActiveCRMPipeline();
+              }              
             }
           }
         },
@@ -500,7 +506,7 @@ export class AddLeadComponent implements OnInit {
               for (let p of activeCRMPipelines) {
                 if (p.id == this.lead.pipelineId) {
                   self.stages = p.stages;
-                  self.activeCRMDetails.hasLeadPipeline = true;
+                  //self.activeCRMDetails.hasLeadPipeline = true;
                   break;
                 }
               }              
