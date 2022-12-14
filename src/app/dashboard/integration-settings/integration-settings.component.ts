@@ -19,6 +19,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	@Input() integrationType: String;
 	@Output() closeEvent = new EventEmitter<any>();
 	@Output() unlinkEvent = new EventEmitter<any>();
+	@Output() refreshEvent = new EventEmitter<any>();
 	customResponse: CustomResponse = new CustomResponse();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	loading: boolean = false;
@@ -390,6 +391,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.getIntegrationDetails();
+						this.refreshEvent.emit();
 					}
 				});
 	}

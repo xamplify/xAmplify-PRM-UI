@@ -770,7 +770,7 @@
                                             </div>
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" (refreshEvent)="checkIntegrations()" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 
