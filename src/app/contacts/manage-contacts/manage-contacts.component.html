@@ -728,15 +728,58 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12">
-        <!-- remove this class="tabbable tabbable-custom tabbable-noborder" -->
-        <div class="">
-          <div class="tab-content" style="min-height: 570px;">
+        <div class="page-bar">
+          <div class="tab-content" style="min-height: 570px;padding: 0px 10px">
             <!-- BEGIN PAGE HEADER-->
-            <div class="page-bar" style="margin-bottom: 0px">
-             <div style="float:left;">
+            <div class="" style="">
+             <div style="float:left;padding: 10px 0px 0px 0px">
             <app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
               </div>
-            <!-- remove page-toolbar here-->
+              <div class="page-toolbar">
+                <ng-template #filterButton>
+                <div class="btn-group" style="margin-right: 10px;">
+                  <div class="inputs" style="float: right;display: flex;">
+                    <div *ngIf="!isSegmentation" (click)="modelForSeg()"
+                      style="float: left; cursor: pointer; margin-right: 10px" data-toggle="modal"
+                      data-target="#filterModal">
+                      <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
+                        title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+                    </div>
+                    <div *ngIf="isSegmentation" (click)="removeSegmentation()"
+                      style="float: left; cursor: pointer; margin-right: 10px">
+                      <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
+                        title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i>
+                      <i class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
+                    </div>
+                    <div
+                      [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
+                      <select class="form-control" [(ngModel)]="sortOption"
+                        (ngModelChange)="sortByOption($event, 'contacts')">
+                        <ng-container *ngFor="let sort of sortOptions; let i = index">
+                          <option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
+                          <option *ngIf="sort.for == 'contacts'" [ngValue]="sort">{{sort.name}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div class="portlet-input input-inline"
+                      [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                      <div class="input-icon right">
+                        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+                          (input)="searchKeyValue('contacts')" class="form-control"
+                          placeholder="Search"
+                          (keypress)="eventHandler($event.keyCode)">
+
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                          (click)="searchKey='';search('contacts')"></button>
+                        <button type="submit" class="search-box-item-click" (click)="search('contacts')">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              </div>
             </div>
             <div class="tab-pane active"></div>
             <div class="row">
@@ -748,9 +791,9 @@
                 <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
                   <h4 translate>No results found</h4>
                 </div>
-                <div class="portlet light" *ngIf="contactsByType.contacts?.length > 0">
-                  <div class="portlet-title" style="border-bottom: none;">
-                    <div class="caption" style="margin-top: 10px;">
+                <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
+                  <div class="portlet-title" style="border:none">
+                    <div class="caption">
                       <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                        <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
                           && contactsByType.selectedCategory !='invalid'"translate>
@@ -774,54 +817,12 @@
                         <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                      </span>
                     </div>
-                    <!-- remove setting icon here-->
-                    <!-- start added page-toolbar here-->
-                    <div class="page-toolbar">
-                      <div class="btn-group pull-right">
-                        <div class="inputs" style="float: right;display: flex;margin-top: 3px;">
-                          <div *ngIf="!isSegmentation" (click)="modelForSeg()"
-                            style="float: left; cursor: pointer; margin-right: 10px" data-toggle="modal"
-                            data-target="#filterModal">
-                            <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-                              title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
-                          </div>
-                          <div *ngIf="isSegmentation" (click)="removeSegmentation()"
-                            style="float: left; cursor: pointer; margin-right: 10px">
-                            <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-                              title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i>
-                            <i class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
-                          </div>
-                          <div
-                            [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
-                            <select class="form-control" [(ngModel)]="sortOption"
-                              (ngModelChange)="sortByOption($event, 'contacts')">
-                              <ng-container *ngFor="let sort of sortOptions; let i = index">
-                                <option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
-                                <option *ngIf="sort.for == 'contacts'" [ngValue]="sort">{{sort.name}}</option>
-                              </ng-container>
-                            </select>
-                          </div>
-                          <div class="portlet-input input-inline"
-                            [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-                            <div class="input-icon right">
-                              <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                                (input)="searchKeyValue('contacts')" class="form-control"
-                                placeholder="Search"
-                                (keypress)="eventHandler($event.keyCode)">
-      
-                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-                                (click)="searchKey='';search('contacts')"></button>
-                              <button type="submit" class="search-box-item-click" (click)="search('contacts')">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                              </button>
-                            </div>
-                          </div>
-                          <!-- Start setting icon here-->
-                          <div class="btn-group pull-right" style="color: #000000;padding-left: 15px; flex: none;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
+                    <div class="btn-group pull-right" style="margin-top: 4px; display: flex;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
                           authenticationService.isOrgAdminPartner()) && !sharedLeads">
+                          <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                       <span class="dropdown-toggle" data-toggle="dropdown"
-                        style="box-shadow: none; margin-top: 8px; float: right;">
+                        style="box-shadow: none; margin-top: 8px; float: right;display: flex;">
                         <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px" aria-hidden="true"></i><i class="fa fa-angle-down"
                           style="font-size: 14px; float: right" aria-hidden="true"></i>
                       </span>
@@ -838,14 +839,9 @@
                             (click)="hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a>
                         </li>
                       </ul>
-                          </div>
-                          <!-- End setting icon here-->
-                        </div>
-                      </div>
                     </div>
-                     <!-- End page-toolbar here-->
                   </div>
-                  <div class="portlet-body" style="padding-top: 0px;">
+                  <div class="portlet-body">
                     <div class="table-responsive">
                       <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading">
                       </app-loader>
@@ -1122,16 +1118,12 @@
                         </tbody>
                       </table>
                     </div>
-                    <app-pagination style="position:relative;top:3px;" [pagination]="contactsByType.pagination"
+                  </div>
+                </div>
+                <app-pagination style="position:relative;top:-9px;" [pagination]="contactsByType.pagination"
                   *ngIf="!contactsByType.isLoading" [type]="contactsByType.selectedCategory"
                   (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)">
                 </app-pagination>
-                  </div>
-                </div>
-                <!-- <app-pagination style="position:relative;top:-9px;" [pagination]="contactsByType.pagination"
-                  *ngIf="!contactsByType.isLoading" [type]="contactsByType.selectedCategory"
-                  (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)">
-                </app-pagination> -->
               </div>
             </div>
             <app-export-csv *ngIf="referenceService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
@@ -1139,7 +1131,6 @@
             <!-- END PAGE CONTENT -->
           </div>
         </div>
-      </div>
     </div>
   </div>
   <app-scroll-top></app-scroll-top>
