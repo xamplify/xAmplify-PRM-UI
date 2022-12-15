@@ -736,7 +736,7 @@
             <app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
               </div>
               <div class="page-toolbar">
-                <div class="pull-right" *ngIf="sharedLeads && !contactsByType.isLoading && contactsByType.contacts?.length == 0" style="margin-top: 6px;margin-bottom: 10px;">
+                <div class="pull-right" *ngIf="(sharedLeads && !contactsByType.isLoading && contactsByType.contacts?.length == 0) || !contactsByType.isLoading && contactsByType.contacts?.length == 0" style="margin-top: 6px;margin-bottom: 10px;">
                   <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                 </div>
                 <ng-template #filterButton>
@@ -821,13 +821,11 @@
                         <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                      </span>
                     </div>
-                    <div class="pull-right" *ngIf="sharedLeads" style="margin-top: 6px;">
-                      <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
-                    </div>
-                    <div class="btn-group pull-right" style="margin-top: 4px; display: flex;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
+                    <div class="btn-group pull-right" style="margin-top: 4px; display: flex;" >
+                          <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
+                          <div *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
                           authenticationService.isOrgAdminPartner()) && !sharedLeads">
-                          <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                       <span class="dropdown-toggle" data-toggle="dropdown"
                         style="box-shadow: none; margin-top: 8px; float: right;display: flex;">
                         <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px" aria-hidden="true"></i><i class="fa fa-angle-down"
@@ -846,6 +844,7 @@
                             (click)="hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a>
                         </li>
                       </ul>
+                      </div>
                     </div>
                   </div>
                   <div class="portlet-body">
