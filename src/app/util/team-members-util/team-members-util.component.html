@@ -96,7 +96,9 @@
     </div>
   </div>
   <div class="portlet-body clearfix">
-    <a *ngIf="!httpRequestLoader.isLoading"><span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span></strong></span></a>
+    <a *ngIf="!httpRequestLoader.isLoading" (click)="findPrimaryAdminAndExtraAdmins()">
+      <span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span></strong></span>
+    </a>
     <div class="table-responsive">
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
       <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
@@ -486,4 +488,36 @@
 <!----XNFR-97----->
 <app-confirm-sweet-alert-util *ngIf="showPrimaryAdminConfirmSweetAlert" [parameterDto]="primaryAdminSweetAlertParameterDto" (notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
 
+<!--XNFR-139 Admins Preview-->
+<div class="modal fade right" id="adminsPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="adminsPreviewPopup" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width-modal-popup" role="document">
+      <div class="modal-content">
+          <div class="modal-header" >
+              <h4 class="modal-title popup-header-title-font text-center" translate>Admins</h4>
+          </div>
+            <div class="modal-body">
+                <app-list-loader *ngIf="adminsLoader.isLoading"></app-list-loader>
+                <div class="table-responsive" *ngIf="!adminsLoader.isLoading">
+                    <table  class="table table-striped tgrid table-condensed table-bordered hash-table-color"
+                         id="adminsTable" aria-describedby="adminsTable">
+                        <tbody>
+                            <ng-container *ngFor="let admin of admins;let i=index">
+                                <tr>
+                                    <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="admin">
+                                        </app-user-info>
+                                        <span class="active-status" *ngIf="admin?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!adminsLoader.isLoading">
+                <button type="submit" class="btn btn-default"  data-dismiss="modal" translate>Close</button>
+              </div>
+      </div>
+  </div>
+</div>
 

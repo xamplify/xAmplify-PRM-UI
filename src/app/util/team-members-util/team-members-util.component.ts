@@ -84,6 +84,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   showPrimaryAdminConfirmSweetAlert = false;
   selectedPrimaryAdminTeamMemberUserId = 0;
   primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  adminsLoader:HttpRequestLoader = new HttpRequestLoader();
+  admins:Array<any> = new Array<any>();
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -909,6 +911,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       );
     }
     this.showPrimaryAdminConfirmSweetAlert = false;
+  }
+
+  findPrimaryAdminAndExtraAdmins(){
+    this.admins = [];
+    $('#adminsPreviewPopup').modal('show');
+    this.referenceService.scrollToModalBodyTopByClass();
+    this.referenceService.startLoader(this.adminsLoader);
+    this.teamMemberService.findPrimaryAdminAndExtraAdmins().subscribe(
+      response=>{
+        this.admins = response.data;
+        this.referenceService.stopLoader(this.adminsLoader);
+      },error=>{
+        $('#adminsPreviewPopup').modal('hide');
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
   }
 
 }
