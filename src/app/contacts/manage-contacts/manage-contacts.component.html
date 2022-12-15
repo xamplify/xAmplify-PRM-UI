@@ -736,6 +736,9 @@
             <app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
               </div>
               <div class="page-toolbar">
+                <div class="pull-right" *ngIf="sharedLeads && !contactsByType.isLoading && contactsByType.contacts?.length == 0" style="margin-top: 6px;margin-bottom: 10px;">
+                  <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
+                </div>
                 <ng-template #filterButton>
                 <div class="btn-group" style="margin-right: 10px;">
                   <div class="inputs" style="float: right;display: flex;">
@@ -780,11 +783,12 @@
                 </div>
               </ng-template>
               </div>
+
             </div>
             <div class="tab-pane active"></div>
             <div class="row">
               <div class="col-xs-12">
-                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex">
+                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;"> 
                   <div class="loader"></div>
                   <h4 translate>please wait while we process your request</h4>
                 </div>
@@ -816,6 +820,9 @@
                         <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}} List</span>
                         <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s List</span>
                      </span>
+                    </div>
+                    <div class="pull-right" *ngIf="sharedLeads" style="margin-top: 6px;">
+                      <ng-template [ngTemplateOutlet]="filterButton"></ng-template>
                     </div>
                     <div class="btn-group pull-right" style="margin-top: 4px; display: flex;" *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||

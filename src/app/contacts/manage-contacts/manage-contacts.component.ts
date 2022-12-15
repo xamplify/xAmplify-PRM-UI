@@ -1538,7 +1538,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	resetListContacts() {
-		this.sortOption = this.sortOptions[0];
+		//this.sortOption = this.sortOptions[0];
 		this.showListOfContactList = false;
 		this.contactsByType.contacts = [];
 	}
