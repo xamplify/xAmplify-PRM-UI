@@ -87,7 +87,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     width: string = "";
     isListView: boolean = false;
     defaultTabClass = "col-block";
-    activeTabClass = "col-block col-block-active";
+    activeTabClass = "col-block col-block-active width";
     completedTabClass = "col-block col-block-complete";
     disableTabClass = "col-block col-block-disable";
 

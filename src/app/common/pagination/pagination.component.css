@@ -7,3 +7,16 @@
 .pagination{
 	margin: 0px !important;
 }
+@media (max-width:425px){
+	.padding{
+		padding-left: 49px !important;
+		padding-top: 8px;
+		padding-right: 15px;
+	}
+	.pl{
+		padding-left: 51px !important;
+	}
+	.pr{
+		padding-right: 33px !important;
+	}
+}

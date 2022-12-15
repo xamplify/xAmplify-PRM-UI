@@ -158,7 +158,7 @@
                       </span>
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
-                        <button class="btn btn-primary" translate>
+                        <button class="btn btn-primary padding align" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
                       </a>
@@ -184,7 +184,7 @@
                         </button>
                       </a>
 
-                      <div class="inputs" align="right" style="float: right; display: inline-flex;">
+                      <div class="inputs display mr-pd" align="right">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">
                             <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"

@@ -2165,3 +2165,45 @@ div.tab{
 .table-responsive{
   padding: 10px 0px 0px 0px;
 }
+/* sudha sri */
+@media (max-width:375px){
+  .pr{
+    padding-right: 20px !important;
+  }
+}
+@media (max-width:425px){
+  .search-align{
+    padding-bottom: 13px;
+    padding-left: 21px;
+    padding-right: 10px;
+  }
+  .pt{
+    padding-top: 0px;
+  }
+}
+@media (max-width:320px){
+  .pr{
+    padding-right: 25px !important;
+  }
+}
+.steps-view{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.width{
+  width:20%;
+}
+@media (max-width:1024px){
+  /* .cenetered-block{
+    font-size: 9px;
+  } */
+  .hidden-xs{
+    font-size: 9px !important;
+  }
+}
+@media (max-width:320px){
+  .cenetered-block{
+    padding:5px 0;
+  }
+}

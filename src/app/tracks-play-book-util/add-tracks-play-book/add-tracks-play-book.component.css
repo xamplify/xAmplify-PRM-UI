@@ -1149,3 +1149,9 @@ input.cmn-toggle-round-flat:checked+label:after {
     padding-left: 0;
     padding-right: 11px;
   }
+  /* sudha sri */
+  .steps-view{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }

@@ -41,8 +41,8 @@
         <!-- End of Line 2 -->
         <div id="campaign-tabs">
             <div class="container" style="width: 100%;">
-                <div class="portlet light row" style="display: flex;">
-                    <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
+                <div class="portlet light row steps-view">
+                    <div id="s.2" class="width" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
                                 <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -779,7 +779,7 @@
 											[style.display]="myVideosStyle">
 											<div id="videos_table_new_wrapper"
 												class="dataTables_wrapper form-inline no-footer">
-												<div class="table-responsive">
+												<div class="table-responsive pt">
 													<table class="table tgrid" cellspacing="0"
 														width="100%" role="grid" id="videoTable">
 														<thead>
@@ -1151,7 +1151,7 @@
                                                 Select Recipients to be used in this campaign
                                             </ng-container>
                                         </div>
-                                        <div class="inputs" style="float: right;">
+                                        <div class="inputs search-align" style="float: right;">
                                             <div style="float: left;">
                                                  <select class="form-control cc mTopSort" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                     (ngModelChange)="sortRecipientsList($event)">                                                    
@@ -1159,7 +1159,7 @@
                                                         [ngValue]="option">{{option.name}}</option>
                                                 </select> 
                                             </div>
-                                            <div class="portlet-input input-inline mAlign " style="position: relative;top: -6px;">
+                                            <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
@@ -1181,7 +1181,7 @@
                                                     </th>
                                                 </tr>
                                             </table>
-                                            <div class="table-responsive">
+                                            <div class="table-responsive pt">
                                                 <table class="table tgrid table-hover table-sm" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                                     <thead>
                                                         <tr>
@@ -1540,7 +1540,7 @@
                                                 <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPaginationDropdownTemplates($event)">
                                                 </app-pagination>
                                             </div>
-                                            <div class="page-bar" style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
+                                            <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
                                         </div>

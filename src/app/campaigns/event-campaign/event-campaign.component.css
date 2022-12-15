@@ -452,3 +452,12 @@ a.icons-link:hover {
   padding-bottom: 10px!important;
 }
 }
+/* sudha sri */
+@media (max-width:320px){
+  .mr15{
+    margin-right: -15px;
+  }
+  .mr21{
+    margin-right: -21px;
+  }
+}

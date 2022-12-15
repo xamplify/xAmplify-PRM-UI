@@ -859,7 +859,7 @@
 									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
 										style="padding:10px">
 										<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
-										<div class="inputs" style="float: right;padding-bottom: 5px;">
+										<div class="inputs" style="float: right;padding-bottom: 5px;display: flex;">
 											<div style="float: left;padding-right: 5px;" *ngIf="!reDistributeEvent && !reDistributeEventManage">
 												<select class="form-control mEventPad"
 													[(ngModel)]="recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption"
@@ -1106,7 +1106,7 @@
 				  <div class="boxes portlet light" style="border:none" [hidden]="gridLoader">
 					  <div class="portlet-title" style="display:block;background: none !important;border-bottom:none">
 						<div>
-							<div class="input-icon right pull-right"
+							<div class="input-icon right pull-right mr15"
 							  style="padding-top: 5px; right: 74px;">
 							  <input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
 								placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
@@ -1116,7 +1116,7 @@
 								<i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;" aria-hidden="true"></i>
 							  </button>
 							</div>
-							<button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()" style="padding-bottom: 8px !important;">
+							<button type="submit" class="campaign-email-template-filter-icon mr21" (click)="showFolderFilterPopup()" style="padding-bottom: 8px !important;">
 								<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
 								<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
 							</button>

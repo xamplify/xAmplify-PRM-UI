@@ -28,3 +28,25 @@
     padding: 10px;
     margin: 10px;
 }
+/* sudha sri */
+@media (max-width:375px){
+    .padding{
+        padding: 7px 4px;
+    }
+}
+@media (max-width:320px){
+    .align{
+        display: flex;
+    }
+}
+.display{
+    float: right; 
+    display: inline-flex;
+}
+@media (max-width:320px){
+    .mr-pd{
+        margin-left: -16px;
+        padding-top: 8px;
+        padding-right: 13px;
+    }
+}
