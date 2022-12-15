@@ -20,6 +20,7 @@ import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $:any, swal: any;
 @Component({
@@ -82,6 +83,9 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   analyticsCountDto:AnalyticsCountDto = new AnalyticsCountDto();
   showPrimaryAdminConfirmSweetAlert = false;
   selectedPrimaryAdminTeamMemberUserId = 0;
+  primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  adminsLoader:HttpRequestLoader = new HttpRequestLoader();
+  admins:Array<any> = new Array<any>();
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -97,6 +101,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.primaryAdminSweetAlertParameterDto.confirmButtonText = "Yes, Change It";
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
@@ -881,7 +886,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
  /********XNFR-139*********/
   setPrimaryAdminOptions(teamMember:any){
-    if(teamMember.status=='APPROVE'){
+    if(teamMember.status=='APPROVE' && teamMember.secondAdmin && !this.isLoggedInAsTeamMember){
       this.showPrimaryAdminConfirmSweetAlert = true;
       this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
     }
@@ -906,6 +911,22 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       );
     }
     this.showPrimaryAdminConfirmSweetAlert = false;
+  }
+
+  findPrimaryAdminAndExtraAdmins(){
+    this.admins = [];
+    $('#adminsPreviewPopup').modal('show');
+    this.referenceService.scrollToModalBodyTopByClass();
+    this.referenceService.startLoader(this.adminsLoader);
+    this.teamMemberService.findPrimaryAdminAndExtraAdmins().subscribe(
+      response=>{
+        this.admins = response.data;
+        this.referenceService.stopLoader(this.adminsLoader);
+      },error=>{
+        $('#adminsPreviewPopup').modal('hide');
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
   }
 
 }
