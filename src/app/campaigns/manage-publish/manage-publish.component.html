@@ -116,7 +116,7 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div class="col-xs-5 col-sm-4 col-md-3">
+                  <div class="col-xs-5 col-sm-4 col-md-3 pr">
                     <div class="mSortWid" style="float: left;">
                       <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
                         (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
@@ -134,7 +134,7 @@
                   </div>
 
                   <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
-                    <div class="portlet-input input-inline" style="display: inline-flex;">
+                    <div class="portlet-input input-inline align" style="display: inline-flex;">
                       <div class="input-icon campaign-search-rr mr5">
                         <input type="text" class="form-control" [(ngModel)]="searchKey"
                           [ngModelOptions]="{standalone: true}" placeholder="Search"

@@ -532,3 +532,12 @@ table tr:nth-child(even) td {
   padding:0px;
   background-color: #ffffff;
 }
+/* sudha sri */
+@media (max-width:320px){
+	.pr{
+		padding-right: 0px;
+	}
+	.align{
+		display: unset !important;
+	}
+}

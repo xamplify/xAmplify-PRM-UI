@@ -56,7 +56,7 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.usedBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div title="$ {{tileData?.usedBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
                         <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -71,7 +71,7 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.availableBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div title="$ {{tileData?.availableBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
                         <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -112,7 +112,7 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline">
+                        <div class="portlet-input input-inline pt-pl">
                            <div class="input-icon right" style="margin-bottom: 8px;">
                               <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>

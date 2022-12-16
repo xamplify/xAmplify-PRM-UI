@@ -209,104 +209,21 @@
 						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet light">
-								<div class="row portlet-title" style="margin-right: 0;margin-left: 0;display: flex;align-items: center;margin-top: -5px;margin-bottom: 0px;">
-									<div class="col-md-2 col-lg-2 col-xs-12" style="padding-right:0px;padding-left:0px;">
-									<div [className]="checkingContactTypeName=='Partner' ? 'caption align-baseline' : 'caption align-center' " translate style="display:flex;">
-										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i><span style="font-size: 16px;margin-left: 2px;margin-right: 3px;">List of </span>
-										<span style="font-size: 16px;" *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-										<span style="font-size: 16px;" *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+								<div class="portlet-title" style="padding-bottom: 6px !important;">
+									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
+										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of 
+										<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 									</div>
-								</div>
-
-								<div class="col-xs-12 col-md-5 col-sm-5 p0" style="padding-bottom: 0px !important;display: flex;align-items: center;justify-content: space-between;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
-								authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
-								(hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
-<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
-   <button id="add_contact" class="btn-padding btn green" (click)="addContactModalOpen()"
-	   [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-	   translate>
-	   One at a Time
-	   <i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;" aria-hidden="true"></i>
-   </button>
-</div>
-<ng-container *ngIf="!refService.isMobileScreenSize()">
-   <div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
-	   <button id="copyFrom_clipboard" class="btn-padding btn green"
-		   [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-		   (click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>
-		   Copy List From ClipBoard <i class="fa fa-clipboard" aria-hidden="true"
-			   style="font-size: 12px; margin-left: 5px;"></i>
-	   </button>
-   </div>
-   <div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
-	   <div class="btn-padding fileUpload btn btn-primary" id="upload_csv"
-		   [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
-		   style="background-color: #26a69a !important" translate>
-		   Upload CSV <i class="fa fa-upload" aria-hidden="true"
-			   style="font-size: 12px; margin-left: 5px;"></i> <input type="file" ng2FileSelect
-			   class="upload" [uploader]="uploader" title=" " (click)="input.value = null;resetResponse();"
-			   (change)="fileChange(input)" accept=".csv" #input
-			   [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
-	   </div>
-   </div>
-</ng-container>
-</div>
-							
-<div class="col-xs-12 col-md-4 col-sm-4 p0 pull-right">
-	<div class="row" style="margin-left: 0px;margin-right: 0px;">
-	<div class="col-xs-2 col-md-2 col-sm-2">
-		<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
-			data-toggle="modal" data-target="#filterModal">
-			<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-				title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
-		</div>
-		<div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: right; cursor: pointer;">
-			<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-				title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
-				class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
-		</div>
-	</div>
-	<div class="col-xs-10 col-md-10 col-sm-10 p0">
-		<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8">
-			<div class="inputs" align="right" style="float: right">
-				<div class="inputs" align="right" style="float: right;display: inline-flex;">
-					<div style="float: left; margin-right: 10px;">
-						<select class="form-control" [(ngModel)]="sortOption"
-							(ngModelChange)="sortByOption($event)">
-							<ng-container *ngFor="let sort of sortOptions; let i = index">
-								<option [ngValue]="sort">{{sort.name}}</option>
-							</ng-container>
-						</select>
-					</div>
-					<div class="portlet-input input-inline">
-						<div class="input-icon right">
-							<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-								class="form-control" placeholder="Search"
-								(keypress)="eventHandler($event.keyCode)">
-							<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-								(click)="searchKey='';search('contactList')"></button>
-							<button type="submit" class="search-box-item-click" (click)="search('contactList')">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</button>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
-		<div class="col-md-1 col-lg-1">
 									<div class="color-grey" *ngIf="!sharedLeads">
-										<!-- <div *ngIf="!isSynchronizationList">
+										<div *ngIf="!isSynchronizationList">
 													<button id="cancel_button" class="btn pull-right" [disabled]="selectedAddContactsOption === 9"
 														(click)="cancelContacts()" style="margin-left: 5px;" translate>
 														Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
 													</button>
-												</div> -->
-												<div class="btn-group" >
-													<button class="btn-padding btn dropdown-toggle" style="background-color: rgb(38, 166, 154);color: white;border-radius: 3px !important;"
+												</div>
+												<div class="btn-group pull-right" >
+													<button class="btn dropdown-toggle" style="background-color: rgb(38, 166, 154);color: white;border-radius: 3px !important;"
 														id="save&delete_button" data-toggle="dropdown" translate>
 														Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
 													</button>
@@ -331,8 +248,49 @@
 													</ul>
 												</div>
 												</div>
-											</div>
-												
+												<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-right: 5px;">
+													<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
+														<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
+															data-toggle="modal" data-target="#filterModal">
+															<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
+																title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+														</div>
+														<div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: right; cursor: pointer;">
+															<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
+																title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+																class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
+														</div>
+													</div>
+													<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort" style="width: 52.33333333%;">
+														<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8">
+															<div class="inputs" align="right" style="float: right">
+																<div class="inputs" align="right" style="float: right;display: inline-flex;">
+																	<div style="float: left; margin-right: 10px;">
+																		<select class="form-control" [(ngModel)]="sortOption"
+																			(ngModelChange)="sortByOption($event)">
+																			<ng-container *ngFor="let sort of sortOptions; let i = index">
+																				<option [ngValue]="sort">{{sort.name}}</option>
+																			</ng-container>
+																		</select>
+																	</div>
+																	<div class="portlet-input input-inline">
+																		<div class="input-icon right">
+																			<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+																				class="form-control" placeholder="Search"
+																				(keypress)="eventHandler($event.keyCode)">
+																			<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+																				(click)="searchKey='';search('contactList')"></button>
+																			<button type="submit" class="search-box-item-click" (click)="search('contactList')">
+																				<i class="fa fa-search" aria-hidden="true"></i>
+																			</button>
+											
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 												<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate> Save As
 														</button>
@@ -343,7 +301,39 @@
 											<ng-container
 												*ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 												   && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
-											
+												<div class="col-xs-12 col-md-6 col-sm-6 p0" style="margin-top: -13px;padding-bottom: 16px !important;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+																					 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
+																					 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
+													<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+														<button id="add_contact" class="btn green" (click)="addContactModalOpen()"
+															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+															translate>
+															One at a Time
+															<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;" aria-hidden="true"></i>
+														</button>
+													</div>
+													<ng-container *ngIf="!refService.isMobileScreenSize()">
+														<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+															<button id="copyFrom_clipboard" class="btn green"
+																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>
+																Copy List From ClipBoard <i class="fa fa-clipboard" aria-hidden="true"
+																	style="font-size: 12px; margin-left: 5px;"></i>
+															</button>
+														</div>
+														<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+															<div class="fileUpload btn btn-primary" id="upload_csv"
+																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
+																style="background-color: #26a69a !important" translate>
+																Upload CSV <i class="fa fa-upload" aria-hidden="true"
+																	style="font-size: 12px; margin-left: 5px;"></i> <input type="file" ng2FileSelect
+																	class="upload" [uploader]="uploader" title=" " (click)="input.value = null;resetResponse();"
+																	(change)="fileChange(input)" accept=".csv" #input
+																	[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+															</div>
+														</div>
+													</ng-container>
+												</div>
 											</ng-container>
 											<!-- <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
 												<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">

@@ -37,12 +37,12 @@
    </div>
    <div class="row">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light" style="height: 153px;">
-            <div class="row" style="margin-top: 13px;">
+         <div class="portlet light height" style="height: 153px;">
+            <div class="row mt" style="margin-top: 13px;">
               <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 24px;">
                   <div class="row">
-                     <div title="{{mdfRequestTiles?.totalPartners}}" class="{{tileClass}}" *ngIf="!isPartnerView">
+                     <div title="{{mdfRequestTiles?.totalPartners}}" class="{{tileClass}}" id="pl" *ngIf="!isPartnerView">
                         <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -74,7 +74,7 @@
                            </div>
                         </div>
                      </div>
-                     <div title="{{mdfRequestTiles?.totalRequests}}" class="{{tileClass}}">
+                     <div title="{{mdfRequestTiles?.totalRequests}}" class="{{tileClass}}" id="pb-pr">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -89,7 +89,7 @@
                            </span>
                         </a>
                      </div>
-                     <div title="$ {{mdfRequestTiles?.averageRequestSize}}" class="{{tileClass}}">
+                     <div title="$ {{mdfRequestTiles?.averageRequestSize}}" id="pl" class="{{tileClass}}">
                         <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -104,7 +104,7 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{mdfRequestTiles?.totalValue}}" class="{{tileClass}}">
+                     <div title="$ {{mdfRequestTiles?.totalValue}}" id="pr"  class="{{tileClass}}">
                         <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -146,7 +146,7 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline">
+                        <div class="portlet-input input-inline ml-pt">
                            <div class="input-icon right">
                               <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a vendor" (keypress)="eventHandler($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchVendors();"></button>
