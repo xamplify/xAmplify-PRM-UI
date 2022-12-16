@@ -33,11 +33,11 @@
         <div class="col-xs-12  p5">
           <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
           </app-list-loader>
-          <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;" [class.greay]="1!=selectedTabIndex"
                 (click)="showLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -57,9 +57,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="2!=selectedTabIndex"
                 (click)="showWonLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -78,9 +78,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="3!=selectedTabIndex"
                 (click)="showLostLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -99,9 +99,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="4!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom: 0px !important;" [class.greay]="4!=selectedTabIndex"
                 (click)="showConvertedLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -164,7 +164,7 @@
                       </a>
 
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                        <button class="btn btn-white padding mt" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
@@ -186,8 +186,8 @@
 
                       <div class="inputs display mr-pd" align="right">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
-                          <div class="input-icon right" style="position: relative;right: -11px;">
-                            <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"
+                          <div class="input-icon right r5 r20" style="position: relative;right: -11px;">
+                            <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search"
                               (keypress)="leadEventHandler($event.keyCode)">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
