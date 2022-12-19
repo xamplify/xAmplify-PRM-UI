@@ -100,7 +100,7 @@
                         </div>
                     </ng-container>
                 </ng-container>
-                <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
                     <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
                     </app-pagination>
                 </div>

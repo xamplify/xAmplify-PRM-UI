@@ -184,3 +184,13 @@ h3 {
 		padding-left: 12px;
 	}
 }
+@media only screen and (max-width: 768px){
+.bar {
+       width: 88% !important;
+   }
+}
+@media only screen and (max-width: 425px){
+	.bar {
+		   width: 100% !important;
+	   }
+	}
