@@ -288,7 +288,7 @@
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                     <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
+                     <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader" style="color: #ff3a3a;">No {{contactType}} found</p>
                      <div class="table-responsive">
                         <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
                            <div class="input-icon" style="position:relative;right: -11px;">
@@ -340,7 +340,7 @@
                            <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
                         </div>
                      </div>
-                     <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0">No {{contactType}} found</div>
+                     <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader">No {{contactType}} found</div>
                   </fieldset>
                </ng-container>
                 <!---XNFR-125---->
@@ -614,7 +614,7 @@
  </div>
  </div>
  <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
-    <div class="actions-block text-center m10" *ngIf="campaign">
+    <div class="actions-block text-center m10" *ngIf="campaign && !campaign?.campaignProcessing">
        <ng-container *ngIf="campaign.launched">
           <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier ) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="navigateRedistributedCampaigns(campaign)"
           data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
