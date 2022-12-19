@@ -183,6 +183,7 @@
                             <tbody>
                                 <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                                     <td style="width: 10%;">
+                                        <ng-container *ngIf="!campaign?.campaignProcessing">
                                         <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
                                             <img class="imageClass"
                                                 [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
@@ -218,6 +219,10 @@
                                                 [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                                 src="assets/images/survey.png" alt="Survey Campaign">
                                         </ng-container>
+                                        </ng-container>
+                                        <ng-container *ngIf="campaign?.campaignProcessing">
+                                            <img   src="assets/images/processing.gif" alt="Processing">
+                                          </ng-container>
                                         <br>
                                         <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                             <h6 class="view-banner banner-top"
@@ -588,7 +593,7 @@
                                     </ng-container>
                                     <td class="center">
                                         <!----Buttons start here----->
-                                        <div class="actions-block override-actions" style="display: flex;">
+                                        <div class="actions-block override-actions" style="display: flex;" *ngIf="!campaign?.campaignProcessing">
                                             <ng-container *ngIf="campaign.launched">
                                                 <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                                                     <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
@@ -867,7 +872,7 @@
                                         </h5>
                                     </td>
                                     <td>
-                                        <div class="pull-right">
+                                        <div class="pull-right" *ngIf="!campaign?.campaignProcessing">
                                             <div class="dropdown">
                                                 <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
                                                 <ul class="dropdown-menu pull-right">
@@ -1016,6 +1021,9 @@
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
                         <div class="grid-box" style="height:300px">
                             <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                            <ng-container *ngIf="campaign?.campaignProcessing">
+                                <img   src="assets/images/processing.gif" alt="Processing">
+                              </ng-container>
                             <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
                                 <span *ngIf="campaign.campaignName?.length>22">...</span>
@@ -1153,7 +1161,7 @@
                                         *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved</span>
                                 </ng-container>
                             </div>
-                            <div class="bar auto-height">
+                            <div class="bar auto-height" *ngIf="!campaign?.campaignProcessing">
                                 <!--Buttons Start Here-->
                                 <a [class.disablednew]="!campaign.hasAccess"
                                     *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId
