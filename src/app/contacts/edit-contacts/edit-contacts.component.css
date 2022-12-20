@@ -163,6 +163,27 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .align-baseline{
 	align-items: baseline;
 }
+@media (max-width:320px){
+	.mr-pt{
+		margin-right: -25px !important;
+    	padding-top: 3px !important;
+	}
+	.pt{
+		padding-top: 3px;
+	}
+	.mt{
+		margin-top: -7px;
+	}
+}
+@media (max-width:375px){
+	.mt{
+		margin-top: -7px;
+	}
+	.pt{
+		padding-top: 3px;
+	}
+	
+}
 /* @media (max-width:425px){
 	.pr{
 		padding-right: 14px !important;

@@ -222,7 +222,7 @@
 														Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
 													</button>
 												</div>
-												<div class="btn-group pull-right" >
+												<div class="btn-group pull-right pt">
 													<button class="btn dropdown-toggle" style="background-color: rgb(38, 166, 154);color: white;border-radius: 3px !important;"
 														id="save&delete_button" data-toggle="dropdown" translate>
 														Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
@@ -248,7 +248,7 @@
 													</ul>
 												</div>
 												</div>
-												<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-right: 5px;">
+												<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt" style="margin-right: 5px;">
 													<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 														<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
 															data-toggle="modal" data-target="#filterModal">
@@ -313,7 +313,7 @@
 														</button>
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
-														<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+														<div class="btn-group pt" *ngIf="!isSynchronizationList && !isFormList">
 															<button id="copyFrom_clipboard" class="btn green"
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>
@@ -321,7 +321,7 @@
 																	style="font-size: 12px; margin-left: 5px;"></i>
 															</button>
 														</div>
-														<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+														<div class="btn-group mt" *ngIf="!isSynchronizationList && !isFormList">
 															<div class="fileUpload btn btn-primary" id="upload_csv"
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 																style="background-color: #26a69a !important" translate>
