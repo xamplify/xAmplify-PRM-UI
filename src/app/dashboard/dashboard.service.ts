@@ -800,4 +800,12 @@ export class DashboardService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    /****XNFR-209*****/
+    findProcessingCampaigns(pagination:Pagination){
+        const url = this.superAdminUrl + 'findProcessingCampaigns?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+       }
 }
