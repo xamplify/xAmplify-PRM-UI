@@ -1,6 +1,6 @@
 <ng-container *ngIf="!isSuperAdmin">
   <div class="page-sidebar-wrapper" *ngIf="authenticationService?.user?.hasCompany">
-    <div class="page-sidebar navbar-collapse collapse" [ngStyle] = "{'background-color': skin.backgroundColor}" >
+    <div class="page-sidebar navbar-collapse collapse left-menu-color">
       <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader"></app-lefside-navigation-loader>
       <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && menuItemError">
           <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
