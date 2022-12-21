@@ -29,28 +29,43 @@
            <table class='table tgrid' aria-describedby="">
              <thead>
                <tr>
-                <th class="text-center">Campaign Id</th>
-                <th class="text-center" scope="row" translate>Campaign Name</th>
-                <th class="text-center" scope="row" translate>Company Name</th>
+                <th class="text-center">Id</th>
+                <th class="text-center" scope="row" translate>Name</th>
+                <th class="text-center" scope="row" translate>Company</th>
                 <th class="text-center" scope="row" translate>Launched</th>
-                <th class="text-center" scope="row" translate>Channel Campaign</th>
-                <th class="text-center" scope="row" translate>Redistributed Campaign</th>
+                <th class="text-center" scope="row" translate>Channel</th>
+                <th class="text-center" scope="row" translate>Redistributed</th>
                 <th class="text-center" scope="row" translate>User List Status</th>
-                <th class="text-center" scope="row" translate>Channel Campaign Status</th>
-                <th class="text-center" scope="row" translate>Email Notification Status</th>
+                <th class="text-center" scope="row" translate>Channel Status</th>
+                <th class="text-center" scope="row" translate>Email Notifications</th>
                </tr>
              </thead>
              <tbody>
                <ng-container *ngFor="let campaign of pagination.pagedItems;let i = index">
                  <tr>
-                  <td>{{campaign?.campaignName}}</td>
+                  <td>{{campaign?.campaignId}}</td>
+                  <td class="text-center" title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice: 0: 30}}
+                    <span *ngIf="campaign.campaignName?.length>30">...</span>
+                  </td>
                   <td>{{campaign?.companyName}}</td>
-                  <td>{{campaign?.launched}}</td>
-                  <td>{{campaign?.channelCampaign}}</td>
-                  <td>{{campaign?.redistributedCampaign}}</td>
-                  <td>{{campaign?.campaignUserListStatus}}</td>
-                  <td>{{campaign?.campaignPartnerStatus}}</td>
-                  <td>{{campaign?.campaignEmailNotificationsStatus}}</td>
+                  <td class="text-center">
+                      <i  [className]="campaign?.launched ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
+                  <td class="text-center">
+                    <i  [className]="campaign?.channelCampaign ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
+                  <td class="text-center">
+                    <i  [className]="campaign?.redistributedCampaign ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
+                  <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
+                      <i  [className]="campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
+                  <td class="text-center" title="{{campaign?.campaignPartnerStatus}}">
+                    <i  [className]="campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
+                  <td class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
+                    <i  [className]="campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                  </td>
                  </tr>
                </ng-container>
              </tbody>
