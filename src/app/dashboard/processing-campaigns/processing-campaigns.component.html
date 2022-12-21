@@ -58,13 +58,13 @@
                     <i  [className]="campaign?.redistributedCampaign ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
-                      <i  [className]="campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                      <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td class="text-center" title="{{campaign?.campaignPartnerStatus}}">
-                    <i  [className]="campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                    <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
-                    <i  [className]="campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                    <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                  </tr>
                </ng-container>
