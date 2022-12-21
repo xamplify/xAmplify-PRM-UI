@@ -831,6 +831,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           
           goToCalendarView(){
               this.navigatingToRelatedComponent = true;
+              this.viewClass = 'fa fa-calendar';
               if(this.teamMemberId>0){
                 if(this.categoryId!=undefined && this.categoryId>0){
                     this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
@@ -855,15 +856,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.selectedCampaign = campaign;
         
     }
-
+    viewClass:any = 'fa fa-th-list';
     setViewType(viewType:string){
         if("List"==viewType){
             this.modulesDisplayType.isListView = true;
+            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
+            this.viewClass = 'fa fa-th-large';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
@@ -871,6 +874,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
             this.closeFilterOption();
+            this.viewClass = 'fa fa-folder';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = true;
@@ -889,6 +893,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
+            this.viewClass = 'fa fa-th' ;
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -1251,6 +1256,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.selectedCampaignId = 0;
     this.editButtonClicked = false;
     }
-
+   
 
 }

@@ -468,7 +468,7 @@ tr.highlight {
 }
 
 .tabbable-custom {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important; */
 }
 
 .control-label {
@@ -1767,3 +1767,29 @@ strong {
   top: -7px;
 }
 
+/************* 21-12-2022**********/
+.group-dropdown{
+	position: relative;
+    display: inline-block;
+}
+.group-dropdown:hover .group-dd-content
+{
+   display: block;
+}
+.group-dd-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 218px;
+    box-shadow: 0 8px 16px #0003;
+    z-index: 1200;
+    border: 1px solid #dadada;
+    border-radius: 3px;
+    align-items: center;
+	top: 34px;
+    padding: 10px;
+	cursor: pointer;
+}
+.group-dd-content ul li i{
+	width: auto;
+}
