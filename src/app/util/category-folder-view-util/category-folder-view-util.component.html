@@ -4,6 +4,9 @@
         <div class="row">
             <div class="page-toolbar col-xs-12" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
+                    <div class="group-dropdown" style="padding-right:5px">
+                        <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button>
+                    <div class="group-dd-content">
                     <ng-container class='m10'>
                         <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                             <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
@@ -18,9 +21,12 @@
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
                         </span>
                         <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List'" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
-                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
+                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
+                            <i class="fa fa-th p10" aria-hidden="true"></i>
                         </span>
                     </ng-container>
+                    </div>
+                </div>
                     <div class="inputs float-right custom-flex">
                         <div id="left">
                             <select class="form-control" [(ngModel)]="categorySortOption.selectedCategoryDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">

@@ -40,10 +40,11 @@ export class CategoryFolderViewUtilComponent implements OnInit {
  		this.isFromRedistributedCampaignSection = this.router.url.indexOf("campaigns/partner")>-1; 
 
     }
-
+   viewClass :any = 'fa fa-th-list';
     setViewType(type: string) {
         this.inputObject['viewType'] = type;
         this.inputObject['archived'] = this.archived;
+        this.inputObject['viewClass'] = this.viewClass;
         this.valueUpdate.emit(this.inputObject);
     }
 
@@ -54,8 +55,18 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.folderViewType = this.moduleType['folderType'];
         this.selectedModuleType = this.moduleType['type'];
         this.archived = this.moduleType['archived'];
+        this.viewClass = this.moduleType['viewClass'];
         this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
+        // if(this.folderViewType == "Folder-Grid"){
+        //     this.viewClass = 'fa fa-folder';
+        // }else if(this.folderListViewInput == "Folder-List"){
+        //     this.viewClass = 'fa fa-th';
+        // }else if(this.folderListViewInput == "List"){
+        //     this.viewClass = 'fa fa-th-list';
+        // }else if (this.folderListViewInput == "Grid"){
+        //     this.viewClass ='fa fa-th-large';
+        // }
     }
 
     listCategories(pagination: Pagination) {
@@ -173,6 +184,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 
     goToCalendarView(){
         this.navigatingToRelatedComponent.emit();
+        this.viewClass = 'fa fa-calendar';
         let teamMemberId = this.route.snapshot.params['teamMemberId'];
         if(teamMemberId!=undefined && teamMemberId>0){
             this.router.navigate(['/home/campaigns/calendar/' + teamMemberId]);
