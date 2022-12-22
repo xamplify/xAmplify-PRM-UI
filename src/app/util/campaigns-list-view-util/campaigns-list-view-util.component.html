@@ -1,6 +1,8 @@
 <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
     <a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
-    <strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
+    <strong translate>Editing this scheduled campaign is not permitted because the campaign has been already launched/it is in progress, Please
+        refresh the page or <a href="javascript: void(0);" (click)="refreshPage()">Click here</a> to refresh the
+        page.</strong>
 </div>
 
 <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }">
