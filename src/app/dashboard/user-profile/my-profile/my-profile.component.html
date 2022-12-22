@@ -1896,6 +1896,7 @@
                     <div class="form-group">
                         <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
+                        <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
