@@ -873,8 +873,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
-            this.closeFilterOption();
             this.viewClass = 'fa fa-folder';
+            this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = true;

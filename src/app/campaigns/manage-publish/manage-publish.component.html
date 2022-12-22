@@ -78,11 +78,75 @@
                   translate>Survey</li>
                 <li class="filter" style="display: none;" translate>Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-12 col-md-8"
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-8 pb5"
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                 <div class="row">
                    <div class="btn-group col-xs-12 col-sm-4 col-md-4 p0">
-                    <div class="pull-right">
+                    <!-- <div class="pull-right">
+                      <div class="group-dropdown">
+                        <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button>
+                      <div class="group-dd-content">
+                       <ng-container class='m10' >
+                        <div style="display: flex; justify-content: space-between; padding-left: 0;">
+                        <span class="btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          title="Calendar View" tabindex="0">
+                          <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
+                        </span>
+                        <span class="btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          title="List View" [class.disabled]="modulesDisplayType.isListView"
+                          (click)="setViewType('List')" >
+                          <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                      </span>
+                        <span class="btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
+                          (click)="setViewType('Grid')">
+                          <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                        </span>
+                        <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
+                          <span class="btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                            title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
+                            (click)="setViewType('Folder-Grid')">
+                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                          </span>
+                          <span class="btn-xs hidden-xs l-g-view folder-list-span-custom-width"
+                            data-toggle="tooltip" data-placement="bottom" title="Folder List View"
+                            [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
+                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> --
+                            <i class="fa fa-th p10" aria-hidden="true"></i>
+
+                          </span>
+                          
+                        </ng-container>
+                        <span *ngIf="pagination.categoryId>0" class="btn-xs hidden-xs l-g-view"
+                          data-toggle="tooltip" data-placement="bottom" title="Go back"
+                          (click)="setViewType('Folder-Grid')">
+                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                        </div>
+                      </ng-container>
+
+                    </div>
+                    </div>
+                    </div> -->
+                  </div>
+                  <!-- <div class="col-xs-5 col-sm-4 col-md-3" style="padding-right: 18px;padding-left: 3px;">
+                    <div class="mSortWid">
+                      <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                        </option>
+                      </select>
+
+                      <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
+                          {{sortOption.name}}
+                        </option>
+                      </select>
+                    </div>
+                  </div> -->
+
+                  <div class="mFloatSearch" style="display: flex;padding-right: 30px">
+                    <div class="">
                       <div class="group-dropdown">
                         <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button>
                       <div class="group-dd-content">
@@ -127,26 +191,23 @@
                     </div>
                     </div>
                     </div>
-                  </div>
-                  <div class="col-xs-5 col-sm-4 col-md-3" style="padding-right: 18px;padding-left: 3px;">
-                    <div class="mSortWid">
-                      <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
-                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
-                        </option>
-                      </select>
-
-                      <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
-                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
-                          {{sortOption.name}}
-                        </option>
-                      </select>
+                    <div class="col-xs-5 col-sm-5 col-md-5" style="padding-right: 8px;padding-left: 3px;">
+                      <div class="mSortWid">
+                        <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                          (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                          <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                          </option>
+                        </select>
+  
+                        <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                          (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                          <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
+                            {{sortOption.name}}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
-                    <div class="portlet-input input-inline align" style="display: inline-flex;">
+                    <div class="portlet-input input-inline" style="display: inline-flex;">
                       <div class="input-icon campaign-search-rr mr5">
                         <input type="text" class="form-control" [(ngModel)]="searchKey"
                           [ngModelOptions]="{standalone: true}" placeholder="Search"
@@ -161,7 +222,7 @@
                         title="Filter" (click)="toggleFilterOption()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                       </span>
-                      <div class="" style="padding-left: 4px;display: flex;">
+                      <div class="pr5" style="display: flex;">
                         <a  data-placement="bottom" (click)="listCampaign(pagination)" class="btn btn-xs l-g-view" data-toggle="tooltip"
                          title="Refresh">
                         <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>

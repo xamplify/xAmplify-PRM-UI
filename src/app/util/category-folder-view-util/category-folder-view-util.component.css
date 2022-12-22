@@ -138,3 +138,8 @@
     top: 9px;
     position: relative;
 }
+
+/*** Tharak(22-12-2022)*****/
+.group-dd-content {
+    min-width: 241px;
+}

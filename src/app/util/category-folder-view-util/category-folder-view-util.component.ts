@@ -29,6 +29,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     isFromCampaignModule = false;
 	isFromRedistributedCampaignSection = false;
     folderViewType = "List";
+    viewClass  = 'fa fa-th-list';
 	folderListViewInput = {};
 	selectedModuleType = "";
     archived: any = false;
@@ -38,14 +39,23 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) {
         this.isFromCampaignModule = this.router.url.indexOf("campaigns")>-1; 
  		this.isFromRedistributedCampaignSection = this.router.url.indexOf("campaigns/partner")>-1; 
-
+         
     }
-   viewClass :any = 'fa fa-th-list';
+
     setViewType(type: string) {
         this.inputObject['viewType'] = type;
         this.inputObject['archived'] = this.archived;
         this.inputObject['viewClass'] = this.viewClass;
+        this.viewClass = 'fa fa-th';
         this.valueUpdate.emit(this.inputObject);
+    }
+    setViewClass(type: string){
+      if('Folder-Grid' == type ){
+        this.viewClass = 'fa fa-folder';
+      }
+      else{
+        this.viewClass = 'fa fa-th';
+      }
     }
 
     ngOnInit() {
@@ -58,12 +68,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.viewClass = this.moduleType['viewClass'];
         this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
-        // if(this.folderViewType == "Folder-Grid"){
+        // if(this.folderViewType == "Folder-List"){
         //     this.viewClass = 'fa fa-folder';
-        // }else if(this.folderListViewInput == "Folder-List"){
-        //     this.viewClass = 'fa fa-th';
-        // }else if(this.folderListViewInput == "List"){
-        //     this.viewClass = 'fa fa-th-list';
         // }else if (this.folderListViewInput == "Grid"){
         //     this.viewClass ='fa fa-th-large';
         // }
