@@ -143,3 +143,6 @@
 .group-dd-content {
     min-width: 241px;
 }
+.group-dd-content-width{
+    min-width: 198px;
+} 

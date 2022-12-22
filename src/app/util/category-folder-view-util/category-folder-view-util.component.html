@@ -6,7 +6,7 @@
                 <div class="btn-group pull-right">
                     <div class="group-dropdown" style="padding-right:5px">
                         <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button>
-                    <div class="group-dd-content">
+                    <div class="group-dd-content" [ngStyle]="{'min-width': isFromCampaignModule && !isFromRedistributedCampaignSection ? '241px' : '198px' }">
                     <ng-container class='m10'>
                         <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                             <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
