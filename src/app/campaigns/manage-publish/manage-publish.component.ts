@@ -910,14 +910,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     navigateToManageSection(viewType:string){
         if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
-            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
-            this.viewClass= 'fa fa-list-large';
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
@@ -925,7 +923,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
-            this.viewClass = 'fa fa-folder';
            this.modulesDisplayType.isFolderGridView = false;
            this.modulesDisplayType.isFolderListView = false;
            if("List"==viewType){
