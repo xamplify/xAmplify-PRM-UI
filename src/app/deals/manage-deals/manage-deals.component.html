@@ -127,13 +127,13 @@
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
-                        <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom" style="margin-left: 4px !important;" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                           title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                        
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Download"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-left: 4px;" data-toggle="tooltip" title="Download"
                         [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>

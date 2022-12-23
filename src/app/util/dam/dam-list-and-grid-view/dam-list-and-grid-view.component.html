@@ -462,7 +462,7 @@
 						<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
 							<i class="fa fa-refresh" aria-hidden="true"></i>
 						</a>
-						<div style="float: left;">
+						<div class="pb3" style="float: left;">
 							<ng-container *ngIf="isPartnerView">
 								<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 									<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>

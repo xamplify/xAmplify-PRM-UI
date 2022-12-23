@@ -130,10 +130,10 @@
       <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="tabbable tabbable-custom tabbable-noborder" id="header" style="box-shadow: none !important;border-radius: 5px;">
+          <div class="page-bar p10" id="header" style="box-shadow: none !important;border-radius: 5px;">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                <div class="page-bar m10" style="border-bottom: 1px solid #eee;padding-bottom: 8px;">
+                <div class="m10 margin-left-right ml-mr pb" style="border-bottom: 1px solid #eee;padding-bottom: 50px;">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
@@ -146,18 +146,18 @@
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
                         <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom"
-                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View" style="margin-left: 3px !important;"
                           [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 3px !important;"
                         title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
                         (click)="downloadLeads()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
 
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 4px;">
                         <button class="btn btn-primary padding align" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
@@ -186,7 +186,7 @@
 
                       <div class="inputs display mr-pd" align="right">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
-                          <div class="input-icon right r5 r20" style="position: relative;right: -11px;">
+                          <div class="input-icon right r5 r20" style="position: relative;right: -3px;">
                             <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search"
                               (keypress)="leadEventHandler($event.keyCode)">
@@ -197,7 +197,7 @@
                             </button>
                           </div>
                         </div>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: -8px !important;"
                           title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
@@ -276,10 +276,10 @@
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
                 <!-- -------------------- List View for Leads-------------------- -->
-                <section class='m10'
+                <section class='col-xs-12 col-lg-12 col-md-12 m10 ml-w'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
 
-                  <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
+                  <div class="table-responsive width" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
                         <tr>

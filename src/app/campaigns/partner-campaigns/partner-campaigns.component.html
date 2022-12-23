@@ -68,8 +68,9 @@
                         </button>
                         <button  class="btn-xs hidden-xs l-g-view folder-list-span-custom-width" 
                         title="Folder List View" [class.disabled]="this.modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                        <img src="assets/images/folder-list.png" style="height: 15px !important;margin-top: -4px;" alt=""/>
-                        </button>
+                        <!-- <img src="assets/images/folder-list.png" style="height: 15px !important;margin-top: -4px;" alt=""/> -->
+                        <i class="fa fa-th p10" aria-hidden="true"></i>
+                      </button>
                       </ng-container>
                       <button *ngIf="pagination.categoryId>0" class="btn-xs hidden-xs l-g-view"  
                       title="Go back" (click)="setViewType('Folder-Grid')">

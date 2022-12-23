@@ -69,6 +69,14 @@
     .padding{
         padding: 7px 5px !important;
     }
+    .ml-w{
+        margin-left: -11px !important;
+        width: 107%;
+    }
+    .ml-mr{
+        margin-left: 5px !important;
+        margin-right: -3px !important;
+    }
 }
 @media (max-width:375px){
     .ml{
@@ -82,4 +90,16 @@
     .r20{
         right: -20px !important;
     }
+    .pb{
+        padding-bottom: 105px !important;
+    }
+    .width{
+        width: 103%;
+    }
+    .pb{
+        padding-bottom: 110px;
+    }
+}
+.margin-left-right{
+    margin-left: 24px;margin-right: 5px;
 }

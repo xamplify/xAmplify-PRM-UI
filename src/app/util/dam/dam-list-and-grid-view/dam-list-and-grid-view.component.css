@@ -285,3 +285,9 @@ cursor: default;
 .min-width-thtwpx{
   min-width: 320px;
 }
+/* sudha sri */
+@media (max-width:320px){
+  .pb3{
+    padding-bottom: 3px;
+  }
+}
