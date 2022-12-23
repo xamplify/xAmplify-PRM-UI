@@ -668,4 +668,5 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	 }
 
+
 }

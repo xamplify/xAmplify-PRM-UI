@@ -6,24 +6,24 @@
                 <div class="btn-group pull-right">
                     <div class="group-dropdown" style="padding-right:5px">
                         <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button>
-                    <div class="group-dd-content" [ngStyle]="{'min-width': isFromCampaignModule && !isFromRedistributedCampaignSection ? '241px' : '198px' }">
+                    <div class="group-dd-content" [ngStyle]="{'min-width': isFromCampaignModule && !isFromRedistributedCampaignSection ? '243px' : '198px' }">
                     <ng-container class='m10'>
-                        <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
+                        <button *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                             <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
-                    </span>
-                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
+                        </button>
+                        <button class="btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
                             <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                        </span> &nbsp;
-                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')">
+                        </button> &nbsp;
+                        <button class="btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')">
                             <i  class="fa fa-th-large p10" aria-hidden="true"></i>
-                        </span>
-                        <span class="btn btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';setViewClass('Folder-Grid')"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
+                        </button>
+                        <button class="btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';setViewClass('Folder-Grid')"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
-                        </span>
-                        <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';setViewClass('Folder-List')" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
+                        </button>
+                        <button class="btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';setViewClass('Folder-List')" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
                             <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
                             <i class="fa fa-th p10" aria-hidden="true"></i>
-                        </span>
+                        </button>
                     </ng-container>
                     </div>
                 </div>

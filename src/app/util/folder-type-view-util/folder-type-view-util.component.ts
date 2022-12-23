@@ -12,6 +12,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Roles } from 'app/core/models/roles';
+import { Angular2Csv } from 'angular2-csv';
 declare var $: any;
 @Component({
   selector: 'app-folder-type-view-util',
@@ -31,6 +32,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   roles:Roles = new Roles();
   isPartnerView = false;
   type:string = "";
+  viewClass : any;
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,

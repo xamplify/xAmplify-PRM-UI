@@ -1793,3 +1793,10 @@ strong {
 .group-dd-content ul li i{
 	width: auto;
 }
+
+/****** tharak(22-12-2022)*****/
+.disabled{
+	pointer-events: auto;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
