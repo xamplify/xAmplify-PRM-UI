@@ -805,3 +805,7 @@ input:checked + .slider-new:before {
 .activeCRM {
   background-color: #d7e5ff;
 }
+
+.red {
+  color: #f76c6c
+}
