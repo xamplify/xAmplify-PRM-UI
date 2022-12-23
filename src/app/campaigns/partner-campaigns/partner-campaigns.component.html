@@ -343,7 +343,7 @@
           </div>
           <ng-container *ngIf="this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView">
             <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
-              <div *ngIf="pagination.pagedItems.length !== 0">
+              <div class="col-xs-12" *ngIf="pagination.pagedItems.length !== 0">
                 <app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAllFilteredResults($event)">
                 </app-pagination>
               </div>
