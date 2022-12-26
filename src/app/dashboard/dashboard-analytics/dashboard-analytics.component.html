@@ -224,7 +224,7 @@
                             && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
                             (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
                 <div class="row">
-                    <div class="page-bar portlet light border-radius-0 shadow mmtp" *ngIf="authenticationService?.mdf">
+                    <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
                         <app-mdf-statistics  [applyFilter]="applyFilter" *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
                     </div>
                 </div>

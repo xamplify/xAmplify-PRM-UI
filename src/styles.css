@@ -1535,9 +1535,11 @@ strong {
   margin: 0 0;
 }
 .welcome-header {
-  margin: 0.3em 0;
+  margin: 0px;
   color: #00a6e8;
-  font-weight: 400;
+  font-weight: 600;
+  padding:5px;
+  
 }
 
 .text-overflow {
