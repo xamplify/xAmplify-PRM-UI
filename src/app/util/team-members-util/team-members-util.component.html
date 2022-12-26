@@ -50,7 +50,7 @@
   <!---Team Members---->
   <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
   <!---Header-->
-  <div class="clearfix" *ngIf="isTeamMemberModule">
+  <!-- <div class="clearfix" *ngIf="isTeamMemberModule">
     <section class="clearfix">
       <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
         <div class="col-xs-6 col-sm-2 hidden-xs">
@@ -69,15 +69,48 @@
         </div>
       </ng-container>
     </section>
-  </div>
+  </div> -->
  <!---End Of Header-->
  <!--List Of Team members---->
  <div class="portlet light">
-  <div class="portlet-title">
-    <div class="caption" translate>Team Members</div>
-    <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+  <div class="portlet-title" style="border-bottom: none;">
+    <div class="row">
+      <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
+    <div class="caption" translate>Team Members
+      <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
       <i class="fa fa-power-off" aria-hidden="true"></i> Logout
     </button>
+    </div>
+    </div>
+    <!-- <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+      <i class="fa fa-power-off" aria-hidden="true"></i> Logout
+    </button> -->
+    <div class="col-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
+      <div class="row">
+        <div class="clearfix" *ngIf="isTeamMemberModule">
+          <section class="clearfix">
+            <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
+              <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
+                <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
+                    <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
+                    <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
+                </div>
+            </div>
+              <div class="col-xs-12 col-sm-4 pull-right">
+                  <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
+                      <h6 style="font-size:14px" translate>Add</h6>
+                  </button>
+              </div>
+              <!-- <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
+                  <a id="right" class="btn btn-success" (click)="downloadTeamMembersCsv()" download translate>Download CSV Template</a>
+              </div> -->
+            </ng-container>
+          </section>
+        </div>
+      </div>
+      <!-- close inner row-->
+    </div>
+    <div class="col-4 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
     <div class="tools zero-padding-margin">
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
@@ -90,9 +123,21 @@
                 </div>
             </div>
         </div>
-        <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
+        <span data-placement="bottom" class="btn btn-xs  l-g-view" data-toggle="tooltip"
+        title="Refresh" (click)="refreshList()">
+        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
+      </span>
+      <!-- Download TeamMembers Csv -->
+      <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+        title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
+        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+        && !authenticationService?.module?.deletedPartner ">
+        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+      </span>
+      <!-- End Download TeamMembers Csv-->
+        <!-- <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
           <i aria-hidden="true" class="fa fa-refresh"></i>
-       </a>
+       </a> -->
     </div>
   </div>
   <div class="portlet-body clearfix">
@@ -230,6 +275,9 @@
       </div>
   </div>
 </div>
+<!-- <div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+  <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
+</div> -->
 
   </ng-container>
   <!---End Of Team Members---->
@@ -371,7 +419,6 @@
 </div>
 <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
 <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-  
   <div class="table-responsive">
     <table class="table table-striped silvertm" id="add-team-member-table"  aria-describedby="TeamMemberList">
       <thead>
