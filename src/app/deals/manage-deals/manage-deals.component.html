@@ -302,7 +302,7 @@
                               </h5>
                             </td>
                             <td style="width: 10%;">
-                              <select [disabled]="authenticationService?.module?.deletedPartner" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
+                              <select [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
                                 style="width: 135px">
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                               </select>
@@ -315,11 +315,11 @@
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" title="Edit Deal"
                                       id="deal">
                                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                                     </a>
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
                                       title="Delete Deal" id="deal">
                                       <i class="fa fa-trash mr5" aria-hidden="true"></i>
                                     </a>
