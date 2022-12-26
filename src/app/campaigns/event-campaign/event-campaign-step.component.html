@@ -314,7 +314,7 @@
 														<div class="email-options-checkbox-group email-options-notify">
 															<div class="email-options-checkbox clearfix">
 																<div class="col-sm-1 ui-switch-custom-div">
-																	<switch [status]="" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																	<switch [status]="eventCampaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 																		(statusChange)="configurePipelines()">
 																	</switch>
 																</div>
@@ -331,7 +331,7 @@
 													</div>
 												</div>
 	
-												<div class="form-group" *ngIf="isConfigurePipelines"
+												<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 													[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 													<label class="control-label col-sm-3">Lead Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
 													<div class="col-sm-9">
@@ -344,7 +344,7 @@
 													</div>
 												</div>
 	
-												<div class="form-group" *ngIf="isConfigurePipelines"
+												<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 													[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 													<label class="control-label col-sm-3">Deal Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
 													<div class="col-sm-9">

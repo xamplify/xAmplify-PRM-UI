@@ -20,6 +20,7 @@ export class SfDealComponent implements OnInit {
   @Input() campaign: any;
   @Input() public isPreview = false;
   @Input() isVendor = false;
+  @Input() activeCRM: string;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormValid: boolean = true;
@@ -32,6 +33,7 @@ export class SfDealComponent implements OnInit {
   sfFormError: string = "";
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isLoading = false;
+  
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -52,9 +54,11 @@ export class SfDealComponent implements OnInit {
       }
       
       this.isLoading = true;
-      this.getActiveCRMCustomForm();
-      //this.getSalesforceCustomForm();
-      
+      if ("SALESFORCE" === this.activeCRM) {
+        this.getSalesforceCustomForm();
+      } else {
+        this.getActiveCRMCustomForm();
+      }      
     }
   }
   
@@ -66,12 +70,14 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
-          let selectedOptions = multiSelectObj.value.split(';');        
-          for(let option of selectedOptions){
-            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-            this.multiSelectvalueArray.push(this.optionObj);
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray;
           }
-          multiSelectObj.value = this.multiSelectvalueArray; 
         }      
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
@@ -96,12 +102,14 @@ export class SfDealComponent implements OnInit {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
         for (let multiSelectObj of allMultiSelects) {
-          let selectedOptions = multiSelectObj.value.split(';');        
-          for(let option of selectedOptions){
-            this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-            this.multiSelectvalueArray.push(this.optionObj);
+          if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
+            let selectedOptions = multiSelectObj.value.split(';');
+            for (let option of selectedOptions) {
+              this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+              this.multiSelectvalueArray.push(this.optionObj);
+            }
+            multiSelectObj.value = this.multiSelectvalueArray;
           }
-          multiSelectObj.value = this.multiSelectvalueArray; 
         }      
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
@@ -257,4 +265,13 @@ export class SfDealComponent implements OnInit {
       }
     }
   }
+
+  numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number    
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+      return false;
+    }
+    return true;
+  }
+
 }

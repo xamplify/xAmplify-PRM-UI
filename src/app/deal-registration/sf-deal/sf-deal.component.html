@@ -11,11 +11,20 @@
         <span class="required" *ngIf="columnInfo.required">*</span>
       </label>
 
-      <!-- ---------------------------TextBox & Email----------------------------- -->
-      <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
+      <!-- ---------------------------TextBox & Email & Number----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
         <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor"
           class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
           [(ngModel)]="columnInfo.value" maxlength="{{columnInfo.labelLength}}" (input)="validateField(columnInfo)">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
+
+      <!-- ---------------------------Number----------------------------- -->
+      <ng-container *ngIf="columnInfo.labelType=='number'">
+        <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor"
+          class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
+          [(ngModel)]="columnInfo.value" maxlength="{{columnInfo.labelLength}}" (keypress)="numericOnly($event)"
+          (input)="validateField(columnInfo)">
         <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
       </ng-container>
 
@@ -89,13 +98,28 @@
           (input)="validateField(columnInfo)" [disabled]="isVendor || isPreview"></textarea>
       </ng-container>
       <!-- ---------------------------Radio Button----------------------------- -->
-      <ng-container *ngIf="columnInfo.labelType=='radio'">
+      <!-- <ng-container *ngIf="columnInfo.labelType=='radio'">
         <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
           <div class="form-check">
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                 (click)="columnInfo.value = radioButton.id"
                 [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue"
+                [disabled]="isVendor || isPreview">
+              {{radioButton.name}}
+            </label>
+          </div>
+          <br>
+        </ng-container>
+      </ng-container> -->
+
+      <ng-container *ngIf="columnInfo.labelType=='radio'">
+        <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                (click)="columnInfo.value = radioButton.labelId"
+                [checked]="radioButton.labelId === columnInfo.value || radioButton.labelId=== columnInfo.selectedValue"
                 [disabled]="isVendor || isPreview">
               {{radioButton.name}}
             </label>

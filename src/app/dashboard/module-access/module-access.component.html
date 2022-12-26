@@ -105,6 +105,26 @@
 										<option value="20" [selected]="roleId ==20">Prm</option>
 									</select>
 							</tr>
+							<!-- XNFR-139 -->
+							<tr>
+								<th scope="col">Maximum Admins
+									<a *ngIf="!ngxLoading">
+										<span>
+											<strong>
+												<span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span>
+											</strong>
+										</span>
+									</a>
+								</th>
+								<td style="width: 50%;">
+									<select class="form-control" id="maxAdmins-Edit" [(ngModel)]="campaignAccess.maxAdmins" (change)="setMaxAdmins()">
+										<option value="2" [selected]="campaignAccess.maxAdmins ==2">2</option>
+										<option value="3" [selected]="campaignAccess.maxAdmins ==3">3</option>
+										<option value="4" [selected]="campaignAccess.maxAdmins ==4">4</option>
+										<option value="5" [selected]="campaignAccess.maxAdmins ==5">5</option>
+									</select>
+								</td>	
+							</tr>
 							<ng-container *ngIf="roleId!=20">
 								<tr>
 									<th scope="row">Sales Enablement (View In Browser In Create Campaign)</th>
@@ -266,6 +286,7 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
+							
 						</tbody>
 					</table>
 				</div>

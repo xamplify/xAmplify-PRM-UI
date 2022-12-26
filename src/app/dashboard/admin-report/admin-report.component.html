@@ -15,8 +15,9 @@
     </ul>
   </div>
   <div>
+    <app-processing-campaigns *ngIf="!detailsTielsView"></app-processing-campaigns>
    <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 
-  <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
+    <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
 	  <!-- -Top 10 Recent Registered Users -->
 	  <app-recent-logged-in-users [type]="'registered'" (notifyAdminReportComponent)="selectedVendorDetails($event)"></app-recent-logged-in-users>

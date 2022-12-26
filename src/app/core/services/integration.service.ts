@@ -155,4 +155,16 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getCRMPipelines(loggedInUserId: number, type: any) {
+        return this._http.get(this.authenticationService.REST_URL + `/pipeline/DEAL/${type}/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+      }
+
+      syncActiveCRMPipelines(loggedInUserId: number, type: any) {
+        return this._http.get(this.authenticationService.REST_URL + `${type}/sync/pipelines/${loggedInUserId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

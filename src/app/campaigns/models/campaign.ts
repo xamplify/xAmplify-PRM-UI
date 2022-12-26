@@ -102,4 +102,7 @@ export class Campaign {
     oneClickLaunchCampaignRedistributed = false;
     oneClickLaunchCondition = false;
     pushToCRM = [];
+    configurePipelines = false;
+    utcTimeInString = "";
+    campaignProcessing = false;
 }

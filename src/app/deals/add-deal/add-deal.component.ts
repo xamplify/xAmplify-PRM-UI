@@ -207,15 +207,15 @@ export class AddDealComponent implements OnInit {
             self.deal.createdForCompanyId = self.lead.createdForCompanyId;
             self.createdForCompanyIdError = false;
             self.deal.associatedUserId = self.lead.associatedUserId;
-            //this.isSalesForceEnabled();
+            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+              self.deal.campaignId = self.lead.campaignId;
+              self.deal.campaignName = self.lead.campaignName;
+             // this.getCampaignDealPipeline();
+            } else {
+              //self.getPipelines();
+            }
+            //this.isSalesForceEnabled();         
             this.getActiveCRMDetails();
-            // if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-            //   self.deal.campaignId = self.lead.campaignId;
-            //   self.deal.campaignName = self.lead.campaignName;
-            //   this.getCampaignDealPipeline();
-            // } else {
-            //   self.getPipelines();
-            // }
           }
         },
         error => {
@@ -820,10 +820,13 @@ setSfFormFieldValues() {
               let sfCfData = new SfCustomFieldsDataDTO();
               sfCfData.sfCfLabelId = formLabel.labelId;                    
               if(formLabel.labelType === 'multiselect'){
+                if (formLabel.value != undefined && formLabel.value.length > 0) {
                   for (let option of formLabel.value) {
-                      sfCfData.value = sfCfData.value + option.name + ";";
+                    sfCfData.value = sfCfData.value + option.name + ";";
                   }
-                  sfCfData.value = sfCfData.value.substring(0,sfCfData.value.length-1);
+                  sfCfData.value = sfCfData.value.substring(0, sfCfData.value.length - 1);
+                }
+                  
               }else if(formLabel.labelType === 'datetime'){
                   sfCfData.value = formLabel.value;
                   sfCfData.type = formLabel.labelType;
@@ -938,23 +941,14 @@ getActiveCRMDetails() {
           this.showDefaultForm = true; 
           this.activeCRMDetails.hasDealPipeline = false;                      
           if (this.edit || this.preview) {
-            this.setProperties();
-            if (this.deal.campaignId > 0) {
-              this.getCampaignDealPipeline();
-            } else {
-              this.getPipelines();
-            }
+            this.setProperties();            
           } else {
-            this.getQuestions();
-            
-            if (this.lead.campaignId != null && this.lead.campaignId > 0) {
-              this.deal.campaignId = this.lead.campaignId;
-              this.deal.campaignName = this.lead.campaignName;
-              this.getCampaignDealPipeline();
-            } else {
-              this.resetPipelines();
-            }
-
+            this.getQuestions();                     
+          }
+          if (this.deal.campaignId > 0) {
+            this.getCampaignDealPipeline();
+          } else {
+            this.getPipelines();
           }
           this.getDealTypes();
         } else { 
@@ -964,6 +958,7 @@ getActiveCRMDetails() {
             this.getActiveCRMPipelines();
           }        
         }
+        
       });
 }
 

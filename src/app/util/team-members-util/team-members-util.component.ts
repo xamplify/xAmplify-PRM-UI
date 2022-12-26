@@ -19,6 +19,8 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { AnalyticsCountDto } from 'app/core/models/analytics-count-dto';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $:any, swal: any;
 @Component({
@@ -28,8 +30,6 @@ declare var $:any, swal: any;
   providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch, Properties, RegularExpressions]
 })
 export class TeamMembersUtilComponent implements OnInit, OnDestroy {
-
-
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   addTeamMemberLoader: HttpRequestLoader = new HttpRequestLoader();
   teamMembers: Array<any> = new Array<any>();
@@ -69,7 +69,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   fileImportInput: any;
   csvRecords: any[];
   newlyAddedTeamMembers: any[];
-  isOrgAdmin = false;
   /******Preview Group Modules */
 
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -80,6 +79,13 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   moveToTop: boolean;
   showPartnersPopup:boolean;
   selectedTeamMemberId:number;
+  showSecondAdmin = true;
+  analyticsCountDto:AnalyticsCountDto = new AnalyticsCountDto();
+  showPrimaryAdminConfirmSweetAlert = false;
+  selectedPrimaryAdminTeamMemberUserId = 0;
+  primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  adminsLoader:HttpRequestLoader = new HttpRequestLoader();
+  admins:Array<any> = new Array<any>();
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -87,7 +93,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
-    this.isOrgAdmin = this.authenticationService.module.isOrgAdmin;
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.loggedInUserId;
@@ -96,9 +101,23 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.primaryAdminSweetAlertParameterDto.confirmButtonText = "Yes, Change It";
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
+    
+  }
+
+  findMaximumAdminsLimitDetails(){
+    this.teamMemberService.findMaximumAdminsLimitDetails().subscribe(
+      response=>{
+        this.analyticsCountDto = response.data;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      },error=>{
+        this.analyticsCountDto = new AnalyticsCountDto();
+        this.referenceService.loading(this.httpRequestLoader, false);
+      }
+    );
   }
 
   ngOnDestroy(): void {
@@ -129,7 +148,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         error => {
           this.logger.errorPage(error);
         }, () => {
-        
+          this.referenceService.loading(this.httpRequestLoader, true);
+          this.findMaximumAdminsLimitDetails();
         }
       );
   }
@@ -216,15 +236,18 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.teamMemberService.updateTeamMemberXNFR2(this.team)
         .subscribe(
           data => {
-            this.editTeamMember = false;
             this.referenceService.loading(this.addTeamMemberLoader, false);
             this.referenceService.goToTop();
             this.loading = false;
             if (data.statusCode == 200) {
+              this.editTeamMember = false;
               this.customResponse = new CustomResponse('SUCCESS', data.message, true);
               this.pagination = new Pagination();
               this.findAll(this.pagination);
-            } else if (data.statusCode == 403) {
+            }else if(data.statusCode==3008){
+              this.customResponse = new CustomResponse('ERROR', data.message, true);
+            }else if (data.statusCode == 403) {
+              this.editTeamMember = false;
               this.authenticationService.forceToLogout();
             }
           },
@@ -451,7 +474,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   selectTeamMemberGroupId(teamMemberGroupId: any) {
     this.team.teamMemberGroupId = teamMemberGroupId;
     this.validateAddTeamMemberForm("teamMemberGroup");
-    if (this.isOrgAdmin) {
+    if (this.showSecondAdmin) {
       this.team.enableOption = false;
       this.team.secondAdmin = false;
       this.loading = true;
@@ -516,6 +539,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.editTeamMember = false;
     this.saveOrUpdateButtonText = "Save";
     this.refreshList();
+  }
+  
+  goToManageTeam(){
+    this.clearForm();
+    this.customResponse = new CustomResponse();
   }
 
 
@@ -680,7 +708,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
 
   validateSecondAdminOptionForCsvUsers(teamMemberGroupId: number, team: any) {
     team.teamMemberGroupId = teamMemberGroupId;
-    if (this.isOrgAdmin) {
+    if (this.showSecondAdmin) {
       team.enableOption = false;
       team.secondAdmin = false;
       this.loading = true;
@@ -855,6 +883,50 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     if(refreshList){
       this.refreshList();
     }
+  }
+ /********XNFR-139*********/
+  setPrimaryAdminOptions(teamMember:any){
+    if(teamMember.status=='APPROVE' && !this.isLoggedInAsTeamMember){
+      this.showPrimaryAdminConfirmSweetAlert = true;
+      this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
+    }
+  }
+
+  /********XNFR-139*********/
+  enableAsPrimaryAdmin(event:any){
+    if (event) {
+      this.loading = true;
+      this.teamMemberService.updatePrimaryAdmin(this.selectedPrimaryAdminTeamMemberUserId).
+      subscribe(
+          response=>{
+            this.loading = false;
+            this.referenceService.showSweetAlertProceesor("Primary Admin Updated Successfully.");
+            let self = this;
+             setTimeout(function(){
+                 self.authenticationService.logout();
+             }, 3000);
+          },error=>{
+            this.logger.errorPage(error);
+          }
+      );
+    }
+    this.showPrimaryAdminConfirmSweetAlert = false;
+  }
+
+  findPrimaryAdminAndExtraAdmins(){
+    this.admins = [];
+    $('#adminsPreviewPopup').modal('show');
+    this.referenceService.scrollToModalBodyTopByClass();
+    this.referenceService.startLoader(this.adminsLoader);
+    this.teamMemberService.findPrimaryAdminAndExtraAdmins().subscribe(
+      response=>{
+        this.admins = response.data;
+        this.referenceService.stopLoader(this.adminsLoader);
+      },error=>{
+        $('#adminsPreviewPopup').modal('hide');
+        this.referenceService.showSweetAlertServerErrorMessage();
+      }
+    )
   }
 
 }

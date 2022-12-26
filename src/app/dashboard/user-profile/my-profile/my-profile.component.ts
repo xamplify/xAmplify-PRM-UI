@@ -428,13 +428,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			if (this.referenceService.integrationCallBackStatus) {
-				this.activeTabName = 'integrations';
-				this.activeTabHeader = this.properties.integrations;
-			} else {
-				this.activeTabName = 'personalInfo';
-				this.activeTabHeader = this.properties.personalInfo;
-			}
+			// if (this.referenceService.integrationCallBackStatus) {
+			// 	this.activeTabName = 'integrations';
+			// 	this.activeTabHeader = this.properties.integrations;
+			// 	//this.referenceService.integrationCallBackStatus = false;
+			// } else {
+			// 	this.activeTabName = 'personalInfo';
+			// 	this.activeTabHeader = this.properties.personalInfo;
+			// }
+
+			this.activeTabName = 'personalInfo';
+			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
 			this.geoLocation();
 			this.videoUtilService.normalVideoJsFiles();
@@ -3672,13 +3676,30 @@ configSalesforce() {
 	}
 
 	getActiveCRMDetails() {
+		this.referenceService.loading(this.httpRequestLoader, true);
 		this.integrationService.getActiveCRMDetailsByUserId(this.loggedInUserId)
 			.subscribe(
 				data => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					this.activeCRMDetails = data.data;
 					
 				});
+	}
+
+	syncPipelines() {
+		this.ngxloading = true;
+		this.integrationService.syncActiveCRMPipelines(this.loggedInUserId, this.activeCRMDetails.type.toLowerCase())
+			.subscribe(
+				data => {
+					this.ngxloading = false;
+					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
+					this.listAllPipelines(this.pipelinePagination);
+				}, error=>{
+					this.ngxloading = false;					
+				}
+			);
+
 	}
 
 }

@@ -360,8 +360,10 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.lead = data.data; 
-            //this.isSalesForceEnabled();          
+            self.lead = data.data;  
+            if (self.lead.createdForCompanyId > 0) {
+            }
+
             this.getActiveCRMDetails(); 
           }
         },
@@ -466,7 +468,11 @@ export class AddLeadComponent implements OnInit {
               }
             } else {              
               //this.getSalesforcePipeline();
-              this.getActiveCRMPipeline();
+              if (this.lead.campaignId > 0) {
+                this.getCampaignLeadPipeline();
+              } else {
+                this.getActiveCRMPipeline();
+              }              
             }
           }
         },
@@ -485,14 +491,27 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let activeCRMPipelines = data.data;
-            let activeCRMPipeline = activeCRMPipelines[0];
-            if (this.lead.pipelineId != undefined && this.lead.pipelineId !== activeCRMPipeline.id) {
-              this.lead.pipelineStageId = 0
-            } 
-            self.lead.pipelineId = activeCRMPipeline.id;
-            //self.pipelineIdError = false;
-            self.stages = activeCRMPipeline.stages;
-            self.activeCRMDetails.hasLeadPipeline = true;
+            if (activeCRMPipelines.length === 1) {
+              let activeCRMPipeline = activeCRMPipelines[0];
+              if (this.lead.pipelineId != undefined && this.lead.pipelineId !== activeCRMPipeline.id) {
+                this.lead.pipelineStageId = 0
+              }
+              self.lead.pipelineId = activeCRMPipeline.id;
+              //self.pipelineIdError = false;
+              self.stages = activeCRMPipeline.stages;
+              self.activeCRMDetails.hasLeadPipeline = true;
+            } else {
+              self.pipelines = activeCRMPipelines;
+              self.activeCRMDetails.hasLeadPipeline = false;
+              for (let p of activeCRMPipelines) {
+                if (p.id == this.lead.pipelineId) {
+                  self.stages = p.stages;
+                  //self.activeCRMDetails.hasLeadPipeline = true;
+                  break;
+                }
+              }              
+            }
+            
           } else if (data.statusCode == 404) {
             self.lead.pipelineId = 0;
             self.stages = [];

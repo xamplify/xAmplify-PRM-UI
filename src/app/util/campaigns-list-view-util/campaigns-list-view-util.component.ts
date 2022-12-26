@@ -351,7 +351,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                             this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
                         }                      
                         let isLaunched = this.campaignService.campaign.launched;
-                        if (isLaunched) {
+                        if (isLaunched || data.campaignProcessing) {
                         	this.isScheduledCampaignLaunched = true;
                             this.isloading = false;
                         } else {
