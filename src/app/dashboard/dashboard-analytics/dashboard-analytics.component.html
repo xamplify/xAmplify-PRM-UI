@@ -63,7 +63,7 @@
         <ng-container
             *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1 || authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
             <!------------Modules Count Anlatyics Boxes---------------------->
-            <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;border-radius: 5px !important;">
+            <div class="page-bar page-bar-shadow" style="padding: 1em 1em 0 1em;">
                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                 </app-response-message>
                 <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
@@ -77,7 +77,7 @@
 
             <div class="row" *ngIf="authenticationService.module.showCampaignsAnalyticsDivInDashboard">
                 <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
+                <div class="portlet light" style="margin: 14px;margin-top: 1px;">
                     <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
