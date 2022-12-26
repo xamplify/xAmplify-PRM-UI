@@ -1659,8 +1659,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.integrationTabIndex = 1;
 	}
 	closeMarketoForm(event: any) {
-		if (event === "0")
+		if (event === "0") {
+			this.checkIntegrations();
 			this.integrationTabIndex = 0;
+		}			
 	}
 
 	activateTab(activeTabName: any) {

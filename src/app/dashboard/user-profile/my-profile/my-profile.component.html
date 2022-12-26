@@ -1904,19 +1904,41 @@
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
-                                    <span class="fa fa-ellipsis-v"></span>
-                                    <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
-                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
-                                    <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
-                                    <span style="margin-right: 5px;">Default</span> 
-                                    <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
-                                        <option value="markAs">Mark as</option>
-                                        <option value="won">Won</option>
-                                        <option value="lost">Lost</option>
-                                        <option value="none">None</option>
-                                    </select>
-                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.crmPipeline"  class="btn-danger button-blue" (click)="deleteStage(x)"
-                                    style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <div class="row">
+                                        <span class="col-lg-1">
+                                            <span class="fa fa-ellipsis-v"></span>
+                                        </span>
+                                        
+                                        <span class="col-lg-5">
+                                            <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
+                                            placeholder="Enter Stage Name" style="width: 240px;
+                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)">
+                                        </span>
+                                        <span class="col-lg-6">
+                                            <div>
+                                                <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
+                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
+                                                <span style="margin-right: 5px;">Default</span>
+                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
+                                                    <option value="markAs">Mark as</option>
+                                                    <option value="won">Won</option>
+                                                    <option value="lost">Lost</option>
+                                                    <option value="none">None</option>
+                                                </select>
+                                                <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                    (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
+                                                        class="glyphicon glyphicon-trash"></span></button>
+                                            </div>
+                                            <div>
+                                                <span *ngIf="pipeline.type === 'deal'">
+                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
+                                                </span>                                                 
+                                            </div> 
+                                        </span>
+                                    </div>
+                                    
                                 </li>
                             </ng-container>                            
                           </ul>
