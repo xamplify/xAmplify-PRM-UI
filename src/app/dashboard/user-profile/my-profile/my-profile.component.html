@@ -1931,7 +1931,7 @@
                                                         class="glyphicon glyphicon-trash"></span></button>
                                             </div>
                                             <div>
-                                                <span *ngIf="pipeline.type === 'deal'">
+                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
                                                     <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
                                                     name="nonInteractive" style="margin: 5px;"> Non Interactive
                                                 </span>                                                 

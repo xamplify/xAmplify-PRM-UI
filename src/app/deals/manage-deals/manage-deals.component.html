@@ -301,13 +301,20 @@
                                 </app-timestamp>
                               </h5>
                             </td>
-                            <td style="width: 10%;">
-                              <select [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
-                                style="width: 135px">
+                            <td style="width: 20%;">
+                              <span style="display:flex">
+                                <select
+                                  [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
+                                  class="form-control" [(ngModel)]="deal.pipelineStageId"
+                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 135px">
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
-                              </select>
+                                </select>
+                                <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
+                                  *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
+                                  title="You can not edit this deal as it is on a non interactive deal stage."></span>                              
+                              </span>
                             </td>
-                            <td style="width: 30%;">
+                            <td style="width: 20%;">
                               <div class="actions-block override-actions">
                                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
