@@ -1,14 +1,14 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div [className]="hideRowClass ? '':'row'">
-	<div class="page-bar portlet light border-radius-0 shadow tfamt">
+	<div class="page-bar portlet light  tfamt">
 		<div class="portlet-title" *ngIf="!assetsLoader">
 			<h4 class="pull-left m10 f-w-600 text-primary" translate>
 				<a (click)="goToManage()">{{title}}</a> 
 				<a  (click)="goToManage()" style="font-size: 13px;">( {{manageAssetsText}} )</a>
 			</h4>
-			<a class="close-circle" title="Refresh"  (click)="refresh()" translate>
+			<span class="close-circle" title="Refresh"  (click)="refresh()" translate>
 				 <i class="fa fa-refresh" aria-hidden="true"></i>
-			</a>
+			</span>
 			<button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToAddDam()">
 				<i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
 				<span class="hidden-xs" translate>Design / Upload</span>

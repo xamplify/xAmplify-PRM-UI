@@ -61,7 +61,7 @@ h3 {
 .center{ text-align: center;}
 .search-css{  margin: 0 10px; float: left;}
 .mobile-css{float: left;width: 100%; padding-right: 10px;}
-.mobileSorting{ float: right; margin-right: 1px;}
+.mobileSorting{ float: right;  width:100%;padding-right: 10px;}
 .sortingContacts {float: left; margin-right: 10px; }
 .filter-css{  left: 85px; top: 3px;cursor: pointer }
 .mobile-view-filter{ left: 0px; top: 0px;cursor: pointer}

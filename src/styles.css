@@ -711,21 +711,21 @@ a {
 }
 
 .close-circle {
-  border: 1px solid #00a6e8;
+  border: 1px solid #ddd;
   padding: 5px;
   text-align: center;
   color: #00a6e8;
-  background-color: #fff;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  background-color: #f1f3fa;
+  width: 34px;
+  height: 34px;
+  border-radius: 3px;
   display: block;
   float: right;
 }
 
 .close-circle i {
   display: block !important;
-  margin-top: -1px;
+  margin-top: 5px;
 }
 
 .close-circle:hover {
