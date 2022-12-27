@@ -1,6 +1,6 @@
 
 <div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm">
-    <div *ngIf="showSandboxText" class="alert alert-info" [ngStyle] = "{'background-color': skin?.backgroundColor}">
+    <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard" [ngStyle] = "{'background-color': skin?.backgroundColor}">
+<div class="page-content" *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
