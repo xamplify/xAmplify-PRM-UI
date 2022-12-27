@@ -118,6 +118,66 @@ img.active {
     margin-left: 19px;
     padding-top: 13px;
 }
+@media (max-width:768px){
+    .mr{
+        margin-right: -137px !important;
+    }
+    .width{
+        width: 44% !important;
+        margin-left: 17px !important;
+    }
+    .pl{
+        padding-left: 1px;
+    }
+    .search-width{
+        width: 217px;
+    }
+}
+@media (width:425px){
+    .mt-mr{
+        margin-top: 0px !important;
+        margin-right: 0px !important;
+    }
+    .pl{
+        padding-left: 10px;
+    }
+    .padding{
+        padding: 7px;
+    }
+    .p4{
+        padding: 4px;
+    }
+}
+@media (max-width:375px){
+    .wth-ml-mt{
+        width: 50% !important;
+        margin-left: 90px !important;
+        margin-top: 0px !important;
+    }
+    .pl{
+        padding-left: 6px;
+    }
+    .p4{
+        padding: 4px;
+    }
+}
+@media (max-width:320px){
+    .pl{
+        padding-left: 43px;
+    }
+    .mr{
+        margin-right: -40px !important;
+    }
+    .p3{
+        padding: 3px;
+    }
+    .w100{
+        width: 100%;
+    }
+}
+/* .margin{
+    margin-right: -11px !important;
+} */
 /* .dashboard-stat{
     margin-bottom: -5px;
     margin-top: 9px;
