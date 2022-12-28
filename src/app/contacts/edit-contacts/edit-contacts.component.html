@@ -313,7 +313,7 @@
 														</button>
 													</div>
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
-														<div class="btn-group pt" *ngIf="!isSynchronizationList && !isFormList">
+														<div class="btn-group p-top2" *ngIf="!isSynchronizationList && !isFormList">
 															<button id="copyFrom_clipboard" class="btn green"
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>

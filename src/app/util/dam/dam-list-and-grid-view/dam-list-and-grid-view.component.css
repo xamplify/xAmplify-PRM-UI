@@ -182,8 +182,8 @@ cursor: default;
 }
 
 .ref-mar{
-  margin-top: 3px !important;
-  margin-left: 10px !important;
+  /* margin-top: 3px !important; */
+  margin-left: 2px !important;
 }
 
 .mxv{
@@ -290,4 +290,7 @@ cursor: default;
   .pb3{
     padding-bottom: 3px;
   }
+}
+#mt15{
+  margin-top: 15px;
 }

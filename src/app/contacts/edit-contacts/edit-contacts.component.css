@@ -180,9 +180,15 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		margin-top: -7px;
 	}
 	.pt{
-		padding-top: 3px;
+		padding-top: 0px;
+	}
+	.p-top2{
+		padding-top: 2px;
 	}
 	
+}
+.pull-right{
+	margin-bottom: 2px;
 }
 /* @media (max-width:425px){
 	.pr{

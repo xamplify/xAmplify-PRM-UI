@@ -133,7 +133,7 @@
           <div class="page-bar p10" id="header" style="box-shadow: none !important;border-radius: 5px;">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                <div class="m10 margin-left-right ml-mr pb" style="border-bottom: 1px solid #eee;padding-bottom: 50px;">
+                <div class="m10 margin-left-right ml-mr pb" style="padding-bottom: 50px;">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
@@ -151,7 +151,7 @@
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 3px !important;"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 3px !important;margin-right: 3px;"
                         title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
                         (click)="downloadLeads()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
@@ -164,7 +164,7 @@
                       </a>
 
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white padding mt" data-toggle="tooltip" data-placement="bottom"
+                        <button class="btn btn-white padding mt button" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
@@ -213,9 +213,12 @@
                     <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filters</div>
-                        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
+                        <div class="form-group" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div>
                       </div>
                       <div class="portlet box">
                         <app-response-message class="pg8" [customResponse]="filterResponse"
@@ -254,9 +257,9 @@
                                   </select>
                                 </div>
                               </div>
-                            <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                            <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                               <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         </form>
@@ -276,7 +279,7 @@
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
                 <!-- -------------------- List View for Leads-------------------- -->
-                <section class='col-xs-12 col-lg-12 col-md-12 m10 ml-w'
+                <section class='col-xs-12 col-lg-12 col-md-12 m10 ml-w' style="margin-top: -8px !important;"
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
 
                   <div class="table-responsive width" [hidden]="httpRequestLoader.isLoading">

@@ -182,7 +182,7 @@
                 <div class="row setup-content step activeStepInfo" id="step-2">
                     <div >
                         <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm" aria-labelledby="form-label">
-                            <div class="portlet light" style="margin-top: 10px;">
+                            <div class="portlet light">
                                 <div class="portlet box" style="border: none !important;">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
@@ -1313,7 +1313,7 @@
                 <!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType!='landingPage'">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <div class="text-center" style="margin-top: 10px;">
+                    <div class="text-center">
                         <div class="col-xs-12 portlet light">
                             <div class="input-icon right pull-right cebp" style="padding-right: 8px;">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">

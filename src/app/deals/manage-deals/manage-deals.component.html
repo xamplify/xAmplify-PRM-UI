@@ -133,7 +133,7 @@
                         </span>
                        
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-left: 4px;" data-toggle="tooltip" title="Download"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-left: 4px;margin-right: -7px;" data-toggle="tooltip" title="Download"
                         [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
@@ -144,14 +144,14 @@
                       </a>
 
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                        <button class="btn btn-white" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>
 
                       <a *ngIf="isVendorVersion && syncMicrosoft" (click)="syncLeadsWithMicrosoft()">
-                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                        <button class="btn btn-white" style="margin-right: -7px;" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize with Microsoft Dynamics" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> Microsoft Dynamics
                         </button>
@@ -186,9 +186,12 @@
                     <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filter</div>
-                        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
+                        <div class="form-group" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div> 
                       </div>                                       
                       <div class="portlet box">
                         <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
@@ -234,9 +237,9 @@
                                 </div>
                               </div>
                       
-                        <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                        <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                           <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                        </div> 
+                        </div>  -->
                       </div>
                     </div>
                     </form>
@@ -354,7 +357,7 @@
                   </div>
   
                 </section>
-                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="alert alert-info">
+                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
                   <strong translate>No Deals Found.</strong>
                 </div>
                 
@@ -524,7 +527,7 @@
                     <strong translate>No Campaigns Found.</strong>
                   </div>
                 </section>
-                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="alert alert-info">
+                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
                   <strong translate>No Campaigns Found.</strong>
                 </div>
   
