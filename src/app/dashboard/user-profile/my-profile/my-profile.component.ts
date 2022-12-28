@@ -2867,6 +2867,9 @@ configSalesforce() {
 
 	deleteStage(divIndex: number) {
 		this.pipeline.stages.splice(divIndex, 1);
+		if (this.defaultStageIndex > divIndex) {
+			this.defaultStageIndex = this.defaultStageIndex - 1;
+		}
 	}
 
 	addStage() {
