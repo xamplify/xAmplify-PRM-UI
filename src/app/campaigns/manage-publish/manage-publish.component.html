@@ -1370,11 +1370,11 @@
           <!-- End Of tab Content -->
         </div>
         <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-          <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-            <div *ngIf="pagination.pagedItems.length !== 0" class="col-xs-12 pg8">
-              <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
+          <div class="col-xs-12 pt5" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
+            <div *ngIf="pagination.pagedItems.length !== 0" class="row">
+              <app-pagination class="col-xs-10" [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
                 (notifyParent)="setPage($event)"></app-pagination>
-              <select class="form-control" style="float: right; width: auto;margin-top: -35px;" [(ngModel)]="itemsSize"
+              <select class="col-xs-2 form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize"
                 (ngModelChange)="getNumberOfItemsPerPage($event)">
                 <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
                 </option>
