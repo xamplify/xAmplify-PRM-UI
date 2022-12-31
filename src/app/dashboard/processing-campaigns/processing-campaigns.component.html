@@ -3,7 +3,7 @@
   </ngx-loading>
    <div class="portlet light">
      <div class="portlet-title">
-       <div class="caption">Processing Campaigns</div>
+       <div class="caption">{{header}}</div>
         <div class="inputs">
           <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
             <i class="fa fa-refresh margin" aria-hidden="true"></i>
@@ -32,9 +32,9 @@
                 <th>Campaign</th>
                 <th scope="row" translate></th>
                 <th class="text-center" scope="row" translate>Launched</th>
-                <th class="text-center" scope="row" translate>Channel Campaign Shared To Partners</th>
+                <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Channel Campaign Shared To Partners</th>
                 <th class="text-center" scope="row" translate>Campaign User User List Status</th>
-                <th class="text-center" scope="row" translate>Email Notifications</th>
+                <th *ngIf="!scheduledCampaigns" class="text-center" scope="row" translate>Email Notifications</th>
                </tr>
              </thead>
              <tbody>
@@ -81,13 +81,13 @@
                   <td class="text-center">
                       <i  [className]="campaign?.launched ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
-                  <td class="text-center" title="{{campaign?.campaignPartnerStatus}}">
+                  <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignPartnerStatus}}">
                     <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
                       <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
-                  <td class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
+                  <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
                     <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                  </tr>
