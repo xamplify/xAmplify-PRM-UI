@@ -88,7 +88,7 @@
                       <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignEmailNotificationsStatus}}">
-                    <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                    <i title="{{campaign?.campaignEmailNotificationsStatus}}"  [className]="campaign?.campaignEmailNotificationsStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignEmailNotificationsStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignEmailNotificationsStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                  </tr>
                </ng-container>
