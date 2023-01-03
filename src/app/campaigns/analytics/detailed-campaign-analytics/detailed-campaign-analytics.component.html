@@ -43,7 +43,7 @@
     <div class="portlet light clearfix" *ngIf="!isShowPartnerLeads && !showLeads && !showDeals">
       <div class="portlet-body">
         <div *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'"  class="alert alert-info">
-          <strong translate>Email sending is in progress.Please refresh the page to see the latest data</strong>
+          <strong translate>Email sending is in progress.Please <a href="javascript: void(0);" (click)="checkParentAndRedistributedCampaignAccess()">Click here</a> to see the latest data</strong>
         </div>
         <div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page
         </div>
