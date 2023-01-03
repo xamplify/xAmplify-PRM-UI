@@ -105,4 +105,5 @@ export class Campaign {
     configurePipelines = false;
     utcTimeInString = "";
     campaignProcessing = false;
+    campaignEmailNotificationStatusInString = "";
 }
