@@ -342,7 +342,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     editCampaignsWhichAreNotLaunched(campaign:any){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             let obj = { 'campaignId': campaign.campaignId }
-            this.campaignService.getCampaignById(obj)
+            this.campaignService.editCampaign(obj)
                 .subscribe(
                 data => {
                         this.campaignService.campaign = data; 
@@ -363,12 +363,12 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                               }
                         }
                 },
-                error => { this.logger.errorPage(error) });
+                error => { this.showErrorResponse(error); });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
             let obj = { 'campaignId': campaign.campaignId }
-            this.campaignService.getCampaignById(obj)
+            this.campaignService.editCampaign(obj)
                 .subscribe(
                 data => {
                     if (data.campaignType === 'SOCIAL') {
@@ -381,7 +381,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                         }
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
-                        if (isLaunched) {
+                        if (isLaunched || data.campaignProcessing) {
                             this.isScheduledCampaignLaunched = true;
                             this.isloading = false;
                         } else {
@@ -401,9 +401,20 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     }
                 },
                 error => {
-                     this.logger.errorPage(error) 
+                     this.showErrorResponse(error);
                 });
             this.isScheduledCampaignLaunched = false;
+        }
+    }
+
+    private showErrorResponse(error: any) {
+        let statusCode = JSON.parse(error["status"]);
+        if (statusCode == 400) {
+            this.refService.scrollSmoothToTop();
+            this.isScheduledCampaignLaunched = true;
+            this.isloading = false;
+        } else {
+            this.logger.errorPage(error);
         }
     }
 
@@ -1062,6 +1073,15 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
         this.selectedCampaignId = 0;
         this.editButtonClicked = false;
     }
+
+    refreshPage() {
+        try {
+            this.isScheduledCampaignLaunched = false;
+            this.listCampaign(this.pagination);
+     } catch (error) {
+         this.logger.error("error in manage-publish-component init() ", error);
+     }
+ }
 
 
 }

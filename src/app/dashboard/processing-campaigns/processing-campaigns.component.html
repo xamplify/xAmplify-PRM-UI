@@ -55,6 +55,9 @@
                   </td>
                   <td title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice: 0: 30}}
                     <span *ngIf="campaign.campaignName?.length>30">...</span>
+                    <h5  [title]="campaign.id">
+                      <span translate>Id : <strong>{{campaign.campaignId}}</strong></span>
+                    </h5>
                     <h5  [title]="campaign.companyName">
                       <span translate>Company Name : <strong>{{campaign.companyName | slice: 0: 30}}</strong>
                         <span *ngIf="campaign.companyName?.length>30">...</span>
@@ -82,7 +85,7 @@
                       <i  [className]="campaign?.launched ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td *ngIf="!scheduledCampaigns" class="text-center" title="{{campaign?.campaignPartnerStatus}}">
-                    <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
+                    <i  title="{{campaign?.campaignPartnerStatus}}" [className]="campaign?.campaignPartnerStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignPartnerStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignPartnerStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
                   </td>
                   <td class="text-center" title="{{campaign?.campaignUserListStatus}}">
                       <i title="{{campaign?.campaignUserListStatus}}" [className]="campaign?.campaignUserListStatus=='INITIATED' ? 'fa fa-hourglass-start active-status' : campaign?.campaignUserListStatus=='COMPLETED' ? 'fa fa-check active-status' : campaign?.campaignUserListStatus=='IN_PROGRESS'?'fa fa-spinner active-status':'fa fa-times required'" aria-hidden="true"></i>
