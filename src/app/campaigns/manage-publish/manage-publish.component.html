@@ -287,6 +287,8 @@
                         </ng-container>
                         
                         <br>
+                       
+
                         <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                           <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign"
                           translate>
@@ -324,7 +326,10 @@
                           Ended</h6>
                           <!---XNFR-125-->
                           <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
-                      </td>
+                          <h6 class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
+                            <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+                          </h6>
+                        </td>
                       <td>
                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
                           <span><strong>{{campaign.campaignName}}</strong></span>
@@ -1028,6 +1033,10 @@
                             translate>Archived</span>
                           <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
                             translate>Ended</span>
+                            <br>
+                            <span class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
+                              <span translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+                            </span>
                           </h4>
                         <h6 [title]="campaign.createdBy" translate>By
                           <strong>{{campaign.createdBy | slice:0:15}}<span

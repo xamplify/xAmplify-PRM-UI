@@ -263,6 +263,9 @@
                                             Ended</h6>
                                         <!---XNFR-125-->
                                         <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
+                                        <h6 class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
+                                            <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+                                          </h6>   
                                     </td>
                                     <td>
                                         <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
@@ -1022,7 +1025,7 @@
                     <div class="col-md-3 col-sm-4 col-xs-12"
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
                         <div class="grid-box" style="height:300px">
-                            <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                            <img *ngIf="!campaign?.campaignProcessing" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                             <ng-container *ngIf="campaign?.campaignProcessing">
                                 <img   src="assets/images/processing.gif" alt="Processing">
                               </ng-container>
@@ -1059,6 +1062,10 @@
                                     translate>Archived</span>
                                 <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
                                     translate>Ended</span>
+                                <br>
+                                <span class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
+                                    <span translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+                                </span>
                             </h4>
                             <h6 [title]="campaign.createdBy">By
                                 <strong>{{campaign.createdBy | slice:0:15}}<span
