@@ -94,7 +94,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;" translate>All</div>
+											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>All</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -112,7 +112,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.validContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;" translate>Valid</div>
+											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>Valid</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -130,7 +130,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;" translate>Registered</div>
+											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>Registered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -148,7 +148,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px" translate>Unregistered</div>
+											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Unregistered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -166,7 +166,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px" translate>Undeliverable</div>
+											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Undeliverable</div>
 										</div>
 										<span class="morePadding"> 
 											<a class="more" style="text-align: left;" translate>
@@ -185,7 +185,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px" translate>Unsubscribed</div>
+											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Unsubscribed</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -301,7 +301,7 @@
 											<ng-container
 												*ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 												   && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
-												<div class="col-xs-12 col-md-6 col-sm-6 p0" style="margin-top: -13px;padding-bottom: 16px !important;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+												<div class="col-xs-12 col-md-6 col-sm-6 p0" style="margin-top: -13px;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
 																					 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
 																					 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
 													<div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
