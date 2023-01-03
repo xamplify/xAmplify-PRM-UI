@@ -948,7 +948,12 @@ getActiveCRMDetails() {
           if (this.deal.campaignId > 0) {
             this.getCampaignDealPipeline();
           } else {
-            this.getPipelines();
+            if (this.activeCRMDetails.activeCRM 
+              && ("MICROSOFT" === this.activeCRMDetails.type || "MARKETO" === this.activeCRMDetails.type)) {
+                this.getActiveCRMPipelines();
+            } else {
+              this.getPipelines();
+            }            
           }
           this.getDealTypes();
         } else { 
