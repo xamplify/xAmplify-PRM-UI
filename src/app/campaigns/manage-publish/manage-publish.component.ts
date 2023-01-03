@@ -140,7 +140,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "NOW") {
             this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign launched successfully";
+            this.campaignSuccessMessage = "Campaign saved successfully.Please wait until we process and launch the campaign.";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "UPDATE") {
             this.showMessageOnTop();
