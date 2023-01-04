@@ -65,10 +65,10 @@ body {
     line-height: 15px;
 }
 
-.disabled {
+/* .disabled {
     pointer-events: none;
     cursor: not-allowed;
-}
+} */
 
 #form-preview-company-logo {
     vertical-align: middle;
