@@ -2929,7 +2929,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if ("NOW" == this.campaignLaunchForm.value.scheduleCampaign) {
                 message = " launching ";
             }
-            this.refService.showSweetAlertProcessingLoader('We are deploying the campaign');
+            this.refService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
             this.dataError = false;
             this.refService.goToTop();
             this.campaignService.saveCampaign(data)
