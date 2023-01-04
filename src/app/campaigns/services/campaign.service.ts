@@ -77,6 +77,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    editCampaign(data: any) {
+        data['userId'] = this.authenticationService.getUserId();
+        return this.http.post(this.URL + "admin/editCampaign?access_token=" + this.authenticationService.access_token,data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getEventCampaignById(campaignId:any){
       let eventUrl = this.URL + "campaign/get-event-campaign/"+campaignId+"?access_token=" + this.authenticationService.access_token;
       if(this.reDistributeEvent){ this.reDistributeEvent = false; eventUrl = this.URL + "campaign/get-partner-campaign/"+campaignId+"/"+this.authenticationService.user.id+"?access_token=" + this.authenticationService.access_token }

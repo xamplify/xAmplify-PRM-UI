@@ -81,6 +81,7 @@ import { DonutPieChartComponent } from './dashboard-analytics-components/donut-p
 import { AgencyDashboardComponent } from './agency-dashboard/agency-dashboard.component';
 import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
 import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
+import { ProcessingCampaignsComponent } from './processing-campaigns/processing-campaigns.component';
 
 
 
@@ -138,7 +139,8 @@ import { IntegrationSettingsComponent } from './integration-settings/integration
         DonutPieChartComponent,
         AgencyDashboardComponent,
         CustomSkinComponent,
-        IntegrationSettingsComponent
+        IntegrationSettingsComponent,
+        ProcessingCampaignsComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

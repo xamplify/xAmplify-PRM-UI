@@ -2929,7 +2929,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if ("NOW" == this.campaignLaunchForm.value.scheduleCampaign) {
                 message = " launching ";
             }
-            this.refService.showSweetAlertProcessingLoader('We are ' + message + ' the campaign');
+            this.refService.showSweetAlertProcessingLoader('We are deploying the campaign');
             this.dataError = false;
             this.refService.goToTop();
             this.campaignService.saveCampaign(data)
@@ -2966,7 +2966,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     error => {
                         swal.close();
                         this.hasInternalError = true;
-                        this.logger.errorPage(error);
+                        let statusCode = JSON.parse(error["status"]);
+                        if (statusCode == 400) {
+                            this.router.navigate(["/home/campaigns/manage"]);
+                            this.refService.scrollSmoothToTop();
+                            this.refService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
+                        } else {
+                            this.logger.errorPage(error);
+                        }
                     },
                     () => this.logger.info("Finished launchCampaign()")
                 );

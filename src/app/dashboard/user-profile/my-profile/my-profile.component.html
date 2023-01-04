@@ -770,7 +770,7 @@
                                             </div>
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
-                                            <app-integration-settings [integrationType]="integrationType" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                            <app-integration-settings [integrationType]="integrationType" (refreshEvent)="checkIntegrations()" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
                                         </div>
                                     </div>
 
@@ -824,7 +824,9 @@
                                                                             <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
                                                                         </td> -->
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
-                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i><span>{{pipeline.name}}</span>
+                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
+                                                                            <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
+                                                                                    *ngIf="pipeline?.name?.length>45">...</span></span>
                                                                             <h6 class="view-banner" *ngIf="pipeline.crmPipeline" translate>{{pipeline.integrationType}}</h6>
                                                                         </td>                                                                        
                                                                         <td>
@@ -1894,8 +1896,9 @@
                         <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
+                        <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
@@ -1903,19 +1906,41 @@
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
-                                    <span class="fa fa-ellipsis-v"></span>
-                                    <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
-                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
-                                    <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
-                                    <span style="margin-right: 5px;">Default</span> 
-                                    <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
-                                        <option value="markAs">Mark as</option>
-                                        <option value="won">Won</option>
-                                        <option value="lost">Lost</option>
-                                        <option value="none">None</option>
-                                    </select>
-                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.crmPipeline"  class="btn-danger button-blue" (click)="deleteStage(x)"
-                                    style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <div class="row">
+                                        <span class="col-lg-1">
+                                            <span class="fa fa-ellipsis-v"></span>
+                                        </span>
+                                        
+                                        <span class="col-lg-5">
+                                            <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
+                                            placeholder="Enter Stage Name" style="width: 240px;
+                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)">
+                                        </span>
+                                        <span class="col-lg-6">
+                                            <div>
+                                                <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
+                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
+                                                <span style="margin-right: 5px;">Default</span>
+                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
+                                                    <option value="markAs">Mark as</option>
+                                                    <option value="won">Won</option>
+                                                    <option value="lost">Lost</option>
+                                                    <option value="none">None</option>
+                                                </select>
+                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                    (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
+                                                        class="glyphicon glyphicon-trash"></span></button>
+                                            </div>
+                                            <div>
+                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
+                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
+                                                </span>                                                 
+                                            </div> 
+                                        </span>
+                                    </div>
+                                    
                                 </li>
                             </ng-container>                            
                           </ul>

@@ -1653,9 +1653,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
       }
       /** XNFR-134 ***** */
-      
       portletBody = "modal fade";
       addBlurClass() {
         $('#exampleModal').removeClass(this.portletBody);
     }
+    /** XNFR-139 ***** */
+    setMaxAdmins(){
+        let maxAdmins =  $('#maxAdmins option:selected').val();
+        this.campaignAccess.maxAdmins = maxAdmins;
+    }
+    
+
 }

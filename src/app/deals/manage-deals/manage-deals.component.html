@@ -16,7 +16,7 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !allApisLoader">
+            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !authenticationService?.module.isOnlyPartnerCompany">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
             						margin-top: 5px;" *ngIf="isCompanyPartner" translate>{{authenticationService?.partnerModule?.customName}} View </li>
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
@@ -301,13 +301,20 @@
                                 </app-timestamp>
                               </h5>
                             </td>
-                            <td style="width: 10%;">
-                              <select [disabled]="authenticationService?.module?.deletedPartner" class="form-control" [(ngModel)]="deal.pipelineStageId" (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
-                                style="width: 135px">
+                            <td style="width: 20%;">
+                              <span style="display:flex">
+                                <select
+                                  [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
+                                  class="form-control" [(ngModel)]="deal.pipelineStageId"
+                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 135px">
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
-                              </select>
+                                </select>
+                                <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
+                                  *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
+                                  title="You can not edit this deal as it is on a non interactive deal stage."></span>                              
+                              </span>
                             </td>
-                            <td style="width: 30%;">
+                            <td style="width: 20%;">
                               <div class="actions-block override-actions">
                                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
@@ -315,11 +322,11 @@
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="editDeal(deal)" title="Edit Deal"
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" title="Edit Deal"
                                       id="deal">
                                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                                     </a>
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate" (click)="confirmDeleteDeal(deal)"
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
                                       title="Delete Deal" id="deal">
                                       <i class="fa fa-trash mr5" aria-hidden="true"></i>
                                     </a>
@@ -358,7 +365,7 @@
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
         
                   <div class="table-responsive" [hidden]="campaignRequestLoader.isLoading">
-                    <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
+                    <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                       <thead>
                         <tr>
                           <th class="center-aligned" translate></th>
@@ -403,12 +410,12 @@
                               </span>
                             </td>
                             <td>
-                              <a data-toggle="tooltip" data-placement="top" title="Number of Leads" style="cursor: default">
+                              <a data-toggle="tooltip" data-placement="top" title="Number of Deals" style="cursor: default">
                                 <span class="circled-number"><strong>{{campaign.leadsCount}}</strong></span>
                               </a>
         
                               <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
-                                title="View leads for this campaign">
+                                title="View deals for this campaign">
                                 <span class="circled-number">
                                   <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
                                     aria-hidden="true"></i>
@@ -416,7 +423,7 @@
                               </a>
   
                               <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" 
-                                title="View leads/deals for this campaign">
+                                title="View deals for this campaign">
                                 <span class="circled-number">
                                   <i class="fa fa-users" aria-hidden="true"></i>
                                 </span>
@@ -475,7 +482,7 @@
                                                 </td>
                                                 <td>
                                                   <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
-                                                    data-placement="top" title="Number Of Leads">
+                                                    data-placement="top" title="Number Of Deals">
                                                     <span class="circled-number"><b>{{item.dealsCount}}</b></span>
                                                   </a>
                                                 </td>
@@ -525,7 +532,7 @@
   
               </div>
             </div>
-            <!-- -----------------------------Campaign View - Leads List-------------------------------------- -->
+            <!-- -----------------------------Campaign View - Deals List-------------------------------------- -->
             <div class="tab-content" *ngIf="showCampaignDeals">
               <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
               </app-response-message>

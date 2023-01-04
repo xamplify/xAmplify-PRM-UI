@@ -1067,6 +1067,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         .subscribe(
           data => {
             this.campaign = data;
+            this.campaign.displayTime = new Date(this.campaign.utcTimeInString);
             this.isChannelCampaign = data.channelCampaign;
             if(this.campaign.nurtureCampaign && this.campaign.companyId == this.loggedInUserCompanyId){
             	this.isNavigatedThroughAnalytics = false;
