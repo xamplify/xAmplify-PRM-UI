@@ -22,6 +22,7 @@ h5 {
     background: #ebf1ff;
     text-align: center;
     height: 233px;
+    border-radius: 5px;
 }
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {

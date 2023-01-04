@@ -617,11 +617,11 @@
                           <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                   	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
-                            data-toggle="tooltip" data-placement="top" style="width:11%;"
+                            data-toggle="tooltip" data-placement="top"
                             (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                             title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share" aria-hidden="true"></i>
                           </a>
-                          <a style="width:11%;" [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
+                          <a  [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                            (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList)"
@@ -629,7 +629,7 @@
                             data-rel="fancybox-button"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                           </a> 
                           <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                          <a [class.disabled]="!contactList.emailValidationInd" style="width:11%;"
+                          <a [class.disabled]="!contactList.emailValidationInd" style=""
                             *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
                                                 || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                             (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
@@ -643,10 +643,10 @@
                             title="{{actionsDescription.contact_list_saveAs}}"
                             (click)="saveAsNewList(contactList)"
                             [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
-                            data-rel="fancybox-button" style="left: 60%;width:11%;;"> <i class="fa fa-files-o" aria-hidden="true"
+                            data-rel="fancybox-button" style="left: 60%;"> <i class="fa fa-files-o" aria-hidden="true"
                               style="color: white;"></i>
 
-                          </a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0" style="width:11%;"
+                          </a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0" 
 
                             (click)="hasDownLoadAccess(contactList.id, contactList.name)"
                             *ngIf="assignLeads || (!sharedLeads)"
@@ -661,13 +661,13 @@
                               [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
                               *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                               (click)="synchronizeContactList(contactList)"
-                              data-rel="fancybox-button" style="left: 18%; top: -20px;width:11%;">
+                              data-rel="fancybox-button" style="left: 18%; top: -20px;">
                               <i class="fa fa-refresh" aria-hidden="true" style="color: white;"></i>
                             </a>
                           </ng-container>
                           <!---XNFR-81----->
                           <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList && !contactList?.teamMemberPartnerList">
-                            <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style="width:11%;"
+                            <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style=""
                             *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                       || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                       && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
@@ -678,7 +678,7 @@
                           </ng-container>
                            <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads 
                            && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
-                                    data-toggle="tooltip" data-placement="top" style="width:11.3%;"
+                                    data-toggle="tooltip" data-placement="top" style=""
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                     title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn" aria-hidden="true"></i>
                                   </a>
@@ -698,7 +698,7 @@
                       </div>
                     </div>
                   </div>
-                  <div id="pagination">
+                  <div id="pagination" style="margin-top: -10px;">
                     <!--pager here  -->
                     <app-pagination
                       [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
