@@ -246,6 +246,9 @@ export class Properties {
 	emailTemplates = "emailTemplates";
 	campaigns = "campaigns";
 
+	/**Campaign****/
+	campaignLaunchedMessage = "The campaign was successfully deployed. Please wait until the campaign is processed and launched. We will send you email updates in timely manner."
+	deployingCampaignMessage = "We are deploying the campaign";
 
 
 

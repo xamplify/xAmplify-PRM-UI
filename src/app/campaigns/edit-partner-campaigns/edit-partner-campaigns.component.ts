@@ -1307,7 +1307,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
              }else if("NOW"==this.campaignLaunchForm.value.scheduleCampaign){
                 message = " launching ";
              }
-             this.referenceService.showSweetAlertProcessingLoader('We are saving the campaign');
+             this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
               this.dataError = false;
               this.contactListBorderColor = "silver";
               this.referenceService.goToTop();
