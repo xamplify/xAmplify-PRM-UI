@@ -38,7 +38,7 @@
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12" *ngIf="!detailedResponse">
-            <div class="portlet light clearfix" style="min-height: 644px;">
+            <div class="portlet light clearfix">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
@@ -118,7 +118,7 @@
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true">
                                             <i class="fa fa-refresh" aria-hidden="true"></i>
                                         </a>
                                     </div>

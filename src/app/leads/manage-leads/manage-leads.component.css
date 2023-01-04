@@ -171,3 +171,11 @@
         margin-top: 64px !important;
     }
 } */
+.pg2{
+    position: relative;
+    top: -2px;
+}
+.pg3{
+    position: relative;
+    top: -3px;
+}

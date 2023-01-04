@@ -1082,7 +1082,7 @@
 										</div>
 									</div>
 								</div>
-								<div style="text-align:left">
+								<div style="text-align:left;padding-left: 10px;padding-right: 9px;">
 									<app-pagination [class.disabled]="isPreviewEvent" [pagination]="contactListsPagination"
 										[type]="'contactlists'" (notifyParent)="setPage($event)"
 										(notifyParentDropDown)="paginationDropDown($event)">
@@ -1256,7 +1256,7 @@
 							  </section>
 				 </div>
 			 </div>
-					<div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+					<div style="text-align:left;padding-left: 31px;padding-right: 28px; " [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
 					  <app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
 				(notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
 			</div>

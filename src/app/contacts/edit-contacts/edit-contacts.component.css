@@ -262,3 +262,6 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		padding-bottom: 5px;
 	}
 } */
+.table{
+	margin-bottom: 18px;
+}

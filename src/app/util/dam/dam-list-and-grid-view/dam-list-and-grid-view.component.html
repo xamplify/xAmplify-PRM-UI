@@ -307,8 +307,8 @@
 					<div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading"
 						class="alert alert-info text-center">
 						<strong>No Data Found.</strong>
-					</div>
-					<div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="listLoader.isLoading">
+					</div> 
+					<div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="listLoader.isLoading" style="margin-top: -9px;">
 						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listItems($event)"></app-pagination>
 					</div>
 				</ng-container>
@@ -440,7 +440,7 @@
 		<div class="row">
 			<div class="page-toolbar col-xs-12">
 				<div class="btn-group pull-right">
-					<div class="group-dropdown">
+					<div class="group-dropdown mt15">
 						<button [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
 						modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'" style="padding:10px !important"></button>
 					<div class="group-dd-content" style="min-width: 198px;">

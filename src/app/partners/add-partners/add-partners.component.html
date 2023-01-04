@@ -58,7 +58,7 @@
                 <li><a translate>Onboarding
                         {{authenticationService?.partnerModule?.customName}}</a></li>
             </ul>
-            <div id="download-partners-csv" class="hidden-xs">
+            <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;">
                 <a (click)="downloadEmptyCsv()">
                     <button type="button" class="btn green" download
                         style="color: #ffffff;"
@@ -690,14 +690,14 @@
                                         <table class='table tgrid'>
                                             <thead *ngIf="newPartnerUser?.length != 0">
                                                 <tr>
-                                                    <th style="width: 25%; text-align: center;">Entity info</th>
+                                                    <th style="width: 25%; text-align: left;">Entity info</th>
                                                     <th>PHONE</th>
                                                     <!-- <th>JOB TITLE</th> -->
                                                     <th class="hidden-xs" translate>VERTICAL</th>
                                                     <th class="hidden-xs" translate>REGION</th>
                                                     <th class="hidden-xs" translate>TYPE</th>
                                                     <th class="hidden-xs" translate>CATEGORY</th>
-                                                    <th class='hidden-xs hidden-sm text-center' translate>ADDRESS</th>
+                                                    <th class='hidden-xs hidden-sm text-left' translate>ADDRESS</th>
                                                     <!-- <th class='text-center'>MORE</th> -->
                                                 </tr>
                                             </thead>
@@ -799,6 +799,7 @@
                                             </li>
                                         </ul>
     
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -880,11 +881,12 @@
                                                         (change)="editContactComponent.checkAll($event, partners)"
                                                         id="checkAllExistingContacts" /></th>
                                                     <th style="width: 23%;" translate>Entity info</th>
+                                                    <th class="hidden-xs" translate></th>
+                                                    <th class="hidden-xs" translate></th>
                                                     <th class="hidden-xs" translate>VERTICAL</th>
                                                     <th class="hidden-xs" translate>REGION</th>
                                                     <th class="hidden-xs" translate>TYPE</th>
                                                     <th class="hidden-xs hidden-sm" translate>CATEGORY</th>
-                                                    <th></th>
                                                     <th class='text-center' translate>ACTIONS</th>
                                                 </tr>
                                             </thead>
@@ -906,7 +908,20 @@
                                                             [isPartnerInfo]="true" [userInfo]="contact">
                                                         </app-user-info> <!-- -XNFR-85 --> <ng-container
                                                             *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
-                                                        <span
+                                                         </ng-container> <ng-container
+                                                            *ngIf="contact?.multipleTeamMemberGroupsAssigned">
+                                                        <span class="inactive-status"> <strong>Please
+                                                                contact admin</strong>
+                                                        </span> </ng-container></td>
+                                                        <td>
+                                                            <!-- <span *ngIf="!isPartnerEntityInfo">
+                                                            <a style="display: table;" title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span></a>
+                                                            <span *ngIf="userInfo?.mobileNumber">
+                                                                <a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>{{userInfo?.mobileNumber}}</a>
+                                                            </span>
+                                                            </span> -->
+
+                                                            <span
                                                             [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
                                                             <ng-container *ngIf="contact?.teamMemberGroupId>0">
                                                             <strong title="{{contact?.selectedTeamMemberGroupName}}">Group
@@ -918,11 +933,15 @@
                                                                 {{contact?.selectedTeamMembersCount}}</strong> </ng-container> <ng-container
                                                                 *ngIf="contact?.teamMemberGroupId==0"> <strong>No
                                                                 Group Selected</strong> </ng-container>
-                                                        </span> </ng-container> <ng-container
-                                                            *ngIf="contact?.multipleTeamMemberGroupsAssigned">
-                                                        <span class="inactive-status"> <strong>Please
-                                                                contact admin</strong>
-                                                        </span> </ng-container></td>
+                                                        </span>
+                                                        </td>
+                                                        <td>
+                                                            <button id='more_less_button_{{i}}' class="hidden-xs"
+                                                                (click)="contact.isShowDetails = ! contact.isShowDetails">
+                                                                <span *ngIf="!contact.isShowDetails" translate>More</span>
+                                                                <span *ngIf="contact.isShowDetails" translate>Less</span>
+                                                            </button>
+                                                        </td>
                                                     <td class="hidden-xs white-space-transform"
                                                         title="{{contact.vertical}}">{{contact.vertical |
                                                         slice:0:14}} <span *ngIf="contact.vertical?.length>14">..</span>
@@ -940,13 +959,13 @@
                                                         slice:0:14}} <span *ngIf="contact.category?.length>14">..</span>
                                                     </td>
     
-                                                    <td>
+                                                    <!-- <td>
                                                         <button id='more_less_button_{{i}}' class="hidden-xs"
                                                             (click)="contact.isShowDetails = ! contact.isShowDetails">
                                                             <span *ngIf="!contact.isShowDetails" translate>More</span>
                                                             <span *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
-                                                    </td>
+                                                    </td> -->
                                                     <td>
                                                         <div class="actions-block override-actions">
                                                             <a id="envolope_{{i}}"
@@ -1710,7 +1729,7 @@
                                     </span>
                                     </th>
                                     <th *ngIf="authenticationService?.module?.adminOrSuperVisor"
-                                        scope="row" translate>Team Member Group <span
+                                        style="text-align: center;" scope="row" translate>Team Member Group <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle"
                                             aria-hidden="true"
                                             title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>

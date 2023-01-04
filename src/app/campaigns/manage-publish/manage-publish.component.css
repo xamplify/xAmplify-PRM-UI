@@ -550,7 +550,7 @@ table tr:nth-child(even) td {
 	}
 }
 .form-control{
-	padding: 6px 0px;
+	padding: 5px 12px;
 }
 .pb5{
 	padding-bottom: 5px;

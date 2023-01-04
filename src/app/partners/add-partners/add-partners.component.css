@@ -128,3 +128,12 @@
 /* .portlet.light .portlet-body{
 	padding-top:0px;
 } */
+.text-center{
+	text-align: center;
+}
+.text-left{
+	text-align: left;
+}
+.table{
+	margin-bottom: 13px;
+}

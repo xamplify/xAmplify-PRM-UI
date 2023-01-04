@@ -391,7 +391,7 @@
                   </div>
 
                   <!-- --------------------Pagination0-------------------- -->
-                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8">
+                  <div *ngIf="!httpRequestLoader.isLoading" class="pg2">
                     <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
                       (notifyParentDropDown)="listLeads($event)"></app-pagination>
                   </div>
@@ -589,7 +589,7 @@
                     </table>
                   </div>
 
-                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8">
+                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg3">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>

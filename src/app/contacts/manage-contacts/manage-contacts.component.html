@@ -210,7 +210,7 @@
             </div>
             <!-- End tile here-->
             <div [ngClass]="{'page-bar p10': showListOfContactList}">
-              <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
+              <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                 <div class="tab-pane active">
                   <div class="clearfix"></div>
                   <!-- Remove Tiles here-->
@@ -290,7 +290,7 @@
                   </div>
                   <section [hidden]="!isListView"
                     *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="padding-top: 5px;">
                       <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                         <thead>
                           <tr>
@@ -698,7 +698,7 @@
                       </div>
                     </div>
                   </div>
-                  <div id="pagination" style="margin-top: -10px;">
+                  <div id="pagination" style="margin-top: -5px;">
                     <!--pager here  -->
                     <app-pagination
                       [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"

@@ -4,7 +4,7 @@
   }
   </style>
   <div [hidden]="pagination.pagedItems.length == 0">
-  <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" class="pr" style="float: right;font-size: 15px;padding-right: 10px;">
+  <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
   	<select class="form-control margin-top" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
       <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
       <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
@@ -12,7 +12,7 @@
     </select>
  </div>
 </div>
-<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding" style="padding-left: 10px;">
+<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" title="First">
     <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">
       <span><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
@@ -38,6 +38,6 @@
   </li>
 </ul>
 <br>
-<span class="total-records-bg-color pl" style="padding-left: 10px;"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>
+<span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>
 
 
