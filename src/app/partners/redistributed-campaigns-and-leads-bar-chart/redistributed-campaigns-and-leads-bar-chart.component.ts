@@ -108,8 +108,8 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     }else if(chartId="top10LeadsAndDealsBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[2];
-        primaryYAxisText = "Leads";
-        secondaryYAxisText = "Deals";
+        primaryYAxisText = "Deals";
+        secondaryYAxisText = "Leads";
     }
     let series = [];
     if(this.hasLeadsAndDealsAccess){
