@@ -824,7 +824,9 @@
                                                                             <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
                                                                         </td> -->
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
-                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i><span>{{pipeline.name}}</span>
+                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
+                                                                            <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
+                                                                                    *ngIf="pipeline?.name?.length>45">...</span></span>
                                                                             <h6 class="view-banner" *ngIf="pipeline.crmPipeline" translate>{{pipeline.integrationType}}</h6>
                                                                         </td>                                                                        
                                                                         <td>
@@ -1918,7 +1920,7 @@
                                         <span class="col-lg-6">
                                             <div>
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
-                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
+                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
                                                 <span style="margin-right: 5px;">Default</span>
                                                 <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
                                                     <option value="markAs">Mark as</option>

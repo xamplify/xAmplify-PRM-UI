@@ -2863,6 +2863,7 @@ configSalesforce() {
 		for (var i = 0; i < 4; i++) {
 			this.addStage();
 		}
+		this.pipeline.stages[0].defaultStage = true;
 	}
 
 	deleteStage(divIndex: number) {
@@ -3705,6 +3706,11 @@ configSalesforce() {
 				}
 			);
 
+	}
+
+	defaultStageChange(pipelineStage: PipelineStage) {		
+		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
+		pipelineStage.defaultStage = true;
 	}
 
 }
