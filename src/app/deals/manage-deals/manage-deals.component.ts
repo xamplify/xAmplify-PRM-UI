@@ -316,26 +316,38 @@ export class ManageDealsComponent implements OnInit {
   showWonDeals() {
     this.selectedTabIndex = 2;
     this.resetDealsPagination();
-    this.dealsPagination.filterKey = "won";
-    this.listDeals(this.dealsPagination);
+    this.dealsPagination.filterKey = "won";   
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "won";
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignDeals = false;
     this.selectedPartnerCompanyId = 0;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.dealsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listDeals(this.dealsPagination);
     this.listCampaigns(this.campaignPagination);
   }
 
   showLostDeals() {
     this.selectedTabIndex = 3;
     this.resetDealsPagination();
-    this.dealsPagination.filterKey = "lost";
-    this.listDeals(this.dealsPagination);
+    this.dealsPagination.filterKey = "lost";    
     this.campaignPagination = new Pagination;
     this.campaignPagination.filterKey = "lost";
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignDeals = false;
     this.selectedPartnerCompanyId = 0;
+    if(this.vanityLoginDto.vanityUrlFilter){
+      this.dealsPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.dealsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
+    this.listDeals(this.dealsPagination);
     this.listCampaigns(this.campaignPagination);
   }
 
