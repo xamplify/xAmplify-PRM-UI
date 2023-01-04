@@ -1422,7 +1422,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (this.authenticationService.isOnlyPartner()) { eventCampaign.channelCampaign = false; }
         eventCampaign.user.userId = this.loggedInUserId;
         if (this.router.url.includes('campaigns/re-distribute')) {
-            console.log(this.selectedFormData);
         } else {
             if (this.authenticationService.module.hasFormAccess) {
                 this.selectedFormData = this.previewPopUpComponent.selectedFormData;
