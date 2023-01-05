@@ -582,3 +582,7 @@
       font-weight: 500;
       cursor: default;
   }
+/****** Tharak *******/
+.welcome-header {
+    padding:10px 0px;
+}

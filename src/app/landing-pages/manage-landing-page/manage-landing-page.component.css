@@ -12,7 +12,7 @@
 }
 
 .portlet.light {
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+    /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4); */
     padding: 10px;
 }
 
@@ -521,4 +521,7 @@ hr {
         margin-left: -23px;
         margin-top: -2px;
     }
+  }
+  .group-dd-content{
+      min-width: 200px;
   }
