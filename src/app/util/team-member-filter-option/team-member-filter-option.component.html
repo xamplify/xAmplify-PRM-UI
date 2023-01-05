@@ -1,5 +1,5 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="tg-filter" *ngIf="showPartners" style="display: flex;justify-content: end;">
+<div class="tg-filter" *ngIf="showPartners">
   <ul class="mix-filter" *ngIf="!filterIcon">
     <li class="filter" (click)="applyFilter(0)" [class.filter-box-selected]="0 == selectedFilterIndex" translate>All
     </li>
