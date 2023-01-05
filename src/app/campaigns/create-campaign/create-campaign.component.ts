@@ -955,7 +955,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else {
                 this.isCampaignDetailsFormValid = false;
             }
-
+        }
+        if(!this.isValidCampaignName){
+            this.isCampaignDetailsFormValid = false;
         }
     }
     validateEmail(emailId: string) {
