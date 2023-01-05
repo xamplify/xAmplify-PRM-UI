@@ -1705,7 +1705,7 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="margin-bottom: -12px;">
                     <div class="alert alert-danger"
                         *ngIf="contactAndMdfPopupResponse.isVisible">
                         <strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
@@ -1808,7 +1808,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <br>
+                    <!-- <br> -->
                 </div>
                 <ngx-loading [show]="processingPartnersLoader || previewLoader"
                     [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
