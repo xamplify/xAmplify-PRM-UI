@@ -26,3 +26,9 @@
 .login-success{
   color:#3c763d;
 }
+.success-margin{
+  margin: 5px -2px 7px 0px;
+}
+.danger-margin{
+  margin: 5px -13px 7px -17px;
+}

@@ -271,7 +271,7 @@
                 </div>
             </div>
             <!-- High Level Analytics -->
-            <div class="clearfix"  *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <div class="clearfix" style="padding-top: 2px;"  *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
                 <div class="portlet light" id="hla-adv-dashboard">
                 <div class="portlet-title" style="min-height: 0px;">
                     <div class="caption">
@@ -306,7 +306,7 @@
 
             <!--Opportunity Stats-->
             <div *ngIf="!authenticationService?.module?.deletedPartner 
-            &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)" class="clearfix">
+            &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)" class="clearfix" style="padding-top: 6px;">
                 <div class="portlet light">
                     <div class="portlet-title">
                         <div class="caption">
