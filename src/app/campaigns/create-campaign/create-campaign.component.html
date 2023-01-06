@@ -1906,13 +1906,13 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                             <div *ngFor="let reply of replies;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
-                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                    <div class="portlet-title custom-change-css">
                                                         <div class="col-xs-6">
-                                                            <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
+                                                            <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                <label class="switch-choose" translate>Choose Template
                                                                     </label>
                                                                 <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectReplyEmailBody($event,i,reply)">
@@ -2266,13 +2266,13 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                             <div *ngFor="let url of urls;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{url.divId}}">
-                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                    <div class="portlet-title custom-change-css">
                                                         <div class="col-xs-6">
-                                                            <h4 class="text-left" style="color:#fff">Add an Auto-response to a website visit - {{i+1}}</h4>
+                                                            <h4 class="text-left">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                <label class="switch-choose" translate>Choose Template
                                                                     </label>
                                                                 <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectClickEmailBody($event,i,url)">
