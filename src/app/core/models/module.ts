@@ -101,5 +101,6 @@ export class Module {
     agencyUserDashboard = false;
     /***XBI-1533**/
     isAdmin = false;
+    isPartnerAdmin = false;
 
 }
