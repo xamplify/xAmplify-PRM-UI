@@ -886,7 +886,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
  /********XNFR-139*********/
   setPrimaryAdminOptions(teamMember:any){
-    if(teamMember.status=='APPROVE' && !this.isLoggedInAsTeamMember){
+    if(teamMember.status=='APPROVE' && !this.isLoggedInAsTeamMember && this.authenticationService.module.isAdmin){
       this.showPrimaryAdminConfirmSweetAlert = true;
       this.selectedPrimaryAdminTeamMemberUserId = teamMember.teamMemberUserId;
     }
