@@ -54,7 +54,8 @@
                             {{userData.occupation}}
                         </div>
                         <div class="profile-usertitle-job">
-                            {{roleNames}}
+                            {{roleNames}} 
+                            <span *ngIf="(authenticationService?.module?.isAdmin || authenticationService?.module?.isPartnerAdmin) && authenticationService?.module?.isTeamMember">(TEAM MEMBER)</span>
                         </div>
                         <div *ngIf="authenticationService?.module?.upgradeToMarketing" class="profile-usertitle-job" >
                             <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your Account</button>

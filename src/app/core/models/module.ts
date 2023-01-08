@@ -102,5 +102,6 @@ export class Module {
     /***XBI-1533**/
     isAdmin = false;
     isPartnerAdmin = false;
+    isTeamMember = false;
 
 }
