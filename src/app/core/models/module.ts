@@ -99,7 +99,7 @@ export class Module {
     isAgencySuperVisor = false;
     isAgencyCompany = false;
     agencyUserDashboard = false;
+    /***XBI-1533**/
+    isAdmin = false;
 
-
-   
 }
