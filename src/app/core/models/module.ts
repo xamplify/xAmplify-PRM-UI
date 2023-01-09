@@ -104,5 +104,6 @@ export class Module {
     isPartnerAdmin = false;
     isTeamMember = false;
     isPartnerCompany = false;
+    isAdminAndPartnerCompany = false;
 
 }

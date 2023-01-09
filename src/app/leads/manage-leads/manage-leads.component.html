@@ -17,12 +17,12 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 p0">
             <ul class="mix-filter p0 m0" style="float: right"
-              *ngIf="!authenticationService.vanityURLEnabled && isCompanyPartner && isVendor && !authenticationService?.module.isOnlyPartnerCompany">
+              *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-            						margin-top: 5px;" *ngIf="isCompanyPartner" translate>
+            						margin-top: 5px;" translate>
                 {{authenticationService?.partnerModule?.customName}} View </li>
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
-            						margin-top: 5px;" *ngIf=" isVendor && enableLeads" translate>Vendor View</li>
+            						margin-top: 5px;" translate>Vendor View</li>
               <p class="filter" style="float: right;
             						margin: 10px;background-color: white" translate>Opportunities as:   </p>
             </ul>
