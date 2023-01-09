@@ -103,5 +103,6 @@ export class Module {
     isAdmin = false;
     isPartnerAdmin = false;
     isTeamMember = false;
+    isPartnerCompany = false;
 
 }
