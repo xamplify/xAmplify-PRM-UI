@@ -140,3 +140,9 @@
 h5{
 	font-weight: 600;
 }
+.height{
+	min-height: 45px;
+}
+.portlet.light > .portlet-title > .caption{
+	padding: 8px 0px !important;
+}

@@ -290,7 +290,7 @@
                   </div>
                   <section [hidden]="!isListView"
                     *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                    <div class="table-responsive" style="padding-top: 5px;">
+                    <div class="table-responsive pt5"  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
                       <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                         <thead>
                           <tr>

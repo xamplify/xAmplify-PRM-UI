@@ -64,7 +64,7 @@ h5 {
 }
 
 .mtop {
-    margin-top: 20px !important;
+    margin-top: 28px !important;
 }
 
 .cpad {
@@ -133,4 +133,13 @@ h5 {
     .mDisableColor{
         color: #888!important;
     }
+}
+.portlet > .portlet-title > .caption{
+    line-height: 30px;
+}
+.mt{
+margin-top: 9px !important;
+}
+.padding{
+    padding: 10px 30px 22px !important;
 }

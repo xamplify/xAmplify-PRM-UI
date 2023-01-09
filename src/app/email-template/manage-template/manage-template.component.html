@@ -35,7 +35,7 @@
 
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="colxs-12 col-sm-12 col-md-6">
+                        <div class="colxs-12 col-sm-12 col-md-6" style="padding-top: 5px;">
                             <div *ngIf="!isOnlyPartner">
                                 <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView &&!modulesDisplayType.isFolderListView">
                                     <li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All</li>
@@ -60,7 +60,7 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" style="padding-top: 10px;margin-left: -5px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right" style="display: flex;">
                                 <div class="">
                                 <div class="group-dropdown">

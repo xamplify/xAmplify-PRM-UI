@@ -109,3 +109,6 @@
     padding:7px;
     background-color: #6dcff6;
 }
+.search-box-item-click{
+    top: 6px !important;
+}

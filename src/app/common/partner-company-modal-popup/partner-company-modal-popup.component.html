@@ -26,7 +26,7 @@
                                                          <div class="btn-group pull-right">
                                                             <div class="inputs float-right" style="display: inline-flex;">
                                                                <div class="portlet-input input-inline" id="search-div">
-                                                                  <div class="input-icon right" id="icon">
+                                                                  <div class="input-icon right" id="icon" style="margin-top: -6px;">
                                                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
                                                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                                                                      <button type="submit" class="search-box-item-click" (click)="searchPartners()">

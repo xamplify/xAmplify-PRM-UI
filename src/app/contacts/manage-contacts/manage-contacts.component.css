@@ -194,3 +194,9 @@ h3 {
 		   width: 100% !important;
 	   }
 	}
+.success{
+	    margin-top: -6px !important;
+}
+.pt5{
+	padding-top: 5px;
+}
