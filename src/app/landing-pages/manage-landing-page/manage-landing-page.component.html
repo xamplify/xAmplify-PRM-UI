@@ -30,7 +30,7 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6" style="padding-left: 11px;">
                             <div>
-                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
+                                <ul class="mix-filter" style="margin-top: -1px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>Regular (Public)
@@ -341,15 +341,19 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="landingPageAliasUrl" #userinput>
                         <br>
+                        <div style="padding-top: 9px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')" translate>Copy
                             Link</a>
+                        </div>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')"  translate>Copy Embed
                             Link</a>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

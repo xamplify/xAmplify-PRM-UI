@@ -42,10 +42,10 @@
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <div class="portlet-title" style="border-bottom: none">
+                <div class="portlet-title" style="border-bottom: none;margin-bottom:0px !important">
                     <div class="row">
                         <div class="page-toolbar" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                            <div class="col-xs-12 col-sm-4" >
+                            <div class="col-xs-12 col-sm-4" style="margin-top: -2px;">
                                 <ul class="mix-filter" *ngIf="!pagination.surveyCampaignForm ">
                                     <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
                                         translate>All</li> 
@@ -59,7 +59,7 @@
                                         Default Form</li>
                                 </ul>
                             </div>
-                            <div class="col-xs-12 col-sm-8">
+                            <div class="col-xs-12 col-sm-8" style="margin-top: -1px;">
                                 <div class="btn-group pull-right" style="display: flex;">
                                     <div class="">
                                     <div class="group-dropdown">
@@ -357,15 +357,19 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
+                        <div style="padding-top: 8px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
                             </a>
+                        </div>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

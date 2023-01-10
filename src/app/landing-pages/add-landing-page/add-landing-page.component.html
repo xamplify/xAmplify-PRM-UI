@@ -6,8 +6,8 @@
     <ng-container *ngIf="!httpRequestLoader.isLoading">
         <div class="row">
             <div class="col-xs-12">
-                <div class="tile mScroll">
-                    <div class="page-bar mWidth">
+                <div class="tile mScroll" style="border-radius: 5px;">
+                    <div class="page-bar mWidth" style="border:none !important;">
                         <ul class="page-breadcrumb" *ngIf="loadLandingPage">
                             <li>
                                 <i class="fa fa-home" aria-hidden="true"></i>
@@ -29,7 +29,7 @@
                         </ul>
                         <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                         <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
-                        <button  class="new-tab-button" *ngIf="loadLandingPage">
+                        <button  class="new-tab-button" style="border-radius: 5px;" *ngIf="loadLandingPage">
                             Open Links In New Tab <input type="checkbox" [(ngModel)]="landingPage.openLinksInNewTab">
                           </button>
                     </div>
