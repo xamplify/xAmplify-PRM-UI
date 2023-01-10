@@ -165,6 +165,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
+                            <ng-container *ngIf="!authenticationService?.module?.contentLoader">
                             <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
                                      <i class="icon-user"></i> 
@@ -200,9 +201,10 @@
                                     </li>
                                 </ng-container>
                             </ng-container>
-                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService.module.isCompanyPartner || superiorRole.indexOf('Partner') > -1)">
+                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
                                 <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                             </li>
+                        </ng-container>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out
