@@ -137,3 +137,6 @@ cursor: default;
 .form-selected{
   background-color: #6dcff6;
 }
+.xamp-margin-left-icon{
+  margin: 0px 5px 5px 5px !important;
+}
