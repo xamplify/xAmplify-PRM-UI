@@ -66,7 +66,8 @@ Login page
   border: none;
   background-color: #dde3ec;
   height: 43px;
-  color: #8290a3;
+  /* color: #8290a3; */
+  color: #333333;
   border: 1px solid #dde3ec;
 }
 .login .content .form-control:focus, .login .content .form-control:active {
