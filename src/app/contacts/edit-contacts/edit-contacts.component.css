@@ -265,3 +265,6 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .table{
 	margin-bottom: 18px;
 }
+.ellipsis{
+	width: none;
+}

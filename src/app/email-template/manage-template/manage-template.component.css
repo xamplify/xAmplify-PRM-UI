@@ -360,3 +360,7 @@ body {
 .pg8{
 	top: -2px;
 }
+/* 10-01-2023 */
+.portlet > .portlet-title {
+	font-size: 0px;
+}

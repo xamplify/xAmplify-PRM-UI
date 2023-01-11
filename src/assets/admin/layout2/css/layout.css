@@ -236,7 +236,7 @@ Page Header
   font-size: 17px;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Montserrat',"Open Sans", sans-serif;
   position: absolute;
   top: 17px;
   right: 9px;
@@ -1389,7 +1389,8 @@ Page sidebar
   padding: 17px 15px 15px 15px;
   text-decoration: none;
   font-size: 13px;
-  font-weight: 300;
+  /* 11-01-2023 */
+  font-weight: 400;
   text-align: center;
 }
 .page-sidebar .page-sidebar-menu > li > a > .title,
@@ -1956,7 +1957,7 @@ Page content
   color: #666;
   margin: 0px 0px 20px 0px;
   font-weight: 300;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Montserrat',"Open Sans", sans-serif;
   /* subtitle */
 }
 .page-title small {
@@ -1976,6 +1977,8 @@ Page content
 .page-bar {
   padding: 0px;
   background-color: #ffffff;
+  /* background-color: #333; */
+
   margin-bottom: 20px;
   border-radius: 5px;
   border:1px solid #ddd;
@@ -2071,6 +2074,8 @@ Page content
 }
 .page-container-bg-solid .page-content {
   background-color: #f1f3fa;
+  /* background-color: #374048; */
+
 }
 .page-full-width .page-content {
   margin-left: 0px !important;

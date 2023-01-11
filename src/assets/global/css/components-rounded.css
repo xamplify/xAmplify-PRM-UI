@@ -14,7 +14,8 @@ General reset
 /* Set default body */
 body {
   color: #333333;
-  font-family: "Open Sans", sans-serif;
+  /* color: #ffff; */
+  font-family: 'Montserrat',"Open Sans", sans-serif;
   padding: 0px !important;
   margin: 0px !important;
   font-size: 13px;
@@ -947,12 +948,15 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 300;
+  /* 10-01-2023 */
+  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-weight: 500;
+  color: 333;
 }
 
 h1 {
-  font-size: 33px;
+   /* 10-01-2023 */
+   font-size: 38px;
 }
 
 h2 {
@@ -964,7 +968,8 @@ h3 {
 }
 
 h4 {
-  font-size: 17px;
+   /* 10-01-20223 */
+   font-size: 16px;
 }
 
 h5 {
@@ -1103,7 +1108,7 @@ a:hover {
 }
 
 .primary-font {
-  font-family: "Open Sans", sans-serif !important;
+  font-family: 'Montserrat',"Open Sans", sans-serif !important;
 }
 
 .bold {
@@ -2232,12 +2237,14 @@ Customized Bootstrap Buttons
 .btn-sm,
 .btn-xs {
   padding: 4px 10px 5px 10px;
-  font-size: 13px;
+  /* 10-01-2023 */
+  font-size: 12px;
   line-height: 1.5;
 }
 .btn-sm > i,
 .btn-xs > i {
-  font-size: 13px;
+   /* 10-01-2023 */
+  font-size: 12px;
 }
 
 .btn-xs {
@@ -2418,7 +2425,7 @@ Charts and statistics
   overflow: hidden;
   height: 300px;
   width: 100%;
-  font-family: "Open Sans", sans-serif !important;
+  font-family: 'Montserrat',"Open Sans", sans-serif !important;
   font-size: 14px;
 }
 
@@ -2630,7 +2637,8 @@ Dropdown Menu
   margin: 10px  0px 0px 0px;
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
   border: 1px solid #eee;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* 10-01-2023 ("Helvetica Neue", Helvetica, Arial, sans-serif) */
+  font-family: 'Montserrat',"Open Sans", sans-serif;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
@@ -3785,7 +3793,7 @@ Customized Bootstrap Labels
   font-weight: 300;
   padding: 3px 6px 3px 6px;
   color: #fff;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Montserrat',"Open Sans", sans-serif;
 }
 .label.label-sm {
   font-size: 12px;
@@ -3861,9 +3869,9 @@ Text states
   color: #c6c6c6;
 }
 
-.text-primary {
+/* .text-primary {
   color: #428bca;
-}
+} */
 
 .text-success {
   color: #45B6AF;
@@ -4621,6 +4629,9 @@ Portlets
   padding: 0;
   margin-bottom: 10px;
   min-height: 41px;
+  /* 10-01-2023 */
+  font-size: 16px;
+  font-weight: 500;
   -webkit-border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
   -ms-border-radius: 4px 4px 0 0;
@@ -4640,6 +4651,8 @@ Portlets
   font-size: 18px;
   line-height: 18px;
   padding: 10px 0;
+  /* 10-01-2023 */
+  font-weight: 500;
 }
 .portlet > .portlet-title > .caption.bold {
   font-weight: 400;
@@ -4901,6 +4914,7 @@ Portlets
 .portlet.light {
    /* padding: 5px 5px 10px 10px; */
    background-color: #fff;
+   /* background-color: #333; */
    /* border-radius: 5px !important; */
    border-radius: 5px ;
    border:1px solid #ddd;
@@ -4923,14 +4937,16 @@ Portlets
   /*min-height: 48px;*/
 }
 .portlet.light > .portlet-title > .caption {
-  color: #666;
+  /* 10-01-2023 (#666) */
+  color: #333;
   padding: 10px 0;
 }
 .portlet.light > .portlet-title > .caption > .caption-subject {
   font-size: 16px;
 }
 .portlet.light > .portlet-title > .caption > i {
-  color: #777;
+  /* 10-01-2023 (#777) */
+  color: #333;
   font-size: 15px;
   font-weight: 300;
   margin-top: 3px;
@@ -5158,10 +5174,11 @@ Dashboard Stats
   color: #f7f7f7;
 }
 .dashboard-stat .details .desc {
+  /* 10-01-2023 */
   text-align: right;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0px;
-  font-weight: 300;
+  font-weight: 500;
 }
 .dashboard-stat .more {
   clear: both;
@@ -5928,8 +5945,9 @@ Custom tables
 }
 
 .table thead tr th {
-  font-size: 12px;
-  font-weight: 800;
+  /* 10-01-2023 */
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .table-advance {
@@ -6014,7 +6032,7 @@ Light Table
   font-weight: 600;
   font-size: 13px;
   color: #93a2a9;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Montserrat',"Open Sans", sans-serif;
   border: 0;
   border-bottom: 1px solid #F2F5F8;
 }
@@ -9975,10 +9993,12 @@ Grey Default
   filter: alpha(opacity=10);
 }
 .dashboard-stat.grey .details .number {
-  color: #333333;
+  /* 10-01-2023 */
+  /* color: #333333; */
 }
 .dashboard-stat.grey .details .desc {
-  color: #333333;
+  /* 10-01-2023 */
+  /* color: #333333; */
   opacity: 1;
   filter: alpha(opacity=100);
 }
@@ -11596,7 +11616,8 @@ Red Sunglo
 /* General Text & Icon Font Colors */
 .font-red-sunglo {
  /*  color: #E26A6A !important;*/
- color: #00a6e8 !important
+ /* 10-01-2023 */
+ /* color: #00a6e8 !important */
 }
 
 .progress-bar.red-sunglo {
@@ -14517,3 +14538,15 @@ Transparent Button
   background: transparent;
   color: #888;
 }
+/* 10-01-2023 */
+.tooltip {
+  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-size: 10px;
+}
+.profile-usermenu{
+  color: #333;
+}
+/* *{
+  margin: 0 auto;
+  padding: 0;
+} */

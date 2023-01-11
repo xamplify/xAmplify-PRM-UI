@@ -62,13 +62,13 @@
 									<span>
 										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
 										 && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" data-toggle="tooltip" data-placement="top" title="Edit list Name"
-											style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;" (click)="editListName()">
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
 											<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 											</span>
 										</span>
 										<span *ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
-											style="font-size: 16px; font-family: Open Sans; color: #989292;">{{selectedContactListName}}
+											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
 										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" style="color: #4d5b69;text-align: right;margin-right: -19px;">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
@@ -94,7 +94,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>All</div>
+											<div class="desc fz17"  translate>All</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -112,7 +112,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.validContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>Valid</div>
+											<div class="desc fz17"  translate>Valid</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -130,7 +130,7 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px; color: #FFFFFF;font-weight: 500;" translate>Registered</div>
+											<div class="desc fz17"  translate>Registered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -148,7 +148,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Unregistered</div>
+											<div class="desc fz17" style="" translate>Unregistered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -166,7 +166,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Undeliverable</div>
+											<div class="desc fz17" style="" translate>Undeliverable</div>
 										</div>
 										<span class="morePadding"> 
 											<a class="more" style="text-align: left;" translate>
@@ -185,7 +185,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc fz17" style="font-size:20px;font-weight: 500;" translate>Unsubscribed</div>
+											<div class="desc fz17" style="" translate>Unsubscribed</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>

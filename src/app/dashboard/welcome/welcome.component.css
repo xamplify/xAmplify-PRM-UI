@@ -152,14 +152,16 @@ h3 {
 	}
 	.text-block p {
 		margin: 0 0 10px;
-		font-size: 20px;
-		color: rgba(119, 119, 119, 0.7);
+		/* 10-01-2023 (20px,rgba(119, 119, 119, 0.7))*/
+		font-size: 18px;
+		/* color: #333; */
 		text-align: justify;
 		padding: 1em;
 	}
 	.text-block h1 {
 		font-weight: bolder;
-		font-size: 3.2em;
+		/* 10-01-2023 */
+		/* font-size: 3.2em; */
 		text-transform: lowercase;
 		margin: 0;
 	}
@@ -244,7 +246,8 @@ h3 {
 }
 
 .welcome-item-header{
-	color: #00B3B3;
+	/* 11-01-2023 */
+	/* color: #00B3B3; */
 	text-align: left
 }
 /******* tharak ******/

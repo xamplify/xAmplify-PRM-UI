@@ -517,7 +517,8 @@ tr.highlight {
 .tgrid > tbody > tr > th,
 .tgrid > thead > tr > td,
 .tgrid > thead > tr > th {
-  padding: 10px !important;
+  /* 10-01-2023 */
+  /* padding: 10px !important; */
   vertical-align: middle !important;
   color: #555555;
 }
@@ -798,7 +799,10 @@ legend {
 }
 
 .text-primary {
-  color: #008fd5 !important;
+  /* 10-01-2023 (#008fd5) */
+  color: #333 !important;
+  /* color: #fff !important; */
+
 }
 
 .text-white {
@@ -1537,7 +1541,7 @@ strong {
 }
 .welcome-header {
   margin: 0px;
-  color: #00a6e8;
+  /* color: #00a6e8; */
   font-weight: 600;
   padding:5px;
   

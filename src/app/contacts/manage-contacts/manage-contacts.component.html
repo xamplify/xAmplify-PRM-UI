@@ -71,7 +71,7 @@
                   <div class="details">
                     <div class="number" style="font-weight: 300 !important; color: #FFFFFF;">
                       {{contactsByType.allContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px; color: #FFFFFF;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       All
                     </div>
                   </div>
@@ -95,7 +95,7 @@
                   <div class="details">
                     <div class="number numberCss" style="font-weight: 300 !important; color: #FFFFFF;">
                       {{contactsByType.activeContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px; color: #FFFFFF;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       Registered
                       <!-- {{checkingContactTypeName}}s -->
                     </div>
@@ -120,7 +120,7 @@
                   <div class="details">
                     <div class="number" style="font-weight: 300 !important;">
                       {{contactsByType.inactiveContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       Unregistered
                       <!-- {{checkingContactTypeName}}s -->
                     </div>
@@ -144,7 +144,7 @@
                   <div class="details">
                     <div class="number" style="font-weight: 300 !important;">
                       {{contactsByType.validContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       Valid
                     </div>
                   </div>
@@ -167,7 +167,7 @@
                   <div class="details">
                     <div class="number" style="font-weight: 300 !important;">
                       {{contactsByType.invalidContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       Undeliverable
                       <!-- {{checkingContactTypeName}}s -->
                       <i class="fa fa-check-circle"
@@ -196,7 +196,7 @@
                   <div class="details">
                     <div class="number" style="font-weight: 300 !important;">
                       {{contactsByType.unsubscribedContactsCount}}</div>
-                    <div class="desc fz-16" style="font-size: 20px;font-weight: 500;" translate>
+                    <div class="desc fz-16"  translate>
                       Unsubscribed
                       <!-- {{checkingContactTypeName}}s -->
                     </div>
@@ -516,7 +516,7 @@
                                       aria-hidden="true"></i>
                                   </a>
                                 </div>
-                                <div class="actions-block override-actions"
+                                <div class="actions-block override-actions" style=""
                                     *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                   ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                                   || (!contactList.synchronisedList  && !contactList.emailValidationInd)" >

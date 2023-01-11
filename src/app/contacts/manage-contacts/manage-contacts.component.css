@@ -158,8 +158,10 @@ h3 {
 }
 
 #header-custom-li-font{
+	/* 10-01-2023 */
 	font-size: 16px; 
-	color: #888888;
+	/* color: #888888; */
+	font-weight: 500;
 }
 /****** 15-11-2022 *****/
 .details{
