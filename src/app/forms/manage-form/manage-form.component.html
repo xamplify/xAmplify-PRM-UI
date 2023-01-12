@@ -189,7 +189,7 @@
                                                 </a>
                                                 </div>
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop">
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                                     <i class="fa fa-clipboard"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
