@@ -247,6 +247,9 @@
 
 													</ul>
 												</div>
+												<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
+															(click)="saveAs(true)" style="margin-right: 5px;" translate> Save As
+												</button>
 												</div>
 												<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt" style="margin-right: 5px;">
 													<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
@@ -291,9 +294,9 @@
 														</div>
 													</div>
 												</div>
-												<button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
+												<!-- <button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
 															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate> Save As
-														</button>
+												</button> -->
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
@@ -708,7 +711,6 @@
 																			<strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
 																				<span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
 																			</strong>
-																			<br>
 																			<strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
 																		</ng-container>
 																		<ng-container *ngIf="contact?.teamMemberGroupId==0">
@@ -1037,7 +1039,7 @@
 																<strong title="{{allcontacts?.selectedTeamMemberGroupName}}">Group Name : {{allcontacts?.selectedTeamMemberGroupName | slice:0:10}}
 																	<span *ngIf="allcontacts?.selectedTeamMemberGroupName?.length>10">..</span>
 																</strong>
-																<br>
+															
 																<strong>Team Members : {{allcontacts?.selectedTeamMembersCount}}</strong>
 															</ng-container>
 															<ng-container *ngIf="allcontacts?.teamMemberGroupId==0">

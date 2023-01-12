@@ -211,7 +211,7 @@
             <!-- End tile here-->
             <div [ngClass]="{'page-bar p10': showListOfContactList}">
               <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
-                <div class="tab-pane active" style="padding-top: 5px;">
+                <div class="tab-pane active" >
                   <div class="clearfix"></div>
                   <!-- Remove Tiles here-->
                   <span *ngIf="iszohoAccessTokenExpired">
@@ -274,11 +274,14 @@
                     </div>
                   </div>
 
-
+                  <div class="row mr0 ml0">
+                    <div class="col-xs-12">
                   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                   </app-response-message>
                   <app-response-message [customResponse]="emailNotificationCustomResponse" *ngIf="emailNotificationCustomResponse.isVisible">
                   </app-response-message>
+                   </div>
+                   </div>
                   <!-- END DASHBOARD STATS -->
                   <div class="clearfix"></div>
                 </div>
@@ -698,7 +701,7 @@
                       </div>
                     </div>
                   </div>
-                  <div id="pagination" style="margin-top: -5px;">
+                  <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-5px': ''}">
                     <!--pager here  -->
                     <app-pagination
                       [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
@@ -926,7 +929,7 @@
                                       <strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
                                         <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
                                       </strong>
-                                      <br>
+                                      
                                       <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
                                     </ng-container>
                                     <ng-container *ngIf="contact?.teamMemberGroupId==0">

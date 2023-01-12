@@ -145,7 +145,7 @@ h3 {
 }
 
 .mix-filter {
-    margin: 5px;
+    margin: 0px;
 }
 
 .mix-filter li {
@@ -201,4 +201,8 @@ h3 {
 }
 .pt5{
 	padding-top: 5px;
+}
+
+.table {
+	margin-bottom: 15px;
 }

@@ -39,7 +39,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc" title="Active {{authenticationService?.partnerModule?.customName}}">Active
+                  <div class="desc" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -65,7 +65,7 @@
                 <div class="details">
                   <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
@@ -109,7 +109,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" title="Inactive {{authenticationService?.partnerModule?.customName}}">Inactive
+                  <div class="desc" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{approvePartnersCount}}</div>
-                  <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}">Approve
+                  <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -347,7 +347,7 @@
           <div class="tab-content">
             <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-            <div class="page-bar m10" [hidden]="httpRequestLoader.isLoading">
+            <div class="page-bar" [hidden]="httpRequestLoader.isLoading">
               <ul  class="mix-filter col-xs-12 col-md-5 p0 m0 mDisplay" style="display: inline-flex;">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
@@ -449,7 +449,7 @@
                 </div>
               </div>
             </div>
-            <section class='m10'
+            <section class=''
               *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="table-responsive">
                 <table class='table tgrid table-hover table-sm' *ngIf="isListView" aria-describedby="">
