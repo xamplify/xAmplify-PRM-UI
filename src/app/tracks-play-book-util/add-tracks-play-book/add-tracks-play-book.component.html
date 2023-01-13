@@ -268,7 +268,7 @@
     </div>
 
     <!-- step 2 -->
-    <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
+    <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
       <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet light" style="border: none;">
         <div class="input-icon right pull-right cebp">
@@ -283,14 +283,14 @@
           style="margin-bottom: 5px;">
           <span class="required">{{descriptionErrorMessage}}</span>
         </div>
-        <div class="portlet-body">
+        <div class="portlet-body pt15">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
               (ready)="onReady($event)" debounce="500" maxlength="5000"
               (change)="validateDescription();validateAllSteps()" (input)="setDescription();validateDescription();validateAllSteps()">
             </ckeditor>
           </div>
-          <div class="row" style="margin: 10px 0px;">
+          <div class="row" style="margin: 10px 0px -18px;">
             <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-1')"
               translate>Previous</button>
             <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-3');"
@@ -302,7 +302,7 @@
 
     <!-- step 3 -->
     <div [ngClass]="{'blur-content' : showFilePreview}">
-      <div *ngIf="activeTabName == 'step-3'" class="setup-content step activeStepInfo" style="margin-top: 10px;">
+      <div *ngIf="activeTabName == 'step-3'" class="setup-content step activeStepInfo">
         <div class="portlet light" style="border:none">
           <div class="col-lg-12">
             <div class="page-toolbar">
@@ -335,7 +335,7 @@
               </div>
             </div>
           </div>
-          <div class="portlet-body">
+          <div class="portlet-body pt5">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
               <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
@@ -406,7 +406,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 10px;">
+            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 20px;">
               <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                 (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
               </app-pagination>
@@ -415,7 +415,7 @@
             <div *ngIf="assetPagination.totalRecords==0 && !assetLoader.isLoading" class="alert alert-info">
               <strong>No Assets Found.</strong>
             </div>
-            <div style="padding: 0px 0px 35px 0px;">
+            <div style="padding: 0px 0px 15px 0px;">
               <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-2')"
                 translate>Previous</button>
               <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-4');"

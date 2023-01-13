@@ -482,7 +482,7 @@
 							</ng-container>
 						</div>
 						<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
-							<div class="input-icon right mDamSearch"	style="position: relative; right: -11px;">
+							<div class="input-icon right mDamSearch rSearch" style="position: relative; right: -6px;">
 								<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
 								<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
 								<button type="submit" class="search-box-item-click"	(click)="searchAssets()">

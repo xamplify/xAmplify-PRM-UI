@@ -1,6 +1,8 @@
+<div style="padding-top:10px;margin-bottom: -5px;">
 <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn" id="right" style="border-radius: 5px;" (click)="showForms()">
   {{buttonText}}
 </button>
+</div>
 <!-- ----------------------List Available Forms------------------- -->
 <div class="modal fade right" id="forms-list" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog full-width">

@@ -183,7 +183,7 @@ cursor: default;
 
 .ref-mar{
   /* margin-top: 3px !important; */
-  margin-left: 2px !important;
+  margin-left: -1px !important;
 }
 
 .mxv{
@@ -219,7 +219,7 @@ cursor: default;
     padding: 0px!important;
   }
   .mDamSearch{
-    right: 0px!important;
+    right: 9px!important;
     width: 100%;
   }
   .mDamResponse{
@@ -245,6 +245,10 @@ cursor: default;
   .mDisableColor{
     color: #888!important;
     border: 1px solid;
+}
+.ref-mar{
+    margin-left: -16px !important;
+    margin-right: 2px;
 }
 }
 
@@ -297,5 +301,10 @@ cursor: default;
 @media screen and (max-width:479px){
   .mt15{
     margin-top: 15px;
+  }
+}
+@media screen and (max-width:320px){
+  .rSearch{
+    right: -2px!important;
   }
 }
