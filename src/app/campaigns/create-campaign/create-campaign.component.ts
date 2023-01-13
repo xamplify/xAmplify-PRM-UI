@@ -3631,11 +3631,16 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         $('#edit-template').show(600);
         this.editTemplateLoader = true;
         this.beeContainerInput['emailTemplateName'] = landingPage.name;
-        this.landingPageService.getJsonContent(landingPage.id).subscribe(
+        this.landingPageService.getById(landingPage.id).subscribe(
             response=>{
-                this.beeContainerInput['module'] = "pages";
-                this.beeContainerInput['jsonBody'] = response.message;
-                this.beeContainerInput['id'] = landingPage.id;
+                if(response.statusCode==200){
+                    this.beeContainerInput['module'] = "pages";
+                    this.beeContainerInput['jsonBody'] = response.data.jsonBody;
+                    this.beeContainerInput['id'] = landingPage.id;
+                }else{
+                    this.hideEditTemplateDiv();
+                    this.refService.showSweetAlertServerErrorMessage();
+                }
             },error=>{
                 this.hideEditTemplateDiv();
                 this.refService.showSweetAlertServerErrorMessage();
