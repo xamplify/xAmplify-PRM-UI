@@ -122,6 +122,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     clicked = false;
     editButtonClicked = false;
     selectedCampaignId = 0;
+    showUpArrowButton = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -1119,6 +1120,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
+            this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
             this.navigatingToRelatedComponent = true;
             if(this.teamMemberId!=undefined && this.teamMemberId>0){
                 this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");

@@ -11,6 +11,9 @@
                     <div class="row">
                         <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right mb10">
+                                <div class="group-dropdown">
+                                    <button class="l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button>
+                                  <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('l')">
                                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
@@ -30,7 +33,9 @@
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                                     </span>
                                 </ng-container>
-                                <div class="inputs mt" style="float: right"> 
+                                </div>
+                                </div>
+                                <div class="inputs" style="float: right"> 
                                     <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">
                                             <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">

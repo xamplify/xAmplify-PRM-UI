@@ -43,6 +43,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
+    this.viewClass = this.folderViewType =="fg"? 'fa fa-folder':'fa fa-th';
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.findAllCategories(this.pagination);

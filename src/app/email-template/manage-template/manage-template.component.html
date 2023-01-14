@@ -83,14 +83,18 @@
                                         <i class="fa fa-th p10" aria-hidden="true"></i>
                                     </span>
                                 </ng-container>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                    <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
                                         title="Go back" (click)="setViewType('Folder-Grid')"> 
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span>
+                                    </span> -->
                                 </ng-container>
                                 </div>
                                 </div>
                                 </div>
+                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                    title="Go back" (click)="setViewType('Folder-Grid')"> 
+                                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                </span>
                                 <div class="inputs" align="right" style="float: right">
                                     <ng-container>
                                         <div style="float: left;">

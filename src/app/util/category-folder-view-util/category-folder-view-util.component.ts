@@ -33,6 +33,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 	folderListViewInput = {};
 	selectedModuleType = "";
     archived: any = false;
+    titleHeader ="";
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -82,18 +83,23 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 		this.selectedModuleType = type;
         if (type == 1) {
             pagination.categoryType = 'e';
+            this.titleHeader = "Manage Templates";
         }else if(type==2){
             pagination.categoryType = 'f';
+            this.titleHeader ="Manage Forms";
         }else if(type==3){
             pagination.categoryType = 'l';
+            this.titleHeader = "Manage Pages";
 			pagination.partnerView = false;
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
 			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
+            this.titleHeader = type==5 ? "Campaigns shared by Vendors": "Manage Campaigns";
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
+
 			}
         }
         let teamMemberId = this.moduleType['teamMemberId'];
@@ -165,25 +171,34 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         let type = this.moduleType['type'];
         if(type==1){
             this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
+            this.titleHeader = "Manage Templates";
         }else if(type==2){
+            this.titleHeader = "Manage Forms";
             this.router.navigate( ['home/forms/manage/' + categoryId] );
         }else if(type==3){
 			let partnerLandingPage = this.moduleType['partnerLandingPage'];
 			if(partnerLandingPage){
 				 this.router.navigate( ['home/pages/partner/' + categoryId] );
+                 this.titleHeader = "Pages Shared By Vendors";
 			}else{
 				 this.router.navigate( ['home/pages/manage/' + categoryId] );
+                 this.titleHeader = "Manage Pages";
 			}
            
         }else if(type==4){
             let teamMemberId = this.moduleType['teamMemberId'];
             if(teamMemberId!=undefined && teamMemberId>0){
+                this.titleHeader ="Manage Campaigns";
                 this.router.navigate( ['home/campaigns/manage/' + categoryId+"/"+teamMemberId] );
+                
             }else{
+                this.titleHeader ="Manage Campaigns";
                 this.router.navigate( ['home/campaigns/manage/' + categoryId] );
+                
             }
         }else if(type==5){
             this.router.navigate( ['home/campaigns/partner/f/' + categoryId] );
+            this.titleHeader ="Campaigns shared by Vendors";
         }
         
     }

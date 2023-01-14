@@ -199,3 +199,9 @@ fieldset {
     	width: 89%;
 	}
 }
+.mix-filter {
+	margin: 0px !important;
+}
+.input-icon > .form-control {
+	padding-left: 10px;
+}

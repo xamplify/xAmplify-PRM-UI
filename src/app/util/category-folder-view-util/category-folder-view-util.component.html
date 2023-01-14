@@ -2,11 +2,14 @@
 <div>
     <div class="portlet-title">
         <div class="row">
-            <div class="page-toolbar col-xs-12" style="padding-right: 23px;">
+            <div class="col-xs-3 caption pull-left">
+               <h4>{{titleHeader}}</h4>
+            </div>
+            <div class="page-toolbar col-xs-9" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
                     <div class="group-dropdown" style="padding-right:5px">
                         <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button>
-                    <div class="group-dd-content" [ngStyle]="{'min-width': isFromCampaignModule && !isFromRedistributedCampaignSection ? '243px' : '198px' }">
+                    <div class="group-dd-content" style="min-width: max-content;">
                     <ng-container class='m10'>
                         <button *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                             <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
@@ -51,7 +54,7 @@
     </div>
     <br>
      <!-----------------------Folder Grid View----------------------------------------->
-    <div class="row mix-grid p10" *ngIf="folderViewType=='Folder-Grid'">
+    <div class="row mix-grid" *ngIf="folderViewType=='Folder-Grid'">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
         <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading"> 
