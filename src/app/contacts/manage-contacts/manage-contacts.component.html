@@ -286,7 +286,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <!-- END FILTER -->
-                <section *ngIf="showListOfContactList">
+                <section class="col-xs-12 p0" *ngIf="showListOfContactList">
                   <div class="clearfix">
                     <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                     <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>

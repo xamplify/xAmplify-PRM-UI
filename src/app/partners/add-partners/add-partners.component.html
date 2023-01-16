@@ -908,68 +908,47 @@
                                                         value="{{contact.id}}" id="{{contact.id}}"
                                                         (click)="editContactComponent.highlightRow(contact.id,$event)" />
                                                     </td>
-                                                    <td><app-user-info [isPartnerEntityInfo]="true"
-                                                            [isPartnerInfo]="true" [userInfo]="contact">
-                                                        </app-user-info> <!-- -XNFR-85 --> <ng-container
-                                                            *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
-                                                         </ng-container> <ng-container
-                                                            *ngIf="contact?.multipleTeamMemberGroupsAssigned">
-                                                        <span class="inactive-status"> <strong>Please
-                                                                contact admin</strong>
-                                                        </span> </ng-container></td>
-                                                        <td>
-                                                            <span>
-                                                            <a style="display: table;" title="{{contact?.emailId}}">{{contact?.emailId | slice:0:30}}<span *ngIf="contact?.emailId?.length>30">...</span></a>
-                                                            <span *ngIf="contact?.mobileNumber">
-                                                                <a href="tel:{{contact?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>{{contact?.mobileNumber}}</a>
+                                                    <td><app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
+                                                        <!-- -XNFR-85 -->
+                                                        <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId>0">
+                                                                    <strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
+                                                                        <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
+                                                                    </strong>
+                                                                    <br>
+                                                                    <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="contact?.teamMemberGroupId==0">
+                                                                    <strong>No Group Selected</strong>
+                                                                </ng-container>
                                                             </span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="contact?.multipleTeamMemberGroupsAssigned">
+                                                            <span class="inactive-status">
+                                                                <strong>Please contact admin</strong>
                                                             </span>
-
-                                                            <span
-                                                            [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
-                                                            <ng-container *ngIf="contact?.teamMemberGroupId>0">
-                                                            <h5 title="{{contact?.selectedTeamMemberGroupName}}">Group
-                                                                Name : {{contact?.selectedTeamMemberGroupName |
-                                                                slice:0:10}} <span
-                                                                *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
-                                                            </h5> <br>
-                                                            <h5>Team Members :
-                                                                {{contact?.selectedTeamMembersCount}}</h5> </ng-container> <ng-container
-                                                                *ngIf="contact?.teamMemberGroupId==0"> <h5>No
-                                                                Group Selected</h5> </ng-container>
-                                                        </span>
-                                                        </td>
-                                                        <td>
-                                                            <button id='more_less_button_{{i}}' class="hidden-xs"
-                                                                (click)="contact.isShowDetails = ! contact.isShowDetails">
-                                                                <span *ngIf="!contact.isShowDetails" translate>More</span>
-                                                                <span *ngIf="contact.isShowDetails" translate>Less</span>
-                                                            </button>
-                                                        </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.vertical}}">{{contact.vertical |
-                                                        slice:0:14}} <span *ngIf="contact.vertical?.length>14">..</span>
+                                                        </ng-container>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.region}}">{{contact.region |
-                                                        slice:0:14}} <span *ngIf="contact.region?.length>14">..</span>
+                                                    <td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+                                                        <span *ngIf="contact.vertical?.length>14">..</span>
                                                     </td>
-                                                    <td class="hidden-xs white-space-transform"
-                                                        title="{{contact.partnerType}}">{{contact.partnerType
-                                                        | slice:0:14}} <span *ngIf="contact.partnerType?.length>14">..</span>
+                                                    <td class="hidden-xs white-space-transform" title="{{contact.region}}">{{contact.region | slice:0:14}}
+                                                        <span *ngIf="contact.region?.length>14">..</span>
                                                     </td>
-                                                    <td class="hidden-xs hidden-sm white-space-transform"
-                                                        title="{{contact.category}}">{{contact.category |
-                                                        slice:0:14}} <span *ngIf="contact.category?.length>14">..</span>
+                                                    <td class="hidden-xs white-space-transform" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+                                                        <span *ngIf="contact.partnerType?.length>14">..</span>
                                                     </td>
-    
-                                                    <!-- <td>
-                                                        <button id='more_less_button_{{i}}' class="hidden-xs"
-                                                            (click)="contact.isShowDetails = ! contact.isShowDetails">
-                                                            <span *ngIf="!contact.isShowDetails" translate>More</span>
-                                                            <span *ngIf="contact.isShowDetails" translate>Less</span>
+                                                    <td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:14}}
+                                                        <span *ngIf="contact.category?.length>14">..</span>
+                                                    </td>
+                        
+                                                    <td>
+                                                        <button id='more_less_button_{{i}}' class="hidden-xs" (click)="contact.isShowDetails = ! contact.isShowDetails">
+                                                            <span *ngIf="!contact.isShowDetails" translate>More</span> <span
+                                                                *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
-                                                    </td> -->
+                                                    </td>
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
                                                             <a id="envolope_{{i}}"

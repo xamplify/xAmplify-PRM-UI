@@ -170,6 +170,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
+        this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
