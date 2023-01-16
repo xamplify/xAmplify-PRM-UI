@@ -188,7 +188,7 @@
 
 	<!--Pagination-->
 	<div *ngIf="pagination.pagedItems.length !== 0"
-		style="margin-top: 25px;">
+		style="margin-top: 25px;padding-left: 10px;">
 		<app-pagination [pagination]="pagination"
 			(notifyParent)="setPage($event)"
 			(notifyParentDropDown)="listCategories($event)"

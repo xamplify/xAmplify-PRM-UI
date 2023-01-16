@@ -230,7 +230,7 @@
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngIf="form.count>0">
-                                                        <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
+                                                        <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics" style="margin-top: -5px;">
                                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
@@ -301,7 +301,7 @@
                                 </ng-container>
                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
-                                        <a class="cursor">
+                                        <a class="cursor" style="margin-top:5px;">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
