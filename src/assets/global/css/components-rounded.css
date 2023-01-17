@@ -5234,6 +5234,9 @@ Dashboard Stats 2
   background: #fff;
   padding: 15px 15px 1px 15px;
   margin-bottom: 20px;
+  /* 17-01-2023 */
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 .dashboard-stat2 .display {
   margin-bottom: 0px;

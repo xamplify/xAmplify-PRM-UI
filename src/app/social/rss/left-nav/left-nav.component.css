@@ -14,7 +14,7 @@ img {
 #leftbar{
     min-height: 820px!important;
     background-color: #ffffff!important;
-    box-shadow: 0px 5px 5px 5px #eae9e9;
+    /* box-shadow: 0px 5px 5px 5px #eae9e9; */
     border-radius: 5px;
     max-height: 820px!important;
     overflow-y: auto;
@@ -70,4 +70,8 @@ img {
 
 .add-content-text{
     font-family: Open Sans, sans-serif;
+}
+
+.dashboard-stat2 {
+    border-radius: 5px;
 }

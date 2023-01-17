@@ -269,9 +269,9 @@ body {
 }
 
 
-.portlet {
+/* .portlet {
 	border-radius: 0
-}
+} */
 
 .portlet.light {
 	box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
@@ -394,9 +394,9 @@ body {
 	padding: 5px;
 }
 
-.portlet {
+/* .portlet {
 	border-radius: 0;
-}
+} */
 .portlet > .portlet-title{min-height: auto;}
 .portlet-title h4{margin: 0.5em 0;
     font-weight: 600;
