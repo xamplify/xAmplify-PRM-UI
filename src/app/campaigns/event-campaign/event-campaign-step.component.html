@@ -88,12 +88,12 @@
 					</div>
 				</div>	
 		<div class="portlet light container"
-				style="width: 100%; border-radius: 0; border-top: 0;box-shadow:none;border: 1px solid #ccc; padding-bottom: 10px;border-radius: 5px !important;">
+				style="width: 100%;padding-bottom: 10px;">
 				<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
 				
 		   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="padding:10px"></app-response-message>
 				<!-- Step One code -->
-				<fieldset style="margin-top: 25px;border: none;" [hidden]="!detailsTab">
+				<fieldset class="portlet" style="margin-top: 25px;" [hidden]="!detailsTab">
 				<div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
 					<h4 class="pull-left f-w-600" *ngIf="!isEventUpdate" translate>Event Details</h4>
 					<h4 class="pull-left f-w-600" *ngIf="isEventUpdate" translate>Event Update</h4>

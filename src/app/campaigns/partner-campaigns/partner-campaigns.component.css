@@ -206,6 +206,6 @@ fieldset {
 	padding-left: 10px;
 }
 
-.open>.dropdown-menu {
-	width: 600%
+.bar a {
+	width: auto;
 }

@@ -461,3 +461,6 @@ a.icons-link:hover {
     margin-right: -21px;
   }
 }
+fieldset{
+  border-radius: 5px;
+}
