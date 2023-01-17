@@ -266,5 +266,5 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 	margin-bottom: 18px;
 }
 .ellipsis{
-	width: none;
+	width: auto !important;
 }

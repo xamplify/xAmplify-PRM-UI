@@ -70,7 +70,7 @@
 										<span *ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" style="color: #4d5b69;text-align: right;margin-right: -19px;">
+										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" style="color: #4d5b69;margin-right: -19px;">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
 									</span>
@@ -710,7 +710,7 @@
 																		<ng-container *ngIf="contact?.teamMemberGroupId>0">
 																			<strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
 																				<span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
-																			</strong>
+																			</strong><br>
 																			<strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
 																		</ng-container>
 																		<ng-container *ngIf="contact?.teamMemberGroupId==0">
@@ -1039,7 +1039,7 @@
 																<strong title="{{allcontacts?.selectedTeamMemberGroupName}}">Group Name : {{allcontacts?.selectedTeamMemberGroupName | slice:0:10}}
 																	<span *ngIf="allcontacts?.selectedTeamMemberGroupName?.length>10">..</span>
 																</strong>
-															
+															<br>
 																<strong>Team Members : {{allcontacts?.selectedTeamMembersCount}}</strong>
 															</ng-container>
 															<ng-container *ngIf="allcontacts?.teamMemberGroupId==0">
