@@ -93,7 +93,8 @@
                                             <span class="gridHeader">Page</span>
                                         </th>
                                         <th scope="row" class="hidden-xs text-center">Type</th>
-                                        <th scope="row" class="hidden-xs text-center">Created On</th>
+                                        <th *ngIf="isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Shared On</th>
+                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Created On</th>
                                         <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Updated On</th>
                                         <th scope="row" class="text-center" style="min-width: 200px;">Actions</th>
                                     </tr>
