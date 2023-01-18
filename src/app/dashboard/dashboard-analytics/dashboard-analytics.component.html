@@ -47,7 +47,7 @@
                     <h4 title="{{logedInCustomerCompanyName}}"  class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
-                    <div style="display: flex;">
+                    <div class="df-mt5">
                     <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
                     <div>
                         <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"

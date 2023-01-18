@@ -78,15 +78,18 @@
                                         </span>
                                  </ng-container>
 
-                                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                                        <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                        </span>
+                                        </span> -->
                                 </ng-container>
                                 </div>
                                 <!-- close group-dd-content-->
                                 </div>
                                 <!--close group-dropdown-->
                                </div>
+                               <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                                <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                               </span>
                                 <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                                     <div *ngIf="!isPartnerLandingPage">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">

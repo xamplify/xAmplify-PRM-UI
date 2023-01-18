@@ -6,6 +6,9 @@
 	/* background-color: #00a6e8 */
 	background-color: white;
 }
+.unread-notification:hover,{
+  background-color: #ddd;
+}
 
 /* CSS Added Nagesh */
 .btn-header{
@@ -91,8 +94,7 @@ right: -19px !important;
 .custome-response-css{
 	margin: -8px 0px 10px 0px;
 }
-
->>> .error-message{
+.error-message{
 	text-align: left;
 }
 input.form-control{border: none;width: 100%;padding: 5px;font-size: 1em;border-bottom: 2px solid #efefef;}
@@ -191,4 +193,7 @@ margin: 10px 10px 10px 10px;
 }
 .page-header.navbar .top-menu .navbar-nav>li.dropdown-user>.dropdown-menu {
   width: auto !important;
+}
+#logoutButton{
+ background-color: #e8edf2;
 }

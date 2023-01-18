@@ -516,6 +516,11 @@
       cursor: pointer;
   }
 
+  .df-mt5{
+    display: flex;
+    margin-top: 5px;
+  }
+
   .mg-tooltip {
       position: absolute;
       right: 98px;

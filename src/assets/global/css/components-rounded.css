@@ -951,7 +951,11 @@ h6 {
   /* 10-01-2023 */
   font-family: 'Montserrat',"Open Sans", sans-serif;
   font-weight: 500;
-  color: 333;
+  /* color: #333 !important; */
+}
+/* 18-01-2023 */
+h1,h2,h3,h4,h5,h6 {
+  color: #333 !important;
 }
 
 h1 {

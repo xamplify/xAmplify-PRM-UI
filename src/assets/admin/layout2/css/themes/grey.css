@@ -55,7 +55,8 @@ Page Header
   border-bottom-color: #eaedf2;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external {
-  background: #eaedf2;
+  /* background: #eaedf2; */
+  background: #e8edf2;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external > h3 {
   color: #62878f;

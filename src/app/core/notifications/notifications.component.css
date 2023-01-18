@@ -35,9 +35,11 @@ ul.alt-row-style1 li a{
 }
  .read {
     background-color: #fff;
+    /* background-color: #d6dfe2; */
 }
- .unread {
-    background-color: #d6dfe2;
+ .unread:hover {
+    /* background-color: #d6dfe2; */
+    background-color: #ddd;
 }
 .portlet-title {
     min-height: 30px;
