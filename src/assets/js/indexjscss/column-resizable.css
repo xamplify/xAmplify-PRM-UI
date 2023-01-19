@@ -265,7 +265,7 @@ span.ui-column-resizer {
 }
 
 .folder-custom-response {
-	overflow-x: auto;
+	/* overflow-x: auto; */
 	margin-bottom: 5px;
 }
 

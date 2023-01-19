@@ -67,7 +67,7 @@
                  <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                  <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix" *ngIf="!listLoader.isLoading">
-                    <div class="col-xs-12" style="padding: 0px 0;margin-top: -14px;">
+                    <div class="col-xs-12" style="padding: 0px 0;margin-top: 5px;">
                        <div class="table-responsive">
                           <table class="table tgrid" aria-describedby="published-partners-list">
                              <thead>

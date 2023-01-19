@@ -440,10 +440,11 @@
 		<div class="row">
 			<div class="page-toolbar col-xs-12">
 				<div class="btn-group pull-right">
-					<div class="group-dropdown mt15">
+					<div class="">
+					<div class="group-dropdown">
 						<button [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
 						modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'" style="padding:10px !important"></button>
-					<div class="group-dd-content" style="min-width: 198px;">
+					<div class="group-dd-content">
 					<ng-container class='m10'>
 						 <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
 							<i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp; 
@@ -459,13 +460,43 @@
 									<i  class="fa fa-th p10" aria-hidden="true"></i>
 								</span>
 							</ng-container>
-							<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+							<!-- <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
 								<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-							</span>
+							</span> -->
 					</ng-container>
 				 </div>
 				</div>
-					<div class="inputs mDamTop" style="float: right">
+				<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+					<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+				</span>
+				<div class="inputs mDamTop" style="float: right">
+					<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
+						<i class="fa fa-refresh" aria-hidden="true"></i>
+					</a>
+					<div class="pb3" style="float: left;">
+						<ng-container *ngIf="isPartnerView">
+							<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
+								<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+							</select> 
+						</ng-container>
+						<ng-container *ngIf="!isPartnerView">
+							<select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+								<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+							</select> 
+						</ng-container>
+					</div>
+					<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
+						<div class="input-icon right mDamSearch rSearch" style="position: relative; right: -6px;">
+							<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+							<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
+							<button type="submit" class="search-box-item-click"	(click)="searchAssets()">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			    </div>
+					<!-- <div class="inputs mDamTop" style="float: right">
 						<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
 							<i class="fa fa-refresh" aria-hidden="true"></i>
 						</a>
@@ -490,7 +521,7 @@
 								</button>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>

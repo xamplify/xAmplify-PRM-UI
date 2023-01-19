@@ -465,3 +465,6 @@ a.icons-link:hover {
 fieldset{
   border-radius: 5px;
 }
+.content__list {
+  font-size: 12px;
+}

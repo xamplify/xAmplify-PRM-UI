@@ -10,9 +10,10 @@
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
                         <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                            <div class="btn-group pull-right mb10">
+                            <div class="btn-group pull-right mb10" style="display: flex;">
+                                <div class="">
                                 <div class="group-dropdown">
-                                    <button class="l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button>
+                                    <button class="btn btn-xs l-g-view {{viewClass}}" [ngClass]="!showUpArrowButton && !folderListView?'':'hidden-xs' " style="padding: 10px !important"></button>
                                   <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('l')">
@@ -29,12 +30,16 @@
                                             <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="No Image Found"/>
                                         </span>
                                     </ng-container>
-                                    <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                                    <!-- <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span>
+                                    </span> -->
                                 </ng-container>
                                 </div>
                                 </div>
+                                <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                </span>
+                               </div>
                                 <div class="inputs" style="float: right"> 
                                     <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">

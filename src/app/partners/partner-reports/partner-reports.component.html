@@ -24,13 +24,13 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12 p5">
+    <div class="col-xs-12 col-md-12 col-sm-12">
       <div>
         <div>
-          <div class="row">
+          <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;">
             <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
-            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()">
+            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -53,7 +53,7 @@
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
+            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -76,7 +76,7 @@
 
             <!--Through Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
+            <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
                 <div class="visual">
@@ -100,7 +100,7 @@
 
             <!--InActive Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -123,7 +123,7 @@
 
             <!--Active Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
+            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths" (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -343,12 +343,13 @@
   <div id="through-partner-div" style="display: none;">
     <div class="row">
       <div class="col-md-12">
-        <div class="tabbable tabbable-custom tabbable-noborder" id="header">
+        <!--tabbable tabbable-custom tabbable-noborder-->
+        <div class="page-bar p10" id="header">
           <div class="tab-content">
             <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-            <div class="page-bar" [hidden]="httpRequestLoader.isLoading">
-              <ul  class="mix-filter col-xs-12 col-md-5 p0 m0 mDisplay" style="display: inline-flex;">
+            <div class="" [hidden]="httpRequestLoader.isLoading">
+              <ul  class="mix-filter col-xs-12 col-sm-12 col-md-5 p0 m0 mDisplay" style="display: inline-flex;">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                   [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
@@ -367,13 +368,13 @@
                   [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
+              <div class="page-toolbar col-xs-12 col-sm-7 col-md-7 p0">
                 <div class="btn-group pull-right">
                   <ng-container class='m10 hidden-xs'>
                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                       title="List View" [class.disabled]="isListView" (click)="isListView = true"><i
                         class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                       title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i
                         class="fa fa-th-large p10" aria-hidden="true"></i></span>
                   </ng-container>
@@ -449,7 +450,7 @@
                 </div>
               </div>
             </div>
-            <section class=''
+            <section class='col-xs-12 p0'
               *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="table-responsive">
                 <table class='table tgrid table-hover table-sm' *ngIf="isListView" aria-describedby="">
