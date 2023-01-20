@@ -60,6 +60,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     surveyCampaignId = 0;
     selectedFormSubmitId = 0;
     detailedResponse: boolean = false;
+    viewClass = 'fa fa-th-list';
 
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -406,34 +407,40 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     setViewType(viewType: string) {
         if ("List" == viewType) {
+            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
+            this.viewClass = 'fa fa-th-large';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);
         } else if ("Folder-Grid" == viewType) {
+            this.viewClass = 'fa fa-folder';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isFolderGridView = true;
             this.exportObject['type'] = 2;
             this.exportObject['folderType'] = viewType;
+            this.exportObject['viewClass'] = this.viewClass;
             if (this.categoryId > 0) {
                 this.router.navigateByUrl('/home/forms/manage/');
             }
         }else if("Folder-List" == viewType){
+            this.viewClass = 'fa fa-th';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 2;
+            this.exportObject['viewClass'] = this.viewClass;
 
         }
     }

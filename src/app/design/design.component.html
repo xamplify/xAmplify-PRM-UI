@@ -15,17 +15,17 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div class="portlet light">
+            <div class="portlet light padding">
                 <div class="portlet-title">
                     <div class="caption" translate>
-                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a Design
+                        <i class="fa fa-cogs mt" aria-hidden="true"></i>Create a Design
                     </div>
                     <div>
                         <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <div class="row" style="margin-top: 20px;">
+                    <div class="row" style="margin-top: 28px;">
                         <ng-container *ngIf="isLoading">
                             <app-landing-page-loader [maxBoxLength]=3></app-landing-page-loader>
                         </ng-container>

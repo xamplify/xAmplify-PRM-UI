@@ -1,9 +1,9 @@
-<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
+<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError" style="border:none;padding-bottom: 8px;">
   <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
   </div>
-  <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign">
+  <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign" style="padding-right: 2px;">
     <div class="btn-group pull-right" style="width: max-content;">      
       <div class="inputs" align="right" style="float: right; display: inline-flex;">
         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
@@ -41,9 +41,12 @@
     <div class="portlet light m10">
       <div class="portlet-title">
         <div class="caption" translate>Apply Filters</div>
-        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+        <button type="button" class="close-circle" style="margin-left:10px;" (click)="closeFilterOption()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
+        <div class="form-group" style="text-align: -webkit-right;">
+          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+        </div>
       </div>                                       
       <div class="portlet box">
         <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
@@ -58,7 +61,7 @@
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
-              <div class="form-group col-sm-4">
+              <div class="form-group col-sm-4 form-group-mr">
                 <label class="control-label">To Date &nbsp;
                   <!-- <span class="required">*</span> -->
                 </label>
@@ -66,9 +69,9 @@
                 </app-date-picker>
               </div>
               <div class="row">
-                            <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                            <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                               <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                              <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                              <select class="form-control select-width" [(ngModel)]="statusFilter"
                               [ngModelOptions]="{standalone: true}">
                                   <option value="">---Select Status---</option>  
                                 <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
@@ -76,9 +79,9 @@
                               </select>
                             </div>
                             </div>
-                            <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                            <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                               <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                            </div>
+                            </div> -->
             </div>
           </div>
         </form>

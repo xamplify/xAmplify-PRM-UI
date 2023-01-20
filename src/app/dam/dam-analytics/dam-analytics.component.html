@@ -36,8 +36,8 @@
 
  <div class="row">
   <div class="col-md-12 col-lg-12">
-     <div class="portlet light mHeight" style="height:198px;">
-      <div class="page-bar">
+     <div class="portlet light mHeight" style="height: 172px;padding-top: 3px !important;">
+      <div style="padding-top: 10px;margin-left: -9px;">
          <ul class="page-breadcrumb">
             <li>
                <span>
@@ -47,13 +47,13 @@
             </li>
          </ul>
       </div>
-        <div class="row" style="margin-top: 20px;">
+        <div class="row" style="margin-top: 20px;margin-right: -20px;margin-left: 0px;">
            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
-              <div class="row">
-                 <div  id="vendor-details-tile" class="{{tileClass}} mPad2">
+              <div class="row" style="margin-top: -14px;">
+                 <div  id="vendor-details-tile" class="{{tileClass}} mPad2" style="border-radius: 5px !important;">
                     <div class="row">
-                        <div class="flex margin-flex">
+                        <div class="flex margin-flex" style="padding-left: 5px;">
                             <span class='profile'>
                                 <span class='uppercase'>{{damAnalyticsTilesDto?.circleAlphabet}}</span>
                                 </span>
@@ -117,16 +117,21 @@
       <div class="clearfix">
          <div class="col-xs-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet box blue">
-               <div class="portlet-title">
-                  <div class="caption" translate>
+            <div class="portlet light">
+               <div class="portlet-title" style="padding-top: 3px;border-bottom: none;">
+                  <div class="caption" style="padding-top: 8px !important;padding-left: 3px !important;" translate>
                      <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                      Analytics
                   </div>
                   <div class="inputs"  style="float: right; padding: 4px">
-                     <div class="portlet-input input-inline">
+                     <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 m0 campaign-filter-option">
+                        <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
+                        <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
+                        <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
+                    </ul>
+                     <div class="portlet-input input-inline" style="margin-left: 85px;margin-right: -92px;">
                         <div class="input-icon right">
-                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                           <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
                            <button type="submit" class="search-box-item-click" (click)="searchAnalytics()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                         </div>
@@ -135,15 +140,15 @@
                </div>
             
             <!--End Of Portlet Box-->
-            <div class="portlet-body table-responsive" style="overflow: hidden;">
-               <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
+            <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px;">
+               <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
                   <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
                   <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
                   <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
-              </ul>
+              </ul> -->
               <app-list-loader *ngIf="analyticsLoader.isLoading"></app-list-loader>
               <div class="clearfix"  *ngIf="!analyticsLoader.isLoading">
-               <div class="col-xs-12" style="padding: 10px 0;">
+               <div class="col-xs-12" style="padding: 0px 0;">
                   <div class="table-responsive">
                      <table class='table tgrid' aria-describedby="dam-analytics-list">
                         <thead>

@@ -35,7 +35,7 @@
 
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="colxs-12 col-sm-12 col-md-6">
+                        <div class="colxs-12 col-sm-12 col-md-6" style="padding-top: 5px;">
                             <div *ngIf="!isOnlyPartner">
                                 <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView &&!modulesDisplayType.isFolderListView">
                                     <li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All</li>
@@ -60,8 +60,12 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                            <div class="btn-group pull-right">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" style="padding-top: 10px;margin-left: -5px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                            <div class="btn-group pull-right" style="display: flex;">
+                                <div class="">
+                                <div class="group-dropdown">
+                                    <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button>
+                                <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
                                         <i class="fa fa-th-list p10"   aria-hidden="true"></i></span> &nbsp;
@@ -75,14 +79,22 @@
                                     </span>
                                     <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
                                         title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                        <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/>
+                                        <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
+                                        <i class="fa fa-th p10" aria-hidden="true"></i>
                                     </span>
                                 </ng-container>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                    <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
                                         title="Go back" (click)="setViewType('Folder-Grid')"> 
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span>
+                                    </span> -->
                                 </ng-container>
+                                </div>
+                                </div>
+                                </div>
+                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                    title="Go back" (click)="setViewType('Folder-Grid')"> 
+                                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                </span>
                                 <div class="inputs" align="right" style="float: right">
                                     <ng-container>
                                         <div style="float: left;">

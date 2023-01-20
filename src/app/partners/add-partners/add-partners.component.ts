@@ -45,6 +45,11 @@ declare var $, Papa, swal, Swal: any;
 		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
+	// @Input() userInfo: any;
+	// @Input() isPartnerInfo: boolean;
+	// @Input() isExclusion : boolean=false;
+	// highlightLetter: string = "*";
+
 	loggedInUserId: number;
 	validEmailPatternSuccess: boolean = true;
 	user: User;
@@ -968,7 +973,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			var self = this;
 			reader.onload = function (e: any) {
 				var contents = e.target.result;
-				let csvData = reader.result;
+				let csvData:any = reader.result;
 				let csvRecordsArray = csvData.split(/\r|\n/);
 				let headersRow = self.fileUtil
 					.getHeaderArray(csvRecordsArray);
@@ -1697,6 +1702,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	hideZohoAuthorisedPopup() {
 		$('#zohoShowAuthorisedPopup').modal('hide');
 		this.zohoErrorResponse = new CustomResponse();
+		this.cancelPartners()
 	}
 	authorisedZohoContacts() {
 		try {
@@ -2596,6 +2602,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
+			// this.setHighlightLetter();
 			this.socialContactImage();
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
@@ -4149,5 +4156,28 @@ getTeamMembersByGroupId(partner: any, index: number) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
-	
+//   setHighlightLetter() {
+// 	if (this.isPartnerInfo) {
+// 		if (this.userInfo.contactCompany != undefined && this.userInfo.contactCompany != null && this.userInfo.contactCompany.trim().length > 0) {
+// 			this.highlightLetter = this.userInfo.contactCompany.slice(0,1);
+// 		}else if(this.userInfo.companyName!=undefined && this.userInfo.companyName!=null && $.trim(this.userInfo.companyName).length>0){
+// 			this.highlightLetter = this.userInfo.companyName.slice(0,1);
+// 		}else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+// 			this.highlightLetter = this.userInfo.emailId.slice(0,1);
+// 		}
+// 	}
+//  else if (this.isExclusion) {
+// 	if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
+// 	}
+// } else {
+// 	if (this.userInfo.firstName != undefined && this.userInfo.firstName != null && this.userInfo.firstName.trim().length > 0 ) {
+// 		this.highlightLetter = this.userInfo.firstName.slice(0,1);
+// 	} else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
+// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
+// 	} else if (this.userInfo.email != undefined && this.userInfo.email != null && this.userInfo.email.trim().length > 0) {
+// 		this.highlightLetter = this.userInfo.email.slice(0,1);
+// 	}
+// }
+// }
 }

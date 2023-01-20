@@ -1,0 +1,28 @@
+/* sudha sri */
+@media (max-width:425px){
+    .height{
+        height: 223px !important;
+    }
+    .mt{
+        margin-top: -3px !important;
+    }
+    #pl{
+        padding-left: 3px !important;
+    }
+    #pb-pr{
+        padding-bottom: 2px !important;
+        padding-right: 3px !important;
+    }
+    #pr{
+        padding-right: 3px !important;
+    }
+    .pt-pl{
+        padding-top: 3px !important;
+        padding-left: 4px !important;
+        padding-right: 13px!important;
+    }
+    .ml-pt{
+        margin-left: 10px !important;
+        padding-top: 6px !important;
+    }
+}

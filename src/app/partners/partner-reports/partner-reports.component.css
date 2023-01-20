@@ -58,7 +58,7 @@
     position: relative;
     text-transform: uppercase;
     font-weight: 300;
-    font-size: 11px;
+    font-size: 10px;
     opacity: .7;
 }
 .center-aligned{
@@ -158,4 +158,14 @@ cursor: default;
 }
 }
 
-
+.dashboard-stat .more > i {
+	margin-top: 0px;
+}
+.dashboard-stat-lighter {
+	margin-bottom: 0px;
+	margin-top: 10px;
+}
+.dashboard-stat .details {
+	right: 0px;
+	padding-left: 10px;
+}

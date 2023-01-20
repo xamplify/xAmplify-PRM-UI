@@ -49,6 +49,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   moduleId:number = 0;
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+  viewClass = 'fa fa-th-list';
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -71,6 +72,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 		}
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
+      this.viewClass = this.viewType=="g"?'fa fa-th-large ':'fa fa-th-list';
 		} else {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
@@ -110,6 +112,7 @@ setViewType(viewType: string) {
       let gridView = "g" == viewType;
       this.modulesDisplayType.isGridView = gridView;
       this.modulesDisplayType.isListView = !gridView;
+      this.viewClass = 'fa fa-th-list';
     } else {
       if (this.folderViewType != undefined && viewType != "fg") {
         this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg", viewType, this.categoryId,this.isPartnerView,this.tracksModule);

@@ -111,3 +111,38 @@
   .portlet.light>.portlet-title>.caption{
 	padding: 5px 0 !important;
   }
+
+  .sbi-click-child{
+    /* top:45px !important; */
+	right: 16px !important;
+  }
+  .sbi-clear-child{
+	/* top:48px !important; */
+	right: 50px !important;
+
+  }
+  .portlet > .portlet-title {
+	margin-bottom: 0px;
+  }
+  
+/* .portlet.light .portlet-body{
+	padding-top:0px;
+} */
+.text-center{
+	text-align: center;
+}
+.text-left{
+	text-align: left;
+}
+.table{
+	margin-bottom: 13px;
+}
+h5{
+	font-weight: 600;
+}
+.height{
+	min-height: 45px;
+}
+.portlet.light > .portlet-title > .caption{
+	padding: 8px 0px !important;
+}

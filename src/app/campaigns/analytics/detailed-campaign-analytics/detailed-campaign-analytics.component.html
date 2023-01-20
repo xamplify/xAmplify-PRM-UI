@@ -812,8 +812,8 @@
                 </div>
                 <div class="portlet light"
                   [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification ">
-                  <div class="portlet-title col-xs-12">
-                    <div class="caption col-xs-12 col-sm-7">
+                  <div class="portlet-title col-xs-12" style="border-bottom:none">
+                    <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important;">
                       <span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
                         <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                         <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
@@ -826,7 +826,7 @@
                         <span *ngIf="campaignType==='SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                       </span>
                     </div>
-                    <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;"
+                    <div class="col-xs-5 col-sm-2" style="margin-top: -4px;padding-left:0px;"
                       *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR' || campaignType === 'SURVEY'">
                       <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
                         <div class="">
@@ -840,7 +840,7 @@
                     </div>
                     <div class="col-xs-5"
                       [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR' && campaignType !== 'SURVEY', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY' }"
-                      style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
+                      style="margin-top: -4px;padding-right: 0px;padding-left:0px;">
                       <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                         class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                       <button class="search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -852,7 +852,7 @@
                     </div>
                     <div *ngIf="'LANDINGPAGE'!=campaignType"
                       [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
-                      class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+                      class="btn-group pull-right col-xs-1" style="margin-top: -9px; cursor:pointer; color: #7d8c98">
                       <span class="dropdown-toggle" data-toggle="dropdown"
                         style="box-shadow:none;margin-top: 14px; float:right;display: inline-flex;">
                         <i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>

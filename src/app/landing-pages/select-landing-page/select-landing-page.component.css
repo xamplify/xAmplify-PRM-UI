@@ -13,9 +13,9 @@
 	padding: 10px;
 }
 
-.portlet.light {
+/* .portlet.light {
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-}
+} */
 
 .text-center {
 	text-align: center;
@@ -218,4 +218,7 @@ h1 {
   }
 .grid-box{
 	padding-bottom: 0px !important;
+}
+.pg8{
+	top:0px !important;
 }
