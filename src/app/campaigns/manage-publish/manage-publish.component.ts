@@ -141,7 +141,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "NOW") {
             this.showMessageOnTop();
-            this.campaignSuccessMessage = "Campaign launched successfully";
+            this.campaignSuccessMessage = this.properties.campaignLaunchedMessage;
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
         } else if (this.refService.campaignSuccessMessage == "UPDATE") {
             this.showMessageOnTop();
@@ -376,7 +376,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editCampaignsWhichAreNotLaunched(campaign:any){
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             let obj = { 'campaignId': campaign.campaignId }
-            this.campaignService.getCampaignById(obj)
+            this.campaignService.editCampaign(obj)
                 .subscribe(
                 data => {
                         this.campaignService.campaign = data; 
@@ -398,13 +398,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                 },
                 error => {
-                     this.logger.errorPage(error);
+                    this.showErrorResponse(error);
                     });
             this.isScheduledCampaignLaunched = false;     	
         }
         else {
             let obj = { 'campaignId': campaign.campaignId }
-            this.campaignService.getCampaignById(obj)
+            this.campaignService.editCampaign(obj)
                 .subscribe(
                 data => {
                     if (data.campaignType === 'SOCIAL') {
@@ -417,7 +417,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                         let isLaunched = this.campaignService.campaign.launched;
                         let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
-                        if (isLaunched) {
+                        if (isLaunched || data.campaignProcessing) {
                             this.isScheduledCampaignLaunched = true;
                             this.isloading = false;
                         } else {
@@ -437,11 +437,22 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     }
                 },
                 error => {
-                     this.logger.errorPage(error);
+                    this.showErrorResponse(error);
                 });
             this.isScheduledCampaignLaunched = false;
         }
     }
+    private showErrorResponse(error: any) {
+        let statusCode = JSON.parse(error["status"]);
+        if (statusCode == 400) {
+            this.refService.scrollSmoothToTop();
+            this.isScheduledCampaignLaunched = true;
+            this.isloading = false;
+        } else {
+            this.logger.errorPage(error);
+        }
+    }
+
     /*****XNFR-125*****/
     checkOneClickLaunchAccess(campaignId:number){
         this.isloading = true;

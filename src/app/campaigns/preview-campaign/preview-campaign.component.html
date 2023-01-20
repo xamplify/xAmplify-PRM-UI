@@ -13,6 +13,10 @@
             <div style="position: relative; top:-10px;">
                <app-response-message [customResponse]="campaignErrorResponse" *ngIf="campaignErrorResponse.isVisible"></app-response-message>
             </div>
+            <div *ngIf="isScheduledCampaignLaunched" id="scheduleCompleted" class="alert alert-info alert-dismissable fade in">
+               <a (click)="referenceService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
+               <strong translate>Editing this scheduled campaign is not permitted because the campaign launching is in progress.</strong>
+             </div>
              <ng-container *ngIf="campaign && !deleteCampaignAlert">
                 <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                    <legend class="scheduler-border">Campaign details:</legend>

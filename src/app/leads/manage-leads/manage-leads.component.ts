@@ -321,6 +321,12 @@ export class ManageLeadsComponent implements OnInit {
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -334,6 +340,12 @@ export class ManageLeadsComponent implements OnInit {
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }
@@ -347,6 +359,12 @@ export class ManageLeadsComponent implements OnInit {
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
     this.showCampaignLeads = false;
     this.selectedPartnerCompanyId = 0;
+    if (this.vanityLoginDto.vanityUrlFilter) {
+      this.leadsPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.leadsPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+      this.campaignPagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
+      this.campaignPagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+    }
     this.listLeads(this.leadsPagination);
     this.listCampaigns(this.campaignPagination);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -18,11 +18,12 @@ import { CustomResponse } from '../../common/models/custom-response';
   providers: [Pagination, HttpRequestLoader, Properties, SortOption]
 })
 export class ProcessingCampaignsComponent implements OnInit {
-
+  @Input() scheduledCampaigns = false;
   pagination: Pagination = new Pagination();
   loading = false;
   apiError: boolean;
   customResponse:CustomResponse = new CustomResponse();
+  header = "";
   constructor(public dashboardService: DashboardService, public referenceService: ReferenceService,
 		public httpRequestLoader: HttpRequestLoader,
 		public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,
@@ -34,6 +35,13 @@ export class ProcessingCampaignsComponent implements OnInit {
 
 
   ngOnInit() {
+    if(this.scheduledCampaigns){
+      this.pagination.archived = false;
+      this.header = "Scheduled Campaigns";
+    }else{
+      this.pagination.archived = true;
+      this.header = "Processing Campaigns";
+    }
     this.findProcessingCampaigns(this.pagination);
   }
 

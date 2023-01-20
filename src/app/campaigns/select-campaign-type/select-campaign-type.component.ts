@@ -107,6 +107,7 @@ export class SelectCampaignTypeComponent implements OnInit{
 
     ngOnInit() {
         try{
+          this.campaignService.campaign = undefined;
  		      this.getCompanyIdByUserId(); 
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);

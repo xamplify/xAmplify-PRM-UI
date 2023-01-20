@@ -867,7 +867,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
       else {
         var obj = { 'campaignId': this.previewCampaignId }
-        this.campaignService.getCampaignById(obj)
+        this.campaignService.editCampaign(obj)
           .subscribe(
           data => {
             this.campaignService.campaign = data;
@@ -877,8 +877,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             }
             const isLaunched = this.campaignService.campaign.launched;
             const isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
-            if (isLaunched) {
+            if (isLaunched || data.campaignProcessing) {
               this.isScheduledCampaignLaunched = true;
+              this.ngxloading = false;
             } else {
               if (isNurtureCampaign) {
                  /*********XNFR-125*********/
@@ -896,10 +897,21 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             }
           },
           error => {
-            this.ngxloading = false; 
+            this.showErrorResponse(error);
            });
         this.isScheduledCampaignLaunched = false;
       }
+    }
+
+    private showErrorResponse(error: any) {
+        let statusCode = JSON.parse(error["status"]);
+        if (statusCode == 400) {
+            this.referenceService.scrollSmoothToTop();
+            this.isScheduledCampaignLaunched = true;
+            this.ngxloading = false;
+        } else {
+            this.xtremandLogger.errorPage(error);
+        }
     }
 
 

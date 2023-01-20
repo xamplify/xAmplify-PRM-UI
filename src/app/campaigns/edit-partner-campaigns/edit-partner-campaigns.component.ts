@@ -1307,7 +1307,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
              }else if("NOW"==this.campaignLaunchForm.value.scheduleCampaign){
                 message = " launching ";
              }
-             this.referenceService.showSweetAlertProcessingLoader('We are '+message+' the campaign');
+             this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
               this.dataError = false;
               this.contactListBorderColor = "silver";
               this.referenceService.goToTop();
@@ -1337,7 +1337,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
               error => {
 				  swal.close();
                   this.hasInternalError = true;
-                  this.xtremandLogger.errorPage(error);
+                  let statusCode = JSON.parse(error["status"]);
+                  if (statusCode == 400) {
+                      this.router.navigate(["/home/campaigns/manage"]);
+                      this.referenceService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
+                  } else {
+                    this.xtremandLogger.errorPage(error);
+                  }
+                  
               },
               () => this.xtremandLogger.info("Finished launchCampaign()")
           );

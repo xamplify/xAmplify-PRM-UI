@@ -241,7 +241,7 @@ export class AddDealComponent implements OnInit {
           } else if (data.statusCode == 404) {
             self.deal.pipelineId = 0;
             self.stages = [];
-            self.getPipelines();
+            self.getActiveCRMPipelines();
             self.hasCampaignPipeline = false;
           }
         },
@@ -948,7 +948,14 @@ getActiveCRMDetails() {
           if (this.deal.campaignId > 0) {
             this.getCampaignDealPipeline();
           } else {
-            this.getPipelines();
+            this.getActiveCRMPipelines();
+
+            // if (this.activeCRMDetails.activeCRM 
+            //   && ("MICROSOFT" === this.activeCRMDetails.type || "MARKETO" === this.activeCRMDetails.type)) {
+            //     this.getActiveCRMPipelines();
+            // } else {
+            //   this.getPipelines();
+            // }            
           }
           this.getDealTypes();
         } else { 
@@ -963,11 +970,17 @@ getActiveCRMDetails() {
 }
 
 getActiveCRMPipelines() {
-  let self = this;    
-  this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, this.activeCRMDetails.type)
+  let self = this; 
+  this.isLoading = true;   
+  let type = "XAMPLIFY";
+  if (this.activeCRMDetails != undefined && this.activeCRMDetails.type != undefined) { 
+    type = this.activeCRMDetails.type;
+  }
+  this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type)
     .subscribe(
       data => {
         this.referenceService.loading(this.httpRequestLoader, false);
+        this.isLoading = false;
         if (data.statusCode == 200) {
           let activeCRMPipelines:Array<any> = data.data;
           if (activeCRMPipelines.length === 1) {
@@ -978,11 +991,18 @@ getActiveCRMPipelines() {
             self.activeCRMDetails.hasDealPipeline = true;
           } else {     
             self.pipelines = activeCRMPipelines;
-            for (let p of activeCRMPipelines) {
+            let dealPipelineExist = false;
+            for (let p of activeCRMPipelines) {              
               if (p.id == this.deal.pipelineId) {
+                dealPipelineExist = true;
                 self.stages = p.stages;
                 break;
               }
+            }
+            if (!dealPipelineExist) {
+              self.deal.pipelineId = 0;
+              self.deal.pipelineStageId = 0;
+              this.setFieldErrorStates();
             }
             self.activeCRMDetails.hasDealPipeline = false;
           }

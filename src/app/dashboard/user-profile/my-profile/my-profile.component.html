@@ -54,7 +54,8 @@
                             {{userData.occupation}}
                         </div>
                         <div class="profile-usertitle-job">
-                            {{roleNames}}
+                            {{roleNames}} 
+                            <span *ngIf="(authenticationService?.module?.isAdmin || authenticationService?.module?.isPartnerAdmin) && authenticationService?.module?.isTeamMember">(TEAM MEMBER)</span>
                         </div>
                         <div *ngIf="authenticationService?.module?.upgradeToMarketing" class="profile-usertitle-job" >
                             <button class="btn btn-info" *ngIf="!isUpgradedRequestSubmitted" (click)="upgrade()">Request To Upgrade Your Account</button>
@@ -123,19 +124,17 @@
                                       authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
-                            <!---Lead Pipelines--->
-                            <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}"  *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember 
-                               || authenticationService.module.isPrmAndPartner  || authenticationService.module.isPrmAndPartnerTeamMember)">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
-                            </li>
-                            <!---Deal Pipelines--->
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}" 
-                                *ngIf="!authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner' && (hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
-                                authenticationService.isVendor() || authenticationService.isVendorPartner())">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
-                                    (click)="activateTab('dealPipelines');clearCustomResponse()"> {{properties.dealPipelines | translate}}</a>
-                            </li>
+                            <ng-container *ngIf="authenticationService?.leadsAndDeals">
+                                <!---Lead Pipelines--->
+                                <li [ngClass]="{'active-tab': activeTabName == 'leadPipelines'}">
+                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadPipelines'}" (click)="activateTab('leadPipelines');clearCustomResponse()"> {{properties.leadPipelines | translate}}</a>
+                                </li>
+                                <!---Deal Pipelines--->
+                                <li [ngClass]="{'active-tab': activeTabName == 'dealPipelines'}">
+                                    <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealPipelines'}"
+                                        (click)="activateTab('dealPipelines');clearCustomResponse()"> {{properties.dealPipelines | translate}}</a>
+                                </li>
+                            </ng-container>
                             <!--------------Developers----------------------->
                             <div class="my-profile-header-text">Developers</div>
                             <!--SPF Configuration-->
@@ -194,10 +193,7 @@
                             authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
-                             <!-- <li   [ngClass]="{'active-tab': activeTabName == 'custom-skin'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
-                            <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'custom-skin'}" (click)="activateTab('custom-skin');clearCustomResponse()">{{properties.customSkin | translate}}</a>
-                            </li> -->
+                            
                         </ng-container>
                         </ul>
                     </div>
@@ -824,7 +820,9 @@
                                                                             <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
                                                                         </td> -->
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
-                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i><span>{{pipeline.name}}</span>
+                                                                            border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
+                                                                            <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
+                                                                                    *ngIf="pipeline?.name?.length>45">...</span></span>
                                                                             <h6 class="view-banner" *ngIf="pipeline.crmPipeline" translate>{{pipeline.integrationType}}</h6>
                                                                         </td>                                                                        
                                                                         <td>
@@ -1904,19 +1902,41 @@
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
-                                    <span class="fa fa-ellipsis-v"></span>
-                                    <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName" placeholder="Enter Stage Name" style="width: 260px;
-                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)" (keydown)="pipelineSumbitOnEnter($event)">
-                                    <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex" id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;">
-                                    <span style="margin-right: 5px;">Default</span> 
-                                    <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview" >
-                                        <option value="markAs">Mark as</option>
-                                        <option value="won">Won</option>
-                                        <option value="lost">Lost</option>
-                                        <option value="none">None</option>
-                                    </select>
-                  			          <button type="button" *ngIf="x != 0 && !pipelinePreview && !pipeline.crmPipeline"  class="btn-danger button-blue" (click)="deleteStage(x)"
-                                    style="float: right;" [disabled]="!pipelineStage.canDelete"><span class="glyphicon glyphicon-trash"></span></button>
+                                    <div class="row">
+                                        <span class="col-lg-1">
+                                            <span class="fa fa-ellipsis-v"></span>
+                                        </span>
+                                        
+                                        <span class="col-lg-5">
+                                            <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
+                                            placeholder="Enter Stage Name" style="width: 240px;
+                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)">
+                                        </span>
+                                        <span class="col-lg-6">
+                                            <div>
+                                                <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
+                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
+                                                <span style="margin-right: 5px;">Default</span>
+                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
+                                                    <option value="markAs">Mark as</option>
+                                                    <option value="won">Won</option>
+                                                    <option value="lost">Lost</option>
+                                                    <option value="none">None</option>
+                                                </select>
+                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                    (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
+                                                        class="glyphicon glyphicon-trash"></span></button>
+                                            </div>
+                                            <div>
+                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
+                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
+                                                </span>                                                 
+                                            </div> 
+                                        </span>
+                                    </div>
+                                    
                                 </li>
                             </ng-container>                            
                           </ul>
