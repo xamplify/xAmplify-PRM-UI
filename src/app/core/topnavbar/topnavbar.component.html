@@ -28,7 +28,7 @@
         </a>
         <!-- END PAGE ACTIONS -->
         <!-- BEGIN PAGE TOP -->
-        <div class="page-top" [ngStyle] = "{'background-color': cskin.backgroundColor}">
+        <div class="page-top">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- SEARCH IS HIDDEN -->
             <form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
@@ -57,16 +57,16 @@
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
-                            <button [ngStyle] = "{'background-color': cskin?.buttonColor, 'font-family': cskin?.fontFamily, 'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
-                            <button [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button  [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                             <i class="fa fa-line-chart"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
                    
                     <li class="btnShare"  style="margin-top: 17px;margin-right: 5px;" *ngIf="authenticationService?.module?.hasSocialStatusRole">
-                        <button class="btn btn custom"  [ngStyle] = "{'background-color': cskin?.buttonColor, 'font-family': cskin?.fontFamily, 'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
+                        <button class="btn btn custom"   [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs"  translate>Update Status</span>
-							<i class="fa fa-share" [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor}"  button data-toggle="tooltip" aria-hidden="true"></i>
+							<i class="fa fa-share"   button data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
                     </li>
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
@@ -81,11 +81,12 @@
                                 <h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications</h3>
                             </li>
                             <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                <ul class="dropdown-menu-list scroller" data-handle-color="#637283">
                                     <app-notifications [isTopNavBar]=true></app-notifications>
                                 </ul>
                             </li>
-                            <li style="text-align:center;"><a routerLink="/home/dashboard/notifications"><span style="color:#00a6e8">View All</span></a></li>
+                            <li class="divider"></li>
+                            <li id="logoutButton" style="text-align:center;"><a routerLink="/home/dashboard/notifications"><span class="bold">View All</span></a></li>
                         </ul>
                     </li>
 

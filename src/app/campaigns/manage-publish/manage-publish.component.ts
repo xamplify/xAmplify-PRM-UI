@@ -122,6 +122,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     clicked = false;
     editButtonClicked = false;
     selectedCampaignId = 0;
+    showUpArrowButton = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -169,6 +170,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
+        // this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -842,6 +844,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           
           goToCalendarView(){
               this.navigatingToRelatedComponent = true;
+              this.viewClass = 'fa fa-calendar';
               if(this.teamMemberId>0){
                 if(this.categoryId!=undefined && this.categoryId>0){
                     this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
@@ -866,21 +869,24 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.selectedCampaign = campaign;
         
     }
-
+    viewClass:any = 'fa fa-th-list';
     setViewType(viewType:string){
         if("List"==viewType){
             this.modulesDisplayType.isListView = true;
+            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
+            this.viewClass = 'fa fa-th-large';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
+            this.viewClass = 'fa fa-folder';
             this.closeFilterOption();
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -890,6 +896,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['viewClass'] = this.viewClass;
             if(this.categoryId>0){
                 this.navigatingToRelatedComponent = true;
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
@@ -900,6 +907,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 
             }
         }else if("Folder-List"==viewType){
+            this.viewClass = 'fa fa-th' ;
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
@@ -908,6 +916,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
 			this.exportObject['teamMemberId'] = this.teamMemberId;
             this.exportObject['archived'] = this.archived;
+            this.exportObject['viewClass'] = this.viewClass;
             this.closeFilterOption();
         }
     }
@@ -1123,6 +1132,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
+            this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
             this.navigatingToRelatedComponent = true;
             if(this.teamMemberId!=undefined && this.teamMemberId>0){
                 this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
@@ -1262,6 +1272,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.selectedCampaignId = 0;
     this.editButtonClicked = false;
     }
-
+   
 
 }

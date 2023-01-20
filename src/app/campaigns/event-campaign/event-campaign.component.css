@@ -94,6 +94,7 @@
   color: #2c3f52 !important;
   font-weight: 600;
   margin-top: 4px;
+  font-size: 13px;
 }
 
 .color-css {
@@ -451,4 +452,19 @@ a.icons-link:hover {
 .mEventPadTemplate{
   padding-bottom: 10px!important;
 }
+}
+/* sudha sri */
+@media (max-width:320px){
+  .mr15{
+    margin-right: -15px;
+  }
+  .mr21{
+    margin-right: -21px;
+  }
+}
+fieldset{
+  border-radius: 5px;
+}
+.content__list {
+  font-size: 12px;
 }

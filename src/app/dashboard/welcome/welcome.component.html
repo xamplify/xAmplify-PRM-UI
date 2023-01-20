@@ -9,10 +9,10 @@
  cursor: not-allowed;
  }
  .page-bar-shadow {
-     box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important;
+     /* box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important; */
  }
  </style>
- <div class="page-content" *ngIf="!showDealForm" [ngStyle]="{'background-color':skin?.backgroundColor}">
+ <div class="page-content" *ngIf="!showDealForm">
   <div *ngIf="showSandboxText" class="alert alert-info">
     <strong>{{properties?.sandboxText}}</strong>
   </div>
@@ -35,8 +35,8 @@
         </div>
         <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
           <div style="display: flex;">
-            <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-            <div>
+            <h4>Do you want to set this as your default screen?</h4>
+            <div style="margin: 10px 10px 0px 5px;">
               <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
                 size="small" (change)="setWelcomeAsDefaultPage($event)"></ui-switch>
             </div>
@@ -45,7 +45,7 @@
         <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
     </div>
-    <div class="page-bar page-bar-shadow">
+    <div class="page-bar page-bar-shadow" style="border-radius: 5px !important;box-shadow: none !important;">
       <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
       <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
       <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
@@ -92,7 +92,7 @@
          </div>
           <div class="col-sm-6 col-xs-12 block">
             <div class="text-block">
-              <h1 style="color: #76c9ff;text-align: left" translate>Content</h1>
+              <h1 style="text-align: left" translate>Content</h1>
               <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
               <div style="text-align: left">
                 <button class="btn btn-xs color2" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
@@ -117,7 +117,7 @@
           </div>
           <div class="col-sm-6 col-xs-12 block" style="right: -46px;">
             <div class="text-block">
-              <h1 style="color: #00B3B3;text-align: left;" translate>contacts</h1>
+              <h1 style="text-align: left;" translate>contacts</h1>
               <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
               <div style="text-align: left;">
                 <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
@@ -139,7 +139,7 @@
           </div>
           <div class="col-sm-6 col-xs-12 block">
             <div class="text-block">
-              <h1 class="text-left" style="color: #FBB23E" translate>Templates</h1>
+              <h1 class="text-left" style="" translate>Templates</h1>
               <p class="left-side">{{welcome_text.templates}}</p>
               <div class="text-left">
                 <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
@@ -161,7 +161,7 @@
             </div>
               <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
                 <div class="text-block">
-                  <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
+                  <h1 class="text-left" style="" translate>Campaigns</h1>
                   <p class="left-side">{{welcome_text.campaigns}}</p>
                   <div class="text-left">
                     <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
@@ -183,7 +183,7 @@
             </div>
             <div class="col-sm-6 col-xs-12 block">
                   <div class="text-block">
-                    <h1 class="text-left" style="color: #00B3B3" translate>Team members</h1>
+                    <h1 class="text-left" style="" translate>Team members</h1>
                     <p class="left-side">Add team members to make content and campaign management a group effort</p>
                     <div class="text-left">
                       <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
@@ -205,7 +205,7 @@
           </div>
           <div class="col-sm-6 col-xs-12 block" style="position: relative; right: -40px;">
             <div class="text-block">
-              <h1 class="text-left" style="color: #76C9FF" translate>Social Accounts</h1>
+              <h1 class="text-left" style="" translate>Social Accounts</h1>
               <p class="left-side">{{welcome_text.socialMedia}}</p>
               <div class="text-left">
                 <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
@@ -227,7 +227,7 @@
               </div>
               <div class="col-sm-6 col-xs-12 block">
                 <div class="text-block">
-                  <h1 style="color: #00B3B3" class="text-left" translate>Analytics</h1>
+                  <h1 style="" class="text-left" translate>Analytics</h1>
                   <p class="left-side">{{welcome_text.analytics}}</p>
                   <div  class="text-left">
                     <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>

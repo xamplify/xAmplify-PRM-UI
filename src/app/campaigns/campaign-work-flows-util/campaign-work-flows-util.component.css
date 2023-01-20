@@ -44,7 +44,7 @@
 
 .dashboard-stat2,
 .portlet {
-  border-radius: 0 !important;
+  /* border-radius: 0 !important; */
   /* padding-top: 2em; */
 }
 

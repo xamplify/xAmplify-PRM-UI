@@ -415,6 +415,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     },
                     () => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
                     )
+					this.sortOption = this.sortOptions[0];
             } catch (error) {
                 this.xtremandLogger.error(error, "ManageContactsComponent", "loadAllContactList()");
             }
@@ -455,6 +456,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 },
                 () => this.xtremandLogger.info("MangeContactsComponent loadAssignedLeadsLists() finished")
                 )
+				this.sortOption = this.sortOptions[0];
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "loadAssignedLeadsLists()");
         }
@@ -1466,6 +1468,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.resetListContacts();
 			if (this.listContactData == true) {
 				this.searchKey = null;
+				 this.sortOption = this.sortOptions[0];
 				this.listContactData = false;
 			}
 			this.referenceService.loading(this.httpRequestLoader, true);
@@ -1538,7 +1541,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	resetListContacts() {
-		this.sortOption = this.sortOptions[0];
+		 //this.sortOption = this.sortOptions[0];
 		this.showListOfContactList = false;
 		this.contactsByType.contacts = [];
 	}

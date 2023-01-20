@@ -12,8 +12,8 @@
 }
 
 .portlet.light {
-	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-	padding: 10px;
+	/* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+	padding: 10px; */
 }
 
 .text-center {
@@ -353,4 +353,12 @@ body {
 
 .icons-width{
 	width: 220px;
+}
+
+.pg8{
+	top: -2px;
+}
+/* 10-01-2023 */
+.portlet > .portlet-title {
+	font-size: 0px;
 }

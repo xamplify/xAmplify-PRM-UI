@@ -84,6 +84,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	loggedInAsSuperAdmin = false;
 	saveAsDefaultTemplate = false;
 	defaultTemplateInput = {};
+	viewClass = 'fa fa-th-list';
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
 		private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
 		public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -283,6 +284,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 					if (!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView) {
 						this.modulesDisplayType.isListView = true;
 						this.modulesDisplayType.isGridView = false;
+						this.viewClass ='fa fa-th-list';
 					}
 					this.modulesDisplayType.isFolderListView = false;
 					this.modulesDisplayType.isFolderGridView = false;
@@ -497,35 +499,42 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 
 	setViewType(viewType: string) {
 		if ("List" == viewType) {
+			this.viewClass = 'fa fa-th-list';
 			this.modulesDisplayType.isListView = true;
 			this.modulesDisplayType.isGridView = false;
 			this.modulesDisplayType.isFolderGridView = false;
 			this.modulesDisplayType.isFolderListView = false;
 			this.navigateToManageSection(viewType);
 		} else if ("Grid" == viewType) {
+			this.viewClass = 'fa fa-th-large';
 			this.modulesDisplayType.isListView = false;
 			this.modulesDisplayType.isGridView = true;
 			this.modulesDisplayType.isFolderGridView = false;
 			this.modulesDisplayType.isFolderListView = false;
 			this.navigateToManageSection(viewType);
 		} else if ("Folder-Grid" == viewType) {
+			this.viewClass = 'fa fa-folder';
 			this.modulesDisplayType.isListView = false;
 			this.modulesDisplayType.isGridView = false;
 			this.modulesDisplayType.isFolderGridView = true;
 			this.modulesDisplayType.isFolderListView = false;
 			this.exportObject['type'] = 1;
 			this.exportObject['folderType'] = viewType;
+		    this.exportObject['viewClass'] = this.viewClass;
 			if (this.categoryId > 0) {
 				this.router.navigateByUrl('/home/emailtemplates/manage/');
 			}
 
 		} else if ("Folder-List" == viewType) {
+			this.viewClass = 'fa fa-th';
 			this.modulesDisplayType.isListView = false;
 			this.modulesDisplayType.isGridView = false;
 			this.modulesDisplayType.isFolderGridView = false;
 			this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
 			this.exportObject['type'] = 1;
+			this.exportObject['viewClass'] = this.viewClass;
+
 		}
 	}
 

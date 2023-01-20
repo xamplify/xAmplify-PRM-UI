@@ -9,3 +9,5 @@
 .user-email { font-weight: 400;float: left; font-size: 13px !important;}
 .user-company { margin: 2px 0;font-weight: 600; color: #676767;}
 .ml10{ margin-left:10px }
+@media only screen and (max-width:479px){ .pl10{padding-left: 15px !important;} }
+    

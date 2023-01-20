@@ -23,6 +23,7 @@ h5 {
     background: #ebf1ff;
     text-align: center;
     height: 233px;
+    border-radius: 5px;
 }
 
 .img-responsive,
@@ -68,4 +69,7 @@ h5 {
 	color: #008fd5;
     font-size: 12px;
     font-weight: 600;
+}
+.portlet{
+    margin-bottom: 21px !important;
 }

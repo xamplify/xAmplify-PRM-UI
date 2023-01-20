@@ -27,7 +27,8 @@
 }
 
 .partners-text{
-    font-size: 14px;
+     /* 10-01-2023 */
+    /* font-size: 14px; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

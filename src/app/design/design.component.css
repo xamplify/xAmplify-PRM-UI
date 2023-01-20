@@ -23,6 +23,7 @@ h5 {
     background: #ebf1ff;
     text-align: center;
     height: 233px;
+    border-radius: 5px;
 }
 
 .img-responsive,
@@ -69,4 +70,13 @@ h5 {
     .mDisableColor{
         color: #888!important;
     }
+}
+.portlet > .portlet-title > .caption{
+    line-height: 30px;
+}
+.mt{
+margin-top: 9px !important;
+}
+.padding{
+    padding: 10px 30px 22px !important;
 }

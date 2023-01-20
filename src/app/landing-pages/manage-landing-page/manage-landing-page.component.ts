@@ -48,6 +48,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isGridView = false;
     isFolderGridView = false;
     exportObject:any = {};
+    viewClass = 'fa fa-th-list';
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
 	modulesDisplayType = new ModulesDisplayType();
@@ -332,24 +333,28 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     setViewType(viewType: string) {
         if ("List" == viewType) {
+            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView  = false;
             this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
+            this.viewClass = 'fa fa-th-large';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView  = false;
             this.navigateToManageSection(viewType);
         } else if ("Folder-Grid" == viewType) {
+            this.viewClass = 'fa fa-folder';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = true;
             this.modulesDisplayType.isFolderListView  = false;
             this.exportObject['type'] = 3;
             this.exportObject['folderType'] = viewType;
+            this.exportObject['viewClass'] = this.viewClass;
             if(this.isPartnerLandingPage){
                 this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
             }
@@ -362,12 +367,14 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 }
             }
         }else if("Folder-List"==viewType){
+            this.viewClass = 'fa fa-th';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 3;
+            this.exportObject['viewClass'] = this.viewClass;
             if(this.isPartnerLandingPage){
                 this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
             }

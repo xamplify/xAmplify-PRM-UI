@@ -58,7 +58,7 @@
   </div>
 </div>
 <ng-container *ngIf="isTopNavBar && notifications?.length > 0">
-  <ul class="dropdown-menu-list scroller" style="height: 250px;">
+  <ul class="dropdown-menu-list scroller" style="height: 250px;overflow-x: hidden;">
     <li *ngFor="let item of notifications;" [ngClass]="{'read': item.read, 'unread': !item.read}">
       <a (click)='navigate(item)'>
         <span class="social-icon" style="width: 18px;">

@@ -33,11 +33,11 @@
         <div class="col-xs-12  p5">
           <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
           </app-list-loader>
-          <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;" [class.greay]="1!=selectedTabIndex"
                 (click)="showLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -48,7 +48,7 @@
                   <div class="number">
                     <span>{{counts.totalLeads}}</span>
                   </div>
-                  <div class="desc" translate>Total Leads</div>
+                  <div class="desc" style="font-weight: 500;" translate>Total Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
                   <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
@@ -57,9 +57,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="2!=selectedTabIndex"
                 (click)="showWonLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -70,7 +70,7 @@
                   <div class="number">
                     <span>{{counts.wonLeads}}</span>
                   </div>
-                  <div class="desc" translate>Won Leads</div>
+                  <div class="desc" style="font-weight: 500;" translate>Won Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
                   <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -78,9 +78,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="3!=selectedTabIndex"
                 (click)="showLostLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -91,7 +91,7 @@
                   <div class="number">
                     <span>{{counts.lostLeads}}</span>
                   </div>
-                  <div class="desc" translate>Lost Leads</div>
+                  <div class="desc" style="font-weight: 500;" translate>Lost Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
                   <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -99,9 +99,9 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="4!=selectedTabIndex"
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom: 0px !important;" [class.greay]="4!=selectedTabIndex"
                 (click)="showConvertedLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
@@ -112,7 +112,7 @@
                   <div class="number">
                     <span>{{counts.convertedLeads}}</span>
                   </div>
-                  <div class="desc" translate>Converted Leads</div>
+                  <div class="desc" style="font-weight: 500;" translate>Converted Leads</div>
                 </div>
                 <span id="permhref" class="morePadding ">
                   <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
@@ -130,16 +130,15 @@
       <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="tabbable tabbable-custom tabbable-noborder" id="header">
+          <div class="page-bar p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                
-                <div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading">
+                <div class="m10 margin-left-right ml-mr pb" style="padding-bottom: 50px;">
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
+                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 p0 mt10">
                     <div class="btn-group pull-right" style="width: max-content;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
@@ -147,25 +146,25 @@
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
                         <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom"
-                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View" style="margin-left: 3px !important;"
                           [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 3px !important;margin-right: 3px;"
                         title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
                         (click)="downloadLeads()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
 
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 11px;">
-                        <button class="btn btn-primary" translate>
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 4px;">
+                        <button class="btn btn-primary padding align" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Lead
                         </button>
                       </a>
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'" (click)="syncLeadsAndDeals()">
-                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                        <button class="btn btn-white padding mt button" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
@@ -185,20 +184,20 @@
                         </button>
                       </a>
 
-                      <div class="inputs" align="right" style="float: right; display: inline-flex;">
+                      <div class="inputs display" align="right">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
-                          <div class="input-icon right" style="position: relative;right: -11px;">
-                            <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"
+                          <div [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"  class="input-icon right r5" style="position: relative;right: -3px;">
+                            <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search"
                               (keypress)="leadEventHandler($event.keyCode)">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
-                            <button type="submit" class="search-box-item-click" (click)="searchLeads()">
+                            <button type="submit" [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'" class="search-box-item-click top" (click)="searchLeads()">
                               <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                           </div>
                         </div>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: -8px !important;"
                           title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
@@ -214,9 +213,12 @@
                     <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filters</div>
-                        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
+                        <div class="form-group" style="text-align: -webkit-right;">
+                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                        </div>
                       </div>
                       <div class="portlet box">
                         <app-response-message class="pg8" [customResponse]="filterResponse"
@@ -232,7 +234,7 @@
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <div class="form-group col-sm-4">
+                              <div class="form-group col-sm-4 form-group-mr">
                                 <label class="control-label">To Date &nbsp;
                                   <!-- <span class="required">*</span> -->
                                 </label>
@@ -245,9 +247,9 @@
                               </div> -->
                               
                               <div class="row">
-                                <div class="form-group col-sm-6" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
                                   <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                                  <select class="form-control" style="width:  196px;height: 32px;" [(ngModel)]="statusFilter"
+                                  <select class="form-control select-width"  [(ngModel)]="statusFilter"
                                     [ngModelOptions]="{standalone: true}">
                                     <option value="">---Select Status---</option>
                                     <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
@@ -255,9 +257,9 @@
                                   </select>
                                 </div>
                               </div>
-                            <div class="form-group col-sm-12" style="text-align: -webkit-right;">
+                            <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
                               <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                         </form>
@@ -277,7 +279,7 @@
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
                 <!-- -------------------- List View for Leads-------------------- -->
-                <section class='m10'
+                <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
 
                   <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
@@ -389,7 +391,7 @@
                   </div>
 
                   <!-- --------------------Pagination0-------------------- -->
-                  <div *ngIf="!httpRequestLoader.isLoading" class="pg8">
+                  <div *ngIf="!httpRequestLoader.isLoading" class="pg2">
                     <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
                       (notifyParentDropDown)="listLeads($event)"></app-pagination>
                   </div>
@@ -404,7 +406,7 @@
                 </div>
 
                 <!-- -------------------- Campaign Level View for Leads-------------------- -->
-                <section class='m10'
+                <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
 
                   <div class="table-responsive" [hidden]="campaignRequestLoader.isLoading">
@@ -493,7 +495,7 @@
                               <div class="row" *ngIf="showPartnerList" style="width: 100%;">
                                 <div class="col-xs-12 p5" style="padding-right: 0px !important">
                                   <div class="portlet light">
-                                    <div class="portlet-title">
+                                    <div class="portlet-title" style="border-bottom:none;">
                                       <div class="caption">
                                         <span
                                           class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
@@ -587,7 +589,7 @@
                     </table>
                   </div>
 
-                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg8">
+                  <div *ngIf="!campaignRequestLoader.isLoading" class="pg3">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>
@@ -619,7 +621,7 @@
                 </div>
 
                 <a (click)="closeCampaignLeads()" class="pull-right close-circle"
-                  style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+                  style="margin: 9px 14px;">
                   <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                     aria-hidden="true"></span></a>
                 <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId"

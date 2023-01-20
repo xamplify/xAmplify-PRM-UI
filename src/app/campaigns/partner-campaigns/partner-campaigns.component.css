@@ -171,3 +171,41 @@ fieldset {
 	font-size: 12px;
 }
 
+/* sudha sri */
+@media (min-width:1104px){
+	.r10{
+		right: 30px !important;
+	}
+}
+@media (max-width:425px){
+	.r10{
+		right: 10px !important;
+	}
+}
+@media (max-width:375px){
+	.right{
+		right: -74px !important;
+	}
+	.r10{
+		right: -62px !important;
+	}
+}
+@media (max-width:320px){
+	.right{
+		right: -108px !important;
+	}
+	.r10{
+		right: -95px !important;
+    	width: 89%;
+	}
+}
+.mix-filter {
+	margin: 0px !important;
+}
+.input-icon > .form-control {
+	padding-left: 10px;
+}
+
+.bar a {
+	width: auto;
+}

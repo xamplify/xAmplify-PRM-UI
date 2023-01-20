@@ -154,9 +154,9 @@ label img {
 	border-radius: 50%
 }
 
-.form-group label {
+/* .form-group label {
 	font-weight: 700
-}
+} */
 .padding-10px {
 	padding: 10px
 }
@@ -269,12 +269,12 @@ body {
 }
 
 
-.portlet {
+/* .portlet {
 	border-radius: 0
-}
+} */
 
 .portlet.light {
-	box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
+	/* box-shadow: 0 0 1px rgba(0, 0, 0, 0.4); */
 	padding: 5px
 }
 
@@ -336,7 +336,7 @@ body {
 }
 
 .dashboard-stat2 {
-	padding: 15px
+	padding: 15px;
 }
 
 .btn-social-selected {
@@ -393,17 +393,17 @@ body {
 .box {
 	padding: 5px;
 }
-
+/* 
 .portlet {
 	border-radius: 0;
-}
+} */
 .portlet > .portlet-title{min-height: auto;}
 .portlet-title h4{margin: 0.5em 0;
     font-weight: 600;
     color: #999;}
-.portlet.light {
+/* .portlet.light {
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-}
+} */
 
 .text-center {
 	text-align: center;

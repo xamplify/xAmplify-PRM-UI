@@ -173,3 +173,7 @@ cursor: default;
     /* line-height: 1px!important; */
   }
 }
+
+.pg8{
+  top: -1px;
+}
