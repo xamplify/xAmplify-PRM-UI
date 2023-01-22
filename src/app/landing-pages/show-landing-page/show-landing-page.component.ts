@@ -40,6 +40,7 @@ export class ShowLandingPageComponent implements OnInit {
           }
 
   ngOnInit() {    
+    $("#xamplify-index-head").html("");
     if(this.vanityURLService.isVanityURLEnabled()){
       this.vanityURLService.checkVanityURLDetails();
     }
@@ -173,6 +174,7 @@ export class ShowLandingPageComponent implements OnInit {
                document.getElementById('landing-page-html-body').innerHTML = htmlBody;
                this.getLocationDetails(null,null,landingPageAlias,null,data.enumType,null,0);
            }else{
+              
                document.getElementById('landing-page-html-body').innerHTML = response.message;
                this.getLocationDetails(null,null,this.alias,null,response.data,null,0);
            }
