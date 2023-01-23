@@ -1275,10 +1275,10 @@
       *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
       <div class="col-xs-12 p0">
         <div class="portlet-title col-xs-12"
-          style="padding: 10px 0px 4px 0px; border-bottom: 1px solid #c5c5c5;    background-color: #3598dc;">
-          <div class="caption col-xs-12 col-sm-8">
+          style="padding: 10px 0px 4px 0px; border-bottom: 1px solid #c5c5c5;">
+          <div class="caption col-xs-12 col-sm-8" style="padding-top: 2px;">
             <span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
-              <span style="color:#fff!important">
+              <span style="color:#333!important">
                 <i aria-hidden="true" class="fa fa-user-secret" style="font-size:20px!important"
                   id="leads-info-font-size"></i>
                 &nbsp;YOUR LEAD DETAILS
@@ -1293,7 +1293,7 @@
           </div>
 
 
-          <div class="col-xs-10 col-sm-3" style="margin-top: 0px;padding-right: 0px;">
+          <div class="col-xs-10 col-sm-3" style="margin-top: -4px;padding-right: 0px;">
             <input type="text" [(ngModel)]="leadsSearchKey" [ngModelOptions]="{standalone: true}" class="form-control"
               placeholder="Search" (keypress)="leadEventHandler($event.keyCode)">
             <button class="search-box-item-clear" *ngIf="leadsSearchKey" (click)="leadsSearchKey=''; leadDetailsSearch()">
@@ -1308,8 +1308,8 @@
             class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
             <span class="dropdown-toggle" data-toggle="dropdown"
               style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;display: inline-flex;">
-              <i class="fa fa-cog" style="color:#fff;font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-                style="color:#fff;font-size:14px; float:right"></i>
+              <i class="fa fa-cog" style="color:#333;font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
+                style="color:#333;font-size:14px; float:right"></i>
             </span>
             <ul class="dropdown-menu pull-right" style="right:20px !important">
               <li><a (click)="downloadLeadList()"> Export To Excel </a>
@@ -1363,7 +1363,7 @@
 
       <div class="row" id="responsive">
         <div class="col-xs-12 p0">
-          <div class="portlet light">
+          <div class="portlet light" style="border:none !important;">
             <div *ngIf="!httpRequestLoader.isLoading && leadsFormDetails?.length == 0" class="alert alert-info">
               <strong>No Records Found.</strong>
             </div>
