@@ -36,15 +36,16 @@ export class ShowLandingPageComponent implements OnInit {
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
           private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
-            //this.vanityUrlService.isVanityURLEnabled();
           }
 
-  ngOnInit() {    
+  ngOnInit() {   
+    $('.loader-container').hide();
+    this.processor.set(this.processor);
     $("#xamplify-index-head").html("");
+    $('#page-loader-html').css({'display':'block'});
     if(this.vanityURLService.isVanityURLEnabled()){
       this.vanityURLService.checkVanityURLDetails();
     }
-      this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
       if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
