@@ -59,6 +59,6 @@
 }
 
 .upper-text-heading {
-	color: #FFF;
+	color: #FFF !important;
 	margin: 0;
 }

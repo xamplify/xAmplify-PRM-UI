@@ -33,6 +33,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   isPartnerView = false;
   type:string = "";
   viewClass : any;
+  titleHeader:string = "";
+  suffixHeader:string = "";
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -56,6 +58,15 @@ export class FolderTypeViewUtilComponent implements OnInit {
       pagination.partnerCompanyId = pagination.companyId;
       pagination.partnerView  = this.isPartnerView;
     }
+    this.suffixHeader = this.isPartnerView ? "Shared " : "Manage ";
+    if(this.pagination.categoryType == "DAM"){
+      this.titleHeader = "Dam";
+    } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+      this.titleHeader = "Tracks";
+    } else if (this.pagination.categoryType == "PLAY_BOOK") {
+      this.titleHeader = "Play Books";
+    }
+
     pagination.userId = this.authenticationService.getUserId();
     this.authenticationService.setVanityUrlFilter(pagination);
     this.userService.getCategories(this.pagination)
