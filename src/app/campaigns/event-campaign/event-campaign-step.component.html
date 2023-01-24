@@ -1404,13 +1404,13 @@
 			   </div>
 				<div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-				  <div class="portlet-title custom-change-css mEventLaunchHeight" style="display:block">
+				  <div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}"  style="display:block">
 					<div class="col-xs-12 col-sm-6">
 					  <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
 					</div>
 					<div class="col-xs-12 col-sm-6 mEventLaunchWidth">
 					<div class="pull-right">
-					<label class="switch-choose" style="color:black" *ngIf="!reDistributeEvent && !reDistributeEventManage && !eventCampaign.nurtureCampaign">Choose Template</label>
+					<label class="switch-choose" style="color:#fff" *ngIf="!reDistributeEvent && !reDistributeEventManage && !eventCampaign.nurtureCampaign">Choose Template</label>
 					<switch class="switch-choose" [hidden]="reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 					[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 					(statusChange)="selectReplyEmailBody($event,i,reply)">

@@ -224,3 +224,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.xamp-margin-left-icon{
+    margin: 0px 5px 5px 5px !important;
+}
+.alert{
+    margin-top: 5px;
+}
