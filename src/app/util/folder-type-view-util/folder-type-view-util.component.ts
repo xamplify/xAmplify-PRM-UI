@@ -60,7 +60,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     }
     this.suffixHeader = this.isPartnerView ? "Shared " : "Manage ";
     if(this.pagination.categoryType == "DAM"){
-      this.titleHeader = "Dam";
+      this.titleHeader = "Digital Asset Management";
     } else if (this.pagination.categoryType == "LEARNING_TRACK") {
       this.titleHeader = "Tracks";
     } else if (this.pagination.categoryType == "PLAY_BOOK") {
