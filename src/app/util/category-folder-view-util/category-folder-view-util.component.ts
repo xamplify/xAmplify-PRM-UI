@@ -93,6 +93,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 			pagination.partnerView = false;
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
+                this.titleHeader = 'Pages Shared By Vendors';
 			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
