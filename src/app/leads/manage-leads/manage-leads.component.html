@@ -133,14 +133,14 @@
           <div class="page-bar p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                <div class="m10 margin-left-right ml-mr pb" style="padding-bottom: 50px;">
-                  <h4 class="text-primary pull-left">{{titleHeading}} Leads</h4>
+                <div class="m10 margin-left-right ml-mr pb" style="padding-bottom: 35px;">
+                  <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4>
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany">
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
                   <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 p0 mt10">
-                    <div class="btn-group pull-right" style="width: max-content;">
+                    <div class="btn-group pull-right" style="width: max-content;margin-top: -15px;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
