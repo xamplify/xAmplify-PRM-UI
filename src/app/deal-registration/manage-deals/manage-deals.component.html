@@ -36,8 +36,8 @@
 		</div><!-- -End Of 2 -->
 
 
-		<div class="row">
-			<div class="col-xs-12  p5">
+		<div class="portlet light">
+			<div>
 				<div class="row">
 					<!-- -------Total Leads------- -->
 					<app-box-loader [countLoader]=6 *ngIf="opportunitiesAnalyticsLoader"></app-box-loader>
@@ -137,7 +137,7 @@
 						</a>
 					</div>
 					<!-- -------Approved Deals------- -->
-					<div class="col-xs-6 col-sm-3 col-md-3" *ngIf="!opportunitiesAnalyticsLoader" [style.pointer-events]="opportunitiesAnalytics?.approvedDeals != 0 ? 'auto' : 'none' " >
+					<div class="col-xs-6 col-sm-3 col-md-3" style="padding-top: 8px;" *ngIf="!opportunitiesAnalyticsLoader" [style.pointer-events]="opportunitiesAnalytics?.approvedDeals != 0 ? 'auto' : 'none' " >
 						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()" [class.greay]="6!=selectedTabIndex" [class.disabled]="approvedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 6==selectedTabIndex ? '#white' : '#ccc' }"
@@ -156,7 +156,7 @@
 					</div>
 					
 					<!-- -------Rejected Deals------- -->
-					<div class="col-xs-6 col-sm-3 col-md-3"  *ngIf="!opportunitiesAnalyticsLoader" [style.pointer-events]="opportunitiesAnalytics?.rejectedDeals != 0 ? 'auto' : 'none' ">
+					<div class="col-xs-6 col-sm-3 col-md-3" style="padding-top: 8px;" *ngIf="!opportunitiesAnalyticsLoader" [style.pointer-events]="opportunitiesAnalytics?.rejectedDeals != 0 ? 'auto' : 'none' ">
 						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()" [class.greay]="7!=selectedTabIndex" [class.disabled]="rejectedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 7==selectedTabIndex ? '#white' : '#ccc' }"
@@ -179,9 +179,9 @@
 		<!-- -----------------------------Campaigns List-------------------------------------- -->
 		<div class="row" *ngIf="campaingnList">
 			<div class="col-md-12">
-				<div class="tabbable tabbable-custom tabbable-noborder" id="header">
+				<div class="portlet light" id="header">
 					<div class="tab-content">
-						<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
+						<div class="page-bar m10" style="border:none !important;" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
 							<ul class="mix-filter col-xs-12 col-sm-6 col-lg-6 p0 m0">
 								<li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;" translate>Campaign Type:</li>
 								<li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex" translate>All</li>
@@ -459,7 +459,7 @@
 							<div *ngIf="isCampaignByLeads && campaignsPagination.pagedItems.length !== 0" style="padding: 0 13px;">
 								<app-pagination class="pg8" [pagination]="campaignsPagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
 								 (notifyParentDropDown)="listThroughPartnerCampaigns($event)"></app-pagination>
-								<select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
+								<select class="form-control" style="float: right; width: auto;margin-top: -45px;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
 									<option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
 								</select>
 							</div>
@@ -476,7 +476,7 @@
 			</div>
 		</div><!-- -End Of row (Campaigns List) -->
 		<!-- --------------------------------Partner List -------------------------------- -->
-		<div class="row" *ngIf="leadList" style="background-color:white">
+		<div class="page-bar" *ngIf="leadList">
 
 			<app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
 			<div class="caption col-xs-8 col-md-6" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px

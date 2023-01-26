@@ -121,7 +121,7 @@
                   <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6" style="padding: 0px 10px 10px 0px;">
+                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6" style="padding: 0px 4px 10px 0px;">
                     <div class="btn-group pull-right width">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
