@@ -155,6 +155,8 @@ a.disabled {
 	text-align: center;
 	width: 175px;
 	border-radius: 3px;
+	/*25-01-2023*/
+	margin: 10px 0px;
 }
 
 .email-template-preview {

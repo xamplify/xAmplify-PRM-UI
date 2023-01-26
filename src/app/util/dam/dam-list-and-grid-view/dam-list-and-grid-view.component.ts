@@ -78,7 +78,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
-	viewClass = 'fa fa-th-list';
 	SuffixHeading:string = "";
 	titleHeader:string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
@@ -126,15 +125,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-				this.viewClass = this.modulesDisplayType.isListView ? 'fa fa-th-list' : this.modulesDisplayType.isGridView ?'fa fa-th-large':'';
 				if(this.modulesDisplayType.isFolderListView){
 					this.viewType = "fl";
 					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
-					this.viewClass= 'fa fa-th';
 				}else if(this.modulesDisplayType.isFolderGridView){
 					this.viewType = "fg";
 					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
-					this.viewClass = 'fa fa-folder';
 				}
 			}
 		}
@@ -166,14 +162,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				let gridView = "g" == viewType;
 				this.modulesDisplayType.isGridView = gridView;
 				this.modulesDisplayType.isListView = !gridView;
-				this.viewClass = 'fa fa-th-large';
 			} else {
 				if (this.folderViewType != undefined && viewType != "fg") {
 					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
-					this.viewClass = 'fa fa-th-list';
 				} else {
 					this.referenceService.goToManageAssets(viewType,this.isPartnerView);
-					this.viewClass = 'fa fa-th-list';
 				}
 				this.titleHeader = ' Assets';
 			}
