@@ -5,7 +5,7 @@
 <div class="page-bar">
   <div class="row">
     <div class="col-md-12">
-      <div class="portlet light clearfix" style="min-height: 644px;">
+      <div class="portlet light clearfix" >
         <div class="portlet-title" style="border-bottom: none">
           <div class="row">
             <div class="page-toolbar col-xs-12">
@@ -175,13 +175,13 @@
               <div class="inputs" style="float: right;">
                 <div class="portlet-input input-inline" id="search" style="width: 180px;">
                   <div id="search-icon">
-                    <input type="text" id="search-text" class="form-control" style="height: 34px;"
+                    <input type="text" id="search-text" class="form-control" style="height: 34px;margin-top: -10px;"
                       [(ngModel)]="detailedAnalyticsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                       placeholder="search..." (keypress)="detailedAnalyticsEventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear"
                       *ngIf="detailedAnalyticsSortOption.searchKey"
                       (click)="detailedAnalyticsSortOption.searchKey='';detailedAnalyticsSearch();"></button>
-                    <button type="submit" class="search-box-item-click" (click)="detailedAnalyticsSearch()"><i
+                    <button type="submit" class="search-box-item-click alignment" (click)="detailedAnalyticsSearch()"><i
                         class="fa fa-search"></i>
                     </button>
                   </div>

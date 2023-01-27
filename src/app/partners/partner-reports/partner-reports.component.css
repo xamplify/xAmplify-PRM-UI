@@ -169,3 +169,11 @@ cursor: default;
 	right: 0px;
 	padding-left: 10px;
 }
+.pd-l{
+	padding-left: 12px;
+}
+@media screen and (max-width:479px){
+	.pd-l{
+		padding-left: 14px;
+	}
+}

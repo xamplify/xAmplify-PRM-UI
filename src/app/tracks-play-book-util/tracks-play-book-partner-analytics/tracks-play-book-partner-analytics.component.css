@@ -230,3 +230,6 @@
 .alert{
     margin-top: 5px;
 }
+.alignment{
+    top: -9px !important;
+}

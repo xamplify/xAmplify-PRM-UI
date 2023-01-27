@@ -30,7 +30,7 @@
           <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;">
             <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
-            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToActivePartnersDiv()">
+            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l" (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
