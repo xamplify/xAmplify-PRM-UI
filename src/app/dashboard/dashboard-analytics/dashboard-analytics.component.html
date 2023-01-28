@@ -1,5 +1,5 @@
 
-<div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm">
+<div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !authenticationService?.module?.contentLoader">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
