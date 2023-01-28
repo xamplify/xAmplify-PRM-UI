@@ -937,7 +937,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 } else {
                     this.replies.pop();
                 }
-
             }
         }
      }
