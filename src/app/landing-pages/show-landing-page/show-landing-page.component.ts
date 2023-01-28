@@ -42,7 +42,7 @@ export class ShowLandingPageComponent implements OnInit {
     $('.loader-container').hide();
     this.processor.set(this.processor);
     $("#xamplify-index-head").html("");
-    $('#page-loader-html').css({'display':'block'});
+    $('#page-loader-index-html').css({'display':'block'});
     if(this.vanityURLService.isVanityURLEnabled()){
       this.vanityURLService.checkVanityURLDetails();
     }

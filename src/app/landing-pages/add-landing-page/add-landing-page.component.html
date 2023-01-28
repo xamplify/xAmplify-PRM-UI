@@ -29,7 +29,7 @@
                     <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                     <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
                    <div>
-                    <button  class="new-tab-button" style="border-radius: 5px;" *ngIf="loadLandingPage">
+                    <button  class="new-tab-button" style="border-radius: 5px;" *ngIf="loadLandingPage" (click)="landingPage.openLinksInNewTab=!landingPage.openLinksInNewTab">
                         Open Links In New Tab <input type="checkbox" [(ngModel)]="landingPage.openLinksInNewTab">
                       </button>
                     </div>

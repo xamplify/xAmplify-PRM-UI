@@ -2957,7 +2957,20 @@ export class ReferenceService {
 
   getListViewAsDefault(viewType:string){
     if(viewType==undefined){
-      viewType='l';
+      let defaultDisplayType = localStorage.getItem("defaultDisplayType");
+      if(defaultDisplayType!=undefined){
+        if("LIST"==defaultDisplayType){
+          viewType = "l";
+        }else if("GRID"==defaultDisplayType){
+          viewType='g';
+        }else if("FOLDER_LIST"==defaultDisplayType){
+          viewType='fl';
+        }else if("FOLDER_GRID"==defaultDisplayType){
+          viewType='fg';
+        }
+      }else{
+        viewType = 'l';
+      }
     }
     return viewType;
   }
@@ -3040,5 +3053,7 @@ export class ReferenceService {
     description = description.replace(/\s\s+/g, " ").trim(); // remove double spaces
     return description;
   }
+
+
   
 }
