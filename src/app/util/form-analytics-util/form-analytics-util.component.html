@@ -106,7 +106,7 @@
 							<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
 								<td colspan="5">
 									<table id="expanded-table" class="table tgrid table-bordered"
-										aria-describedby="form-analytics-table">
+										aria-describedby="form-analytics-table" style="margin-bottom: 1px;">
 										<tr *ngFor="let column of columns;let i  = index;">
 											<th *ngIf="i>=4" scope="row">
 												{{column.labelName}}<span class="required"
