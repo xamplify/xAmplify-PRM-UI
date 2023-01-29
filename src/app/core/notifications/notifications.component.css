@@ -44,3 +44,6 @@ ul.alt-row-style1 li a{
 .portlet-title {
     min-height: 30px;
 }
+.alert {
+    margin-bottom: 0px;
+}

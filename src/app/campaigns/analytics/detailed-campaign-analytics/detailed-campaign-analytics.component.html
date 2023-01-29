@@ -26,7 +26,7 @@
 <ng-container>
   <div [ngClass]="hidePageContent? '':'page-content'" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads && !showDealForm"
     [class.ml0]="authenticationService.isSuperAdmin()">
-    <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
+    <div class="page-bar square-box" style="margin: 0 0px 15px;">
       <ng-template  [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
       <button routerLink="/home/campaigns/{{campaign.campaignId}}/checkin"
         *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary"

@@ -56,7 +56,7 @@
       </div> -->
     </div>
     <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
-      <h4 translate>No results found</h4>
+      <strong translate>No results found</strong>
     </div>
     <div>
       <app-pagination [pagination]="pagination" (notifyParentDropDown)="listNotifications($event)" (notifyParent)="setPage($event)"></app-pagination>

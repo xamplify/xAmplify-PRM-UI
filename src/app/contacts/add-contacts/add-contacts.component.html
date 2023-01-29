@@ -127,7 +127,7 @@
 			<form #f="ngForm">
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-						style="min-height: 570px">
+						style="">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 								<div class="portlet light add-options">
@@ -419,75 +419,8 @@
 								</div>
 							</div>
 						</div>
-						<!-- Contact List Name Text Box -->
-						<div class="row portlet light m0">
-							<div class="col-xs-12 col-md-6 p0">
-								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-3 p0 control-label"
-										style="margin-top: 12px;" translate>{{checkingContactTypeName}}
-										List Name*</label>
-									<div class="col-xs-12 col-sm-8" style="margin-top: 4px;">
-										<input type="text" class="form-control" id="contactListName"
-											autocomplete="off" (ngModelChange)="changEvent($event)"
-											required [(ngModel)]="model.contactListName"
-											name="contactListName"
-											(input)="validateContactName(model.contactListName)"
-											minlength="1" maxlength="250" placeholder="List Name"
-											#contactListName="ngModel">
-	
-										<!-- Validation Messages -->
-										<div *ngIf="isValidContactName">
-											<p class="custom-error-message chagneText" translate>{{invalidContactNameError}}</p>
-										</div>
-										<div *ngIf="contactListNameError">
-											<p class="custom-error-message chagneText" translate>Please
-												enter the {{checkingContactTypeName}} list name.</p>
-										</div>
-										<div *ngIf="noOptionsClickError ">
-											<p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!--  // -->
-							<div class="col-xs-12 col-md-4 p0" *ngIf="!assignLeads">
-								<div class="portlet-title" style="display: block">
-									<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
-									<span style="cursor: pointer; color: #54a7e9;"> <i
-										class="fa fa-question-circle" data-html="true"
-										data-toggle="tooltip" data-placement="bottom"
-										title="Public: This list and subsequent campaigns can be viewed by all team members and admins. 
-											<br> <br> 
-											Private: This list and subsequent campaigns can only be viewed by you and admins."
-										style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
-									</i>
-									</span> <span style="margin-left: 5px;"> <switch
-											[status]="model.isPublic" [onText]="'Public'"
-											[offText]="'Private'"
-											[onColor]="callActionSwitch.onGreenColorSwitch"
-											[offColor]="callActionSwitch.offPrivateColor"
-											[size]="callActionSwitch.size"
-											(statusChange)="changeStatus($event)"> </switch>
-									</span>
-								</div>
-							</div>
-	
-							<!--  // -->
-							<div class="col-xs-12 col-md-6" class="pull-right">
-								<section class="pull-right"
-									style="margin-bottom: 10px; margin-top: 3px;">
-									<button id="sample_editable_1_new" class="btn green"
-										(click)="saveContacts()" translate>
-										Save <i class="fa fa-save"></i>
-									</button>
-									<button id="cancel_button" class="btn green"
-										(click)="cancelContacts()" translate>
-										Cancel<i class="fa fa-cancel"></i>
-									</button>
-								</section>
-							</div>
-	
-						</div>
+						<!-- remove here Contact List Name Text Box -->
+						
 						<!--  // -->
 						<!-- <div class="col-xs-12 col-md-6" *ngIf="assignLeads">
 							<div class="form-group">
@@ -549,7 +482,7 @@
 								<div class="col-xs-12 col-md-12">
 									<div class="form-group">
 										<label for="name" class="col-xs-12 col-sm-2 control-label"
-											translate>Legal Basis Options*</label>
+											translate>Legal Basis Options<span class="star"> *</span></label>
 										<div id="multiselect-sample" class="control-section">
 											<div class="col-lg-4 content-wrapper">
 												<div class="control-styles">
@@ -613,6 +546,75 @@
 							<div *ngIf="uploadedCsvFileName">
 								<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
 							</div>
+						</div>
+						<!-- Contact List Name Text Box -->
+						<div class="row portlet light m0">
+							<div class="col-xs-12 col-md-6 p0">
+								<div class="form-group">
+									<label for="name" class="col-xs-12 col-sm-4 p0 control-label"
+										style="margin-top: 12px;" translate>{{checkingContactTypeName}}
+										List Name<span class="star"> *</span></label>
+									<div class="col-xs-12 col-sm-8" style="margin-top: 4px;">
+										<input type="text" class="form-control" id="contactListName"
+											autocomplete="off" (ngModelChange)="changEvent($event)"
+											required [(ngModel)]="model.contactListName"
+											name="contactListName"
+											(input)="validateContactName(model.contactListName)"
+											minlength="1" maxlength="250" placeholder="List Name"
+											#contactListName="ngModel">
+	
+										<!-- Validation Messages -->
+										<div *ngIf="isValidContactName">
+											<p class="custom-error-message chagneText" translate>{{invalidContactNameError}}</p>
+										</div>
+										<div *ngIf="contactListNameError">
+											<p class="custom-error-message chagneText" translate>Please
+												enter the {{checkingContactTypeName}} list name.</p>
+										</div>
+										<div *ngIf="noOptionsClickError ">
+											<p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--  // -->
+							<div class="col-xs-12 col-md-4 p0" *ngIf="!assignLeads">
+								<div class="portlet-title" style="display: block">
+									<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
+									<span style="cursor: pointer; color: #54a7e9;"> <i
+										class="fa fa-question-circle" data-html="true"
+										data-toggle="tooltip" data-placement="bottom"
+										title="Public: This list and subsequent campaigns can be viewed by all team members and admins. 
+											<br> <br> 
+											Private: This list and subsequent campaigns can only be viewed by you and admins."
+										style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
+									</i>
+									</span> <span style="margin-left: 5px;"> <switch
+											[status]="model.isPublic" [onText]="'Public'"
+											[offText]="'Private'"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.offPrivateColor"
+											[size]="callActionSwitch.size"
+											(statusChange)="changeStatus($event)"> </switch>
+									</span>
+								</div>
+							</div>
+	
+							<!--  // -->
+							<div class="col-xs-12 col-md-6" class="pull-right">
+								<section class="pull-right"
+									style="margin-bottom: 10px; margin-top: 3px;">
+									<button id="sample_editable_1_new" class="btn green"
+										(click)="saveContacts()" translate>
+										Save <i class="fa fa-save"></i>
+									</button>
+									<button id="cancel_button" class="btn green"
+										(click)="cancelContacts()" translate>
+										Cancel<i class="fa fa-cancel"></i>
+									</button>
+								</section>
+							</div>
+	
 						</div>
 						<!-- <div class="portlet light mt10" *ngIf="uploadedCsvFileName">
 							<div *ngIf="uploadedCsvFileName">
@@ -989,37 +991,37 @@
 															<table cellpadding="5" cellspacing="0"
 																style="padding-left: 50px; margin-left: 55px;">
 																<tbody>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Company:</td>
-																		<td class='pt10 pb10'>{{user.contactCompany}}</td>
+																	<tr style="">
+																		<td class='bold' translate>Company:</td>
+																		<td class=''>{{user.contactCompany}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Job Title:</td>
-																		<td class='pt10 pb10'>{{user.jobTitle}}</td>
+																	<tr style="">
+																		<td class='bold' translate>Job Title:</td>
+																		<td class=''>{{user.jobTitle}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Address:</td>
-																		<td class='pt10 pb10'>{{user.address}}</td>
+																	<tr style="">
+																		<td class='bold' translate>Address:</td>
+																		<td class=''>{{user.address}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>City:</td>
-																		<td class='pt10 pb10'>{{user.city}}</td>
+																	<tr style="">
+																		<td class='bold' translate>City:</td>
+																		<td class=''>{{user.city}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>State:</td>
-																		<td class='pt10 pb10'>{{user.state}}</td>
+																	<tr style="">
+																		<td class='bold' translate>State:</td>
+																		<td class=''>{{user.state}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Zip Code:</td>
-																		<td class='pt10 pb10'>{{user.zipCode}}</td>
+																	<tr style="">
+																		<td class='bold' translate>Zip Code:</td>
+																		<td class=''>{{user.zipCode}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Country:</td>
-																		<td class='pt10 pb10'>{{user.country}}</td>
+																	<tr style="">
+																		<td class='bold' translate>Country:</td>
+																		<td class=''>{{user.country}}</td>
 																	</tr>
-																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10' translate>Phone Number:</td>
-																		<td class='pt10 pb10'>
+																	<tr style="">
+																		<td class='bold' translate>Phone Number:</td>
+																		<td class=''>
 																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 																					<int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 																				</div> --> <!-- {{user.mobileNumber}} --> <a
