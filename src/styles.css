@@ -1755,7 +1755,7 @@ strong {
 
 .view-banner-draft {
 	background-color: #f76c1a;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;

@@ -364,3 +364,6 @@ body {
 .portlet > .portlet-title {
 	font-size: 0px;
 }
+.badge{
+	color: #fff !important;
+}

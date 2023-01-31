@@ -69,7 +69,7 @@
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer" style="min-height: 0px !important;">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
@@ -155,7 +155,7 @@
             <!--------Play Books------------->
             <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer" style="min-height: 413px;">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
