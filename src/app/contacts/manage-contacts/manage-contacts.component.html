@@ -69,7 +69,7 @@
                       *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important; color: #FFFFFF;">
+                    <div class="number">
                       {{contactsByType.allContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       All
@@ -118,7 +118,7 @@
                       *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.inactiveContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Unregistered
@@ -142,7 +142,7 @@
                       *ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.validContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Valid
@@ -165,7 +165,7 @@
                       *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.invalidContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Undeliverable
@@ -194,7 +194,7 @@
                       *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.unsubscribedContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Unsubscribed

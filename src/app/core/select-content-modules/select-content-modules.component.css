@@ -69,7 +69,7 @@ h5 {
 
 .cpad {
     padding: 0px !important;
-    min-height: 413px !important;
+    /* min-height: 413px !important; */
 
 }
 
@@ -142,4 +142,7 @@ margin-top: 9px !important;
 }
 .padding{
     padding: 10px 30px 22px !important;
+}
+.pb-26 {
+  padding-bottom: 26px !important;
 }

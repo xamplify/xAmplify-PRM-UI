@@ -162,7 +162,7 @@ h3 {
 		font-weight: bolder;
 		/* 10-01-2023 */
 		/* font-size: 3.2em; */
-		text-transform: lowercase;
+		/* text-transform: lowercase; */
 		margin: 0;
 	}
 	.btn {
@@ -188,7 +188,7 @@ h3 {
 	}
 	.text-block h1 {
 		font-weight: 600;
-		text-transform: lowercase;
+		/* text-transform: lowercase; */
 		font-size: 25px;
 	}
 	.block {

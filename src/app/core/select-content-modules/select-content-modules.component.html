@@ -69,7 +69,7 @@
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer" style="min-height: 0px !important;">
+              <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
@@ -117,7 +117,7 @@
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/tracks.png">
                   </div>
-                  <div class="text">
+                  <div class="text pb-26">
                     <h4 class="header-text-css" translate>Track Builder</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.lmsAccess">
@@ -155,12 +155,12 @@
             <!--------Play Books------------->
             <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer" style="min-height: 413px;">
+              <div class="portlet light cpad  hover-effect pointer">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
                   </div>
-                  <div class="text">
+                  <div class="text pb-26">
                     <h4 class="header-text-css" translate>Play Book</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.playbookAccess">
