@@ -18,7 +18,7 @@ body {
   font-family:  'Gantari',"Open Sans", sans-serif;
   padding: 0px !important;
   margin: 0px !important;
-  font-size: 13px;
+  font-size: 14px;
   direction: ltr;
 }
 
@@ -2248,7 +2248,7 @@ Customized Bootstrap Buttons
 .btn-sm > i,
 .btn-xs > i {
    /* 10-01-2023 */
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .btn-xs {
@@ -5956,7 +5956,7 @@ Custom tables
 
 .table thead tr th {
   /* 10-01-2023 */
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -14551,7 +14551,7 @@ Transparent Button
 /* 10-01-2023 */
 .tooltip {
   font-family:  'Gantari',"Open Sans", sans-serif;
-  font-size: 10px;
+  font-size: 12px;
 }
 .profile-usermenu{
   color: #333;
