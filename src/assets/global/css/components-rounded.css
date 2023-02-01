@@ -960,15 +960,15 @@ h1,h2,h3,h4,h5,h6 {
 
 h1 {
    /* 10-01-2023 */
-   font-size: 38px;
+   font-size: 36px;
 }
 
 h2 {
-  font-size: 27px;
+  font-size: 28px;
 }
 
 h3 {
-  font-size: 23px;
+  font-size: 24px;
 }
 
 h4 {
@@ -1975,7 +1975,7 @@ Customized Bootstrap Buttons
 /* Default buttons */
 .btn {
   border-width: 0;
-  padding: 7px 14px;
+  padding: 6px 14px;
   font-size: 14px;
   outline: none !important;
   background-image: none !important;
@@ -2242,7 +2242,7 @@ Customized Bootstrap Buttons
 .btn-xs {
   padding: 4px 10px 5px 10px;
   /* 10-01-2023 */
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 .btn-sm > i,
@@ -14562,7 +14562,7 @@ Transparent Button
 } */
 /* 12-02-2023 */
 .page-header.navbar .top-menu .navbar-nav>li.dropdown-user .dropdown-menu>li>a {
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 400 !important;
   color: #000000 !important;
 }

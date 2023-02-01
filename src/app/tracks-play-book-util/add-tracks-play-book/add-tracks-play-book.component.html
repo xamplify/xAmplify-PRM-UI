@@ -433,7 +433,7 @@
 
     <!-- step 4 -->
     <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
-      <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px; position: absolute;">
+      <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
       <app-tracks-play-book-partner-company-and-lists [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
