@@ -1145,10 +1145,10 @@ strong {
   transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
-.modal-body {
+/* .modal-body {
   max-height: calc(100vh - 122px);
   overflow-y: auto;
-}
+} */
 
 .modal.right.fade.in .modal-dialog {
   right: 0 !important;
@@ -1207,6 +1207,8 @@ strong {
 
 .modal-body {
   max-height: calc(100vh - 122px);
+  /* max-height: calc(100vh - 135px); */
+  /* height: auto; */
   overflow-y: auto;
 }
 
@@ -1753,7 +1755,7 @@ strong {
 
 .view-banner-draft {
 	background-color: #f76c1a;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;

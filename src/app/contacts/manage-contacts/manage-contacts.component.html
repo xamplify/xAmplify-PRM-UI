@@ -69,7 +69,7 @@
                       *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important; color: #FFFFFF;">
+                    <div class="number">
                       {{contactsByType.allContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       All
@@ -118,7 +118,7 @@
                       *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.inactiveContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Unregistered
@@ -142,7 +142,7 @@
                       *ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.validContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Valid
@@ -165,7 +165,7 @@
                       *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.invalidContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Undeliverable
@@ -194,7 +194,7 @@
                       *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                    <div class="number" style="font-weight: 300 !important;">
+                    <div class="number">
                       {{contactsByType.unsubscribedContactsCount}}</div>
                     <div class="desc fz-16"  translate>
                       Unsubscribed
@@ -237,7 +237,8 @@
                     </div>
                     <div [className]="checkingContactTypeName=='Contact' ? 'col-xs-12 col-sm-6 col-lg-6 pb6':'col-xs-12 col-sm-6 col-lg-6 p0 pull-right'" >
                       <div class="btn-group pull-right">
-                        <ng-container class='m10'> <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        <ng-container class='m10'> 
+                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" ng
                             data-placement="bottom" style="margin-right: 10px;" title="List View" [class.disabled]="isListView"
                             (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                           <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
@@ -291,7 +292,7 @@
                     <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                     <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
                   </div>
-                  <section [hidden]="!isListView"
+                  <section [hidden]="!isListView" [ngStyle]="{'margin-top' : !isListView ? '-8px' : '-5px'}"
                     *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
                     <div class="table-responsive pt5"  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
                       <table class='table tgrid' id="partner_contact_list" aria-describedby="">
@@ -541,7 +542,7 @@
                       </table>
                     </div>
                   </section>
-                  <div class="row mix-grid" [hidden]="isListView"
+                  <div class="row mix-grid" [hidden]="isListView" [ngStyle]="{'margin-top' : isListView ? '-5px' : '-8px'}"
                     *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                     <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box" id="contactListDiv_{{contactList.id}}">
@@ -732,7 +733,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="page-bar">
-          <div class="tab-content" style="min-height: 570px;padding: 0px 10px">
+          <div class="tab-content" style="padding: 0px 10px">
             <!-- BEGIN PAGE HEADER-->
             <div class="" style="">
              <div style="float:left;padding: 10px 0px 0px 0px">
@@ -746,7 +747,7 @@
                 <div class="btn-group" style="margin-right: 10px;">
                   <div class="inputs" style="float: right;display: flex;">
                     <div *ngIf="!isSegmentation" (click)="modelForSeg()"
-                      style="float: left; cursor: pointer; margin-right: 10px" data-toggle="modal"
+                      style="float: left; cursor: pointer; margin-right: 15px" data-toggle="modal"
                       data-target="#filterModal">
                       <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
                         title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>

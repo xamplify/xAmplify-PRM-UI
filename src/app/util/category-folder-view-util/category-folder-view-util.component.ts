@@ -29,7 +29,6 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     isFromCampaignModule = false;
 	isFromRedistributedCampaignSection = false;
     folderViewType = "List";
-    viewClass  = 'fa fa-th-list';
 	folderListViewInput = {};
 	selectedModuleType = "";
     archived: any = false;
@@ -46,18 +45,9 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     setViewType(type: string) {
         this.inputObject['viewType'] = type;
         this.inputObject['archived'] = this.archived;
-        this.inputObject['viewClass'] = this.viewClass;
-        this.viewClass = 'fa fa-th';
         this.valueUpdate.emit(this.inputObject);
     }
-    setViewClass(type: string){
-      if('Folder-Grid' == type ){
-        this.viewClass = 'fa fa-folder';
-      }
-      else{
-        this.viewClass = 'fa fa-th';
-      }
-    }
+   
 
     ngOnInit() {
         this.customResponse = new CustomResponse();
@@ -66,14 +56,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.folderViewType = this.moduleType['folderType'];
         this.selectedModuleType = this.moduleType['type'];
         this.archived = this.moduleType['archived'];
-        this.viewClass = this.moduleType['viewClass'];
         this.pagination.archived = this.archived;
         this.listCategories(this.pagination);
-        // if(this.folderViewType == "Folder-List"){
-        //     this.viewClass = 'fa fa-folder';
-        // }else if (this.folderListViewInput == "Grid"){
-        //     this.viewClass ='fa fa-th-large';
-        // }
     }
 
     listCategories(pagination: Pagination) {
@@ -93,6 +77,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 			pagination.partnerView = false;
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
+                this.titleHeader = 'Pages Shared By Vendors';
 			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
@@ -205,7 +190,6 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 
     goToCalendarView(){
         this.navigatingToRelatedComponent.emit();
-        this.viewClass = 'fa fa-calendar';
         let teamMemberId = this.route.snapshot.params['teamMemberId'];
         if(teamMemberId!=undefined && teamMemberId>0){
             this.router.navigate(['/home/campaigns/calendar/' + teamMemberId]);

@@ -9,11 +9,18 @@
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="col-xs-3">
+                            <h4 class="pull-left m10 text-primary">{{suffixHeader}}{{titleHeader}}</h4>
+                        </div>
+                        <div class="page-toolbar col-xs-9" style="padding-top: 4px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right mb10" style="display: flex;">
                                 <div class="">
                                 <div class="group-dropdown">
-                                    <button class="btn btn-xs l-g-view {{viewClass}}" [ngClass]="!showUpArrowButton && !folderListView?'':'hidden-xs' " style="padding: 10px !important"></button>
+                                    <button
+							[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                    modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+							style="padding: 10px !important"></button>
+                                    <!-- <button class="btn btn-xs l-g-view {{viewClass}}" [ngClass]="!showUpArrowButton && !folderListView?'':'hidden-xs' " style="padding: 10px !important"></button> -->
                                   <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('l')">

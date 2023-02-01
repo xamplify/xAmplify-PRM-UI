@@ -514,17 +514,14 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnDestroy() {
         this.adddMoreReceiversComponent.eventRedistributionMessage = ""
     }
-    viewClass:any = 'fa fa-th-list';
     setViewType(viewType:string){
         if("List"==viewType){
             this.modulesDisplayType.isListView = true;
-            this.viewClass = 'fa fa-th-list';
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
-            this.viewClass = 'fa fa-th-large';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
@@ -532,27 +529,23 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
             this.modulesDisplayType.isListView = false;
-            this.viewClass = 'fa fa-folder';
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = true;
             this.modulesDisplayType.isFolderListView = false;
             this.exportObject['type'] = 5;
             this.exportObject['folderType'] = viewType;
             this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
-            this.exportObject['viewClass'] = this.viewClass;
             if(this.categoryId>0){
                 this.router.navigateByUrl('/home/campaigns/partner/all/');
             }
             
         }else if("Folder-List"==viewType){
-            this.viewClass = 'fa fa-th';
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 5;
-            this.exportObject['viewClass'] = this.viewClass;
             this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
         }
     }
