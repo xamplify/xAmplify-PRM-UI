@@ -236,7 +236,7 @@ Page Header
   font-size: 17px;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   position: absolute;
   top: 17px;
   right: 9px;
@@ -1388,7 +1388,7 @@ Page sidebar
   border: 0px;
   padding: 17px 15px 15px 15px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   /* 11-01-2023 */
   font-weight: 400;
   text-align: center;
@@ -1434,7 +1434,7 @@ Page sidebar
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a {
   border: none;
   text-shadow: none;
-  font-size: 13px;
+  font-size: 14px;
 }
 .page-sidebar .page-sidebar-menu > li.active > a > .selected,
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .selected {
@@ -1514,7 +1514,7 @@ Page sidebar
   margin: 0;
   padding: 9px 15px 9px 15px;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 300;
   background: none;
 }
@@ -1957,7 +1957,7 @@ Page content
   color: #666;
   margin: 0px 0px 20px 0px;
   font-weight: 300;
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   /* subtitle */
 }
 .page-title small {
@@ -2073,7 +2073,7 @@ Page content
   background-color: #fff;
 }
 .page-container-bg-solid .page-content {
-  background-color: #f1f3fa;
+  background-color: #f1f5f9;
   /* background-color: #374048; */
 
 }

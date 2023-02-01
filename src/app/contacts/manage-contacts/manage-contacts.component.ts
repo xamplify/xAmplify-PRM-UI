@@ -127,6 +127,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	disableSave : boolean =false;
 	loggedInUserCompanyId: any;
 
+	public currentContactType: string = "valid";
+
 	sortOptions = [
 		{ 'name': 'Sort by', 'value': '', 'for': '' },
 		{ 'name': 'List name (A-Z)', 'value': 'name-ASC', 'for': 'contactList' },
@@ -256,7 +258,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.isPartner = false;
             this.assignLeads = true;
             this.module = 'leads';
-            this.checkingContactTypeName = "Lead"
+            this.checkingContactTypeName = "Lead";
             this.sortOptions.push({ 'name': 'Assigned date (ASC)', 'value': 'assignedTime-ASC', 'for': 'shareLeadsList' });
             this.sortOptions.push({ 'name': 'Assigned date (DESC)', 'value': 'assignedTime-DESC', 'for': 'shareLeadsList' });
         } else if (currentUrl.includes('home/contacts')) {

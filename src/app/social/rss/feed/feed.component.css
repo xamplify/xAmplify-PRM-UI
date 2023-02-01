@@ -41,9 +41,9 @@
 .page-bar {
     border-radius: 5px !important;
 }
-.portlet.light {
+/* .portlet.light {
     border-radius: 5px !important;
-}
+} */
 .rss-summary > img { display: none;}
 
 .alignment { margin-left: 30px;}

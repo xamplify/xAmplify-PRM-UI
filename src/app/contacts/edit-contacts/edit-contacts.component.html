@@ -93,7 +93,7 @@
                										 *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
-											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
+											<div class="number">{{contactsByType.allContactsCount}}</div>
 											<div class="desc fz17"  translate>All</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
@@ -111,7 +111,7 @@
                										 *ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
-											<div class="number" style="color: #FFFFFF;">{{contactsByType.validContactsCount}}</div>
+											<div class="number">{{contactsByType.validContactsCount}}</div>
 											<div class="desc fz17"  translate>Valid</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
@@ -129,7 +129,7 @@
                										 *ngIf="contactsByType.selectedCategory == 'active'" aria-hidden="true"></i>
 										</div>
 										<div class="details">
-											<div class="number" style="color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
+											<div class="number">{{contactsByType.activeContactsCount}}</div>
 											<div class="desc fz17"  translate>Registered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
@@ -148,7 +148,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc fz17" style="" translate>Unregistered</div>
+											<div class="desc fz17" translate>Unregistered</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -166,7 +166,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc fz17" style="" translate>Undeliverable</div>
+											<div class="desc fz17" translate>Undeliverable</div>
 										</div>
 										<span class="morePadding"> 
 											<a class="more" style="text-align: left;" translate>
@@ -185,7 +185,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc fz17" style="" translate>Unsubscribed</div>
+											<div class="desc fz17" translate>Unsubscribed</div>
 										</div>
 										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
@@ -206,9 +206,10 @@
 					<app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 					<br/>
 					<div *ngIf="showEditContactData">
-						<div class="col-xs-12 p0" style="margin-top: -9px !important;">
+						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light">
+							<div class="portlet light" [ngStyle]="{'margin-top' :
+							((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
 								<div class="portlet-title" style="padding-bottom: 6px !important;">
 									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
 										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of 
@@ -222,7 +223,7 @@
 														Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
 													</button>
 												</div>
-												<div class="btn-group pull-right pt">
+												<div class="btn-group pull-right pt" >
 													<button class="btn dropdown-toggle" style="background-color: rgb(38, 166, 154);color: white;border-radius: 3px !important;"
 														id="save&delete_button" data-toggle="dropdown" translate>
 														Actions <i class="fa fa-angle-down" aria-hidden="true"></i>

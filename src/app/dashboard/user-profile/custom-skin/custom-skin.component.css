@@ -1605,14 +1605,14 @@ div.switch5>input.switch:focus ~label:before {
 	width: 100%;
 	transform: rotate(180deg);
 	height: 85px;
-	font-family: 'Montserrat',"Open Sans", sans-serif;
+	font-family:  'Gantari',"Open Sans", sans-serif;
 	font-size: 11px;
 }
 
 .main-content {
 	height: 85px;
 	color: black !important;
-	font-family: 'Montserrat',"Open Sans", sans-serif;
+	font-family:  'Gantari',"Open Sans", sans-serif;
 	font-size: 12px;
 	/* display: flex;
     justify-content:center; */

@@ -181,8 +181,8 @@
 
 .portlet.light {
     padding: 5px 5px 10px 10px;
-    background-color: #fff;
-    border-radius: 6px !important;
+    /* background-color: #fff;
+    border-radius: 6px !important; */
 }
 
 .page-content-wrapper .page-content {

@@ -19,7 +19,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .alert-success,.alert-danger,.alert-warning> h5{font-size:16px}
 100%{-webkit-transform:rotate (360deg);transform:rotate (360deg)}
 .btn-tools{font-size:28px;color:#FFF;margin-top:10px;cursor:pointer}
-.dashboard-stat .details .number{font-weight:600!important}
+/* .dashboard-stat .details .number{font-weight:600!important} */
 .loaderGif{ height: 57px; position: relative; top: -52px; right: -81px;}
 #container { width: 511px;  padding-top: 0;   position: absolute; top: -1px;left: -4px;	font-family: helvetica, arial, sans-serif;}
 h3 {
@@ -205,4 +205,7 @@ h3 {
 
 .table {
 	margin-bottom: 15px;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 400;
 }

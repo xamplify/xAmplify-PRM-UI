@@ -1385,15 +1385,15 @@
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type!='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.createdBy}}">
                                                                                                     <strong translate>By:</strong>
-                                                                                                    <span>{{campaign?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>12">..</span>
+                                                                                                    <span>{{campaign?.emailTemplate?.createdBy|slice:0:11}}<span
+                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>11">..</span>
                                                                                                     </span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type=='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.vendorName}}">
                                                                                                     <strong translate>By:</strong><span>{{campaign?.emailTemplate?.vendorName|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>12">..</span>
+                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>11">..</span>
                                                                                                         </span>
                                                                                                 </span>
                                                                                             </ng-container>
@@ -1474,16 +1474,16 @@
                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
                                                                                             <strong translate>By:</strong>
-                                                                                            <span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">..</span>
+                                                                                            <span>{{emailTemplate.createdBy|slice:0:11}}<span
+                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span>
                                                                                             </span>
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.vendorName}}">
                                                                                             <strong translate>By:</strong>
-                                                                                            <span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.vendorName?.length>12">..</span>
+                                                                                            <span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                    *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                             </span>
                                                                                         </span>
                                                                                     </ng-container>
@@ -1906,7 +1906,7 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                             <div *ngFor="let reply of replies;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
-                                                    <div class="portlet-title custom-change-css">
+                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                         <div class="col-xs-6">
                                                             <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
                                                         </div>
@@ -2097,8 +2097,8 @@
                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
                                                                                                                                             <strong translate>By:</strong>
-                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>12">..</span></span>
+                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:11}}<span
+                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
@@ -2176,14 +2176,14 @@
                                                                                                                                 <br>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:11}}<span
+                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>11">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
@@ -2266,7 +2266,7 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                             <div *ngFor="let url of urls;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{url.divId}}">
-                                                    <div class="portlet-title custom-change-css">
+                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                         <div class="col-xs-6">
                                                             <h4 class="text-left">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                         </div>
@@ -2438,7 +2438,7 @@
                                                                                                                                         <ng-container *ngIf="url?.emailTemplate?.type!='PARTNER'">
                                                                                                                                             <span style="float:left" title="{{url?.emailTemplate?.createdBy}}">
                                                                                                                                                 <strong translate>By:</strong><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                                                                        *ngIf="url?.emailTemplate?.createdBy?.length>12">..</span></span>
+                                                                                                                                                        *ngIf="url?.emailTemplate?.createdBy?.length>11">..</span></span>
                                                                                                                                             </span>
                                                                                                                                         </ng-container>
                                                                                                                                         <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
@@ -2519,7 +2519,7 @@
                                                                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
                                                                                                                                             <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
+                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                             
@@ -2670,9 +2670,10 @@
         </div>
         <!--Edit Template Div---->
         <div id="edit-template" style="display: none;">
-            <div class="portlet light shadow">
+            <div class="portlet light">
                 <div *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
                     {{beeContainerInput?.emailTemplateName}}
+                    <div>
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
@@ -2682,6 +2683,7 @@
                     <button  class="new-tab-button" *ngIf="showEditTemplatePopup && campaignType=='landingPage'">
                         Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                       </button>
+                    </div>
                 </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">

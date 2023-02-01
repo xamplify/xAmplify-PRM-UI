@@ -32,7 +32,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   roles:Roles = new Roles();
   isPartnerView = false;
   type:string = "";
-  viewClass : any;
+  titleHeader:string = "";
+  suffixHeader:string = "";
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -43,7 +44,6 @@ export class FolderTypeViewUtilComponent implements OnInit {
 
   ngOnInit() {
     this.folderViewType = this.route.snapshot.params['viewType'];
-    this.viewClass = this.folderViewType =="fg"? 'fa fa-folder':'fa fa-th';
     this.pagination.categoryType = this.referenceService.getCategoryType(this.moduleId);
     this.type = this.referenceService.getLearningTrackOrPlayBookType(this.moduleId);
     this.findAllCategories(this.pagination);
@@ -56,6 +56,15 @@ export class FolderTypeViewUtilComponent implements OnInit {
       pagination.partnerCompanyId = pagination.companyId;
       pagination.partnerView  = this.isPartnerView;
     }
+    this.suffixHeader = this.isPartnerView ? "Shared " : "Manage ";
+    if(this.pagination.categoryType == "DAM"){
+      this.titleHeader = " Digital Assets";
+    } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+      this.titleHeader = "Tracks";
+    } else if (this.pagination.categoryType == "PLAY_BOOK") {
+      this.titleHeader = "Play Books";
+    }
+
     pagination.userId = this.authenticationService.getUserId();
     this.authenticationService.setVanityUrlFilter(pagination);
     this.userService.getCategories(this.pagination)

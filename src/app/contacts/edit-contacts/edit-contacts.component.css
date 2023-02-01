@@ -268,3 +268,9 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .ellipsis{
 	width: auto !important;
 }
+.margin-top9{
+	margin-top: -9px !important;
+}
+.margin-top2{
+	margin-top: 2px !important;
+}

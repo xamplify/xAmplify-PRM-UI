@@ -358,7 +358,7 @@
 												</div>
 							<div class="form-group">
 								<label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
-									 <span class="text-danger" style="margin-left: -3px;">*</span>
+									 <span class="text-danger">*</span>
 								</label>
 								<div class="col-sm-9 p0">
 									<div class="col-sm-6">
@@ -1404,7 +1404,7 @@
 			   </div>
 				<div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
 				<div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-				  <div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}" style="display:block">
+				  <div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}"  style="display:block">
 					<div class="col-xs-12 col-sm-6">
 					  <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
 					</div>

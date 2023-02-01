@@ -245,7 +245,7 @@
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
-                        style="font-size:25px;padding-top:10px"></i></a>
+                        style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
                   </div>
                 </div>
               </div>
@@ -271,6 +271,10 @@
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
       <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet light" style="border: none;">
+        <div class="portlet-title">
+          <div class="col-xs-4 p0">
+            <h4 claass="text-primary pull-left">Description</h4>
+          </div>
         <div class="input-icon right pull-right cebp">
           <ul class="button-align inline">
             <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
@@ -279,6 +283,7 @@
                 Forms</button></li>
           </ul>
         </div>
+       </div>
         <div *ngIf="!isDescriptionValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center"
           style="margin-bottom: 5px;">
           <span class="required">{{descriptionErrorMessage}}</span>

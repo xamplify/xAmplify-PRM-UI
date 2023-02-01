@@ -15,7 +15,7 @@ General reset
 body {
   color: #333333;
   /* color: #ffff; */
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   padding: 0px !important;
   margin: 0px !important;
   font-size: 13px;
@@ -949,7 +949,7 @@ h4,
 h5,
 h6 {
   /* 10-01-2023 */
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   font-weight: 500;
   /* color: #333 !important; */
 }
@@ -1112,7 +1112,7 @@ a:hover {
 }
 
 .primary-font {
-  font-family: 'Montserrat',"Open Sans", sans-serif !important;
+  font-family:  'Gantari',"Open Sans", sans-serif !important;
 }
 
 .bold {
@@ -2429,7 +2429,7 @@ Charts and statistics
   overflow: hidden;
   height: 300px;
   width: 100%;
-  font-family: 'Montserrat',"Open Sans", sans-serif !important;
+  font-family:  'Gantari',"Open Sans", sans-serif !important;
   font-size: 14px;
 }
 
@@ -2642,7 +2642,7 @@ Dropdown Menu
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
   border: 1px solid #eee;
   /* 10-01-2023 ("Helvetica Neue", Helvetica, Arial, sans-serif) */
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
@@ -2663,7 +2663,7 @@ Dropdown Menu
   text-decoration: none;
   display: block;
   clear: both;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 18px;
   white-space: nowrap;
 }
@@ -3799,7 +3799,7 @@ Customized Bootstrap Labels
   font-weight: 300;
   padding: 3px 6px 3px 6px;
   color: #fff;
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
 }
 .label.label-sm {
   font-size: 12px;
@@ -5166,7 +5166,8 @@ Dashboard Stats
   line-height: 36px;
   letter-spacing: -1px;
   margin-bottom: 0px;
-  font-weight: 300;
+  /* 01-02-2023*/
+  font-weight: 400;
 }
 
 .dashboard-stat .details .value {
@@ -6041,7 +6042,7 @@ Light Table
   font-weight: 600;
   font-size: 13px;
   color: #93a2a9;
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   border: 0;
   border-bottom: 1px solid #F2F5F8;
 }
@@ -14549,7 +14550,7 @@ Transparent Button
 }
 /* 10-01-2023 */
 .tooltip {
-  font-family: 'Montserrat',"Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
   font-size: 10px;
 }
 .profile-usermenu{
@@ -14580,11 +14581,37 @@ Transparent Button
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #074e84; 
+  /* background: #074e84;  */
+  background: rgb(52, 73, 90);
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #007bff; 
+  /* background: #007bff;  */
+  background: #008fd5;
 }
+
+
+/** 26-01-2023 **/
+/* .modal-title{
+    margin: 7px;
+} */
+.modal-header {
+    padding: 10px;
+}
+/* 26-01-2023 */
+.modal-header > button.close-circle,
+.modal-header > a.close-circle
+ {
+  width: 24px !important;
+  height: 24px !important;
+}
+.modal-header > button.close-circle i,
+.modal-header > a.close-circle i {
+  margin-top: -1px !important;
+}
+.pbc-m3 {
+  margin: 3px -30px !important;
+}
+ 

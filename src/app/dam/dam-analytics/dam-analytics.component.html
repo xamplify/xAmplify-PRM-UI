@@ -129,7 +129,7 @@
                         <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
                         <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
                     </ul>
-                     <div class="portlet-input input-inline" style="margin-left: 85px;margin-right: -92px;">
+                     <div class="portlet-input input-inline" style="margin-left: 97px;margin-right: -104px;">
                         <div class="input-icon right">
                            <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
