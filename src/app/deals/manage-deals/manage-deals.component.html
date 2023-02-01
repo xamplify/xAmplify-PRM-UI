@@ -113,15 +113,15 @@
       <!-- -----------------------------Deals List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar p10" id="header">
-            <div class="tab-content">
+          <div class="portlet light" id="header">
+            <div class="protl-title">
               <div *ngIf="!showCampaignDeals">
                 <div class="">
                   <h4 class="text-primary pull-left">{{titleHeading}} Deals</h4>
-                  <div class="col-xs-12 col-sm-6 col-lg-6" *ngIf="isVendorVersion">
+                  <div class="col-xs-12 col-sm-6 col-lg-5" *ngIf="isVendorVersion">
                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>                
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6" style="padding: 0px 4px 10px 0px;">
+                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 pull-right" style="padding: 0px 4px 10px 0px;">
                     <div class="btn-group pull-right width">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
@@ -179,9 +179,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
+                <!-- <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
                   Please contact admin for 'Deals'
-                </div>
+                </div> -->
                 <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
@@ -541,6 +541,9 @@
   
               </div>
             </div>
+            <div class="portlet-body">
+            <!-- <div class="tab-content">
+            </div> -->
             <!-- -----------------------------Campaign View - Deals List-------------------------------------- -->
             <div class="tab-content" *ngIf="showCampaignDeals">
               <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
@@ -562,6 +565,10 @@
               (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)" 
               (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
               </app-manage-campaign-deals>
+            </div>
+            <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
+              Please contact admin for 'Deals'
+            </div>
             </div>
           </div>
         </div>
