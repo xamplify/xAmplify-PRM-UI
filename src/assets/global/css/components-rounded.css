@@ -2250,6 +2250,9 @@ Customized Bootstrap Buttons
    /* 10-01-2023 */
   font-size: 13px;
 }
+.danger {
+  color: red;
+}
 
 .btn-xs {
   padding: 1px 5px;
@@ -14614,4 +14617,6 @@ Transparent Button
 .pbc-m3 {
   margin: 3px -30px !important;
 }
- 
+.swal2-modal hr {
+  height: 0px;
+}
