@@ -662,7 +662,7 @@
                                 </a>
                               </ng-container>
                               <ng-container
-                                *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign ">
+                                *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
                                 <a (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip"
                                   data-placement="top" title="Show Download History" data-rel="fancybox-button">
                                   <i class="fa fa-history" aria-hidden="true"></i>
@@ -1232,7 +1232,7 @@
                               </a>
                             </ng-container>
                             <ng-container
-                              *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign ">
+                              *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
                               <a (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip"
                                 data-placement="top" title="Show Download History" data-rel="fancybox-button">
                                 <i class="fa fa-history" aria-hidden="true"></i>

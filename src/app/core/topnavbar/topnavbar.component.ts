@@ -63,6 +63,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   showMyVendors: boolean = false;
   vendorCount: any = 0;
   superiorRole: string = "";
+  myVendorsLoader: boolean;
 
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -231,19 +232,12 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
             if (this.superiorRole == undefined || this.superiorRole == null) {
               this.superiorRole = "";
             }
-            // alert(this.authenticationService.module.loggedInThroughOwnVanityUrl);
-            // if (this.authenticationService.user.hasCompany && !this.authenticationService.module.loggedInThroughOwnVanityUrl && (this.authenticationService.module.isCompanyPartner || superiorRole.includes('Partner'))
-            // ) {
-
-            //   this.showMyVendors = true;
-            // }
           } else {
             this.authenticationService.loggedInUserRole = 'User';
           }
         },
         error => this.logger.errorPage(error),
         () => {
-          this.logger.log('Finished')
           if (this.vanityLoginDto.vanityUrlFilter) {
             this.vendorCount = 1;
           } else {
@@ -254,11 +248,15 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
 
   getVendorCount() {
+    this.myVendorsLoader = true;
     this.dashboardService.getVendorCount(this.vanityLoginDto).subscribe(
       (response) =>{
         if (response.statusCode == 200) {
           this.vendorCount = response.data;
         }     
+        this.myVendorsLoader = false;
+      },error=>{
+        this.myVendorsLoader = false;
       }
     )
   }
