@@ -344,6 +344,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 
 	}
+	
+		setClipBoardPage(page: number) {
+		try {
+			if (page < 1 || page > this.pager.totalPages) {
+				return;
+			}
+			this.pager = this.socialPagerService.getPager(this.users.length, page, this.pageSize);
+			this.pagination.pagedItems = this.users.slice(this.pager.startIndex, this.pager.endIndex + 1);
+
+		} catch (error) {
+			this.xtremandLogger.error(error, "AddContactsComponent setPage().")
+		}
+
+	}
 
 
 
@@ -1449,9 +1463,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				this.xtremandLogger.info(user);
 				this.users.push(user);
 				self.pagination.pagedItems.push(user);
+				//self.setClipBoardPage(1);
 				$("button#sample_editable_1_new").prop('disabled', false);
 			}
 			this.selectedAddContactsOption = 1;
+			self.setClipBoardPage(1);
 			var endTime = new Date();
 			$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>");
 			$("#clipBoardValidationMessage").append("<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>");
@@ -1807,6 +1823,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isValidClipBoardData = false;
 		this.isValidLegalOptions = true;
 		this.selectedLegalBasisOptions = [];
+		this.isShowUsers = true;
 	}
 
 	checkAll(ev: any,  contacts:User[]) {
@@ -2469,6 +2486,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			console.log(addContactsOption)
 		} else if (addContactsOption === 1) {
 			this.copyFromClipboard();
+			this.isShowUsers = false;
 		}
 	}
 
