@@ -637,7 +637,7 @@
 									<div class="clearfix">
 										<div class="col-xs-12 p0" style="margin-top: -16px !important;">
 											<div class="table-responsive">
-												<table class='table tgrid'	*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading" aria-describedby="" style="padding-top: 9px;">
+												<table class='table tgrid' *ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)" aria-describedby="" style="padding-top: 9px;">
 													<thead>
 														<tr>
 															<th class='text-center' scope="col"><input type="checkbox"
@@ -814,7 +814,28 @@
 										</div>
 									</div>
 								</div>
-								<app-pagination [pagination]="pagination" [type]="'contacts'"
+								
+								<!-- pagination added for copy from clipboard preview data -->								
+								<ul *ngIf="pager.pages && pager.pages.length && isValidClipBoardData"
+										class="pagination">
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setClipBoardPage(1)" translate>First</a></li>
+										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setClipBoardPage(pager.currentPage - 1)" translate>Previous</a></li>
+										<li *ngFor="let page of pager.pages"
+											[ngClass]="{active:pager.currentPage === page}"><a
+											(click)="setClipBoardPage(page)">{{page}}</a></li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setClipBoardPage(pager.currentPage + 1)" translate>Next</a>
+										</li>
+										<li
+											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+											<a (click)="setClipBoardPage(pager.totalPages)" translate>Last</a>
+										</li>
+									</ul>
+								
+								<app-pagination *ngIf="isShowUsers" [pagination]="pagination" [type]="'contacts'"
 										(notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 							</div>
 							<!-- END EXAMPLE TABLE PORTLET-->
