@@ -2033,8 +2033,8 @@ legend {
 }
 
 .view-banner {
-  background-color: #00a6e8;
-  color: white;
+  /* background-color: #00a6e8;
+  color: white; */
   padding: 4px;
   text-align: center;
   width: 70px;

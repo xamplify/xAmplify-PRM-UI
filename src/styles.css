@@ -1619,7 +1619,7 @@ strong {
 /***03 Jun******/
 .view-banner {
   background-color: #00a6e8;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 125px;
@@ -1732,7 +1732,7 @@ strong {
 
 .view-banner-agency {
 	background-color: #00a6e8;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;
@@ -1746,7 +1746,7 @@ strong {
 
 .view-banner-green {
 	background-color: #60bb23;
-	color: white;
+	color: white !important;
 	padding: 6px;
 	text-align: center;
 	width: 175px;
