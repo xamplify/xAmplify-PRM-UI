@@ -1426,7 +1426,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 
@@ -1450,7 +1450,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 .info-text-color {
@@ -1813,4 +1813,8 @@ strong {
 	pointer-events: auto;
     cursor: not-allowed;
     /* opacity: 0.5; */
+}
+
+.pb-26 {
+  padding-bottom: 26px !important;
 }

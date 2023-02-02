@@ -4,7 +4,7 @@
 
 .text {
     text-align: center;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -86,11 +86,11 @@ h5 {
 
 .header-description-css {
     text-align: center;
-    padding-left: 10px;
+    /* padding-left: 10px; */
     color: #888;
     font-size: 12px;
-    padding-top: 10px;
-    /* height: 60px; */
+    padding: 10px;
+    height: 70px;
 }
 
 .bordernone{
@@ -143,6 +143,6 @@ margin-top: 9px !important;
 .padding{
     padding: 10px 30px 22px !important;
 }
-.pb-26 {
+/* .pb-26 {
   padding-bottom: 26px !important;
-}
+} */

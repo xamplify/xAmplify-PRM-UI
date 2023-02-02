@@ -14585,7 +14585,8 @@ Transparent Button
 /* Handle */
 ::-webkit-scrollbar-thumb {
   /* background: #074e84;  */
-  background: rgb(52, 73, 90);
+  /* background: rgb(52, 73, 90); */
+  background: #0086af;
   border-radius: 10px;
 }
 
