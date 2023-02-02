@@ -6,7 +6,7 @@
 	/* background-color: #00a6e8 */
 	background-color: white;
 }
-.unread-notification:hover,{
+.unread-notification:hover{
   background-color: #ddd;
 }
 
@@ -186,6 +186,9 @@ margin: 10px 10px 10px 10px;
 /* :host{
   font-style: Arial;
 } */
+.btn {
+  padding: 6px 14px !important;
+}
 .custom{
   background-color: #008fd5 ;
   color: #fff;

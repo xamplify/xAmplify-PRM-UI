@@ -1975,7 +1975,7 @@ Customized Bootstrap Buttons
 /* Default buttons */
 .btn {
   border-width: 0;
-  padding: 6px 14px;
+  padding: 7px 14px;
   font-size: 14px;
   outline: none !important;
   background-image: none !important;
@@ -14585,15 +14585,15 @@ Transparent Button
 /* Handle */
 ::-webkit-scrollbar-thumb {
   /* background: #074e84;  */
-  /* background: rgb(52, 73, 90); */
-  background: #0086af;
+  background: rgb(52, 73, 90);
+  /* background: #0086af; */
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   /* background: #007bff;  */
-  background: #008fd5;
+  background: #0086af;
 }
 
 

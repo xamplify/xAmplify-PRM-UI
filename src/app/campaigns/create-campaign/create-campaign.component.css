@@ -2208,3 +2208,10 @@ div.tab{
     padding:5px 0;
   }
 }
+.close-circle {
+  height: 30px;
+  width: 30px;
+}
+.close-circle i{
+  margin-top: 2px;
+}
