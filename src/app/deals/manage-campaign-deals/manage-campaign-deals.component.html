@@ -203,12 +203,13 @@
   </div>
   <!-- End of 24 -->
   <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
-    class="alert alert-info">
+    class="col-xs-12
+    alert alert-info">
     <strong translate>No Deals Found.</strong>
   </div>
 
 </section>
-<div *ngIf="!httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="alert alert-info">
+<div *ngIf="!httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 alert alert-info">
   <strong translate>No Deals Found.</strong>
 </div>
 

@@ -277,3 +277,10 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .margin-top2{
 	margin-top: 2px !important;
 }
+.row{
+	margin-right: -10px;
+    margin-left: -10px;
+}
+.pr2{
+	padding-right: 2px;
+}
