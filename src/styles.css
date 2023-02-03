@@ -1818,3 +1818,14 @@ strong {
 .pb-26 {
   padding-bottom: 26px !important;
 }
+.card-radius{
+  border-radius:20px !important;
+}
+.border-none{
+  border: none !important;
+}
+.img1 {
+  background: #34495a;
+  text-align: center;
+  border-radius: 20px 20px 0px 0px;
+}    

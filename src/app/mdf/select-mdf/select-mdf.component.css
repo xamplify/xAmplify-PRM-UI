@@ -13,14 +13,15 @@ h4 {
 }
 
 h5 {
-    font-size: 14px!important;
+    font-size: 13px!important;
     font-weight: 400!important;
 }
 
-.img1 {
-    background: #ebf1ff;
+/* .img1 {
+    background: #34495a;
     text-align: center;
-}
+    border-radius: 20px 20px 0px 0px;
+} */
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 15px;
@@ -86,9 +87,9 @@ h5 {
     text-align: center;
     padding-left: 10px;
     color: #888;
-    font-size: 12px;
+    font-size: 13px;
     padding-top: 10px;
-    /* height: 60px; */
+    height: 76px;
 }
 
 .bordernone{
@@ -125,4 +126,7 @@ h5 {
 }
 .mb12{
     margin-bottom: 12px !important;
+}
+.portlet .light{
+    padding:0px !important;
 }

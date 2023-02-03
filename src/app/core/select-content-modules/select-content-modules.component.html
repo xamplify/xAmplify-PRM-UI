@@ -18,10 +18,11 @@
   </div>
   <div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
     <div class="col-md-12">
-      <div class="portlet light padding">
+      <div class="padding">
         <div class="portlet-title">
-          <div class="caption" translate>
-            <i class="fa fa-cogs mt" aria-hidden="true"></i>Select Module
+          <div class="caption" translate style="font-size:20px !important;">
+            <!-- <i class="fa fa-cogs mt" aria-hidden="true"></i> -->
+            Select Module
           </div>
         </div>
         <div class="portlet-body">
@@ -69,7 +70,7 @@
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
@@ -91,7 +92,7 @@
                       <span class="design-name mDisableColor" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text">
+                  <div class="text border-none">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -112,7 +113,7 @@
             <!--------Learning Track------------->
             <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/tracks.png">
@@ -134,7 +135,7 @@
                         <span class="design-name mDisableColor" translate>Add Tracks</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text border-none">
                       <h5>
                         <a class="prfpx" (click)="navigate('tracks/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -155,7 +156,7 @@
             <!--------Play Books------------->
             <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
@@ -177,7 +178,7 @@
                         <span class="design-name mDisableColor" translate>Add Play Books</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text border-none">
                       <h5>
                         <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
