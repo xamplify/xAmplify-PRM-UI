@@ -284,3 +284,9 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .pr2{
 	padding-right: 2px;
 }
+@media (width:1441px){
+	.align{
+		margin-right: -32px; 
+     	margin-left: 0px;
+	}
+}
