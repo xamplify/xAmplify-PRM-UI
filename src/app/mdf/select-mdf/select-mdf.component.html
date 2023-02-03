@@ -42,7 +42,7 @@
                       <span class="design-name" translate>Manage MDF Details</span></a>
                     </h5>
                   </div>
-                  <div class="text border-none">
+                  <div class="text">
                     <h5 class="mltp">
                       <a (click)="navigate('mdf/requests')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -50,7 +50,7 @@
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.mdfAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.mdfAccessAsPartner" class="text border-none">
                     <h5 class="mltp">
                       <a (click)="navigate('mdf/requests/p')">
                       <i class="fa fa-list" aria-hidden="true"></i>
