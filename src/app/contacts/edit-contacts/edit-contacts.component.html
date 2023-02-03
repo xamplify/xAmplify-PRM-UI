@@ -45,8 +45,8 @@
 </div>
 
 <div class="clearfix" id="manageContacts">
-	<div class="row">
-		<div class="col-xs-12">
+	<div class="col-xs-12 p10">
+		<div class="row">
 			<div>
 
 				<div class="tab-content">
@@ -824,7 +824,7 @@
 					</div>
 				</div>
 
-				<div class="row-css col-xs-12 mp0" *ngIf="showAllContactData">
+				<div class="" *ngIf="showAllContactData">
 					<div class="col-xs-12">
 						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 							class="alert alert-info">
@@ -840,9 +840,9 @@
 							been deleted successfully.
 						</div>
 					</div>
-					<div class="valid-list mr pr-pl" id="hidingListOfUsersTable">
+					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light align">
+						<div class="portlet light">
 							<div class="portlet-title">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}

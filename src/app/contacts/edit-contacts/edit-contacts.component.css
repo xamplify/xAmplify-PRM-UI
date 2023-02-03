@@ -139,7 +139,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 }
 @media (max-width:425px){
 	.pr-pl{
-		padding-right: 28px !important;
+		padding-right: 0px !important;
         padding-left: 1px !important;
 	}
 	.pr15{
