@@ -150,7 +150,7 @@
 	color: #505659;
 	white-space: nowrap;
 	line-height: 1em;
-	font-size: 1.25rem;
+	/* font-size: 1.25rem; */
 }
 .item__last-modified, .item__size, .item__type {
 	font-size:11px;
