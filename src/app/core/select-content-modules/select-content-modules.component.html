@@ -92,7 +92,7 @@
                       <span class="design-name mDisableColor" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text border-none">
+                  <div class="text">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -100,7 +100,7 @@
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
                     <h5>
                       <a class="prtfpx" (click)="navigate('dam/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -135,7 +135,7 @@
                         <span class="design-name mDisableColor" translate>Add Tracks</span></a>
                       </h5>
                     </div>
-                    <div class="text border-none">
+                    <div class="text">
                       <h5>
                         <a class="prfpx" (click)="navigate('tracks/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -143,7 +143,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
                     <h5>
                       <a (click)="navigate('tracks/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -178,7 +178,7 @@
                         <span class="design-name mDisableColor" translate>Add Play Books</span></a>
                       </h5>
                     </div>
-                    <div class="text border-none">
+                    <div class="text">
                       <h5>
                         <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -186,7 +186,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
                     <h5>
                       <a  (click)="navigate('playbook/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
