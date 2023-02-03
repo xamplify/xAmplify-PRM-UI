@@ -3,14 +3,14 @@
 @import '~ngx-sharebuttons/styles/themes/default/default-theme.css'; */
 h1 {
   color: #369;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Gantari',Arial, Helvetica, sans-serif;
   font-size: 250%;
 }
 
 h2,
 h3 {
   color: #444;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Gantari',Arial, Helvetica, sans-serif;
   font-weight: lighter;
 }
 
@@ -22,7 +22,7 @@ body,
 input[text],
 button {
   color: #888;
-  font-family: Cambria, Georgia;
+  font-family: 'Gantari',Cambria, Georgia;
 }
 
 a {
@@ -1426,7 +1426,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 
@@ -1450,7 +1450,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 .info-text-color {
@@ -1619,7 +1619,7 @@ strong {
 /***03 Jun******/
 .view-banner {
   background-color: #00a6e8;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 125px;
@@ -1732,7 +1732,7 @@ strong {
 
 .view-banner-agency {
 	background-color: #00a6e8;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;
@@ -1746,7 +1746,7 @@ strong {
 
 .view-banner-green {
 	background-color: #60bb23;
-	color: white;
+	color: white !important;
 	padding: 6px;
 	text-align: center;
 	width: 175px;
@@ -1813,4 +1813,8 @@ strong {
 	pointer-events: auto;
     cursor: not-allowed;
     /* opacity: 0.5; */
+}
+
+.pb-26 {
+  padding-bottom: 26px !important;
 }

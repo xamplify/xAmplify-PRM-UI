@@ -6,7 +6,7 @@
 	/* background-color: #00a6e8 */
 	background-color: white;
 }
-.unread-notification:hover,{
+.unread-notification:hover{
   background-color: #ddd;
 }
 
@@ -116,7 +116,7 @@ label{font-weight: bold !important;}
   background-color: #008fd5;
   border: 1px solid #3575b5;
   color: #fff;
-  padding: 6px 16px;
+  padding: 6px 14px;
   cursor: pointer;
   float: left;
   font-size: 14px;
@@ -186,6 +186,9 @@ margin: 10px 10px 10px 10px;
 /* :host{
   font-style: Arial;
 } */
+.btn {
+  padding: 6px 14px !important;
+}
 .custom{
   background-color: #008fd5 ;
   color: #fff;

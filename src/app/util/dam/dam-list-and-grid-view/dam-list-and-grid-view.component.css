@@ -35,7 +35,7 @@ cursor: default;
 
 .view-banner{
    background-color: #00a6e8;
-    color: white;
+    color: white !important;
     padding: 4px;
     text-align: center;
     width: 125px;

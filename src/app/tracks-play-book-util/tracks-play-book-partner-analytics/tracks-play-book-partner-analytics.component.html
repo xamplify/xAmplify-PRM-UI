@@ -178,7 +178,7 @@
                     <input type="text" id="search-text" class="form-control" style="height: 34px;margin-top: -10px;"
                       [(ngModel)]="detailedAnalyticsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                       placeholder="search..." (keypress)="detailedAnalyticsEventHandler($event.keyCode)">
-                    <button class="glyphicon glyphicon-remove search-box-item-clear"
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="margin-top: -10px;"
                       *ngIf="detailedAnalyticsSortOption.searchKey"
                       (click)="detailedAnalyticsSortOption.searchKey='';detailedAnalyticsSearch();"></button>
                     <button type="submit" class="search-box-item-click alignment" (click)="detailedAnalyticsSearch()"><i

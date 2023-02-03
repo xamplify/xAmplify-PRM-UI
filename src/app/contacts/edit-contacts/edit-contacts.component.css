@@ -265,6 +265,9 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .table{
 	margin-bottom: 18px;
 }
+.table-toolbar {
+	margin-bottom: 0px;
+}
 .ellipsis{
 	width: auto !important;
 }
@@ -273,4 +276,11 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 }
 .margin-top2{
 	margin-top: 2px !important;
+}
+.row{
+	margin-right: -10px;
+    margin-left: -10px;
+}
+.pr2{
+	padding-right: 2px;
 }

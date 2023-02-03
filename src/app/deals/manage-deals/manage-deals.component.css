@@ -82,5 +82,7 @@
 .info-icon {
     color: #fa5252;
     padding: 10px 5px;
-
 }
+a>span.glyphicon.glyphicon-remove {
+	margin-top: 4px;
+  }

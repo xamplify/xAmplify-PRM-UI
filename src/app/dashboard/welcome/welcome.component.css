@@ -147,7 +147,7 @@ h3 {
 
 @media only screen and (min-width: 600px) {
     .text-block {
-		padding: 2em;
+		padding: 6em 2em 2em 2em;
 		text-align: center;
 	}
 	.text-block p {
@@ -253,4 +253,7 @@ h3 {
 /******* tharak ******/
 .welcome-header{
 	padding:10px 0px;
+}
+.dash-img-svg {
+	height: 240px;
 }
