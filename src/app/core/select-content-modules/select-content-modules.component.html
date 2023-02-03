@@ -92,7 +92,7 @@
                       <span class="design-name mDisableColor" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text">
+                  <div class="text" [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -135,7 +135,7 @@
                         <span class="design-name mDisableColor" translate>Add Tracks</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text" [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('tracks/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -177,8 +177,8 @@
                         <i class="fa fa-plus mDisableColor" aria-hidden="true"></i>
                         <span class="design-name mDisableColor" translate>Add Play Books</span></a>
                       </h5>
-                    </div>
-                    <div class="text">
+                    </div> 
+                    <div class="text" [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
