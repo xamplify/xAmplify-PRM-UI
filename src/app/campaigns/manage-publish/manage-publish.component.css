@@ -560,3 +560,6 @@ table tr:nth-child(even) td {
     cursor: not-allowed;
     opacity: 0.5;
 }
+.view-banner{
+	color: white !important;
+}

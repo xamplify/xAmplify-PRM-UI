@@ -1692,13 +1692,14 @@
 			  </div>
 			  <div class="portlet-title border-none" [hidden]="isPreviewEvent">
 				  <div class="col-xs-12 center-block" [class.disabled]="eventError.eventExpiredError">
+					<button  *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="font-weight: 600;width: 10em;" class="btn btn-default mBtnAlign" (click)="resetTabs('templates')">Previous</button>
 					<button type="submit" *ngIf="checkLaunchOption=='NOW'" class="btn green" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'NOW')">Launch</button>
 					<button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'" class="btn green" style="width: 10em;" (click)="scheduleCampaign()">Schedule</button>
 					<button type="submit" *ngIf="checkLaunchOption=='SAVE'"  class="btn green" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
 					<button type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
 				  </div>
 				</div>
-				<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button>
+				<!-- <button  *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button> -->
 			  </div>
 		   <!--   end step four launch   -->
 			</div>

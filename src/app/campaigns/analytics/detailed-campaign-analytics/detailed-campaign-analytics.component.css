@@ -907,6 +907,11 @@ fieldset {
 	width: 125px;
 
 }
-
+h1, h2, h3, h4, h5, h6 {
+    color: inherit !important;
+}
+a>span.glyphicon.glyphicon-remove {
+	margin-top: 4px;
+  }
 
 

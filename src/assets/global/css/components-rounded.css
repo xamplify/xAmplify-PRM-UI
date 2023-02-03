@@ -18,7 +18,7 @@ body {
   font-family:  'Gantari',"Open Sans", sans-serif;
   padding: 0px !important;
   margin: 0px !important;
-  font-size: 13px;
+  font-size: 14px;
   direction: ltr;
 }
 
@@ -960,15 +960,15 @@ h1,h2,h3,h4,h5,h6 {
 
 h1 {
    /* 10-01-2023 */
-   font-size: 38px;
+   font-size: 36px;
 }
 
 h2 {
-  font-size: 27px;
+  font-size: 28px;
 }
 
 h3 {
-  font-size: 23px;
+  font-size: 24px;
 }
 
 h4 {
@@ -2242,13 +2242,16 @@ Customized Bootstrap Buttons
 .btn-xs {
   padding: 4px 10px 5px 10px;
   /* 10-01-2023 */
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 .btn-sm > i,
 .btn-xs > i {
    /* 10-01-2023 */
-  font-size: 12px;
+  font-size: 13px;
+}
+.danger {
+  color: red;
 }
 
 .btn-xs {
@@ -5956,7 +5959,7 @@ Custom tables
 
 .table thead tr th {
   /* 10-01-2023 */
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -14551,7 +14554,7 @@ Transparent Button
 /* 10-01-2023 */
 .tooltip {
   font-family:  'Gantari',"Open Sans", sans-serif;
-  font-size: 10px;
+  font-size: 12px;
 }
 .profile-usermenu{
   color: #333;
@@ -14562,7 +14565,7 @@ Transparent Button
 } */
 /* 12-02-2023 */
 .page-header.navbar .top-menu .navbar-nav>li.dropdown-user .dropdown-menu>li>a {
-  font-size: 13px !important;
+  font-size: 14px !important;
   font-weight: 400 !important;
   color: #000000 !important;
 }
@@ -14583,13 +14586,14 @@ Transparent Button
 ::-webkit-scrollbar-thumb {
   /* background: #074e84;  */
   background: rgb(52, 73, 90);
+  /* background: #0086af; */
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   /* background: #007bff;  */
-  background: #008fd5;
+  background: #0086af;
 }
 
 
@@ -14614,4 +14618,6 @@ Transparent Button
 .pbc-m3 {
   margin: 3px -30px !important;
 }
- 
+/* .swal2-modal hr {
+  height: 0px;
+} */
