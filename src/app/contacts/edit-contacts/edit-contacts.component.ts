@@ -1131,7 +1131,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	removeCsv() {
+	removeCsv() {	
+        this.uploader.queue.length = 0;
+        this.selectedLegalBasisOptions = [];
 		this.fileTypeError = false;
 		this.inValidCsvContacts = false;
 		this.existedEmailIds, length = 0;
@@ -1810,6 +1812,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	}
 
 	cancelContacts() {
+	    this.uploader.queue.length = 0;
 		this.resetResponse();
 		if (this.selectedAddContactsOption == 1) {
 			this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
@@ -1823,7 +1826,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.isValidClipBoardData = false;
 		this.isValidLegalOptions = true;
 		this.selectedLegalBasisOptions = [];
-		this.isShowUsers = true;
+		this.filePrevew = false;
+		this.uploadCsvUsingFile = false;
+		this.isShowUsers = true;		
 	}
 
 	checkAll(ev: any,  contacts:User[]) {

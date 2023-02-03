@@ -253,7 +253,7 @@
 												</button>
 												</div>
 												<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt" style="margin-right: 5px;">
-													<div class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
+													<div *ngIf="!clickBoard && !filePrevew"  class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 														<div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
 															data-toggle="modal" data-target="#filterModal">
 															<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
@@ -266,7 +266,7 @@
 														</div>
 													</div>
 													<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort" style="width: 52.33333333%;">
-														<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8">
+														<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8 && !clickBoard && !filePrevew">
 															<div class="inputs" align="right" style="float: right">
 																<div class="inputs" align="right" style="float: right;display: inline-flex;">
 																	<div style="float: left; margin-right: 10px;">
