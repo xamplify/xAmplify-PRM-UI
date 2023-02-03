@@ -1538,7 +1538,7 @@ strong {
 
 .green-banner {
   background-color: green;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 158px;
@@ -1741,7 +1741,7 @@ strong {
 }
 
 .view-banner-hidden {
-	color: #f1f1f1;
+	color: #f1f1f1 !important;
 }
 
 .view-banner-green {
