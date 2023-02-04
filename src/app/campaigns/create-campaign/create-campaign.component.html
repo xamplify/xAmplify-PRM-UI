@@ -2628,7 +2628,8 @@
                                             <br>
                                             <select class="form-control" style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
                                                 <option *ngFor="let country of countries" [value]="country.id">
-                                                    {{country.name}}</option>
+                                                    {{country.name}}
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">

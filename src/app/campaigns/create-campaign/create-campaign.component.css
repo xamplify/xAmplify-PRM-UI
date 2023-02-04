@@ -1,7 +1,7 @@
 .form-group label {
   font-weight: 500 !important;
   color: #999 !important;
-  font-size:13px
+  /* font-size:13px */
 }
 
 .btn-reply {
@@ -77,6 +77,9 @@ a.disabled {
   border-right: none;
   /* width: 20% */
 }
+/* .item__content {
+  font-size: 13px;
+} */
 
 /* .step .col-md-2:last-child {
     border: 1px solid #C0C0C0;
@@ -260,10 +263,10 @@ a.disabled {
   cursor: not-allowed;
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
   background-color: #00a6e8 !important;
   color: white;
-}
+} */
 
 .ui-switch-custom-div {
   width: 7%;
@@ -2214,4 +2217,8 @@ div.tab{
 }
 .close-circle i{
   margin-top: 2px;
+}
+.table tr.contact-list-selected td {
+  background-color: #ddd !important;
+  color:#000 !important;
 }
