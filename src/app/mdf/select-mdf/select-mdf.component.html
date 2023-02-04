@@ -15,12 +15,12 @@
   </div>
   <div class="row" *ngIf="!authenticationService?.module?.contentLoader">
     <div class="col-md-12">
-      <div class="portlet light">
+      <div class="">
         <div class="portlet-body mb12">
           <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany && (authenticationService?.mdf ||authenticationService?.mdfAccessAsPartner)">
             <!--------MDF------------->
-            <div class="col-md-6 col-centered">
-              <div class="portlet light cpad  hover-effect pointer">
+            <div class="col-md-4 col-centered">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
                     <img alt="Content/Videos" class="pricing-head-img img-responsive mauto" src="assets/images/mdf.png">
@@ -42,7 +42,7 @@
                       <span class="design-name" translate>Manage MDF Details</span></a>
                     </h5>
                   </div>
-                  <div class="text">
+                  <div class="text" [ngClass]="authenticationService?.mdfAccessAsPartner?'':'border-none'">
                     <h5 class="mltp">
                       <a (click)="navigate('mdf/requests')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -50,7 +50,7 @@
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.mdfAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.mdfAccessAsPartner" class="text border-none">
                     <h5 class="mltp">
                       <a (click)="navigate('mdf/requests/p')">
                       <i class="fa fa-list" aria-hidden="true"></i>

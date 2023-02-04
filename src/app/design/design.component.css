@@ -15,22 +15,23 @@ h4 {
 }
 
 h5 {
-    font-size: 14px!important;
+    font-size: 13px!important;
     font-weight: 400!important;
 }
 
-.img1 {
-    background: #ebf1ff;
-    text-align: center;
-    height: 233px;
-    border-radius: 5px;
-}
+/* .img1 {
+    background: #34495a;
+    text-align: center; */
+    /* height: 233px; */
+    /* border-radius: 20px 20px 0px 0px;
+} */
 
 
 .img-responsive,
 .thumbnail a>img,
 .thumbnail>img {
-    padding-top: 65px;
+    padding-top: 15px;
+    padding-bottom:15px;
     display: block;
     max-width: 112px;
     height: auto;
@@ -79,7 +80,7 @@ h5 {
 margin-top: 9px !important;
 }
 .padding{
-    padding: 10px 30px 22px !important;
+    padding: 0px 5px!important;
 }
 
 .header-text-css {
@@ -93,7 +94,10 @@ margin-top: 9px !important;
     text-align: center;
     /* padding-left: 10px; */
     color: #888;
-    font-size: 12px;
+    font-size: 13px;
     padding: 10px;
-     height: 70px;
+     height: 76px;
+}
+.portlet .light{
+    padding:0px !important;
 }

@@ -1815,3 +1815,7 @@ legend {
     margin-top: 12px;
     margin-left: 5px;
 }
+
+.item__content{
+	font-size: 13px;
+}

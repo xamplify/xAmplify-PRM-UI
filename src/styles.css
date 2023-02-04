@@ -1538,7 +1538,7 @@ strong {
 
 .green-banner {
   background-color: green;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 158px;
@@ -1741,7 +1741,7 @@ strong {
 }
 
 .view-banner-hidden {
-	color: #f1f1f1;
+	color: #f1f1f1 !important;
 }
 
 .view-banner-green {
@@ -1818,3 +1818,14 @@ strong {
 .pb-26 {
   padding-bottom: 26px !important;
 }
+.card-radius{
+  border-radius:20px !important;
+}
+.border-none{
+  border: none !important;
+}
+.img1 {
+  background: #34495a;
+  text-align: center;
+  border-radius: 20px 20px 0px 0px;
+}    
