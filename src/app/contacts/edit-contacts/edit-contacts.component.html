@@ -1234,9 +1234,9 @@
 								<div class="form-group">
 									<div class="form-inline col-sm-12">
 										<div class="form-group col-sm-4">
-										<b>{{i}}</b>
+										<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">{{i}}</b>
 											<select class="form-control"
-												[(ngModel)]="criterias[i].property">
+												[(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
 												<option
 													*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
 											</select>
@@ -1260,7 +1260,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row col-sm-1" style="margin-left: 32px;">
+							<div class="row col-sm-1" style="margin-left: 30px;">
 							<div data-toggle="tooltip" data-placement="left" title="Add a condition">
 								<button [disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
 									<i class="fa fa-plus-square" aria-hidden="true"
