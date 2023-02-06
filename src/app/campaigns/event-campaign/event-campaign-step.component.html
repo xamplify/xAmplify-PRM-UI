@@ -1724,7 +1724,7 @@
 			<div class="portlet light shadow">
 				<div *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
 					{{beeContainerInput?.emailTemplateName}}
-					<a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
+					<a class="close-circle pull-right" style="margin-top: 20px;" (click)="hideEditTemplateDiv()">
 						<i class="fa fa-times" aria-hidden="true"></i>
 					</a>
 					<app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>

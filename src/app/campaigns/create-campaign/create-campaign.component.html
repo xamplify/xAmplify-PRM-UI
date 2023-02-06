@@ -34,7 +34,7 @@
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="page-bar" *ngIf="folderCustomResponse.isVisible">
+        <div [ngClass]="folderCustomResponse.isVisible?'page-bar':'' " style="background: none !important;border: none !important" *ngIf="folderCustomResponse.isVisible">
             <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
             </app-response-message>
         </div>
