@@ -27,11 +27,15 @@
         </div>
         <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
           <div class="cf-padding-dam">
+            <div style="margin-top: -1px;">
             <a class="close-circle" (click)="closeCircle()"  title="Close">
               <i class="fa fa-times" aria-hidden="true"></i>
               </a>
-            <button class="add-button-xamplify mr5"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-        </div>
+              </div>
+            <div style="padding-top: 2px;">
+              <button class="add-button-xamplify mr5" style="border-radius:5px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+            </div>
+            </div>
         </div>
       </div>
     </div>
@@ -349,7 +353,7 @@
                 </div>
           </div>
           <div class="footer">
-          <button [disabled]="isDisableForm" class="btn btn-default" id="right" style="margin-right: 7px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
+          <button [disabled]="isDisableForm" class="btn btn-default" id="right" style="margin-right: 20px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
           <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate>{{submitButtonText}}</button>
           </div>
         </div>

@@ -424,7 +424,7 @@ label {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .list__item,
@@ -1570,4 +1570,10 @@ div.switch5>input.switch:focus~label:before {
 
 .full-width-modal-popup {
     width: 100%!important;
+}
+.xamp-margin-left-icon{
+    margin: 0px 5px 5px 5px;
+}
+.margin{
+    margin-right: 12px;
 }

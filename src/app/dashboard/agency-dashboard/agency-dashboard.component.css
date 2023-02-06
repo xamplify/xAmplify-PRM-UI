@@ -22,6 +22,7 @@ h5 {
     background: #ebf1ff;
     text-align: center;
     height: 233px;
+    border-radius: 5px;
 }
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {
@@ -115,7 +116,7 @@ a {
     line-height: 36px;
     letter-spacing: -1px;
     margin-bottom: 0px;
-    font-weight: 300;
+    /* font-weight: 300; */
 }
 
 .dashboard-stat .details .number {

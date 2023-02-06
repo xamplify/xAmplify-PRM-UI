@@ -34,15 +34,15 @@
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="page-bar" *ngIf="folderCustomResponse.isVisible">
+        <div [ngClass]="folderCustomResponse.isVisible?'page-bar':'' " style="background: none !important;border: none !important" *ngIf="folderCustomResponse.isVisible">
             <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
             </app-response-message>
         </div>
         <!-- End of Line 2 -->
-        <div class="page-bar" id="campaign-tabs">
-            <div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
-                <div style="display: flex;padding-top: 1em;">
-                    <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
+        <div id="campaign-tabs">
+            <div class="container" style="width: 100%;">
+                <div class="portlet light row steps-view">
+                    <div id="s.2" class="width" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block">
                             <span>
                                 <i class="fa fa-th-list" aria-hidden="true"></i>
@@ -180,10 +180,10 @@
                 </div>
                 <!-- -------------------------------------Campaign Details--------------------------------------------------------- -->
                 <div class="row setup-content step activeStepInfo" id="step-2">
-                    <div class="col-xs-12">
+                    <div >
                         <form role="form" class="form-horizontal form-bordered form-label-stripped" id="campaignDetailsForm" aria-labelledby="form-label">
-                            <div style="margin-top: 10px;">
-                                <div class="portlet box">
+                            <div class="portlet light">
+                                <div class="portlet box" style="border: none !important;">
                                     <div class="portlet-body form">
                                         <!-- BEGIN FORM-->
                                         <div class="form-body col-sm-6 col-sm-offset-3">
@@ -564,7 +564,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
-                                                        <!-- <option [value]="0">Select Pipeline</option> -->
+                                                        <option [value]="0">Select Pipeline</option>
                                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -578,7 +578,7 @@
                                                 <div class="col-sm-8">
                                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
                                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
-                                                        <!-- <option [value]="0">Select Pipeline</option> -->
+                                                        <option [value]="0">Select Pipeline</option>
                                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                                                     </select>
                                                 </div>
@@ -651,309 +651,494 @@
                                         <!-- END FORM-->
                                     </div>
                                 </div>
+                                <div class="page-bar" style="padding-right: 21px;box-shadow: none !important;border: none !important;">
                                 <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                                 <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                                 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                            </div>
                             </div>
                         </form>
                     </div>
                     <div id="emailTemplateContent" style="display: none;"></div>
                 </div>
                 <!-- -------------------------------------Video Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo" id="step-3">
-                    <!-- <br> -->
-                    <div class="col-xs-12">
-                        <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                            <div class="row pb10" id="user_list_table_view">
-                                <div class="col-lg-12" style="padding-left: 0px;padding-right: 0px;">
-                                    <div class="note-vid" translate>Select the video for your campaign</div>
-                                    <div id="home" class="tab-pane fade in active">
-                                        <div class="tab" *ngIf="!campaign.createdFromVideos">
-                                            <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner" translate>My Videos</button>
-                                            <ng-container *ngIf="!campaign.createdFromVideos">
-                                                <div class="input-icon right pull-right m10 col-xs-7" *ngIf="isMyVideosActive">
-                                                    <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="videoSearchInput" (click)="videoSearchInput=''"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchVideo()"><i
-                                                            class="fa fa-search"
-                                                            style="font-size: 16px !important;padding:5px !important;"></i></button>
-                                                </div>
-                                                <div class="input-icon right pull-right m10 " *ngIf="!isMyVideosActive">
-                                                    <input type="text" [(ngModel)]="channelVideoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'channel')">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="channelVideoSearchInput" (click)="channelVideoSearchInput=''"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchChannelVideo()"><i class="fa fa-search"
-                                                            style="font-size: 16px !important;padding:5px !important;"></i></button>
-                                                </div>
-                                            </ng-container>
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-3" >
+					<!-- <br> -->
+					<div class="col-xs-12">
+						<div class="text-center">
+							<div class="row" id="user_list_table_view">
+								<div class="">
+									<!-- <div class="note-vid pull-left m10">
+                                        <div class="">Select the video for your
+                                            campaign
                                         </div>
-
-                                        <div id="my-videos" class="tabcontent" [style.display]="myVideosStyle">
-                                            <div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
-                                                <div class="table-responsive">
-                                                    <table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
-                                                        <thead style="background-color: #B7B7B7;">
-                                                            <tr role="row">
-                                                                <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" style="width: 45%;" translate>Videos
-                                                                </th>
-                                                                <th style="text-align: center;width: 24%;" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
-                                                                    <span class="filter_column filter_select">
-                                                                        <select class="select_filter form-control"
-                                                                            data-live-search="true"
-                                                                            (change)="filterCategoryVideos($event)">
-                                                                            <option value="" class="search_init" translate>
-                                                                                Category</option>
-                                                                            <option *ngFor="let category of categories"
-                                                                                class="colorSelect"
-                                                                                value="{{category.id}}"
-                                                                                [selected]="category.id==videosPagination.videoCategoryId">
-                                                                                {{category.name}}</option>
-                                                                        </select>
-                                                                    </span>
-                                                                </th>
-                                                                <th style="text-align: center;width: 24%;" *ngIf="campaign.createdFromVideos" translate>Category</th>
-                                                                <th style="text-align: center;width: 18%;" *ngIf="!campaign.createdFromVideos" translate>Upload Date
-                                                                    <span class="filter_column filter_select" *ngIf="false">
-                                                                        <select class="form-control"
-                                                                            (change)="filterVideosByType($event)">
-                                                                            <option value="" class="search_init" translate>Type
-                                                                            </option>
-                                                                            <option value="PRIVATE" translate>PRIVATE</option>
-                                                                            <option value="PUBLIC" translate>PUBLIC</option>
-                                                                            <option value="UNLISTED" translate>UNLISTED</option>
-                                                                        </select>
-                                                                    </span>
-                                                                </th>
-                                                                <!-- <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th> -->
-                                                                <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
-                                                                <th style="text-align: center;width: 13%;" translate>Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="row_selected">
-                                                            <tr *ngIf="campaignVideo.httpRequestLoader.isServerError || campaignVideo.httpRequestLoader.isLoading">
-                                                                <td colspan="5">
-                                                                    <app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading">
-                                                                    </app-loader>
-                                                                    <app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError">
-                                                                    </app-error-pages>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="videosPagination.totalRecords==0">
-                                                                <td colspan="5">
-                                                                    <div class="alert alert-info"><strong translate>No videos found
-                                                                            </strong></div>
-                                                                </td>
-                                                            </tr>
-                                                            <ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
-                                                                <!-- ------------------Selected Video Row-->
-                                                                <ng-container *ngIf="showSelectedVideo==true && !partnerVideoSelected">
-                                                                    <tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id" id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'my-videos')">
-                                                                        <!-- --------------Thumbnail--------------------------- -->
-                                                                        <td style="text-align: center;">
-                                                                            <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'my-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
-                                                                            </app-video-thumbnail>
-                                                                        </td>
-                                                                        <!-- --------------Category--------------------------- -->
-                                                                        <td class="text-center">
-                                                                            {{savedVideoFile.categoryName}}</td>
-                                                                        <!-- --------------Published To--------------------------- -->
-                                                                        <td class="text-center">
-                                                                            <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
-                                                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate">
-                                                                            </app-timestamp>
-                                                                        </td>
-                                                                        <!-- --------------Status--------------------------- -->
-                                                                        <td class="text-center">
-                                                                            <img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
-                                                                            <img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
-                                                                        </td>
-                                                                    </tr>
-                                                                </ng-container>
-                                                                <!-- --------------------Avalilable Campaign Videos------------ -->
-                                                                <ng-container *ngIf="!campaign.createdFromVideos">
-                                                                    <tr role="row" class="odd" *ngFor="let videoFile of videosPagination.pagedItems;let i =  index" (click)="setClickedRow(videoFile,'my-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage" (mouseover)='showToolTip(videoFile.viewBy)'>
-                                                                        <!-- --------------Thumbnail--------------------------- -->
-                                                                        <!-- --------------Title--------------------------- -->
-                                                                        <td *ngIf="videoFile.id!==videoId">
-                                                                            <input class="radio-button-css" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'my-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">
-                                                                            <input class="radio-button-css" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                                                            <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)">
-                                                                            </app-video-thumbnail>
-                                                                        </td>
-                                                                        <!-- --------------Category--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            {{videoFile.categoryName}}</td>
-                                                                        <!-- --------------Published To--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
-                                                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate">
-                                                                            </app-timestamp>
-
-                                                                        </td>
-                                                                        <!-- --------------Status--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            <img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
-                                                                            <img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
-                                                                        </td>
-                                                                    </tr>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="col-xs-12 mPag mt10" style="text-align:left;" [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
-                                                    <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)">
-                                                    </app-pagination>
+                                    </div> -->
+									<div id="home" class="tab-pane fade in active">
+										<div class="tab" *ngIf="!campaign.createdFromVideos">
+                                            <div class="note-vid pull-left" style="padding-top: 8px;">
+                                                <div class="">Select the video for your
+                                                    campaign
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- ----Partner Videos Start Here -->
-                                        <div id="channel-videos" class="tabcontent" [style.display]="partnerVideosStyle">
-                                            <div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
-                                                <div class="inputs" align="right" style="display:inline;padding: 5px 5px 12px 0px;">
-                                                    <div class="portlet-input input-inline input-large">
+											<!-- <button [class]="myVideosClass"
+												(click)="showTab($event,'my-videos')" id="my-videos-tab"
+												*ngIf="!isOnlyPartner" translate>My Videos</button> -->
+											<ng-container *ngIf="!campaign.createdFromVideos">
+											<!-- <div class="input-icon right pull-right m10 col-xs-7"
+												*ngIf="isMyVideosActive">
+												<input type="text" [(ngModel)]="videoSearchInput"
+													[ngModelOptions]="{standalone: true}" class="form-control"
+													placeholder="Search for a Video"
+													(keypress)="eventHandler($event.keyCode, 'myvideos')">
+												<button
+													class="glyphicon glyphicon-remove search-box-item-clear"
+													style="padding: 5px;" *ngIf="videoSearchInput"
+													(click)="videoSearchInput=''"></button>
+												<button type="submit" class="search-box-item-click"
+													style="padding: 4px !important; margin-left: 55px;"
+													(click)="searchVideo()">
+													<i class="fa fa-search"
+														style="font-size: 16px !important; padding: 5px !important;"></i>
+												</button>
+											</div>
+											<div class="input-icon right pull-right m10 "
+												*ngIf="!isMyVideosActive">
+												<input type="text" [(ngModel)]="channelVideoSearchInput"
+													[ngModelOptions]="{standalone: true}" class="form-control"
+													placeholder="Search for a Video"
+													(keypress)="eventHandler($event.keyCode, 'channel')">
+												<button
+													class="glyphicon glyphicon-remove search-box-item-clear"
+													style="padding: 5px;" *ngIf="channelVideoSearchInput"
+													(click)="channelVideoSearchInput=''"></button>
+												<button type="submit" class="search-box-item-click"
+													style="padding: 4px !important;"
+													(click)="searchChannelVideo()">
+													<i class="fa fa-search"
+														style="font-size: 16px !important; padding: 5px !important;"></i>
+												</button>
+											</div> -->
+											<div class="">
+                                                <div class="btn-group pull-right" style="margin: -7px;padding:10px">
+                                                    <div class="inputs sort-class" style="display: flex;">
+                                                        <div style="padding-right: 14px;">
+                                                            <select class="select_filter form-control"
+                                                                data-live-search="true"
+                                                                (change)="filterCategoryVideos($event)">
+                                                                <option value="" class="search_init" translate>
+                                                                    Category</option>
+                                                                <option *ngFor="let category of categories"
+                                                                    class="colorSelect" value="{{category.id}}"
+                                                                    [selected]="category.id==videosPagination.videoCategoryId">
+                                                                    {{category.name}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="portlet-input input-inline search-class">
+                                                            <div class="input-icon right pull-right"
+                                                                *ngIf="isMyVideosActive">
+                                                                <input type="text" [(ngModel)]="videoSearchInput"
+                                                                    [ngModelOptions]="{standalone: true}" class="form-control"
+                                                                    placeholder="Search for a Video"
+                                                                    (keypress)="eventHandler($event.keyCode, 'myvideos')">
+                                                                <button
+                                                                    class="glyphicon glyphicon-remove search-box-item-clear"
+                                                                    style="padding: 5px;" *ngIf="videoSearchInput"
+                                                                    (click)="videoSearchInput=''"></button>
+                                                                <button type="submit" class="search-box-item-click"
+                                                                    style="padding: 4px !important; margin-left: 55px;"
+                                                                    (click)="searchVideo()">
+                                                                    <i class="fa fa-search"
+                                                                        style="font-size: 16px !important; padding: 5px !important;"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="input-icon right pull-right"
+                                                                *ngIf="!isMyVideosActive">
+                                                                <input type="text" [(ngModel)]="channelVideoSearchInput"
+                                                                    [ngModelOptions]="{standalone: true}" class="form-control"
+                                                                    placeholder="Search for a Video"
+                                                                    (keypress)="eventHandler($event.keyCode, 'channel')">
+                                                                <button
+                                                                    class="glyphicon glyphicon-remove search-box-item-clear"
+                                                                    style="padding: 5px;" *ngIf="channelVideoSearchInput"
+                                                                    (click)="channelVideoSearchInput=''"></button>
+                                                                <button type="submit" class="search-box-item-click"
+                                                                    style="padding: 4px !important;"
+                                                                    (click)="searchChannelVideo()">
+                                                                    <i class="fa fa-search"
+                                                                        style="font-size: 16px !important; padding: 5px !important;"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="table-responsive">
-                                                    <table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable" style="margin-top:-18px;">
-                                                        <thead style="background-color: #B7B7B7;">
-                                                            <tr role="row">
-                                                                <th style="text-align: left;width:45%" translate>Videos</th>
-                                                                <!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
-                                                                <th style="width:24%;" class="text-center" *ngIf="!campaign.createdFromVideos">
-                                                                    <span class="filter_column filter_select">
-                                                                        <select class="select_filter form-control"
-                                                                            data-live-search="true"
-                                                                            (change)="filterPartnerCategoryVideos($event)">
-                                                                            <option value="" class="search_init" translate>
-                                                                                Category</option>
-                                                                            <option
-                                                                                *ngFor="let category of partnerCategories"
-                                                                                class="colorSelect"
-                                                                                value="{{category.id}}"
-                                                                                [selected]="category.id==channelVideosPagination.videoCategoryId">
-                                                                                {{category.name}}</option>
-                                                                        </select>
-                                                                    </span>
-                                                                </th>
-                                                                <th style="width: 24%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Category</th>
-                                                                <th style="width: 18%" class="text-center" *ngIf="!campaign.createdFromVideos" translate>Upload Date
-                                                                    <span class="filter_column filter_select" *ngIf="false">
-                                                                        <select class="form-control"
-                                                                            (change)="filterPartnerVideosByType($event)">
-                                                                            <option value="" class="search_init" translate>Type
-                                                                            </option>
-                                                                            <option value="PRIVATE" translate>PRIVATE</option>
-                                                                            <option value="PUBLIC" translate>PUBLIC</option>
-                                                                            <option value="UNLISTED" translate>UNLISTED</option>
-                                                                        </select>
-                                                                    </span>
-                                                                </th>
-                                                                <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
-                                                                <th style="width: 13%;" class="text-center" translate>Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody class="row_selected">
-                                                            <tr *ngIf="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError">
-                                                                <td colspan="5">
-                                                                    <app-loader [model]="campaignVideo.httpRequestLoader.isHorizontalCss" *ngIf="campaignVideo.httpRequestLoader.isLoading">
-                                                                    </app-loader>
-                                                                    <app-error-pages *ngIf="campaignVideo.httpRequestLoader.isServerError">
-                                                                    </app-error-pages>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="channelVideosPagination.totalRecords==0">
-                                                                <td colspan="5">
-                                                                    <div class="alert alert-info">
-                                                                        <strong translate>No videos found</strong>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                            <ng-container *ngIf="channelVideosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
-                                                                <ng-container *ngIf="showSelectedVideo==true && partnerVideoSelected">
-                                                                    <tr *ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)" [class.active]="selectedRow==savedVideoFile.id" id="selectedVideoRow" (click)="setClickedRow(savedVideoFile,'partner-videos')">
-                                                                        <td class="text-center">
-                                                                            <input class="radio-button-css" type="radio" [checked]="selectedRow==savedVideoFile.id" (click)="setClickedRow(savedVideoFile,'partner-videos')" name="videoFileId" [value]="savedVideoFile.id" id="campaign_video_id_{{savedVideoFile.id}}">
-                                                                            <app-video-thumbnail [videoFile]="savedVideoFile" (notifyParent)="showPreview($event)">
-                                                                            </app-video-thumbnail>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            {{savedVideoFile.categoryName}}</td>
-                                                                        <td class="text-center">
-                                                                            <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
-                                                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="savedVideoFile.uploadedDate">
-                                                                            </app-timestamp>
-                                                                        </td>
-                                                                        <td class="text-center">
-                                                                            <img src="assets/images/draft.png" *ngIf="savedVideoFile.viewBy=='DRAFT'">
-                                                                            <img src="assets/images/success.png" *ngIf="savedVideoFile.viewBy!='DRAFT'">
-                                                                        </td>
-                                                                    </tr>
-                                                                </ng-container>
-                                                                <!-- --------------------Avalilable Campaign Videos------------ -->
-                                                                <ng-container *ngIf="!campaign.createdFromVideos">
-                                                                    <tr role="row" class="odd" *ngFor="let videoFile of channelVideosPagination.pagedItems;let i =  index" (click)="setClickedRow(videoFile,'partner-videos')" [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')" [attr.title]="draftMessage"
-                                                                        (mouseover)='showToolTip(videoFile.viewBy)'>
-                                                                        <!-- --------------Thumbnail--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
-                                                                            <input class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" (click)="setClickedRow(videoFile,'partner-videos')" id="campaign_video_id_{{videoFile.id}}" [checked]="videoFile.id == selectedRow">
-                                                                            <input *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId" class="radio-button-css" type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                                                            <app-video-thumbnail [videoFile]="videoFile" (notifyParent)="showPreview($event)">
-                                                                            </app-video-thumbnail>
-
-                                                                        </td>
-                                                                        <td class="text-center" *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
-                                                                            <input type="radio" name="videoFileId" [value]="videoFile.id" disabled="disabled" title="Video is in draft mode, please update the publish options to Library or Viewers.">
-                                                                            <app-video-thumbnail [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}" [videoFile]="videoFile" (notifyParent)="showPreview($event)">
-                                                                            </app-video-thumbnail>
-                                                                        </td>
-                                                                        <!-- --------------Category--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            {{videoFile.categoryName}} </td>
-                                                                        <!-- --------------Published To--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            <!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
-                                                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate">
-                                                                            </app-timestamp>
-                                                                        </td>
-                                                                        <!-- --------------Status--------------------------- -->
-                                                                        <td class="text-center" *ngIf="videoFile.id!==videoId">
-                                                                            <img src="assets/images/draft.png" *ngIf="videoFile.viewBy=='DRAFT'">
-                                                                            <img src="assets/images/success.png" *ngIf="videoFile.viewBy!='DRAFT'">
-                                                                        </td>
-                                                                    </tr>
-                                                                </ng-container>
-                                                            </ng-container>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div style="text-align:left;" [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
-                                                    <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)">
-                                                    </app-pagination>
-                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
-                            <button type="button" style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4');" [disabled]="!isVideo" title="Please Select Video" translate>Next</button>
-                        </div>
-                    </div>
-                </div>
+                                            </ng-container>
+										</div>
+
+										<div id="my-videos" class="tab-content"
+											[style.display]="myVideosStyle">
+											<div id="videos_table_new_wrapper"
+												class="dataTables_wrapper form-inline no-footer">
+												<div class="table-responsive pt">
+													<table class="table tgrid" cellspacing="0"
+														width="100%" role="grid" id="videoTable">
+														<thead>
+															<tr role="row">
+																<th class="sorting_disabled" rowspan="1" colspan="1"
+																	aria-label="Thumbnail" style="width: 45%;" translate>Videos
+																</th>
+																<!-- <th style="text-align: center; width: 24%;"
+																	class="sorting_disabled" rowspan="1" colspan="1"
+																	*ngIf="!campaign.createdFromVideos"><span
+																	class="filter_column filter_select"> <select
+																		class="select_filter form-control"
+																		data-live-search="true"
+																		(change)="filterCategoryVideos($event)">
+																			<option value="" class="search_init" translate>
+																				Category</option>
+																			<option *ngFor="let category of categories"
+																				class="colorSelect" value="{{category.id}}"
+																				[selected]="category.id==videosPagination.videoCategoryId">
+																				{{category.name}}</option>
+																	</select>
+																</span></th> -->
+                                                                <th style="text-align: center; width: 24%;"
+                                                                class="sorting_disabled" rowspan="1" colspan="1"
+                                                                *ngIf="!campaign.createdFromVideos">Category</th>
+																<th style="text-align: center; width: 24%;"
+																	*ngIf="campaign.createdFromVideos" translate>Category</th>
+																<th style="text-align: center; width: 18%;"
+																	*ngIf="!campaign.createdFromVideos" translate>Upload
+																	Date <span class="filter_column filter_select"
+																	*ngIf="false"> <select class="form-control"
+																		(change)="filterVideosByType($event)">
+																			<option value="" class="search_init" translate>Type
+																			</option>
+																			<option value="PRIVATE" translate>PRIVATE</option>
+																			<option value="PUBLIC" translate>PUBLIC</option>
+																			<option value="UNLISTED" translate>UNLISTED</option>
+																	</select>
+																</span>
+																</th>
+																<!-- <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th> -->
+																<th style="text-align: center; width: 18%;"
+																	*ngIf="campaign.createdFromVideos" translate>Upload
+																	Date</th>
+																<th style="text-align: center; width: 13%;" translate>Status</th>
+															</tr>
+														</thead>
+														<tbody class="row_selected">
+															<tr
+																*ngIf="campaignVideo.httpRequestLoader.isServerError || campaignVideo.httpRequestLoader.isLoading">
+																<td colspan="5"><app-loader
+																		[model]="campaignVideo.httpRequestLoader.isHorizontalCss"
+																		*ngIf="campaignVideo.httpRequestLoader.isLoading">
+																	</app-loader> <app-error-pages
+																		*ngIf="campaignVideo.httpRequestLoader.isServerError">
+																	</app-error-pages></td>
+															</tr>
+															<tr *ngIf="videosPagination.totalRecords==0">
+																<td colspan="5">
+																	<div class="alert alert-info">
+																		<strong translate>No videos found </strong>
+																	</div>
+																</td>
+															</tr>
+															<ng-container
+																*ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
+															<!-- ------------------Selected Video Row--> <ng-container
+																*ngIf="showSelectedVideo==true && !partnerVideoSelected">
+															<tr
+																*ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)"
+																[class.active]="selectedRow==savedVideoFile.id"
+																id="selectedVideoRow"
+																(click)="setClickedRow(savedVideoFile,'my-videos')">
+																<!-- --------------Thumbnail--------------------------- -->
+																<td style="text-align: center;"><input
+																	class="radio-button-css" type="radio"
+																	[checked]="selectedRow==savedVideoFile.id"
+																	(click)="setClickedRow(savedVideoFile,'my-videos')"
+																	name="videoFileId" [value]="savedVideoFile.id"
+																	id="campaign_video_id_{{savedVideoFile.id}}"> <app-video-thumbnail
+																		[videoFile]="savedVideoFile"
+																		(notifyParent)="showPreview($event)">
+																	</app-video-thumbnail></td>
+																<!-- --------------Category--------------------------- -->
+																<td class="text-center">
+																	{{savedVideoFile.categoryName}}</td>
+																<!-- --------------Published To--------------------------- -->
+																<td class="text-center">
+																	<!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
+																	<app-timestamp [isOnlyDate]="true"
+																		[dateAndTime]="savedVideoFile.uploadedDate">
+																	</app-timestamp>
+																</td>
+																<!-- --------------Status--------------------------- -->
+																<td class="text-center"><img
+																	src="assets/images/draft.png"
+																	*ngIf="savedVideoFile.viewBy=='DRAFT'"> <img
+																	src="assets/images/success.png"
+																	*ngIf="savedVideoFile.viewBy!='DRAFT'"></td>
+															</tr>
+															</ng-container> <!-- --------------------Avalilable Campaign Videos------------ -->
+															<ng-container *ngIf="!campaign.createdFromVideos">
+															<tr role="row" class="odd"
+																*ngFor="let videoFile of videosPagination.pagedItems;let i =  index"
+																(click)="setClickedRow(videoFile,'my-videos')"
+																[class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')"
+																[attr.title]="draftMessage"
+																(mouseover)='showToolTip(videoFile.viewBy)'>
+																<!-- --------------Thumbnail--------------------------- -->
+																<!-- --------------Title--------------------------- -->
+																<td *ngIf="videoFile.id!==videoId"><input
+																	class="radio-button-css"
+																	*ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId"
+																	type="radio" name="videoFileId" [value]="videoFile.id"
+																	(click)="setClickedRow(videoFile,'my-videos')"
+																	id="campaign_video_id_{{videoFile.id}}"
+																	[checked]="videoFile.id == selectedRow"> <input
+																	class="radio-button-css"
+																	*ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId"
+																	type="radio" name="videoFileId" [value]="videoFile.id"
+																	disabled="disabled"
+																	title="Video is in draft mode, please update the publish options to Library or Viewers.">
+																	<app-video-thumbnail
+																		[ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}"
+																		[videoFile]="videoFile"
+																		(notifyParent)="showPreview($event)">
+																	</app-video-thumbnail></td>
+																<!-- --------------Category--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	{{videoFile.categoryName}}</td>
+																<!-- --------------Published To--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	<!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
+																	<app-timestamp [isOnlyDate]="true"
+																		[dateAndTime]="videoFile.uploadedDate">
+																	</app-timestamp>
+
+																</td>
+																<!-- --------------Status--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	<img src="assets/images/draft.png"
+																	*ngIf="videoFile.viewBy=='DRAFT'"> <img
+																	src="assets/images/success.png"
+																	*ngIf="videoFile.viewBy!='DRAFT'">
+																</td>
+															</tr>
+															</ng-container> </ng-container>
+														</tbody>
+													</table>
+												</div>
+												<div class="mPag mt10" style="text-align: left;"
+													[hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+													<app-pagination
+														[hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError"
+														[pagination]="videosPagination" [type]="'videos'"
+														(notifyParent)="setPagePagination($event)"
+														(notifyParentDropDown)="loadCampaignVideos($event)">
+													</app-pagination>
+												</div>
+											</div>
+										</div>
+										<!-- ----Partner Videos Start Here -->
+										<div id="channel-videos" class="tab-content"
+											[style.display]="partnerVideosStyle">
+											<div id="videos_table_new_wrapper"
+												class="dataTables_wrapper form-inline no-footer">
+												<div class="inputs" align="right"
+													style="display: inline; padding: 5px 5px 12px 0px;">
+													<div class="portlet-input input-inline input-large"></div>
+												</div>
+												<div class="table-responsive">
+													<table class="table tgrid" cellspacing="0"
+														width="100%" role="grid" id="videoTable"
+														style="margin-top: -18px;">
+														<thead>
+															<tr role="row">
+																<th style="text-align: left; width: 45%" translate>Videos</th>
+																<!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
+																<th style="width: 24%;" class="text-center"
+																	*ngIf="!campaign.createdFromVideos"><span
+																	class="filter_column filter_select"> <select
+																		class="select_filter form-control"
+																		data-live-search="true"
+																		(change)="filterPartnerCategoryVideos($event)">
+																			<option value="" class="search_init" translate>
+																				Category</option>
+																			<option *ngFor="let category of partnerCategories"
+																				class="colorSelect" value="{{category.id}}"
+																				[selected]="category.id==channelVideosPagination.videoCategoryId">
+																				{{category.name}}</option>
+																	</select>
+																</span></th>
+																<th style="width: 24%;" class="text-center"
+																	*ngIf="campaign.createdFromVideos" translate>Category</th>
+																<th style="width: 18%" class="text-center"
+																	*ngIf="!campaign.createdFromVideos" translate>Upload
+																	Date <span class="filter_column filter_select"
+																	*ngIf="false"> <select class="form-control"
+																		(change)="filterPartnerVideosByType($event)">
+																			<option value="" class="search_init" translate>Type
+																			</option>
+																			<option value="PRIVATE" translate>PRIVATE</option>
+																			<option value="PUBLIC" translate>PUBLIC</option>
+																			<option value="UNLISTED" translate>UNLISTED</option>
+																	</select>
+																</span>
+																</th>
+																<th style="width: 18%;" class="text-center"
+																	*ngIf="campaign.createdFromVideos" translate>Upload
+																	Date</th>
+																<th style="width: 13%;" class="text-center" translate>Status</th>
+															</tr>
+														</thead>
+														<tbody class="row_selected">
+															<tr
+																*ngIf="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError">
+																<td colspan="5"><app-loader
+																		[model]="campaignVideo.httpRequestLoader.isHorizontalCss"
+																		*ngIf="campaignVideo.httpRequestLoader.isLoading">
+																	</app-loader> <app-error-pages
+																		*ngIf="campaignVideo.httpRequestLoader.isServerError">
+																	</app-error-pages></td>
+															</tr>
+															<tr *ngIf="channelVideosPagination.totalRecords==0">
+																<td colspan="5">
+																	<div class="alert alert-info">
+																		<strong translate>No videos found</strong>
+																	</div>
+																</td>
+															</tr>
+															<ng-container
+																*ngIf="channelVideosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
+															<ng-container
+																*ngIf="showSelectedVideo==true && partnerVideoSelected">
+															<tr
+																*ngIf="(!isAdd && isCampaignDraftVideo)|| (refService.campaignVideoFile!=undefined)"
+																[class.active]="selectedRow==savedVideoFile.id"
+																id="selectedVideoRow"
+																(click)="setClickedRow(savedVideoFile,'partner-videos')">
+																<td class="text-center"><input
+																	class="radio-button-css" type="radio"
+																	[checked]="selectedRow==savedVideoFile.id"
+																	(click)="setClickedRow(savedVideoFile,'partner-videos')"
+																	name="videoFileId" [value]="savedVideoFile.id"
+																	id="campaign_video_id_{{savedVideoFile.id}}"> <app-video-thumbnail
+																		[videoFile]="savedVideoFile"
+																		(notifyParent)="showPreview($event)">
+																	</app-video-thumbnail></td>
+																<td class="text-center">
+																	{{savedVideoFile.categoryName}}</td>
+																<td class="text-center">
+																	<!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
+																	<app-timestamp [isOnlyDate]="true"
+																		[dateAndTime]="savedVideoFile.uploadedDate">
+																	</app-timestamp>
+																</td>
+																<td class="text-center"><img
+																	src="assets/images/draft.png"
+																	*ngIf="savedVideoFile.viewBy=='DRAFT'"> <img
+																	src="assets/images/success.png"
+																	*ngIf="savedVideoFile.viewBy!='DRAFT'"></td>
+															</tr>
+															</ng-container> <!-- --------------------Avalilable Campaign Videos------------ -->
+															<ng-container *ngIf="!campaign.createdFromVideos">
+															<tr role="row" class="odd"
+																*ngFor="let videoFile of channelVideosPagination.pagedItems;let i =  index"
+																(click)="setClickedRow(videoFile,'partner-videos')"
+																[class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')"
+																[attr.title]="draftMessage"
+																(mouseover)='showToolTip(videoFile.viewBy)'>
+																<!-- --------------Thumbnail--------------------------- -->
+																<td class="text-center"
+																	*ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
+																	<input class="radio-button-css" type="radio"
+																	name="videoFileId" [value]="videoFile.id"
+																	(click)="setClickedRow(videoFile,'partner-videos')"
+																	id="campaign_video_id_{{videoFile.id}}"
+																	[checked]="videoFile.id == selectedRow"> <input
+																	*ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId"
+																	class="radio-button-css" type="radio"
+																	name="videoFileId" [value]="videoFile.id"
+																	disabled="disabled"
+																	title="Video is in draft mode, please update the publish options to Library or Viewers.">
+																	<app-video-thumbnail [videoFile]="videoFile"
+																		(notifyParent)="showPreview($event)">
+																	</app-video-thumbnail>
+
+																</td>
+																<td class="text-center"
+																	*ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+																	<input type="radio" name="videoFileId"
+																	[value]="videoFile.id" disabled="disabled"
+																	title="Video is in draft mode, please update the publish options to Library or Viewers.">
+																	<app-video-thumbnail
+																		[ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}"
+																		[videoFile]="videoFile"
+																		(notifyParent)="showPreview($event)">
+																	</app-video-thumbnail>
+																</td>
+																<!-- --------------Category--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	{{videoFile.categoryName}}</td>
+																<!-- --------------Published To--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	<!-- <span class="view-by-banner">{{videoFile.viewBy}}</span> -->
+																	<app-timestamp [isOnlyDate]="true"
+																		[dateAndTime]="videoFile.uploadedDate">
+																	</app-timestamp>
+																</td>
+																<!-- --------------Status--------------------------- -->
+																<td class="text-center" *ngIf="videoFile.id!==videoId">
+																	<img src="assets/images/draft.png"
+																	*ngIf="videoFile.viewBy=='DRAFT'"> <img
+																	src="assets/images/success.png"
+																	*ngIf="videoFile.viewBy!='DRAFT'">
+																</td>
+															</tr>
+															</ng-container> </ng-container>
+														</tbody>
+													</table>
+												</div>
+												<div style="text-align: left;"
+													[hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
+													<app-pagination
+														[hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError"
+														[pagination]="channelVideosPagination"
+														[type]="'partner-videos'"
+														(notifyParent)="setPagePagination($event)"
+														(notifyParentDropDown)="loadPartnerVideos($event)">
+													</app-pagination>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<button type="button" style="float: left;"
+								class="btn btn-default m10"
+								(click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
+							<button type="button" style="float: right;"
+								class="btn btn-default btn green m10"
+								(click)="resetActive($event, 40, 'step-4');"
+								[disabled]="!isVideo" title="Please Select Video" translate>Next</button>
+						</div>
+					</div>
+				</div>
                 <!-- End Of 197(Video Tab) -->
                 <!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
                 <div class="row setup-content hiddenStepInfo" id="step-4">
-                    <div class="col-xs-12">
-                        <div class="col-xs-12 mt10">
+                    <div class="col-xs-12 portlet light">
+                        <div class="mt10">
                             <!---Partners/Contacts List For Through/To Campaign-->
-                            <div class="row pb10 portlet light" id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
+                            <div id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
                                 <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
                                 <app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError">
                                 </app-error-pages>
                                 <div [hidden]="campaignContact.httpRequestLoader.isLoading || campaignContact.httpRequestLoader.isServerError">
-                                    <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-                                        <div class="note-vid pull-left">
+                                    <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+                                        <div class="note-vid pull-left" style="padding-bottom: 4px;">
                                             <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                                 <ng-container *ngIf="contactListTabName=='Partners'">
                                                     Select List of {{authenticationService?.partnerModule?.customName}} to be used in this campaign
@@ -966,7 +1151,7 @@
                                                 Select Recipients to be used in this campaign
                                             </ng-container>
                                         </div>
-                                        <div class="inputs" style="float: right;">
+                                        <div class="inputs search-align" style="float: right;">
                                             <div style="float: left;">
                                                  <select class="form-control cc mTopSort" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                                     (ngModelChange)="sortRecipientsList($event)">                                                    
@@ -974,11 +1159,11 @@
                                                         [ngValue]="option">{{option.name}}</option>
                                                 </select> 
                                             </div>
-                                            <div class="portlet-input input-inline mAlign " style="position: relative;top: -6px;">
+                                            <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()">
+                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;right: 0px !important;" (click)="searchContactList()">
                                                         <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
@@ -996,7 +1181,7 @@
                                                     </th>
                                                 </tr>
                                             </table>
-                                            <div class="table-responsive">
+                                            <div class="table-responsive pt">
                                                 <table class="table tgrid table-hover table-sm" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                                     <thead>
                                                         <tr>
@@ -1116,22 +1301,24 @@
                                     <strong>{{invalidShareLeadsSelectionErrorMessage}}</strong>
                                 </div>
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
-                             </div>   
+                             </div> 
+                             <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;">  
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit"  class="btn btn-default btn green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
+                        </div>
                         </div>
                     </div>
                 </div>
                 <!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType!='landingPage'">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                        <div class="portlet light">
-                            <div class="input-icon right pull-right cebp">
+                    <div class="text-center">
+                        <div class="col-xs-12 portlet light">
+                            <div class="input-icon right pull-right cebp" style="padding-right: 8px;">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
-                                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
-                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px 10px 0px 0px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
+                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()" style="right: 9px !important;">
                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                             </div>
                             <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
@@ -1198,15 +1385,15 @@
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type!='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.createdBy}}">
                                                                                                     <strong translate>By:</strong>
-                                                                                                    <span>{{campaign?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>12">..</span>
+                                                                                                    <span>{{campaign?.emailTemplate?.createdBy|slice:0:11}}<span
+                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>11">..</span>
                                                                                                     </span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type=='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.vendorName}}">
                                                                                                     <strong translate>By:</strong><span>{{campaign?.emailTemplate?.vendorName|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>12">..</span>
+                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>11">..</span>
                                                                                                         </span>
                                                                                                 </span>
                                                                                             </ng-container>
@@ -1287,16 +1474,16 @@
                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
                                                                                             <strong translate>By:</strong>
-                                                                                            <span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">..</span>
+                                                                                            <span>{{emailTemplate.createdBy|slice:0:11}}<span
+                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span>
                                                                                             </span>
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.vendorName}}">
                                                                                             <strong translate>By:</strong>
-                                                                                            <span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.vendorName?.length>12">..</span>
+                                                                                            <span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                    *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                             </span>
                                                                                         </span>
                                                                                     </ng-container>
@@ -1349,12 +1536,14 @@
                                             <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
                                                 <strong translate>No templates found</strong>
                                             </div>
-                                            <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+                                            <div style="text-align:left;margin-right: 14px;margin-left: 18px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
                                                 <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPaginationDropdownTemplates($event)">
                                                 </app-pagination>
                                             </div>
+                                            <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
+                                        </div>
                                         </div>
                                     </form>
                                 </div>
@@ -1366,8 +1555,8 @@
                 <!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
-                        <div class="portlet light">
-                            <div class="input-icon right pull-right cebp">
+                        <div class="portlet light row" style="border: none;">
+                            <div class="input-icon right pull-right cebp" style=" right: 70px;">
                                 <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput='';searchLandingPage()"></button>
                                 <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()">
@@ -1529,7 +1718,7 @@
                                             <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info alert-top-padding-xamplify">
                                                 <strong translate>No pages found</strong>
                                             </div>
-                                            <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
+                                            <div style="text-align:left;padding-left: 14px;padding-right: 12px; " [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
@@ -1544,7 +1733,7 @@
                 <!-- End of step 5 -->
 
                 <!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
-                <div class="row setup-content step hiddenStepInfo" id="step-6">
+                <div class="row setup-content step hiddenStepInfo portlet light" id="step-6">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
                         <strong>{{invalidScheduleTimeError}}</strong>
@@ -1556,7 +1745,7 @@
                                 <div class="row">
                                     <div class="portlet-body clearfix">
                                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-                                            <div class="portlet light clearfix" style="padding:0px">
+                                            <div class="portlet clearfix" style="padding:0px">
                                                 <div class="p0">
                                                     <div id="main_video_src" [hidden]="campaignType!='video'"></div>
                                                     <div class="pricing hover-effect" [hidden]="campaignType=='video'">
@@ -1582,7 +1771,7 @@
                                         </div>
                                         <div [attr.class]="lauchTabPreivewDivClass">
                                             <app-dashboard-loader *ngIf="emailReceiversCountLoader"></app-dashboard-loader>
-                                            <div class="portlet light border-0" *ngIf="!emailReceiversCountLoader">
+                                            <div class="portlet border-0" *ngIf="!emailReceiversCountLoader">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -1635,7 +1824,7 @@
                                                 </div>
 
                                             </div>
-                                            <div class="portlet light border-0" id="email-template-preview-div">
+                                            <div class="portlet border-0" id="email-template-preview-div">
                                                 <div class="table-responsive">
                                                     <table width="100%">
                                                         <tr>
@@ -1717,13 +1906,13 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                             <div *ngFor="let reply of replies;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
-                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                         <div class="col-xs-6">
-                                                            <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
+                                                            <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                <label class="switch-choose" translate>Choose Template
                                                                     </label>
                                                                 <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectReplyEmailBody($event,i,reply)">
@@ -1908,8 +2097,8 @@
                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
                                                                                                                                             <strong translate>By:</strong>
-                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>12">..</span></span>
+                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:11}}<span
+                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
@@ -1987,14 +2176,14 @@
                                                                                                                                 <br>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:11}}<span
+                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
+                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>11">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
@@ -2077,13 +2266,13 @@
                                             <legend> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
                                             <div *ngFor="let url of urls;let i=index">
                                                 <div class="portlet light dashboard-stat2" id="{{url.divId}}">
-                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                    <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                         <div class="col-xs-6">
-                                                            <h4 class="text-left" style="color:#fff">Add an Auto-response to a website visit - {{i+1}}</h4>
+                                                            <h4 class="text-left">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                <label class="switch-choose" translate>Choose Template
                                                                     </label>
                                                                 <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectClickEmailBody($event,i,url)">
@@ -2249,7 +2438,7 @@
                                                                                                                                         <ng-container *ngIf="url?.emailTemplate?.type!='PARTNER'">
                                                                                                                                             <span style="float:left" title="{{url?.emailTemplate?.createdBy}}">
                                                                                                                                                 <strong translate>By:</strong><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                                                                        *ngIf="url?.emailTemplate?.createdBy?.length>12">..</span></span>
+                                                                                                                                                        *ngIf="url?.emailTemplate?.createdBy?.length>11">..</span></span>
                                                                                                                                             </span>
                                                                                                                                         </ng-container>
                                                                                                                                         <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
@@ -2330,7 +2519,7 @@
                                                                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
                                                                                                                                             <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
+                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                             
@@ -2415,7 +2604,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12">
-                            <div class="portlet light dashboard-stat2" style="padding-top: 2em;">
+                            <div>
                                 <div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let schedule of sheduleCampaignValues">
@@ -2439,7 +2628,8 @@
                                             <br>
                                             <select class="form-control" style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
                                                 <option *ngFor="let country of countries" [value]="country.id">
-                                                    {{country.name}}</option>
+                                                    {{country.name}}
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
@@ -2465,7 +2655,7 @@
                                 </div>
 
                                 <div class="portlet-title border-none">
-                                    <div class="col-xs-12 center-block mTop">
+                                    <div class="col-xs-12 center-block mTop" style="padding-top: 6px;">
                                         <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
@@ -2481,10 +2671,11 @@
         </div>
         <!--Edit Template Div---->
         <div id="edit-template" style="display: none;">
-            <div class="portlet light shadow">
+            <div class="portlet light">
                 <div *ngIf="!editTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
                     {{beeContainerInput?.emailTemplateName}}
-                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()">
+                    <div>
+                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()" [ngStyle]="{'margin-top':showEditTemplatePopup && campaignType=='landingPage'? '10px':''}">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                     
@@ -2493,6 +2684,7 @@
                     <button  class="new-tab-button" *ngIf="showEditTemplatePopup && campaignType=='landingPage'">
                         Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                       </button>
+                    </div>
                 </div>
               <div class="portlet-body clearfix">
                   <div *ngIf="showEditTemplateMessageDiv"  [className]="templateMessageClass">

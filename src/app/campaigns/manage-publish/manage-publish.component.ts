@@ -122,6 +122,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     clicked = false;
     editButtonClicked = false;
     selectedCampaignId = 0;
+    showUpArrowButton = false;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -169,6 +170,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
+        // this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -866,7 +868,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.selectedCampaign = campaign;
         
     }
-
     setViewType(viewType:string){
         if("List"==viewType){
             this.modulesDisplayType.isListView = true;
@@ -1123,6 +1124,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse();
 
         if (this.categoryId != undefined && this.categoryId > 0) {
+            this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
             this.navigatingToRelatedComponent = true;
             if(this.teamMemberId!=undefined && this.teamMemberId>0){
                 this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
@@ -1262,6 +1264,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     this.selectedCampaignId = 0;
     this.editButtonClicked = false;
     }
-
+   
 
 }

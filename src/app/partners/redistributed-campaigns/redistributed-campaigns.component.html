@@ -21,7 +21,7 @@
             </div>
             <div class="col-xs-6 col-sm-6 col-lg-6 p0">
               <div class="portlet-input input-inline mRedistributedSearch" style="margin-right: 12px; width:170px">
-                <div class="input-icon right" style="position: relative;right: -11px;">
+                <div class="input-icon right" style="position: relative;right: -11px;width: 178px;">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="channelCampaignsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search" (keypress)="searchInCampaignsOnKeyPress($event.keyCode,'channel-campaigns')">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="channelCampaignsSortOption.searchKey" (click)="channelCampaignsSortOption.searchKey='';searchCampaigns('channel-campaigns')"></button>

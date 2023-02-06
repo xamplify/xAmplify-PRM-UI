@@ -98,7 +98,7 @@
                                         data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                                     </span>
-                                    <a style="margin-top:5px;position:relative;right: -4px;"
+                                    <a style=""
                                         *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
                                         class="close-circle" data-toggle="tooltip" data-placement="top"
                                         title="Download">
@@ -268,7 +268,7 @@
                                           </h6>   
                                     </td>
                                     <td>
-                                        <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
+                                        <h4 class="moreipsis" title="{{campaign.campaignName}}">
                                             <span><strong>{{campaign.campaignName}}</strong></span>
                                         </h4>
                                         <h5 class="moreipsis" [title]="campaign.createdBy">
@@ -637,7 +637,7 @@
                                                         </a>
                                                     </ng-container>
                                                     <ng-container
-                                                        *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign ">
+                                                        *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
                                                         <a (click)="goToTemplateDownloadPartners(campaign)"
                                                             data-toggle="tooltip" data-placement="top"
                                                             title="Show Download History" data-rel="fancybox-button">
@@ -1245,7 +1245,7 @@
                                         </a>
                                     </ng-container>
                                     <ng-container
-                                        *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign">
+                                        *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign">
                                         <a (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip"
                                             data-placement="top" title="Show Download History"
                                             data-rel="fancybox-button">

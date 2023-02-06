@@ -56,6 +56,7 @@ cursor: default;
 }
 .cursor{
 	cursor: not-allowed;
+  margin-top: -4px;
 }
 
 
@@ -172,4 +173,8 @@ cursor: default;
     white-space: initial!important;
     /* line-height: 1px!important; */
   }
+}
+
+.pg8{
+  top: -1px;
 }

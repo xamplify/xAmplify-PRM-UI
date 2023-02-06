@@ -19,7 +19,7 @@
     </div>
     <div class="portlet-body clearfix">
       <ul class="alt-row-style1 p0" *ngIf="notifications?.length > 0">
-        <li *ngFor="let item of pagedItems" [ngClass]="{'read': item.read, 'unread': !item.read}">
+        <li *ngFor="let item of pagination.pagedItems" [ngClass]="{'read': item.read, 'unread': !item.read}">
           <a (click)='navigate(item)'>
             <span class="social-icon">
               <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
@@ -32,7 +32,7 @@
           </a>
         </li>
       </ul>
-      <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+      <!-- <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
         <li [ngClass]="{disabled:pager.currentPage === 1}">
           <a (click)="setPage(1)">First</a>
         </li>
@@ -43,22 +43,28 @@
           <a (click)="setPage(page)">{{page}}</a>
         </li>
         <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a (click)="setPage(pager.currentPage + 1)">Next</a>
+          <a (click)="setPage(pager.currentPage + 1)">Next>></a>
         </li>
         <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
           <a (click)="setPage(pager.totalPages)">Last</a>
         </li>
-      </ul>
-      <div style="float: right; font-size: 15px;" *ngIf="pager.pages && pager.pages.length">
+       </ul> -->
+      <!--<div style="float: right; font-size: 15px;" *ngIf="pager.pages && pager.pages.length">
         <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
           <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
         </select>
-      </div>
+      </div> -->
+    </div>
+    <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
+      <strong translate>No results found</strong>
+    </div>
+    <div>
+      <app-pagination [pagination]="pagination" (notifyParentDropDown)="listNotifications($event)" (notifyParent)="setPage($event)"></app-pagination>
     </div>
   </div>
 </div>
 <ng-container *ngIf="isTopNavBar && notifications?.length > 0">
-  <ul class="dropdown-menu-list scroller" style="height: 250px;">
+  <ul class="dropdown-menu-list scroller" style="height: 250px;overflow-x: hidden;">
     <li *ngFor="let item of notifications;" [ngClass]="{'read': item.read, 'unread': !item.read}">
       <a (click)='navigate(item)'>
         <span class="social-icon" style="width: 18px;">

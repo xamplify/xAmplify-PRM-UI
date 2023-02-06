@@ -5,8 +5,8 @@
 
 .text {
     text-align: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    /* padding-bottom: 10px; */
+    /* border-bottom: 1px solid #ddd; */
 }
 
 h4 {
@@ -23,6 +23,7 @@ h5 {
     background: #ebf1ff;
     text-align: center;
     height: 233px;
+    border-radius: 20px 20px 0px 0px;
 }
 
 .img-responsive,
@@ -68,4 +69,7 @@ h5 {
 	color: #008fd5;
     font-size: 12px;
     font-weight: 600;
+}
+.portlet{
+    margin-bottom: 21px !important;
 }

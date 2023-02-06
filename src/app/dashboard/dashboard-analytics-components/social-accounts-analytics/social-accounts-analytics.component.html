@@ -1,6 +1,6 @@
 <ng-container *ngIf="(authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner())">
-<div class="clearfix" *ngIf="socialConnections?.length > 0">
+<div class="clearfix" *ngIf="socialConnections?.length > 0" style="padding-top: 6px;">
   <div class="portlet light shadow">
       <div class="portlet-title">
           <h4 class="caption-subject font-red-sunglo f-w-600" translate>Social Accounts</h4>

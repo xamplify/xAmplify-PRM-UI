@@ -20,8 +20,10 @@ export class UserInfoComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.setBackgroundColor();
-        this.setHighlightLetter();        
+        if(this.userInfo!=undefined){
+            this.setBackgroundColor();
+            this.setHighlightLetter();  
+        }
     }
 
     setHighlightLetter() {

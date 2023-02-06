@@ -117,3 +117,179 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		width: 75.333333%!important;
 	}
 }
+/* sudha sri */
+@media (max-width:600px){
+	.mb-9{
+		margin-bottom:10px;
+	}
+}
+@media (max-width:1440px){
+	.pr{
+	padding-right: 15px !important;
+	}
+	.mr{
+		margin-right: -31px;
+	}
+}
+@media (max-width:768px){
+	.pr-pl{
+		padding-right: 12px !important;
+		padding-left: 12px !important;
+	}
+}
+@media (max-width:425px){
+	.pr-pl{
+		padding-right: 0px !important;
+        padding-left: 1px !important;
+	}
+	.pr15{
+		padding-right: 15px!important;
+	}
+}
+@media (max-width:1024px){
+	.pb5{
+		padding-bottom: 5px;
+	}
+	.fz17{
+		font-size: 16px !important;
+	}
+}
+.btn-padding{
+	padding: 7px 8px !important; 
+}
+.align-center{
+	align-items: center;
+}
+.align-baseline{
+	align-items: baseline;
+}
+@media (max-width:320px){
+	.mr-pt{
+		margin-right: -25px !important;
+    	padding-top: 3px !important;
+	}
+	.pt{
+		padding-top: 3px;
+	}
+	.mt{
+		margin-top: -7px;
+	}
+}
+@media (max-width:375px){
+	.mt{
+		margin-top: -7px;
+	}
+	.pt{
+		padding-top: 0px;
+	}
+	.p-top2{
+		padding-top: 2px;
+	}
+	
+}
+.pull-right{
+	margin-bottom: 2px;
+}
+/* @media (max-width:425px){
+	.pr{
+		padding-right: 14px !important;
+	}
+	.pr1{
+		padding-right: 1px !important;
+	}
+} */
+/* .pr0{
+	padding-right:0px;
+}
+.pl0{
+	padding-left:0px;
+}
+@media (max-width:1440px){
+	.pr0{
+		padding-right: 0px !important;
+	}
+}
+@media (max-width:425px){
+	.pr0{
+		padding-right: 15px!important;
+	}
+	.pr15{
+		padding-right: 0px!important;
+	}
+	.pr15{
+		padding-right: 0px;
+	}
+	.pl15{
+		padding-left: 15px !important;
+	}
+	.pr13{
+		padding-right: 13px !important;
+	}
+}
+.mp0{
+ margin:0px !important;
+ padding:0px;
+}
+.valid-list{
+	top: -13px;
+    width: 100%;
+    left: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+@media (max-width:768px){
+	.pr0{
+		padding-right: 0px;
+	}
+	.pl11{
+		padding-left: 11px;
+	}
+	.pb5{
+		padding-bottom: 5px;
+	}
+}
+@media (max-width:425px){
+	.pr0{
+		padding-right: 0px;
+	}
+	.pl11{
+		padding-left: 11px;
+	}
+	.pl13{
+		padding-left: 13px;
+	}
+	.pb5{
+		padding-bottom: 5px;
+	}
+} */
+.table{
+	margin-bottom: 18px;
+}
+.table-toolbar {
+	margin-bottom: 0px;
+}
+.ellipsis{
+	width: auto !important;
+}
+.margin-top9{
+	margin-top: -9px !important;
+}
+.margin-top2{
+	margin-top: 2px !important;
+}
+.row{
+	margin-right: -10px;
+    margin-left: -10px;
+}
+.pr2{
+	padding-right: 2px;
+}
+@media (width:1441px){
+	.align{
+		margin-right: -32px; 
+     	margin-left: 0px;
+	}
+}
+/* .rows{
+	margin-right: -30px;
+} */

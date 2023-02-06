@@ -83,7 +83,7 @@ export class ManageDealsComponent implements OnInit {
   selectedVendorCompanyId: any;
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
- 
+  titleHeading:string = "";
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -298,6 +298,7 @@ export class ManageDealsComponent implements OnInit {
   showDeals() {
     this.getCounts();
     this.selectedTabIndex = 1;
+    this.titleHeading = "Total ";
     this.resetDealsPagination();
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
@@ -315,6 +316,7 @@ export class ManageDealsComponent implements OnInit {
 
   showWonDeals() {
     this.selectedTabIndex = 2;
+    this.titleHeading = "Won ";
     this.resetDealsPagination();
     this.dealsPagination.filterKey = "won";   
     this.campaignPagination = new Pagination;
@@ -334,6 +336,7 @@ export class ManageDealsComponent implements OnInit {
 
   showLostDeals() {
     this.selectedTabIndex = 3;
+    this.titleHeading = "Lost ";
     this.resetDealsPagination();
     this.dealsPagination.filterKey = "lost";    
     this.campaignPagination = new Pagination;

@@ -124,7 +124,7 @@ tr:hover {
 }
 
 .dashboard-stat2 {
-	border-radius: 1px;
+	border-radius: 5px;
 	background: #fff;
 	padding: 15px 15px 1px 15px;
 	margin-bottom: 20px;
@@ -197,10 +197,10 @@ h3 {
 	margin-top: 0em;
 }
 
-.portlet.light {
-	box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.4);
-	border-radius: 3px !important;
-}
+/* .portlet.light {
+	/* box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.4); */
+	/* border-radius: 3px !important; *
+} */
 
 p {
 	margin: 0 0 10px;
@@ -216,7 +216,7 @@ p {
 
 .page-bar {
 	padding: 0;
-	border-radius: 0;
+	/* border-radius: 0; */
 }
 
 h1.bold {
@@ -907,6 +907,11 @@ fieldset {
 	width: 125px;
 
 }
-
+h1, h2, h3, h4, h5, h6 {
+    color: inherit !important;
+}
+a>span.glyphicon.glyphicon-remove {
+	margin-top: 4px;
+  }
 
 

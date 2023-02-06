@@ -1,3 +1,6 @@
 .min-width-icon{
     min-width: 170px;
 }
+#notification-list{
+    margin-top: -1px !important;
+}

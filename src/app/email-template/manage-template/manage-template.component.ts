@@ -526,6 +526,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 			this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
 			this.exportObject['type'] = 1;
+
 		}
 	}
 

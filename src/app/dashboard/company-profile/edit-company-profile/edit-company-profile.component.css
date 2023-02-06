@@ -59,10 +59,14 @@
     max-height: 100%;
 }
 .profile-pic {
-       margin-top: 8px;
+       /* margin-top: 8px;
     position: absolute;
         left: -10px;
     top: 89px;
+    border: none; */
+    position: absolute;
+    margin-top: 48px;
+    left: -16px;
     border: none;
 }
 
@@ -173,8 +177,10 @@ svg {
 	display: none;
 }
 .img-grid{
-	max-width: 218px !important;
-    height: 150px !important;
+	/* max-width: 100% !important;
+    height: auto !important; */
+    max-width: auto;
+    height: 64px;
 }
 
 .img-class{

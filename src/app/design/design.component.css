@@ -5,7 +5,7 @@
 
 .text {
     text-align: center;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -15,20 +15,23 @@ h4 {
 }
 
 h5 {
-    font-size: 14px!important;
+    font-size: 13px!important;
     font-weight: 400!important;
 }
 
-.img1 {
-    background: #ebf1ff;
-    text-align: center;
-    height: 233px;
-}
+/* .img1 {
+    background: #34495a;
+    text-align: center; */
+    /* height: 233px; */
+    /* border-radius: 20px 20px 0px 0px;
+} */
+
 
 .img-responsive,
 .thumbnail a>img,
 .thumbnail>img {
-    padding-top: 65px;
+    padding-top: 15px;
+    padding-bottom:15px;
     display: block;
     max-width: 112px;
     height: auto;
@@ -69,4 +72,32 @@ h5 {
     .mDisableColor{
         color: #888!important;
     }
+}
+.portlet > .portlet-title > .caption{
+    line-height: 30px;
+}
+.mt{
+margin-top: 9px !important;
+}
+.padding{
+    padding: 0px 5px!important;
+}
+
+.header-text-css {
+    text-align: center;
+    padding-left: 10px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-description-css {
+    text-align: center;
+    /* padding-left: 10px; */
+    color: #888;
+    font-size: 13px;
+    padding: 10px;
+     height: 76px;
+}
+.portlet .light{
+    padding:0px !important;
 }

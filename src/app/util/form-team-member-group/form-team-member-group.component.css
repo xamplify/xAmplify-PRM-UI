@@ -277,3 +277,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.mb-12{
+    margin-bottom: 12px !important;
+}

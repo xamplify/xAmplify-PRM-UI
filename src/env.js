@@ -25,6 +25,11 @@
 	// window.__env.CLIENT_URL = 'https://xtremand.com/';
 	// window.__env.SERVER_URL =  'https://release.xamp.io/';
 	//  window.__env.imagesHost = "https://release.xamp.io/vod/images/";
+  
+  /**********UI******************/
+  // window.__env.CLIENT_URL = 'https://x-amplify.com/';
+	// window.__env.SERVER_URL =  'https://aravindu.com/';
+	//  window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 	window.__env.clientId = "6639d69f-523f-44ca-b809-a00daa26b367";
 	window.__env.clientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";

@@ -1,9 +1,22 @@
 .margin-top{
-	margin-top: 10px;
+	/* margin-top: 10px; */
 }
 .total-records-bg-color{
-	color: #1091d9;
+	/* color: #1091d9; */
 }
 .pagination{
 	margin: 0px !important;
+}
+@media (max-width:425px){
+	.padding{
+		/* padding-left: 49px !important; */
+		padding-top: 5px;
+		/* padding-right: 15px; */
+	}
+	/* .pl{ */
+		/* padding-left: 51px !important; */
+	/* }
+	.pr{ */
+		/* padding-right: 33px !important; */
+	/* } */
 }

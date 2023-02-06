@@ -1,5 +1,5 @@
 #vendor-details-tile {
-    border-color: lightgrey;
+    border: lightgrey 1px solid;
     border-style: solid;
     height: 102px;
     border-radius: 10px;

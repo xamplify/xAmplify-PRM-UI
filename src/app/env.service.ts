@@ -11,7 +11,7 @@ export class EnvService {
   
     
     /*********************QA**********************/
-     CLIENT_URL= 'https://socialubuntu.com/'; //socail ubuntu client app server
+     CLIENT_URL= 'https://xamplify.co/'; //socail ubuntu client app server
      SERVER_URL='https://aravindu.com/'; // social ubuntu backend prodution testing
      imagesHost = "https://aravindu.com/vod/images/";
 
