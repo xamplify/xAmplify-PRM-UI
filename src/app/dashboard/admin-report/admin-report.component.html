@@ -127,10 +127,10 @@
   <app-admin-partner-companies *ngIf="!detailsTielsView"></app-admin-partner-companies>
 
   <!------Vendor Invitation Reports-->
-  <app-vendor-invitation-report></app-vendor-invitation-report>
+  <app-vendor-invitation-report *ngIf="!detailsTielsView"></app-vendor-invitation-report>
 
   <!------Marketing Role Requests-->
-  <app-marketing-role-requests></app-marketing-role-requests>
+  <app-marketing-role-requests *ngIf="!detailsTielsView"></app-marketing-role-requests>
   
     <section *ngIf="detailsTielsView">
       <div class="portlet light">
