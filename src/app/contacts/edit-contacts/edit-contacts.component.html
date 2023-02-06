@@ -1234,9 +1234,9 @@
 								<div class="form-group">
 									<div class="form-inline col-sm-12">
 										<div class="form-group col-sm-4">
-										<b>{{i}}</b>
+										<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">{{i}}</b>
 											<select class="form-control"
-												[(ngModel)]="criterias[i].property">
+												[(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
 												<option
 													*ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
 											</select>
