@@ -161,3 +161,9 @@ h3 {
 	font-size: 16px; 
 	color: #888888;
 }
+
+.actions-msg {
+	float: none !important;
+    margin: 0 auto;
+    display: table;
+}
