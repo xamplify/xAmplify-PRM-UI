@@ -753,10 +753,10 @@
                         title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
                     </div>
                     <div *ngIf="isSegmentation" (click)="removeSegmentation()"
-                      style="float: left; cursor: pointer; margin-right: 10px">
+                      style="float: left; cursor: pointer; margin-right: 10px;display: flex;">
                       <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
                         title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i>
-                      <i class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
+                      <i class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;margin-top: 15px;"></i>
                     </div>
                     <div
                       [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
