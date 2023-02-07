@@ -154,9 +154,9 @@
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-												<div class="btn-info fileinput-button btn-block"
+												<button class="btn-info fileinput-button btn-block"
 													id="uploadCSV"
-													style="min-height: 85px; border-radius: 3px !important;"
+													
 													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i
 														style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
@@ -166,7 +166,7 @@
 														(click)="input.value = null;resetResponse();"
 														(change)="fileChange(input)" accept=".csv" #input
 														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-												</div>
+											</button>
 												<div style="margin-top: 5px;">
 													<a (click)="downloadEmptyCsv()"> <i
 														class="fa fa-download" aria-hidden="true"

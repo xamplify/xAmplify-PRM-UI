@@ -1828,4 +1828,9 @@ strong {
   background: #34495a;
   text-align: center;
   border-radius: 20px 20px 0px 0px;
-}    
+  background-image: linear-gradient( 30deg,#34495a  50%, transparent 50%) !important;
+background-size: 1090px;
+background-repeat: no-repeat;
+background-position: 0;
+transition: background 300ms ease-in-out;
+}
