@@ -1001,6 +1001,7 @@ h3 {
   margin: 0 auto;
   text-align: center;
   padding: 1em;
+  height: 100px;
 }
 
 .cenetered-block > h5 {

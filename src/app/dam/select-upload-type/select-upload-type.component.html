@@ -30,46 +30,56 @@
   <div class="row">
       <div class="col-md-12">
           <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-          <div class="portlet light">
+          <div class="">
               <div class="portlet-body">
                   <div class="row" style="margin-top: 20px;">
                     <div class="col-xs-2"></div>
                           <div class="col-md-4" title="Click To Upload" (click)="goToUpload()">
-                              <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 20px;">
+                              <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
                                   <div class="portlet-body">
                                       <div class="img1">
                                           <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam-icons.png">
                                       </div>
-                                      <div class="text">
-                                        <h4 style="padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Upload File
-                                        </h4>
+                                      <div class="text text-border">
+                                        <h4  class="header-text-css" translate>Upload File</h4>
+                                        <p class="header-description-css" translate>
+                                        <span>Upload videos, images, and documents in various formats from your device or cloud platforms.</span><br>
+                                      </p>
+                                      </div>
+                                      <div class="text mMobileDisable">
                                         <h5>
                                             <a (click)="goToUpload()">
                                               <i class="glyphicon glyphicon-upload" aria-hidden="true"></i>&nbsp;
                                                   <span class="design-name" translate>Upload</span></a>
                                         </h5>
+                                        </div>
                                     </div>
                                   </div>
                               </div>
-                          </div>
+                          
                           <div class="col-md-4" title="Click To Design Template" (click)="addAsset()">
-                            <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 20px;">
+                            <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
                                 <div class="portlet-body">
                                     <div class="img1">
                                         <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img image-center" src="assets/images/design-dam.png">
                                     </div>
-                                    <div class="text">
-                                        <h4 style="padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Design PDF
-                                        </h4>
-                                        <h5>
+                                    <div class="text text-border">
+                                        <h4 class="header-text-css" translate>Design PDF</h4>
+                                        <p class="header-description-css" translate>
+                                          <span>Create personalized PDF templates and find it in "Content" <i class="fa fa-angle-right"></i> "Manage my assets"</span><br>
+                                        </p>
+                                        </div>
+                                        <div class="text mMobileDisable">
+                                          <h5>
                                             <a (click)="addAsset()">
                                               <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
                                                   <span class="design-name" translate>Design</span></a>
                                         </h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        
                         <div class="col-xs-2"></div>
                   </div>
               </div>

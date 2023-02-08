@@ -407,15 +407,15 @@
                       <table class="table tgrid">
                         <thead>
                           <tr>
-                            <th style="font-size: 12px; font-weight: 500;">RESPONSE DETAILS</th>
-                            <th style="font-size: 12px; font-weight: 500;">INVITES</th>
-                            <th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
-                            <th style="font-size: 12px; font-weight: 500;">YES</th>
-                            <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">NO</th>
-                            <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">MAYBE
+                            <th style="font-size: 13px; font-weight: 500;">RESPONSE DETAILS</th>
+                            <th style="font-size: 13px; font-weight: 500;">INVITES</th>
+                            <th style="font-size: 13px; font-weight: 500;">EMAIL OPENED</th>
+                            <th style="font-size: 13px; font-weight: 500;">YES</th>
+                            <th style="font-size: 13px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">NO</th>
+                            <th style="font-size: 13px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">MAYBE
                             </th>
-                            <th style="font-size: 12px; font-weight: 500;">NOT YET</th>
-                            <th style="font-size: 12px; font-weight: 500;">ATTENDEES <br>
+                            <th style="font-size: 13px; font-weight: 500;">NOT YET</th>
+                            <th style="font-size: 13px; font-weight: 500;">ATTENDEES <br>
                               <h6 class="m0" style="font-size:9px"><b>(
                                   including guests )</b></h6>
                             </th>
@@ -1723,19 +1723,19 @@
                 <table class="table tgrid">
                   <thead>
                     <tr>
-                      <th style="font-size: 12px; font-weight: 500;" style="width:50%">NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;"
+                      <th style="font-size: 13px; font-weight: 500;" style="width:50%">NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;"
                         *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
                           [hidden]="rsvpResposeType === 'email not open'">MESSAGE</span></th>
-                      <th style="font-size: 12px; font-weight: 500;"
+                      <th style="font-size: 13px; font-weight: 500;"
                         *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">CAMPAIGN
                         NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;"
+                      <th style="font-size: 13px; font-weight: 500;"
                         *ngIf="rsvpResposeType === 'email open' && rsvpResposeType != 'invities'">SUBJECT</th>
-                      <th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span
+                      <th style="font-size: 13px; font-weight: 500;" *ngIf="rsvpResposeType != 'invities'"><span
                           [hidden]="rsvpResposeType === 'email not open'">RSVP
                           Date</span></th>
-                      <th style="font-size: 12px; font-weight: 500;"
+                      <th style="font-size: 13px; font-weight: 500;"
                         *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
                           [hidden]="rsvpResposeType === 'email not open'">GUESTS
                           <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> -->
@@ -2062,12 +2062,12 @@
                 <table class="table tgrid" *ngIf="campaignReport.usersWatchList?.length != 0">
                   <thead>
                     <tr>
-                      <th style="font-size: 12px; font-weight: 500;">NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;">START DURATION</th>
-                      <th style="font-size: 12px; font-weight: 500;">STOP DURATION</th>
-                      <!-- 	<th style="font-size: 12px; font-weight: 500;">IP ADDRESS</th> -->
-                      <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-                      <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
+                      <th style="font-size: 13px; font-weight: 500;">NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;">START DURATION</th>
+                      <th style="font-size: 13px; font-weight: 500;">STOP DURATION</th>
+                      <!-- 	<th style="font-size: 13px; font-weight: 500;">IP ADDRESS</th> -->
+                      <th style="font-size: 13px; font-weight: 500;">LOCATION</th>
+                      <th style="font-size: 13px; font-weight: 500;">PLATFORM</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2359,9 +2359,9 @@
                 <table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
                   <thead>
                     <tr>
-                      <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;">SENT TIME</th>
+                      <th style="font-size: 13px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;">CAMPAIGN NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;">SENT TIME</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2471,12 +2471,12 @@
               <table class="table tgrid" *ngIf="donutCampaignViews?.length != 0">
                 <thead>
                   <tr>
-                    <th style="font-size: 12px; font-weight: 500;">NAME</th>
-                    <!-- <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th> -->
-                    <th style="font-size: 12px; font-weight: 500;">LOCATION</th>
-                    <th style="font-size: 12px; font-weight: 500;">DATE</th>
-                    <th style="font-size: 12px; font-weight: 500;">PLATFORM</th>
-                    <th style="font-size: 12px; font-weight: 500;">VIEWS</th>
+                    <th style="font-size: 13px; font-weight: 500;">NAME</th>
+                    <!-- <th style="font-size: 13px; font-weight: 500;">CAMPAIGN NAME</th> -->
+                    <th style="font-size: 13px; font-weight: 500;">LOCATION</th>
+                    <th style="font-size: 13px; font-weight: 500;">DATE</th>
+                    <th style="font-size: 13px; font-weight: 500;">PLATFORM</th>
+                    <th style="font-size: 13px; font-weight: 500;">VIEWS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -2889,9 +2889,9 @@
                 <table class="table tgrid" *ngIf="emailActionDetailsPagination.pagedItems?.length != 0">
                   <thead>
                     <tr>
-                      <th style="font-size: 12px; font-weight: 500;text-align: left;width:25%">NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;">CAMPAIGN NAME</th>
-                      <th style="font-size: 12px; font-weight: 500;" *ngIf="campaignReport.emailActionType === 'sent'">
+                      <th style="font-size: 13px; font-weight: 500;text-align: left;width:25%">NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;">CAMPAIGN NAME</th>
+                      <th style="font-size: 13px; font-weight: 500;" *ngIf="campaignReport.emailActionType === 'sent'">
                         SENT TIME</th>
                     </tr>
                   </thead>
