@@ -5392,6 +5392,7 @@ Social Icons
 }
 .social-icons li .facebook {
   background: url(../img/social/facebook.svg) no-repeat;
+  background-size: cover;
 }
 .social-icons li .forrst {
   background: url(../img/social/forrst.png) no-repeat;
@@ -5542,6 +5543,7 @@ Inline Social Icons
 }
 .social-icon.facebook {
   background: url(../img/social/facebook.svg) no-repeat;
+  background-size: cover;
 }
 .social-icon.forrst {
   background: url(../img/social/forrst.png) no-repeat;
