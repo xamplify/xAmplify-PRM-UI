@@ -30,11 +30,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   loading = false;
   resendActiveMail = false;
   mainLoader: boolean;
-  socialProviders = [{ "name": "salesforce", "iconName": "salesforce" },
-  { "name": "facebook", "iconName": "facebook" },
+  socialProviders = [{ "name": "Salesforce", "iconName": "salesforce" },
+  { "name": "Facebook", "iconName": "facebook" },
   { "name": "twitter", "iconName": "twitter" },
   { "name": "google", "iconName": "googleplus" },
-  { "name": "linkedin", "iconName": "linkedin" }];
+  { "name": "Linkedin", "iconName": "linkedin" }];
 
 
   roles: Array<Role>;
