@@ -311,7 +311,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.onSelect(this.campaign.countryId);
             }
         }
-        this.findDataShareOption();
+        
+        if(this.campaign.nurtureCampaign){
+        this.dataShare = this.campaign.dataShare;
+           console.log(this.campaign.dataShare );        
+        }else{
+           this.findDataShareOption();
+        }
+        
     }
     
     findDataShareOption(){
@@ -1260,7 +1267,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   
 
   listCategories(){
-    this.loading = true;
+    this.loading = true;    
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;

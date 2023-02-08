@@ -43,7 +43,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
                                             <div class="caption caption-md" style="width: 100%;display: inline-flex;">
                                                 <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong title="{{form.name}}">{{form.name}}</strong>
+                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong title="{{form.name}}" [style.color]="form.descriptionColor">{{form.name}}</strong>
                                                 </h4>
                                                 <a *ngIf="!isMdfForm" class="icon-margin" style="padding-left: 5px;padding-top: 3px;"data-toggle="tooltip" data-placement="top" title="Change Form Details"
                                                         (click)="showAddForm()">

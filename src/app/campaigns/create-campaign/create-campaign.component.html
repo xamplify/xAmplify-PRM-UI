@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 60, 'step-4');">
+                    <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }"  (click)="resetActive($event, 60, 'step-4');">
                         <div class="cenetered-block">
                             <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
@@ -1129,7 +1129,7 @@
                 <!-- End Of 197(Video Tab) -->
                 <!-- -------------------------------------Contact List Tab--------------------------------------------------------- -->
                 <div class="row setup-content hiddenStepInfo" id="step-4">
-                    <div class="col-xs-12 portlet light">
+                    <div [ngClass]="campaign?.oneClickLaunch?'col-xs-12':'col-xs-12 portlet light'">
                         <div class="mt10">
                             <!---Partners/Contacts List For Through/To Campaign-->
                             <div id="user_list_table_view" *ngIf="!campaign?.oneClickLaunch">
@@ -1301,12 +1301,16 @@
                                     <strong>{{invalidShareLeadsSelectionErrorMessage}}</strong>
                                 </div>
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)"></app-select-partners-and-share-leads>
+                                <ng-template *ngIf="campaign?.oneClickLaunch" [ngTemplateOutlet]="previousButton"></ng-template>
                              </div> 
-                             <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;">  
+                             <ng-template *ngIf="!campaign?.oneClickLaunch" [ngTemplateOutlet]="previousButton"></ng-template>
+                             <ng-template #previousButton>
+                             <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;"> 
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit"  class="btn btn-default btn green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
+                    </ng-template>
                         </div>
                     </div>
                 </div>

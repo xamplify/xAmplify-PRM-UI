@@ -58,7 +58,7 @@
                 <li><a translate>Onboarding
                         {{authenticationService?.partnerModule?.customName}}</a></li>
             </ul>
-            <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:2px;">
+            <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
                 <a (click)="downloadEmptyCsv()">
                     <button type="button" class="btn green" download
                         style="color: #ffffff;"
@@ -98,9 +98,9 @@
                                             </button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <div class="btn-info fileinput-button btn-block"
+                                            <button class="btn-info fileinput-button btn-block"
                                                 id="uploadCSV"
-                                                style="min-height: 85px; border-radius: 3px !important;"
+                                                
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i class="fa fa-file-excel-o cct" aria-hidden="true"></i> <span
                                                     style="display: block; font-size: 12px; text-align: center"
@@ -109,7 +109,7 @@
                                                     (click)="input.value = null;resetResponse();"
                                                     (change)="fileChange(input)" accept=".csv" #input
                                                     [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
-                                            </div>
+                                        </button>
                                             <div style="margin-top: 5px;">
                                                 <a (click)="downloadEmptyCsv()"> <i
                                                     class="fa fa-download" aria-hidden="true"
