@@ -3,7 +3,7 @@
 	style="width: 100%; word-break: break-word; display: inline-block;"
 	[ngStyle]="{'background-color':skin.backgroundColor,'color':skin.textColor  ,'border-color':'2px solid'+skin.buttonBorderColor}">
 	<footer>
-		<div [style.color]="skin.textColor" style="padding: 20px;"
+		<div [style.color]="skin.textColor" style="text-align: center;"
 			[innerHTML]="footerContent"
 			*ngIf="skin.showFooter && skin.textContent"
 			[ngStyle]="{'color':skin.textColor}"></div>

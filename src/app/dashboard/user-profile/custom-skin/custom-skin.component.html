@@ -33,7 +33,7 @@
 				Content</a></li>
 	</ul>
 </div>
-<div class="portlet-body clearfix" [ngStyle]="{'cursor': activeTabName == 'pagecontent'||  activeTabName == 'footer' ? 'not-allowed':''}">
+<div class="portlet-body clearfix" [ngStyle]="{'cursor': activeTabName == 'pagecontent' ? 'not-allowed':''}">
 	<div class="tab-content">
 
 		<div class="tab-pane"
@@ -470,9 +470,9 @@
 			</div>
 		</div>
 
-		<div class="tab-pane" style="cursor: not-allowed;"
+		<div class="tab-pane"
 			[ngClass]="{'active': activeTabName == 'footer'}">
-			<div class="portlet light col-xs-12" style="pointer-events: none;">
+			<div class="portlet light col-xs-12">
 				<div class="row" style="padding: 10px 10px;">
 					<div class="col-md-6 col-lg-6" style="padding: 0px">
 						<div class="col-md-12 col-lg-12" style="margin-top: 20px;">
@@ -491,7 +491,7 @@
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
 								<label>Background Color</label> <input class="form-control"
-									[value]="backgroundColor" [(ngModel)]="form.backgroundColor"
+									[value]="backgroundColor" [(ngModel)]="backgroundColor"
 									style="margin-bottom: 10px; padding-left: 40px;"
 									(input)="checkValidColorCode(backgroundColor,'backgroundColor')"
 									maxlength="7" /> <span class="input-group-addon color-pick"
