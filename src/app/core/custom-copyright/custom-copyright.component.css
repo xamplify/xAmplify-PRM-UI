@@ -1,8 +1,9 @@
 .copyright-css {
 	text-align: center;
-	padding: 10px;
+	padding: 10px 50px;
 	color: #ffffff;
 	font-size: 15px;
+	padding-bottom: 0px;
 }
 
 a:link {
