@@ -176,3 +176,8 @@
         height: 285px!important;
     }
 }
+.pd-align{
+    top: 0px !important;
+    padding-left: 16px;
+    padding-right: 13px;
+}

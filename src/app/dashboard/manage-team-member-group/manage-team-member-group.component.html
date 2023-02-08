@@ -47,7 +47,7 @@
     </ng-container>
   </ng-container>
 </div>
-<div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+<div *ngIf="pagination?.pagedItems.length !== 0" class="pg8 pd-align">
   <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findGroups($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 </div>
 <!-- End of 24 -->
