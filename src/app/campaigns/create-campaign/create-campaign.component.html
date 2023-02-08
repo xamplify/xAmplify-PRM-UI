@@ -1537,7 +1537,7 @@
                                             <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
                                                 <strong translate>No co-branded templates found</strong>
                                             </div>
-                                            <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
+                                            <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info" style="margin-top: 10px;">
                                                 <strong translate>No templates found</strong>
                                             </div>
                                             <div style="text-align:left;margin-right: 14px;margin-left: 18px;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
