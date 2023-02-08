@@ -981,7 +981,7 @@ h5 {
 }
 
 h6 {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* Headings helper text */
@@ -5391,7 +5391,7 @@ Social Icons
   background: url(../img/social/evernote.png) no-repeat;
 }
 .social-icons li .facebook {
-  background: url(../img/social/facebook.png) no-repeat;
+  background: url(../img/social/facebook.svg) no-repeat;
 }
 .social-icons li .forrst {
   background: url(../img/social/forrst.png) no-repeat;
@@ -5409,7 +5409,7 @@ Social Icons
   background: url(../img/social/last-fm.png) no-repeat;
 }
 .social-icons li .linkedin {
-  background: url(../img/social/linkedin.png) no-repeat;
+  background: url(../img/social/linkedin.svg) no-repeat;
 }
 .social-icons li .picasa {
   background: url(../img/social/picasa.png) no-repeat;
@@ -5434,7 +5434,7 @@ Social Icons
 }
 
 .social-icons li .salesforce {
-  background: url(../img/social/sf.png) no-repeat;
+  background: url(../img/social/salesforce.svg) no-repeat;
 }
 .social-icons li .twitter {
   background: url(../img/social/twitter.png) no-repeat;
@@ -5541,7 +5541,7 @@ Inline Social Icons
   background: url(../img/social/evernote.png) no-repeat;
 }
 .social-icon.facebook {
-  background: url(../img/social/facebook.png) no-repeat;
+  background: url(../img/social/facebook.svg) no-repeat;
 }
 .social-icon.forrst {
   background: url(../img/social/forrst.png) no-repeat;
@@ -5559,7 +5559,7 @@ Inline Social Icons
   background: url(../img/social/last-fm.png) no-repeat;
 }
 .social-icon.linkedin {
-  background: url(../img/social/linkedin.png) no-repeat;
+  background: url(../img/social/linkedin.svg) no-repeat;
 }
 .social-icon.picasa {
   background: url(../img/social/picasa.png) no-repeat;
@@ -5586,7 +5586,7 @@ Inline Social Icons
   background: url(../img/social/twitter.png) no-repeat;
 }
 .social-icons li .salesforce {
-  background: url(../img/social/sf.png) no-repeat;
+  background: url(../img/social/salesforce.svg) no-repeat;
 }
 .social-icon.vimeo {
   background: url(../img/social/vimeo.png) no-repeat;

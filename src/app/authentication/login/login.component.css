@@ -43,4 +43,13 @@ a.forget-password:hover {color: #4db1e2;}
     border-top: 1px solid #eee;
   }
   
+  /*** 07-02-2023***/
+  .img-child {
+    height: 28px !important;
+    width: 28px !important;
+    display: flex;
+  }
+  .social-icon-color {
+  background-position: unset;
+  }
   
