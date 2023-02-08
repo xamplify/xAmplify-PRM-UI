@@ -239,4 +239,8 @@ width:150%;
   padding-bottom: 4px;
   padding-right: 0px;
 }
-
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
+}

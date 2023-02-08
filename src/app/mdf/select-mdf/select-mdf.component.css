@@ -49,6 +49,7 @@ h5 {
     -moz-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
 }
 
 .pointer {
@@ -57,7 +58,7 @@ h5 {
 
 .design-name {
     color: #008fd5;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     margin-left: 5px;
 }
@@ -87,7 +88,7 @@ h5 {
     text-align: center;
     padding-left: 10px;
     color: #888;
-    font-size: 13px;
+    font-size: 14px;
     padding-top: 10px;
     height: 76px;
 }
@@ -129,4 +130,13 @@ h5 {
 }
 .portlet .light{
     padding:0px !important;
+}
+.img1:hover{
+    background-position: 100%;
+    /* color: black !important; */
+    background-color: #b8def1;
+    transition-duration: 500ms;
+}
+p{
+    margin:0px;
 }
