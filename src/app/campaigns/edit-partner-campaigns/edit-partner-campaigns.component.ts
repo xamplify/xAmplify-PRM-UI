@@ -311,14 +311,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.onSelect(this.campaign.countryId);
             }
         }
-        
-        if(this.campaign.nurtureCampaign){
-        this.dataShare = this.campaign.dataShare;
-           console.log(this.campaign.dataShare );        
+           if(this.campaign.nurtureCampaign){
+               this.findNurtureCampaignDataShareOption();       
         }else{
-           this.findDataShareOption();
+               this.findDataShareOption();
         }
-        
     }
     
     findDataShareOption(){
@@ -328,6 +325,21 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.dataShare = response.data;
                 this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
                 this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
+                this.ngxloading = false;
+            },error=>{
+                this.dataShare = false;
+                this.ngxloading = false;
+            }
+        );
+    }
+    
+        findNurtureCampaignDataShareOption(){
+        this.ngxloading = true;
+        this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
+            response=>{
+                this.dataShare = response.data;
+              //  this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
+               // this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
                 this.ngxloading = false;
             },error=>{
                 this.dataShare = false;
