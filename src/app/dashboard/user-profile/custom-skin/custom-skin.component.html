@@ -90,7 +90,7 @@
 						<div class="portlet light"
 							style="margin-top: 5px; background: #f1f3fa;">
 							<div class="portlet light" style="text-align: center;"
-								[ngStyle]="{'background-color':form.backgroundColor,'color':form.buttonValueColor,'font-family':form.fontFamily}">
+								[ngStyle]="{'background-color':form.backgroundColor,'color':form.buttonValueColor}">
 								Header</div>
 							<div class="row" style="display: flex;">
 								<div class="col-xs-6 col-sm-2 col-lg-2"
@@ -102,7 +102,7 @@
 									<div class="portlet light main-content"
 										style="display: flex; justify-content: center;">
 										<h6
-											style="margin: auto; font-size: 12px; font-family: Open Sans, sans-serif">Page
+											style="margin: auto; font-size: 12px;">Page
 											Content</h6>
 									</div>
 								</div>
@@ -110,7 +110,7 @@
 							<div class="col-xs-16 col-sm-16 col-lg-16"
 								style="text-align: center;">
 								<div class="portlet light"
-									style="margin-bottom: 0px; font-family: Open Sans, sans-serif; font-size: 12px">Footer</div>
+									style="margin-bottom: 0px; font-size: 12px">Footer</div>
 							</div>
 						</div>
 					</div>
@@ -237,7 +237,7 @@
 									style="padding-left: 0px;">
 									<div class="portlet light main-content"
 										style="display: flex; justify-content: center;"
-										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">
+										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor}">
 										<h6 style="margin: auto;"
 											[ngStyle]="{'color':form.headerTextColor}">Page Content</h6>
 									</div>
@@ -427,7 +427,7 @@
 								<div class="col-xs-6 col-sm-2 col-lg-2"
 									style="text-align: center; padding-right: 6px;">
 									<div class="portlet light left-left box-center"
-										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Left
+										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor}">Left
 										Menu</div>
 								</div>
 								<div class="col-xs-6 col-sm-10 col-lg-10"
@@ -539,7 +539,7 @@
 							<div class="col-xs-16 col-sm-16 col-lg-16"
 								style="text-align: center;">
 								<div class="portlet light" style="margin-bottom: 0px;"
-									[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor,'font-family':form.fontFamily}">Footer</div>
+									[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor}">Footer</div>
 							</div>
 						</div>
 					</div>
@@ -590,6 +590,7 @@
 				<div class="col-md-6 col-lg-12">
 					<label>Footer Content</label>
 					<p class="text-area-css">Max characters 225</p>
+					<!-- <p class="text-area-css" *ngIf="minLength<2">Please Enter At Least two characters</p> -->
 				</div>
 				<div class="col-xs-12">
 					<div *ngIf="form.showFooter"
