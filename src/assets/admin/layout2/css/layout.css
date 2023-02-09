@@ -2091,7 +2091,7 @@ Page content
   .page-content-wrapper .page-content {
     margin-left: 195px;
     margin-top: 0px;
-    min-height: 1100px;
+    min-height: 1200px;
     padding: 20px 22px 10px 21px;
   }
   .page-content-wrapper .page-content.no-min-height {
@@ -2485,4 +2485,8 @@ Page Loading
 .page-on-load > .clearfix {
   display: none;
   transition: all 2s;
+}
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu>li:last-child>a, .page-sidebar .page-sidebar-menu>li:last-child>a {
+  border-bottom: 1px solid #43525c !important;
 }

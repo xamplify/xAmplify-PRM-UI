@@ -180,7 +180,7 @@ Page Header
 }
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a,
 .page-sidebar .page-sidebar-menu > li > a {
-  border-top: 1px solid #3d4f65;
+  border-bottom: 1px solid #3d4f65;
   color: #f2f4f6;
 }
 @media (max-width: 991px) {
