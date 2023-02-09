@@ -809,3 +809,8 @@ input:checked + .slider-new:before {
 .red {
   color: #f76c6c
 }
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
+}
