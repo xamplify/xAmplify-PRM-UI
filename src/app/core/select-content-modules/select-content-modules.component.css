@@ -32,17 +32,17 @@ h5 {
     padding-bottom: 15px;
 }
 
-.para1 {
+/* .para1 {
     padding: 10px 95px 20px 99px;
     font-size: 16px;
     text-align: justify;
-}
+} */
 
-.para2 {
+/* .para2 {
     padding: 7px 91px 20px 99px;
     font-size: 16px;
     text-align: justify;
-}
+} */
 
 .hover-effect:hover {
     border: 1px solid #4eafd6;
@@ -94,21 +94,21 @@ h5 {
     height: 76px;
 }
 
-.bordernone{
+/* .bordernone{
     border: none !important
-}
+} */
 
-.pltpx{
+/* .pltpx{
     padding-left: 10px;
-}
+} */
 
 .prfpx{
     padding-right: 40px;
 }
 
-.prtpx{
+/* .prtpx{
     padding-right: 32px;
-}
+} */
 
 .prtfpx{
     padding-right: 24px;
@@ -138,9 +138,9 @@ h5 {
 .portlet > .portlet-title > .caption{
     line-height: 30px;
 }
-.mt{
+/* .mt{
 margin-top: 9px !important;
-}
+} */
 .padding{
     padding: 0px 5px !important;
 }

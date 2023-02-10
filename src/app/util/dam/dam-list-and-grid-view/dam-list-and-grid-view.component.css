@@ -1,10 +1,10 @@
-.img-class-list{
+/* .img-class-list{
 	height: 50px;
     width: auto;
     background: #f2f4f9;
     border: solid 1px #008fd5;
     border-radius: 1px;
-}
+} */
 .img-class{
 	/* height: 50px; */
     width: auto;
@@ -17,16 +17,16 @@
 	min-width: 145px;
 }
 
-#right-corner{
+/* #right-corner{
 	float: right;
-}
+} */
 
 
-#disabled-icon{
+/* #disabled-icon{
 border: none;
 margin: 0px 15px 0 0;
 cursor: default;
-}
+} */
 
 .cursor{
 	cursor: not-allowed;
@@ -97,9 +97,9 @@ cursor: default;
 	padding: 2px !important;
 	margin: 10px 4px !important;
 }
-.custom-width-icon{
+/* .custom-width-icon{
 	min-width: 130px;
-}
+} */
 
 .thumbnail-wrapper {
 	float: left;
@@ -125,18 +125,18 @@ cursor: default;
     /* top: 16px; */
 }
 
-.custom-image-css-grid{
+/* .custom-image-css-grid{
   border: 0px solid rgb(90, 90, 90);
     max-height: 27% !important;
-}
+} */
 
-.top10{
+/* .top10{
   margin-top: 5px;
-}
+} */
 
-.icon-grid-xcss{
+/* .icon-grid-xcss{
   font-size: 20px; color: #5a5a5a
-}
+} */
 
 .published{
   background-color: green !important;
@@ -152,34 +152,34 @@ cursor: default;
   background-color: #d3d3d317;
 }
 
-.ml5{
+/* .ml5{
   margin-left: 5px;
-}
+} */
 
 
-.port-heading {
+/* .port-heading {
   padding-left: 10px!important;
   padding-top: 10px!important;
   background: #f1f1f1;
-}
+} */
 
-.cpdam{
+/* .cpdam{
   padding: 40px 40px 0px 17px;
-}
+} */
 
-.cphdam{
+/* .cphdam{
   padding: 0px 0px!important;min-height: 200px;
-}
+} */
 .min-h{
   min-height: 245px;
 }
 
-.edit-cancel{
+/* .edit-cancel{
   margin-right: 95px;
-}
-.edit-submit{
+} */
+/* .edit-submit{
   margin-right: 5px;
-}
+} */
 
 .ref-mar{
   /* margin-top: 3px !important; */
@@ -253,14 +253,14 @@ cursor: default;
 }
 
 
-.mix-filter {
+/* .mix-filter {
 	margin: 5px;
-}
+} */
 
-.mix-filter li {
+/* .mix-filter li {
 	font-size: 12px;
 	text-transform: uppercase;
-}
+} */
 
 .draft-video{
   background-color: #f76c1a;
@@ -286,9 +286,9 @@ cursor: default;
   font-size: 12px;
 }
 
-.min-width-thtwpx{
+/* .min-width-thtwpx{
   min-width: 320px;
-}
+} */
 /* sudha sri */
 @media (max-width:320px){
   .pb3{

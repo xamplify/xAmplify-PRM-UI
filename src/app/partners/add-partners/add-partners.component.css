@@ -38,10 +38,10 @@
 	}
 }
 
-.gray-color {
+/* .gray-color {
 	position: relative;
 	color: grey;
-}
+} */
 
 .cloud-items {
 	position: relative;
@@ -54,30 +54,30 @@
 	white-space: nowrap;
 }
 
-.mr8 {
+/* .mr8 {
 	margin-right: 20px !important;
-}
+} */
 
-#customWidth {
+/* #customWidth {
 	width: 53%;
-}
+} */
 
 .danger {
 	color: red;
 }
 
-.img-cloud {
+/* .img-cloud {
 	width: 100% !important;
 	height: auto !important;
-}
+} */
 
-.popup-header-title-font {
+/* .popup-header-title-font {
 	font-weight: 600;
-}
+} */
 
-.cwosn {
+/* .cwosn {
 	width: 161px;
-}
+} */
 
 #download-partners-csv {
 	margin-top: 2px;
@@ -92,9 +92,9 @@
 	margin: 0 auto 10px
 }
 
-.e9eef2{
+/* .e9eef2{
 	background-color: #e9eef2;
-}
+} */
 
 @media screen and (max-width:600px){
 	.mSweetalertWid{

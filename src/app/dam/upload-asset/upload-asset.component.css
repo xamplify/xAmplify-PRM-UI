@@ -1,4 +1,4 @@
-#preview {
+/* #preview {
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 5px;
@@ -7,7 +7,7 @@
   max-height: 100%;
   max-width: 100%;
   overflow: hidden;
-}
+} */
 
 .upload-asset-div {
   width: auto;
@@ -22,7 +22,7 @@
   margin-bottom: 0
 }
 
-.fileinput-button input {
+/* .fileinput-button input {
   position: absolute;
   top: 0;
   right: 0;
@@ -32,7 +32,7 @@
   font-size: 200px;
   direction: ltr;
   cursor: pointer;
-}
+} */
 
 /* Fixes for IE < 8 */
 
@@ -57,9 +57,9 @@
   color: #fff;
 }
 
-.profile-overlay, .banner-overlay {
+/* .profile-overlay, .banner-overlay {
   display: none;
-}
+} */
 
 .asset-thumbnail-div:hover .profile-overlay {
   width: 100%;
@@ -76,21 +76,21 @@
   padding-top: 10px;
 }
 
-.mt-5 {
+/* .mt-5 {
   margin-top: -5px!important;
-}
+} */
 
 .text-css {
   position: absolute;
   left: 57px;
   top: 13px;
 }
-
+/* 
 .text-css-content {
   position: absolute;
   left: 57px;
   top: 20px;
-}
+} */
 
 .message-content {
   border: dotted 3px lightgray;
@@ -110,10 +110,10 @@
   border: none;
 }
 
-.asset-img-grid {
+/* .asset-img-grid {
   height: 207px !important;
   max-width: 218px !important;
-}
+} */
 .thumbnail-remover{
   position: absolute;
     left: 286px;
@@ -140,11 +140,11 @@ width:150%;
   background-color: #f2f2f2;
 }
 
-.scroller {
+/* .scroller {
   height: 125px;
   padding: 5px;
   overflow: auto;
-}
+} */
 
 .asset-thumbnail-div-sm {
   display: block;
@@ -197,13 +197,13 @@ width:150%;
   }
 }
 
-.box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;}
+/* .box-border{  border: 1px solid #b7b7b7; padding: 19px 0px 0px 0px;  margin: 4px 0px; min-height: 116px;} */
 
-.customDisableCss {
+/* .customDisableCss {
     cursor: not-allowed !important;
     opacity: 0.6;
     pointer-events: none;
-}
+} */
 
 @media only screen and (max-width:600px){
   #my-video{  height:160px; width: 287px }
