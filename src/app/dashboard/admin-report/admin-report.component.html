@@ -15,6 +15,7 @@
     </ul>
   </div>
   <div>
+    <app-active-queries *ngIf="!detailsTielsView"></app-active-queries>
     <app-processing-campaigns [scheduledCampaigns]="false"  *ngIf="!detailsTielsView"></app-processing-campaigns>
     <app-processing-campaigns [scheduledCampaigns]="true" *ngIf="!detailsTielsView"></app-processing-campaigns>
    <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 

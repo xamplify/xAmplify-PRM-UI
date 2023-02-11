@@ -82,6 +82,7 @@ import { AgencyDashboardComponent } from './agency-dashboard/agency-dashboard.co
 import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
 import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
 import { ProcessingCampaignsComponent } from './processing-campaigns/processing-campaigns.component';
+import { ActiveQueriesComponent } from './active-queries/active-queries.component';
 
 
 
@@ -140,7 +141,8 @@ import { ProcessingCampaignsComponent } from './processing-campaigns/processing-
         AgencyDashboardComponent,
         CustomSkinComponent,
         IntegrationSettingsComponent,
-        ProcessingCampaignsComponent
+        ProcessingCampaignsComponent,
+        ActiveQueriesComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
