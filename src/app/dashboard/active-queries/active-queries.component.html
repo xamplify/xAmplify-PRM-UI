@@ -1,3 +1,55 @@
-<p>
-  active-queries works!
-</p>
+<div class="col-xs-12">
+   <div class="portlet light">
+     <div class="portlet-title">
+       <div class="caption">Active Queries</div>
+        <div class="inputs">
+          <a class="close-circle" (click)="findActiveQueries()" data-toggle="tooltip" data-placement="top" title="Refresh">
+            <i class="fa fa-refresh margin" aria-hidden="true"></i>
+          </a>
+        </div>
+     </div>
+     <div class="alert alert-warning text-center">
+      <strong>Please Click On The Refresh Icon To See Active Queries</strong>
+    </div>
+    <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+     <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !apiError">
+       <div>
+         <div class="table-responsive">
+           <table class='table tgrid' aria-describedby="">
+             <thead>
+               <tr>
+                <th scope="row" translate>Process Id</th>
+                <th scope="row" translate>Database Name</th>
+                <th scope="row" translate>Ip Address</th>
+                <th scope="row" translate>Query Started On</th>
+                <th  scope="row" translate>Query</th>
+                <th  scope="row" translate>Query Used In</th>
+               </tr>
+             </thead>
+             <tbody>
+               <ng-container *ngFor="let activeQuery of activeQueries;let i = index">
+                 <tr>
+                  <td>{{activeQuery?.processId}}</td>
+                  <td>{{activeQuery?.dataBaseName}}</td>
+                  <td>{{activeQuery?.ipAddress}}</td>
+                  <td>{{activeQuery?.queryStartedOn}}</td>
+                  <td>
+                    <textarea disabled class="form-control" style="width: 100%" cols="50" rows="10">{{activeQuery?.query}}</textarea>
+                    </td>
+                    <td>{{activeQuery?.queryUsedIn}}</td>
+                 </tr>
+               </ng-container>
+             </tbody>
+           </table>
+         </div>
+       </div>
+       <div *ngIf="activeQueries?.length==0 && !httpRequestLoader.isLoading && !apiError" class="alert alert-info text-center">
+        <strong>No Active Queries Found</strong>
+      </div>
+     </div>
+     <div *ngIf="apiError" class="alert alert-danger">
+        <strong>Oops!Something went wrong.Please try again after sometime</strong>
+    </div>
+   </div>
+</div>
+

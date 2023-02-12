@@ -48,7 +48,7 @@ export class ProcessingCampaignsComponent implements OnInit {
 
 
   findProcessingCampaigns(pagination:Pagination){
-	this.customResponse = new CustomResponse();
+	  this.customResponse = new CustomResponse();
     this.apiError = false;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.dashboardService.findProcessingCampaigns(pagination).
