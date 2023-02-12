@@ -747,52 +747,52 @@ export class DashboardService {
          return this.http.post(url,vanityLoginDto)
          .map(this.extractData)
          .catch(this.handleError);
+    }
+
+    saveHighLevelAnalyticsDownloadRequest(downloadRequestDto:DownloadRequestDto){
+    const url =
+    this.authenticationService.REST_URL +
+    "highlevel/analytics/saveDownloadRequest?access_token=" +
+    this.authenticationService.access_token;
+    return this.http
+    .post(url, downloadRequestDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+    }
+    /** XNFR-134 */
+        getTopNavigationBarCustomSkin(vanityLoginDto:VanityLoginDto){
+        const url = this.authenticationService.REST_URL + 'custom/skin/find/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+        }
+        saveCustomSkin(custom:any){
+        const url = this.authenticationService.REST_URL+ 'custom/skin/save?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,custom)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getDefaulSkinBYType(userId:number,type:string){
+        const url = this.authenticationService.REST_URL + 'custom/skin/get/'+ userId +'/'+type+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
         }
 
- saveHighLevelAnalyticsDownloadRequest(downloadRequestDto:DownloadRequestDto){
-     const url =
-       this.authenticationService.REST_URL +
-       "highlevel/analytics/saveDownloadRequest?access_token=" +
-       this.authenticationService.access_token;
-     return this.http
-       .post(url, downloadRequestDto)
-       .map(this.extractData)
-       .catch(this.handleError);
-        }
-        /** XNFR-134 */
-          getTopNavigationBarCustomSkin(vanityLoginDto:VanityLoginDto){
-            const url = this.authenticationService.REST_URL + 'custom/skin/find/?access_token=' + this.authenticationService.access_token;
-            return this.http.post(url,vanityLoginDto)
+    getVendors(pagination: Pagination) {
+        const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
-          }
-          saveCustomSkin(custom:any){
-            const url = this.authenticationService.REST_URL+ 'custom/skin/save?access_token=' + this.authenticationService.access_token;
-            return this.http.post(url,custom)
-            .map(this.extractData)
-            .catch(this.handleError);
-        }
-        getDefaulSkinBYType(userId:number,type:string){
-            const url = this.authenticationService.REST_URL + 'custom/skin/get/'+ userId +'/'+type+'?access_token=' + this.authenticationService.access_token;
-            return this.http.get(url)
-            .map(this.extractData)
-            .catch(this.handleError);
-          }
 
-        getVendors(pagination: Pagination) {
-            const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
-            return this.http.post(url, pagination)
-                .map(this.extractData)
-                .catch(this.handleError);
-    
-        }
+    }
 
-        getVendorCount(vanityLoginDto: VanityLoginDto) {
-            return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
-               .map(this.extractData)
-               .catch(this.handleError);
-        }
-        
+    getVendorCount(vanityLoginDto: VanityLoginDto) {
+        return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     /****XNFR-139****/
     findMaximumAdminsLimitDetailsByCompanyId(companyId:number){
         let url = this.authenticationService.REST_URL +"teamMember/findMaximumAdminsLimitDetailsByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token;
@@ -807,5 +807,13 @@ export class DashboardService {
         return this.http.post(url,pagination)
         .map(this.extractData)
         .catch(this.handleError);
-       }
+    }
+
+    findActiveQueries(){
+        const url = this.superAdminUrl + 'findActiveQueries?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
 }
