@@ -18,25 +18,31 @@
            <table class='table tgrid' aria-describedby="">
              <thead>
                <tr>
-                <th scope="row" translate>Process Id</th>
-                <th scope="row" translate>Database Name</th>
-                <th scope="row" translate>Ip Address</th>
-                <th scope="row" translate>Query Started On</th>
-                <th  scope="row" translate>Query</th>
-                <th  scope="row" translate>Query Used In</th>
+                <th class="text-center" scope="row" translate>PID</th>
+                <th class="text-center" scope="row" translate>DB</th>
+                <th class="text-center" scope="row" translate>Ip</th>
+                <th class="text-center" scope="row" translate>Accessed From</th>
+                <th class="text-center" scope="row" translate>Start Time</th>
+                <th class="text-center" scope="row" translate>Used In</th>
+                <th class="text-center"  scope="row" translate>Query</th>
+                <th class="text-center" scope="row" translate>Copy</th>
                </tr>
              </thead>
              <tbody>
                <ng-container *ngFor="let activeQuery of activeQueries;let i = index">
                  <tr>
-                  <td>{{activeQuery?.processId}}</td>
-                  <td>{{activeQuery?.dataBaseName}}</td>
-                  <td>{{activeQuery?.ipAddress}}</td>
-                  <td>{{activeQuery?.queryStartedOn}}</td>
-                  <td>
-                    <textarea disabled class="form-control" style="width: 100%" cols="50" rows="10">{{activeQuery?.query}}</textarea>
+                  <td class="text-center">{{activeQuery?.processId}}</td>
+                  <td class="text-center">{{activeQuery?.dataBaseName}}</td>
+                  <td class="text-center">{{activeQuery?.ipAddress}}</td>
+                  <td class="text-center">{{activeQuery?.queryAccessedFrom}}</td>
+                  <td class="text-center">{{activeQuery?.queryStartedOn}}</td>
+                  <td class="text-center">{{activeQuery?.queryUsedIn}}</td>
+                  <td class="text-center">
+                    <textarea disabled class="form-control">{{activeQuery?.query}}</textarea>
                     </td>
-                    <td>{{activeQuery?.queryUsedIn}}</td>
+                    <td class="text-center">
+                      <a><i class="fa fa-copy fsfpx" aria-hidden="true" ></i></a>
+                    </td>
                  </tr>
                </ng-container>
              </tbody>
