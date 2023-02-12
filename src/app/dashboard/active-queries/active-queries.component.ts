@@ -6,6 +6,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Properties } from '../../common/models/properties';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import * as XLSX from 'xlsx';
+declare var $:any;
 @Component({
   selector: "app-active-queries",
   templateUrl: "./active-queries.component.html",
@@ -58,5 +59,14 @@ export class ActiveQueriesComponent implements OnInit {
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
     this.loading = false;
+  }
+
+  copyQueryText(inputElement:any,index:number){
+    $(".success").hide();
+    $('#copied-query-' + index).hide();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    $('#copied-query-' + index).show(500);
   }
 }

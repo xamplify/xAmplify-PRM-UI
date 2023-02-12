@@ -4,11 +4,11 @@
      <div class="portlet-title">
        <div class="caption">Active Queries</div>
         <div class="inputs">
-          <a class="close-circle" (click)="findActiveQueries()" data-toggle="tooltip" data-placement="top" title="Refresh">
-            <i class="fa fa-refresh margin" aria-hidden="true"></i>
-          </a>
           <a *ngIf="activeQueries?.length>0" class="close-circle" (click)="exportexcel()" data-toggle="tooltip" data-placement="top" title="Export To Excel">
             <i class="fa fa-download margin" aria-hidden="true"></i>
+          </a>
+          <a class="close-circle" (click)="findActiveQueries()" data-toggle="tooltip" data-placement="top" title="Refresh">
+            <i class="fa fa-refresh margin" aria-hidden="true"></i>
           </a>
         </div>
      </div>
@@ -43,12 +43,17 @@
                   <td class="text-center">
                     <app-display-date-and-time [dateAndTimeUTCString]="activeQuery?.queryStartedOnInUTCString"></app-display-date-and-time>
                   </td>
-                  <td class="text-center">{{activeQuery?.queryUsedIn}}</td>
+                  <td class="text-center">{{activeQuery?.queryUsedIn}}
+                    <br>
+                    <span class="success" id="copied-query-{{i}}" style="display: none;">
+                      <strong>Query copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                  </span>
+                  </td>
                   <td class="text-center">
-                    <textarea disabled class="form-control">{{activeQuery?.query}}</textarea>
+                    <textarea readonly="readonly" class="form-control" #queryText>{{activeQuery?.query}}</textarea>
                     </td>
                     <td class="text-center">
-                      <a><i class="fa fa-copy fsfpx" aria-hidden="true" ></i></a>
+                      <a (click)="copyQueryText(queryText,i)"><i class="fa fa-copy fsfpx" aria-hidden="true"></i></a>
                     </td>
                  </tr>
                </ng-container>
