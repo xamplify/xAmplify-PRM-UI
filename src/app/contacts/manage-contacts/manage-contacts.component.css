@@ -2,7 +2,6 @@
 a:hover{text-decoration:none}
 a.disabled{pointer-events:none;cursor:not-allowed}
 .pagination{margin:10px 4px 1px}
-/* .tabbable-custom{box-shadow:0 0 5px rgba(0,0,0,.4)!important} */
 .custom-error-message{padding:5px;border:1px solid rgba(255,0,0,0.21);color:rgba(255,0,0,0.7);margin:5px 0;text-transform:capitalize}
 .flex{display:flex}
 .alert-info{background-color:#00a6e8;border-color:#00a6e8;border-radius:0}
@@ -158,9 +157,7 @@ h3 {
 }
 
 #header-custom-li-font{
-	/* 10-01-2023 */
 	font-size: 16px; 
-	/* color: #888888; */
 	font-weight: 500;
 }
 /****** 15-11-2022 *****/

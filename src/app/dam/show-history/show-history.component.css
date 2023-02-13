@@ -6,7 +6,6 @@
     border-radius: 1px;
 }
 .img-class{
-	/* height: 50px; */
     width: auto;
 }
 #actions-row{
@@ -119,10 +118,7 @@ cursor: default;
 }
 
 .custom-image-css{
-    /* max-height: 55% !important; */
-   /*  max-width: 69px !important; */
     position: relative;
-    /* top: 16px; */
 }
 
 .custom-image-css-grid{
@@ -182,7 +178,6 @@ cursor: default;
 }
 
 .ref-mar{
-  /* margin-top: 3px !important; */
   margin-left: 4px !important;
 }
 
