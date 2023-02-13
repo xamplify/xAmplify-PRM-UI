@@ -59,12 +59,7 @@
   color: #777;font-weight: 500;margin: 5px;
 }
 .bottomCss {  bottom: -183px; }
-/* .videojs-logo-play{
-  position: absolute;
-  top: 15px;
-  right: 34px;
-  width: 75px;
-} */
+
 .imagePath {  height: 111px; width: 100%; }
 .is360video {  z-index: 900; }
 textarea {
