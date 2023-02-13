@@ -19,7 +19,6 @@ padding: -1px;
 }
 
 .portlet {
-/* border-radius: 0; */
 padding: 10px;
 }
 :host /deep/ .vjs-mouse-display {
