@@ -5,7 +5,6 @@
 
 .text {
     text-align: center;
-    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -18,14 +17,6 @@ h5 {
     font-size: 13px!important;
     font-weight: 400!important;
 }
-
-/* .img1 {
-    background: #34495a;
-    text-align: center; */
-    /* height: 233px; */
-    /* border-radius: 20px 20px 0px 0px;
-} */
-
 
 .img-responsive,
 .thumbnail a>img,
@@ -93,7 +84,6 @@ margin-top: 9px !important;
 
 .header-description-css {
     text-align: center;
-    /* padding-left: 10px; */
     color: #888;
     font-size: 14px;
     padding: 10px;
@@ -109,7 +99,6 @@ margin-top: 9px !important;
   }
   .img1:hover{
     background-position: 100%;
-    /* color: black !important; */
     background-color: #b8def1;
     transition-duration: 500ms;
 } 
