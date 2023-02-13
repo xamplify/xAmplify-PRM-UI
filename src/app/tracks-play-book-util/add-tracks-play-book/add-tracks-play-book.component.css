@@ -35,7 +35,6 @@
 }
 
 .vertical-center {
-    /* display: flex;*/
     align-items: center;
     justify-content: center;
     display: block;
@@ -157,7 +156,6 @@
 }
 
 .portlet.box {
-    /* border: 1px solid #c4c1bb; */
     overflow: hidden;
     min-height: 425px;
 }
@@ -219,9 +217,6 @@
 .input-group-addon {
     white-space: nowrap;
     vertical-align: middle;
-    /* height: 39%!important;
-    border: 1px solid #eaeaea!important;
-    border-radius: 3px!important; */
     width: auto;
     padding: 10px 5px 10px 5px;
 }
@@ -391,15 +386,6 @@
     opacity: .4
 }
 
-
-/* 
-label {
-    display: inline-block;
-    max-width: 100%;
-    margin-bottom: 5px;
-    font-weight: 700;
-} */
-
 .list__item {
     position: relative;
     min-height: 1px;
@@ -462,7 +448,6 @@ label {
     color: #505659;
     white-space: nowrap;
     line-height: 2em;
-    /* font-size: 1.25rem; */
 }
 
 .item__last-modified,
@@ -470,21 +455,6 @@ label {
 .item__type {
     font-size: 11px;
 }
-
-/* .item__size,
-.item__type {
-     display: inline-block 
-} */
-
-/* .item__size span {
-    margin-right: .5rem;
-    padding-right: .75rem; */
-    /* border-right: 1px solid #ccc */
-/* } */
-
-/* .item__name strong {
-    font-weight: 700 !important;
-} */
 
 .list__item .item__actions {
     -webkit-box-pack: justify;
@@ -501,10 +471,6 @@ label {
     border-top: 1px solid #eaebed;
 }
 
-/* .actions__external-link {
-    margin-right: .75rem;
-} */
-
 .item__content {
     position: static;
 }
@@ -513,7 +479,6 @@ label {
     cursor: pointer;
     width: 26px;
     height: 30px;
-    /* background: url(../assets/cbe16914.svg) 50% no-repeat; */
     -webkit-background-size: contain;
     background-size: contain;
     display: inline-block;
@@ -525,7 +490,6 @@ label {
 }
 
 .fm.external-link {
-    /* background: url("assets/images/icon-img-preview.svg") 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;
@@ -533,7 +497,6 @@ label {
 }
 
 .fm.delete {
-    /* background: url(https://app.getbee.io/v18.09.03.1427/assets/28fa3e8f.svg) 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;
@@ -567,19 +530,6 @@ label {
     -ms-transform: rotate(-50deg);
     transform: rotate(-50deg);
 }
-
-/* .list-content-table {
-    overflow-x: inherit;
-    padding: 15px;
-    margin-top: 36px;
-} */
-
-/* .img-circle {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-} */
-
 
 /* tabs */
 
@@ -867,7 +817,6 @@ input.cmn-toggle-round-flat:checked+label:after {
 .form-group label {
     font-weight: 700;
     color: rgb(111, 111, 111);
-    /* float: left; */
     margin-bottom: 0.4em;
 }
 
@@ -883,12 +832,7 @@ input.cmn-toggle-round-flat:checked+label:after {
 /* Style the search field */
 
 .link input[type=text] {
-    /* padding: 10px; */
-    /* font-size: 17px; */
-    /* border: 1px solid grey; */
     float: left;
-    /* width: 80%; */
-    /* background: #f1f1f1; */
 }
 
 
@@ -897,13 +841,9 @@ input.cmn-toggle-round-flat:checked+label:after {
 .link button {
     float: left;
     width: 10%;
-    /* padding: 10px; */
     background: #2196F3;
     color: white;
-    /* font-size: 17px; */
-    /* border: 1px solid grey; */
     border-left: none;
-    /* Prevent double borders */
     cursor: pointer;
 }
 
@@ -937,12 +877,6 @@ input.cmn-toggle-round-flat:checked+label:after {
     min-height: 77px;
     padding: 4px 0px;
 }
-
-/* .blur-modal {
-    pointer-events: none;
-    z-index: 100;
-    opacity: .5;
-} */
 
 #myInput {
     box-sizing: border-box;
@@ -1002,14 +936,6 @@ input.cmn-toggle-round-flat:checked+label:after {
     width: auto;
     margin: 0 auto;
 }
-
-/* .img-company-list {
-    max-width: 100%;
-    max-height: 100%;
-    height: 100%;
-    width: auto;
-    margin: 0 auto;
-} */
 
 .dropdown-icon {
     position: absolute;
