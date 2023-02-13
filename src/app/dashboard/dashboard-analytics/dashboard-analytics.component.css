@@ -178,7 +178,6 @@
   }
 
   .icon-div {
-      /* margin-left: -1em; */
       margin-top: 0em;
   }
 
@@ -194,10 +193,6 @@
       padding: 2em;
   }
 
-  /* .page-bar {
-      padding: 0;
-      border-radius: 0;
-  } */
 
   h1.bold {
       font-weight: bolder;
@@ -408,7 +403,6 @@
 
   .email-action-desscription {
       font-size: 12px;
-      /* text-transform: lowercase; */
   }
 
   .capitalize {
@@ -482,30 +476,6 @@
   .gu-block-content {
       margin: 7px 0;
   }
-
-  /* .scrollbar {
-      max-height: 200px;
-      overflow: auto;
-  } */
-
-  /* .scrollbar::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      background-color: #F5F5F5;
-  } */
-
-  /* .scrollbar::-webkit-scrollbar {
-      width: 6px;
-      background-color: #F5F5F5;
-  } */
-
-  /* .scrollbar::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-      background-color: #555;
-  } */
 
   .form-check-label {
       border: 1px solid rgba(218, 218, 218, 0.53);
