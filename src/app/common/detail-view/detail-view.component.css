@@ -5,3 +5,7 @@
 .disabled{
 	pointer-events: none;
 }
+
+a>span.glyphicon.glyphicon-remove {
+  margin-top: 4px;
+}

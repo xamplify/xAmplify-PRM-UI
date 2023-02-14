@@ -41,7 +41,7 @@ hr {
 }
 
 .portlet.box, .portlet>.portlet-body {
-    border-radius: 0;
+    /* border-radius: 0; */
 }
 
 .empty-box {
@@ -62,13 +62,13 @@ hr {
 }
 
 .portlet {
-    border-radius: 0;
+    /* border-radius: 0; */
     margin: 1em;
 }
 
-.portlet.light {
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
-}
+/* .portlet.light {
+    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4); *
+} */
 
 .fa.fa-user-plus {
     font-size: 1.3em;
@@ -308,7 +308,7 @@ hr {
 }
 
 .tmutttpx {
-    width: 236px !important;
+    width: 220px !important;
 }
 
 .tmu-refresh-padding {
@@ -387,4 +387,23 @@ hr {
 
 .mbtpxni{
     margin-bottom: 20px !important;
+}
+
+.caption{
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+.table{
+    margin-bottom: 0px;
+}
+
+
+@media  (max-width: 1200px) {
+    .tmutttpx{
+        width:134px !important;
+    }
+}
+.btn + .btn {
+    margin-left: 0px;
 }

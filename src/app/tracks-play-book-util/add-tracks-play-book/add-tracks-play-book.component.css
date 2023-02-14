@@ -157,7 +157,7 @@
 }
 
 .portlet.box {
-    border: 1px solid #c4c1bb;
+    /* border: 1px solid #c4c1bb; */
     overflow: hidden;
     min-height: 425px;
 }
@@ -462,7 +462,7 @@ label {
     color: #505659;
     white-space: nowrap;
     line-height: 2em;
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
 }
 
 .item__last-modified,
@@ -1145,3 +1145,19 @@ input.cmn-toggle-round-flat:checked+label:after {
         width:130%;
     }
 }
+.portlet.light .form .form-body {
+    padding-left: 0;
+    padding-right: 11px;
+  }
+  /* sudha sri */
+  .steps-view{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .pt15{
+    padding-top: 20px !important;
+  }
+  .pt5{
+    padding-top: 5px !important;
+  }

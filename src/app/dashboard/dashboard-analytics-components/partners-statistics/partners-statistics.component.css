@@ -19,7 +19,8 @@
 
 
 .partners-text {
-    font-size: 14px;
+     /* 10-01-2023 */
+    /* font-size: 14px; */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -120,4 +121,8 @@
     .mPad0{
         padding: 0px;
     }
+}
+
+.input-medium{
+    width:auto !important;
 }

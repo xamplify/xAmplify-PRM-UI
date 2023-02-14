@@ -292,7 +292,6 @@
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                     <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0 && !isContactListLoader" style="color: #ff3a3a;">No {{contactType}} found</p>
                      <div class="table-responsive">
                         <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
                            <div class="input-icon" style="position:relative;right: -11px;">
@@ -794,7 +793,7 @@
                    <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
                    </select>
                 </div>
-                <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
+                <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -7px;padding-right: 10px;margin-right: 21px; float:right;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
                 </span>
                 <ul class="dropdown-menu pull-right">

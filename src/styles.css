@@ -3,14 +3,14 @@
 @import '~ngx-sharebuttons/styles/themes/default/default-theme.css'; */
 h1 {
   color: #369;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Gantari',Arial, Helvetica, sans-serif;
   font-size: 250%;
 }
 
 h2,
 h3 {
   color: #444;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Gantari',Arial, Helvetica, sans-serif;
   font-weight: lighter;
 }
 
@@ -22,7 +22,7 @@ body,
 input[text],
 button {
   color: #888;
-  font-family: Cambria, Georgia;
+  font-family: 'Gantari',Cambria, Georgia;
 }
 
 a {
@@ -395,7 +395,7 @@ nav a.active {
 
 .portlet.light,
 .dashboard-stat2 {
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   padding: 10px !important;
 }
 
@@ -435,7 +435,7 @@ nav a.active {
 .bootstrap-switch,
 .bootstrap-switch-handle-on,
 .bootstrap-switch-handle-off button {
-  border-radius: 0 !important;
+  /* border-radius: 0 !important; */
   webkit-border-radius: 0 !important;
 }
 
@@ -468,7 +468,7 @@ tr.highlight {
 }
 
 .tabbable-custom {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) !important; */
 }
 
 .control-label {
@@ -517,7 +517,8 @@ tr.highlight {
 .tgrid > tbody > tr > th,
 .tgrid > thead > tr > td,
 .tgrid > thead > tr > th {
-  padding: 10px !important;
+  /* 10-01-2023 */
+  /* padding: 10px !important; */
   vertical-align: middle !important;
   color: #555555;
 }
@@ -672,15 +673,16 @@ a {
   display: inline-block;
 }
 
+/* 09-01-2023 */
 .actions-block i,
 .circled-number {
   border: 1px solid #5bb2f5;
   color: #5bb2f5;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   text-align: center;
-  line-height: 32px !important;
+  line-height: 28px !important;
   vertical-align: middle;
   margin-right: 7px;
   font-size: 13px !important;
@@ -711,21 +713,21 @@ a {
 }
 
 .close-circle {
-  border: 1px solid #00a6e8;
+  border: 1px solid #ddd;
   padding: 5px;
   text-align: center;
   color: #00a6e8;
-  background-color: #fff;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  background-color: #f1f3fa;
+  width: 34px;
+  height: 34px;
+  border-radius: 3px;
   display: block;
   float: right;
 }
 
 .close-circle i {
   display: block !important;
-  margin-top: -1px;
+  margin-top: 4px;
 }
 
 .close-circle:hover {
@@ -797,7 +799,10 @@ legend {
 }
 
 .text-primary {
-  color: #008fd5 !important;
+  /* 10-01-2023 (#008fd5) */
+  color: #333 !important;
+  /* color: #fff !important; */
+
 }
 
 .text-white {
@@ -1073,12 +1078,17 @@ strong {
 
 @media screen and (min-width: 991px) {
   .side-bar {
-    position: relative;
+    /* position: relative;
     right: -42px;
     top: 24px;
     cursor: pointer;
     color: #a8adad;
-    display: block;
+    display: block; */
+    position: relative;
+    top: 24px;
+    cursor: pointer;
+    color: #a8adad;
+    display: flex;
   }
 }
 
@@ -1135,10 +1145,10 @@ strong {
   transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
-.modal-body {
+/* .modal-body {
   max-height: calc(100vh - 122px);
   overflow-y: auto;
-}
+} */
 
 .modal.right.fade.in .modal-dialog {
   right: 0 !important;
@@ -1197,6 +1207,8 @@ strong {
 
 .modal-body {
   max-height: calc(100vh - 122px);
+  /* max-height: calc(100vh - 135px); */
+  /* height: auto; */
   overflow-y: auto;
 }
 
@@ -1264,7 +1276,7 @@ strong {
 }
 
 .lt-green-c {
-  color: #58cc00 !important;
+  color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
 
@@ -1289,7 +1301,7 @@ strong {
 }
 
 .pure-g-c {
-  color: #08f145 !important;
+  color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
 
@@ -1414,7 +1426,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 
@@ -1438,7 +1450,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #00a6e847 !important;
+  background-color: #eee !important;
   color: white;
 }
 .info-text-color {
@@ -1526,7 +1538,7 @@ strong {
 
 .green-banner {
   background-color: green;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 158px;
@@ -1535,9 +1547,11 @@ strong {
   margin: 0 0;
 }
 .welcome-header {
-  margin: 0.3em 0;
-  color: #00a6e8;
-  font-weight: 400;
+  margin: 0px;
+  /* color: #00a6e8; */
+  font-weight: 600;
+  padding:5px;
+  
 }
 
 .text-overflow {
@@ -1605,7 +1619,7 @@ strong {
 /***03 Jun******/
 .view-banner {
   background-color: #00a6e8;
-  color: white;
+  color: white !important;
   padding: 4px;
   text-align: center;
   width: 125px;
@@ -1718,7 +1732,7 @@ strong {
 
 .view-banner-agency {
 	background-color: #00a6e8;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;
@@ -1727,12 +1741,12 @@ strong {
 }
 
 .view-banner-hidden {
-	color: #f1f1f1;
+	color: #f1f1f1 !important;
 }
 
 .view-banner-green {
 	background-color: #60bb23;
-	color: white;
+	color: white !important;
 	padding: 6px;
 	text-align: center;
 	width: 175px;
@@ -1741,7 +1755,7 @@ strong {
 
 .view-banner-draft {
 	background-color: #f76c1a;
-	color: #fff;
+	color: #fff !important;
 	padding: 3px 6px 3px 6px;
 	text-align: center;
 	font-size: 10px;
@@ -1767,3 +1781,56 @@ strong {
   top: -7px;
 }
 
+/************* 21-12-2022**********/
+.group-dropdown{
+	position: relative;
+    display: inline-block;
+}
+.group-dropdown:hover .group-dd-content
+{
+   display: block;
+}
+.group-dd-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width:  max-content;
+    box-shadow: 0 8px 16px #0003;
+    z-index: 1200;
+    border: 1px solid #dadada;
+    border-radius: 3px;
+    align-items: center;
+	top: 34px;
+    padding: 10px;
+	cursor: pointer;
+}
+.group-dd-content ul li i{
+	width: auto;
+}
+
+/****** tharak(22-12-2022)*****/
+.disabled{
+	pointer-events: auto;
+    cursor: not-allowed;
+    /* opacity: 0.5; */
+}
+
+.pb-26 {
+  padding-bottom: 26px !important;
+}
+.card-radius{
+  border-radius:10px !important;
+}
+.border-none{
+  border: none !important;
+}
+.img1 {
+  background: #34495a;
+  text-align: center;
+  border-radius: 10px 10px 0px 0px;
+  background-image: linear-gradient( 30deg,#34495a  50%, transparent 50%) !important;
+background-size: 1090px;
+background-repeat: no-repeat;
+background-position: 0;
+transition: background 300ms ease-in-out;
+}

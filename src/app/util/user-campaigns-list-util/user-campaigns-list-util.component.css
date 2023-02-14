@@ -99,7 +99,7 @@ img.active {
         top:-5px!important;;
     }
     .mMargin{
-        margin: 5px 10px!important;
+        margin: 0px 3px!important;
     }
 
     .mWidth{
@@ -124,4 +124,24 @@ img.active {
 }
 .mBottom{
     bottom: 3px!important;
+} */
+@media screen and (max-width:479px){
+ .display{
+    display: block !important;
+ }
+ .mMargin{
+    margin: 2px 1px!important;
+}
+.p-top{
+    padding-top: 1px !important;
+}
+.align{
+    height: 34px !important;
+    top: 2px;
+}
+}
+/* @media screen and (max-width:479px){
+.mMargin{
+    margin: 1px 2px!important;
+}
 } */

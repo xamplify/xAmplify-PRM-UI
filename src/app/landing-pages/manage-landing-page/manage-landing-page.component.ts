@@ -79,6 +79,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     showAllLandingPages(type: string, index: number) {
         this.selectedLandingPageTypeIndex = index;
         this.pagination.filterKey = type;
+        this.pagination.pageIndex = 1;
         this.listLandingPages(this.pagination);
     }
 

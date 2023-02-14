@@ -3,3 +3,7 @@ a.disabled {
    cursor: not-allowed;
 }
 .emailTempCss { width:259px; }
+/* sudha sri */
+.left-menu-color{
+   position: absolute;background-color: rgb(52, 73, 90);height: 100% !important;
+}

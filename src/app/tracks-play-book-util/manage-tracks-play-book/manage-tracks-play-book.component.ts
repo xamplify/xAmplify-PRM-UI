@@ -49,6 +49,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   moduleId:number = 0;
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+  titleHeader:string = "";
+  suffixHeader:string = "";
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -60,6 +62,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
     this.tracksModule = this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK];
     this.moduleId = this.tracksModule ? this.roles.learningTrackId :this.roles.playbookId;
     this.isPartnerView = this.router.url.indexOf('/shared') > -1;
+    this.titleHeader = this.tracksModule ? "Tracks" : "Play Books";
+    this.suffixHeader = this.isPartnerView ? 'Shared ':'Manage ';
     if(this.folderListViewCategoryId!=undefined){
 			this.categoryId = this.folderListViewCategoryId;
 			this.folderListView = true;
@@ -138,6 +142,7 @@ setViewType(viewType: string) {
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.categoryId = this.categoryId;
     pagination.lmsType = this.type;
+
     /**********Vanity Url Filter**************** */
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;

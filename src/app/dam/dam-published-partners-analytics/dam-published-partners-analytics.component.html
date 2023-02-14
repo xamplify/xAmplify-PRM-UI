@@ -30,9 +30,9 @@
      <div class="clearfix">
         <div class="col-xs-12">
            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-           <div class="portlet box blue">
-              <div class="portlet-title">
-                 <div class="caption" translate>
+           <div class="portlet light">
+              <div class="portlet-title" style="padding-bottom: 3px;border-bottom: none;">
+                 <div class="caption" style="padding-top: 9px !important;padding-left: 4px !important;" translate>
                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                     Published {{authenticationService?.partnerModule?.customName}}
                  </div>
@@ -46,15 +46,15 @@
                     </div>
                     <div class="portlet-input input-inline">
                        <div class="input-icon right">
-                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search.." (keypress)="eventHandler($event.keyCode)">
+                          <input type="text" id="sort-text" style="height: 34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search.." (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                        </div>
                     </div>
                  </div>
               </div>
-              <div class="portlet-body table-responsive" style="overflow: hidden;">
-              <div class="page-bar">
+              <div class="table-responsive" style="overflow: hidden;">
+              <div style="padding-bottom: 15px;margin-left: -18px;">
 		         <ul class="page-breadcrumb">
 		            <li>
                      <span title="{{selectedAssetName}}">
@@ -67,7 +67,7 @@
                  <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                  <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix" *ngIf="!listLoader.isLoading">
-                    <div class="col-xs-12" style="padding: 10px 0;">
+                    <div class="col-xs-12" style="padding: 0px 0;margin-top: 5px;">
                        <div class="table-responsive">
                           <table class="table tgrid" aria-describedby="published-partners-list">
                              <thead>

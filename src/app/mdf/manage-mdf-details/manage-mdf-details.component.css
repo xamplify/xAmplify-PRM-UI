@@ -1,0 +1,10 @@
+/* sudha sri */
+@media (max-width:425px){
+    .pt{
+        padding-top: 3px;
+    }
+    .pt-pl{
+        padding-top: 7px;
+        padding-left: 9px;
+    }
+}

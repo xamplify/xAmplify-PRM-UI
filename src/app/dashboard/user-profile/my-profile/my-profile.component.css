@@ -481,9 +481,9 @@ input:checked + .slider:before {
   padding-bottom: 10px;
 }
 
-.page-bar {
+/* .page-bar {
   border-radius: 0;
-}
+} */
 
 .portlet.light {
   padding: 20px;

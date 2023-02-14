@@ -35,7 +35,7 @@ cursor: default;
 
 .view-banner{
    background-color: #00a6e8;
-    color: white;
+    color: white !important;
     padding: 4px;
     text-align: center;
     width: 125px;
@@ -182,8 +182,8 @@ cursor: default;
 }
 
 .ref-mar{
-  margin-top: 3px !important;
-  margin-left: 10px !important;
+  /* margin-top: 3px !important; */
+  margin-left: -1px !important;
 }
 
 .mxv{
@@ -219,7 +219,7 @@ cursor: default;
     padding: 0px!important;
   }
   .mDamSearch{
-    right: 0px!important;
+    right: 9px!important;
     width: 100%;
   }
   .mDamResponse{
@@ -245,6 +245,10 @@ cursor: default;
   .mDisableColor{
     color: #888!important;
     border: 1px solid;
+}
+.ref-mar{
+    margin-left: -16px !important;
+    margin-right: 2px;
 }
 }
 
@@ -284,4 +288,26 @@ cursor: default;
 
 .min-width-thtwpx{
   min-width: 320px;
+}
+/* sudha sri */
+@media (max-width:320px){
+  .pb3{
+    padding-bottom: 3px;
+  }
+}
+#mt15{
+  margin-top: 15px;
+}
+@media screen and (max-width:479px){
+  .mt15{
+    margin-top: 15px;
+  }
+}
+@media screen and (max-width:320px){
+  .rSearch{
+    right: -2px!important;
+  }
+}
+.mb10{
+  margin-bottom: 6px !important;
 }

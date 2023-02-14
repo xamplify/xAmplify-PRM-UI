@@ -87,7 +87,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     width: string = "";
     isListView: boolean = false;
     defaultTabClass = "col-block";
-    activeTabClass = "col-block col-block-active";
+    activeTabClass = "col-block col-block-active width";
     completedTabClass = "col-block col-block-complete";
     disableTabClass = "col-block col-block-disable";
 
@@ -955,7 +955,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else {
                 this.isCampaignDetailsFormValid = false;
             }
-
+        }
+        if(!this.isValidCampaignName){
+            this.isCampaignDetailsFormValid = false;
         }
     }
     validateEmail(emailId: string) {
@@ -2929,7 +2931,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             } else if ("NOW" == this.campaignLaunchForm.value.scheduleCampaign) {
                 message = " launching ";
             }
-            this.refService.showSweetAlertProcessingLoader('We are saving the campaign');
+            this.refService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
             this.dataError = false;
             this.refService.goToTop();
             this.campaignService.saveCampaign(data)
@@ -3629,11 +3631,16 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         $('#edit-template').show(600);
         this.editTemplateLoader = true;
         this.beeContainerInput['emailTemplateName'] = landingPage.name;
-        this.landingPageService.getJsonContent(landingPage.id).subscribe(
+        this.landingPageService.getById(landingPage.id).subscribe(
             response=>{
-                this.beeContainerInput['module'] = "pages";
-                this.beeContainerInput['jsonBody'] = response.message;
-                this.beeContainerInput['id'] = landingPage.id;
+                if(response.statusCode==200){
+                    this.beeContainerInput['module'] = "pages";
+                    this.beeContainerInput['jsonBody'] = response.data.jsonBody;
+                    this.beeContainerInput['id'] = landingPage.id;
+                }else{
+                    this.hideEditTemplateDiv();
+                    this.refService.showSweetAlertServerErrorMessage();
+                }
             },error=>{
                 this.hideEditTemplateDiv();
                 this.refService.showSweetAlertServerErrorMessage();

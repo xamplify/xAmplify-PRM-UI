@@ -82,7 +82,7 @@ export class ManageLeadsComponent implements OnInit {
   prm: boolean;
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
-
+  titleHeading:string = "";
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -296,6 +296,7 @@ export class ManageLeadsComponent implements OnInit {
   showLeads() {
     this.getCounts();
     this.selectedTabIndex = 1;
+    this.titleHeading = "Total ";
     this.resetLeadsPagination();
     this.campaignPagination = new Pagination;
     this.campaignPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
@@ -314,6 +315,7 @@ export class ManageLeadsComponent implements OnInit {
   showWonLeads() {
    // this.referenceService.loading(this.httpRequestLoader, true);
     this.selectedTabIndex = 2;
+    this.titleHeading = "Won ";
      this.resetLeadsPagination();
     this.leadsPagination.filterKey = "won";
     this.campaignPagination = new Pagination;
@@ -333,6 +335,7 @@ export class ManageLeadsComponent implements OnInit {
 
   showLostLeads() {
     this.selectedTabIndex = 3;
+    this.titleHeading = "Lost "
     this.resetLeadsPagination();
     this.leadsPagination.filterKey = "lost";
     this.campaignPagination = new Pagination;
@@ -352,6 +355,7 @@ export class ManageLeadsComponent implements OnInit {
 
   showConvertedLeads() {
     this.selectedTabIndex = 4;
+    this.titleHeading = "Converted ";
     this.resetLeadsPagination();
     this.leadsPagination.filterKey = "converted";
     this.campaignPagination = new Pagination;

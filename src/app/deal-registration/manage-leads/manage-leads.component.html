@@ -199,7 +199,7 @@
         <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
           <app-pagination [pagination]="pagination" [type]="'deal-leads'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
             (notifyParentDropDown)="listCampaignPartners($event)"></app-pagination>
-          <select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
+          <select class="form-control" style="float: right; width: auto;margin-top: -37px;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
             <option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
           </select>
         </div>

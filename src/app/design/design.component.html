@@ -15,32 +15,33 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div class="portlet light">
-                <div class="portlet-title">
-                    <div class="caption" translate>
-                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a Design
+            <div class="portlet light padding" style="border: none;background: none;">
+                <div class="portlet-title" style="border:none;">
+                    <div class="caption" translate style="font-size:20px !important;">
+                        <!-- <i class="fa fa-cogs mt" aria-hidden="true"></i> -->
+                        Create a Design
                     </div>
                     <div>
-                        <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="btn btn custom" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <div class="row" style="margin-top: 20px;">
+                    <div class="row" style="margin-top: 28px;">
                         <ng-container *ngIf="isLoading">
                             <app-landing-page-loader [maxBoxLength]=3></app-landing-page-loader>
                         </ng-container>
                         <ng-container *ngIf="!isLoading">
                             <div *ngIf="emailTemplate" class="col-md-4">
-                                <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                                <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1">
-                                            <img alt="Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/email-design.png">
+                                            <img alt="Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/templates.svg">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Templates
+                                            <h4 class="header-text-css" translate>Templates
                                             </h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
-                                                For use in email, video and event campaigns.
+                                            <p class="header-description-css" translate>
+                                                Ideal for utilization in email marketing, video campaigns, and event promotions.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable">
@@ -62,15 +63,15 @@
                                 </div>
                             </div>
                             <div *ngIf="form" class="col-md-4">
-                                <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                                <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1">
-                                            <img alt="Forms" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/form-design.png">
+                                            <img alt="Forms" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/forms.svg">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Forms</h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
-                                                Gather basic contact info, newsletter sign ups, feedback, and more.
+                                            <h4 class="header-text-css" translate>Forms</h4>
+                                            <p class="header-description-css" translate>
+                                                Gather information such as contact details, newsletters, customer feedback effectively.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable">
@@ -93,16 +94,16 @@
                                 </div>
                             </div>
                             <div *ngIf="landingPage || partnerLandingPage" class="col-md-4">
-                                <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                                <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1">
-                                            <img alt="Pages" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/page-design.png">
+                                            <img alt="Pages" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/pages.svg">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Pages
+                                            <h4 class="header-text-css" translate>Pages
                                             </h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
-                                                Turn web traffic into leads and improve conversion rates.
+                                            <p class="header-description-css" translate>
+                                               	Transform web visitors into potential leads and enhance the success rate of conversions.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable" *ngIf="landingPage">

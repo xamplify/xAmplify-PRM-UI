@@ -19,7 +19,7 @@
   <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
   <div class="row" id="responsive" *ngIf="!httpRequestLoader.isLoading && surveyAnalytics != undefined">
     <div class="col-xs-12 p5">
-      <div class="portlet light">
+      <div class="portlet light" style="margin-top: 17px !important;">
         <div class="portlet-title">
           <div class="col-xs-12">
             <h3 class="text-wrap" title="{{surveyAnalytics?.formName}}"><b>{{surveyAnalytics.formName}}</b></h3>
@@ -50,7 +50,7 @@
 
     <ng-container *ngIf="!detailedResponse">
       <ng-container *ngIf="showTab === 'question-summarries'">
-        <div class="col-md-12" *ngFor="let questionSummary of surveyAnalytics?.questionSummaries;let i  = index">
+        <div class="col-md-12" style="padding-top: 20px;" *ngFor="let questionSummary of surveyAnalytics?.questionSummaries;let i  = index">
           <div class="panel panel-info">
             <div class="panel-heading panel-heading-custom">
               <h3 class="panel-title mt7"><b>Q{{i+1}}. </b>{{questionSummary.question}}</h3>

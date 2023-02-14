@@ -224,6 +224,7 @@ saveComment(){
     this.mdfRequestCommentDto.requestId = parseInt(this.selectedRequestDetails[5]);
     this.mdfService.saveComment(this.mdfRequestCommentDto).subscribe((result: any) => {
        this.stopLoaders();
+       this.invalidComment = true;
        this.mdfRequestCommentDto = new MdfRequestCommentDto();
        this.listComments();
     }, error => {

@@ -22,7 +22,6 @@
 
 .swal2-modal {
     background-color: #fff;
-    font-family: Open Sans !important;
     border-radius: 0;
     box-sizing: border-box;
     text-align: center;
@@ -220,7 +219,7 @@
 }
 
 .swal2-icon.swal2-info {
-    font-family: "Open Sans", sans-serif;
+    font-family:  'Gantari',"Open Sans", sans-serif;
     color: #3fc3ee;
     border-color: #3fc3ee
 }

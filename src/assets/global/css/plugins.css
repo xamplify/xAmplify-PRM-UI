@@ -2462,13 +2462,13 @@ Morris Charts
   font-weight: 400;
   font-size: 15px;
   color: #7D8C9D;
-  font-family: "Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
 }
 .morris-hover.morris-default-style .morris-hover-point {
   text-align: left;
   font-size: 14px;
   font-weight: 400;
-  font-family: "Open Sans", sans-serif;
+  font-family:  'Gantari',"Open Sans", sans-serif;
 }
 
 /***

@@ -3,7 +3,7 @@
 }
 
 .text {
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -13,14 +13,15 @@ h4 {
 }
 
 h5 {
-    font-size: 14px!important;
+    font-size: 13px!important;
     font-weight: 400!important;
 }
 
-.img1 {
-    background: #ebf1ff;
+/* .img1 {
+    background: #34495a;
     text-align: center;
-}
+    border-radius: 20px 20px 0px 0px;
+} */
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 15px;
@@ -48,6 +49,7 @@ h5 {
     -moz-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
 }
 
 .pointer {
@@ -56,7 +58,7 @@ h5 {
 
 .design-name {
     color: #008fd5;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     margin-left: 5px;
 }
@@ -67,7 +69,7 @@ h5 {
 
 .cpad {
     padding: 0px !important;
-    min-height: 473px !important;
+    /* min-height: 473px !important; */
 
 }
 
@@ -86,9 +88,9 @@ h5 {
     text-align: center;
     padding-left: 10px;
     color: #888;
-    font-size: 12px;
+    font-size: 14px;
     padding-top: 10px;
-    /* height: 60px; */
+    height: 76px;
 }
 
 .bordernone{
@@ -122,4 +124,19 @@ h5 {
 
 .mltp{
     margin-left: 15% !important;
+}
+.mb12{
+    margin-bottom: 12px !important;
+}
+.portlet .light{
+    padding:0px !important;
+}
+.img1:hover{
+    background-position: 100%;
+    /* color: black !important; */
+    background-color: #b8def1;
+    transition-duration: 500ms;
+}
+p{
+    margin:0px;
 }

@@ -9,8 +9,19 @@
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                            <div class="btn-group pull-right mb10">
+                        <div class="col-xs-3">
+                            <h4 class="pull-left m10 text-primary">{{suffixHeader}}{{titleHeader}}</h4>
+                        </div>
+                        <div class="page-toolbar col-xs-9" style="padding-top: 4px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                            <div class="btn-group pull-right mb10" style="display: flex;">
+                                <div class="">
+                                <div class="group-dropdown">
+                                    <button
+							[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                    modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+							style="padding: 10px !important"></button>
+                                    <!-- <button class="btn btn-xs l-g-view {{viewClass}}" [ngClass]="!showUpArrowButton && !folderListView?'':'hidden-xs' " style="padding: 10px !important"></button> -->
+                                  <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('l')">
                                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
@@ -26,10 +37,16 @@
                                             <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="No Image Found"/>
                                         </span>
                                     </ng-container>
-                                    <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                                    <!-- <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span>
+                                    </span> -->
                                 </ng-container>
+                                </div>
+                                </div>
+                                <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')" style="margin-top: -5px !important;">
+                                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                </span>
+                               </div>
                                 <div class="inputs" style="float: right"> 
                                     <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">
@@ -39,7 +56,7 @@
                                                 <i class="fa fa-search" aria-hidden="true"></i></button>
                                         </div>
                                     </div>
-                                    <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                                    <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true">
                                         <i class="fa fa-refresh" aria-hidden="true"></i>
                                       </a>
                                 </div>
@@ -189,7 +206,7 @@
     
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
-                        <div class="grid-box box-shadow">
+                        <div class="grid-box">
                             <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/lms-thumbnail.png';" alt="{{learningTrack.title}}">
                             <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
                                 {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>

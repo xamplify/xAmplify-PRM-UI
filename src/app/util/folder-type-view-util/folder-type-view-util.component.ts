@@ -12,6 +12,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Roles } from 'app/core/models/roles';
+import { Angular2Csv } from 'angular2-csv';
 declare var $: any;
 @Component({
   selector: 'app-folder-type-view-util',
@@ -31,6 +32,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
   roles:Roles = new Roles();
   isPartnerView = false;
   type:string = "";
+  titleHeader:string = "";
+  suffixHeader:string = "";
   constructor(private router: Router,
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -53,6 +56,15 @@ export class FolderTypeViewUtilComponent implements OnInit {
       pagination.partnerCompanyId = pagination.companyId;
       pagination.partnerView  = this.isPartnerView;
     }
+    this.suffixHeader = this.isPartnerView ? "Shared " : "Manage ";
+    if(this.pagination.categoryType == "DAM"){
+      this.titleHeader = " Digital Assets";
+    } else if (this.pagination.categoryType == "LEARNING_TRACK") {
+      this.titleHeader = "Tracks";
+    } else if (this.pagination.categoryType == "PLAY_BOOK") {
+      this.titleHeader = "Play Books";
+    }
+
     pagination.userId = this.authenticationService.getUserId();
     this.authenticationService.setVanityUrlFilter(pagination);
     this.userService.getCategories(this.pagination)

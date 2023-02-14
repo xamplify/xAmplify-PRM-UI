@@ -84,8 +84,9 @@ New Profile Page
 
 .profile-usermenu ul li a {
   color: #93a3b5;
-  font-size: 16px;
-  font-weight: 400;
+  /* 11-01-2023 */
+  /* font-size: 16px;
+  font-weight: 400; */
 }
 
 .profile-usermenu ul li a i {

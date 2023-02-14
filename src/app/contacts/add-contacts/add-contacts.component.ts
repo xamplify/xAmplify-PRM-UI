@@ -211,7 +211,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else if( currentUrl.includes( 'home/assignleads' ) ){
             this.isPartner = false;
             this.assignLeads = true;
-            this.checkingContactTypeName = "Lead"
+            this.checkingContactTypeName = "Share Lead"
             this.module = "leads";
         }
         else {

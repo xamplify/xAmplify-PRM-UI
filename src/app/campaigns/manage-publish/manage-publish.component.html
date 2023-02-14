@@ -24,7 +24,7 @@
         <a translate>Manage Campaigns</a>
       </li>
     </ul>
-    <div class="pull-right">
+    <div class="pull-right" style="padding: 1px 1px 1px;">
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
         (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Archived Campaigns</button>
       <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"
@@ -41,9 +41,10 @@
   <ng-container *ngIf="!addWorkflows">
     <div class="row">
       <div class="col-md-12 mSlide">
-        <div class="tabbable tabbable-custom tabbable-noborder">
+        <div class="page-bar">
+        <div class="p10" style="box-shadow: none !important;border-radius: 5px;">
           <div class="tab-content">
-            <div class="page-bar m10">
+            <div class="row m0">
               <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 mWid"
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                 <li class="filter" (click)="filterCampaigns('NONE',0)"
@@ -77,65 +78,81 @@
                   translate>Survey</li>
                 <li class="filter" style="display: none;" translate>Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-12 col-md-8"
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-8 p0"
                 *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                <div class="row">
-                  <div class="btn-group col-xs-12 col-sm-4 col-md-4 p0">
-                    <div style="float: right">
-                      <ng-container class='m10'>
-                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                          title="Calendar View">
+                <div class="col-xs-12">
+                  <div class="row pull-right" style="display: flex;">
+                    <div class="hidden-xs" style="padding-right:  5px">
+                    <div class="group-dropdown">
+                      <button
+                      [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                            modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                      style="padding: 10px !important"></button>
+                        <!-- <button class="hidden-xs l-g-view {{viewClass}}" style="padding: 10px !important"></button> -->
+                      <div class="group-dd-content">
+                       <ng-container class='m10' >
+                        <div style="display: flex; justify-content: space-between; padding-left: 0;">
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
+                          title="Calendar View" tabindex="0">
                           <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                         </span>
-                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                           title="List View" [class.disabled]="modulesDisplayType.isListView"
-                          (click)="setViewType('List')">
+                          (click)="setViewType('List')" >
                           <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                        </span>
-                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                      </span>
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                           title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
                           (click)="setViewType('Grid')">
                           <i class="fa fa-th-large p10" aria-hidden="true"></i>
                         </span>
                         <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
-                          <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                          <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                             title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
                             (click)="setViewType('Folder-Grid')">
                             <i class="fa fa-folder p10" aria-hidden="true"></i>
                           </span>
-                          <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width"
+                          <span class="btn btn-xs hidden-xs l-g-view margin-space"
                             data-toggle="tooltip" data-placement="bottom" title="Folder List View"
                             [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" />
+                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> -->
+                            <i class="fa fa-th p10" aria-hidden="true"></i>
+
                           </span>
+                          
                         </ng-container>
-                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"
+                        <!-- <span *ngIf="pagination.categoryId>0" class="btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" data-placement="bottom" title="Go back"
                           (click)="setViewType('Folder-Grid')">
-                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> -->
+                        </div>
                       </ng-container>
-                    </div>
-                  </div>
-                  <div class="col-xs-5 col-sm-4 col-md-3">
-                    <div class="mSortWid" style="float: left;">
-                      <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
-                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                        <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
-                        </option>
-                      </select>
 
-                      <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
-                        (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                        <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
-                          {{sortOption.name}}
-                        </option>
-                      </select>
                     </div>
-                  </div>
-
-                  <div class="col-xs-12 col-sm-4 col-md-5 manage-campaigns-prml mFloatSearch">
-                    <div class="portlet-input input-inline" style="display: inline-flex;">
-                      <div class="input-icon campaign-search-rr mr5">
+                    </div>
+                    </div>
+                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 5px;"
+                      data-toggle="tooltip" data-placement="bottom" title="Go back"
+                      (click)="setViewType('Folder-Grid')">
+                      <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                    <div class="col-xs-4 col-sm-4 col-md-4 p0">
+                      <div class="mSortWid">
+                        <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                          (ngModelChange)="getSortedResult($event)" style="position: relative;">
+                          <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                          </option>
+                        </select>
+  
+                        <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                          (ngModelChange)="getSortedResult($event)" style="position: relative;">
+                          <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
+                            {{sortOption.name}}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="portlet-input input-inline" style="display: inline-flex; margin-left: 5px;">
+                      <div class="input-icon campaign-search-rr">
                         <input type="text" class="form-control" [(ngModel)]="searchKey"
                           [ngModelOptions]="{standalone: true}" placeholder="Search"
                           (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
@@ -145,23 +162,22 @@
                           <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                       </div>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
                         title="Filter" (click)="toggleFilterOption()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                       </span>
-                      <div class="ml5">
-                        <a *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
-                          class="close-circle campaign-downloading-mt" data-toggle="tooltip" data-placement="top"
+                      <div class="pr5" style="display: flex;">
+                        <a  data-placement="bottom" (click)="listCampaign(pagination)" class="btn btn-xs  l-g-view" data-toggle="tooltip"
+                         title="Refresh">
+                        <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
+                      </a>
+                        <!-- <a  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
+                          class="btn btn-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                           title="Download">
-                          <i class="fa fa-download margin" aria-hidden="true"></i>
-                        </a>
-                        <a (click)="listCampaign(pagination)" class="close-circle mt10" data-toggle="tooltip"
-                          data-placement="top" title="Refresh">
-                          <i class="fa fa-refresh" aria-hidden="true"></i>
-                        </a>
+                          <i _ngcontent-c17="" class="fa fa-download p10" aria-hidden="true"></i>
+                        </a> -->
                       </div>
                     </div>
-
 
                   </div>
                 </div>
@@ -224,7 +240,7 @@
             </app-grid-loader>
             <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
             <!-----List View--------->
-            <section class='m10'
+            <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5'
               *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="table-responsive">
                 <table [class.bottomTableCss]="pagination.pagedItems.length<5"
@@ -331,7 +347,7 @@
                           </h6>
                         </td>
                       <td>
-                        <h4 class="moreipsis campaign-font" title="{{campaign.campaignName}}">
+                        <h4 class="moreipsis" title="{{campaign.campaignName}}">
                           <span><strong>{{campaign.campaignName}}</strong></span>
                         </h4>
                         <h5 class="moreipsis" [title]="campaign.createdBy">
@@ -646,7 +662,7 @@
                                 </a>
                               </ng-container>
                               <ng-container
-                                *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign ">
+                                *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
                                 <a (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip"
                                   data-placement="top" title="Show Download History" data-rel="fancybox-button">
                                   <i class="fa fa-history" aria-hidden="true"></i>
@@ -983,13 +999,13 @@
                 </table>
               </div>
             </section>
-            <div *ngIf="totalRecords <= 0 && modulesDisplayType.isListView" class="alert alert-info">
+            <div *ngIf="totalRecords <= 0 && modulesDisplayType.isListView" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
               <strong translate>No campaigns found</strong>
             </div>
             <div class="tab-pane active" *ngIf="modulesDisplayType.isGridView">
               <!----Grid View------>
               <div class="margin-top-10">
-                <div class="row mix-grid p10">
+                <div class="row mix-grid">
                   <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                   <ng-container
                     *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
@@ -1216,7 +1232,7 @@
                               </a>
                             </ng-container>
                             <ng-container
-                              *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign ">
+                              *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
                               <a (click)="goToTemplateDownloadPartners(campaign)" data-toggle="tooltip"
                                 data-placement="top" title="Show Download History" data-rel="fancybox-button">
                                 <i class="fa fa-history" aria-hidden="true"></i>
@@ -1282,13 +1298,12 @@
                 </div>
               </div>
               <!-- End of 24 -->
-              <div *ngIf="totalRecords <= 0 && !modulesDisplayType.isListView" class="alert alert-info">
+              <div *ngIf="totalRecords <= 0 && !modulesDisplayType.isListView" class=" col-xs-12 alert alert-info">
                 <strong translate>No campaigns found</strong>
               </div>
             </div>
-            <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-              <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError"
-                style="background:white">
+            <!-- <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+              <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
                 <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                   <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
                     (notifyParent)="setPage($event)"></app-pagination>
@@ -1303,9 +1318,27 @@
                   </select>
                 </div>
               </div>
-            </ng-container>
+            </ng-container> -->
           </div>
           <!-- End Of tab Content -->
+        </div>
+        <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+          <div class="col-xs-12 pt5" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
+            <div *ngIf="pagination.pagedItems.length !== 0" class="row" style="padding-left: 10px;margin-top: -15px;">
+              <app-pagination class="col-xs-10" [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
+                (notifyParent)="setPage($event)"></app-pagination>
+              <select class="col-xs-2 form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize"
+                (ngModelChange)="getNumberOfItemsPerPage($event)">
+                <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
+                </option>
+                <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[1]">
+                  {{numberOfItemsPerPage[1].name}}</option>
+                <option *ngIf="pagination.totalRecords>24" [ngValue]="numberOfItemsPerPage[2]">
+                  {{numberOfItemsPerPage[2].name}}</option>
+              </select>
+            </div>
+          </div>
+        </ng-container>
         </div>
       </div>
     </div>

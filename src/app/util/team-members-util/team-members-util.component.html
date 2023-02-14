@@ -49,35 +49,40 @@
 <div class="row">
   <!---Team Members---->
   <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
-  <!---Header-->
-  <div class="clearfix" *ngIf="isTeamMemberModule">
-    <section class="clearfix">
-      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
-        <div class="col-xs-6 col-sm-2 hidden-xs">
-          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
-              <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
-              <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
-          </div>
-      </div>
-        <div class="col-xs-12 col-sm-2">
-            <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
-                <h6 style="font-size:14px" translate>Add</h6>
-            </button>
-        </div>
-        <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
-            <a id="right" class="btn btn-success" (click)="downloadTeamMembersCsv()" download translate>Download CSV Template</a>
-        </div>
-      </ng-container>
-    </section>
-  </div>
- <!---End Of Header-->
  <!--List Of Team members---->
  <div class="portlet light">
-  <div class="portlet-title">
-    <div class="caption" translate>Team Members</div>
-    <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
+  <div class="portlet-title" style="border-bottom: none;">
+    <div class="row">
+      <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
+    <div class="caption" translate>Team Members
+      <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs margin-left-one-per" translate>
       <i class="fa fa-power-off" aria-hidden="true"></i> Logout
     </button>
+    </div>
+    </div>
+    <div class="col-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
+      <div class="row">
+        <div class="clearfix" *ngIf="isTeamMemberModule">
+          <section class="clearfix">
+            <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
+              <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
+                <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
+                    <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
+                    <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
+                </div>
+            </div>
+              <div class="col-xs-12 col-sm-4 pull-right">
+                  <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
+                      <h6 style="font-size:14px" translate>Add</h6>
+                  </button>
+              </div>
+            </ng-container>
+          </section>
+        </div>
+      </div>
+      <!-- close inner row-->
+    </div>
+    <div class="col-4 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
     <div class="tools zero-padding-margin">
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
@@ -90,18 +95,30 @@
                 </div>
             </div>
         </div>
-        <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
-          <i aria-hidden="true" class="fa fa-refresh"></i>
-       </a>
+        <span data-placement="bottom" class="btn btn-xs  l-g-view" data-toggle="tooltip"
+        title="Refresh" (click)="refreshList()">
+        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
+      </span>
+      <!-- Download TeamMembers Csv -->
+      <span data-placement="bottom" class="btn btn-xs  hidden-xs l-g-view" data-toggle="tooltip"
+        title="Download TeamMembers Csv" (click)="downloadTeamMembersCsv()" *ngIf="isTeamMemberModule &&!isLoggedInAsTeamMember 
+        && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier 
+        && !authenticationService?.module?.deletedPartner ">
+        <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+      </span>
+      <!-- End Download TeamMembers Csv-->
     </div>
   </div>
-  <div class="portlet-body clearfix">
-    <a *ngIf="!httpRequestLoader.isLoading" (click)="findPrimaryAdminAndExtraAdmins()">
+    </div>
+    <!-- close row-->
+  </div>
+  <div class="portlet-body clearfix" style="padding-top: 0px;">
+    <a *ngIf="!httpRequestLoader.isLoading && !authenticationService?.module?.deletedPartner" (click)="findPrimaryAdminAndExtraAdmins()">
       <span><strong>Admins : <span title="Availed Admins">{{analyticsCountDto?.availed}}</span>  / <span title="Total Admins">{{analyticsCountDto?.total}}</span></strong></span>
     </a>
     <div class="table-responsive">
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-      <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
+       <table class="table table-striped silvertm" id="team-members" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
         <thead>
           <tr>
             <th scope="row">
@@ -129,16 +146,19 @@
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
             <td>
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
-              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl" [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
+              <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
+              && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin" 
+              [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
                 <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}} : {{teamMember?.partnersCount}}</strong>
                </a>
               </span>
+              <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
             </td>
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
-              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null">
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
                   <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
                     <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
@@ -147,14 +167,18 @@
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
-            <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null">
+            <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
               <span><strong>No Group Selected</strong></span>
             </div>
+            <div class="alert alert-info" *ngIf="teamMember?.primaryAdmin">
+              <span><strong>N/A</strong></span>
+            </div>
+
             </td>
             <!---Second Admin---->
             <td *ngIf="showSecondAdmin && isTeamMemberModule">
               <div class="actions-block float-none">
-                <i  [className]="teamMember?.secondAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
+                <i  [className]="teamMember?.secondAdmin || teamMember?.primaryAdmin ? 'fa fa-check active-status':'fa fa-times red'" aria-hidden="true"></i >
               </div>
             </td>
             <!---Enabled---->
@@ -174,7 +198,7 @@
               </div>
               </td>
             <!---Actions-->
-            <td  class="actions-row" [hidden]="!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner">
+            <td  class="actions-row" [hidden]="(!authenticationService?.module?.loginAs && authenticationService?.module?.deletedPartner) || teamMember?.primaryAdmin">
               <div class="actions-block override-actions custom-width-icon">
                 <!--Login As-->
                 <ng-container *ngIf="teamMember?.loginAs">
@@ -187,8 +211,8 @@
                 </ng-container>
                 <!--XNFR-139-Primary Admin--->
                 <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="setPrimaryAdminOptions(teamMember)"
-                     [className]="teamMember.status!='APPROVE' || isLoggedInAsTeamMember ? 'inactive':''" >
-                  <i [className]="teamMember.status=='APPROVE' ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
+                     [className]="(teamMember.status!='APPROVE' || isLoggedInAsTeamMember) && !authenticationService?.module?.isAdmin ? 'inactive':''" >
+                  <i [className]="teamMember.status=='APPROVE' && authenticationService?.module?.isAdmin ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
                </a>
                 <!--Edit--->
                 <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
@@ -214,6 +238,11 @@
                 </a>
               </div>
             </td> 
+            <td  class="actions-row" *ngIf="teamMember?.primaryAdmin">
+              <div class="alert alert-info">
+                <span><strong>N/A</strong></span>
+              </div>
+            </td>
         </tr>
         </tbody>
       </ng-container>
@@ -230,7 +259,6 @@
       </div>
   </div>
 </div>
-
   </ng-container>
   <!---End Of Team Members---->
 
@@ -243,7 +271,7 @@
             <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle"  title="Go Back" (click)="goToManageTeam()">
+            <a class="close-circle"  title="Go Back" (click)="clearForm()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -371,7 +399,7 @@
 </div>
 <app-list-loader [hidden]="!addTeamMemberLoader.isLoading"></app-list-loader>
 <div class="portlet-body clearfix" [hidden]="addTeamMemberLoader.isLoading">
-  
+
   <div class="table-responsive">
     <table class="table table-striped silvertm" id="add-team-member-table"  aria-describedby="TeamMemberList">
       <thead>
@@ -485,7 +513,7 @@
 <!----XNFR-97----->
 <app-team-member-partners *ngIf="showPartnersPopup" [selectedTeamMemberId]="selectedTeamMemberId" (teamMemberPartnersPopupEventEmitter)="hidePartnersPreviewPopup($event)"></app-team-member-partners>
 
-<!----XNFR-97----->
+<!----XNFR-139----->
 <app-confirm-sweet-alert-util *ngIf="showPrimaryAdminConfirmSweetAlert" [parameterDto]="primaryAdminSweetAlertParameterDto" (notifyComponent)="enableAsPrimaryAdmin($event)"></app-confirm-sweet-alert-util>
 
 <!--XNFR-139 Admins Preview-->

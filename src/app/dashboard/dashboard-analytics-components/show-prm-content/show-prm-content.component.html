@@ -26,10 +26,10 @@
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/asset-library.png">
                   </div>
                   <div>
                     <h4 class="header-text-css" translate>Digital Asset Management</h4>
@@ -42,7 +42,7 @@
                       <span class="design-name" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text">
+                  <div class="text" [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -50,7 +50,7 @@
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
                     <h5>
                       <a class="prtfpx" (click)="navigate('dam/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -63,10 +63,10 @@
             <!--------Learning Track------------->
             <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/tracks.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/track-builder.png">
                   </div>
                   <div>
                     <h4 class="header-text-css" translate>Track Builder</h4>
@@ -79,7 +79,7 @@
                         <span class="design-name" translate>Add Tracks</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text" [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('tracks/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -87,7 +87,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
                     <h5>
                       <a (click)="navigate('tracks/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -100,10 +100,10 @@
             <!--------Play Books------------->
             <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.prmContentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.prmContentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.prmContentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.prmContentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/play-book.png">
                   </div>
                   <div>
                     <h4 class="header-text-css" translate>Play Book</h4>
@@ -116,7 +116,7 @@
                         <span class="design-name" translate>Add Play Books</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text" [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -124,7 +124,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
                     <h5>
                       <a  (click)="navigate('playbook/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>

@@ -21,16 +21,16 @@
     </div>
     <div class="row" *ngIf="statusCode==200">
         <div class="col-md-12">
-            <div class="portlet light clearfix">
+            <div class="portlet light clearfix" style="box-shadow: none;">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
-                <div class="portlet-title" style="border-bottom: 1px solid #eee;padding-bottom: 5px;">
+                <div class="portlet-title" style="border-bottom:none;padding-top: 10px;">
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6" style="padding-left: 11px;">
                             <div>
-                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
+                                <ul class="mix-filter" style="margin-top: -1px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>Regular (Public)
@@ -52,8 +52,16 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="padding-right: 22px;">
-                            <div class="btn-group pull-right">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="padding-right: 22px;padding-left: 5px;">
+                            <div class="btn-group pull-right" style="display: flex;">
+                                <div class="">
+                                <div class="group-dropdown">
+                                    <button
+                                    [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                                          modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                    style="padding: 10px !important"></button>
+                                    <!-- <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button> -->
+                                <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
                                         <i class="fa fa-th-list p10"  aria-hidden="true"></i>
@@ -61,21 +69,31 @@
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                         <i class="fa fa-th-large p10"  aria-hidden="true"></i></span>
 
-                                     <ng-container *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined')">
+                                     <ng-container *ngIf="(pagination.categoryId==0 || pagination?.categoryId=='undefined')">
                                         <span  class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
                                             title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
                                                 <i class="fa fa-folder p10" aria-hidden="true"></i>
                                         </span>
                                         <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
                                             title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                            <img src="assets/images/folder-list.png"  alt="Image not found" class="folder-list-image-custom-css"/>
+                                            <!-- <img src="assets/images/folder-list.png"  alt="Image not found" class="folder-list-image-custom-css"/> -->
+                                            <i class="fa fa-th p10" aria-hidden="true"></i>
+
                                         </span>
                                  </ng-container>
 
-                                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                                        <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                        </span>
+                                        </span> -->
                                 </ng-container>
+                                </div>
+                                <!-- close group-dd-content-->
+                                </div>
+                                <!--close group-dropdown-->
+                               </div>
+                               <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
+                                <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                               </span>
                                 <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                                     <div *ngIf="!isPartnerLandingPage">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
@@ -130,7 +148,9 @@
                                             <span class="gridHeader" translate>Page</span>
                                         </th>
                                         <th scope="row" class="hidden-xs text-center"  translate>Type</th>
-                                        <th scope="row" class="hidden-xs text-center" translate>Created On</th>
+                                        <th *ngIf="isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Shared On</th>
+                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Created On</th>
+                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Updated On</th>
                                         <th scope="row" class="text-center" style="min-width: 200px;" translate>Actions</th>
                                     </tr>
                                 </thead>
@@ -172,6 +192,15 @@
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                         </td>
+                                        <ng-container *ngIf="!isPartnerLandingPage">
+                                            <td class="hidden-xs text-center" *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
+                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage?.updatedDateInString">
+                                                </app-timestamp>
+                                            </td>
+                                            <td *ngIf="landingPage?.updatedDateInString?.length==0" class="text-center">
+                                               -
+                                            </td>
+                                        </ng-container>
                                         <td id="actions-td-width-xamp ">
                                             <div class="actions-block override-actions min-width-icon actionButtonAlign mActionButtonAlign">
                                                 <div class="mActionTop1">
@@ -277,7 +306,7 @@
                                                     aria-hidden="true"></i></a>
                                         <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                     class="fa fa-wpforms" aria-hidden="true"></i></a>
-                                        <span class="badge" id="notification-list" translate>{{landingPage.formsCount}}</span>
+                                        <span class="badge" id="notification-list" translate style="">{{landingPage.formsCount}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                         <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
@@ -330,15 +359,19 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="landingPageAliasUrl" #userinput>
                         <br>
+                        <div style="padding-top: 9px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')" translate>Copy
                             Link</a>
+                        </div>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')"  translate>Copy Embed
                             Link</a>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -4,7 +4,7 @@
 
 .text {
     text-align: center;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -18,10 +18,11 @@ h5 {
     font-weight: 400!important;
 }
 
-.img1 {
+/* .img1 {
     background: #ebf1ff;
     text-align: center;
-}
+    border-radius: 5px;
+} */
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 15px;
@@ -49,6 +50,7 @@ h5 {
     -moz-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
 }
 
 .pointer {
@@ -57,7 +59,7 @@ h5 {
 
 .design-name {
     color: #008fd5;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     margin-left: 5px;
 }
@@ -122,4 +124,16 @@ h5 {
 
 .mfpx{
     margin:14px !important;
+}
+.portlet .light{
+    padding:0px !important;
+}
+.padding{
+    padding: 0px 5px !important;
+}
+.img1:hover{
+    background-position: 100%;
+    /* color: black !important; */
+    background-color: #b8def1;
+    transition-duration: 500ms;
 }

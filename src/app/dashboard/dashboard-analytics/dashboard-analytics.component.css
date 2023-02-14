@@ -194,10 +194,10 @@
       padding: 2em;
   }
 
-  .page-bar {
+  /* .page-bar {
       padding: 0;
       border-radius: 0;
-  }
+  } */
 
   h1.bold {
       font-weight: bolder;
@@ -483,29 +483,29 @@
       margin: 7px 0;
   }
 
-  .scrollbar {
+  /* .scrollbar {
       max-height: 200px;
       overflow: auto;
-  }
+  } */
 
-  .scrollbar::-webkit-scrollbar-track {
+  /* .scrollbar::-webkit-scrollbar-track {
       box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
       border-radius: 10px;
       background-color: #F5F5F5;
-  }
+  } */
 
-  .scrollbar::-webkit-scrollbar {
+  /* .scrollbar::-webkit-scrollbar {
       width: 6px;
       background-color: #F5F5F5;
-  }
+  } */
 
-  .scrollbar::-webkit-scrollbar-thumb {
+  /* .scrollbar::-webkit-scrollbar-thumb {
       border-radius: 10px;
       box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
       background-color: #555;
-  }
+  } */
 
   .form-check-label {
       border: 1px solid rgba(218, 218, 218, 0.53);
@@ -514,6 +514,11 @@
       color: rgba(125, 125, 125, 0.74);
       letter-spacing: 0.5px;
       cursor: pointer;
+  }
+
+  .df-mt5{
+    display: flex;
+    margin-top: 5px;
   }
 
   .mg-tooltip {
@@ -582,3 +587,7 @@
       font-weight: 500;
       cursor: default;
   }
+/****** Tharak *******/
+.welcome-header {
+    padding:10px 0px;
+}

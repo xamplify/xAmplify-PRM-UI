@@ -78,6 +78,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
+	SuffixHeading:string = "";
+	titleHeader:string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
@@ -96,7 +98,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.callInitMethods();
 			this.videoFileService.campaignReport = false;
 		}
-		
+		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';		
 	}
 
 	callInitMethods() {
@@ -166,6 +168,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				} else {
 					this.referenceService.goToManageAssets(viewType,this.isPartnerView);
 				}
+				this.titleHeader = ' Assets';
 			}
 		}
 	}
@@ -667,5 +670,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
             this.updatedItemsCountEmitter.emit(this.exportObject);
 		}
 	 }
+
 
 }

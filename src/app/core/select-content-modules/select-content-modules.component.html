@@ -18,10 +18,11 @@
   </div>
   <div class="row" *ngIf="authenticationService?.module?.showContent && !authenticationService?.module?.contentLoader">
     <div class="col-md-12">
-      <div class="portlet light">
+      <div class="padding">
         <div class="portlet-title">
-          <div class="caption" translate>
-            <i class="fa fa-cogs" aria-hidden="true"></i>Select Module
+          <div class="caption" translate style="font-size:20px !important;">
+            <!-- <i class="fa fa-cogs mt" aria-hidden="true"></i> -->
+            Select Module
           </div>
         </div>
         <div class="portlet-body">
@@ -69,16 +70,16 @@
             <!--------DAM------------->
             <div *ngIf="authenticationService?.module?.damAccess || authenticationService?.module?.damAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/dam.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/asset-library.svg">
                   </div>
                   <div class="text">
                     <h4 class="header-text-css" translate>Asset Library</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.module?.damAccess">
-                        <span>Create a library of manuals, instructions, sales decks, one-pagers, and other sales and marketing content that your {{authenticationService?.partnerModule?.customName}} can access at any time.</span><br>
+                        <span> Create Manuals,Instructions Sales/Marketing content to your {{authenticationService?.partnerModule?.customName}} can access any time.</span><br>
                       </ng-container>
                       <span *ngIf="authenticationService?.module?.damAccessAsPartner && !authenticationService?.module?.damAccess">A library of vendor-given manuals, instructions, sales decks, one-pagers, and other sales and marketing content that you can access at any time.</span>
                     </p>
@@ -91,7 +92,7 @@
                       <span class="design-name mDisableColor" translate>Design / Upload</span></a>
                     </h5>
                   </div>
-                  <div class="text">
+                  <div class="text" [ngClass]="authenticationService?.module?.damAccessAsPartner?'':'border-none'">
                     <h5>
                       <a class="prfpx" (click)="navigate('dam/manage')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -99,7 +100,7 @@
                     </h5>
                   </div>
                 </ng-container>
-                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.damAccessAsPartner" class="text border-none">
                     <h5>
                       <a class="prtfpx" (click)="navigate('dam/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -112,10 +113,10 @@
             <!--------Learning Track------------->
             <div *ngIf="authenticationService?.module?.lmsAccess || authenticationService?.module?.lmsAccessAsPartner"   [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/tracks.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/track-builder.svg">
                   </div>
                   <div class="text">
                     <h4 class="header-text-css" translate>Track Builder</h4>
@@ -134,7 +135,7 @@
                         <span class="design-name mDisableColor" translate>Add Tracks</span></a>
                       </h5>
                     </div>
-                    <div class="text">
+                    <div class="text" [ngClass]="authenticationService?.module?.lmsAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('tracks/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -142,7 +143,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.lmsAccessAsPartner" class="text border-none">
                     <h5>
                       <a (click)="navigate('tracks/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>
@@ -155,10 +156,10 @@
             <!--------Play Books------------->
             <div *ngIf="authenticationService?.module?.playbookAccess || authenticationService?.module?.playbookAccessAsPartner"  [className]="(authenticationService?.module?.contentDivsCount==1) ? 'col-md-6 col-centered': (authenticationService?.module?.contentDivsCount==2) ? 'col-md-6':
             (authenticationService?.module?.contentDivsCount==3) ? 'col-md-4': (authenticationService?.module?.contentDivsCount==4) ? 'col-md-3':'col-md-3'">
-              <div class="portlet light cpad  hover-effect pointer">
+              <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
                   <div class="img1">
-                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/playbook.png">
+                    <img alt="Videos" class="pricing-head-img img-responsive mauto" src="assets/images/play-book.svg">
                   </div>
                   <div class="text">
                     <h4 class="header-text-css" translate>Play Book</h4>
@@ -176,8 +177,8 @@
                         <i class="fa fa-plus mDisableColor" aria-hidden="true"></i>
                         <span class="design-name mDisableColor" translate>Add Play Books</span></a>
                       </h5>
-                    </div>
-                    <div class="text">
+                    </div> 
+                    <div class="text" [ngClass]="authenticationService?.module?.playbookAccessAsPartner?'':'border-none'">
                       <h5>
                         <a class="prfpx" (click)="navigate('playbook/manage')">
                         <i class="fa fa-list" aria-hidden="true"></i>
@@ -185,7 +186,7 @@
                       </h5>
                     </div>
                   </ng-container>
-                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text bordernone">
+                  <div *ngIf="authenticationService?.module?.playbookAccessAsPartner" class="text border-none">
                     <h5>
                       <a  (click)="navigate('playbook/shared')">
                       <i class="fa fa-list" aria-hidden="true"></i>

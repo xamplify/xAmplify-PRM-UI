@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 
 @Component({
   selector: 'app-lefside-navigation-loader',
@@ -8,13 +8,18 @@ import { Component, OnInit } from '@angular/core';
 export class LefsideNavigationLoaderComponent implements OnInit {
 	className = "col-xs-12";
 	items: number[] = [];
-
+	@Input() topNavbarLoader = false;
 	constructor() { }
 
 	ngOnInit() {
-		for(let i=0;i<=6;i++){
-			this.items.push(i);
+		if(this.topNavbarLoader){
+			this.items.push(1);
+		}else{
+			for(let i=0;i<=6;i++){
+				this.items.push(i);
+			}
 		}
+		
 	}
 
 }

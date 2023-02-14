@@ -38,14 +38,14 @@
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12" *ngIf="!detailedResponse">
-            <div class="portlet light clearfix" style="min-height: 644px;">
+            <div class="portlet light clearfix">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <div class="portlet-title" style="border-bottom: none">
+                <div class="portlet-title" style="border-bottom: none;margin-bottom:0px !important">
                     <div class="row">
                         <div class="page-toolbar" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                            <div class="col-xs-12 col-sm-4" >
+                            <div class="col-xs-12 col-sm-4" style="margin-top: -2px;">
                                 <ul class="mix-filter" *ngIf="!pagination.surveyCampaignForm ">
                                     <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
                                         translate>All</li> 
@@ -59,14 +59,22 @@
                                         Default Form</li>
                                 </ul>
                             </div>
-                            <div class="col-xs-12 col-sm-8">
-                                <div class="btn-group pull-right">
+                            <div class="col-xs-12 col-sm-8 pull-right" style="margin-top: -1px;">
+                                <div class="btn-group pull-right" style="display: flex;">
+                                    <div class="">
+                                    <div class="group-dropdown">
+                                        <button
+                                        [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                                              modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                        style="padding: 10px !important"></button>
+                                        <!-- <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button> -->
+                                    <div class="group-dd-content">
                                     <ng-container class='m10'>
                                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                                             title="List View" [class.disabled]="modulesDisplayType.isListView"
                                             (click)="setViewType('List')">
                                             <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
-                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" style="margin-right: -2px;"
                                             data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
                                             (click)="setViewType('Grid')">
                                             <i class="fa fa-th-large p10" aria-hidden="true"></i>
@@ -85,11 +93,20 @@
                                             </span>
                                         </ng-container>
                     
-                                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space"
+                                        <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space"
                                             data-toggle="tooltip" data-placement="bottom" title="Go back"
                                             (click)="setViewType('Folder-Grid')">
-                                            <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                                            <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> -->
                                     </ng-container>
+                                    </div>
+                                    <!-- close group-dd-content-->
+                                    </div>
+                                    <!-- close  group-dropdown-->
+                                    </div>
+                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space"
+                                        data-toggle="tooltip" data-placement="bottom" title="Go back"
+                                        (click)="setViewType('Folder-Grid')">
+                                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                     <div class="inputs" style="float: right">
                                         <div class="mPad" style="float: left;">
                                             <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
@@ -98,7 +115,7 @@
                                                     {{option.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+                                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;margin-left: -4px;">
                                             <div class="input-icon right" style="position: relative;right: -11px;">
                                                 <input type="text" style="height:34px;" class="form-control"
                                                     [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
@@ -109,7 +126,7 @@
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true">
                                             <i class="fa fa-refresh" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -189,7 +206,7 @@
                                                 </a>
                                                 </div>
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop">
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                                     <i class="fa fa-clipboard"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -221,7 +238,7 @@
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngIf="form.count>0">
-                                                        <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
+                                                        <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics" style="margin-top: -5px;">
                                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
@@ -280,7 +297,7 @@
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm&& !pagination.surveyCampaignForm " data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm&& !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm " data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                     <i class="fa fa-clipboard"></i>
 
                                 </a>
@@ -292,7 +309,7 @@
                                 </ng-container>
                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
-                                        <a class="cursor">
+                                        <a class="cursor" style="margin-top:5px;">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
@@ -348,15 +365,19 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
+                        <div style="padding-top: 8px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
                             </a>
+                        </div>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

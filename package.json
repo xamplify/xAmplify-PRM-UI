@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "ss": "ng serve --live-reload false --open",
-    "start":"ng serve  --live-reload false --open --ssl --ssl-key ./localhost.key  --ssl-cert ./localhost.crt",
+    "start": "ng serve --live-reload false --open",
+    "ssl": "ng serve  --live-reload false --open --ssl --ssl-key ./localhost.key  --ssl-cert ./localhost.crt",
     "vanity": "ng serve --host 0.0.0.0 --disable-host-check --live-reload false --open",
     "build": "ng build",
     "test": "ng test",
@@ -74,6 +74,7 @@
     "sockjs-client": "^1.3.0",
     "stompjs": "^2.3.3",
     "underscore": "^1.8.3",
+    "xlsx": "^0.12.8",
     "zone.js": "^0.8.9"
   },
   "devDependencies": {

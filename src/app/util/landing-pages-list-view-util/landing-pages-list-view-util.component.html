@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" style="padding-right: 22px;">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
@@ -93,7 +93,9 @@
                                             <span class="gridHeader">Page</span>
                                         </th>
                                         <th scope="row" class="hidden-xs text-center">Type</th>
-                                        <th scope="row" class="hidden-xs text-center">Created On</th>
+                                        <th *ngIf="isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Shared On</th>
+                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Created On</th>
+                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center" translate>Updated On</th>
                                         <th scope="row" class="text-center" style="min-width: 200px;">Actions</th>
                                     </tr>
                                 </thead>
@@ -136,6 +138,15 @@
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                         </td>
+                                        <ng-container *ngIf="!isPartnerLandingPage">
+                                            <td class="hidden-xs text-center" *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
+                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage?.updatedDateInString">
+                                                </app-timestamp>
+                                            </td>
+                                            <td *ngIf="landingPage?.updatedDateInString?.length==0" class="text-center">
+                                               -
+                                            </td>
+                                        </ng-container>
                                         <td id="actions-td-width-xamp">
                                             <div class="actions-block override-actions min-width-icon">
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">

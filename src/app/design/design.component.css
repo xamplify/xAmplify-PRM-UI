@@ -5,7 +5,7 @@
 
 .text {
     text-align: center;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -15,20 +15,23 @@ h4 {
 }
 
 h5 {
-    font-size: 14px!important;
+    font-size: 13px!important;
     font-weight: 400!important;
 }
 
-.img1 {
-    background: #ebf1ff;
-    text-align: center;
-    height: 233px;
-}
+/* .img1 {
+    background: #34495a;
+    text-align: center; */
+    /* height: 233px; */
+    /* border-radius: 20px 20px 0px 0px;
+} */
+
 
 .img-responsive,
 .thumbnail a>img,
 .thumbnail>img {
-    padding-top: 65px;
+    padding-top: 15px;
+    padding-bottom:15px;
     display: block;
     max-width: 112px;
     height: auto;
@@ -53,6 +56,7 @@ h5 {
     -moz-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
 }
 
 .pointer {
@@ -61,7 +65,7 @@ h5 {
 
 .design-name{
 	color: #008fd5;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
 }
 
@@ -69,4 +73,46 @@ h5 {
     .mDisableColor{
         color: #888!important;
     }
+}
+.portlet > .portlet-title > .caption{
+    line-height: 30px;
+}
+.mt{
+margin-top: 9px !important;
+}
+.padding{
+    padding: 0px 5px!important;
+}
+
+.header-text-css {
+    text-align: center;
+    padding-left: 10px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header-description-css {
+    text-align: center;
+    /* padding-left: 10px; */
+    color: #888;
+    font-size: 14px;
+    padding: 10px;
+     height: 76px;
+}
+.portlet .light{
+    padding:0px !important;
+}
+.custom{
+    background-color: #008fd5 ;
+    color: #fff;
+    border: 1px solid #3575b5;
+  }
+  .img1:hover{
+    background-position: 100%;
+    /* color: black !important; */
+    background-color: #b8def1;
+    transition-duration: 500ms;
+} 
+p{
+    margin:0px;
 }
