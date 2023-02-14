@@ -463,3 +463,8 @@ fieldset{
 .content__list {
   font-size: 12px;
 }
+.custom{
+	background-color: #008fd5 ;
+	color: #fff;
+	border: 1px solid #3575b5;
+  }

@@ -2139,3 +2139,8 @@ div.tab{
   background-color: #ddd !important;
   color:#000 !important;
 }
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
+}

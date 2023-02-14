@@ -6,9 +6,6 @@
 Login page
 ***/
 /* bg color */
-.login {
-  /*background-color: #364150 !important;*/
-}
 .custom-label{
 	color: #fff;
 }
@@ -66,7 +63,6 @@ Login page
   border: none;
   background-color: #dde3ec;
   height: 43px;
-  /* color: #8290a3; */
   color: #333333;
   border: 1px solid #dde3ec;
 }
@@ -244,7 +240,6 @@ Login page
   }
 
   .login-options .social-icons {
-    /*float: left;*/
     padding-top: 3px;
   }
 
