@@ -37,14 +37,14 @@ Login page
 }
 
 .login .content h3 {
-  color: #4db3a5;
+  color: #fff !important;
   text-align: center;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 400 !important;
 }
 
 .login .content h4 {
-  color: #ffffff;
+  color: #ffffff  !important;
 }
 
 .login .content .hint {
