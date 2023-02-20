@@ -796,7 +796,7 @@
                   <div class="loader"></div>
                   <h4 translate>please wait while we process your request</h4>
                 </div>
-                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
                 </div>
                 <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
@@ -1292,7 +1292,7 @@
         </div>
       </div>
       <div class="modal-body clearfix">
-        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;">
+        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;margin-left: 0px !important;">
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading">

@@ -6,6 +6,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .page-breadcrumb:hover div{visibility:visible}
 .show-more{display:table-row}
 .sweet-alert{width:300px;font-weight:100px;font-size:16px}
+.mt10{margin-top: 10px;}
 .textareaNumber {
 	background: url(http://i.imgur.com/2cOaJ.png);
 	background-attachment: local;

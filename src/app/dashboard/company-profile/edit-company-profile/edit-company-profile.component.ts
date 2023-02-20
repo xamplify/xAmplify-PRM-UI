@@ -32,6 +32,8 @@ import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { MdfService } from 'app/mdf/services/mdf.service';
 import {DashboardType} from 'app/campaigns/models/dashboard-type.enum';
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 
 
 declare var $,swal: any;
@@ -184,6 +186,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     allLoginScreenDirectionsList:string[] = [];  
     prm = false;  
     vendorTier = false;
+    containWithinAspectRatio = false;
+    transform: ImageTransform = {};
+    scale = 1;
+    canvasRotation = 0;
+    rotation = 0;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -220,6 +227,30 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.uploadFileConfiguration();
         }          
         
+    }
+    toggleContainWithinAspectRatio() {
+        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+    }
+    zoomOut() {
+        this.scale -= .1;
+        this.transform = {
+            ...this.transform,
+            scale: this.scale
+        };
+    }
+
+    zoomIn() {
+        this.scale += .1;
+        this.transform = {
+            ...this.transform,
+            scale: this.scale
+        };
+    }
+    resetImage() {
+        this.scale = 1;
+        this.rotation = 0;
+        this.canvasRotation = 0;
+        this.transform = {};
     }
     
     validateUserUsingEmailId(){
@@ -321,7 +352,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     //   this.squareCropperSettings.noFileInput = true;
     //   this.squareData = {};
     // }
-    fileChangeEvent(){ this.cropRounded = false; $('#cropLogoImage').modal('show'); }
+     fileChangeEvent(){ this.cropRounded = false; $('#cropLogoImage').modal('show'); }
     // fileChangeListener($event,cropperComp: ImageCropperComponent) {
     //   // this.cropper = cropperComp;
     //   const image:any = new Image();
@@ -358,16 +389,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     imageCroppedMethod(event: ImageCroppedEvent) {
       this.croppedImage = event.base64;
-      console.log(event);
-      console.log(this.squareData);
+      console.log(event, base64ToFile(event.base64));
     }
     imageLoaded() {
       this.showCropper = true;
       console.log('Image loaded')
     }
-    cropperReady() {
-      console.log('Cropper ready')
+    cropperReady(sourceImageDimensions: Dimensions) {
+        console.log('Cropper ready', sourceImageDimensions);
     }
+
     loadImageFailed () {
       console.log('Load failed');
       this.errorUploadCropper = true;
