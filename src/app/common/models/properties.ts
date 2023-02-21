@@ -29,6 +29,7 @@ export class Properties {
 
 	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
 	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
+	MARKETO_CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Synchronization initiated successfully. It might take few minutes.";
 	
 	LEAD_LIST_SYNCHRONIZATION_SUCCESS = "Your lead list has been synchronized successfully.";
     LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
