@@ -704,7 +704,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else if(this.contactOption == 'marketoContacts'){
             this.saveMarketoContactsWithPermission();
         }else if(this.contactOption == 'marketoSelectedContacts'){
-            this.saveMarketoSelectedContactsWithPermission();
+            this.saveMarketoSelectedContactsWithPermission();           
         }else if(this.contactOption == 'hubSpotContacts'){
             this.saveHubSpotContactsWithPermission();
         }else if(this.contactOption == 'hubSpotSelectedContacts'){
@@ -3410,18 +3410,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
     saveMarketoContactsWithPermission() {
            if (this.assignLeads) {
-               this.contactListObject = new ContactList;
-               this.contactListObject.name = this.model.contactListName;
-               this.contactListObject.isPartnerUserList = this.isPartner;
-               //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-               this.contactListObject.synchronisedList = true;
-               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
-               this.contactListObject.publicList = true;
-               this.setSocialUsers(this.socialContact);
+                this.contactListObject = new ContactList;
+                this.contactListObject.name = this.model.contactListName;
+                this.contactListObject.isPartnerUserList = this.isPartner;
+                this.contactListObject.contactType = "CONTACT";
+                this.contactListObject.socialNetwork = "MANUAL";
+                this.contactListObject.publicList = true;
+                this.contactListObject.synchronisedList = false;
+                this.socialContact.moduleName = this.getModuleName();
+               //this.setSocialUsers(this.socialContact);
+               this.setSocialUserObjs();
                this.setLegalBasisOptions(this.socialUsers);
-
+               
                this.userUserListWrapper.users = this.socialUsers;
+               this.userUserListWrapper.userList = this.contactListObject;
                this.saveAssignedLeadsList();
+
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
@@ -3482,16 +3486,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
     saveMarketoSelectedContactsWithPermission() {
            if (this.assignLeads) {
-        	     this.contactListObject = new ContactList;
-                 this.contactListObject.name = this.model.contactListName;
-                 this.contactListObject.isPartnerUserList = this.isPartner;
-                 this.contactListObject.contactType = "CONTACT";
-                 this.contactListObject.socialNetwork = "MANUAL";
-                 this.contactListObject.publicList = true;
-                 this.setLegalBasisOptions(this.allselectedUsers);
+            //    this.contactListObject = new ContactList;
+            //    this.contactListObject.name = this.model.contactListName;
+            //    this.contactListObject.isPartnerUserList = this.isPartner;
+            //    this.contactListObject.contactType = "CONTACT";
+            //    this.contactListObject.socialNetwork = "MANUAL";
+            //    this.contactListObject.publicList = true;
+            //    this.setLegalBasisOptions(this.allselectedUsers);
 
-                 this.userUserListWrapper.users = this.allselectedUsers;
-                 this.saveAssignedLeadsList();
+            //    this.userUserListWrapper.users = this.allselectedUsers;
+            //    this.saveAssignedLeadsList();
+
+                 this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.userUserListWrapper.users = this.allselectedUsers;
+            this.saveAssignedLeadsList();
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -4161,7 +4171,12 @@ vanityCheckingMarketoContactsAuthentication(){
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.synchronisedList = true;
+            if (type === 'marketo') {
+                this.contactListObject.synchronisedList = false;
+            } else {
+                this.contactListObject.synchronisedList = true;
+            }
+            
             this.contactListObject.socialNetwork = type.toLocaleUpperCase();
             this.contactListObject.contactType  =  "CONTACT";
             this.contactListObject.publicList = true;
