@@ -1558,6 +1558,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             });
             this.contactService.socialProviderName = 'google';
             this.socialContact.socialNetwork = "GOOGLE";
+            this.socialContact.contacts = [];
             var self = this;
             this.contactService.getGoogleContacts( this.socialContact )
                 .subscribe(
@@ -3008,24 +3009,24 @@ salesForceVanityAuthentication() {
 				}
 			}else */
 				
-				if (this.contactService.socialProviderName == 'google') {
-            	  if (this.contactService.oauthCallbackMessage.length > 0) {
-            		  let message = this.contactService.oauthCallbackMessage;
-            		  this.contactService.oauthCallbackMessage = '';
-                      this.customResponse = new CustomResponse('ERROR', message, true);
-                  } else {
-                      this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
-                      this.socialContact.contactType = localStorage.getItem('contactType');
-                      this.socialContact.alias = localStorage.getItem('alias');
-                      this.getGoogleContactsUsers();
-                      this.contactService.socialProviderName = "nothing";
-                      localStorage.removeItem("currentPage");
-                      localStorage.removeItem("currentModule");
-                      localStorage.removeItem("socialNetwork");
-                      localStorage.removeItem("contactType");
-                      localStorage.removeItem("alias");
-                  }
-			}
+            if (this.contactService.socialProviderName == 'google') {
+                if (this.contactService.oauthCallbackMessage.length > 0) {
+                    let message = this.contactService.oauthCallbackMessage;
+                    this.contactService.oauthCallbackMessage = '';
+                    this.customResponse = new CustomResponse('ERROR', message, true);
+                } else {
+                    this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+                    this.socialContact.contactType = localStorage.getItem('contactType');
+                    this.socialContact.alias = localStorage.getItem('alias');
+                    this.getGoogleContactsUsers();
+                    this.contactService.socialProviderName = "nothing";
+                    localStorage.removeItem("currentPage");
+                    localStorage.removeItem("currentModule");
+                    localStorage.removeItem("socialNetwork");
+                    localStorage.removeItem("contactType");
+                    localStorage.removeItem("alias");
+                }
+            }
 			else if (this.contactService.socialProviderName == 'salesforce') {
                   if (this.contactService.oauthCallbackMessage.length > 0) {
                 	  let message = this.contactService.oauthCallbackMessage;
@@ -3081,26 +3082,23 @@ salesForceVanityAuthentication() {
             this.getLegalBasisOptions();
 
             this.checkZohoStatusCode = localStorage.getItem("statusCode");
-            if(this.checkZohoStatusCode == 202)
-            {
+            if (this.checkZohoStatusCode == 202) {
                 localStorage.setItem("isZohoSynchronization", "yes");
                 localStorage.removeItem("statusCode");
                 this.checkZohoStatusCode = 0;
 
 
-            if(localStorage.getItem('vanityUrlDomain'))
-               {
-                var message = "isZohoSynchronization";
-                let trargetWindow = window.opener;
-                trargetWindow.postMessage(message,"*");
-                localStorage.removeItem('vanityUrlDomain');
-                self.close();
-            }
+                if (localStorage.getItem('vanityUrlDomain')) {
+                    var message = "isZohoSynchronization";
+                    let trargetWindow = window.opener;
+                    trargetWindow.postMessage(message, "*");
+                    localStorage.removeItem('vanityUrlDomain');
+                    self.close();
+                }
 
-        }else
-        {
-            localStorage.setItem("isZohoSynchronization", "no");
-        }
+            } else {
+                localStorage.setItem("isZohoSynchronization", "no");
+            }
 		
 			window.addEventListener('message', function(e) {
 				window.removeEventListener('message', function(e){}, true);
