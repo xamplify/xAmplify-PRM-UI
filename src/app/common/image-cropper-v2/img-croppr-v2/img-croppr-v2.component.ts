@@ -222,7 +222,7 @@ export class ImgCropprV2Component implements OnChanges, OnInit{
     }
 
     private isValidImageType(type: string): boolean {
-        return /image\/(png|jpg|jpeg|bmp|gif|tiff|webp)/.test(type);
+        return /image\/(png|jpg|jpeg|bmp|gif|tiff)/.test(type);
     }
 
     private loadBase64Image(imageBase64: string): void {

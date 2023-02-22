@@ -398,7 +398,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     cropperReady(sourceImageDimensions: Dimensions) {
         console.log('Cropper ready', sourceImageDimensions);
     }
-
     loadImageFailed () {
       console.log('Load failed');
       this.errorUploadCropper = true;

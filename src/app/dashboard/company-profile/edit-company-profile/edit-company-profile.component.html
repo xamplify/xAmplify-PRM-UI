@@ -889,8 +889,8 @@
 							[maintainAspectRatio]="false" [onlyScaleDown]="true"
 							[roundCropper]="false" format="jpg" outputType="base64"
 							(imageCropped)="bgImageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
+							[imageQuality]="0" (loadImageFailed)="loadImageFailed()"
 							[style.display]="showCropper ? null : 'none'"></image-cropper>
 					</div>
 					<div *ngIf="!bgImageChangedEvent">

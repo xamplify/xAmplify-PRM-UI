@@ -175,7 +175,7 @@ svg {
 	/* max-width: 100% !important;
     height: auto !important; */
     max-width: auto;
-    height: 64px;
+    height: 100%;
 }
 
 .img-class{
