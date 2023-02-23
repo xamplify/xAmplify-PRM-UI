@@ -152,8 +152,8 @@ label{font-weight: bold !important;}
 }
 
 .company-logo-thumbnail-wrapper>img {
-/* height: 42px;
-width: auto; */
+height: 42px;
+width: auto;
 margin: 10px 10px 10px 10px;
 }
 
