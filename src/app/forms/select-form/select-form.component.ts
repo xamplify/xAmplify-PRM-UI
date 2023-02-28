@@ -44,6 +44,7 @@ export class SelectFormComponent implements OnInit {
   showAllForms(type: string, index: number) {
     this.selectedFormTypeIndex = index;
     this.pagination.filterKey = type;
+    this.pagination.pageIndex = 1;
     this.listDefaultForms(this.pagination);
   }
 
