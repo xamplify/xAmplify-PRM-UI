@@ -2165,6 +2165,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							let message = this.checkingContactTypeName=='Partner' ? this.authenticationService.partnerModule.customName : this.checkingContactTypeName;
 							swal(message + ' re-subscribed successfully');
 							this.listContactsByType(this.contactsByType.selectedCategory);
+							this.contactsCount();
 						}
 					},
 					(error: any) => {
