@@ -1800,3 +1800,9 @@ background-repeat: no-repeat;
 background-position: 0;
 transition: background 300ms ease-in-out;
 }
+.d-flex{
+  display:flex;
+}
+.justify-content-between{
+  justify-content: space-between;
+}

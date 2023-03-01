@@ -41,8 +41,8 @@ export class ImgCropprV2Component implements OnChanges, OnInit{
     private originalSize: Dimensions;
     private transformedSize: Dimensions;
     private setImageMaxSizeRetries = 0;
-    private cropperScaledMinWidth = 20;
-    private cropperScaledMinHeight = 20;
+    private cropperScaledMinWidth = 2000;
+    private cropperScaledMinHeight = 2000;
     private exifTransform: ExifTransform = {rotate: 0, flip: false};
     private autoRotateSupported: Promise<boolean> = supportsAutomaticRotation();
     private stepSize = 3;
@@ -222,7 +222,7 @@ export class ImgCropprV2Component implements OnChanges, OnInit{
     }
 
     private isValidImageType(type: string): boolean {
-        return /image\/(png|jpg|jpeg|bmp|gif|tiff)/.test(type);
+        return /image\/(png|jpg|jpeg|bmp|gif|tiff|svg)/.test(type);
     }
 
     private loadBase64Image(imageBase64: string): void {
