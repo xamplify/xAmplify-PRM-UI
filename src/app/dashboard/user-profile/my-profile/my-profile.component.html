@@ -1799,11 +1799,51 @@
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
-                    </img-cropper>
+                    <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
+                    </img-cropper> -->
+                    <div [hidden]="!imageChangedEvent">
+                    <app-img-croppr-v2
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [containWithinAspectRatio]="containWithinAspectRatio"
+                    [aspectRatio]="1 / 1"
+                    [resizeToWidth]="800"
+                    [cropperMinWidth]="500"
+                    [onlyScaleDown]="true"
+                    [roundCropper]="true"
+                    [alignImage]="'left'"
+                    [style.display]="showCropper ? null : 'none'"
+                    format="png"
+                    [transform]="transform"
+                    (imageCropped)="imageCroppedMethod($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (cropperReady)="cropperReady($event)"
+                    (loadImageFailed)="loadImageFailed()">
+                    </app-img-croppr-v2>
                 </div>
+                <div *ngIf="!imageChangedEvent">
+                    <fieldset
+                        style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+                    </fieldset>
+                </div>
+                </div>
+                <div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" >
+							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							{{
+							  containWithinAspectRatio
+								? 'Fill Aspect Ratio'
+								: 'Contain Within Aspect Ratio'
+							}}
+						  </button>
+						<button class="btn-info" (click)="resetImage()"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
+						<button class="btn-info" (click)="zoomOut()"><i class="fa fa-search-minus" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomIn()"><i class="fa fa-search-plus" aria-hidden="true"></i> </button>
+						</div>
                 <div>
-                    <button class="btn btn-primary" [disabled]="(circleData | json) === '{}'" (click)="uploadProfileImage()">Upload Image</button>
+                    <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadProfileImage()">Upload Image</button>
+                </div>
                 </div>
             </div>
         </div>
