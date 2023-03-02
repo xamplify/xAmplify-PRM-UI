@@ -159,6 +159,14 @@ h3 {
 
 #header-custom-li-font{
 	font-size: 16px; 
+	color: #888888;
+}
+
+.actions-msg {
+	float: none !important;
+    margin: 0 auto;
+    display: table;
+	/* color: #888888; */
 	font-weight: 500;
 }
 /****** 15-11-2022 *****/
@@ -206,4 +214,5 @@ h3 {
 }
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 400;
+
 }

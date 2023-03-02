@@ -172,10 +172,8 @@ svg {
 	display: none;
 }
 .img-grid{
-	/* max-width: 100% !important;
-    height: auto !important; */
-    max-width: auto;
-    height: 64px;
+    height: 42px;
+    width: 120px;
 }
 
 .img-class{

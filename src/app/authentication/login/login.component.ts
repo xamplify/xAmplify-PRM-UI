@@ -281,7 +281,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (currentUser != undefined) {
       this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
     } else {
-      let loginUrl = "/" + socialProvider.name + "/login";
+      let loginUrl = "/" + socialProvider.name.toLowerCase() + "/login";
       if (this.isLoggedInVanityUrl) {
         let x = screen.width / 2 - 700 / 2;
         let y = screen.height / 2 - 450 / 2;

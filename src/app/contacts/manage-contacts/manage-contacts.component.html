@@ -327,7 +327,8 @@
                         </thead>
                         <tbody>
                           <ng-container *ngFor="let contactList of pagination.pagedItems ;let i =index">
-                            <tr [class.isProcessing]="!contactList.emailValidationInd">
+                            <!-- XNFR-211 -->
+                            <tr [class.isProcessing]="contactList.uploadInProgress || contactList.validationInProgress || !contactList.emailValidationInd">
                               <td class="cw" *ngIf="showExpandButton">
                                 <div class="actions-block left-float">
                                   <a (click)="viewMatchedContacts(contactList)" title="Matched Results">
@@ -352,8 +353,9 @@
                                   alt="manual" style="height: 70px;">
                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
+                                  <!-- XNFR-211 -->
                                 <img
-                                  *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
+                                  *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
                                   src="assets/images/Spinner.gif"
                                   style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
                               </td>
@@ -453,9 +455,10 @@
                                   *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                                   <strong>-</strong></span>
                               </td>
+                              <!-- XNFR-211 -->
                               <td *ngIf="!authenticationService.isSuperAdmin()">
                                 <div class="actions-block override-actions" style="float:none !important;"
-                                  *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
+                                  *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                                   <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                   	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
@@ -519,16 +522,18 @@
                                     title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn"
                                       aria-hidden="true"></i>
                                   </a>
-                                </div>
-                                <div class="actions-block override-actions" style=""
-                                    *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                                </div>                                
+                                <div class="actions-block override-actions"
+                                    *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                   ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
-                                  || (!contactList.synchronisedList  && !contactList.emailValidationInd)" >
+                                  || (!contactList.synchronisedList  && !contactList.emailValidationInd))" >
                                   <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                                     (click)="forceProcessList(contactList.id)">
                                     <i class="fa fa-repeat" aria-hidden="true"></i>
                                   </a>
                                 </div>
+                                <div class="actions-block actions-msg" *ngIf="contactList.uploadInProgress">Uploading...</div>
+                                <div class="actions-block actions-msg" *ngIf="contactList.validationInProgress">Validating Email IDs...</div>
                               </td>
                             </tr>
                             <tr *ngIf="contactList?.expand">
@@ -554,7 +559,7 @@
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"  src="{{properties?.microsoftImage}}">
                           <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
-                          *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+                          *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                           <h3 translate style="font-size: 14px;">
                             processing<span class="arrow">
                                <img alt="" src="assets/images/Spinner.gif" class="loaderGif" style="margin-top: 77px;">
@@ -617,7 +622,7 @@
                         </td>
                         <!--  -->
                         <div class="bar" 
-                          *ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
+                          *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                           <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                   	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
@@ -691,14 +696,16 @@
 								          </a>
                         </div>
                         <div class="bar" 
-                          *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                          *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                             ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
-                              || (!contactList.synchronisedList  && !contactList.emailValidationInd)">
+                              || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                           <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                             data-rel="fancybox-button" (click)="forceProcessList(contactList.id)">
                             <i class="fa fa-repeat" aria-hidden="true"></i>
                           </a>
                         </div>
+                        <div class="bar" *ngIf="contactList.uploadInProgress">Uploading...</div>
+                        <div class="bar" *ngIf="contactList.validationInProgress">Validating Email IDs...</div>
                       </div>
                     </div>
                   </div>

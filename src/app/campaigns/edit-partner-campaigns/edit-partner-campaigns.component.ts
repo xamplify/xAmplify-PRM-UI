@@ -311,7 +311,11 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.onSelect(this.campaign.countryId);
             }
         }
-        this.findDataShareOption();
+           if(this.campaign.nurtureCampaign){
+               this.findNurtureCampaignDataShareOption();       
+        }else{
+               this.findDataShareOption();
+        }
     }
     
     findDataShareOption(){
@@ -321,6 +325,21 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.dataShare = response.data;
                 this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
                 this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
+                this.ngxloading = false;
+            },error=>{
+                this.dataShare = false;
+                this.ngxloading = false;
+            }
+        );
+    }
+    
+        findNurtureCampaignDataShareOption(){
+        this.ngxloading = true;
+        this.campaignService.findDataShareOption(this.campaign.parentCampaignId).subscribe(
+            response=>{
+                this.dataShare = response.data;
+              //  this.campaign.dataShare = this.dataShare && this.campaign.oneClickLaunch;
+               // this.campaign.detailedAnalyticsShared = this.campaign.dataShare;
                 this.ngxloading = false;
             },error=>{
                 this.dataShare = false;
@@ -1260,7 +1279,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   
 
   listCategories(){
-    this.loading = true;
+    this.loading = true;    
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;
