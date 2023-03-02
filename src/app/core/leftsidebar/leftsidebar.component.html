@@ -77,7 +77,7 @@
 
          <!--------Contacts For Deleted Partner------ -->
          <li *ngIf="menuItem?.contacts && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
-           <a (click)="startLoader()"  [routerLink]="['./contacts/manage']"  >
+           <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor,  'border-bottom': '1px solid' + skin?.buttonBorderColor}" [routerLink]="['./contacts/manage']"  >
                <i class="fa fa-id-card" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                <span class="title" translate>Contacts</span>
                <span class="selected"></span>
@@ -175,7 +175,7 @@
 
           <!--------Campaigns For Deleted Partner------ -->
           <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('campaigns')}">
-           <a (click)="startLoader()"  [routerLink]="['./campaigns/manage']"  >
+           <a (click)="startLoader()" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor,  'border-bottom': '1px solid' + skin?.buttonBorderColor}"  [routerLink]="['./campaigns/manage']"  >
                <i class="fa fa-bullhorn" [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                <span class="title" translate>Campaigns</span>
                <span class="selected"></span>
