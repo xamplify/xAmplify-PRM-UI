@@ -152,7 +152,6 @@ cursor: default;
 
 @media screen and (max-width:600px){
   .mPad{
-      /* padding: 5px; */
       width: 40%;
   }
   .mTopAlert{
@@ -171,7 +170,6 @@ cursor: default;
   }
   .mMobileAlignAction2{
     white-space: initial!important;
-    /* line-height: 1px!important; */
   }
 }
 

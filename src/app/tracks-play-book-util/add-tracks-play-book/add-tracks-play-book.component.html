@@ -234,14 +234,14 @@
                   <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
                     <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
-                      <img *ngIf="!imageChangedEvent && featuredImagePath || !imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
+                      <img *ngIf="!imageChangedEvent && featuredImagePath" src="assets/images/background-form.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">
-                      <img class="img-grid" [src]="croppedImage" alt="">
+                      <img class="img-grid" [src]="featuredImagePath" alt="">
                     </div>
                     <ng-template #showImage>
-                      <img class="img-grid" [src]="featuredImagePath" alt="">
+                      <img class="img-grid" [src]="!featuredImagePath" alt="">
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"

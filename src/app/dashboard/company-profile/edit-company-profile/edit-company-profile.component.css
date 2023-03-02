@@ -59,13 +59,8 @@
     max-height: 100%;
 }
 .profile-pic {
-       /* margin-top: 8px;
     position: absolute;
-        left: -10px;
-    top: 89px;
-    border: none; */
-    position: absolute;
-    margin-top: 48px;
+    margin-top: 44px;
     left: -16px;
     border: none;
 }

@@ -41,13 +41,8 @@ h3 {
 }
 
 .icon-div {
-	/* margin-left: -1em; */
 	margin-top: 0em;
 }
-
-/* .portlet.light {
-	box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.4);
-} */
 
 .p5 {
 	padding: 2em;
@@ -55,7 +50,6 @@ h3 {
 
 .page-bar {
 	padding: 1em 1em 0 1em;
-	/* border-radius: 0; */
 }
 
 .padding-top-bottom-5 {
@@ -152,17 +146,12 @@ h3 {
 	}
 	.text-block p {
 		margin: 0 0 10px;
-		/* 10-01-2023 (20px,rgba(119, 119, 119, 0.7))*/
 		font-size: 18px;
-		/* color: #333; */
 		text-align: justify;
 		padding: 1em;
 	}
 	.text-block h1 {
 		font-weight: bolder;
-		/* 10-01-2023 */
-		/* font-size: 3.2em; */
-		/* text-transform: lowercase; */
 		margin: 0;
 	}
 	.btn {
@@ -188,7 +177,6 @@ h3 {
 	}
 	.text-block h1 {
 		font-weight: 600;
-		/* text-transform: lowercase; */
 		font-size: 25px;
 	}
 	.block {
@@ -246,8 +234,6 @@ h3 {
 }
 
 .welcome-item-header{
-	/* 11-01-2023 */
-	/* color: #00B3B3; */
 	text-align: left
 }
 /******* tharak ******/

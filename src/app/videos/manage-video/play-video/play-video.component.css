@@ -59,12 +59,7 @@
   color: #777;font-weight: 500;margin: 5px;
 }
 .bottomCss {  bottom: -183px; }
-.videojs-logo-play{
-  position: absolute;
-  top: 15px;
-  right: 34px;
-  width: 75px;
-}
+
 .imagePath {  height: 111px; width: 100%; }
 .is360video {  z-index: 900; }
 textarea {
@@ -119,3 +114,6 @@ width: 100% !important;color:white !important; background-color:rgba(29, 25, 25,
 }
 .mt0{ margin-top: 0;}
 .pt0{ padding-top: 0px;}
+.portlet{
+  border-radius:5px !important;
+}

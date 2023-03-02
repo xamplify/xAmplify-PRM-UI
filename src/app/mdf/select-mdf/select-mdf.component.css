@@ -3,7 +3,6 @@
 }
 
 .text {
-    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -16,12 +15,6 @@ h5 {
     font-size: 13px!important;
     font-weight: 400!important;
 }
-
-/* .img1 {
-    background: #34495a;
-    text-align: center;
-    border-radius: 20px 20px 0px 0px;
-} */
 
 .img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 15px;
@@ -69,8 +62,6 @@ h5 {
 
 .cpad {
     padding: 0px !important;
-    /* min-height: 473px !important; */
-
 }
 
 .mauto {

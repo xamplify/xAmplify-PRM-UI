@@ -1,13 +1,3 @@
- /* a:hover {
-    background-color: #f7f1f1 !important;
-  }
-.alert{
-  margin-bottom: 0px !important;
-}
-.alert-message-fw{
-  font-weight: 600 !important;
-} */
-
 /***************/
 .alert-dismissible .close{top: 0 !important;right: 0px !important;}
 .alert-success,.alert-danger,.alert-warning{border-radius:0}

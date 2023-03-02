@@ -116,7 +116,6 @@ a {
     line-height: 36px;
     letter-spacing: -1px;
     margin-bottom: 0px;
-    /* font-weight: 300; */
 }
 
 .dashboard-stat .details .number {
@@ -280,7 +279,6 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     float: left !important;
-    /* overflow: hidden; */
 }
 
 .margin-flex {

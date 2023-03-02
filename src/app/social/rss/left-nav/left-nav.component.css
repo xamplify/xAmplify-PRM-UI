@@ -14,7 +14,6 @@ img {
 #leftbar{
     min-height: 820px!important;
     background-color: #ffffff!important;
-    /* box-shadow: 0px 5px 5px 5px #eae9e9; */
     border-radius: 5px;
     max-height: 820px!important;
     overflow-y: auto;
@@ -22,7 +21,6 @@ img {
 
 .single {
     padding: 10px 15px;
-    /* margin-top: 10px; */
     margin-bottom: 15px;
 }
 
