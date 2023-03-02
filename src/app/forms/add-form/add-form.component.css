@@ -21,10 +21,6 @@
 
 /* Add a background color on hover */
 
-.btn-group button:hover {
-    background-color: #3e8e41;
-}
-
 .right-corner {
     float: right;
 }
@@ -102,12 +98,10 @@ LEGEND {
 }
 
 #form-div:hover {
-    /* cursor: pointer; */
     cursor: move;
 }
 
 .form-control.disabled {
-    /* cursor: default; */
     cursor: move;
 }
 
@@ -121,8 +115,6 @@ LEGEND {
 }
 
 .blur-content {
-    /* -webkit-filter: url(#svg-blur);
-	filter: url(#svg-blur); */
     filter: blur(0px);
     -webkit-filter: blur(0px);
 }
@@ -533,7 +525,6 @@ label {
     cursor: pointer;
     width: 26px;
     height: 30px;
-    /* background: url(../assets/cbe16914.svg) 50% no-repeat; */
     -webkit-background-size: contain;
     background-size: contain;
     display: inline-block;
@@ -545,7 +536,6 @@ label {
 }
 
 .fm.external-link {
-    /* background: url("assets/images/icon-img-preview.svg") 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;
@@ -553,7 +543,6 @@ label {
 }
 
 .fm.delete {
-    /* background: url(https://app.getbee.io/v18.09.03.1427/assets/28fa3e8f.svg) 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;

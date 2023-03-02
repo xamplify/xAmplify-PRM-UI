@@ -49,6 +49,9 @@ import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ExcludeUser } from "../../models/exclude-user";
 import { FileUtil } from '../../../core/models//file-util';
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -254,13 +257,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isUpgradedRequestSubmitted = false;
 	activeCRMDetails: any;
 	integrationType: string = "";
+	containWithinAspectRatio = false;
+	transform: ImageTransform = {};
+    scale = 1;
+    canvasRotation = 0;
+    rotation = 0;
+	imageChangedEvent: any = '';
+	croppedImage: any = '';
+	showCropper = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
+		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -274,6 +285,47 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	private onDropModel(args) {
 	}
 
+	toggleContainWithinAspectRatio() {
+        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+    }
+    zoomOut() {
+        this.scale -= .1;
+        this.transform = {
+            ...this.transform,
+            scale: this.scale
+        };
+    }
+
+    zoomIn() {
+        this.scale += .1;
+        this.transform = {
+            ...this.transform,
+            scale: this.scale
+        };
+    }
+    resetImage() {
+        this.scale = 1;
+        this.rotation = 0;
+        this.canvasRotation = 0;
+        this.transform = {};
+    }
+	imageCroppedMethod(event: ImageCroppedEvent) {
+		this.croppedImage = event.base64;
+		console.log(event, base64ToFile(event.base64));
+	  }
+	  imageLoaded() {
+		this.showCropper = true;
+		console.log('Image loaded')
+	  }
+	  cropperReady(sourceImageDimensions: Dimensions) {
+        console.log('Cropper ready', sourceImageDimensions);
+    }
+	loadImageFailed () {
+		console.log('Load failed');
+		this.errorUploadCropper = true;
+		this.showCropper = false;
+	  }
+
 	cropperSettings() {
 		this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
 		this.circleCropperSettings.noFileInput = true;
@@ -285,15 +337,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	closeModal() {
 		this.cropRounded = !this.cropRounded;
 		this.circleData = {};
+		this.imageChangedEvent = null;
 	}
 	fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
 	uploadProfileImage() {
-		this.loadingcrop = true;
-		let fileObj: any;
-		fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
-		fileObj = this.utilService.blobToFile(fileObj);
-		console.log(fileObj);
-		this.fileUploadCode(fileObj);
+		if(this.croppedImage!=""){
+        this.loadingcrop = true;
+        let fileObj:any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+        fileObj = this.utilService.blobToFile(fileObj);
+        this.fileUploadCode(fileObj);
+      }else{
+          this.refService.showSweetAlertErrorMessage("Please upload an image");
+      }
+      
 	}
 	fileUploadCode(fileObj: File) {
 		this.userService.saveUserProfileLogo(fileObj).subscribe(
@@ -318,6 +375,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		const isSupportfile: any = file.type;
 		if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
 			this.errorUploadCropper = false;
+			this.imageChangedEvent = event;
 			const myReader: FileReader = new FileReader();
 			const that = this;
 			myReader.onloadend = function(loadEvent: any) {

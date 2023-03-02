@@ -12,7 +12,6 @@
 }
 
 .portlet.light {
-    /* box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4); */
     padding: 10px;
 }
 
@@ -39,114 +38,9 @@
     cursor: hand;
 }
 
-.fa-3x {
-    font-size: 3em;
-}
-
-.profile-img-container {
-    height: auto;
-    width: 100%;
-    position: relative;
-}
-
-.email-template-container:hover img {
-    opacity: 0.4;
-}
-
-.email-template-container:not (:hover) .email-template-i-container {
-    display: none;
-}
-
-.email-template-i-container {
-    position: absolute;
-    top: 8em;
-    left: 0px;
-    display: block;
-    width: 100%;
-    z-index: 500;
-    text-align: center;
-}
-
-.email-template-i-container i {
-    display: table-cell;
-    line-height: inherit;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    margin-left: -25px;
-    margin-top: -25px;
-    padding: 32px 24px;
-}
-
-.emailtemplate-selected {
-    background-color: #6dcff6;
-}
-
-.arrow {
-    width: 0;
-    height: 0;
-    line-height: 0;
-    border-left: 20px solid transparent;
-    border-top: 10px solid #c8c8c8;
-    top: 104%;
-    left: 0;
-    position: absolute;
-}
-
-.customDisableCss {
-    cursor: not-allowed !important;
-    opacity: 0.5;
-}
-
 a.disabled {
     pointer-events: none;
     cursor: not-allowed;
-}
-
-#emailtemplate-help {
-    margin-top: 2px;
-    margin-right: 4px;
-    background-color: #00a6e8;
-    float: right;
-}
-
-#container {
-    margin: -4px;
-    width: 500px;
-    height: 25px;
-    padding-top: 30px;
-    font-family: helvetica, arial, sans-serif;
-}
-
-.arrow {
-    width: 0;
-    height: 0;
-    line-height: 0;
-    border-left: 20px solid transparent;
-    border-top: 10px solid #16b2f4;
-    top: 102%;
-    left: 0;
-    position: absolute;
-}
-
-#mix-inner {
-    height: 200px;
-    border: 1px solid #dad4d4;
-}
-
-#template-edit {
-    left: 16%;
-}
-
-#template-action-div {
-    top: 30%;
-    position: relative;
-}
-
-#mix-details {
-    z-index: 700;
-    padding: 7px;
-    height: 185px;
 }
 
 .view-banner {
@@ -156,17 +50,6 @@ a.disabled {
     text-align: center;
     font-size: 10px;
     border-radius: 3px;
-}
-
-.view-banner-draft {
-    background-color: #f76c1a;
-    color: white;
-    width: auto;
-    padding: 5px 10px;
-    text-align: center;
-    float: left;
-    margin: 0;
-    font-size: 12px;
 }
 
 #landing-page-image-preview-custom-css {
@@ -185,7 +68,6 @@ td h6 {
 }
 
 .mix-filter li {
-    /* font-size: 11px; */
     text-transform: uppercase;
     padding: 3px 9px;
 }
@@ -263,12 +145,6 @@ td h6 {
     font-size: 14px;
 }
 
-.view-banner-listView {
-    padding: 4px 10px 5px 12px !important;
-    font-size: 12px !important;
-    border-radius: 30px;
-}
-
 .ribbon1 {
     position: absolute;
     top: -6.1px;
@@ -344,19 +220,6 @@ td h6 {
     width: 200px;
 }
 
-#right-margin {
-    margin-right: 90px;
-}
-
-#search-div {
-    margin-right: 10px;
-}
-
-#icon {
-    position: relative;
-    right: -11px;
-}
-
 #sort-text {
     height: 34px;
 }
@@ -371,32 +234,8 @@ td h6 {
     height: 16px;
 }
 
-.select-all-filter {
-    text-transform: uppercase;
-    font-size: 14px;
-    padding: 7px;
-    background-color: #6dcff6;
-}
-
-#auto-height {
-    height: auto;
-    margin-top: -12px;
-}
-
 #right {
     float: right;
-}
-
-#left {
-    float: left;
-}
-
-#notification {
-    background-color: #ed1c24;
-    color: white;
-    margin-bottom: 25px;
-    margin-left: -24px;
-    margin-top: -5px;
 }
 
 #notification-list {
@@ -406,11 +245,6 @@ td h6 {
     margin-left: -23px;
     margin-top: -6px;
 }
-
-#max-height {
-    bottom: 25px;
-}
-
 
 /* Naresh changes */
 
@@ -423,35 +257,9 @@ td h6 {
     margin: 5px 0 5px 15px !important;
 }
 
-hr {
-    margin: 0px 0;
-    border: 0;
-    border-top: 0.5px solid #cec8c8 !important;
-    border-bottom: 0;
-    width: 86% !important;
-    /* padding-left: 17px; */
-    margin-left: 16px !important;
-}
-
-.box {
-    position: absolute;
-    top: 297px;
-    bottom: 0px;
-    right: 0px;
-    background-color: #f1f3fa;
-    color: #6f6b6b;
-    padding-left: 20px;
-    padding-right: 20px;
-    width: 100%;
-    padding: 0px !important
-}
-
 .bar a {
     width: 25px !important;
     height: 25px !important;
-    /****** 	below code commented by Naresh For buttons alignment   ******/
-    /* padding: 2px !important;
-	margin: 4px 3px !important; */
     padding: 2px 0px 0px 0px !important;
     margin: 4px 2px 0px 0px !important;
 }
@@ -461,24 +269,10 @@ hr {
     margin-top: 5px;
 }
 
-/* .fa {
-    font-size: 12px !important;
-} */
-
-#text-area {
-    /* font-size: 16px; */
-}
-
-#right {
-    float: right;
-}
-
 #actions-td-width-xamp {
     width: 30%;
 }
-#i-custom-font-size{
-	font-size: 15px;
-}
+
 .min-width-icon{
     min-width: 170px;
 }

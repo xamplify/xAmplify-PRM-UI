@@ -57,6 +57,7 @@ export class CustomSkinComponent implements OnInit {
   showFooter:boolean;
   footerContent:any;
   charactersLeft = 250;
+  minLength:number;
   statusCode :any;
   isValid = false;
   customResponse: CustomResponse = new CustomResponse();
@@ -110,8 +111,20 @@ export class CustomSkinComponent implements OnInit {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
   } 
+  // footerBody:string;
+  // onChange(event:any){
+  //  this.footerBody= CKEDITOR.instances.editor1.document.getBody().getText();
+  //  this.minLength = this.footerBody.length;
+  // if(this.footerBody.length === 1){
+  //   this.isValid = true;
+  // }
+  // else{
+  //   this.isValid = false;
+  // }
+  // }
 
   message:string="";
+  
   saveSkin(form:CustomSkin){
     this.ngxloading = true;
     this.message = ""; 
@@ -129,6 +142,7 @@ export class CustomSkinComponent implements OnInit {
       this.sucess = true;
       this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
       this.router.navigate(['/home/dashboard/myprofile']);
+      this.minLength = form.textContent.length;
       },
      error =>{
       this.referenceService.scrollSmoothToTop();
@@ -174,6 +188,7 @@ export class CustomSkinComponent implements OnInit {
            this.fontFamily = this.form.fontFamily
            this.divBgColor = this.form.divBgColor;
            this.footerContent = this.form.textContent;
+           this.minLength = this.form.textContent.length;
            this.headerTextColor = this.form.headerTextColor;
            this.ngxloading =false;
         },error=>{

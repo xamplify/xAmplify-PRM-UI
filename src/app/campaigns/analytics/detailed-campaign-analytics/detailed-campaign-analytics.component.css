@@ -193,14 +193,8 @@ h3 {
 }
 
 .icon-div {
-	/* margin-left: -1em; */
 	margin-top: 0em;
 }
-
-/* .portlet.light {
-	/* box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.4); */
-	/* border-radius: 3px !important; *
-} */
 
 p {
 	margin: 0 0 10px;
@@ -216,7 +210,6 @@ p {
 
 .page-bar {
 	padding: 0;
-	/* border-radius: 0; */
 }
 
 h1.bold {
@@ -274,41 +267,6 @@ h1.bold {
 	border-radius: 3px !important;
 }
 
-/*.color2, .color2-invert:hover {
-	background-color: #00B3B3;
-	color: #fff;
-	border: 1px solid #00B3B3;
-}
-
- .color2:hover, .color2-invert {
-	background-color: #fff;
-	color: #00B3B3;
-	border: 1px solid #00B3B3;
-}
-
-.color3, .color3-invert:hover {
-	background-color: #827596;
-	color: #fff;
-	border: 1px solid #827596;
-}
-
-.color3:hover, .color3-invert {
-	color: #827596;
-	background-color: #fff;
-	border: 1px solid #827596;
-}
-
-.color4, .color4-invert:hover {
-	background-color: #fbb23e;
-	color: #fff;
-	border: 1px solid #fbb23e;
-}
-
-.color4:hover, .color4-invert {
-	color: #fbb23e;
-	background-color: #fff;
-	border: 1px solid #fbb23e;
-} */
 .color1:hover, .color2:hover, .color3:hover, .color4:hover {
 	cursor: pointer;
 }
@@ -764,14 +722,6 @@ tr>td>h6 {
 	overflow: hidden !important;
 }
 
-/*
-.col-lg-2{
-	width: 12.5% !important;
-}
-.col-xs-2{
-	width: 50% !important;
-}
-*/
 #float-right {
 	float: right;
 }
