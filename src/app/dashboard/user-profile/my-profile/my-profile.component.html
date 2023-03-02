@@ -1792,7 +1792,7 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(circleData | json) === '{}'"><span>Select
+                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(circleData | json) === '{}'"><span>Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
                 </div>
@@ -1842,7 +1842,7 @@
 						<button class="btn-info" (click)="zoomIn()"><i class="fa fa-search-plus" aria-hidden="true"></i> </button>
 						</div>
                 <div>
-                    <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadProfileImage()">Upload Image</button>
+                    <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadProfileImage()">Save Changes</button>
                 </div>
                 </div>
             </div>

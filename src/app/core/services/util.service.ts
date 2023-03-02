@@ -94,7 +94,7 @@ export class UtilService {
 
     blobToFile(theBlob){
       theBlob.lastModifiedDate = new Date();
-      theBlob.name = theBlob.lastModifiedDate.getTime()+'.gif';
+      theBlob.name = theBlob.lastModifiedDate.getTime()+'.webp';
       return theBlob;
      }
     convertBase64ToFileObject(dataURI) {
