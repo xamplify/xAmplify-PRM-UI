@@ -177,3 +177,6 @@ cursor: default;
 		padding-left: 14px;
 	}
 }
+.portlet.light, .dashboard-stat2{
+	padding: 7px !important;
+}

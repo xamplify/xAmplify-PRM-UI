@@ -476,6 +476,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.delayAndNavigate(url);
 }
 
+// getting loading from here
 delayAndNavigate(url:string){
   this.loadTopNavBar = true;
   let self = this;
@@ -483,7 +484,7 @@ delayAndNavigate(url:string){
       self.refService.goToRouter(url);
 		}, 500);
   }
-
+//
   
 navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
   if(companyProfileCreated){

@@ -835,10 +835,10 @@
 								: 'Contain Within Aspect Ratio'
 							}}
 						  </button>
-						<button class="btn-info" (click)="resetImage()"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
-						<button class="btn-info" (click)="zoomOut()"><i class="fa fa-search-minus" aria-hidden="true"></i> </button>
-						<button class="btn-info" (click)="zoomIn()"><i class="fa fa-search-plus" aria-hidden="true"></i> </button>
-						</div>
+						<button class="btn-info" (click)="zoomOut()"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomIn()"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="resetImage()"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+					</div>
 				<div>
 					<button class="btn btn-primary" [disabled]="!showCropper"
 						(click)="uploadLogo()">Save Changes</button>
