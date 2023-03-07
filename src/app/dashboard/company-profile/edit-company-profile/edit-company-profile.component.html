@@ -774,12 +774,20 @@
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<div style="position: relative; top: -8px; width: 118px;"
-					class="btn green fileinput-button-css">
+					class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton">
 					<span>Upload image</span> <input style="height: 36px;" title=" "
 						id="custom-input" type="file"
 						(change)="filenewChangeEvent($event)">
 				</div>
-				<div style="position: relative; top: -5px;"
+				<ng-template #uploadButton> 
+					<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="fileBgImageChangeEvent($event)">
+				</div>
+			</ng-template>
+				<div style="position: relative; top: -5px;" 
 					*ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
@@ -875,11 +883,19 @@
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent">
-					<span>Select image</span> <input style="height: 36px;" title=" "
+					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent; else uploadButton">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
 						id="custom-input" type="file"
 						(change)="fileBgImageChangeEvent($event)">
 				</div>
+				<ng-template #uploadButton> 
+					<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="fileBgImageChangeEvent($event)">
+				</div>
+			</ng-template>
 				<div style="position: relative; top: -5px;"
 					*ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
@@ -887,14 +903,50 @@
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
 					<div [hidden]="!bgImageChangedEvent">
-						<image-cropper [imageChangedEvent]="bgImageChangedEvent"
+						<!-- <image-cropper [imageChangedEvent]="bgImageChangedEvent"
 							[maintainAspectRatio]="false" [onlyScaleDown]="true"
 							[roundCropper]="false" format="jpg" outputType="base64"
 							(imageCropped)="bgImageCroppedMethod($event)"
 							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
 							[imageQuality]="0" (loadImageFailed)="loadImageFailed()"
-							[style.display]="showCropper ? null : 'none'"></image-cropper>
-					</div>
+							[style.display]="showCropper ? null : 'none'"></image-cropper> -->
+							<!-- <app-img-croppr-v2
+							[imageChangedEvent]="bgImageChangedEvent"
+							[maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio"
+							[aspectRatio]="3 / 1"
+							[resizeToWidth]="800"
+							[cropperMinWidth]="500"
+							[onlyScaleDown]="true"
+							[roundCropper]="false"
+							[alignImage]="'left'"
+							[style.display]="showCropper ? null : 'none'"
+							format="png"
+							[transform]="transform"
+							(imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()"
+							(cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+							</app-img-croppr-v2> -->					
+					<app-img-croppr-v2
+							[imageChangedEvent]="bgImageChangedEvent"
+							[maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio"
+							[aspectRatio]="3 / 1"
+							[resizeToWidth]="800"
+							[cropperMinWidth]="500"
+							[onlyScaleDown]="true"
+							[roundCropper]="false"
+							[alignImage]="'left'"
+							[style.display]="showCropper ? null : 'none'"
+							format="png"
+							[transform]="transform"
+							(imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()"
+							(cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+							</app-img-croppr-v2>
+						</div>
 					<div *ngIf="!bgImageChangedEvent">
 						<fieldset
 							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
@@ -903,9 +955,28 @@
 					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
 
 				</div>
-				<div>
+				<!-- <div>
 					<button class="btn btn-primary" [disabled]="!showCropper"
 						(click)="uploadBgImage()">Save Changes</button>
+				</div> -->
+				<div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" >
+							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							{{
+							  containWithinAspectRatio
+								? 'Fill Aspect Ratio'
+								: 'Contain Within Aspect Ratio'
+							}}
+						  </button>
+						<button class="btn-info" (click)="zoomOut()"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomIn()"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="resetImage()"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+					</div>
+					<div>
+						<button class="btn btn-primary" [disabled]="!showCropper"
+							(click)="uploadBgImage()">Save Changes</button>
+					</div>
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">

@@ -1792,10 +1792,16 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(circleData | json) === '{}'"><span>Upload
+                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
                 </div>
+                <ng-template #uploadButton> 
+					<div style="position: relative;top: -5px;" class="btn green fileinput-button-css"><span>Upload
+                        image</span>
+                    <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
+                </div>
+			</ng-template>
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>

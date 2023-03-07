@@ -236,6 +236,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.transform = {
             ...this.transform,
             scale: this.scale
+            
         };
     }
 
