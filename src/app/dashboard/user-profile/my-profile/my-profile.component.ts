@@ -286,9 +286,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	toggleContainWithinAspectRatio() {
+		if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.containWithinAspectRatio = !this.containWithinAspectRatio;
     }
     zoomOut() {
+		if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale -= .1;
         this.transform = {
             ...this.transform,
@@ -297,6 +303,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     zoomIn() {
+		if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale += .1;
         this.transform = {
             ...this.transform,
@@ -304,6 +313,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
     resetImage() {
+		if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale = 1;
         this.rotation = 0;
         this.canvasRotation = 0;
@@ -349,7 +361,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
       }else{
-          this.refService.showSweetAlertErrorMessage("Please upload an image");
+        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
+		this.errorUploadCropper = true;
+            this.showCropper = false;
       }
       
 	}
