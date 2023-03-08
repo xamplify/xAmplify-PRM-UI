@@ -1181,6 +1181,7 @@ export class ManageDealsComponent implements OnInit {
   syncLeadsWithActiveCRM() {
     this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader,true);
     this.leadsService.syncLeadsWithActiveCRM(this.loggedInUserId)
       .subscribe(
         data => {
