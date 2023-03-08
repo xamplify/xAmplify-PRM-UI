@@ -12,3 +12,6 @@
 		padding-bottom: 5px;
 	}
 }
+.portlet.light, .dashboard-stat2{
+	margin-top: 12px;
+}

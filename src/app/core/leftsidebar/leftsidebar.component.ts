@@ -81,7 +81,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 
 	ngOnInit() {
-		this.findMenuItems();
+		 this.findMenuItems();
 		this.customSkinLeftMenu();
 	}
 	
