@@ -338,6 +338,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.cropRounded = !this.cropRounded;
 		this.circleData = {};
 		this.imageChangedEvent = null;
+		 this.croppedImage = '';
 	}
 	fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
 	uploadProfileImage() {
