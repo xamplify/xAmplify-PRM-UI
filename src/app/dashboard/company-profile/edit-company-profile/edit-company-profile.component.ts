@@ -422,6 +422,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let fileObj:any;
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
+        this.update();
         this.fileUploadCode(fileObj);
       }else{
         //   this.refService.showSweetAlertErrorMessage("Please upload an image");
@@ -436,16 +437,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         (response: any) => {
           console.log(response);
           this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath = response.path;
-         this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
+          this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
           this.logoError = false;
           this.logoErrorMessage = "";
           this.enableOrDisableButton();
-          this.customResponse = new CustomResponse('SUCCESS', this.properties.COMPANY_PIC_UPDATED, true);
+         // this.customResponse = new CustomResponse('SUCCESS', this.properties.COMPANY_PIC_UPDATED, true);
           $('#cropLogoImage').modal('hide');
           this.closeModal();
         },
-        (error) => { console.log(error);  $('#cropLogoImage').modal('hide');
-         this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
+        (error) => { console.log(error);  $('#cropLogoImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
         ()=>{ this.loadingcrop = false; if(this.companyProfile.website) { this.saveVideoBrandLog(); }});
     }
     errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
@@ -1611,6 +1611,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let fileObj:any;
           fileObj = this.utilService.convertBase64ToFileObject(this.croppedImageForBgImage);
           fileObj = this.utilService.blobToFile(fileObj);
+          this.update();
           this.processBgImageFile(fileObj);
         }else{
            // this.refService.showSweetAlertErrorMessage("Please upload an image");
