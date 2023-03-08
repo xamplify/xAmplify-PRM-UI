@@ -758,15 +758,17 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.leadPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultLeadPipelineId = pipeline.id;
-                                        this.campaign.leadPipelineId = pipeline.id;
-                                    }
+                                        if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                                            this.campaign.leadPipelineId = pipeline.id;
+                                        }                                     }
                                 });
 
                                 this.dealPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultDealPipelineId = pipeline.id;
-                                        this.campaign.dealPipelineId = pipeline.id;
-                                    }
+                                        if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                            this.campaign.dealPipelineId = pipeline.id;
+                                        }                                     }
                                 });
                             } else {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
