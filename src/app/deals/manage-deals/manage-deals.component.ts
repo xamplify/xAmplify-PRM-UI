@@ -885,6 +885,13 @@ export class ManageDealsComponent implements OnInit {
     mapInput.setAttribute("value", this.dealsPagination.stageFilter);
     mapForm.appendChild(mapInput);
     
+    //vendorCompanyIdFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "createdForCompanyId";
+    mapInput.setAttribute("value", this.vendorCompanyIdFilter);
+    mapForm.appendChild(mapInput);
+    
     // partnerTeamMemberGroupFilter
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
