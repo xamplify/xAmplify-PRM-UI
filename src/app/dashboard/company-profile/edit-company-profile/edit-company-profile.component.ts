@@ -229,9 +229,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         
     }
     toggleContainWithinAspectRatio() {
+        if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.containWithinAspectRatio = !this.containWithinAspectRatio;
     }
     zoomOut() {
+        if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale -= .1;
         this.transform = {
             ...this.transform,
@@ -241,6 +247,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     zoomIn() {
+        if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale += .1;
         this.transform = {
             ...this.transform,
@@ -248,6 +257,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         };
     }
     resetImage() {
+        if(this.croppedImage=''){
+			this.showCropper = false;
+		}
         this.scale = 1;
         this.rotation = 0;
         this.canvasRotation = 0;
@@ -410,9 +422,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let fileObj:any;
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
+        this.update();
         this.fileUploadCode(fileObj);
       }else{
-          this.refService.showSweetAlertErrorMessage("Please upload an image");
+        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
+         this.errorUploadCropper = true;
+        this.showCropper = false;
       }
       
     }
@@ -426,6 +441,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.logoError = false;
           this.logoErrorMessage = "";
           this.enableOrDisableButton();
+         // this.customResponse = new CustomResponse('SUCCESS', this.properties.COMPANY_PIC_UPDATED, true);
           $('#cropLogoImage').modal('hide');
           this.closeModal();
         },
@@ -1595,9 +1611,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let fileObj:any;
           fileObj = this.utilService.convertBase64ToFileObject(this.croppedImageForBgImage);
           fileObj = this.utilService.blobToFile(fileObj);
+          this.update();
           this.processBgImageFile(fileObj);
         }else{
-            this.refService.showSweetAlertErrorMessage("Please upload an image");
+           // this.refService.showSweetAlertErrorMessage("Please upload an image");
+            this.errorUploadCropper = true;
+            this.showCropper = false;
         }        
       }
 
