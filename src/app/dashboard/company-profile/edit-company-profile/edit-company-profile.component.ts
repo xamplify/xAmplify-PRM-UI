@@ -161,6 +161,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     imageChangedEvent: any = '';
     croppedImage: any = '';
     showCropper = false;
+    disabled = false;
     isAspectRatio = false;
     aspectRatioValue = '4/3';
     isFromAdminPanel = false;
@@ -229,42 +230,50 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         
     }
     toggleContainWithinAspectRatio() {
-        if(this.croppedImage=''){
-			this.showCropper = false;
-		}
-        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+        if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+      //  this.errorUploadCropper = true;
+        }
     }
     zoomOut() {
-        if(this.croppedImage=''){
-			this.showCropper = false;
-		}
+        if(this.croppedImage!=""){
         this.scale -= .1;
         this.transform = {
             ...this.transform,
-            scale: this.scale
-            
+            scale: this.scale       
         };
+    }else{
+        this.errorUploadCropper = true;
+        this.showCropper = false; 
+    }
     }
 
     zoomIn() {
-        if(this.croppedImage=''){
-			this.showCropper = false;
-		}
-        this.scale += .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
+        if(this.croppedImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+			
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+        }
     }
     resetImage() {
-        if(this.croppedImage=''){
-			this.showCropper = false;
-		}
-        this.scale = 1;
-        this.rotation = 0;
-        this.canvasRotation = 0;
-        this.transform = {};
+        if(this.croppedImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
     }
+}
     
     validateUserUsingEmailId(){
         this.customResponse = new CustomResponse();
@@ -359,6 +368,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.croppedImageForBgImage = '';
       this.squareDataForBgImage = {};
       this.bgImageChangedEvent = null;
+    //  this.errorUploadCropper = false;
     }
     // cropperSettings(){
     //   this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
@@ -422,7 +432,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let fileObj:any;
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
-        this.update();
+        // this.update();
         this.fileUploadCode(fileObj);
       }else{
         //   this.refService.showSweetAlertErrorMessage("Please upload an image");
@@ -1611,7 +1621,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let fileObj:any;
           fileObj = this.utilService.convertBase64ToFileObject(this.croppedImageForBgImage);
           fileObj = this.utilService.blobToFile(fileObj);
-          this.update();
+         // this.update();
           this.processBgImageFile(fileObj);
         }else{
            // this.refService.showSweetAlertErrorMessage("Please upload an image");
