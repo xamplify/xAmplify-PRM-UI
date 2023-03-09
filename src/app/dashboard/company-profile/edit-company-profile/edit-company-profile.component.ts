@@ -1705,7 +1705,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.errorUploadCropper = false;
             this.bgImageChangedEvent = event;
         } else {
-          this.errorUploadCropper = false;
+          this.errorUploadCropper = true;
           this.showCropper = false;
         }
       }
