@@ -286,28 +286,49 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	toggleContainWithinAspectRatio() {
-        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+      //  this.errorUploadCropper = true;
+        }
     }
     zoomOut() {
-        this.scale -= .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
+		if(this.croppedImage!=""){
+			this.scale -= .1;
+			this.transform = {
+				...this.transform,
+				scale: this.scale       
+			};
+		}else{
+			this.errorUploadCropper = true;
+			this.showCropper = false; 
+		}
     }
 
     zoomIn() {
-        this.scale += .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
+		if(this.croppedImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+			
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+        }
     }
     resetImage() {
-        this.scale = 1;
-        this.rotation = 0;
-        this.canvasRotation = 0;
-        this.transform = {};
+		if(this.croppedImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+    }
     }
 	imageCroppedMethod(event: ImageCroppedEvent) {
 		this.croppedImage = event.base64;
@@ -322,8 +343,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 	loadImageFailed () {
 		console.log('Load failed');
-		this.errorUploadCropper = true;
-		this.showCropper = false;
 	  }
 
 	cropperSettings() {
@@ -349,7 +368,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
       }else{
-          this.refService.showSweetAlertErrorMessage("Please upload an image");
+        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
+		this.errorUploadCropper = false;
+            this.showCropper = false;
       }
       
 	}

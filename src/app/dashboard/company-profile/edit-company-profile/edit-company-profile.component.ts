@@ -229,31 +229,94 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         
     }
     toggleContainWithinAspectRatio() {
-        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+        if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+      //  this.errorUploadCropper = true;
+        }
     }
-    zoomOut() {
-        this.scale -= .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-            
-        };
-    }
-
-    zoomIn() {
-        this.scale += .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
-    }
-    resetImage() {
-        this.scale = 1;
-        this.rotation = 0;
-        this.canvasRotation = 0;
-        this.transform = {};
+    toggleContainWithinAspectRatioBgImage() {
+        if(this.croppedImageForBgImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+        //this.errorUploadCropper = true;
+        }
     }
     
+    zoomOut() {
+        if(this.croppedImage!=""){
+			this.scale -= .1;
+			this.transform = {
+				...this.transform,
+				scale: this.scale       
+			};
+		}else{
+			this.errorUploadCropper = true;
+			this.showCropper = false; 
+		}
+    }
+    zoomOutBgImage() {
+        if(this.croppedImageForBgImage!=""){
+			this.scale -= .1;
+			this.transform = {
+				...this.transform,
+				scale: this.scale       
+			};
+		}else{
+			this.errorUploadCropper = true;
+			this.showCropper = false; 
+		}
+    }
+    zoomIn() {
+        if(this.croppedImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+			
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+        }
+    }
+    zoomInBgImage() {
+        if(this.croppedImageForBgImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+			
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+        }
+    }
+    resetImage() {
+        if(this.croppedImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+    }
+    }
+    resetImageBgImage() {
+        if(this.croppedImageForBgImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+		}else{
+        this.showCropper = false;
+        this.errorUploadCropper = true;
+    }
+    }
     validateUserUsingEmailId(){
         this.customResponse = new CustomResponse();
         this.upgradeToVendor = false;
@@ -377,17 +440,17 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       else { this.isAspectRatio = true; this.aspectRatioValue = event; }
     }
     filenewChangeEvent(event){
-      const image:any = new Image();
-      const file:File = event.target.files[0];
-      const isSupportfile = file.type;
-      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-          this.errorUploadCropper = false;
-          this.imageChangedEvent = event;
-      } else {
-        this.errorUploadCropper = true;
-        this.showCropper = false;
+        const image:any = new Image();
+        const file:File = event.target.files[0];
+        const isSupportfile = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            this.imageChangedEvent = event;
+        } else {
+          this.errorUploadCropper = true;
+          this.showCropper = false;
+        }
       }
-    }
     imageCroppedMethod(event: ImageCroppedEvent) {
       this.croppedImage = event.base64;
       console.log(event, base64ToFile(event.base64));
@@ -401,8 +464,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     loadImageFailed () {
       console.log('Load failed');
-      this.errorUploadCropper = true;
-      this.showCropper = false;
     }
     uploadLogo(){
       if(this.croppedImage!=""){
@@ -412,7 +473,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
       }else{
-          this.refService.showSweetAlertErrorMessage("Please upload an image");
+        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
+        this.errorUploadCropper = false;
+            this.showCropper = false;
       }
       
     }
@@ -1597,7 +1660,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           fileObj = this.utilService.blobToFile(fileObj);
           this.processBgImageFile(fileObj);
         }else{
-            this.refService.showSweetAlertErrorMessage("Please upload an image");
+            // this.refService.showSweetAlertErrorMessage("Please upload an image");
+            this.errorUploadCropper = false;
+            this.showCropper = false;
         }        
       }
 
@@ -1620,6 +1685,19 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
 
     fileBgImageChangeEvent(event){
+        const image:any = new Image();
+        const file:File = event.target.files[0];
+        const isSupportfile = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            this.imageChangedEvent = event;
+        } else {
+          this.errorUploadCropper = true;
+          this.showCropper = false;
+        }
+      }
+
+      uploadfileBgImageChangeEvent(event){
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
