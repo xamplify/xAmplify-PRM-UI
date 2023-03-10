@@ -19,12 +19,29 @@ import { UtilService } from '../../core/services/util.service';
 export class ViewPartnersComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
+  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     private xtremandLogger:XtremandLogger,private utilService:UtilService,private pagerService:PagerService,
     private partnerService:ParterService,public router: Router,public sortOption: SortOption,private route:ActivatedRoute) { }
 
   ngOnInit() {
-    alert("View Partnes Componet Loaded");
+    this.findAllPartnerCompanies(this.pagination);
+  }
+
+  findAllPartnerCompanies(pagination:Pagination){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.partnerService.findAllPartnerCompanies(pagination).
+    subscribe(
+      result=>{
+        let data = result.data;
+        pagination.totalRecords = data.totalRecords;
+        this.sortOption.totalRecords = data.totalRecords;
+        pagination = this.pagerService.getPagedItems(pagination, data.list);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      },error=>{
+        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+        this.referenceService.stopLoader(this.httpRequestLoader);
+      });
   }
 
 }

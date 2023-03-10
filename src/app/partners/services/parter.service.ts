@@ -187,6 +187,13 @@ export class ParterService {
         .catch( this.handleError );
     }
 
+    /*********XNFR-220****/
+    findAllPartnerCompanies(pagination:Pagination){
+        pagination.userId = this.authenticationService.getUserId();
+        const url = this.URL + 'partner/allPartners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
     
     
     handleError( error: any ) {
