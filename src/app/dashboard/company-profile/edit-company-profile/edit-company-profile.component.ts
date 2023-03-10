@@ -488,7 +488,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
           this.logoError = false;
           this.logoErrorMessage = "";
-          this.enableOrDisableButton();
+        //   this.enableOrDisableButton();
           $('#cropLogoImage').modal('hide');
           this.closeModal();
         },

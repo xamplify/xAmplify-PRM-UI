@@ -15,7 +15,7 @@
         <div class="page-logo pttpx">
              <div [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
                 <img  *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt="" onerror="this.src='assets/images/xamplify-logo.png';"  />
-                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" alt=""  onerror="this.src='assets/images/xamplify-logo.png';" />
+                <img  *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt=""  onerror="this.src='assets/images/xamplify-logo.png';" />
             </div>
             <div (click)="refService.changeSideBar()" class="side-bar" [class.side-bar-css]="refService.isSidebarClosed" *ngIf="authenticationService.user.hasCompany">
                 <i class="fa fa-bars" style="font-size: 21px;" aria-hidden="true"></i>
