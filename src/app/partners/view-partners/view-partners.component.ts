@@ -21,7 +21,10 @@ export class ViewPartnersComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  journeyLoader:HttpRequestLoader = new HttpRequestLoader();
   sortOption:SortOption = new SortOption();
+  journeyHistroies:Array<any> = new Array<any>();
+  selectedPartner:any;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     private xtremandLogger:XtremandLogger,private utilService:UtilService,private pagerService:PagerService,
     private partnerService:ParterService,public router: Router,private route:ActivatedRoute) { }
@@ -71,10 +74,17 @@ export class ViewPartnersComponent implements OnInit {
 	}
 
   showJourney(partner:any){
+    this.selectedPartner = partner;
+    this.referenceService.showModalPopup("partner-journey-modal");
+    this.referenceService.startLoader(this.journeyLoader);
     this.partnerService.findPartnerCompanyJourney(partner.partnershipId).subscribe(
       response=>{
+        this.journeyHistroies = response.data;
+        this.referenceService.stopLoader(this.journeyLoader);
       },error=>{
-          this.referenceService.showSweetAlertServerErrorMessage();
+        this.referenceService.stopLoader(this.journeyLoader);
+        this.referenceService.showSweetAlertServerErrorMessage();
+        this.referenceService.closeModalPopup("partner-journey-modal");
       }
     )
 

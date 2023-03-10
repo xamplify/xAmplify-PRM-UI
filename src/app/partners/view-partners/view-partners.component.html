@@ -4,7 +4,7 @@
       <div class="caption">
         <i class="icon-bar-chart font-green-sharp hide" aria-hidden="true"></i>
         <span class="caption-subject font-green-sharp uppercase">
-          Journey Of Your {{authenticationService?.partnerModule?.customName}} 
+          {{authenticationService?.partnerModule?.customName}} 
         </span>
       </div>
       <div class="panel-title pull-right">
@@ -66,3 +66,39 @@
     </div>
   </div>
 <!--Journey Modal PopUp-->
+<div class="modal fade right" id="partner-journey-modal" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog full-width-modal-popup">
+    <div class="modal-content" id="over-flow-y">
+      <div class="modal-header">
+        <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title" class="center-aligned">Journey Of {{selectedPartner?.companyNameAddedByVendor}}</h4>
+      </div>
+      <div class="modal-body">
+        <app-modal-popup-loader *ngIf="journeyLoader?.isLoading"></app-modal-popup-loader>
+        <div class="row" *ngIf="!journeyLoader?.isLoading">
+          <div class="timeline">
+              <div class="line text-muted"></div>
+              <article *ngFor="let timeLine of journeyHistroies" class="panel panel-default panel-outline">
+                  <div class="panel-heading icon">
+                      <img class="img-circle mdf-style" src="../../../assets/images/event-success.png" alt="">
+                  </div>
+                  <div class="panel-body pt0">
+                      <p>
+                        <strong style="color:#65b6e4;">{{timeLine?.journeyType}}</strong>
+                         <strong>
+                           <app-display-date-and-time [dateAndTimeUTCString]="timeLine?.createdTimeInString"></app-display-date-and-time>
+                         </strong>
+                         </p>
+                  </div>
+              </article>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <a href="javascript:void(0)" id="float-right" data-dismiss="modal"  class="btn btn-default" translate>Close</a>
+      </div>
+    </div>
+  </div>
+</div>
