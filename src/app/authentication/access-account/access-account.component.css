@@ -15,4 +15,7 @@
     font-size: 22px;
     cursor: pointer;
 }
+nav a:visited, a:link {
+    color: #c6e8e6 !important;
+}
 

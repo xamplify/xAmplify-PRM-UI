@@ -82,6 +82,12 @@
         border-radius: 3px !important;
     }
     
+    .custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
+}
+
 </style>
 <div class="page-content">
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -110,7 +116,7 @@
                         <i class="fa fa-cogs" aria-hidden="true"></i>Create a campaign <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
                     </div>
                     <div>
-                        <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="btn btn custom" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                     </div>
                 </div>
                 <div class="portlet-body">

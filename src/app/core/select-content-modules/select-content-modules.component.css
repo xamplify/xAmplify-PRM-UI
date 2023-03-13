@@ -4,7 +4,6 @@
 
 .text {
     text-align: center;
-    /* padding-bottom: 10px; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -18,30 +17,12 @@ h5 {
     font-weight: 400!important;
 }
 
-/* .img1 {
-    background: #34495a;
-    text-align: center;
-    border-radius: 20px 20px 0px 0px;
-} */
-
 .img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 15px;
     display: block;
     max-width: 112px;
     height: auto;
     padding-bottom: 15px;
-}
-
-.para1 {
-    padding: 10px 95px 20px 99px;
-    font-size: 16px;
-    text-align: justify;
-}
-
-.para2 {
-    padding: 7px 91px 20px 99px;
-    font-size: 16px;
-    text-align: justify;
 }
 
 .hover-effect:hover {
@@ -70,8 +51,6 @@ h5 {
 
 .cpad {
     padding: 0px !important;
-    /* min-height: 413px !important; */
-
 }
 
 .mauto {
@@ -87,28 +66,16 @@ h5 {
 
 .header-description-css {
     text-align: center;
-    /* padding-left: 10px; */
     color: #888;
     font-size: 14px;
     padding: 10px;
     height: 76px;
 }
 
-.bordernone{
-    border: none !important
-}
-
-.pltpx{
-    padding-left: 10px;
-}
-
 .prfpx{
     padding-right: 40px;
 }
 
-.prtpx{
-    padding-right: 32px;
-}
 
 .prtfpx{
     padding-right: 24px;
@@ -138,9 +105,7 @@ h5 {
 .portlet > .portlet-title > .caption{
     line-height: 30px;
 }
-.mt{
-margin-top: 9px !important;
-}
+
 .padding{
     padding: 0px 5px !important;
 }
@@ -149,7 +114,6 @@ margin-top: 9px !important;
 }
 .img1:hover{
     background-position: 100%;
-    /* color: black !important; */
     background-color: #b8def1;
     transition-duration: 500ms;
 }

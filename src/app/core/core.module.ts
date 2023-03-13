@@ -19,6 +19,7 @@ import { Top4AssetsComponent } from '../dashboard/dashboard-analytics-components
 import { Top4TracksAndPlayBooksComponent } from '../dashboard/dashboard-analytics-components/top-4-tracks-and-play-books/top-4-tracks-and-play-books.component';
 import { CustomCopyrightComponent } from './custom-copyright/custom-copyright.component';
 
+
 @NgModule({
 	imports: [CKEditorModule, CommonModule, RouterModule, SharedModule, SlimLoadingBarModule.forRoot()],
 	declarations: [TopnavbarComponent, BottomnavbarComponent, HomeComponent, LeftsidebarComponent, CopyrightComponent, NotificationsComponent, SelectContentModulesComponent,

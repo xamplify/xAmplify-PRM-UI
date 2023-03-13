@@ -9,26 +9,12 @@
 Page Header
 ***********/
 /* Header search bar, toggler button & top menu */
-.page-header.navbar {
-  /* Top notification menu/bar */
-  /* Header seaech box */
-}
-.page-header.navbar .page-logo {
-  /* background: #ffffff; */
-}
+
 .page-header.navbar .page-top {
   box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
   background: #fff;
 }
-.page-header.navbar .top-menu .navbar-nav {
-  /* Extended Dropdowns */
-  /* Notification */
-  /* Inbox */
-  /* Tasks */
-  /* User */
-  /* Language */
-  /* Dark version */
-}
+
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover {
   background-color: #f9fafc;
 }
@@ -55,7 +41,6 @@ Page Header
   border-bottom-color: #eaedf2;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external {
-  /* background: #eaedf2; */
   background: #e8edf2;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external > h3 {
@@ -173,14 +158,10 @@ Page Header
   background-color: #2a3f54;
   /* Default sidebar */
 }
-.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu,
-.page-sidebar .page-sidebar-menu {
-  /* 1st level links */
-  /* All links */
-}
+
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a,
 .page-sidebar .page-sidebar-menu > li > a {
-  border-top: 1px solid #3d4f65;
+  border-bottom: 1px solid #3d4f65;
   color: #f2f4f6;
 }
 @media (max-width: 991px) {
@@ -401,9 +382,6 @@ Page Footer
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
     background-color: #f6f7fa;
-  }
-  .page-header.navbar .page-top {
-   /* box-shadow: none;*/
   }
 }
 @media (max-width: 767px) {
