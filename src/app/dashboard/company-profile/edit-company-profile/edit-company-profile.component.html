@@ -7,7 +7,7 @@
 			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a
 				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
 			<li  *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
-				routerLink="/home/dashboard/default">Home</a><i
+				routerLink="/home/dashboard/default" (click)="update()">Home</a><i
 				class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
@@ -934,7 +934,7 @@
 							[imageChangedEvent]="bgImageChangedEvent"
 							[maintainAspectRatio]="true"
 							[containWithinAspectRatio]="containWithinAspectRatio"
-							[aspectRatio]="3 / 1"
+							[aspectRatio]="16 / 9"
 							[resizeToWidth]="800"
 							[cropperMinWidth]="500"
 							[onlyScaleDown]="true"

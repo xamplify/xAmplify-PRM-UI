@@ -12,6 +12,14 @@
 		padding-bottom: 5px;
 	}
 }
-.portlet.light, .dashboard-stat2{
-	margin-top: 12px;
+
+
+.portlet .dashboard-stat:last-child {
+	margin-bottom: 20px !important;
+}
+.dashboard-stat .details .desc {
+	font-size: 13px !important;
+}
+.portlet.light > .portlet-title > .caption > .caption-subject {
+	font-weight: 600 !important;
 }
