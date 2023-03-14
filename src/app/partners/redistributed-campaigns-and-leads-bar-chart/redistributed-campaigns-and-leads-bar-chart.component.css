@@ -53,3 +53,7 @@
 .pr5{
     padding-right: 5px;
 }
+
+.portlet.light > .portlet-title > .caption > .caption-subject {
+    font-weight: 600 !important;
+}
