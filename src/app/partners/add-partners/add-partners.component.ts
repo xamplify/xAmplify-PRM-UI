@@ -1300,6 +1300,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+		    this.pageLoader = true;
 			this.partnerId[0] = contactId;
 			this.contactService.removeContactListUsers(this.partnerListId, this.partnerId)
 				.subscribe(
@@ -1308,6 +1309,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							let message = "Your " + this.authenticationService.partnerModule.customName + "(s) have been deleted successfully";
 							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
+							this.pageLoader = false;
 						} else {
 							this.authenticationService.forceToLogout();
 						}
