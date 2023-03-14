@@ -29,6 +29,7 @@
 }
 .custom-font-weight{
 	font-weight: 600 !important;
+	white-space: inherit !important;
 }
 .custom-font-size {
 	font-size: 16px !important;
