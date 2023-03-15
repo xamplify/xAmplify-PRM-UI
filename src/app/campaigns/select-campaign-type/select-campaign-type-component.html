@@ -58,7 +58,7 @@
         transition: all 0.3s ease-in-out;
         /*make the smooth transition in 0.3s*/
         color: #eeaaee;
-        border-radius: 3px;
+        border-radius: 5px;
     }
     
     .box-wrapper:hover .box-content {
@@ -73,7 +73,7 @@
     }
     .camp-card{
         height: 242px;
-        border-radius: 3px;
+        border-radius: 5px;
     }
     .camp-card-bg{
         background-color: #f2f4f9!important;
@@ -108,17 +108,15 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div  class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
+            <div  class="" style="padding-left: 30px !important;padding-right: 30px !important;">
                 <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
                 <ng-container *ngIf="!loading">
                 <div class="portlet-title">
-                    <div class="caption" translate>
-                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a campaign <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
-                    </div>
-                    <div>
-                        <button class="btn btn custom" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-                    </div>
+                    <div class="caption" style="padding-top: 4px;padding-bottom: 4px;" translate>
+                        <i class="fa fa-cogs" aria-hidden="true"></i><b>Create a campaign</b> <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
+                        <button class="btn btn custom" id="right" style="margin-top: -18px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                 </div>
+            </div>
                 <div class="portlet-body">
                     <div class="row clearfix">
                         <!-- Pricing -->
@@ -127,7 +125,7 @@
                                 <div class="pricing-head ">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive	" style="padding-top: 19px;" src="assets/images/video-email.png"></h4>
+                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/video-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -151,7 +149,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/regular-email.png"></h4>
+                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/regular-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -174,7 +172,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/social-campaign.png"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/social-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content" style="position: absolute !important;width: 99% !important;height: 193px !important;left: 2px !important;">
@@ -195,7 +193,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/event-campaign.png"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/event-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -217,7 +215,7 @@
                                 <div class="pricing-head">
 
                                     <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/landing-page.png"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/landing-page.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -238,7 +236,7 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('survey')">
                                 <div class="pricing-head">
                                     <h4 class="camp-card-bg">
-                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/survey.png"></h4>
+                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/survey.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
