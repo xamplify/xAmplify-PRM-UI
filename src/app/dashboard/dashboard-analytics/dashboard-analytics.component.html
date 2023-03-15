@@ -262,8 +262,9 @@
             <div class="clearfix" *ngIf="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember) 
                 && authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 && 
                 (authenticationService?.leadsAndDeals)">
-                <div class="portlet light shadow">
-                    <div class="portlet-body clearfix">
+                <!-- Remove (portlet light shadow)-->
+                <div class="row">
+                    <div class="clearfix">
                         <app-leads-statistics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-leads-statistics>
                         <app-deals-statistics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-deals-statistics>
                     </div>
