@@ -24,6 +24,7 @@ export class CompanyProfile {
     videoId = 0;
     street = "";
     privacyPolicy = "";
+    eventUrl = "";
     /******Admin Related*********/
     userEmailId:string = "";
     firstName:string = "";
@@ -36,4 +37,5 @@ export class CompanyProfile {
     loginScreenDirection:string;
     enableVanityURL:boolean =false;
     roleId:number = 0;
+    
 }
