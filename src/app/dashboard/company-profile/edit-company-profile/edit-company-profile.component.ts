@@ -133,6 +133,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     aboutUsError = false;
     aboutUsErrorMessage = "";
 
+    eventUrlDivClass: string = this.formGroupDefaultClass;
+    eventUrlError = false;
+    eventUrlErrorMessage = "";
+
     logoDivClass: string = this.formGroupDefaultClass;
     logoError = false;
     logoErrorMessage = "";
@@ -739,6 +743,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validatePattern('twitterLink');
       this.validatePattern('city');
       this.validatePattern('state');
+      this.validatePattern('eventUrl');
       this.validateCompanyLogo();
     }
 
@@ -1037,6 +1042,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             } else if (columnName == "aboutUs") {
                 this.aboutUsError = false;
                 this.aboutUsDivClass = this.refService.successClass;
+            }else if(columnName=="eventUrl"){
+                this.eventUrlError = false;
+                this.eventUrlDivClass = this.refService.successClass;
             }
             this.enableOrDisableButton();
         }
@@ -1111,6 +1119,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     addAboutUsError(){
         this.aboutUsError = true;
         this.aboutUsDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
+
+    addEventUrlError() {
+        this.eventUrlError = true;
+        this.eventUrlDivClass = this.refService.errorClass;
         this.disableButton();
     }
     
@@ -1196,6 +1210,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.countryDivClass = this.refService.successClass;
         this.enableOrDisableButton();
     }
+
+    removeEventUrlError() {
+        this.eventUrlError = false;
+        this.eventUrlDivClass = this.refService.successClass;
+        this.enableOrDisableButton();
+    }
+
+    
 
     validateEmailId() {
         if ($.trim(this.companyProfile.emailId).length > 0) {
