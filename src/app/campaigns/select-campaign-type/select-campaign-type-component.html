@@ -58,7 +58,7 @@
         transition: all 0.3s ease-in-out;
         /*make the smooth transition in 0.3s*/
         color: #eeaaee;
-        border-radius: 5px;
+        border-radius: 8px;
     }
     
     .box-wrapper:hover .box-content {
@@ -69,17 +69,18 @@
     .pricing {
         position: relative;
         margin-bottom: 15px;
-        border: 1px solid #008fd5!important;
+        border: 1px solid #ddd!important;
+        background: #34495a;
     }
     .camp-card{
         height: 242px;
-        border-radius: 5px;
+        border-radius: 8px;
     }
     .camp-card-bg{
         background-color: #f2f4f9!important;
-        border-bottom: solid 1px #71bade !important;
+        border-bottom: solid 1px #ddd !important;
         height: 195px;
-        border-radius: 3px !important;
+        border-radius: 5px !important;
     }
     
     .custom{
@@ -125,7 +126,7 @@
                                 <div class="pricing-head ">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/video-email.svg"></h4>
+                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/video-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -135,12 +136,12 @@
                                         <li translate><i class="fa fa-video-camera"  aria-hidden="true"></i> Select a video <span class="important">*</span></li>
                                         <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
                                         <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
+                                        <li translate style="border-bottom:none !important;" ><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
 
                                 <div class="pricing-footer">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>Video</h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Video</h4>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +150,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/regular-email.svg"></h4>
+                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/regular-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -163,7 +164,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>E-mail </h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>E-mail </h4>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +173,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/social-campaign.svg"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/social-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content" style="position: absolute !important;width: 99% !important;height: 193px !important;left: 2px !important;">
@@ -184,7 +185,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px;  font-size: 15px; font-weight: 600;" translate>Social Media </h4>
+                                    <h4 style="padding-top: 4px;  font-size: 15px;font-weight: 600;color: #fff !important;" translate>Social Media </h4>
                                 </div>
                             </div> 
                         </div>
@@ -193,7 +194,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/event-campaign.svg"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/event-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -206,7 +207,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;    font-weight: 600;" translate>Event</h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Event</h4>
                                 </div>
                             </div>
                         </div>                       
@@ -214,8 +215,8 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('landingPage')">
                                 <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/landing-page.svg"></h4>
+                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #ddd;height:195px;border-radius: 5px;">
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/landing-page.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -228,7 +229,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px;font-weight: 600;" translate>Page</h4>
+                                    <h4 style="padding-top: 4px;font-weight: 600;color: #fff !important;" translate>Page</h4>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +237,7 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('survey')">
                                 <div class="pricing-head">
                                     <h4 class="camp-card-bg">
-                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="padding: 30px;height: 175px;" src="assets/images/survey.svg"></h4>
+                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/survey.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -250,7 +251,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>Survey </h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Survey </h4>
                                 </div>
                             </div>
                         </div>
