@@ -798,13 +798,16 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   uploadImage() {
+    if(this.croppedImage!=""){
     this.loadingcrop = true;
     this.fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
     this.fileObj = this.utilService.blobToFile(this.fileObj);
     this.loadingcrop = false;
+    }
     if (!this.isAdd) {
       this.tracksPlayBook.removeFeaturedImage = true;
     }
+    this.showCropper = false;
     this.featuredImagePath = "";
     $('#cropImage').modal('hide');
   }
