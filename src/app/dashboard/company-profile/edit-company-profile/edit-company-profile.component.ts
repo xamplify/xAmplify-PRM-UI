@@ -1663,6 +1663,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             // this.refService.showSweetAlertErrorMessage("Please upload an image");
             this.errorUploadCropper = false;
             this.showCropper = false;
+            
         }        
       }
 
