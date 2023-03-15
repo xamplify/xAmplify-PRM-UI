@@ -301,7 +301,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+			//this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -316,7 +316,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
         }
     }
     resetImage() {
@@ -327,7 +327,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+       // this.errorUploadCropper = true;
     }
     }
 	imageCroppedMethod(event: ImageCroppedEvent) {
