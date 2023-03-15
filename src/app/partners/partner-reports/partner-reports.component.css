@@ -28,7 +28,7 @@
 .campaign-type {
 	min-width: 310px;
 	max-width: 800px;
-	height: 110px;
+	height: 115px;
 	margin: 0 auto -10px
 }
 
@@ -154,7 +154,7 @@ cursor: default;
 .mAlignGraph{
 	padding: 0px 0px 2px 0px!important;
     height: 115px;
-    width: 101%;
+    width: 100%;
 }
 }
 
@@ -179,4 +179,7 @@ cursor: default;
 }
 .portlet.light, .dashboard-stat2{
 	padding: 7px !important;
+}
+.portlet.light > .portlet-title > .caption > .caption-subject {
+    font-weight: 600 !important;
 }
