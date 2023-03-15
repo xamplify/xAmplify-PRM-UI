@@ -726,14 +726,14 @@
 													(blur)="validatePattern('linkedInLink')" /> <span
 													*ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
 											</div>
-											<div class="form-group" [attr.class]="twitterDivClass">
-												<label class="control-label" translate>Twitter</label> <input
-													type="text" id="twitter" name="twitter"
-													placeholder="Twitter" class="form-control"
-													[(ngModel)]="companyProfile.twitterLink"
-													(input)="validatePattern('twitterLink')"
-													(blur)="validatePattern('twitterLink')" /> <span
-													*ngIf="twitterLinkError" style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
+											<div class="form-group" [attr.class]="eventUrlDivClass">
+												<label class="control-label" translate>Event Url</label> <input
+													type="text" id="eventUrl" name="eventUrl"
+													placeholder="Event Url" class="form-control"
+													[(ngModel)]="companyProfile.eventUrl"
+													(input)="validatePattern('eventUrl')"
+													(blur)="validatePattern('eventUrl')" /> <span
+													*ngIf="eventUrlError" style="color: #f55d7a">{{eventUrlErrorMessage}}</span>
 											</div>
 										</div>
 									</div>

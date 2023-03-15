@@ -2774,6 +2774,7 @@ export class ReferenceService {
       mergeTags.push({ name: "Vendor Name", value: "{{vendor_name}}" });
       mergeTags.push({ name: "Vendor Email Id", value: "{{vendor_emailId}}" });
     }
+   
     return mergeTags;
   }
 
@@ -2785,6 +2786,11 @@ export class ReferenceService {
     mergeTags.push({
       name: "Sender Company Url",
       value: this.senderMergeTag.senderCompanyUrl,
+    });
+
+    mergeTags.push({
+      name: "Sender Event Url",
+      value: this.senderMergeTag.senderEventUrl,
     });
     return mergeTags;
   }
