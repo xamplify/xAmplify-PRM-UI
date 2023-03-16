@@ -74,13 +74,13 @@
     }
     .camp-card{
         height: 242px;
-        border-radius: 8px;
+        border-radius: 10px;
     }
     .camp-card-bg{
         background-color: #f2f4f9!important;
         border-bottom: solid 1px #ddd !important;
         height: 195px;
-        border-radius: 5px !important;
+        border-radius: 8px 8px 0 0  !important;
     }
     
     .custom{
@@ -109,13 +109,13 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div  class="" style="padding-left: 30px !important;padding-right: 30px !important;">
+            <div  class="">
                 <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
                 <ng-container *ngIf="!loading">
                 <div class="portlet-title">
-                    <div class="caption" style="padding-top: 4px;padding-bottom: 4px;" translate>
-                        <i class="fa fa-cogs" aria-hidden="true"></i><b>Create a campaign</b> <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
-                        <button class="btn btn custom" id="right" style="margin-top: -18px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                    <div class="caption" style="padding-top: 10px;padding-bottom: 25px;font-size: 18px;" translate>
+                        <b>Create a campaign</b>&nbsp;&nbsp; <small style="font-size: 14px" translate>Which type of campaign would you like to create?</small>
+                        <button class="btn btn custom" id="right" style="margin-top: -7px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                 </div>
             </div>
                 <div class="portlet-body">
@@ -126,7 +126,7 @@
                                 <div class="pricing-head ">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/video-email.svg"></h4>
+                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/video-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -150,7 +150,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/regular-email.svg"></h4>
+                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/regular-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -173,10 +173,10 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/social-campaign.svg"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/social-campaign.svg"></h4>
 
                                 </div>
-                                <div class="box-content" style="position: absolute !important;width: 99% !important;height: 193px !important;left: 2px !important;">
+                                <div class="box-content" style="position: absolute !important;width: 100% !important;height: 193px !important;">
                                     <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
@@ -194,7 +194,7 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/event-campaign.svg"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/event-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -215,8 +215,8 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('landingPage')">
                                 <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #ddd;height:195px;border-radius: 5px;">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/landing-page.svg"></h4>
+                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #ddd;height:195px;border-radius: 8px 8px 0 0 ;">
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/landing-page.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
@@ -237,7 +237,7 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('survey')">
                                 <div class="pricing-head">
                                     <h4 class="camp-card-bg">
-                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 88px;" src="assets/images/survey.svg"></h4>
+                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/survey.svg"></h4>
 
                                 </div>
                                 <div class="box-content">

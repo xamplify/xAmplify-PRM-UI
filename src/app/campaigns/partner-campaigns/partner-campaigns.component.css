@@ -136,7 +136,7 @@ fieldset {
 .imageClass {
 	background: #f2f4f9;
 	border: solid 1px #008fd5;
-	border-radius: 1px;
+	border-radius: 5px;
 }
 
 .gearDropdownMenu {

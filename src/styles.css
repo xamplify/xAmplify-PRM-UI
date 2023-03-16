@@ -1806,3 +1806,6 @@ transition: background 300ms ease-in-out;
 .justify-content-between{
   justify-content: space-between;
 }
+.image-padding{
+  height: 64px;padding: 10px 34px;
+}
