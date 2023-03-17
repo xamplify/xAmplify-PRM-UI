@@ -346,7 +346,7 @@
                                 <img *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                   src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
                                   *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"
-                                  alt="manual" style="height: 64px;">
+                                  alt="manual" style="height: 54px;">
                                 <img *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList" src="{{properties?.hubspotImage}}"
                                   alt="manual" style="height: 70px;">
                                   <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
@@ -551,7 +551,7 @@
                     *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                     <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box" id="contactListDiv_{{contactList.id}}">
-                        <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
+                        <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
                           <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"> 
                           <img alt=""  class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"   src="{{properties?.googleImage}}">
                           <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList" src="{{properties?.salesforceImage}}">
