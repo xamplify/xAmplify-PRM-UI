@@ -255,6 +255,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	activeCRMDetails: any;
 	integrationType: string = "";
 
+	// XNFR-215
+	pipedriveRibbonText: string;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1571,7 +1574,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMarketoIntegration();
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
-		this.checkMicrosoftIntegration();		
+		this.checkMicrosoftIntegration();
+		this.checkPipedriveIntegration();		
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -1654,6 +1658,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.integrateRibbonText = "configure";
 		})
 	}
+
+	// XNFR-215
+	checkPipedriveIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.integrationService.checkConfigurationByType("pipedrive").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.pipedriveRibbonText = "configured";
+			}
+			else {
+				this.pipedriveRibbonText = "configure";
+			}			
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkPipedriveIntegration() for pipedrive");
+		}, () => this.logger.log("Pipedrive Integration Configuration Checking done"));
+	}
+	// XNFR-215
 
 	configmarketo() {
 		this.integrationTabIndex = 1;
@@ -1790,6 +1814,11 @@ configHubSpot() {
 		this.integrationTabIndex = 3;
 		//let providerName = 'microsoft';
 		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+	}
+
+	// XNFR-215
+	configurePipedrive() {
+		this.integrationTabIndex = 6;	
 	}
 
 	closeMicrosoftForm(event: any) {
@@ -2403,6 +2432,15 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'MICROSOFT';
+		this.integrationTabIndex = 5;		
+	}
+
+	// xnfr-215
+	pipedriveSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'PIPEDRIVE';
 		this.integrationTabIndex = 5;		
 	}
 

@@ -313,7 +313,7 @@ export class IntegrationSettingsComponent implements OnInit {
 
 
 	activateCRM() {
-		if (this.integrationType === 'HUBSPOT') {
+		if (this.integrationType === 'HUBSPOT' || this.integrationType === 'PIPEDRIVE') {
 			this.activateCRMBySelectingDealPipeline();
 		} else {
 			this.activateCRMNormal();
@@ -424,7 +424,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.listSalesforceCustomFields();
 					} else {
 						this.listExternalCustomFields();
-						if (this.integrationType.toLowerCase() === 'hubspot') {
+						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
 						}
 					}

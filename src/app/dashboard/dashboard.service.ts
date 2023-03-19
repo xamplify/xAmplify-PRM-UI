@@ -816,4 +816,17 @@ export class DashboardService {
         .catch(this.handleError);
     }
 
+    // xnfr-215
+    saveApiTokenForPipedrive(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `pipedrive/saveApiKey?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getApiTokenForPipedrive(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `pipedrive/apiKey/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    // xnfr-215
 }
