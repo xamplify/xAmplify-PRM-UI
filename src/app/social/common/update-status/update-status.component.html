@@ -470,7 +470,8 @@
                         </div>
                     </div>
                     <app-list-loader *ngIf="recipientsLoader?.isLoading"></app-list-loader>
-                    <section *ngIf="contactListsPagination.pagedItems?.length > 0 && !recipientsLoader?.isLoading">
+
+                    <section *ngIf="contactListsPagination?.pagedItems?.length > 0 && !recipientsLoader?.isLoading">
                         <div class="table-responsive">
                             <table class="table tgrid" id='social-contact-list-table' aria-describedby="">
                                 <thead>
@@ -480,18 +481,23 @@
                                         </th>
                                         <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                         <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
+                                            <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'social-contact-list-table',2)"></span>
                                             <span class="gridHeader" translate>List Info</span>
                                         </th>
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th scope="row" class="text-center" translate>Uploaded Date</th>
+                                        <th scope="row" class="text-center"  *ngIf="showContactType" translate>Type
+                                        </th>
+                                        <th scope="row" class="text-center" translate>Created On</th>
                                         <th scope="row" class="text-center" translate>Count</th>
                                         <th scope="row" class="text-center" translate>Preview </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let contactList of contactListsPagination.pagedItems">
+                                <tbody class="pointer">
+                                    <ng-container *ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
+                                    <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contactList,$event,contactList.count,contactList.emailValidationInd)" [class.contact-list-selected]="(socialCampaign?.userListIds.indexOf(contactList.id)>-1 && contactList.count>0)"
+                                        (mouseover)='showContactsAlert(contactList.count)' [attr.title]="emptyContactsMessage">
                                         <td class='m0 text-center'>
                                             <input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)"
                                             [checked]="socialCampaign?.userListIds?.indexOf(contactList.id)>-1">
@@ -513,11 +519,38 @@
                                             <img *ngIf="contactList?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
                                             <img *ngIf="contactList?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
                                           </td>
-                                        <td>
-                                            <h5 class="m0 f-w-600" title="{{contactList.name}}">
-                                                <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
-                                                <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
-                                            </h5>
+                                          <td>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contactList?.name}}">
+                                                <span><strong>{{contactList?.name}}</strong></span>
+                                            </h4>
+                                            <h6 class="moreipsis" title="{{contactList?.createdName}}">
+                                                <span translate> Created By <strong>{{contactList?.creatorName}}</strong></span>
+                                            </h6>
+                                            <ng-container *ngIf="!contactList?.partnerList">
+                                                <div style="display: inline-flex;">
+                                                    <h6 class="view-banner" translate>
+                                                        <span *ngIf="contactList?.publicList" data-toggle="tooltip" data-placement="top"
+                                                            title="{{actionsDescription?.contact_list_public}}" translate>Public
+                                                        </span>
+                                                        <span *ngIf="!contactList?.publicList" data-toggle="tooltip" data-placement="top"
+                                                            title="{{actionsDescription?.contact_list_private}}" translate>Private
+                                                        </span>
+                                                    </h6> 
+                                                    <h6 *ngIf="contactList?.formList" class="view-banner view-banner-green" translate>
+                                                        <span data-toggle="tooltip" data-placement="top"
+                                                            title="This list is associated with a form." translate>Form Contact List
+                                                        </span>
+                                                    </h6>                                                                           
+                                                </div>                                                                        
+                                            </ng-container>
+                                        </td>
+                                        <td class="text-center" *ngIf="showContactType">
+                                            <ng-container *ngIf="contacts?.listType=='Partners'">
+                                                {{authenticationService?.partnerModule?.customName}}
+                                            </ng-container>    
+                                            <ng-container *ngIf="contacts?.listType!='Partners'">
+                                                {{contacts?.listType}}
+                                            </ng-container>                                                                                                                                       
                                         </td>
                                         <td class="text-center">
                                             <app-display-date-and-time [dateAndTimeUTCString]="contactList?.createdTimeInString"></app-display-date-and-time>
@@ -531,13 +564,25 @@
                                             </a>
                                         </td>
                                     </tr>
+                                    <tr role="row" *ngIf="contactList?.expand">
+                                        <td colspan="12">
+                                          <app-userlist-users [searchKey]="recipientsSortOption?.searchKey" [userListId]="contactList.id"></app-userlist-users>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                                 </tbody>
                             </table>
                         </div>
-                        <app-pagination [pagination]="contactListsPagination" [type]="'updatestatuscontactlists'" (notifyParent)="setPage($event)"
-                         (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+                        
                     </section>
-                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 && !recipientsLoader.isLoading">
+
+                    <div style="text-align:left" [hidden]="contactListsPagination?.totalRecords ==0  || recipientsLoader?.isLoading || recipientsLoader?.isLoading.isServerError">
+                        <app-pagination [pagination]="contactListsPagination" [type]="'updatestatuscontactlists'" (notifyParent)="setPage($event)"
+                        (notifyParentDropDown)="loadContactLists($event)"></app-pagination>
+                    </div>
+
+
+                    <section *ngIf="contactListsPagination?.pagedItems?.length === 0 && !recipientsLoader?.isLoading">
                         <div class='alert alert-info' role='alert'>
                             <h4 class='m0'>No data found.</h4>
                         </div>

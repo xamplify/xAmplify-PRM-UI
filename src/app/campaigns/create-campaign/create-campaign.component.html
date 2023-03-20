@@ -1198,12 +1198,12 @@
                                                             </th>
                                                             <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
                                                             </th>
-                                                            <th scope="row" style="text-align: center;" translate>Uploaded Date</th>
+                                                            <th scope="row" style="text-align: center;" translate>Created On</th>
                                                             <th scope="row" style="text-align: center;" translate>Count</th>
                                                             <th scope="row" style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>   
+                                                    <tbody class="pointer">   
                                                         <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
                                                             <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
                                                                 (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">

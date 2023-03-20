@@ -101,6 +101,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	recipientsLoader:HttpRequestLoader = new HttpRequestLoader();
 	recipientsSortOption: SortOption = new SortOption();
 	showExpandButton: boolean;
+	expandedUserList: any;
+	showContactType = false;
+	emptyContactsMessage: string;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -1396,6 +1399,29 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactListsPagination);
 		this.loadContactLists(this.contactListsPagination);
     }
+
+	viewMatchedContacts(userList: any) {
+        userList.expand = !userList.expand;
+        if (userList.expand) {
+            if ((this.expandedUserList != undefined || this.expandedUserList != null)
+                && userList != this.expandedUserList) {
+                this.expandedUserList.expand = false;
+            }
+            this.expandedUserList = userList;
+        }
+    }
+
+	/*******************************Preview*************************************/
+    showContactsAlert(count: number) {
+        this.emptyContactsMessage = "";
+        if (count == 0) {
+            this.emptyContactsMessage = "No Contacts Found For This Contact List";
+        }
+    }
+
+	highlightContactRow(contactList: any, event: any, count: number, isValid: boolean){
+		let contactId = contactList.id;
+	}
 	/***XNFR-222****/
 
 
