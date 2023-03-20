@@ -83,6 +83,7 @@ import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.comp
 import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
 import { ProcessingCampaignsComponent } from './processing-campaigns/processing-campaigns.component';
 import { ActiveQueriesComponent } from './active-queries/active-queries.component';
+import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pipedrive-authentication/pipedrive-authentication.component';
 
 
 
@@ -142,7 +143,8 @@ import { ActiveQueriesComponent } from './active-queries/active-queries.componen
         CustomSkinComponent,
         IntegrationSettingsComponent,
         ProcessingCampaignsComponent,
-        ActiveQueriesComponent
+        ActiveQueriesComponent,
+        PipedriveAuthenticationComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

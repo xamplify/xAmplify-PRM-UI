@@ -588,7 +588,37 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                    <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                        <div class="card-body" style="padding:10px;">    
+                                                            <span *ngIf="pipedriveRibbonText == 'configured'" 
+                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                    <a (click)="pipedriveSettings()" data-toggle="tooltip"
+                                                            data-placement="top" title="Pipedrive Settings"><i class="fa fa-cog"
+                                                                    style="font-size: 20px !important;"></i></a>
+                                                                </span>                                                       
+                                                            <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Pipedrive</h5>
+
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{pipedriveRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{pipedriveRibbonText}}</span>
+                                                            </div>
+                                                            <div style="height: 120px;">
+                                                                <div>
+                                                                    <img src="assets/images/crm/pipedrive-xamplify.png" style="margin-top:20px; text-align: center;width:100%">
+                                                                </div>
+                                                            </div>
+
+                                                            <a (click)="configurePipedrive()" class="btn btn-block btn-primary text-uppercase" *ngIf="pipedriveRibbonText == 'configure'" translate>configure</a>
+                                                            <a (click)="configurePipedrive()" class="btn btn-block btn-primary text-uppercase" *ngIf="pipedriveRibbonText == 'configured'" translate>re configure</a>
+                                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            
 	
                                         </section>
 
@@ -684,7 +714,7 @@
                                             <app-microsoft-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="closeMicrosoftForm($event)">
                                             </app-microsoft-authentication>
                                         </div>
-
+                                        
                                         <div *ngIf="integrationTabIndex == 4">                                            
                                             <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
                                             </app-response-message>
@@ -767,6 +797,12 @@
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
                                             <app-integration-settings [integrationType]="integrationType" (refreshEvent)="checkIntegrations()" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                        </div>   
+                                        
+                                        <!-- XNFR-215 -->
+                                        <div *ngIf="integrationTabIndex == 6">
+                                            <app-pipedrive-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="closeMicrosoftForm($event)">
+                                            </app-pipedrive-authentication>
                                         </div>
                                     </div>
 
@@ -783,12 +819,12 @@
                                                         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                             <div class="page-toolbar">
                                                                 <div class="btn-group pull-right">
-                                                                    <a *ngIf="activeCRMDetails?.activeCRM && activeCRMDetails?.type == 'HUBSPOT' && activeTabName == 'dealPipelines'" (click)="syncPipelines()">
-                                                                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
-                                                                          title="Synchronize" translate>
-                                                                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                                                                    <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
+                                                                        (click)="syncPipelines()">
+                                                                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
+                                                                            <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                                                                         </button>
-                                                                      </a>
+                                                                    </a>
                                                                     <div class="inputs float-right" style="display: inline-flex;">                                                                        
                                                                         <div class="portlet-input input-inline" id="search-div">
                                                                             <div class="input-icon right" id="icon">
