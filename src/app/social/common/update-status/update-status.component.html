@@ -96,7 +96,7 @@
                                 <h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
                             </label>
                             <input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
-                            <span *ngIf="isCampaignNameExist" style="color:red">Campaign already exists</span>
+                            <span *ngIf="isCampaignNameExist required">Campaign already exists</span>
                         </div>
                     </div>
                     <div class="col-sm-5 col-xs-12">
@@ -450,52 +450,83 @@
                     </ng-container>
 
                     <div class="row">
-                        <div class="col-sm-8 col-xs-12">
+                        <div class="col-sm-4 col-xs-12">
                             <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Lists<span *ngIf="alias">(optional)</span></h6>
                         </div>
-                        <div class="col-sm-4 col-xs-12">
-                            <div style="position: relative; padding-bottom: 5px;">
-                          <input type="text" [(ngModel)]="contactListsPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-                          placeholder="Search for a list">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactListsPagination.searchKey" (click)="resetSearchContactList()"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search" aria-hidden="true"></i></button>
-                        </div>
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="social-campaign-search-css">
+                                <!--Sort-->
+                                <select class="form-control cc mTopSort mr10" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                (ngModelChange)="sortRecipientsList($event)">                                                    
+                                <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
+                                    [ngValue]="option">{{option.name}}</option>
+                                </select> 
+                                <!--Search-->
+                                <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+                                    placeholder="Search here" (keypress)="searchOnEnterKeyPress($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="recipientsSortOption?.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchContactList()"> <i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
                         </div>
                     </div>
-
-                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
-                        <div class='alert alert-info' role='alert'>
-                            <h4 class='m0'>No data found.</h4>
-                        </div>
-                    </section>
-                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
-                        <app-list-loader></app-list-loader>
-                    </section>
-                    <section *ngIf="contactListsPagination.pagedItems?.length > 0">
-                        <ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
+                    <app-list-loader *ngIf="recipientsLoader?.isLoading"></app-list-loader>
+                    <section *ngIf="contactListsPagination.pagedItems?.length > 0 && !recipientsLoader?.isLoading">
                         <div class="table-responsive">
-                            <table class="table tgrid" id='contact-list-table' aria-describedby="">
+                            <table class="table tgrid" id='social-contact-list-table' aria-describedby="">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style="width: 5%">Select</th>
-                                        <th scope="col">List Name</th>
-                                        <th scope="col">Preview</th>
+                                        <th scope="row" class="text-center">
+                                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                        </th>
+                                        <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
+                                        <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
+                                            <span class="gridHeader" translate>List Info</span>
+                                        </th>
+                                        <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                                            List Info
+                                        </th>
+                                        <th scope="row" class="text-center" translate>Uploaded Date</th>
+                                        <th scope="row" class="text-center" translate>Count</th>
+                                        <th scope="row" class="text-center" translate>Preview </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let contactList of contactListsPagination.pagedItems">
                                         <td class='m0 text-center'>
                                             <input type='checkbox' id='{{contactList.id}}' (click)="highlightRow(contactList.id)"
-                                            [checked]="socialCampaign.userListIds.indexOf(contactList.id)>-1">
+                                            [checked]="socialCampaign?.userListIds?.indexOf(contactList.id)>-1">
                                         </td>
+                                        <td class="cw" *ngIf="showExpandButton">
+                                            <div class="actions-block left-float">
+                                              <a (click)="$event.stopPropagation();viewMatchedContacts(contactList)" title="Matched Results">
+                                                <i class="fa" [ngClass]="{'fa-angle-right': !contactList?.expand, 'fa-angle-down': contactList?.expand}"
+                                                  aria-hidden="true" style=" padding-top: 0px;"></i>
+                                              </a>
+                                            </div>
+                                        </td>
+                                        <td style="width: 10%;text-align: left;" class="hidden-xs">
+                                            <img  *ngIf="contactList?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
+                                            <img *ngIf="contactList?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
+                                            <img *ngIf="contactList?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
+                                            <img *ngIf="contactList?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
+                                            <img *ngIf="contactList?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
+                                            <img *ngIf="contactList?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                            <img *ngIf="contactList?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
+                                          </td>
                                         <td>
                                             <h5 class="m0 f-w-600" title="{{contactList.name}}">
                                                 <span *ngIf="contactList.name?.length<=50">{{contactList.name}}</span>
                                                 <span *ngIf="contactList.name?.length>50">{{contactList.name | slice:0:50}}...</span>
                                             </h5>
                                         </td>
-                                        <td class='m0'>
-                                            <a class="actions-block pull-left">
+                                        <td class="text-center">
+                                            <app-display-date-and-time [dateAndTimeUTCString]="contactList?.createdTimeInString"></app-display-date-and-time>
+                                        </td>
+                                        <td class="text-center">
+                                            {{contactList?.count}}
+                                        </td>
+                                        <td class='text-center'>
+                                            <a class="actions-block float-none">
                                                 <i class="fa fa-eye" (click)="loadContactsOnPreview(contactList, contactsPagination);" aria-hidden="true"></i>
                                             </a>
                                         </td>
@@ -505,6 +536,11 @@
                         </div>
                         <app-pagination [pagination]="contactListsPagination" [type]="'updatestatuscontactlists'" (notifyParent)="setPage($event)"
                          (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+                    </section>
+                    <section *ngIf="contactListsPagination.pagedItems?.length === 0 && !recipientsLoader.isLoading">
+                        <div class='alert alert-info' role='alert'>
+                            <h4 class='m0'>No data found.</h4>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -588,7 +624,7 @@
                 </div>
                 </section>
             </div></div>
-        </div>
+    </div>
 
     <div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog" aria-labelledby="listVideosModalLabel" data-keyboard="false"
      data-backdrop="static">

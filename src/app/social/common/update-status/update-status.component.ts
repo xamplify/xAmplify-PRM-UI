@@ -29,17 +29,22 @@ import { Properties } from '../../../common/models/properties';
 import { Country } from '../../../core/models/country';
 import { Timezone } from '../../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
-import { Validators } from '@angular/forms';
-import { PieChartGeoDistributionComponent } from 'app/social/twitter/pie-chart-geo-distribution/pie-chart-geo-distribution.component';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
-declare var $, flatpickr, videojs, swal: any;
+/*****XNFR-222******/
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { SortOption } from 'app/core/models/sort-option';
+import { UtilService } from 'app/core/services/util.service';
+/*****XNFR-222*****/
+
+
+declare var $:any, flatpickr:any, videojs:any, swal: any;
 
 @Component({
 	selector: 'app-update-status',
 	templateUrl: './update-status.component.html',
 	styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-	providers: [PagerService, Pagination, CallActionSwitch, Properties]
+	providers: [PagerService, Pagination, CallActionSwitch, Properties,HttpRequestLoader,SortOption]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
 	@Input('isSocialCampaign') isSocialCampaign = false;
@@ -92,12 +97,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	@ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
 	folderCustomResponse: CustomResponse = new CustomResponse();
 	marketingCompany: boolean = false;
+	/***XNFR-222 ***/
+	recipientsLoader:HttpRequestLoader = new HttpRequestLoader();
+	recipientsSortOption: SortOption = new SortOption();
+	showExpandButton: boolean;
+	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
 		public authenticationService: AuthenticationService, private contactService: ContactService,
 		private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
 		private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-		public referenceService: ReferenceService, public campaignService: CampaignService) {
+		public referenceService: ReferenceService, public campaignService: CampaignService,public utilService:UtilService) {
 		
 		this.socialCampaign.emailNotification = true;
 		this.location = this.router.url;
@@ -116,7 +126,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	changeChannelCampaign(event:any) {
 		this.socialCampaign.channelCampaign = event;
 		this.contactListsPagination.maxResults = 12;
-		
 		this.loadContactLists(this.contactListsPagination);
 	}
 
@@ -684,6 +693,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	/*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
 	loadContactLists(contactListsPagination: Pagination) {
+		this.recipientsLoader.isHorizontalCss = true;
+        this.referenceService.loading(this.recipientsLoader, true);
 		if (this.alias != undefined) {
 			this.loadContactsLeadsAndPartners(contactListsPagination);
 		} else {
@@ -704,14 +715,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						let data = response.data;
 						contactListsPagination.totalRecords = data.totalRecords;
 						contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
-						$.each(data.list, function (_index: number, list: any) {
-							list.displayTime = new Date(list.createdTimeInString);
-						});
 					},
 					(error: any) => {
-						this.logger.error(error);
+						this.logger.errorPage(error);
 					},
-					() => contactListsPagination.isLoading = false
+					() => {
+						this.referenceService.loading(this.recipientsLoader, false);
+						contactListsPagination.isLoading = false;
+					}
 				);
 		}
 
@@ -1198,17 +1209,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
 	}
 
-	searchContactList() {
-		this.contactListsPagination.pageIndex = 1;
-		this.loadContactLists(this.contactListsPagination);
-	}
 
-	resetSearchContactList() {
-		this.contactListsPagination.pageIndex = 1;
-		this.contactListsPagination.searchKey = null;
-		this.loadContactLists(this.contactListsPagination);
-
-	}
 
 	// RSS ---------------------------
 
@@ -1365,6 +1366,37 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.referenceService.showSweetAlertSuccessMessage(message);
 		this.listCategories();
 	}
+
+	/***XNFR-222****/
+	
+	searchContactList() {
+		this.getAllFilteredResults();
+		
+	}
+	searchOnEnterKeyPress(eventKeyCode:any){
+		if("13"==eventKeyCode){
+			this.searchContactList();
+		}
+	}
+
+	sortRecipientsList(text: any) {
+        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
+        this.getAllFilteredResults();
+    }
+
+    getAllFilteredResults() {
+		this.contactListsPagination.pageIndex = 1;
+		this.contactListsPagination.searchKey = $.trim(this.recipientsSortOption.searchKey);
+		if (this.contactListsPagination.searchKey != undefined && this.contactListsPagination.searchKey != null 
+			&& $.trim(this.contactListsPagination.searchKey) != "") {
+			this.showExpandButton = true;
+		} else {
+			this.showExpandButton = false;
+		}
+		this.contactListsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.contactListsPagination);
+		this.loadContactLists(this.contactListsPagination);
+    }
+	/***XNFR-222****/
 
 
 }
