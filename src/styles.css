@@ -1812,3 +1812,7 @@ transition: background 300ms ease-in-out;
 .top{
   padding-top:5px;
 }
+/** 20-03-2023 **/
+ .re-distributed-high-level:hover {
+	background-color: #ffffff !important;
+} 

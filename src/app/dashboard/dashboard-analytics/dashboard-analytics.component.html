@@ -126,7 +126,8 @@
                                         </div>
                                         <div class="portlet-title">
                                             <div class="caption">
-                                                <h3 class="caption-subject" style="margin: 0;color: #909090 !important;"
+                                                <!-- Remove color: #909090 !important; -->
+                                                <h3 class="caption-subject camp-title-color" style="margin: 0;"
                                                     title="{{campaign[1]}}">
                                                     {{campaign[1] | slice: 0: 23}}<span
                                                         *ngIf="campaign[1]?.length>23">...</span>

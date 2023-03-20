@@ -458,9 +458,9 @@ td h5 {
 	font-size: 16px !important;
 }
 
-.re-distributed-high-level:hover {
+/* .re-distributed-high-level:hover {
 	background-color: #ffffff !important;
-}
+} */
 
 table tr:nth-child(odd) td {
 	background: rgb(240 240 240)
