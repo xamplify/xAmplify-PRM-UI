@@ -90,7 +90,7 @@
 
         </div>
 
-        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
+        <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0 && !isSocialCampaign}" id="us-right">
             <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
                 <div class="portlet-body clearfix p10">
                     <div class="col-sm-7 col-xs-12">
@@ -206,7 +206,7 @@
                                     <b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
                                 </h5>
                                 <h6 class="m0">
-                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
+                                    {{socialStatus?.socialStatusProvider?.socialConnection?.source | titlecase}}
                                     <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
                                         <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
                                         <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
@@ -430,7 +430,7 @@
                 <div class="col-xs-12 m0 p0" id="post-actions-button-group">
                     <div class="col-xs-12 col-sm-6 pr10 pull-right">
                         <div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
-                            <button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
+                            <button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">{{buttonText}}</button>
                             <button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
                                 <span class="caret"></span>
                             </button>

@@ -109,6 +109,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	isContactList: boolean;
 	isHeaderCheckBoxChecked: boolean;
 	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
+	buttonText = "Post Now";
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -133,6 +134,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 	changeChannelCampaign(event:any) {
 		this.socialCampaign.channelCampaign = event;
+		this.updateButtonText();
 		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.maxResults = 12;
 		//this.socialCampaign.userListIds = [];//Write Logic For Only OrgAdmin & Marketing company
@@ -331,7 +333,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	isSocialAccountsSelected() {
-		if (this.selectedAccounts < 1) {
+		if (this.selectedAccounts < 1 && (!this.socialCampaign.channelCampaign && !this.socialCampaign.nurtureCampaign)) {
 			this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
 			return false;
 		} else {
@@ -422,7 +424,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			this.socialStatusResponse = [];
 			this.socialCampaign.userId = this.userId;
 			this.socialCampaign.socialStatusList = this.socialStatusList;
-
 			this.socialService.createSocialCampaign(this.socialCampaign)
 				.subscribe(
 					data => {
@@ -533,19 +534,19 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	shareNow() {
 		this.socialStatusList.forEach(data => {
 			data.userId = this.userId;
-			// if (this.isUrl(data.statusMessage))
-			//   data.validLink = true;
 			if (data.shareNow) {
 				data.scheduledTime = new Date();
 				data.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			}
 		});
-		if (!this.isSocialCampaign)
+		if (!this.isSocialCampaign){
 			this.updateStatus();
-		else if (this.isSocialCampaign && !this.alias)
+		}	else if (this.isSocialCampaign && !this.alias){
 			this.createSocialCampaign();
-		else if (this.isSocialCampaign && this.alias)
+		}else if (this.isSocialCampaign && this.alias){
 			this.redistributeSocialCampaign();
+		}
+			
 	}
 
 	deleteStatus(socialStatus: SocialStatus) {
@@ -606,10 +607,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.setSocialShareData(this.socialService.partnerFeed, true);
 						this.socialService.partnerFeed = "";
 					}
-					setTimeout(() => {
-						this.referenceService.loading(this.socialAccountsLoader,false);
-					}, 5000);
-					
+					this.referenceService.loading(this.socialAccountsLoader,false);
 				});
 	}
 
@@ -980,6 +978,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 					this.loadCampaignNames(this.userId);
 					this.listCategories();
+					/****XNFR-222*****/
+					this.updateButtonText();
 				}
 			}
 		);
@@ -1510,6 +1510,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         ev.stopPropagation();
     }
 
+	updateButtonText(){
+		this.buttonText = this.socialCampaign.channelCampaign && this.selectedAccounts==0 ? 'Share' : 'Post Now';
+
+	}
 	
 	/***XNFR-222****/
 
