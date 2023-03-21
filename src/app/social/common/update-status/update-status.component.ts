@@ -78,7 +78,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	customResponse = new CustomResponse();
 
 	contactListsPagination: Pagination = new Pagination();
-	contactsPagination: Pagination = new Pagination();
 	videosPagination: Pagination = new Pagination();
 	paginationType: string;
 	location: any;
@@ -104,6 +103,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	expandedUserList: any;
 	showContactType = false;
 	emptyContactsMessage: string;
+	showUsersPreview: boolean;
+	selectedListName: any;
+	selectedListId: any;
+	isContactList: boolean;
+	isHeaderCheckBoxChecked: boolean;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -698,6 +702,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	loadContactLists(contactListsPagination: Pagination) {
 		this.recipientsLoader.isHorizontalCss = true;
         this.referenceService.loading(this.recipientsLoader, true);
+		
 		if (this.alias != undefined) {
 			this.loadContactsLeadsAndPartners(contactListsPagination);
 		} else {
@@ -718,6 +723,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						let data = response.data;
 						contactListsPagination.totalRecords = data.totalRecords;
 						contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
+						var contactIds = this.contactListsPagination.pagedItems.map(function (a) { return a.id; });
+						var items = $.grep(this.socialCampaign.userListIds, function (element:any) {
+							return $.inArray(element, contactIds) !== -1;
+						});
+						if (items.length == contactIds.length) {
+							this.isHeaderCheckBoxChecked = true;
+						} else {
+							this.isHeaderCheckBoxChecked = false;
+						}
 					},
 					(error: any) => {
 						this.logger.errorPage(error);
@@ -760,33 +774,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	/*****************LOAD CONTACTLISTS WITH PAGINATION END *****************/
 
 	/*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION START *****************/
-	loadContactsOnPreview(contactList: ContactList, pagination: Pagination) {
-		pagination.pageIndex = 1;
-		this.contactsPagination.maxResults = 12;
-		this.loadContacts(contactList, pagination);
-	}
 
-	loadContacts(contactList: ContactList, pagination: Pagination) {
-		this.paginationType = 'updatestatuscontacts';
-		this.previewContactList = contactList;
-		this.contactService.loadUsersOfContactList(this.previewContactList.id, pagination).subscribe(
-			(data: any) => {
-				pagination.totalRecords = data.totalRecords;
-				this.contactsPagination = this.pagerService.getPagedItems(pagination, data.listOfUsers);
-				$('#contactsModal').modal('show');
-			},
-			error =>
-				() => console.log('loadContacts() finished')
-		);
-	}
 
 	setPage(event: any) {
-		if (event.type === 'updatestatuscontacts') {
-			this.contactsPagination.pageIndex = event.page;
-			this.loadContacts(this.previewContactList, this.contactsPagination);
-		}
-		else if (event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts') {
+		if (event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts') {
 			this.contactListsPagination.pageIndex = event.page;
+			this.referenceService.goToDiv("social-content-editor-div");
 			this.loadContactLists(this.contactListsPagination);
 		}
 		else if (event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts') {
@@ -799,14 +792,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}
 	}
 	paginationDropDown(pagination: Pagination) {
-		if (this.paginationType === 'updatestatuscontacts') { this.loadContacts(this.previewContactList, pagination); }
-		else if (this.paginationType === 'updatestatuscontactlists') { this.loadContactLists(pagination); }
+		if (this.paginationType === 'updatestatuscontactlists') { this.loadContactLists(pagination); }
 		else if (this.paginationType === 'updatestatusvideos') { this.listVideos(pagination); }
 		else if (this.paginationType === 'loadAllContacts') { this.loadContactLists(pagination) }
 	}
 	closeModal() {
 		this.paginationType = 'updatestatuscontactlists';
-		this.contactsPagination = new Pagination();
 		this.videosPagination = new Pagination();
 	}
 	/*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
@@ -910,18 +901,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	highlightRow(contactListId: number) {
-		const isChecked = $('#' + contactListId).is(':checked');
-		if (isChecked) {
-			if (!this.socialCampaign.userListIds.includes(contactListId)) {
-				this.socialCampaign.userListIds.push(contactListId);
-			}
-			$('#' + contactListId).parent().closest('tr').addClass('highlight');
-		} else {
-			this.socialCampaign.userListIds.splice($.inArray(contactListId, this.socialCampaign.userListIds), 1);
-			$('#' + contactListId).parent().closest('tr').removeClass('highlight');
-		}
-	}
+
 
 	getSocialCampaign(socialCampaignAlias: string) {
 		this.socialService.getSocialCampaignByAlias(socialCampaignAlias)
@@ -1419,9 +1399,108 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         }
     }
 
-	highlightContactRow(contactList: any, event: any, count: number, isValid: boolean){
-		let contactId = contactList.id;
-	}
+
+
+	previewUsers(contactList: any) {
+        this.showUsersPreview = true;
+        this.selectedListName = contactList.name;
+        this.selectedListId = contactList.id;
+    }
+
+    resetValues() {
+        this.showUsersPreview = false;
+        this.selectedListName = "";
+        this.selectedListId = 0;
+    }
+
+	highlightRow(contactList: any, event: any) {
+        let contactId = contactList.id;
+        let isChecked = $('#' + contactId).is(':checked');
+        if (isChecked) {
+            $('#social-campaignContactListTable_' + contactId).addClass('contact-list-selected');
+            this.socialCampaign.userListIds.push(contactId);
+        } else {
+            $('#social-campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+            this.socialCampaign.userListIds.splice($.inArray(contactId, this.socialCampaign.userListIds), 1);
+        }
+        this.contactsUtility();
+        event.stopPropagation();
+        
+    }
+
+	highlightContactRow(contactList: any, event: any, count: number, isValid: boolean) {
+        let contactId = contactList.id;
+        if (isValid) {
+            this.emptyContactsMessage = "";
+             if (count > 0) {
+                let isChecked = $('#' + contactId).is(':checked');
+                if (isChecked) {
+                    //Removing Highlighted Row
+                    $('#' + contactId).prop("checked", false);
+                    $('#social-campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+                    this.socialCampaign.userListIds.splice($.inArray(contactId, this.socialCampaign.userListIds), 1);
+                } else {
+                    //Highlighting Row
+                    $('#' + contactId).prop("checked", true);
+                    $('#social-campaignContactListTable_' + contactId).addClass('contact-list-selected');
+                    this.socialCampaign.userListIds.push(contactId);
+                }
+                this.contactsUtility();
+                event.stopPropagation();
+            } else {
+                this.emptyContactsMessage = "Users are in progress";
+            }
+
+        }
+
+    }
+    contactsUtility() {
+        var trLength = $('#social-contact-list-table tbody tr').length;
+        var selectedRowsLength = $('[name="social-campaignContact[]"]:checked').length;
+        if (selectedRowsLength > 0 || this.socialCampaign.userListIds.length > 0) {
+            this.isContactList = true;
+        } else {
+            this.isContactList = false;
+        }
+        if (trLength != selectedRowsLength) {
+            $('#checkAllExistingSocialContacts').prop("checked", false)
+        } else if (trLength == selectedRowsLength) {
+            $('#checkAllExistingSocialContacts').prop("checked", true);
+        }
+    }
+
+    checkAll(ev: any) {
+        if (ev.target.checked) {
+            $('[name="social-campaignContact[]"]').prop('checked', true);
+            this.isContactList = true;
+            let self = this;
+            $('[name="social-campaignContact[]"]:checked').each(function (index:number) {
+                var id = $(this).val();
+                self.socialCampaign.userListIds.push(parseInt(id));
+                $('#social-campaignContactListTable_' + id).addClass('contact-list-selected');
+            });
+            this.socialCampaign.userListIds = this.referenceService.removeDuplicates(this.socialCampaign.userListIds);
+            if (this.socialCampaign.userListIds.length == 0) { this.isContactList = false; }
+        } else {
+            $('[name="social-campaignContact[]"]').prop('checked', false);
+            $('#social-contact-list-table tr').removeClass("contact-list-selected");
+            if (this.contactListsPagination.maxResults > 30 || (this.contactListsPagination.maxResults == this.contactListsPagination.totalRecords)) {
+                this.isContactList = false;
+                this.socialCampaign.userListIds = [];
+            } else {
+                this.socialCampaign.userListIds = this.referenceService.removeDuplicates(this.socialCampaign.userListIds);
+                let currentPageContactIds = this.contactListsPagination.pagedItems.map(function (a) { return a.id; });
+                this.socialCampaign.userListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.socialCampaign.userListIds, currentPageContactIds);
+                if (this.socialCampaign.userListIds.length == 0) {
+                    this.isContactList = false;
+                }
+            }
+
+        }
+        ev.stopPropagation();
+    }
+
+	
 	/***XNFR-222****/
 
 
