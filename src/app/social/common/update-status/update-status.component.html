@@ -17,58 +17,66 @@
     <div class="row" [hidden]="isRedirectEnabled">
         <div class="col-md-3 col-sm-12">
             <div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
-                <ng-container>
-                    <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
-                    <div class="clearfix"></div>
+                <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
+                <!---XNFR-222-->
+                <app-lefside-navigation-loader *ngIf="socialAccountsLoader.isLoading" [loadDefaultCss]="true"></app-lefside-navigation-loader>
+                <ng-container *ngIf="!socialAccountsLoader.isLoading">
+                    <div *ngIf="socialStatusProviders?.length==0" class="alert alert-info">
+                        <strong>No accounts found.</strong>
+                    </div>
+                    <ng-container *ngIf="socialStatusProviders?.length > 0">
+                        <div class="clearfix"></div>
+                        <ul class="list-group m0 p0">
+                            <li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
+                                <div (click)="toggleSelectAll()">
+                                    <i class="fa fa-square-o" *ngIf="!isAllSelected" aria-hidden="true"></i>
+                                    <i class="fa fa-check-square" *ngIf="isAllSelected" aria-hidden="true"></i>
+                                    <span class="ml10">Select All <strong *ngIf="selectedAccounts > 0">({{selectedAccounts}})</strong></span>
+                                </div>
+                            </li>
+                            <li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
+                                class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
+                                <div class="profile-selected">
+                                    <i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected" aria-hidden="true"></i>
+                                    <i class="fa fa-check-square" *ngIf="socialStatusProvider.selected" aria-hidden="true"></i>
+                                </div>
+                                <div class="profile-image-box">
+                                    <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                    <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
+                                </div>
+                                <div class="profile-name">
+                                        <h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
+                                            class="heading-primary">
+                                            <strong>{{socialStatusProvider.socialConnection.profileName}}</strong>
+                                        </h5>
+                                        <h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+                                            class="heading-primary">
+                                            <strong>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</strong>
+                                        </h5>
+                                        <h6 class="m0">
+                                            {{socialStatusProvider.socialConnection.source | titlecase}}
+                                            <span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+                                                <span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
+                                                <span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
+                                            </span>
+                                            <span *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
+                                                <span *ngIf="!socialStatusProvider.socialConnection.page">Profile</span>
+                                                <span *ngIf="socialStatusProvider.socialConnection.page">Page</span>
+                                            </span>
+                                        </h6>
+                                </div>
+                                <div class="clearfix"></div>
+                            </li>
+                        </ul>
+                        <div class="text-center mt10">
+                            <button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
+                        </div>
+                    </ng-container>
                 </ng-container>
-
-<ul class="list-group m0 p0">
-    <li class="list-group-item p10" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
-        <div (click)="toggleSelectAll()">
-            <i class="fa fa-square-o" *ngIf="!isAllSelected" aria-hidden="true"></i>
-            <i class="fa fa-check-square" *ngIf="isAllSelected" aria-hidden="true"></i>
-            <span class="ml10">Select All <strong *ngIf="selectedAccounts > 0">({{selectedAccounts}})</strong></span>
-        </div>
-    </li>
-    <li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
-        class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
-        <div class="profile-selected">
-            <i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected" aria-hidden="true"></i>
-            <i class="fa fa-check-square" *ngIf="socialStatusProvider.selected" aria-hidden="true"></i>
-        </div>
-        <div class="profile-image-box">
-            <img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
-            <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png" alt="">
-        </div>
-        <div class="profile-name">
-                <h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
-                    class="heading-primary">
-                    <strong>{{socialStatusProvider.socialConnection.profileName}}</strong>
-                </h5>
-                <h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
-                    class="heading-primary">
-                    <strong>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</strong>
-                </h5>
-                <h6 class="m0">
-                    {{socialStatusProvider.socialConnection.source | titlecase}}
-                    <span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-                        <span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
-                        <span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
-                    </span>
-                    <span *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-                        <span *ngIf="!socialStatusProvider.socialConnection.page">Profile</span>
-                        <span *ngIf="socialStatusProvider.socialConnection.page">Page</span>
-                    </span>
-                </h6>
-        </div>
-        <div class="clearfix"></div>
-    </li>
-</ul>
-
-<div class="text-center mt10">
-    <button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
-</div>
+                <!---XNFR-222-->
             </div>
+
+
             <div class="col-sm-12 alert alert-info rounded-0 custom-alert">
                 <h5>Tweet with media must have exactly 1 gif or video or up to 4 photos.</h5>
                 <h5>
@@ -82,11 +90,6 @@
 
         </div>
 
-        <div class="col-md-9 col-sm-12" *ngIf='socialStatusProviders?.length === 0'>
-            <div class='alert alert-info'>
-                <h4 class='m0 bold'><i class="fa fa-exclamation-circle pr10" aria-hidden="true"></i> You have not added any social accounts.</h4>
-            </div>
-        </div>
         <div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
             <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
                 <div class="portlet-body clearfix p10">
@@ -101,7 +104,7 @@
                     </div>
                     <div class="col-sm-5 col-xs-12">
                         <div>
-                            <h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Setting</h6>
+                            <h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Settings</h6>
                             <section class="mt5 mb5">
                                 <switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                                     [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
@@ -111,11 +114,23 @@
                             </section>
                         </div>
                     </div>
-
+                    <!---XNFR-222-->
+                    <div class="col-sm-5 col-xs-12" *ngIf="socialCampaign?.channelCampaign">
+                        <div>
+                            <section class="mt5 mb5">
+                                <switch [status]="socialCampaign.allowPartnerToEditThePost" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                    (statusChange)="socialCampaign.allowPartnerToEditThePost = !socialCampaign.allowPartnerToEditThePost">
+                                </switch>
+                                <h5 class="pl10 inline">Allow {{authenticationService?.partnerModule?.customName}} to edit the post</h5>
+                            </section>
+                        </div>
+                    </div>
+                    <!---XNFR-222-->
                     <div class="col-sm-7 col-xs-12 margin-top-folder" *ngIf="!alias && !marketingCompany">
                         <h5 class="pr10 font-red-sunglo inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through {{authenticationService?.partnerModule?.customName}}</h5>
-                                <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                <switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.bsize"
                                     (statusChange)="changeChannelCampaign($event)">
                                 </switch>
                                 <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To {{authenticationService?.partnerModule?.customName}}</h5>
@@ -452,6 +467,7 @@
                     <div class="row">
                         <div class="col-sm-4 col-xs-12">
                             <h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Lists<span *ngIf="alias">(optional)</span></h6>
+                            <h6 *ngIf="socialCampaign?.userListIds?.length>0" class="success"><strong>Selected Rows : {{socialCampaign?.userListIds?.length}}</strong></h6>
                         </div>
                         <div class="col-sm-8 col-xs-12">
                             <div class="social-campaign-search-css">

@@ -108,6 +108,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	selectedListId: any;
 	isContactList: boolean;
 	isHeaderCheckBoxChecked: boolean;
+	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -132,7 +133,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 	changeChannelCampaign(event:any) {
 		this.socialCampaign.channelCampaign = event;
+		this.contactListsPagination.pageIndex = 1;
 		this.contactListsPagination.maxResults = 12;
+		//this.socialCampaign.userListIds = [];//Write Logic For Only OrgAdmin & Marketing company
 		this.loadContactLists(this.contactListsPagination);
 	}
 
@@ -311,7 +314,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.initializeSocialStatus();
 		this.socialStatus.statusMessage = socialStatus.statusMessage;
 		this.socialStatus.shareNow = true;
-
 		this.updateStatus();
 	}
 
@@ -581,13 +583,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	listSocialConnections() {
+		this.referenceService.loading(this.socialAccountsLoader,true);
 		this.socialService.listAccounts(this.userId, 'ALL', 'ALL')
 			.subscribe(
 				result => {
 					this.socialService.socialConnections = result;
 					this.socialConnections = result;
+					
 				},
-				error => console.log(error),
+				error => {
+					this.logger.errorPage(error);
+				},
 				() => {
 					this.initializeSocialStatus();
 					if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
@@ -600,6 +606,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.setSocialShareData(this.socialService.partnerFeed, true);
 						this.socialService.partnerFeed = "";
 					}
+					setTimeout(() => {
+						this.referenceService.loading(this.socialAccountsLoader,false);
+					}, 5000);
+					
 				});
 	}
 

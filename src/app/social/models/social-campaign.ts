@@ -24,4 +24,7 @@ export class SocialCampaign {
   timeZone: string;
   categoryId:number;
   emailNotification = false;
+
+  /****XNFR-222****/
+  allowPartnerToEditThePost = false;
 }
