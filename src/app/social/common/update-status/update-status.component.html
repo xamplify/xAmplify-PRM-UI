@@ -19,7 +19,7 @@
             <div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
                 <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
                 <!---XNFR-222-->
-                <app-lefside-navigation-loader *ngIf="socialAccountsLoader.isLoading" [loadDefaultCss]="true"></app-lefside-navigation-loader>
+                <app-modal-popup-loader *ngIf="socialAccountsLoader?.isLoading" [height]="220"></app-modal-popup-loader>
                 <ng-container *ngIf="!socialAccountsLoader.isLoading">
                     <div *ngIf="socialStatusProviders?.length==0" class="alert alert-info">
                         <strong>No accounts found.</strong>
