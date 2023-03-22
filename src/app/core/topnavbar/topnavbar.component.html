@@ -44,16 +44,16 @@
             <!-- END HEADER SEARCH BOX -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
-               
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
-                    <!-- BEGIN NOTIFICATION DROPDOWN -->
+                    <!---XNFR-222-->
+                    <app-login-as-partner *ngIf="isLoggedInAsPartner" [showLogOutButton]="isLoggedInAsPartner"></app-login-as-partner>
+                    <!---XNFR-222-->
                     <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">
 						<button class="btn btn-primary" (click)="goBackToAdminPanel()">
 							<span class="hidden-xs">Go back to admin panel</span>
 							<i class="fa fa-power-off" aria-hidden="true"></i>
 						</button>
 					</li>
-
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
