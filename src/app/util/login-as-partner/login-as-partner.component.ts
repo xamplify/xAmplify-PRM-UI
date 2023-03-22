@@ -8,7 +8,8 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 @Component({
   selector: 'app-login-as-partner',
   templateUrl: './login-as-partner.component.html',
-  styleUrls: ['./login-as-partner.component.css']
+  styleUrls: ['./login-as-partner.component.css'],
+  providers:[TeamMemberService]
 })
 export class LoginAsPartnerComponent implements OnInit {
   isPartner = false;

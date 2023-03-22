@@ -8,7 +8,7 @@
     aria-hidden="true"></i>
 </a>
 
-<button  style="margin-top: 17px;margin-right: 5px;" *ngIf="isLoggedInAsPartner && showLogOutButton" (click)="logoutAsPartner()"
- class="btn btn-danger btn-xs margin-left-one-per" translate>
-  <i class="fa fa-power-off" aria-hidden="true"></i> Logout
+<button *ngIf="isLoggedInAsPartner && showLogOutButton"  (click)="logoutAsPartner()"
+class="btn btn-danger btn-xs margin-left-one-per topnav-button-css" translate>
+<i class="fa fa-power-off" aria-hidden="true"></i> Logout as partner
 </button>

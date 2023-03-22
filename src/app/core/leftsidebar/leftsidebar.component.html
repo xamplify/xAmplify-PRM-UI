@@ -18,7 +18,7 @@
            </a>
          </li>
          <!--Partners-->
-         <li *ngIf="menuItem?.partners ||(isLoggedInAsPartner && !isLoggedInAsTeamMember)" [ngClass]="{'active': location.path().includes('partners')}">
+         <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
            <a href="javascript:;" [ngStyle] = "{'background-color': skin?.backgroundColor, 'color': skin?.textColor,  'border-bottom': '1px solid' + skin?.buttonBorderColor}" class="partner" (click)="openOrCloseTabs('partners')">
                <i class="fa fa-handshake-o"  [ngStyle] = "{'color': skin?.iconColor}" aria-hidden="true"></i>
                <span class="title" translate>{{customNamePartners}}</span>
