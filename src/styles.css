@@ -1816,3 +1816,12 @@ transition: background 300ms ease-in-out;
  .re-distributed-high-level:hover {
 	background-color: #ffffff !important;
 } 
+.camp-card-bg{
+  background-color: #f2f4f9!important;
+  border-bottom: solid 1px #ddd !important;
+  height: 195px;
+  border-radius: 8px 8px 0 0  !important;
+} 
+.pricing {
+border: 1px solid #ddd !important;
+}

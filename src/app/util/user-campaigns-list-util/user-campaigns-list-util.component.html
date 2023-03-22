@@ -113,7 +113,8 @@
                        <div class="input-icon right p-top">
                           <input style="height: 35px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                          <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                          <!--Removed color:black !important-->
+                          <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="" aria-hidden="true"></i></button>
                        </div>
                     </div>
                  </div>
