@@ -13,12 +13,13 @@ import { RedistributedCampaignsAndLeadsBarChartComponent } from './redistributed
 import { KpiComponent } from './kpi/kpi.component';
 import { RedistributedCampaignsComponent } from './redistributed-campaigns/redistributed-campaigns.component';
 import { ViewPartnersComponent } from './view-partners/view-partners.component';
+import { LoginAsPartnerComponent } from './login-as-partner/login-as-partner.component';
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, LoginAsPartnerComponent]
 })
 export class PartnersModule { }

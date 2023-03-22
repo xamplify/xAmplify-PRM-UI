@@ -1,0 +1,12 @@
+<ngx-loading [show]="loading"
+[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<a *ngIf="authenticationService?.module?.loginAsPartner && isPartner" data-toggle="tooltip" data-placement="bottom"
+  [title]="contact?.signedUp ? 'Login As':'Account Is Not Activated'" (click)="contact?.signedUp && loginAsPartner()">
+  <i class="fa fa-sign-in" [ngClass]="{'disabled gray': !contact?.signedUp, 'active': contact?.signedUp}"
+    aria-hidden="true"></i>
+</a>
+
+<button *ngIf="isLoggedInAsPartner" (click)="logoutAsPartner()"
+ class="btn btn-danger btn-xs margin-left-one-per" translate>
+  <i class="fa fa-power-off" aria-hidden="true"></i> Logout
+</button>

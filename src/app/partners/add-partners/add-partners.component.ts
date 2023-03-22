@@ -224,13 +224,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectedFilterIndex: number = 1;
 	showFilter = true;
 	collapseAll = false;
-  /****XNFR-130*****/
-  selectAllTeamMemberIds = [];
-  selectAllTeamMemberGroupId = 0;
-  applyForAllClicked = false;
-  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
-  showSweetAlert = false;
-  selectedPartner: any;
+	/****XNFR-130*****/
+	selectAllTeamMemberIds = [];
+	selectAllTeamMemberGroupId = 0;
+	applyForAllClicked = false;
+	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	showSweetAlert = false;
+	selectedPartner: any;
 	microsoftDynamicsImageBlur: boolean = false;
     microsoftDynamicsImageNormal: boolean = false;
     microsoftDynamicsSelectContactListOption:any;
@@ -2327,7 +2327,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			$('#row_' + contactId).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
-			//this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
 			this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, email);
 		}
 		if (this.selectedContactListIds.length == this.pagedItems.length) {
@@ -4158,28 +4157,5 @@ getTeamMembersByGroupId(partner: any, index: number) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
-//   setHighlightLetter() {
-// 	if (this.isPartnerInfo) {
-// 		if (this.userInfo.contactCompany != undefined && this.userInfo.contactCompany != null && this.userInfo.contactCompany.trim().length > 0) {
-// 			this.highlightLetter = this.userInfo.contactCompany.slice(0,1);
-// 		}else if(this.userInfo.companyName!=undefined && this.userInfo.companyName!=null && $.trim(this.userInfo.companyName).length>0){
-// 			this.highlightLetter = this.userInfo.companyName.slice(0,1);
-// 		}else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 			this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 		}
-// 	}
-//  else if (this.isExclusion) {
-// 	if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 	}
-// } else {
-// 	if (this.userInfo.firstName != undefined && this.userInfo.firstName != null && this.userInfo.firstName.trim().length > 0 ) {
-// 		this.highlightLetter = this.userInfo.firstName.slice(0,1);
-// 	} else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 	} else if (this.userInfo.email != undefined && this.userInfo.email != null && this.userInfo.email.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.email.slice(0,1);
-// 	}
-// }
-// }
+
 }

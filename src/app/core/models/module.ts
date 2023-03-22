@@ -106,4 +106,7 @@ export class Module {
     isPartnerCompany = false;
     isAdminAndPartnerCompany = false;
 
+    /*******XNFR-224*******/
+    loginAsPartner = false;
+
 }
