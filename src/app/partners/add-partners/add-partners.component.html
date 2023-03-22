@@ -50,7 +50,8 @@
             <ngx-loading [show]="loading || contactService.isLoadingList"
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         </div>
-        <div class="page-bar">
+        <!--XNFR-224-->
+        <div class="page-bar" *ngIf="!isLoggedInAsPartner">
             <ul class="page-breadcrumb">
                 <li><i class="fa fa-home" aria-hidden="true"></i> <a
                     [routerLink]="referenceService.homeRouter" translate>Home</a> <i
@@ -71,7 +72,8 @@
             </div>
         </div>
         <div class="">
-            <div class="portlet-body">
+            <!----XNFR-222-->
+            <div class="portlet-body" *ngIf="!isLoggedInAsPartner">
                 <form #f="ngForm">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
@@ -368,35 +370,40 @@
                         </ng-container>
                 </select>
                 </span>
-                <ng-template #actionsButton>
-                <button class="btn dropdown-toggle" id="save&delete_button"
-                    style="color: white; float: right; margin-left: 10px;"
-                    [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
-                    data-toggle="dropdown">
-                    <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
-                        <i class="fa fa-angle-down"></i>
-                    </span> <span *ngIf="referenceService.isMobileScreenSize()"><i
-                        style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
-                </button>
-                <ul class="dropdown-menu pull-right">
-                    <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5"
-                        (click)="saveContacts()" translate>Save </a></li>
-                    <li><a id="cancel_button"
-                        *ngIf="selectedAddPartnerOption != 5 || clipBoard"
-                        (click)="cancelPartners()" translate>Cancel </a></li>
-                    <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
-                        *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
-                        (click)="saveAsChange(true); editContactComponent.addPartnerSave = true"
-                        translate>Save As </a></li>
-                    <li><a id="exportToExcel"
-                        *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
-                        (click)="downloadPartnerList()" translate>Export To Excel </a></li>
-                    <li><a id="exportToExcel"
-                        *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
-                        (click)="showAlert()" translate> Delete</a></li>
-                </ul>
-                </ng-template>
-                <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
+                <!---XNFR-222-->
+                <ng-container *ngIf="!isLoggedInAsPartner">
+                    <ng-template #actionsButton>
+                        <button class="btn dropdown-toggle" id="save&delete_button"
+                            style="color: white; float: right; margin-left: 10px;"
+                            [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
+                            data-toggle="dropdown">
+                            <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
+                                <i class="fa fa-angle-down"></i>
+                            </span> <span *ngIf="referenceService.isMobileScreenSize()"><i
+                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5"
+                                (click)="saveContacts()" translate>Save </a></li>
+                            <li><a id="cancel_button"
+                                *ngIf="selectedAddPartnerOption != 5 || clipBoard"
+                                (click)="cancelPartners()" translate>Cancel </a></li>
+                            <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
+                                *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
+                                (click)="saveAsChange(true); editContactComponent.addPartnerSave = true"
+                                translate>Save As </a></li>
+                            <li><a id="exportToExcel"
+                                *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
+                                (click)="downloadPartnerList()" translate>Export To Excel </a></li>
+                            <li><a id="exportToExcel"
+                                *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
+                                (click)="showAlert()" translate> Delete</a></li>
+                        </ul>
+                        </ng-template>
+                        <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
+                </ng-container>
+                <!---XNFR-222-->
+               
             </div>
             <div class="col-xs-12 p0"
                 *ngIf="referenceService.isMobileScreenSize()">
@@ -821,14 +828,16 @@
                     <div class="portlet light">
                         <div class="portlet-title" style="border-bottom: none ;">
                             <div class="caption" style="padding-top: 11px !important;" translate>
-                                <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List
-                                of {{authenticationService?.partnerModule?.customName}}
+                                <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
+                                List of {{authenticationService?.partnerModule?.customName}}
                             </div>
                             <div class="inputs" align="right"
                                 style="float: right; padding: 4px;display:flex;"
                                 *ngIf="!referenceService.isMobileScreenSize()">
-                                <app-team-member-filter-option *ngIf="showFilter"
+                                <!---XNFR-222-->
+                                <app-team-member-filter-option *ngIf="showFilter && !isLoggedInAsPartner"
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+
                                 <div style="float: left; margin: 0 10px;">
                                     <select class="form-control" [(ngModel)]="sortOption"
                                         (ngModelChange)="sortByOption($event)">
@@ -863,8 +872,6 @@
                                 <div class="inputs" align="right" style="float: right"></div>
                             </div>
                             <div class="clearfix">
-                                <!-- <app-team-member-filter-option *ngIf="showFilter"
-                                    (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option> -->
                                 <div class="col-xs-12" style="padding: 0px 0;">
                                     <div class="alert alert-info flex" *ngIf="isLoadingList">
                                         <div class="loader"
@@ -879,13 +886,12 @@
                                         <table class='table tgrid' aria-describedby="">
                                             <thead *ngIf="pagination.pagedItems?.length != 0">
                                                 <tr>
-                                                    <th class='text-center'><input type="checkbox"
-                                                        name="all"
+                                                    <th *ngIf="!isLoggedInAsPartner" class='text-center'>
+                                                        <input type="checkbox" name="all"
                                                         [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
                                                         (change)="editContactComponent.checkAll($event, partners)"
                                                         id="checkAllExistingContacts" /></th>
                                                     <th style="width: 20%;" translate>Entity info</th>
-                                                   
                                                     <th class="hidden-xs" translate>VERTICAL</th>
                                                     <th class="hidden-xs" translate>REGION</th>
                                                     <th class="hidden-xs" translate>TYPE</th>
@@ -898,7 +904,7 @@
                                                 <ng-container *ngFor="let contact of partners;let i = index"
                                                     id="listPartners">
                                                 <tr class='row_{{i}}'>
-                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList ">
+                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList && !isLoggedInAsPartner ">
                                                         <input type="checkbox"
                                                         [checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
                                                         class="chk"
@@ -951,6 +957,9 @@
                                                     </td>
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
+                                                            <!---XNFR-224--->
+                                                            <ng-container *ngIf="!isLoggedInAsPartner">
+                                                            
                                                             <a id="envolope_{{i}}"
                                                                 *ngIf="!contact.signedUp || !contact.notifyPartners"
                                                                 (click)="sendMail(contact.id)"> <i
@@ -989,6 +998,9 @@
                                                                 (click)="goToCampaigns(contact)"> <i
                                                                 class="fa fa-line-chart" aria-hidden="true"></i>
                                                             </a>
+                                                            </ng-container>
+                                                            <app-login-as-partner [contact]="contact"></app-login-as-partner>
+                                                            <!---XNFR-224--->
                                                         </div>
                                                     </td>
                                                     <ng-template #NA>N/A</ng-template>
@@ -1041,12 +1053,6 @@
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}</td>
                                                                 </tr>
-                                                                <!-- <tr *ngIf="mdfAccess">
-                                                                        <td class='pt10 pb10 bold' translate>MDF Amount: </td>
-                                                                        <td *ngIf="contact?.mdfAmountInString" align="center" class="pt10 pb10">
-                                                                            {{contact.mdfAmountInString}}
-                                                                        </td>
-                                                                    </tr> -->
                                                             </tbody>
                                                         </table>
                                                     </td>
@@ -1064,9 +1070,7 @@
                         (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination>
                     </div>
                     <!-- END EXAMPLE TABLE PORTLET-->
-                    <!-- <app-pagination [pagination]="pagination" [type]="'contacts'"
-                        (notifyParent)="setPage($event)"
-                        (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination> -->
+                   
                 </div>
             </div>
             <app-scroll-top></app-scroll-top>
@@ -1095,8 +1099,6 @@
                 <div class="modal-dialog modal-css" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <!-- <button type="button" class="close"  (click)="hideZohoModal()"
-                            data-dismiss="modal">&times;</button> -->
                             <a class="close-circle" data-dismiss="modal"
                                 (click)="hideZohoModal()"><i class="fa fa-times"></i></a>
                             <div>
@@ -1192,7 +1194,6 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-                            <!--    <button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button> -->
                             <button type="button" class="btn btn-primary"
                                 (click)="checkingZohoPopupValues()" translate>Submit</button>
                         </div>
@@ -1268,8 +1269,6 @@
                 <div class="modal-dialog modal-css" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <!-- <button type="button" class="close"
-                            data-dismiss="modal">&times;</button> -->
                             <a class="close-circle" data-dismiss="modal"><i
                                 class="fa fa-times"></i></a>
                             <div>
@@ -1290,9 +1289,7 @@
                                         decide to relink your account, you will need to reenter your
                                         credentials.
                                     </h4>
-                                    <!-- <h4 style="margin-left: 20px;" translate>
-                                        <span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists? <input type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
-                                    </h4> -->
+                                   
                                     <button type="button" class="btn btn-primary"
                                         style="margin-left: 38%; margin-top: 2%"
                                         (click)="unlinkSocailAccount()" translate>Unlink
@@ -1308,45 +1305,6 @@
                 </div>
             </div>
     
-            <!-- 	<div class="modal" id="settingSocialNetwork" tabindex="-1"
-            role="dialog" aria-labelledby="settingSocialNetworkModalLabel"
-            data-keyboard="false" data-backdrop="static">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
-                        <div>
-                            <h4 class="modal-title" id="settingSocialNetworkModalLabel">{{settingSocialNetwork}}
-                                Account Settings</h4>
-                        </div>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <h4 style="margin-left: 20px;">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>After
-                                    Unlinking, your {{settingSocialNetwork}} account will be removed
-                                    from our platform.
-                                </h4>
-                                <h4 style="margin-left: 20px;">
-                                    <span class="glyphicon glyphicon-triangle-right"></span>Would
-                                    you like to delete associated contact lists: <input
-                                        type="checkbox" [(ngModel)]="isUnLinkSocialNetwork"
-                                        [ngModelOptions]="{standalone: true}">
-                                </h4>
-                                <button type="button" class="btn btn-primary"
-                                    style="margin-left: 38%; margin-top: 2%"
-                                    (click)="unlinkSocailAccount()">UnLink Account</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-      </div> -->
-    
         </div>
     </div>
     
@@ -1354,31 +1312,6 @@
         [saveAsListName]="saveAsListName" [gdprInput]="parentInput"
         [isPartner]="true" [showGDPR]="showGDPR"
         (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
-    <!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-css" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title f-w-600" id="saveAsAddPartnerModal">Partner List Name</h4>
-            <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
-              <i class="fa fa-times"></i>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="campaignName">Name</label>
-              <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
-              <span style="color:red">{{saveAsError}}</span>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    
-    
     
     
     <!-- Testing Modal -->

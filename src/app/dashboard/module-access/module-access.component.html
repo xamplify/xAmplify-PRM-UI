@@ -286,6 +286,12 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
+							<!-- XNFR-224 -->
+							<tr *ngIf="!marketing">
+								<th scope="row">Login As Partner</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 							
 						</tbody>
 					</table>

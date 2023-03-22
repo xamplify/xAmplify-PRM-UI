@@ -187,7 +187,10 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.dataShare = false;
     }else if(this.roleId==19){
       this.campaignAccess.shareLeads = false;
-    }else{
+    }else if(this.roleId==18){
+      this.campaignAccess.loginAsPartner = false;
+    }
+    else{
      this.getModuleAccessByCompanyId();
     }
   }

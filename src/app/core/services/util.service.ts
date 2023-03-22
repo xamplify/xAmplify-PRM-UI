@@ -155,6 +155,15 @@ export class UtilService {
         return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
        
     }
+
+    isLoggedAsPartner(){
+        let adminId = this.getLoggedInVendorAdminCompanyUserId();
+        return adminId!=null;
+    }
+
+    getLoggedInVendorAdminCompanyUserId(){
+        return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
+    }
     
 
 }
