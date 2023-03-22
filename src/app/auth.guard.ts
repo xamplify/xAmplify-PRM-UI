@@ -132,7 +132,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
         }
         if(url.indexOf("/home/partners/")>-1){
-            return this.authorizeUrl(roles, url, this.partnerBaseUrl);
+            if(this.utilService.isLoggedAsPartner() && this.utilService.isLoggedAsTeamMember()){
+                return true;
+            }else{
+                return this.authorizeUrl(roles, url, this.partnerBaseUrl);
+            }
         }
         if(url.indexOf("/home/assignleads/")>-1){
             return this.authorizeUrl(roles, url, this.assignLeadBaseUrl);
