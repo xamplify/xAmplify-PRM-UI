@@ -195,6 +195,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     scale = 1;
     canvasRotation = 0;
     rotation = 0;
+    marketing: boolean;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1736,6 +1737,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let roleId =  $('#selectedRole option:selected').val();
           this.prm = roleId==20;
           this.vendorTier = roleId==19;
+          this.marketing = roleId==18;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -1754,6 +1756,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
           }else if(this.vendorTier){
               this.campaignAccess.shareLeads = false;
+          }else if(this.marketing){
+              this.campaignAccess.loginAsPartner = false;
           }
       }
 
