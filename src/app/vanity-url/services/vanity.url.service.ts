@@ -93,8 +93,8 @@ export class VanityURLService {
 
 
   isVanityURLEnabled() {
-   //let url =window.location.hostname;
-    let url="stratappsvendor.xamplify.com";
+   let url =window.location.hostname;
+    //let url="stratappsvendor.xamplify.com";
       if (!url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
