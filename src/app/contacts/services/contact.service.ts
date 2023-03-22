@@ -65,7 +65,6 @@ export class ContactService {
         if(vendorAdminCompanyUserId!=null){
             userId = vendorAdminCompanyUserId;
         }
-        alert(userId);
         return this._http.post(this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token + "&userId=" + userId, pagination)
             .map(this.extractData)
             .catch(this.handleError);

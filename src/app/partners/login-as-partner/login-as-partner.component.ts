@@ -36,6 +36,7 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   logoutAsPartner(){
+    this.loading = true;
     let vendorAdminCompanyUserEmailId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
