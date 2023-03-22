@@ -33,7 +33,8 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
-declare var $, Papa, swal, Swal: any;
+import { UtilService } from 'app/core/services/util.service';
+declare var $:any, Papa:any, swal:any;
 
 @Component({
 	selector: 'app-add-partners',
@@ -236,7 +237,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     microsoftDynamicsSelectContactListOption:any;
     microsoftDynamicsContactListName: string;
     showMicrosoftAuthenticationForm: boolean = false;
-    
+    /*** XNFR-224***/
+	isLoggedInAsPartner = false;
 
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
@@ -244,8 +246,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
-		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public campaignService: CampaignService, public integrationService: IntegrationService, private dashBoardService: DashboardService) {
+		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, 
+		public campaignService: CampaignService, public integrationService: IntegrationService, 
+		private utilService: UtilService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -268,11 +273,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 
 		this.parentInput = {};
-		const currentUser = localStorage.getItem('currentUser');
-		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-		if (campaginAccessDto != undefined) {
-			this.companyId = campaginAccessDto.companyId;
+		/*********XNFR-224*********/
+		if(this.isLoggedInAsPartner){
+			this.companyId = 1234;//Get Vendor Company UserId Here
+		}else{
+			const currentUser = localStorage.getItem('currentUser');
+			let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
+			if (campaginAccessDto != undefined) {
+				this.companyId = campaginAccessDto.companyId;
+			}
 		}
+		/*********XNFR-224*********/
+		
 	}
 
 
@@ -336,7 +348,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					},
 					error => this.xtremandLogger.error(error),
 					() => {
-						console.log('loadContacts() finished');
 						this.loadPartnerList(this.pagination);
 					}
 				);
@@ -1279,7 +1290,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	deleteUserShowAlert(contactId: number) {
-		this.xtremandLogger.info("contactListId in sweetAlert() " + contactId);
 		let self = this;
 		swal({
 			title: 'Are you sure?',
@@ -2603,40 +2613,21 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			// this.setHighlightLetter();
 			this.socialContactImage();
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
-			this.loggedInUserId = this.authenticationService.getUserId();
-			if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-				this.pagination.partnerTeamMemberGroupFilter = true;
+			if(this.isLoggedInAsPartner){
+				let vendorId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+				this.defaultPartnerList(vendorId);
+			}else{
+				this.loggedInUserId = this.authenticationService.getUserId();
+				if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+					this.pagination.partnerTeamMemberGroupFilter = true;
+				}
+				this.defaultPartnerList(this.loggedInUserId);
 			}
-			this.defaultPartnerList(this.loggedInUserId);
-			/*if (localStorage.getItem('vanityUrlFilter')) {
-				localStorage.removeItem('vanityUrlFilter');
-	             if (this.contactService.vanitySocialProviderName == 'google'
-	                    || this.contactService.vanitySocialProviderName == 'salesforce'
-	                    || this.contactService.vanitySocialProviderName == 'zoho') {
-	                    let message: string = '';
-	                    message = localStorage.getItem('oauthCallbackValidationMessage');
-	                    localStorage.removeItem('oauthCallbackValidationMessage');
-	                    if (message != null && message.length > 0) {
-	                        this.customResponse = new CustomResponse('ERROR', message, true);
-	                    } else if (this.contactService.vanitySocialProviderName == 'google') {
-	                        this.getGoogleContactsUsers();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    } else if (this.contactService.vanitySocialProviderName == 'salesforce') {
-	                        this.showModal();
-	                        console.log("AddContactComponent salesforce() Authentication Success");
-	                        this.checkingPopupValues();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    } else if (this.contactService.vanitySocialProviderName == 'zoho') {
-	                        this.zohoShowModal();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    }
-	                }
-			}
-			else*/ if (this.contactService.socialProviderName == 'google') {
+			
+			if (this.contactService.socialProviderName == 'google') {
 				if (this.contactService.oauthCallbackMessage.length > 0) {
 					let message = this.contactService.oauthCallbackMessage;
 					this.contactService.oauthCallbackMessage = '';

@@ -157,8 +157,12 @@ export class UtilService {
     }
 
     isLoggedAsPartner(){
-        let adminId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
+        let adminId = this.getLoggedInVendorAdminCompanyUserId();
         return adminId!=null;
+    }
+
+    getLoggedInVendorAdminCompanyUserId(){
+        return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
     }
     
 
