@@ -13,6 +13,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 export class LoginAsPartnerComponent implements OnInit {
   isPartner = false;
   @Input() contact:any;
+  @Input() showLogOutButton = false;
   loading = false;
   loggedInUserId: number;
   isLoggedInThroughVanityUrl: any;

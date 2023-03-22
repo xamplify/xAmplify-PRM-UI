@@ -69,7 +69,6 @@
 							<i class="fa fa-share" [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor}"  button data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
                     </li>
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -90,7 +89,6 @@
                         </ul>
                     </li>
 
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar" style="display: none;">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-info"></i>

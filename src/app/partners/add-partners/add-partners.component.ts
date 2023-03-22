@@ -274,14 +274,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 		this.parentInput = {};
 		/*********XNFR-224*********/
-		if(this.isLoggedInAsPartner){
-			this.companyId = 1234;//Get Vendor Company UserId Here
-		}else{
-			const currentUser = localStorage.getItem('currentUser');
-			let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
-			if (campaginAccessDto != undefined) {
-				this.companyId = campaginAccessDto.companyId;
-			}
+		const currentUser = localStorage.getItem('currentUser');
+		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
+		if (campaginAccessDto != undefined) {
+			this.companyId = campaginAccessDto.companyId;
 		}
 		/*********XNFR-224*********/
 		
@@ -2616,17 +2612,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.socialContactImage();
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
-			if(this.isLoggedInAsPartner){
-				let vendorId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-				this.defaultPartnerList(vendorId);
-			}else{
-				this.loggedInUserId = this.authenticationService.getUserId();
+			this.loggedInUserId = this.authenticationService.getUserId();
 				if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
 					this.pagination.partnerTeamMemberGroupFilter = true;
 				}
 				this.defaultPartnerList(this.loggedInUserId);
-			}
-			
 			if (this.contactService.socialProviderName == 'google') {
 				if (this.contactService.oauthCallbackMessage.length > 0) {
 					let message = this.contactService.oauthCallbackMessage;

@@ -50,7 +50,8 @@
             <ngx-loading [show]="loading || contactService.isLoadingList"
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         </div>
-        <div class="page-bar">
+        <!--XNFR-224-->
+        <div class="page-bar" *ngIf="!isLoggedInAsPartner">
             <ul class="page-breadcrumb">
                 <li><i class="fa fa-home" aria-hidden="true"></i> <a
                     [routerLink]="referenceService.homeRouter" translate>Home</a> <i
@@ -827,8 +828,8 @@
                     <div class="portlet light">
                         <div class="portlet-title" style="border-bottom: none ;">
                             <div class="caption" style="padding-top: 11px !important;" translate>
-                                <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>List
-                                of {{authenticationService?.partnerModule?.customName}}
+                                <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
+                                List of {{authenticationService?.partnerModule?.customName}}
                             </div>
                             <div class="inputs" align="right"
                                 style="float: right; padding: 4px;display:flex;"
@@ -885,13 +886,12 @@
                                         <table class='table tgrid' aria-describedby="">
                                             <thead *ngIf="pagination.pagedItems?.length != 0">
                                                 <tr>
-                                                    <th class='text-center'><input type="checkbox"
-                                                        name="all"
+                                                    <th *ngIf="!isLoggedInAsPartner" class='text-center'>
+                                                        <input type="checkbox" name="all"
                                                         [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
                                                         (change)="editContactComponent.checkAll($event, partners)"
                                                         id="checkAllExistingContacts" /></th>
                                                     <th style="width: 20%;" translate>Entity info</th>
-                                                   
                                                     <th class="hidden-xs" translate>VERTICAL</th>
                                                     <th class="hidden-xs" translate>REGION</th>
                                                     <th class="hidden-xs" translate>TYPE</th>
@@ -904,7 +904,7 @@
                                                 <ng-container *ngFor="let contact of partners;let i = index"
                                                     id="listPartners">
                                                 <tr class='row_{{i}}'>
-                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList ">
+                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList && !isLoggedInAsPartner ">
                                                         <input type="checkbox"
                                                         [checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
                                                         class="chk"
