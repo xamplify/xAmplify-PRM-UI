@@ -66,6 +66,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   myVendorsLoader: boolean;
   /****XNFR-224 ****/
   isLoggedInAsPartner = false;
+  loggedInAsUserEmailId = "";
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,
@@ -75,6 +76,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
+    this.loggedInAsUserEmailId = userName;
     this.userId = this.authenticationService.getUserId();
     /*** XNFR-134** */
     this.vanityLoginDto.userId = this.userId;
