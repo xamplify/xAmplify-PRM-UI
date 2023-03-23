@@ -15,6 +15,7 @@ export class LoginAsPartnerComponent implements OnInit {
   isPartner = false;
   @Input() contact:any;
   @Input() showLogOutButton = false;
+  @Input() showLoginAsButton = false;
   loading = false;
   loggedInUserId: number;
   isLoggedInThroughVanityUrl: any;
