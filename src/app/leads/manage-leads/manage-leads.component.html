@@ -165,7 +165,8 @@
                         </button>
                       </a>
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                      <!-- XNFR-215 -->
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' && activeCRMDetails?.type != 'PIPEDRIVE'" (click)="syncLeadsWithActiveCRM()">
                         <button class="btn btn-white padding mt button" style="margin-left: 3px;"  data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
