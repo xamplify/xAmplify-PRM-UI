@@ -29,6 +29,7 @@ export class Properties {
 
 	CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Your contact list has been synchronized successfully.";
 	CONTACT_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Contact List.";
+	MARKETO_CONTACT_LIST_SYNCHRONIZATION_SUCCESS = "Synchronization initiated successfully. It might take few minutes.";
 	
 	LEAD_LIST_SYNCHRONIZATION_SUCCESS = "Your lead list has been synchronized successfully.";
     LEAD_LIST_SYNCHRONIZATION_ERROR = "An error occured while synchronizing your Lead List.";
@@ -110,6 +111,7 @@ export class Properties {
 	DEFAULT_PLAYER_SETTINGS = 'Default player settings updated successfully.';
 	VIDEO_LOGO_UPDATED = 'Co-Branding video logo uploaded successfully.';
 	PROFILE_PIC_UPDATED = 'Profile picture updated successfully.';
+	COMPANY_PIC_UPDATED = 'Company logo updated successfully.'
 	PROFILE_UPDATED = 'Profile updated successfully.';
 	PASSWORD_UPDATED = 'Password updated successfully.';
 	PAWORD_ERROR = 'New password should not be same as current password.'
@@ -249,6 +251,9 @@ export class Properties {
 	/**Campaign****/
 	campaignLaunchedMessage = "The campaign was successfully deployed. Please wait until the campaign is processed and launched. We will send you email updates in timely manner."
 	deployingCampaignMessage = "We are deploying the campaign";
+
+	/****XNFR-224****/
+	supportText = "Enable support access to vendor";
 
 
 

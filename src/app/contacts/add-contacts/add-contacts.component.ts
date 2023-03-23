@@ -704,7 +704,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else if(this.contactOption == 'marketoContacts'){
             this.saveMarketoContactsWithPermission();
         }else if(this.contactOption == 'marketoSelectedContacts'){
-            this.saveMarketoSelectedContactsWithPermission();
+            this.saveMarketoSelectedContactsWithPermission();           
         }else if(this.contactOption == 'hubSpotContacts'){
             this.saveHubSpotContactsWithPermission();
         }else if(this.contactOption == 'hubSpotSelectedContacts'){
@@ -1558,6 +1558,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             });
             this.contactService.socialProviderName = 'google';
             this.socialContact.socialNetwork = "GOOGLE";
+            this.socialContact.contacts = [];
             var self = this;
             this.contactService.getGoogleContacts( this.socialContact )
                 .subscribe(
@@ -3008,24 +3009,24 @@ salesForceVanityAuthentication() {
 				}
 			}else */
 				
-				if (this.contactService.socialProviderName == 'google') {
-            	  if (this.contactService.oauthCallbackMessage.length > 0) {
-            		  let message = this.contactService.oauthCallbackMessage;
-            		  this.contactService.oauthCallbackMessage = '';
-                      this.customResponse = new CustomResponse('ERROR', message, true);
-                  } else {
-                      this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
-                      this.socialContact.contactType = localStorage.getItem('contactType');
-                      this.socialContact.alias = localStorage.getItem('alias');
-                      this.getGoogleContactsUsers();
-                      this.contactService.socialProviderName = "nothing";
-                      localStorage.removeItem("currentPage");
-                      localStorage.removeItem("currentModule");
-                      localStorage.removeItem("socialNetwork");
-                      localStorage.removeItem("contactType");
-                      localStorage.removeItem("alias");
-                  }
-			}
+            if (this.contactService.socialProviderName == 'google') {
+                if (this.contactService.oauthCallbackMessage.length > 0) {
+                    let message = this.contactService.oauthCallbackMessage;
+                    this.contactService.oauthCallbackMessage = '';
+                    this.customResponse = new CustomResponse('ERROR', message, true);
+                } else {
+                    this.socialContact.socialNetwork = localStorage.getItem('socialNetwork');
+                    this.socialContact.contactType = localStorage.getItem('contactType');
+                    this.socialContact.alias = localStorage.getItem('alias');
+                    this.getGoogleContactsUsers();
+                    this.contactService.socialProviderName = "nothing";
+                    localStorage.removeItem("currentPage");
+                    localStorage.removeItem("currentModule");
+                    localStorage.removeItem("socialNetwork");
+                    localStorage.removeItem("contactType");
+                    localStorage.removeItem("alias");
+                }
+            }
 			else if (this.contactService.socialProviderName == 'salesforce') {
                   if (this.contactService.oauthCallbackMessage.length > 0) {
                 	  let message = this.contactService.oauthCallbackMessage;
@@ -3081,26 +3082,23 @@ salesForceVanityAuthentication() {
             this.getLegalBasisOptions();
 
             this.checkZohoStatusCode = localStorage.getItem("statusCode");
-            if(this.checkZohoStatusCode == 202)
-            {
+            if (this.checkZohoStatusCode == 202) {
                 localStorage.setItem("isZohoSynchronization", "yes");
                 localStorage.removeItem("statusCode");
                 this.checkZohoStatusCode = 0;
 
 
-            if(localStorage.getItem('vanityUrlDomain'))
-               {
-                var message = "isZohoSynchronization";
-                let trargetWindow = window.opener;
-                trargetWindow.postMessage(message,"*");
-                localStorage.removeItem('vanityUrlDomain');
-                self.close();
-            }
+                if (localStorage.getItem('vanityUrlDomain')) {
+                    var message = "isZohoSynchronization";
+                    let trargetWindow = window.opener;
+                    trargetWindow.postMessage(message, "*");
+                    localStorage.removeItem('vanityUrlDomain');
+                    self.close();
+                }
 
-        }else
-        {
-            localStorage.setItem("isZohoSynchronization", "no");
-        }
+            } else {
+                localStorage.setItem("isZohoSynchronization", "no");
+            }
 		
 			window.addEventListener('message', function(e) {
 				window.removeEventListener('message', function(e){}, true);
@@ -3410,18 +3408,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
     saveMarketoContactsWithPermission() {
            if (this.assignLeads) {
-               this.contactListObject = new ContactList;
-               this.contactListObject.name = this.model.contactListName;
-               this.contactListObject.isPartnerUserList = this.isPartner;
-               //this.contactListObject.contactType = "ASSIGNED_LEADS_LIST";
-               this.contactListObject.synchronisedList = true;
-               this.contactListObject.socialNetwork = this.socialContact.socialNetwork;
-               this.contactListObject.publicList = true;
-               this.setSocialUsers(this.socialContact);
+                this.contactListObject = new ContactList;
+                this.contactListObject.name = this.model.contactListName;
+                this.contactListObject.isPartnerUserList = this.isPartner;
+                this.contactListObject.contactType = "CONTACT";
+                this.contactListObject.socialNetwork = "MANUAL";
+                this.contactListObject.publicList = true;
+                this.contactListObject.synchronisedList = false;
+                this.socialContact.moduleName = this.getModuleName();
+               //this.setSocialUsers(this.socialContact);
+               this.setSocialUserObjs();
                this.setLegalBasisOptions(this.socialUsers);
-
+               
                this.userUserListWrapper.users = this.socialUsers;
+               this.userUserListWrapper.userList = this.contactListObject;
                this.saveAssignedLeadsList();
+
         } else {
             this.loading = true;
             this.setLegalBasisOptions(this.socialContact.contacts);
@@ -3482,16 +3484,22 @@ vanityCheckingMarketoContactsAuthentication(){
 
     saveMarketoSelectedContactsWithPermission() {
            if (this.assignLeads) {
-        	     this.contactListObject = new ContactList;
-                 this.contactListObject.name = this.model.contactListName;
-                 this.contactListObject.isPartnerUserList = this.isPartner;
-                 this.contactListObject.contactType = "CONTACT";
-                 this.contactListObject.socialNetwork = "MANUAL";
-                 this.contactListObject.publicList = true;
-                 this.setLegalBasisOptions(this.allselectedUsers);
+            //    this.contactListObject = new ContactList;
+            //    this.contactListObject.name = this.model.contactListName;
+            //    this.contactListObject.isPartnerUserList = this.isPartner;
+            //    this.contactListObject.contactType = "CONTACT";
+            //    this.contactListObject.socialNetwork = "MANUAL";
+            //    this.contactListObject.publicList = true;
+            //    this.setLegalBasisOptions(this.allselectedUsers);
 
-                 this.userUserListWrapper.users = this.allselectedUsers;
-                 this.saveAssignedLeadsList();
+            //    this.userUserListWrapper.users = this.allselectedUsers;
+            //    this.saveAssignedLeadsList();
+
+                 this.userUserListWrapper = this.getUserUserListWrapperObj(this.allselectedUsers, this.model.contactListName, this.isPartner, true,
+                    "CONTACT", "MANUAL", this.alias, false);
+            this.setLegalBasisOptions(this.allselectedUsers);
+            this.userUserListWrapper.users = this.allselectedUsers;
+            this.saveAssignedLeadsList();
         }else {
             this.loading = true;
             this.setLegalBasisOptions(this.allselectedUsers);
@@ -4161,7 +4169,12 @@ vanityCheckingMarketoContactsAuthentication(){
             this.contactListObject = new ContactList;
             this.contactListObject.name = this.model.contactListName;
             this.contactListObject.isPartnerUserList = this.isPartner;
-            this.contactListObject.synchronisedList = true;
+            if (type === 'marketo') {
+                this.contactListObject.synchronisedList = false;
+            } else {
+                this.contactListObject.synchronisedList = true;
+            }
+            
             this.contactListObject.socialNetwork = type.toLocaleUpperCase();
             this.contactListObject.contactType  =  "CONTACT";
             this.contactListObject.publicList = true;

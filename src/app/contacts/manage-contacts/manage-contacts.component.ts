@@ -649,9 +649,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.salesforceContactsSynchronizationAuthentication(this.socialContact);
 		}
 		
-		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT') {
+		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT'
+			|| contactList.socialNetwork == 'MARKETO') {
 			this.contactListIdForSyncLocal = contactList.id;
-            this.socialNetworkForSyncLocal = contactList.socialNetwork;
+			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
 		}
 		else if (contactList.socialNetwork == 'ZOHO') {
@@ -717,8 +718,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 							this.customResponse = new CustomResponse('INFO', data.message, true);
 						} else if (data.statusCode == 401) {
 							this.customResponse = new CustomResponse('ERROR', data.message, true);
-						} else {
+						} else {		
 							let successMessage = this.assignLeads?this.properties.LEAD_LIST_SYNCHRONIZATION_SUCCESS:this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
+							if ("MARKETO" === socialContact.socialNetwork) {
+								successMessage = this.properties.MARKETO_CONTACT_LIST_SYNCHRONIZATION_SUCCESS;
+							}
 							this.customResponse = new CustomResponse('SUCCESS', successMessage, true);
 							this.loadContactLists(this.pagination);
 							this.contactsCount();

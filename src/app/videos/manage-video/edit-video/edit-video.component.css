@@ -2,25 +2,7 @@
     position: absolute;
     display: block;
     height: 2.3em; }
-.customCss{
-   margin-right: 13px;margin-left: -11px;
-        }
 
-.closeModal {
-    background-color:white;
-    color:red ;
-    float:right;
-    font-size:21px;
-    font-weight:700;
-    line-height:1;
-    opacity:1;
-    }
-
-.videoSizeCss {
-    position: relative;
-    height: 24px;
-    padding: 0px 2px;
-    }
 .iconSize{
     font-size: x-large;
     color: white;
@@ -78,7 +60,6 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
 
 .upperText {
     font-size: 16px;
-    /* color: #fff !important; */
     word-break: break-all;
     line-height: 1.3em;
     font-weight: 600;
@@ -88,7 +69,6 @@ border-bottom: 1px solid #c3c0c0;margin-bottom: 10px; width: 50%; text-align: ri
 }
 
 .lowerText {
-    /* color: #fff !important; */
     word-break: break-all;
     font-size: 15px;
     line-height: 1.0em;
@@ -132,7 +112,6 @@ border-radius: 0;
     margin: 0;
 }
 .colorImg {
-    /* box-shadow: 2px 6px 6px #000; */
     box-shadow: 0px 6px 6px #ccc !important;
     opacity: 1.0;
     filter: alpha(opacity=100);
@@ -145,7 +124,6 @@ border-radius: 0;
 
 .sizeImg {
     height: 73px;
-    /* width: 98px; */
     width: 100% !important;
     padding: 2px;
     border: 1px solid #454;
@@ -180,19 +158,6 @@ textarea {
 #edit_video_player{
     width:auto;
     height: 315px;
-}
-.img-thumbnail span {
-    width:16px;
-    height:16px;
-    display:block;
-    position:absolute;
-    right:0;
-    color:#00a6e8;
-    cursor:pointer
-    }
-
-.img-wrap .close,.text-center {
-text-align:center
 }
 
 .img-wrap {
@@ -241,12 +206,7 @@ border-radius:50%
     cursor: inherit;
     display: block;
 }
-.alertError{
-    text-align: center;
-    position: relative;
-    width: 96%;
-    right: -9px;
-}
+
 .thumbnail-wrapper {
   float: left;
   width: 144px;
@@ -272,12 +232,7 @@ border-radius:50%
   margin: 25px 0 27px;
   font-size: 17px;
 }
-.lineplayercontrol span{
-  color: #00a6e8;
-  border: 1px;
-  background: #fff;
-  padding: 0 10px;
-}
+
 .video-processing-message{
   height: 317px !important; position: relative;width: 100%;color: white !important;top: -317px; margin-bottom: -300px;
 }

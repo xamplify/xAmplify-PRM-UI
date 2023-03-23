@@ -559,7 +559,7 @@
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"  src="{{properties?.microsoftImage}}">
                           <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
-                          *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+                          *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                           <h3 translate style="font-size: 14px;">
                             processing<span class="arrow">
                                <img alt="" src="assets/images/Spinner.gif" class="loaderGif" style="margin-top: 77px;">
@@ -622,7 +622,7 @@
                         </td>
                         <!--  -->
                         <div class="bar" 
-                          *ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
+                          *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                           <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                   	|| (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
@@ -696,14 +696,16 @@
 								          </a>
                         </div>
                         <div class="bar" 
-                          *ngIf="(contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                          *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                             ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
-                              || (!contactList.synchronisedList  && !contactList.emailValidationInd)">
+                              || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                           <a data-toggle="tooltip" data-placement="top" title="Force process the list"
                             data-rel="fancybox-button" (click)="forceProcessList(contactList.id)">
                             <i class="fa fa-repeat" aria-hidden="true"></i>
                           </a>
                         </div>
+                        <div class="bar" *ngIf="contactList.uploadInProgress">Uploading...</div>
+                        <div class="bar" *ngIf="contactList.validationInProgress">Validating Email IDs...</div>
                       </div>
                     </div>
                   </div>
@@ -801,7 +803,7 @@
                   <div class="loader"></div>
                   <h4 translate>please wait while we process your request</h4>
                 </div>
-                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
                 </div>
                 <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
@@ -1297,7 +1299,7 @@
         </div>
       </div>
       <div class="modal-body clearfix">
-        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;">
+        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;margin-left: 0px !important;">
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading">

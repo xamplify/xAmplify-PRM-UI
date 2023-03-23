@@ -12,20 +12,17 @@
     font-family: Verdana, sans-serif;
     border-collapse: collapse;
     border: 1px solid #ebebeb;
-    /* margin: 10px auto; */
     width: 100%;
     max-width: 500px;
 }
 
 .highcharts-data-table caption {
-    /* padding: 1em 0; */
     font-size: 1.2em;
     color: #555;
 }
 
 .highcharts-data-table th {
     font-weight: 600;
-    /* padding: 0.5em; */
 }
 
 .highcharts-data-table td,
@@ -51,9 +48,7 @@
  .box{
     padding: 10px;
 }
- /* .portlet.light{
-    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-} */
+
  .text-center{
     text-align: center;
 }

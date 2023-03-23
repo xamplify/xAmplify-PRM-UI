@@ -7,7 +7,7 @@
 			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a
 				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
 			<li  *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
-				routerLink="/home/dashboard/default">Home</a><i
+				routerLink="/home/dashboard/default" (click)="update()">Home</a><i
 				class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
@@ -86,9 +86,9 @@
 											(click)="imageClick()">
 											<span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
 											<span *ngIf="!croppedImage">
-											 <span
-												*ngIf="!companyLogoImageUrlPath" style="color: #f55d7a;">*
-													Please upload your company logo</span>
+											 <h5
+												*ngIf="!companyLogoImageUrlPath" style="color: #f55d7a !important;">*
+													Please upload your company logo</h5>
 											</span>
 
 													<span
@@ -398,6 +398,12 @@
 										<tr>
 											<th scope="row">Custom Skin Settings</th>
 											<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
+													[ngModelOptions]="{standalone: true}"></td>
+										</tr>
+										<!-- XNFR-224 -->
+										<tr *ngIf="!marketing">
+											<th scope="row">Login As Partner</th>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
 													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
 										
@@ -726,14 +732,14 @@
 													(blur)="validatePattern('linkedInLink')" /> <span
 													*ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
 											</div>
-											<div class="form-group" [attr.class]="twitterDivClass">
-												<label class="control-label" translate>Twitter</label> <input
-													type="text" id="twitter" name="twitter"
-													placeholder="Twitter" class="form-control"
-													[(ngModel)]="companyProfile.twitterLink"
-													(input)="validatePattern('twitterLink')"
-													(blur)="validatePattern('twitterLink')" /> <span
-													*ngIf="twitterLinkError" style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
+											<div class="form-group" [attr.class]="eventUrlDivClass">
+												<label class="control-label" translate>Event Url</label> <input
+													type="text" id="eventUrl" name="eventUrl"
+													placeholder="Event Url" class="form-control"
+													[(ngModel)]="companyProfile.eventUrl"
+													(input)="validatePattern('eventUrl')"
+													(blur)="validatePattern('eventUrl')" /> <span
+													*ngIf="eventUrlError" style="color: #f55d7a">{{eventUrlErrorMessage}}</span>
 											</div>
 										</div>
 									</div>
@@ -773,13 +779,21 @@
 				<h4 class="modal-title" id="cropLogoImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css" *ngIf="!imageChangedEvent">
-					<span>Select image</span> <input style="height: 36px;" title=" "
+				<div style="position: relative; top: -8px; width: 118px;"
+					class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
 						id="custom-input" type="file"
-						(change)="filenewChangeEvent($event)">
+						(change)="fileBgImageChangeEvent($event)">
 				</div>
-				<div style="position: relative; top: -5px;"
+				<ng-template #uploadButton> 
+					<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="fileBgImageChangeEvent($event)">
+				</div>
+			</ng-template>
+				<div style="position: relative; top: -5px;" 
 					*ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
@@ -787,25 +801,62 @@
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
 					<!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
 					<div [hidden]="!imageChangedEvent">
-						<image-cropper [imageChangedEvent]="imageChangedEvent"
-							[maintainAspectRatio]="false" [onlyScaleDown]="true"
+						<!-- <image-cropper [imageChangedEvent]="imageChangedEvent"
+							[maintainAspectRatio]="true" [onlyScaleDown]="true"
 							[roundCropper]="false" format="jpg" outputType="base64"
-							(imageCropped)="imageCroppedMethod($event)"
+							(imageCropped)="imageCroppedMethod($event)" [aspectRatio]="3 / 1"
+							[resizeToWidth]="256" [cropperMinWidth]="128"
 							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
 							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
-							[style.display]="showCropper ? null : 'none'"></image-cropper>
+							[style.display]="showCropper ? null : 'none'"></image-cropper> -->
+
+							<!-- [canvasRotation]="canvasRotation" -->
+							<!--  -->
+							<app-img-croppr-v2
+							[imageChangedEvent]="imageChangedEvent"
+							[maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio"
+							[aspectRatio]="3 / 1"
+							[resizeToWidth]="800"
+							[cropperMinWidth]="500"
+							[onlyScaleDown]="true"
+							[roundCropper]="false"
+							[alignImage]="'left'"
+							[style.display]="showCropper ? null : 'none'"
+							format="png"
+							[transform]="transform"
+							(imageCropped)="imageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()"
+							(cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+							</app-img-croppr-v2>
 					</div>
 					<div *ngIf="!imageChangedEvent">
 						<fieldset
-							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+							style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
 						</fieldset>
 					</div>
 					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
 
 				</div>
+				<div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							{{
+							  containWithinAspectRatio
+								? 'Fill Aspect Ratio'
+								: 'Contain Within Aspect Ratio'
+							}}
+						  </button>
+						<button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+					</div>
 				<div>
 					<button class="btn btn-primary" [disabled]="!showCropper"
 						(click)="uploadLogo()">Save Changes</button>
+				</div>
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">
@@ -825,6 +876,8 @@
     </svg>
 </div>
 
+
+
 <!-- Bg Image Modal -->
 <div class="modal right fade" id="cropBgImage" tabindex="-1"
 	role="dialog" aria-labelledby="cropBgImage" data-keyboard="false"
@@ -838,11 +891,19 @@
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent">
-					<span>Select image</span> <input style="height: 36px;" title=" "
+					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent; else changeButton">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
 						id="custom-input" type="file"
-						(change)="fileBgImageChangeEvent($event)">
+						(change)="uploadfileBgImageChangeEvent($event)">
 				</div>
+				<ng-template #changeButton> 
+					<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css">
+					<span>Upload image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="uploadfileBgImageChangeEvent($event)">
+				</div>
+			</ng-template>
 				<div style="position: relative; top: -5px;"
 					*ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
@@ -850,14 +911,50 @@
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
 					<div [hidden]="!bgImageChangedEvent">
-						<image-cropper [imageChangedEvent]="bgImageChangedEvent"
+						<!-- <image-cropper [imageChangedEvent]="bgImageChangedEvent"
 							[maintainAspectRatio]="false" [onlyScaleDown]="true"
 							[roundCropper]="false" format="jpg" outputType="base64"
 							(imageCropped)="bgImageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
-							[style.display]="showCropper ? null : 'none'"></image-cropper>
-					</div>
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
+							[imageQuality]="0" (loadImageFailed)="loadImageFailed()"
+							[style.display]="showCropper ? null : 'none'"></image-cropper> -->
+							<!-- <app-img-croppr-v2
+							[imageChangedEvent]="bgImageChangedEvent"
+							[maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio"
+							[aspectRatio]="3 / 1"
+							[resizeToWidth]="800"
+							[cropperMinWidth]="500"
+							[onlyScaleDown]="true"
+							[roundCropper]="false"
+							[alignImage]="'left'"
+							[style.display]="showCropper ? null : 'none'"
+							format="png"
+							[transform]="transform"
+							(imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()"
+							(cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+							</app-img-croppr-v2> -->					
+					<app-img-croppr-v2
+							[imageChangedEvent]="bgImageChangedEvent"
+							[maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio"
+							[aspectRatio]="16 / 9"
+							[resizeToWidth]="800"
+							[cropperMinWidth]="500"
+							[onlyScaleDown]="true"
+							[roundCropper]="false"
+							[alignImage]="'left'"
+							[style.display]="showCropper ? null : 'none'"
+							format="png"
+							[transform]="transform"
+							(imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()"
+							(cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+							</app-img-croppr-v2>
+						</div>
 					<div *ngIf="!bgImageChangedEvent">
 						<fieldset
 							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
@@ -866,9 +963,28 @@
 					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
 
 				</div>
-				<div>
+				<!-- <div>
 					<button class="btn btn-primary" [disabled]="!showCropper"
 						(click)="uploadBgImage()">Save Changes</button>
+				</div> -->
+				<div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()" [disabled]="!showCropper">
+							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							{{
+							  containWithinAspectRatio
+								? 'Fill Aspect Ratio'
+								: 'Contain Within Aspect Ratio'
+							}}
+						  </button>
+						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+					</div>
+					<div>
+						<button class="btn btn-primary" [disabled]="!showCropper"
+							(click)="uploadBgImage()">Save Changes</button>
+					</div>
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">

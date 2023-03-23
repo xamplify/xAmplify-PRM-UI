@@ -47,3 +47,13 @@
 .minheight-zero-px{
     min-height: 0px;
 }
+.portlet.light, .dashboard-stat2{
+    padding: 7px !important;
+}
+.pr5{
+    padding-right: 5px;
+}
+
+.portlet.light > .portlet-title > .caption > .caption-subject {
+    font-weight: 600 !important;
+}

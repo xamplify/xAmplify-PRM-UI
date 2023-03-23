@@ -7,10 +7,10 @@
   </app-response-message>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-lg-12">
-      <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+      <div class="col-xs-12 col-sm-5 col-lg-5">
         <button class="add-button-xamplify"  (click)="openCreateDiv()" translate>Create Group</button>
       </div>
-      <div class="col-xs-12 col-sm-7 col-lg-7 p0">
+      <div class="col-xs-12 col-sm-7 col-lg-7">
         <div class="page-toolbar">
           <div class="btn-group pull-right">
             <div class="inputs float-right" style="display: inline-flex;">
@@ -47,7 +47,7 @@
     </ng-container>
   </ng-container>
 </div>
-<div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
+<div *ngIf="pagination?.pagedItems.length !== 0" class="pg8 pd-align">
   <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="findGroups($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 </div>
 <!-- End of 24 -->

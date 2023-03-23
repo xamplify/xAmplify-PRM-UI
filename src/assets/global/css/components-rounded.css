@@ -14,7 +14,6 @@ General reset
 /* Set default body */
 body {
   color: #333333;
-  /* color: #ffff; */
   font-family:  'Gantari',"Open Sans", sans-serif;
   padding: 0px !important;
   margin: 0px !important;
@@ -951,7 +950,6 @@ h6 {
   /* 10-01-2023 */
   font-family:  'Gantari',"Open Sans", sans-serif;
   font-weight: 500;
-  /* color: #333 !important; */
 }
 /* 18-01-2023 */
 h1,h2,h3,h4,h5,h6 {
@@ -1485,9 +1483,6 @@ Separated List
   border-right: 0;
 }
 @media (max-width: 767px) {
-  .list-separated {
-    /* 767px */
-  }
   .list-separated > div {
     margin-bottom: 20px;
   }
@@ -2644,7 +2639,6 @@ Dropdown Menu
   margin: 10px  0px 0px 0px;
   box-shadow: 5px 5px rgba(102, 102, 102, 0.1);
   border: 1px solid #eee;
-  /* 10-01-2023 ("Helvetica Neue", Helvetica, Arial, sans-serif) */
   font-family:  'Gantari',"Open Sans", sans-serif;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -3878,10 +3872,6 @@ Text states
   color: #c6c6c6;
 }
 
-/* .text-primary {
-  color: #428bca;
-} */
-
 .text-success {
   color: #45B6AF;
 }
@@ -4252,7 +4242,6 @@ Customized Bootstrap Modal
 .modal-backdrop {
   border: 0;
   outline: none;
-  /* z-index: 10049; */
 }
 .page-portlet-fullscreen .modal-backdrop {
   z-index: 10059;
@@ -4921,16 +4910,9 @@ Portlets
 
 /* Light Portlet */
 .portlet.light {
-   /* padding: 5px 5px 10px 10px; */
    background-color: #fff;
-   /* background-color: #333; */
-   /* border-radius: 5px !important; */
    border-radius: 5px ;
-   border:1px solid #ddd;
-   /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.4) ; */
-   /* border: 1px solid #eeeef0 !important;
-   box-shadow: 4px 4px 10px 0 rgb(0 0 0 / 8%), -5px -6px 10px 0 rgb(253 253 253 / 90%) !important; */
-  
+   border:1px solid #ddd;  
 }
 .portlet.light.bordered {
   border: 1px solid #e1e1e1 !important;
@@ -4943,7 +4925,6 @@ Portlets
 }
 .portlet.light > .portlet-title {
   padding: 0;
-  /*min-height: 48px;*/
 }
 .portlet.light > .portlet-title > .caption {
   /* 10-01-2023 (#666) */
@@ -10007,13 +9988,7 @@ Grey Default
   opacity: 0.1;
   filter: alpha(opacity=10);
 }
-.dashboard-stat.grey .details .number {
-  /* 10-01-2023 */
-  /* color: #333333; */
-}
 .dashboard-stat.grey .details .desc {
-  /* 10-01-2023 */
-  /* color: #333333; */
   opacity: 1;
   filter: alpha(opacity=100);
 }
@@ -11629,11 +11604,6 @@ Red Sunglo
 }
 
 /* General Text & Icon Font Colors */
-.font-red-sunglo {
- /*  color: #E26A6A !important;*/
- /* 10-01-2023 */
- /* color: #00a6e8 !important */
-}
 
 .progress-bar.red-sunglo {
   background: #E26A6A !important;
@@ -14561,10 +14531,6 @@ Transparent Button
 .profile-usermenu{
   color: #333;
 }
-/* *{
-  margin: 0 auto;
-  padding: 0;
-} */
 /* 12-02-2023 */
 .page-header.navbar .top-menu .navbar-nav>li.dropdown-user .dropdown-menu>li>a {
   font-size: 14px !important;
@@ -14586,23 +14552,17 @@ Transparent Button
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  /* background: #074e84;  */
   background: rgb(52, 73, 90);
-  /* background: #0086af; */
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  /* background: #007bff;  */
   background: #0086af;
 }
 
 
 /** 26-01-2023 **/
-/* .modal-title{
-    margin: 7px;
-} */
 .modal-header {
     padding: 10px;
 }
@@ -14620,6 +14580,3 @@ Transparent Button
 .pbc-m3 {
   margin: 3px -30px !important;
 }
-/* .swal2-modal hr {
-  height: 0px;
-} */

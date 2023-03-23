@@ -15,10 +15,9 @@ import { EditUser } from '../models/edit-user';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { ReferenceService } from '../../core/services/reference.service';
 import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { UserListPaginationWrapper } from '../models/userlist-pagination-wrapper';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { UtilService } from 'app/core/services/util.service';
 
 @Injectable()
 export class ContactService {
@@ -53,16 +52,19 @@ export class ContactService {
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
     hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     oauthCallbackMessage: string = "";
-    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
+    constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private utilService: UtilService) {
     }
 
 
 
     loadUsersOfContactList(contactListId: number, pagination: Pagination) {
-        //pagination.criterias = criterias;
-
+        /*****XNFR-224 */
+        let vendorAdminCompanyUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        if(vendorAdminCompanyUserId!=null){
+            userId = vendorAdminCompanyUserId;
+        }
         return this._http.post(this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token + "&userId=" + userId, pagination)
             .map(this.extractData)
             .catch(this.handleError);

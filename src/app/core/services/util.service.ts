@@ -94,7 +94,7 @@ export class UtilService {
 
     blobToFile(theBlob){
       theBlob.lastModifiedDate = new Date();
-      theBlob.name = theBlob.lastModifiedDate.getTime()+'.jpg';
+      theBlob.name = theBlob.lastModifiedDate.getTime()+'.webp';
       return theBlob;
      }
     convertBase64ToFileObject(dataURI) {
@@ -154,6 +154,15 @@ export class UtilService {
     isLoggedInFromAdminPortal(){
         return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
        
+    }
+
+    isLoggedAsPartner(){
+        let adminId = this.getLoggedInVendorAdminCompanyUserId();
+        return adminId!=null;
+    }
+
+    getLoggedInVendorAdminCompanyUserId(){
+        return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
     }
     
 

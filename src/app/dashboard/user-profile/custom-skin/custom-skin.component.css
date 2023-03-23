@@ -104,7 +104,6 @@ LEGEND {
 }
 
 .form-control.disabled {
-	/* cursor: default; */
 	cursor: move;
 }
 
@@ -118,8 +117,6 @@ LEGEND {
 }
 
 .blur-content {
-	/* -webkit-filter: url(#svg-blur);
-	filter: url(#svg-blur); */
 	filter: blur(0px);
 	-webkit-filter: blur(0px);
 }
@@ -235,7 +232,7 @@ LEGEND {
 
 .text-area-css {
 	float: right;
-	font-size: 11px;
+	font-size: 14px;
 	position: relative;
 	left: -4px;
 	color: #bd1d1d;
@@ -510,7 +507,6 @@ label {
 	cursor: pointer;
 	width: 26px;
 	height: 30px;
-	/* background: url(../assets/cbe16914.svg) 50% no-repeat; */
 	-webkit-background-size: contain;
 	background-size: contain;
 	display: inline-block;
@@ -522,7 +518,6 @@ label {
 }
 
 .fm.external-link {
-	/* background: url("assets/images/icon-img-preview.svg") 50% no-repeat; */
 	background-size: auto auto;
 	-webkit-background-size: contain;
 	background-size: contain;
@@ -530,7 +525,6 @@ label {
 }
 
 .fm.delete {
-	/* background: url(https://app.getbee.io/v18.09.03.1427/assets/28fa3e8f.svg) 50% no-repeat; */
 	background-size: auto auto;
 	-webkit-background-size: contain;
 	background-size: contain;

@@ -42,12 +42,6 @@
   padding: 15px
 }
 
-.dashboard-stat2,
-.portlet {
-  /* border-radius: 0 !important; */
-  /* padding-top: 2em; */
-}
-
 .border-error {
   border-radius: 0 !important;
   padding-top: 2em;

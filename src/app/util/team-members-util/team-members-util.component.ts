@@ -342,12 +342,12 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     $('#delete-team-member-popup').modal('hide');
   }
   loginAs(teamMember: TeamMember) {
+    $("body").addClass("login-as-loader");
     this.loginAsTeamMember(teamMember.emailId, false);
 
   }
 
   loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
-    this.loading = true;
     if (this.isLoggedInThroughVanityUrl) {
       this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
     } else {
@@ -405,6 +405,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   logoutAsTeamMember() {
+    $("body").addClass("login-as-loader");
     let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
     this.loginAsTeamMember(adminEmailId, true);
   }

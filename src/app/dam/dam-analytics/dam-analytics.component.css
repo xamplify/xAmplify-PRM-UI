@@ -50,7 +50,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     float: left !important;
-    /* overflow: hidden; */
 }
 
 .margin-flex {
@@ -59,16 +58,6 @@
 
 img.active {
     height: 50px;
-}
-
-.imageClass{
-	background: #f2f4f9;
-    border: solid 1px #008fd5;
-    border-radius: 3px;
-}
-
-.campaign-name-padding{
-    padding-left: 5px;
 }
 
 .campaign-filter-option{

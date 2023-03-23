@@ -8,7 +8,7 @@
 	<div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
-	<div *ngIf="!userNotFound">
+	<div *ngIf="!userNotFound" style="padding-bottom: 10px;">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<form class="register" [formGroup]="signUpForm" >
       <h4 style="font-size:15px;font-weight:bold;"><span style="color:red">*</span>Please add password to your account, accept the T&C and access the platform</h4>
@@ -47,7 +47,7 @@
 				<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
 				<div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
 			</div>
-			<div class="form-group margin-top-20 margin-bottom-20">
+			<div class="form-group">
 				<label class="check">
 					<input formControlName="agree" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
 				</label>
@@ -55,7 +55,7 @@
 				<div id="register_tnc_error"></div>
 			</div>
 			<div class="actions">
-				<button type="submit" style="color:white"  id="register-submit-btn" class="btn btn-success uppercase pull-right signinTF" (click)="update()">Submit</button>
+				<button type="submit" style="color:white"  id="register-submit-btn" class="btn btn-success uppercase signinTF" (click)="update()">Submit</button>
 			</div>
 		</form>
 	</div>

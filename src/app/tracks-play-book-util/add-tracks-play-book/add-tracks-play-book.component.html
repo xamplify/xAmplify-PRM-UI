@@ -234,7 +234,7 @@
                   <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
                     <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
-                      <img *ngIf="!imageChangedEvent && featuredImagePath || !imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
+                      <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">

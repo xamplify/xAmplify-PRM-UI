@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   loggedInThroughVanityUrl = false;
   loader = false;
   skin:CustomSkin = new CustomSkin();
+  footerSkin:CustomSkin =new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
   constructor(
@@ -312,11 +313,13 @@ export class HomeComponent implements OnInit {
          this.xtremandLogger.error("error" + error);
        }  
   }
+  
   getMainContent(userId:number){
     this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
       (response) =>{
        let cskinMap  = response.data;
        this.skin  = cskinMap.MAIN_CONTENT;
+       this.footerSkin = cskinMap.FOOTER;
     }
     )
     

@@ -158,6 +158,9 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"  *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>
+                            <li  *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption" [ngClass]="{'active-tab': activeTabName == 'support'}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}" (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
+                            </li>
                             <!--------------Admin----------------------->
                             <div class="my-profile-header-text">Admin</div>
                             <!--Dashboard Buttons-->
@@ -269,7 +272,7 @@
                                 </div>
                             </div>
                             <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
-                                Custom Skin Setting helps to change your application colors like background color ,icon color, text color, button color etc.
+                                Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
                                 Based on selecting color in below tab.
                               </div>
                             <div class="portlet-body clearfix">
@@ -814,7 +817,7 @@
                                                 <div class="row">
                                                     <div class="col-xs-12 col-sm-12 col-lg-12">
                                                         <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                                             <button class="add-button-xamplify"  (click)="addPipeline()" translate>Create Pipeline</button>
+                                                             <button class="btn btn custom"  (click)="addPipeline()" translate>Create Pipeline</button>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                             <div class="page-toolbar">
@@ -921,7 +924,7 @@
                                                 <span toggle="#oldPassword" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')" *ngIf="referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value"
                                                     style="left:-30px !important"></span>
 
-                                                <div *ngIf="formErrors.oldPassword" class="alert alert-danger">
+                                                <div *ngIf="formErrors.oldPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.oldPassword}}</div>
                                             </div>
                                             <div class="form-group">
@@ -930,7 +933,7 @@
                                                 <span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
                                                 <span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
 
-                                                <div *ngIf="formErrors.newPassword" class="alert alert-danger">
+                                                <div *ngIf="formErrors.newPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.newPassword}}</div>
                                             </div>
                                             <div class="form-group">
@@ -941,9 +944,9 @@
                                                 <span toggle="#comfirmPassword" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value"
                                                     style="left:-30px !important"></span>
 
-                                                <div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger">
+                                                <div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.confirmNewPassword}}</div>
-                                                <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Password do not match.</div>
+                                                <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger" style="margin-top: 5px;">Password do not match.</div>
                                             </div>
                                             <div class="margin-top-10">
                                                 <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze" translate>
@@ -1027,87 +1030,6 @@
                                                             </div>
                                                         </tr>
                                                     </fieldset><br>
-                                                    <!-- <fieldset *ngIf="gdprSetting.gdprStatus">
-                                                        <legend>Available Options</legend>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        Unsubscribe links &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Add/Remove Unsubscribe links in email.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        GDPR-ready forms &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">GDPR-ready forms.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Terms & Conditions &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Terms & Condtions.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Delete Functionality &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Delete Functionality.
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Event &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Event.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                    </fieldset> -->
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
@@ -1763,6 +1685,56 @@
 
 
                                     </div>
+
+                                     <!-- Support Settings -->
+                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'support'}">
+                                        <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
+                                        </app-dashboard-loader>
+                                        <app-response-message [customResponse]="supportSettingCustomResponse" *ngIf="supportSettingCustomResponse.isVisible"></app-response-message>
+                                        <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                            <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                <tbody>
+                                                    <fieldset>
+                                                        <legend>{{properties?.supportText}}</legend>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Enabling support access typically entails granting access to your account to a Vendor support team or their team member in order for them to assist, guide, and resolve any issues you may be experiencing. 
+                                                                        <br>To ensure that the company account is only accessible to authorized users. Please enable/disable the following settings: 
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="loginAsPartnerOptionEnabledForVendor" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="loginAsPartnerOptionEnabledForVendor!=loginAsPartnerOptionEnabledForVendor">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
+                                                            </div>
+                                                        </tr>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Send me a notification whenever team members from the Vendor company access my account.
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="loginAsPartnerEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="loginAsPartnerEmailNotification!=loginAsPartnerEmailNotification">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
+                                                             </div>   
+                                                         </tr>   
+                                                    </fieldset><br>
+                                                </tbody>
+                                            </table>
+                                            <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                <button type="submit" class="btn green-haze" (click)="updateSupportOption()" translate>Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1828,18 +1800,64 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="(circleData | json) === '{}'"><span>Select
+                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
                 </div>
+                <ng-template #uploadButton> 
+					<div style="position: relative;top: -5px;" class="btn green fileinput-button-css"><span>Upload
+                        image</span>
+                    <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
+                </div>
+			</ng-template>
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
-                    </img-cropper>
+                    <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
+                    </img-cropper> -->
+                    <div [hidden]="!imageChangedEvent">
+                    <app-img-croppr-v2
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [containWithinAspectRatio]="containWithinAspectRatio"
+                    [aspectRatio]="1 / 1"
+                    [resizeToWidth]="800"
+                    [cropperMinWidth]="500"
+                    [onlyScaleDown]="true"
+                    [roundCropper]="true"
+                    [alignImage]="'left'"
+                    [style.display]="showCropper ? null : 'none'"
+                    format="png"
+                    [transform]="transform"
+                    (imageCropped)="imageCroppedMethod($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (cropperReady)="cropperReady($event)"
+                    (loadImageFailed)="loadImageFailed()">
+                    </app-img-croppr-v2>
                 </div>
+                <div *ngIf="!imageChangedEvent">
+                    <fieldset
+                        style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+                    </fieldset>
+                </div>
+                </div>
+                <div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							{{
+							  containWithinAspectRatio
+								? 'Fill Aspect Ratio'
+								: 'Contain Within Aspect Ratio'
+							}}
+						  </button>
+						<button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+						<button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                        <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+                    </div>
                 <div>
-                    <button class="btn btn-primary" [disabled]="(circleData | json) === '{}'" (click)="uploadProfileImage()">Upload Image</button>
+                    <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadProfileImage()">Save Changes</button>
+                </div>
                 </div>
             </div>
         </div>
@@ -1978,7 +1996,7 @@
                           </ul>
                     </div>
                     <div class="form-group" *ngIf="!pipelinePreview && !pipeline.crmPipeline">
-                        <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;width: 90px;" (click)="addStage()" >
+                        <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px;" (click)="addStage()" >
                             <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> Add Stage
                         </a>
                     </div>
