@@ -46,10 +46,11 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                     <!---XNFR-222-->
-                    <app-login-as-partner  [showLogOutButton]="isLoggedInAsPartner" [showLoginAsButton]="false"></app-login-as-partner>
-                    <li *ngIf="isLoggedInAsPartner" class="topnav-button-css">
+                    <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
                         <div class="alert alert-info">
-                            <strong>You are logged in as {{loggedInAsUserEmailId}}</strong>
+                            <strong>You are logged in as {{loggedInAsUserEmailId}}
+                                <app-login-as-partner  [showLogOutButton]="isLoggedInAsPartner" [showLoginAsButton]="false"></app-login-as-partner>
+                            </strong>
                         </div>
                     </li>
                     <!---XNFR-222-->

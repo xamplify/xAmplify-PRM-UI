@@ -181,6 +181,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.isAdminAndPartnerCompany = data.adminAndPartnerCompany;
 					/*****XNFR-224*****/
 					this.authenticationService.module.loginAsPartner = data.loginAsPartner;
+					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

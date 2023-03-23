@@ -1848,8 +1848,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showNotifyPartnersOption = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName == "support"){
+			this.activeTabHeader = this.properties.supportText;
+			this.findSupportTextSettings();
 		}
 		this.referenceService.goToTop();
+	}
+
+	findSupportTextSettings(){
+		this.referenceService.startLoader(this.httpRequestLoader);
+		setTimeout(() => {
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}, 5000);
 	}
 
 	ngOnDestroy() {

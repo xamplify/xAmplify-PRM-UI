@@ -20,10 +20,12 @@ export class LoginAsPartnerComponent implements OnInit {
   loggedInUserId: number;
   isLoggedInThroughVanityUrl: any;
   isLoggedInAsPartner = false;
+  isLoggedInAsTeamMember = false;
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
     private referenceService:ReferenceService,private vanityUrlService:VanityURLService,private utilService:UtilService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+      this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 
      }

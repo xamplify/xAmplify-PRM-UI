@@ -108,5 +108,6 @@ export class Module {
 
     /*******XNFR-224*******/
     loginAsPartner = false;
+    showSupportSettingOption = false;
 
 }
