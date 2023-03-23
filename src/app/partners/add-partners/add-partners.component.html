@@ -51,7 +51,7 @@
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         </div>
         <!--XNFR-224-->
-        <div class="page-bar" *ngIf="!isLoggedInAsPartner">
+        <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li><i class="fa fa-home" aria-hidden="true"></i> <a
                     [routerLink]="referenceService.homeRouter" translate>Home</a> <i
@@ -73,7 +73,7 @@
         </div>
         <div class="">
             <!----XNFR-222-->
-            <div class="portlet-body" *ngIf="!isLoggedInAsPartner">
+            <div class="portlet-body">
                 <form #f="ngForm">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
@@ -370,8 +370,6 @@
                         </ng-container>
                 </select>
                 </span>
-                <!---XNFR-222-->
-                <ng-container *ngIf="!isLoggedInAsPartner">
                     <ng-template #actionsButton>
                         <button class="btn dropdown-toggle" id="save&delete_button"
                             style="color: white; float: right; margin-left: 10px;"
@@ -401,8 +399,6 @@
                         </ul>
                         </ng-template>
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
-                </ng-container>
-                <!---XNFR-222-->
                
             </div>
             <div class="col-xs-12 p0"
@@ -886,7 +882,7 @@
                                         <table class='table tgrid' aria-describedby="">
                                             <thead *ngIf="pagination.pagedItems?.length != 0">
                                                 <tr>
-                                                    <th *ngIf="!isLoggedInAsPartner" class='text-center'>
+                                                    <th class='text-center'>
                                                         <input type="checkbox" name="all"
                                                         [(ngModel)]="editContactComponent.isHeaderCheckBoxChecked"
                                                         (change)="editContactComponent.checkAll($event, partners)"
@@ -904,7 +900,7 @@
                                                 <ng-container *ngFor="let contact of partners;let i = index"
                                                     id="listPartners">
                                                 <tr class='row_{{i}}'>
-                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList && !isLoggedInAsPartner ">
+                                                    <td class="text-center" *ngIf="!isCampaignDraftContactList">
                                                         <input type="checkbox"
                                                         [checked]="editContactComponent.selectedContactListIds.indexOf(contact.id)>-1"
                                                         class="chk"
@@ -957,9 +953,6 @@
                                                     </td>
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
-                                                            <!---XNFR-224--->
-                                                            <ng-container *ngIf="!isLoggedInAsPartner">
-                                                            
                                                             <a id="envolope_{{i}}"
                                                                 *ngIf="!contact.signedUp || !contact.notifyPartners"
                                                                 (click)="sendMail(contact.id)"> <i
@@ -998,7 +991,6 @@
                                                                 (click)="goToCampaigns(contact)"> <i
                                                                 class="fa fa-line-chart" aria-hidden="true"></i>
                                                             </a>
-                                                            </ng-container>
                                                             <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
                                                             <!---XNFR-224--->
                                                         </div>
