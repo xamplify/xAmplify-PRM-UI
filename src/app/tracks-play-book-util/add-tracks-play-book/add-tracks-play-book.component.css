@@ -797,10 +797,10 @@ input.cmn-toggle-round-flat:checked+label:after {
     background-color: #27A1CA;
 }
 
-.form-group label {
+/* .form-group label {
     font-weight: 500 !important;
     color: #999 !important;
-}
+} */
 
 .has-success .form-control {
     border-color: #0ad40e;
@@ -824,9 +824,9 @@ input.cmn-toggle-round-flat:checked+label:after {
     margin-right: 0.5em;
 }
 
-.form-body label {
+/* .form-body label {
     color: #000 !important
-}
+} */
 
 
 /* Style the search field */

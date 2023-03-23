@@ -535,14 +535,14 @@ a {
     margin-right: 5px;
 }
 
-#vendor-details-tile {
+/* #vendor-details-tile {
     border-color: lightgrey;
     border-style: solid;
     height: 102px;
     border-radius: 10px;
     padding-top: 15px;
     background-color: #fff;
-}
+} */
 
 .fund-added {
     color: #fff;

@@ -1825,3 +1825,17 @@ transition: background 300ms ease-in-out;
 .pricing {
 border: 1px solid #ddd !important;
 }
+#vendor-details-tile {
+  border: lightgrey 1px solid;
+  height: 102px;
+  border-radius: 10px;
+  padding-top: 15px;
+  background-color: #fff;
+}
+.form-body label {
+  color: #000 !important
+}
+.form-group label {
+  font-weight: 500 !important;
+  color: #999 !important;
+}
