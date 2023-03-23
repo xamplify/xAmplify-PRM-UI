@@ -187,7 +187,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
 						setTimeout(() => {
 							this.authenticationService.logout();
-						}, 10000);
+						}, 7000);
 					}
 				},
 				error => {

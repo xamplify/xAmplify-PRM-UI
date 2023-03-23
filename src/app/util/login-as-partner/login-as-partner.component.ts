@@ -84,7 +84,6 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   private setLocalStorageAndRedirectToDashboard(emailId: any, data: any) {
-    
     this.utilService.setUserInfoIntoLocalStorage(emailId, data);
     let self = this;
     setTimeout(function () {
