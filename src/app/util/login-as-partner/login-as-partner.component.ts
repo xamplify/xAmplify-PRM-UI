@@ -22,6 +22,7 @@ export class LoginAsPartnerComponent implements OnInit {
   isLoggedInThroughVanityUrl: any;
   isLoggedInAsPartner = false;
   isLoggedInAsTeamMember = false;
+  title = "";
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
     private referenceService:ReferenceService,private vanityUrlService:VanityURLService,private utilService:UtilService) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -33,7 +34,15 @@ export class LoginAsPartnerComponent implements OnInit {
 
   ngOnInit() {
     this.isPartner = this.router.url.includes('home/partners');
-    
+    if(this.contact!=undefined){
+      if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){
+        this.title = "You do not have enough privileges to Login as";
+      }else if(this.contact.signedUp && this.contact.companyId>0 && this.contact.loginAsPartnerOptionEnabledForVendor){
+        this.title = "Login as";
+      }else if((!this.contact.signedUp || this.contact.companyId==0) && !this.contact.loginAsPartnerOptionEnabledForVendor){
+        this.title = "Company profile not created";
+      }
+    }
   }
 
   loginAsPartner(){

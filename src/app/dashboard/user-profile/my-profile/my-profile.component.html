@@ -1699,7 +1699,8 @@
                                                         <tr class="col-md-12 col-lg-12">
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>This is sample text for support
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Enabling support access typically entails granting access to your account to a Vendor support team or their team member in order for them to assist, guide, and resolve any issues you may be experiencing. 
+                                                                        <br>To ensure that the company account is only accessible to authorized users. Please enable/disable the following settings: 
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -1711,6 +1712,21 @@
                                                                 </div>
                                                             </div>
                                                         </tr>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Send me a notification whenever team members from the Vendor company access my account.
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="loginAsPartnerEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="loginAsPartnerEmailNotification!=loginAsPartnerEmailNotification">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
+                                                             </div>   
+                                                         </tr>   
                                                     </fieldset><br>
                                                 </tbody>
                                             </table>
