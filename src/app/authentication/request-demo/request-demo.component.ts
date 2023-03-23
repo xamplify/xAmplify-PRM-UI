@@ -19,6 +19,7 @@ export class RequestDemoComponent implements OnInit {
     isValidForm = false;
     isValidEmail = false;
     isValidCompany = false;
+    isValidMobileNumber = false;
     errorClass = "success";
     submitted = false;
     isContacted = false;
@@ -48,7 +49,7 @@ export class RequestDemoComponent implements OnInit {
       }else{
           this.isValidEmail = true;
           this.errorClass = "success";
-          if(this.isValidCompany){
+          if(this.isValidCompany && this.validateMobileNumber){
               this.isValidForm = true;
           }else{
               this.isValidForm = false;
@@ -60,7 +61,7 @@ export class RequestDemoComponent implements OnInit {
       let company = $.trim(this.requestDemo.company);
       if(company.length>0){
           this.isValidCompany = true;
-          if(this.isValidEmail){
+          if(this.isValidEmail && this.validateMobileNumber){
               this.isValidForm = true;
           }else{
               this.isValidForm = false;
@@ -71,6 +72,21 @@ export class RequestDemoComponent implements OnInit {
       }
   }
   
+validateMobileNumber(){
+    let mobileNumber = $.trim(this.requestDemo.mobileNumber);
+      if(mobileNumber.length>0){
+          this.isValidMobileNumber = true;
+          if(this.isValidEmail && this.isValidCompany){
+              this.isValidForm = true;
+          }else{
+              this.isValidForm = false;
+          }
+      }else{
+          this.isValidMobileNumber = false;
+          this.isValidForm = false;
+      }
+}
+
   save(){
       this.submitted = true;
       let timezoneId = $('#demo-timezoneId option:selected').val();

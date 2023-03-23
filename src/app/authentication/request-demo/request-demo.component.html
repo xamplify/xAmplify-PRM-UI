@@ -72,41 +72,40 @@
                   <input type="text" [(ngModel)]="requestDemo.lastName"  maxlength="255" class="form-control" id="lastName" [ngModelOptions]="{standalone: true}">
               </div>
               <div class="form-group">
-                  <label for="email">Email address <font class="required">*</font></label>
+                  <label for="email">Email address <span class="required">*</span></label>
                   <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
-             	 <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
+             	    <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
               </div>
                <div class="form-group">
-                  <label for="email">Mobile Number</label>
-                  <!--   <int-phone-prefix [defaultCountry]="'us'" [(ngModel)]="requestDemo.mobileNumber" [maxlength]=20  [ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
-              		<input type="text" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
+                  <label for="email">Mobile Number <span class="required">*</span></label>
+              		<input type="text" (input)="validateMobileNumber()" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
               </div>
               <div class="form-group">
-                  <label for="email">Company Name<font class="required">*</font></label>
+                  <label for="email">Company Name<span class="required">*</span></label>
                   <input type="text" [(ngModel)]="requestDemo.company" class="form-control" (input)="validateCompany()" id="company" [ngModelOptions]="{standalone: true}">
               </div>
               <div class="form-group">
                 <div class="row" style="margin-bottom: 24px;">
                   <div class=col-md-6>
-                  <label for="sel1">Country</label>
-                 <select class="form-control"  (change)="onSelect($event.target.value)" id="demo-countryName">
-					<option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-				</select>
+                    <label for="sel1">Country</label>
+                  <select class="form-control"  (change)="onSelect($event.target.value)" id="demo-countryName">
+                      <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                  </select>
                 </div>
                 <div class=col-md-6>
                   <label for="sel1">Time Zone</label>
                     <select class="form-control"  id="demo-timezoneId">
-						<ng-container *ngIf="timezones?.length==1">
-							<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="requestDemo.countryId==timeZone.countryId">
-								{{timeZone.cityName}}
-							</option>
-						</ng-container>
-						<ng-container *ngIf="timezones?.length>1">
-							<option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
-								{{timeZone.cityName}}
-							</option>
-						</ng-container>
-					</select>
+                    <ng-container *ngIf="timezones?.length==1">
+                      <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="requestDemo.countryId==timeZone.countryId">
+                        {{timeZone.cityName}}
+                      </option>
+                    </ng-container>
+                    <ng-container *ngIf="timezones?.length>1">
+                      <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+                        {{timeZone.cityName}}
+                      </option>
+                    </ng-container>
+                  </select>
                   </div>
                 </div>
               </div>
@@ -117,8 +116,8 @@
             </form>
             <div *ngIf="isContacted">
              <h1 class="display-3">Thank You</h1>
-			  <p class="lead"><strong>We will contact you shortly to schedule a demo.</strong></p>
-			</div>
+			        <p class="lead"><strong>We will contact you shortly to schedule a demo.</strong></p>
+			    </div>
           </article>
         </div>
       </div>
