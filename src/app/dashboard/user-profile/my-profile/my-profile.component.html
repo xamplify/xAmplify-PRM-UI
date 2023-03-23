@@ -801,7 +801,7 @@
                                         
                                         <!-- XNFR-215 -->
                                         <div *ngIf="integrationTabIndex == 6">
-                                            <app-pipedrive-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="closeMicrosoftForm($event)">
+                                            <app-pipedrive-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="refreshIntegrationSettings($event)">
                                             </app-pipedrive-authentication>
                                         </div>
                                     </div>
