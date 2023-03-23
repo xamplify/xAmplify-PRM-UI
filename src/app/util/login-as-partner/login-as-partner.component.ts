@@ -5,6 +5,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+declare var $:any;
 @Component({
   selector: 'app-login-as-partner',
   templateUrl: './login-as-partner.component.html',
@@ -36,12 +37,12 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   loginAsPartner(){
-    this.loading = true;
+    $("body").addClass("login-as-loader");
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
   }
 
   logoutAsPartner(){
-    this.loading = true;
+    
     let vendorAdminCompanyUserEmailId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
@@ -50,7 +51,7 @@ export class LoginAsPartnerComponent implements OnInit {
     this.teamMemberService.getVanityUrlRoles(emailId)
     .subscribe(response => {
       this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
-      this.setLocalStorageAndRedirectToDashboard(emailId, response);
+      this.setLocalStorageAndRedirectToDashboard(emailId, response.data);
     },
       (error: any) => {
         this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
@@ -82,8 +83,9 @@ export class LoginAsPartnerComponent implements OnInit {
     this.isLoggedInAsPartner = false;
   }
 
-  private setLocalStorageAndRedirectToDashboard(emailId: any, response: any) {
-    this.utilService.setUserInfoIntoLocalStorage(emailId, response.data);
+  private setLocalStorageAndRedirectToDashboard(emailId: any, data: any) {
+    
+    this.utilService.setUserInfoIntoLocalStorage(emailId, data);
     let self = this;
     setTimeout(function () {
       self.router.navigate(['home/dashboard/'])
@@ -94,6 +96,7 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   logoutAsPartnerOrTeamMember(){
+    $("body").addClass("login-as-loader");
     if(this.isLoggedInAsTeamMember){
       this.logoutAsTeamMember();
     }else{
@@ -108,7 +111,6 @@ logoutAsTeamMember() {
 }
 
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
-  this.loading = true;
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
   } else {
@@ -152,14 +154,7 @@ setLoggedInTeamMemberData(isLoggedInAsAdmin: boolean, emailId: string, response:
       localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
     }
   }
-  this.utilService.setUserInfoIntoLocalStorage(emailId, response);
-  let self = this;
-  setTimeout(function () {
-    self.router.navigate(['home/dashboard/'])
-      .then(() => {
-        window.location.reload();
-      })
-  }, 500);
+  this.setLocalStorageAndRedirectToDashboard(emailId,response);
 
 }
 
