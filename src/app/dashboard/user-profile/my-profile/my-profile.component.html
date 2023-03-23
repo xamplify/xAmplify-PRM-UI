@@ -158,6 +158,9 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"  *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>
+                            <li  *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption" [ngClass]="{'active-tab': activeTabName == 'support'}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}" (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
+                            </li>
                             <!--------------Admin----------------------->
                             <div class="my-profile-header-text">Admin</div>
                             <!--Dashboard Buttons-->
@@ -1027,87 +1030,6 @@
                                                             </div>
                                                         </tr>
                                                     </fieldset><br>
-                                                    <!-- <fieldset *ngIf="gdprSetting.gdprStatus">
-                                                        <legend>Available Options</legend>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        Unsubscribe links &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Add/Remove Unsubscribe links in email.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        GDPR-ready forms &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">GDPR-ready forms.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Terms & Conditions &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Terms & Condtions.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Delete Functionality &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Delete Functionality.
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Event &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Event.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                    </fieldset> -->
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
@@ -1762,6 +1684,40 @@
                                         
 
 
+                                    </div>
+
+                                     <!-- Support Settings -->
+                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'support'}">
+                                        <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
+                                        </app-dashboard-loader>
+                                        <app-response-message [customResponse]="supportSettingCustomResponse" *ngIf="supportSettingCustomResponse.isVisible"></app-response-message>
+                                        <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                            <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+                                                <tbody>
+                                                    <fieldset>
+                                                        <legend>{{properties?.supportText}}</legend>
+                                                        <tr class="col-md-12 col-lg-12">
+                                                            <div class="flex row">
+                                                                <div class="col-md-9 col-lg-9">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>This is sample text for support
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                    <section>
+                                                                        <switch [(status)]="loginAsPartnerOptionEnabledForVendor" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                            (statusChange)="loginAsPartnerOptionEnabledForVendor!=loginAsPartnerOptionEnabledForVendor">
+                                                                        </switch>
+                                                                    </section>
+                                                                </div>
+                                                            </div>
+                                                        </tr>
+                                                    </fieldset><br>
+                                                </tbody>
+                                            </table>
+                                            <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                <button type="submit" class="btn green-haze" (click)="updateSupportOption()" translate>Update</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

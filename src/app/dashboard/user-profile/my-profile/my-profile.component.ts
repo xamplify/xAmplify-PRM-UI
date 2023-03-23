@@ -268,6 +268,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	// XNFR-215
 	pipedriveRibbonText: string;
+	/****XNFR-224****/
+	loginAsPartnerOptionEnabledForVendor = false;
+	supportSettingCustomResponse : CustomResponse = new CustomResponse();
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1848,9 +1851,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showNotifyPartnersOption = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName == "support"){
+			this.activeTabHeader = this.properties.supportText;
+			this.isLoginAsPartnerOptionEnabledForVendor();
 		}
 		this.referenceService.goToTop();
 	}
+	
+
 
 	ngOnDestroy() {
 		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
@@ -2015,6 +2023,7 @@ configSalesforce() {
 	}
 
 	saveGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.companyId = this.referenceService.companyId;
 		this.gdprSetting.createdUserId = this.loggedInUserId;
@@ -2043,6 +2052,7 @@ configSalesforce() {
 
 
 	updateGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.updatedUserId = this.loggedInUserId;
 		this.userService.updateGdprSetting(this.gdprSetting)
@@ -3829,6 +3839,47 @@ configSalesforce() {
 	defaultStageChange(pipelineStage: PipelineStage) {		
 		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
 		pipelineStage.defaultStage = true;
+	}
+
+	/*********XNFR-224*************/
+	isLoginAsPartnerOptionEnabledForVendor(){
+		let companyProfileName = this.authenticationService.vanityURLEnabled ? this.authenticationService.companyProfileName :"";
+		if(this.loggedInThroughVanityUrl && companyProfileName!=""){
+			this.referenceService.startLoader(this.httpRequestLoader);
+			this.userService.isLoginAsPartnerOptionEnabledForVendor(companyProfileName)
+				.subscribe(
+					response=>{
+						this.loginAsPartnerOptionEnabledForVendor = response.data;
+						this.referenceService.stopLoader(this.httpRequestLoader);
+					},error=>{
+						this.logger.error(error);
+						this.referenceService.stopLoader(this.httpRequestLoader);
+						this.supportSettingCustomResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+					}
+				);
+		}
+	}
+
+	updateSupportOption(){
+		this.referenceService.startLoader(this.httpRequestLoader);
+		this.supportSettingCustomResponse = new CustomResponse();
+		let companyProfileName = this.authenticationService.vanityURLEnabled ? this.authenticationService.companyProfileName :"";
+		if(this.loggedInThroughVanityUrl && companyProfileName!=""){
+			this.userService.updateLoginAsPartnerOptionEnabledForVendor(companyProfileName,this.loginAsPartnerOptionEnabledForVendor)
+			.subscribe(
+				response=>{
+					this.supportSettingCustomResponse = new CustomResponse('SUCCESS',response.message,true);
+					this.referenceService.stopLoader(this.httpRequestLoader);
+				},error=>{
+					this.logger.error(error);
+					this.referenceService.stopLoader(this.httpRequestLoader);
+					this.refService.showSweetAlertServerErrorMessage();
+				}
+			);
+		}else{
+			this.referenceService.stopLoader(this.httpRequestLoader);
+		}
+		
 	}
 
 }

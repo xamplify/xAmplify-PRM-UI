@@ -181,6 +181,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.isAdminAndPartnerCompany = data.adminAndPartnerCompany;
 					/*****XNFR-224*****/
 					this.authenticationService.module.loginAsPartner = data.loginAsPartner;
+					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
+					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
+					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						setTimeout(() => {
+							this.authenticationService.logout();
+						}, 7000);
+					}
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

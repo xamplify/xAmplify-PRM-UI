@@ -5,6 +5,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+declare var $:any;
 @Component({
   selector: 'app-login-as-partner',
   templateUrl: './login-as-partner.component.html',
@@ -15,14 +16,17 @@ export class LoginAsPartnerComponent implements OnInit {
   isPartner = false;
   @Input() contact:any;
   @Input() showLogOutButton = false;
+  @Input() showLoginAsButton = false;
   loading = false;
   loggedInUserId: number;
   isLoggedInThroughVanityUrl: any;
   isLoggedInAsPartner = false;
+  isLoggedInAsTeamMember = false;
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
     private referenceService:ReferenceService,private vanityUrlService:VanityURLService,private utilService:UtilService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+      this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 
      }
@@ -33,12 +37,12 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   loginAsPartner(){
-    this.loading = true;
+    $("body").addClass("login-as-loader");
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
   }
 
   logoutAsPartner(){
-    this.loading = true;
+    
     let vendorAdminCompanyUserEmailId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
@@ -47,7 +51,7 @@ export class LoginAsPartnerComponent implements OnInit {
     this.teamMemberService.getVanityUrlRoles(emailId)
     .subscribe(response => {
       this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
-      this.setLocalStorageAndRedirectToDashboard(emailId, response);
+      this.setLocalStorageAndRedirectToDashboard(emailId, response.data);
     },
       (error: any) => {
         this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
@@ -79,8 +83,8 @@ export class LoginAsPartnerComponent implements OnInit {
     this.isLoggedInAsPartner = false;
   }
 
-  private setLocalStorageAndRedirectToDashboard(emailId: any, response: any) {
-    this.utilService.setUserInfoIntoLocalStorage(emailId, response.data);
+  private setLocalStorageAndRedirectToDashboard(emailId: any, data: any) {
+    this.utilService.setUserInfoIntoLocalStorage(emailId, data);
     let self = this;
     setTimeout(function () {
       self.router.navigate(['home/dashboard/'])
@@ -89,4 +93,71 @@ export class LoginAsPartnerComponent implements OnInit {
         });
     }, 500);
   }
+
+  logoutAsPartnerOrTeamMember(){
+    $("body").addClass("login-as-loader");
+    if(this.isLoggedInAsTeamMember){
+      this.logoutAsTeamMember();
+    }else{
+      this.logoutAsPartner();
+    }
+  }
+
+/*********Logout As Team Member******/
+logoutAsTeamMember() {
+  let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+  this.loginAsTeamMember(adminEmailId, true);
 }
+
+loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+  if (this.isLoggedInThroughVanityUrl) {
+    this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
+  } else {
+    this.getUserData(emailId, isLoggedInAsAdmin);
+  }
+}
+getVanityUrlRoles(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.teamMemberService.getVanityUrlRoles(emailId)
+    .subscribe(response => {
+      this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response.data);
+    },
+      (error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+        this.loading = false;
+      }
+    );
+}
+
+getUserData(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.authenticationService.getUserByUserName(emailId)
+    .subscribe(
+      response => {
+        this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response);
+      },
+      (error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+        this.loading = false;
+      }
+    );
+}
+
+setLoggedInTeamMemberData(isLoggedInAsAdmin: boolean, emailId: string, response: any) {
+  if (isLoggedInAsAdmin) {
+    localStorage.removeItem('adminId');
+    localStorage.removeItem('adminEmailId');
+    this.isLoggedInAsTeamMember = false;
+  } else {
+    let adminId = JSON.parse(localStorage.getItem('adminId'));
+    if (adminId == null) {
+      localStorage.adminId = JSON.stringify(this.loggedInUserId);
+      localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+    }
+  }
+  this.setLocalStorageAndRedirectToDashboard(emailId,response);
+
+}
+
+
+}
+
+
