@@ -95,12 +95,15 @@ export class PipedriveAuthenticationComponent implements OnInit {
           this.loading = false;         
           if (response.statusCode == 200) {            
             this.closeForm();
+          } else if (response.statusCode == 403){
+            this.customResponse = new CustomResponse('INFO', response.message, true);
           } else {
             this.customResponse = new CustomResponse('ERROR', response.message, true);
           }
         },
         error => {
           this.loading = false;
+          this.customResponse = new CustomResponse('ERROR', "Failed to save", true);
         },
         () => { }
       );
