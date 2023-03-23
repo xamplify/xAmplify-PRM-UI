@@ -92,4 +92,78 @@ export class LoginAsPartnerComponent implements OnInit {
         });
     }, 500);
   }
+
+  logoutAsPartnerOrTeamMember(){
+    if(this.isLoggedInAsTeamMember){
+      this.logoutAsTeamMember();
+    }else{
+      this.logoutAsPartner();
+    }
+  }
+
+/*********Logout As Team Member******/
+logoutAsTeamMember() {
+  let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+  this.loginAsTeamMember(adminEmailId, true);
 }
+
+loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.loading = true;
+  if (this.isLoggedInThroughVanityUrl) {
+    this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
+  } else {
+    this.getUserData(emailId, isLoggedInAsAdmin);
+  }
+}
+getVanityUrlRoles(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.teamMemberService.getVanityUrlRoles(emailId)
+    .subscribe(response => {
+      this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response.data);
+    },
+      (error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+        this.loading = false;
+      }
+    );
+}
+
+getUserData(emailId: string, isLoggedInAsAdmin: boolean) {
+  this.authenticationService.getUserByUserName(emailId)
+    .subscribe(
+      response => {
+        this.setLoggedInTeamMemberData(isLoggedInAsAdmin, emailId, response);
+      },
+      (error: any) => {
+        this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+        this.loading = false;
+      }
+    );
+}
+
+setLoggedInTeamMemberData(isLoggedInAsAdmin: boolean, emailId: string, response: any) {
+  if (isLoggedInAsAdmin) {
+    localStorage.removeItem('adminId');
+    localStorage.removeItem('adminEmailId');
+    this.isLoggedInAsTeamMember = false;
+  } else {
+    let adminId = JSON.parse(localStorage.getItem('adminId'));
+    if (adminId == null) {
+      localStorage.adminId = JSON.stringify(this.loggedInUserId);
+      localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+    }
+  }
+  this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+  let self = this;
+  setTimeout(function () {
+    self.router.navigate(['home/dashboard/'])
+      .then(() => {
+        window.location.reload();
+      })
+  }, 500);
+
+}
+
+
+}
+
+
