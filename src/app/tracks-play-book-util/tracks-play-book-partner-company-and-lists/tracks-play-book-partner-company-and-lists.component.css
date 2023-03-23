@@ -230,9 +230,9 @@
     margin-bottom: 0px!important;
 }
 
-.panel-default>.panel-heading {
+/* .panel-default>.panel-heading {
     background-color: #ffffff!important;
-}
+} */
 
 .none-float {
     float: none !important;

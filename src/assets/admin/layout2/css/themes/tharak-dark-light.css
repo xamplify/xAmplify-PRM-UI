@@ -63,6 +63,9 @@ body {
 .portlet > .portlet-title {
   border-bottom: 1px solid #2f4857 !important;
 }
+.portlet.box > .portlet-body {
+  background-color: #2b3c46 !important;
+}
 .page-bar .page-breadcrumb > li > a, .page-bar .page-breadcrumb > li > span {
   color : white !important;
 }
@@ -116,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 #notification {
   background-color:#2b3c46 !important ;
-  border: 1px solid #2f4857 !important;
+  /* border: 1px solid #2f4857 !important; */
 }
 .portlet.light > .portlet-title > .caption , .portlet-title > .caption {
   color: white !important;
@@ -157,13 +160,16 @@ td > button {
 .mix-filter li,
 .list-group-item,
 .read,
-input  {
+input,
+.card {
   color: white !important;
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
 .campaign-type-selected,
-ul.alt-row-style1 li:hover{
+ul.alt-row-style1 li:hover,
+.filter.form-selected,
+.filter.landing-page-selected{
   background-color: #22313a !important;
 }
 .mix-filter li:hover, .mix-filter li.active,
@@ -193,14 +199,16 @@ ul.alt-row-style1 li:hover{
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
-.pricing {
+.pricing,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover, .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
   border: 1px solid #2f4857 !important;
 }
 .pricing-content li {
   color: white !important;
   border-bottom: 1px solid #2f4857 !important;
 }
-.col-block.col-block-disable {
+.col-block.col-block-disable,
+.bg-card-header {
   background-color: #2b3c46 !important;
 }
 .col-block.col-block-active {
@@ -227,7 +235,8 @@ table {
 .table tbody tr.active td, .table tbody tr.active th {
   background-color: #22313a !important;
 }
-.tgrid > tbody > tr > td, .tgrid > tbody > tr > th, .tgrid > thead > tr > td, .tgrid > thead > tr > th {
+.tgrid > tbody > tr > td, .tgrid > tbody > tr > th, .tgrid > thead > tr > td, .tgrid > thead > tr > th,
+.table thead > tr > th {
   color: white !important;
 }
 .tgrid > thead {
@@ -333,6 +342,10 @@ table tr:nth-child(even) td{
 .loader-container {
   background-color: #2b3c46 !important;
 }
+.animated-background {
+  background: linear-gradient(to right, #2f4857 8%, #2b3c46 18%, #2f4857 33%) !important;
+  background: #2b3c46 !important;
+}
 #router-loader {
   background-color: #2b3c46 !important;
 }
@@ -343,6 +356,18 @@ table tr:nth-child(even) td{
 .comment-color{
   background: #2b3c46 !important;
 }
+.search-bgcolor {
+  background-color: #2b3c46 !important;
+}
+.profile-image-wrapper{
+  background-color: #2b3c46 !important;
+}
+.color-inline{
+  background-color: #2b3c46 !important;
+}
+.text-dropdown{
+  background-color: #2b3c46 !important;
+}
 .write-new textarea{
   background-color: #2b3c46 !important;
   color:white !important;
@@ -350,8 +375,18 @@ table tr:nth-child(even) td{
 label{
   color:white !important;
 }
+.e-multi-select-wrapper .e-delim-values{
+  color: white !important;
+}
+.e-multi-select-wrapper .e-chips-close.e-close-hooker{
+  color:white !important;
+}
+.pencil-color{
+  color: white !important;
+}
 .panel-default > .panel-heading{
   background-color: #2b3c46 !important;
+  border-color: #2f4857 !important;
 }
 .panel .panel-body {
   background-color: #2b3c46 !important;
@@ -380,6 +415,15 @@ label{
  #text-color-my-profile{
   color:white !important;
  }
+ .text-color{
+  color:white !important;
+}
+.asset-name-class {
+  background-color: #2b3c46 !important;
+}
+.panel-success > .panel-heading{
+  background-color: #2b3c46 !important;
+}
  nav a:visited, a:link{
   color:#5b9bd1 !important;
  }

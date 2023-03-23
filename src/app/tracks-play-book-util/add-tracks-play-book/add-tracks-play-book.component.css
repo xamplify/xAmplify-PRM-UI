@@ -602,9 +602,9 @@
     margin-bottom: 0px!important;
 }
 
-.panel-default>.panel-heading {
+/* .panel-default>.panel-heading {
     background-color: #ffffff!important;
-}
+} */
 
 .table tr.selected td {
     background-color: #00a6e8 !important;

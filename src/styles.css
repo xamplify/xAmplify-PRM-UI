@@ -1839,3 +1839,6 @@ border: 1px solid #ddd !important;
   font-weight: 500 !important;
   color: #999 !important;
 }
+.panel-default>.panel-heading {
+    background-color: #ffffff!important;
+}
