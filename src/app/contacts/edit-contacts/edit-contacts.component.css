@@ -193,3 +193,6 @@ a.disabled{pointer-events:none;cursor:not-allowed}
      	margin-left: 0px;
 	}
 }
+.pencil-color{
+	color: #4d5b69;margin-right: -19px;
+}

@@ -9,8 +9,8 @@
 	/*************Local*******************************/
 
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-	 window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-	 window.__env.imagesHost = "http://127.0.0.1:8887/images/";
+	//  window.__env.SERVER_URL = 'http://localhost:9091/'; // xamplify backend production server
+	//  window.__env.imagesHost = "http://127.0.0.1:8887/images/";
 
 
 	//USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
@@ -21,8 +21,8 @@
 
 	/*********************QA**********************/
 	// window.__env.CLIENT_URL = 'https://xamplify.co/';
-	// window.__env.SERVER_URL =  'https://aravindu.com/';
-	//  window.__env.imagesHost = "https://aravindu.com/vod/images/";
+	 window.__env.SERVER_URL =  'https://aravindu.com/';
+	 window.__env.imagesHost = "https://aravindu.com/vod/images/";
 	/*********************Release**********************/
 	// window.__env.CLIENT_URL = 'https://xtremand.com/';
 	// window.__env.SERVER_URL =  'https://release.xamp.io/';

@@ -70,7 +70,7 @@
 										<span *ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
 											style="font-size: 16px;">{{selectedContactListName}}
 										</span>
-										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" style="color: #4d5b69;margin-right: -19px;">
+										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" class="pencil-color">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</div>
 									</span>

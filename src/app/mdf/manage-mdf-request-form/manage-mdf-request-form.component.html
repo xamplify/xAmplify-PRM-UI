@@ -15,7 +15,8 @@
                         <div class="input-icon right">
                            <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="searchKey" (click)="searchKey='';search();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                           <!-- removed style balck color (SS)-->
+                           <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>
                   </div>
@@ -178,7 +179,7 @@
             <app-modal-popup-loader *ngIf="requestCommentModalPopupLoader"></app-modal-popup-loader>
             <ng-container *ngIf="!requestCommentModalPopupLoader && !commentsCustomResponse.isVisible">
                <div class="request-comment-details">
-                  <div class="row mix-grid p10" style=" background: #f1f1f1; ">
+                  <div class="row mix-grid p10 comment-color" style=" background: #f1f1f1; ">
                      <div class="col-md-2" >
                         <div class="frame">
                            <img style="height: 80px;width: 80px;" class="img-circle" src="{{selectedRequestDetails[0]}}" alt="">

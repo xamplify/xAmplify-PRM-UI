@@ -1328,7 +1328,8 @@
                                                             </div>
                                                         </fieldset>
                                                     </div>
-                                                    <div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
+                                                    <!-- removed bg-color white and shadow white (ss) -->
+                                                    <div class="col-xs-12" style="padding:0;">
                                                         <fieldset>
                                                             <legend translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
@@ -1957,7 +1958,7 @@
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
                                             placeholder="Enter Stage Name" style="width: 240px;
                                                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)">
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color">
                                         </span>
                                         <span class="col-lg-6">
                                             <div>

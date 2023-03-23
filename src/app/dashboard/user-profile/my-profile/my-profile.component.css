@@ -808,3 +808,6 @@ input:checked + .slider-new:before {
   color: #fff;
   border: 1px solid #3575b5;
 }
+a:link, nav a:visited {
+  color:#5b9bd1 !important;
+}
