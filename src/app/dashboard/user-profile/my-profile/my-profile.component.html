@@ -1700,10 +1700,13 @@
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
                                                                     <h5 class="f-w-600" id="text-color-my-profile" translate>Enabling support access typically entails granting access to your account to a Vendor support team or their team member in order for them to assist, guide, and resolve any issues you may be experiencing. 
-                                                                        <br>To ensure that the company account is only accessible to authorized users. Please enable/disable the following settings: 
                                                                     </h5>
+                                                                    <ul>
+                                                                        <li id="text-color-my-profile" translate>To ensure that the company account is only accessible to authorized users.</li>
+                                                                        <li id="text-color-my-profile" style="margin-top: 5px" translate>Please enable/disable the following settings: </li>
+                                                                    </ul>
                                                                 </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:65px">
                                                                     <section>
                                                                         <switch [(status)]="loginAsPartnerOptionEnabledForVendor" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="loginAsPartnerOptionEnabledForVendor!=loginAsPartnerOptionEnabledForVendor">
