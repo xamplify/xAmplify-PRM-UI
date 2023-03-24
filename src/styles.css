@@ -1842,3 +1842,7 @@ border: 1px solid #ddd !important;
 .panel-default>.panel-heading {
     background-color: #ffffff!important;
 }
+.table tr.contact-list-selected td {
+	background-color: #00a6e8;
+	color: white;
+}

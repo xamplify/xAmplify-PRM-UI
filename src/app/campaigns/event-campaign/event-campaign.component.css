@@ -292,10 +292,10 @@ a.icons-link:hover {
   }
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
   background-color: #00a6e8 !important;
   color: white !important;
-}
+} */
 
 .h4-text {
   margin: 20px 20px 0 33px !important;
@@ -337,7 +337,7 @@ a.icons-link:hover {
 .campaign-email-template-filter-icon {
   font-size: 16px !important;
   right: 38px;
-  background: #f1f3fa !important;
+  background: #f1f3fa;
   width: 39px !important;
   padding-top: 3px !important;
   position: absolute;

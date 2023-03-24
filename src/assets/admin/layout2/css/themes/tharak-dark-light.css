@@ -31,7 +31,8 @@ h1, h2, h3, h4, h5, h6 {
 /***** colors class ******/
 .white-co,
 .profile-details b,
-.field-icon {
+.field-icon,
+.list__item .item__name {
   color : white !important;
 }
 body {
@@ -149,7 +150,8 @@ ul.alt-row-style1 li a{
   background-color: white !important;
   color: #2b3c46 !important;
 } */
-.search-box-item-click {
+.search-box-item-click,
+.table tr.contact-list-selected td {
   background-color: #22313a !important;
   color: white !important;
 }
@@ -177,14 +179,18 @@ ul.alt-row-style1 li:hover,
 .mix-filter li.emailtemplate-selected {
   background: #22313a !important;
 }
-.re-distributed-high-level{
+.re-distributed-high-level,
+.list__item > .flex-row{
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
 .re-distributed-high-level:hover {
 	background-color: #22313a !important;
 }
-.l-g-view {
+.l-g-view,
+.alert-success,
+.campaign-email-template-filter-icon,
+.list__item.list__item--selected > .flex-row {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
@@ -194,6 +200,9 @@ ul.alt-row-style1 li:hover,
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
+}
+.table tbody tr.active:hover td, .table tbody tr.active:hover th{
+  background-color: #22313a !important;
 }
 .camp-card-bg {
   background-color: #2b3c46 !important;
@@ -216,20 +225,23 @@ ul.alt-row-style1 li:hover,
 }
 .col-block {
   background-color: #22313a !important;
+  border: 1px solid #2f4857 !important
 }
 .form-body label,
 .form-group label {
   color: white !important
 }
 /*** table ***/
-table {
+table,
+fieldset {
   border: 1px solid #2f4857 !important ;
 }
 .table thead > tr > th {
   border-bottom: 2px solid #2f4857!important;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,
-.modal-footer {
+.modal-footer,
+.list__item .item__actions {
   border-top: 1px solid #2f4857!important;
 }
 .table tbody tr.active td, .table tbody tr.active th {
@@ -421,7 +433,9 @@ label{
 .asset-name-class {
   background-color: #2b3c46 !important;
 }
-.panel-success > .panel-heading{
+.panel-success > .panel-heading,
+.deal-details,
+.bg-color{
   background-color: #2b3c46 !important;
 }
  nav a:visited, a:link{

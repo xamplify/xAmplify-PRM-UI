@@ -221,10 +221,10 @@ a.disabled {
 	cursor: not-allowed;
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
 	background-color: #00a6e8 !important;
 	color: white;
-}
+} */
 
 .ui-switch-custom-div {
 	width: 7%;

@@ -1915,7 +1915,7 @@ legend {
 .campaign-email-template-filter-icon {
   font-size: 16px !important;
   right: 30px;
-  background: #f1f3fa !important;
+  background: #f1f3fa ;
   width: 39px !important;
   padding-top: 3px !important;
   position: absolute;
@@ -2136,8 +2136,8 @@ div.tab{
   margin-top: 2px;
 }
 .table tr.contact-list-selected td {
-  background-color: #ddd !important;
-  color:#000 !important;
+  background-color: #ddd;
+  color:#000;
 }
 .custom{
   background-color: #008fd5 ;
