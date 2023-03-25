@@ -46,15 +46,33 @@ export class LoginAsPartnerComponent implements OnInit {
   }
 
   loginAsPartner(){
-    $("body").addClass("login-as-loader");
+    this.utilService.addLoginAsLoader();
+    this.sendEmailNotificationToPartner();
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
+  }
+  sendEmailNotificationToPartner() {
+    
   }
 
   logoutAsPartner(){
-    
     let vendorAdminCompanyUserEmailId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
+
+  logoutAsPartnerOrTeamMember(){
+    this.utilService.addLoginAsLoader();
+    if(this.isLoggedInAsTeamMember){
+      this.logoutAsTeamMember();
+    }else{
+      this.logoutAsPartner();
+    }
+  }
+
+  logoutAsTeamMember() {
+    let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+    this.loginAsTeamMember(adminEmailId, true);
+  }
+
 
   findRolesAndSetLocalStroageDataAndLogInAsPartner(emailId: any, logoutButtonClicked: boolean) {
     this.teamMemberService.getVanityUrlRoles(emailId)
@@ -103,21 +121,7 @@ export class LoginAsPartnerComponent implements OnInit {
     }, 500);
   }
 
-  logoutAsPartnerOrTeamMember(){
-    $("body").addClass("login-as-loader");
-    if(this.isLoggedInAsTeamMember){
-      this.logoutAsTeamMember();
-    }else{
-      this.logoutAsPartner();
-    }
-  }
-
-/*********Logout As Team Member******/
-logoutAsTeamMember() {
-  let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
-  this.loginAsTeamMember(adminEmailId, true);
-}
-
+ 
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);

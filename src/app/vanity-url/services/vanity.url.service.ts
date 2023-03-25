@@ -10,12 +10,13 @@ import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-
+import { EnvService } from "app/env.service";
 @Injectable()
 export class VanityURLService {
 
 
-  constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title,
+     @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router,public envService: EnvService) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -93,9 +94,15 @@ export class VanityURLService {
 
 
   isVanityURLEnabled() {
-  // let url =window.location.hostname;
-    let url="stratappsvendor.xamplify.com";
-      if (!url.includes("192.168")) {
+   let url = window.location.hostname;
+    let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && this.envService.CLIENT_URL.indexOf('localhost')>-1;
+    if(isLocalHost){
+      let domainName = this.envService.domainName;
+      if(domainName!=""){
+        url = this.envService.domainName+".xamplify.com";
+      }
+    }
+    if (!url.includes("192.168")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;

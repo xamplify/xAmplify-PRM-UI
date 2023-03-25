@@ -421,6 +421,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
 
   goBackToAdminPanel(){
+    this.utilService.addLoginAsLoader();
     this.loading = true;
     let adminEmailId = JSON.parse(localStorage.getItem('loginAsUserEmailId'));
     this.refService.loaderFromAdmin = true;

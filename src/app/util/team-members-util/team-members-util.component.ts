@@ -342,7 +342,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     $('#delete-team-member-popup').modal('hide');
   }
   loginAs(teamMember: TeamMember) {
-    $("body").addClass("login-as-loader");
+    this.utilService.addLoginAsLoader();
     this.loginAsTeamMember(teamMember.emailId, false);
 
   }
@@ -405,7 +405,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   }
 
   logoutAsTeamMember() {
-    $("body").addClass("login-as-loader");
+    this.utilService.addLoginAsLoader();
     let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
     this.loginAsTeamMember(adminEmailId, true);
   }

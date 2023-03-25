@@ -1798,6 +1798,7 @@ b, strong {
 	background-attachment: fixed;
 	background-position: center;
 	z-index: 10000;
-	opacity: 0.5;
-	filter: blur(15px);
+	opacity: 0;
+	filter: blur(30px);
+	background-color: skyblue;
 }
