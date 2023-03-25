@@ -84,6 +84,7 @@ import { IntegrationSettingsComponent } from './integration-settings/integration
 import { ProcessingCampaignsComponent } from './processing-campaigns/processing-campaigns.component';
 import { ActiveQueriesComponent } from './active-queries/active-queries.component';
 import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pipedrive-authentication/pipedrive-authentication.component';
+import { EnableSupportAccessToVendorComponent } from './enable-support-access-to-vendor/enable-support-access-to-vendor.component';
 
 
 
@@ -144,7 +145,8 @@ import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pip
         IntegrationSettingsComponent,
         ProcessingCampaignsComponent,
         ActiveQueriesComponent,
-        PipedriveAuthenticationComponent
+        PipedriveAuthenticationComponent,
+        EnableSupportAccessToVendorComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
