@@ -362,6 +362,23 @@ table tr:nth-child(even) td{
   background-color: #2b3c46 !important;
 }
 /* ss */
+/** 26-03-2023 **/
+.button-color{
+  background-color:  #2b3c46 !important;
+}
+.plus-color{
+  color:white !important;
+}
+.port-heading{
+  background-color:  #2b3c46 !important;
+}
+.caption-color{
+  color:white !important;
+}
+.mdf-bgcolor{
+  background-color:  #2b3c46 !important;
+}
+/** 26-03-2023 **/
 .control-label {
   color:white !important;
  }
