@@ -39,15 +39,20 @@ export class LoginAsPartnerComponent implements OnInit {
 
   ngOnInit() {
     this.isPartner = this.router.url.includes('home/partners');
-    if(this.contact!=undefined){
-      if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){
-        this.title = "You do not have enough privileges to Login as";
-      }else if(this.contact.signedUp && this.contact.companyId>0 && this.contact.loginAsPartnerOptionEnabledForVendor){
-        this.title = "Login as";
-      }else if((!this.contact.signedUp || this.contact.companyId==0) && !this.contact.loginAsPartnerOptionEnabledForVendor){
-        this.title = "Company profile not created";
+    if(this.isLoggedInAsTeamMember){
+      this.title = "Login as disabled as you are already logged in as team member";
+    }else{
+      if(this.contact!=undefined){
+        if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){
+          this.title = "You do not have enough privileges to Login as";
+        }else if(this.contact.signedUp && this.contact.companyId>0 && this.contact.loginAsPartnerOptionEnabledForVendor){
+          this.title = "Login as";
+        }else if((!this.contact.signedUp || this.contact.companyId==0) && !this.contact.loginAsPartnerOptionEnabledForVendor){
+          this.title = "Company profile not created";
+        }
       }
     }
+    
   }
 
   loginAsPartner(){
