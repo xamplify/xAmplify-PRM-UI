@@ -57,8 +57,10 @@ export class LoginAsPartnerComponent implements OnInit {
 
   loginAsPartner(){
     this.utilService.addLoginAsLoader();
-    this.sendEmailNotificationToPartner();
-    this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
+    setTimeout(() => {
+      this.sendEmailNotificationToPartner();
+    }, 2000);
+    
   }
   sendEmailNotificationToPartner() {
     this.loginAsEmailNotificationDto.partnerCompanyUserId = this.contact.id;
@@ -70,6 +72,9 @@ export class LoginAsPartnerComponent implements OnInit {
         this.xtremandLogger.debug("Login As Email Notification Success");
       },error=>{
         this.xtremandLogger.error("Login As Email Notification Failed");
+        this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
+      },()=>{
+        this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
       }
     );
   }
