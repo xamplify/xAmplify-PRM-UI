@@ -193,31 +193,31 @@
                                 <i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
                             </div>
                             <div class="profile-image-box ml0">
-                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
-                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
+                                <img class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus?.socialStatusProvider?.socialConnection.source}}.png" alt="">
                             </div>
                             <div class="profile-name">
-                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                <h5 *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}"
                                     class="heading-primary">
-                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
+                                    <strong>{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}</strong>
                                 </h5>
-                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                <h5 *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}"
                                     class="heading-primary">
-                                    <b>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</b>
+                                    <b>{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}</b>
                                 </h5>
                                 <h6 class="m0">
                                     {{socialStatus?.socialStatusProvider?.socialConnection?.source | titlecase}}
-                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'FACEBOOK'">
+                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.emailId">Profile</span>
+                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.emailId">Page</span>
                                     </span>
-                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
-                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'LINKEDIN'">
+                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.page">Profile</span>
+                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.page">Page</span>
                                     </span>
                                 </h6>
-                            <div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
-                                <h5>{{socialStatus.publishMessage}}</h5>
+                            <div class="error-block mt10" *ngIf="socialStatus?.publishStatus === 'FAILURE'">
+                                <h5>{{socialStatus?.publishMessage}}</h5>
                             </div>
                             </div>
                         </div>
@@ -257,10 +257,10 @@
                         </ng-template>
                         <ng-template #socialProfile>
                             <div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
-                                [attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
-                                    socialStatus.socialStatusProvider.socialConnection.firstName">
-                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
-                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
+                                [attr.title]="socialStatus?.socialStatusProvider?.socialConnection?.profileName ? socialStatus?.socialStatusProvider?.socialConnection?.profileName :
+                                    socialStatus?.socialStatusProvider?.socialConnection?.firstName">
+                                <img class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection?.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                <img class="profile-icon" src="assets/images/social/{{socialStatus?.socialStatusProvider?.socialConnection?.source}}.png" alt="">
                             </div>
                         </ng-template>
                     </div>
@@ -340,27 +340,27 @@
                                                 <i class="fa fa-check-square" *ngIf="socialStatus.selected" aria-hidden="true"></i>
                                             </div>
                                             <div class="profile-image-box">
-                                                <img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
-                                                <img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png" alt="">
+                                                <img class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection?.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
+                                                <img class="profile-icon" src="assets/images/social/{{socialStatus?.socialStatusProvider?.socialConnection?.source}}.png" alt="">
                                             </div>
                                             <div class="profile-name">
-                                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                                <h5 *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}"
                                                     class="heading-primary">
-                                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
+                                                    <strong>{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}</strong>
                                                 </h5>
-                                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                                <h5 *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}"
                                                     class="heading-primary">
-                                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</strong>
+                                                    <strong>{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}</strong>
                                                 </h5>
                                                 <h6 class="m0">
-                                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
-                                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-                                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-                                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                                    {{socialStatus?.socialStatusProvider?.socialConnection?.source | titlecase}}
+                                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'FACEBOOK'">
+                                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.emailId">Profile</span>
+                                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.emailId">Page</span>
                                                     </span> 
-                                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-                                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
-                                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'LINKEDIN'">
+                                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.page">Profile</span>
+                                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.page">Page</span>
                                                     </span>
                                                 </h6>
                                             </div>
@@ -627,7 +627,7 @@
                                     'alert-warning': customResponse.type === 2,
                                     'alert-danger': customResponse.type === 3}">
                             <div class="pull-right">
-                                <i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
+                                <i  aria-hidden="true" (click)="customResponse.statusText = null"></i>
                             </div>
                             <h4>
                             <i aria-hidden="true" class="fa" [ngClass]="{
@@ -644,34 +644,34 @@
                 
                 <div *ngIf="socialStatusResponse?.length > 0">
                     <div *ngFor="let socialStatus of socialStatusResponse">
-                        <div class="social-status-response alert alert-dismissible" [ngClass]="{
+                        <div *ngIf="socialStatus?.socialStatusProvider!=null" class="social-status-response alert alert-dismissible" [ngClass]="{
                                     'alert-success': socialStatus.publishStatus !== 'FAILURE',
                                     'alert-danger': socialStatus.publishStatus === 'FAILURE'}">
                             <div class="pull-right">
-                                <i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
+                                <i aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
                             </div>
-                            <div class="profile-image-box ml0">
-                                <img alt="No Image Found" class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
-                                <img  alt="No Image Found" class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
+                            <div class="profile-image-box ml0" *ngIf="socialStatus?.socialStatusProvider!=null">
+                                <img alt="No Image Found" class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection?.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+                                <img  alt="No Image Found" class="profile-icon" src="assets/images/social/{{socialStatus?.socialStatusProvider?.socialConnection?.source}}.png">
                             </div>
                             <div class="profile-name">
-                                <h5 *ngIf="socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.profileName}}"
+                                <h5 *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}"
                                     class="heading-primary">
-                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.profileName}}</strong>
+                                    <strong>{{socialStatus?.socialStatusProvider?.socialConnection?.profileName}}</strong>
                                 </h5>
-                                <h5 *ngIf="!socialStatus.socialStatusProvider.socialConnection.profileName" title="{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}"
+                                <h5 *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.profileName" title="{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}"
                                     class="heading-primary">
-                                    <strong>{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</strong>
+                                    <strong>{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}</strong>
                                 </h5>
                                 <h6 class="m0">
-                                    {{socialStatus.socialStatusProvider.socialConnection.source | titlecase}}
-                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.emailId">Profile</span>
-                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.emailId">Page</span>
+                                    {{socialStatus?.socialStatusProvider?.socialConnection?.source | titlecase}}
+                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'FACEBOOK'">
+                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.emailId">Profile</span>
+                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.emailId">Page</span>
                                     </span>
-                                    <span *ngIf="socialStatus.socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-                                        <span *ngIf="!socialStatus.socialStatusProvider.socialConnection.page">Profile</span>
-                                        <span *ngIf="socialStatus.socialStatusProvider.socialConnection.page">Page</span>
+                                    <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source === 'LINKEDIN'">
+                                        <span *ngIf="!socialStatus?.socialStatusProvider?.socialConnection?.page">Profile</span>
+                                        <span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.page">Page</span>
                                     </span>
                                 </h6>
                             <div class="error-block mt10" *ngIf="socialStatus.publishStatus === 'FAILURE'">
