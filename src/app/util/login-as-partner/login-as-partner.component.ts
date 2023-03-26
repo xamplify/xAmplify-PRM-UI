@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
+import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+
 declare var $:any;
 @Component({
   selector: 'app-login-as-partner',
@@ -23,8 +26,10 @@ export class LoginAsPartnerComponent implements OnInit {
   isLoggedInAsPartner = false;
   isLoggedInAsTeamMember = false;
   title = "";
+  loginAsEmailNotificationDto:LoginAsEmailNotificationDto = new LoginAsEmailNotificationDto();
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
-    private referenceService:ReferenceService,private vanityUrlService:VanityURLService,private utilService:UtilService) {
+    private referenceService:ReferenceService,private vanityUrlService:VanityURLService,
+    private utilService:UtilService,private xtremandLogger:XtremandLogger) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
@@ -51,7 +56,17 @@ export class LoginAsPartnerComponent implements OnInit {
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
   }
   sendEmailNotificationToPartner() {
-    
+    this.loginAsEmailNotificationDto.partnerCompanyUserId = this.contact.id;
+    this.loginAsEmailNotificationDto.vendorCompanyUserId = this.authenticationService.user.id;
+    this.loginAsEmailNotificationDto.domainName = this.authenticationService.companyProfileName;
+    this.authenticationService.sendLoginAsPartnerEmailNotification(this.loginAsEmailNotificationDto).
+    subscribe(
+      response=>{
+        this.xtremandLogger.debug("Login As Email Notification Success");
+      },error=>{
+        this.xtremandLogger.error("Login As Email Notification Failed");
+      }
+    );
   }
 
   logoutAsPartner(){
