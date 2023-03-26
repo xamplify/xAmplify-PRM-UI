@@ -3,11 +3,12 @@
 <a *ngIf="((authenticationService?.module?.loginAsPartner && isPartner) || isLoggedInAsPartner)
  && showLoginAsButton" 
   data-toggle="tooltip" data-placement="bottom" title="{{title}}"
-   (click)="contact?.signedUp && contact?.companyId>0 && contact?.loginAsPartnerOptionEnabledForVendor && loginAsPartner()">
+   (click)="contact?.signedUp && contact?.companyId>0 &&
+    contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember && loginAsPartner()">
 
   <i  class="fa fa-sign-in" [ngClass]="{'disabled gray': !contact?.signedUp || contact?.companyId==0 
-  || !contact?.loginAsPartnerOptionEnabledForVendor,
-   'active': contact?.signedUp && contact?.companyId>0 && contact?.loginAsPartnerOptionEnabledForVendor}"
+  || !contact?.loginAsPartnerOptionEnabledForVendor || isLoggedInAsTeamMember,
+   'active': contact?.signedUp && contact?.companyId>0 && contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember}"
     aria-hidden="true"></i>
 </a>
 

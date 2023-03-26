@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
+import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+
 declare var $:any;
 @Component({
   selector: 'app-login-as-partner',
@@ -23,8 +26,10 @@ export class LoginAsPartnerComponent implements OnInit {
   isLoggedInAsPartner = false;
   isLoggedInAsTeamMember = false;
   title = "";
+  loginAsEmailNotificationDto:LoginAsEmailNotificationDto = new LoginAsEmailNotificationDto();
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
-    private referenceService:ReferenceService,private vanityUrlService:VanityURLService,private utilService:UtilService) {
+    private referenceService:ReferenceService,private vanityUrlService:VanityURLService,
+    private utilService:UtilService,private xtremandLogger:XtremandLogger) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
@@ -34,27 +39,60 @@ export class LoginAsPartnerComponent implements OnInit {
 
   ngOnInit() {
     this.isPartner = this.router.url.includes('home/partners');
-    if(this.contact!=undefined){
-      if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){
-        this.title = "You do not have enough privileges to Login as";
-      }else if(this.contact.signedUp && this.contact.companyId>0 && this.contact.loginAsPartnerOptionEnabledForVendor){
-        this.title = "Login as";
-      }else if((!this.contact.signedUp || this.contact.companyId==0) && !this.contact.loginAsPartnerOptionEnabledForVendor){
-        this.title = "Company profile not created";
+    if(this.isLoggedInAsTeamMember){
+      this.title = "Login as disabled as you are already logged in as team member";
+    }else{
+      if(this.contact!=undefined){
+        if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){
+          this.title = "You do not have enough privileges to Login as";
+        }else if(this.contact.signedUp && this.contact.companyId>0 && this.contact.loginAsPartnerOptionEnabledForVendor){
+          this.title = "Login as";
+        }else if((!this.contact.signedUp || this.contact.companyId==0) && !this.contact.loginAsPartnerOptionEnabledForVendor){
+          this.title = "Company profile not created";
+        }
       }
     }
+    
   }
 
   loginAsPartner(){
-    $("body").addClass("login-as-loader");
+    this.utilService.addLoginAsLoader();
+    this.sendEmailNotificationToPartner();
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(this.contact.emailId,false);
+  }
+  sendEmailNotificationToPartner() {
+    this.loginAsEmailNotificationDto.partnerCompanyUserId = this.contact.id;
+    this.loginAsEmailNotificationDto.vendorCompanyUserId = this.authenticationService.user.id;
+    this.loginAsEmailNotificationDto.domainName = this.authenticationService.companyProfileName;
+    this.authenticationService.sendLoginAsPartnerEmailNotification(this.loginAsEmailNotificationDto).
+    subscribe(
+      response=>{
+        this.xtremandLogger.debug("Login As Email Notification Success");
+      },error=>{
+        this.xtremandLogger.error("Login As Email Notification Failed");
+      }
+    );
   }
 
   logoutAsPartner(){
-    
     let vendorAdminCompanyUserEmailId = JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
     this.findRolesAndSetLocalStroageDataAndLogInAsPartner(vendorAdminCompanyUserEmailId, true);
   }
+
+  logoutAsPartnerOrTeamMember(){
+    this.utilService.addLoginAsLoader();
+    if(this.isLoggedInAsTeamMember){
+      this.logoutAsTeamMember();
+    }else{
+      this.logoutAsPartner();
+    }
+  }
+
+  logoutAsTeamMember() {
+    let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+    this.loginAsTeamMember(adminEmailId, true);
+  }
+
 
   findRolesAndSetLocalStroageDataAndLogInAsPartner(emailId: any, logoutButtonClicked: boolean) {
     this.teamMemberService.getVanityUrlRoles(emailId)
@@ -103,21 +141,7 @@ export class LoginAsPartnerComponent implements OnInit {
     }, 500);
   }
 
-  logoutAsPartnerOrTeamMember(){
-    $("body").addClass("login-as-loader");
-    if(this.isLoggedInAsTeamMember){
-      this.logoutAsTeamMember();
-    }else{
-      this.logoutAsPartner();
-    }
-  }
-
-/*********Logout As Team Member******/
-logoutAsTeamMember() {
-  let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
-  this.loginAsTeamMember(adminEmailId, true);
-}
-
+ 
 loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
   if (this.isLoggedInThroughVanityUrl) {
     this.getVanityUrlRoles(emailId, isLoggedInAsAdmin);
