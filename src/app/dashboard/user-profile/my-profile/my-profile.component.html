@@ -158,7 +158,7 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"  *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>
-                            <li  *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption" [ngClass]="{'active-tab': activeTabName == 'support'}" >
+                            <li  *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner" [ngClass]="{'active-tab': activeTabName == 'support'}" >
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}" (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
                             </li>
                             <!--------------Admin----------------------->

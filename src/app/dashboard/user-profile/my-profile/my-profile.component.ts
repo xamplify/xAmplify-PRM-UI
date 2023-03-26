@@ -273,6 +273,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	supportSettingCustomResponse : CustomResponse = new CustomResponse();
 	loginAsPartnerEmailNotification = false;
 	showSupportSettingOption = false;
+	isLoggedInAsPartner = false;
 	/****XNFR-224****/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -281,6 +282,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
