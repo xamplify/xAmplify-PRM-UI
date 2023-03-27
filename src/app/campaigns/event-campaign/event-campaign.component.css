@@ -1,5 +1,5 @@
 .form-control {
-  border: 1px solid #CCC !important;
+  border: 1px solid #CCC;
 }
 
 .text-danger {
@@ -91,14 +91,14 @@
 }
 
 .labal-css {
-  color: #2c3f52 !important;
+  color: #2c3f52;
   font-weight: 600;
   margin-top: 4px;
   font-size: 13px;
 }
 
 .color-css {
-  color: #111 !important;
+  color: #111;
 }
 
 .title-css {
@@ -139,7 +139,7 @@
 
 .boxes .portlet-title {
   font-weight: 600 !important;
-  background: #eaeaea !important;
+  background: #eaeaea;
   margin-bottom: 0 !important;
   border-radius: 0 !important;
   min-height: auto !important;
