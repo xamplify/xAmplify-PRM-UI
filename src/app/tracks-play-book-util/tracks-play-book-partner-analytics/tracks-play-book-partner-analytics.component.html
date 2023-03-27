@@ -197,12 +197,14 @@
                 *ngFor="let detailedAnalytics of detailedAnalyticsPagination.pagedItems ;let i =index">
                 <li class="timeline-inverted">
                   <div class="timeline-badge">
-                    <img alt="Image not found" [src]="detailedAnalytics.assetThumbnail">
+                    <img *ngIf="!detailedAnalytics.typeQuiz" alt="Image not found" [src]="detailedAnalytics.assetThumbnail">
+                    <img *ngIf="detailedAnalytics.typeQuiz" src="assets/images/form.png" alt="Image not found">
                   </div>
                   <div class="timeline-panel">
                     <div class="timeline-heading name-wrap">
                       <span class="timeline-title">
-                        <label>Asset Name:</label>
+                        <label><span *ngIf="!detailedAnalytics.typeQuiz">Asset</span><span *ngIf="detailedAnalytics.typeQuiz">Quiz</span>
+                          Name:</label>
                         <h5 style="display: inline;" title="{{detailedAnalytics.assetName}}">{{detailedAnalytics.assetName}}</h5>
                       </span>
                     </div>
@@ -216,6 +218,9 @@
                         </span>
                         <span *ngIf="detailedAnalytics.type == 'DOWNLOADED'">
                           Downloaded On
+                        </span>
+                        <span *ngIf="detailedAnalytics.type == 'SUBMITTED'">
+                          SUBMITTED On
                         </span>
                         <app-timestamp [showInLine]="'true'" [dateAndTime]="detailedAnalytics.createdTime">
                         </app-timestamp>
