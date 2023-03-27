@@ -22,6 +22,8 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SocialService } from 'app/social/services/social.service'
 import { EnvService } from 'app/env.service'
 import { GeoLocationAnalyticsType } from 'app/util/geo-location-analytics-type.enum';
+import { TracksPlayBook } from '../../tracks-play-book-util/models/tracks-play-book';
+import { TracksPlayBookUtilService } from '../../tracks-play-book-util/services/tracks-play-book-util.service';
 
 declare var $,swal: any;
 
@@ -54,10 +56,14 @@ export class FormPreviewComponent implements OnInit {
   enableButton = false;
   siteKey = "";
   @Input() learningTrackId:number;
+  @Input() isTrackQuizSubmitted:boolean = false;
+  @Input() partnerId: number;
   @Output() notifyParent: EventEmitter<any>;
   @Output() captchaValue: EventEmitter<any>;
 
   geoLocationAnalytics : GeoLocationAnalytics;
+  selectedPartnerFormAnswers : Map<number, any> = new Map<number, any>();
+
 
   resolved(captchaResponse: string) {
     if(captchaResponse){
@@ -79,7 +85,8 @@ export class FormPreviewComponent implements OnInit {
   constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
-    private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService) {
+    private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService,
+     public tracksPlayBookUtilService: TracksPlayBookUtilService) {
       this.siteKey = this.envService.captchaSiteKey;
       this.notifyParent = new EventEmitter<any>();
       this.captchaValue = new EventEmitter<any>();
@@ -150,9 +157,11 @@ export class FormPreviewComponent implements OnInit {
           if (this.authenticationService.formValues.length > 0) {
             this.form.formLabelDTOs = this.authenticationService.formValues;
           }
-
-
-          this.ngxLoading = false;
+          if(this.learningTrackId !== undefined && this.learningTrackId > 0 && this.isTrackQuizSubmitted){
+            this.getPartnerFormAnalytics();
+          } else {
+            this.ngxLoading = false;
+          }
         },
         (error: string) => {
           this.processor.remove(this.processor);
@@ -423,5 +432,52 @@ export class FormPreviewComponent implements OnInit {
     k = event.charCode;
     return (k > 47 && k < 58 || k == 46);
   }
+
+  getPartnerFormAnalytics() {
+    this.ngxLoading = true;
+    let formAnalytics: TracksPlayBook = new TracksPlayBook();
+    formAnalytics.userId = this.partnerId;
+    formAnalytics.partnershipId = this.partnerId;
+    formAnalytics.quizId = this.form.id;
+    formAnalytics.id = this.learningTrackId;
+    this.tracksPlayBookUtilService.getPartnerFormAnalytics(formAnalytics).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          let self = this;
+          const data = response.data;
+          this.selectedPartnerFormAnswers = data;
+          $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
+            if (self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
+              value.value = self.selectedPartnerFormAnswers[value.id];
+              let choices: any;
+              if (value.labelType == 'quiz_radio' || 'quiz_checkbox') {
+                choices = value.choices;
+              } else if (value.labelType == 'radio') {
+                choices = value.radioButtonChoices;
+              } else if (value.labelType == 'checkbox') {
+                choices = value.checkBoxChoices;
+              }
+              $.each(choices, function (index: number, choice: any) {
+                if (value.value.indexOf(choice.id) > -1) {
+                  choice.isSelected = true;
+                } else {
+                  choice.isSelected = false;
+                }
+              });
+            } else {
+              value.value = "";
+            }
+          });
+        } else {
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+        }
+        console.log(this.selectedPartnerFormAnswers)
+        this.ngxLoading = false;
+      });
+    (error: any) => {
+      this.ngxLoading = false;
+      this.customResponse = new CustomResponse('ERROR', 'Unable to get data.Please Contact Admin.', true);
+    }
+  } 
 
 }
