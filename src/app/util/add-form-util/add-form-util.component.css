@@ -1569,3 +1569,6 @@ div.switch5>input.switch:focus~label:before {
 .margin{
     margin-right: 12px;
 }
+.design-bgcolor{
+    padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;
+}
