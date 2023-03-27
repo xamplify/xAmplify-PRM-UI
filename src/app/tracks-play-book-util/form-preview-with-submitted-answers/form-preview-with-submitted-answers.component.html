@@ -100,6 +100,13 @@
                                                 Correct Answer: {{columnInfo.correctValues}}
                                               </ng-container>
                                           </div>
+                                          <ng-container *ngIf="columnInfo.description !== undefined && columnInfo.description.length > 0 ">
+                                            <div class="form-group" style="padding-top: 15px;">
+                                                <!-- <label class="control-label">Description</label> -->
+                                                <textarea type="text" [(ngModel)]="columnInfo.description" class="form-control" maxlength="500"
+                                                    style="height: 150px;" disabled="disabled"></textarea>
+                                            </div>
+                                        </ng-container>
                                       </ng-container>
                                   </div>
                               </ng-container>

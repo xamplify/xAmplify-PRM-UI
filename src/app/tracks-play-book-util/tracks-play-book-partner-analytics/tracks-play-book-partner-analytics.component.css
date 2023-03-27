@@ -233,3 +233,11 @@
 .alignment{
     top: -9px !important;
 }
+
+.quiz-score-margin-popup {
+    padding-top: 5px;
+}
+
+.disable-click {
+    pointer-events: none;
+}

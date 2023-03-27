@@ -234,26 +234,37 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   }
 
   showFormAnalytics(partner: any){
-    this.getPartnerFormAnalytics(partner);
-  }
-
-  getPartnerFormAnalytics(partner: any) {
-    this.referenceService.startLoader(this.httpRequestLoader);
     let formAnalytics: TracksPlayBook = new TracksPlayBook();
     formAnalytics.userId = this.loggedInUserId;
     formAnalytics.partnershipId = partner.id;
     formAnalytics.quizId = partner.quizId;
     formAnalytics.id = partner.learningTrackId;
+    this.getPartnerFormAnalytics(formAnalytics);
+  }
+
+  showFormAnalyticsFromPopup(detailedAnalytics: any){
+    this.detailedAnalyticsLoader.isLoading = true;
+    let formAnalytics: TracksPlayBook = new TracksPlayBook();
+    formAnalytics.userId = this.loggedInUserId;
+    formAnalytics.partnershipId = this.selectedPartnerId;
+    formAnalytics.quizId = detailedAnalytics.quizId;
+    formAnalytics.id = detailedAnalytics.learningTrackId;
+    this.getPartnerFormAnalytics(formAnalytics);
+  }
+
+  getPartnerFormAnalytics(formAnalytics: any) {
+    this.referenceService.startLoader(this.httpRequestLoader);
     this.tracksPlayBookUtilService.getPartnerFormAnalytics(formAnalytics).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
           const data = response.data;
           this.selectedPartnerFormAnswers = data;
           this.referenceService.stopLoader(this.httpRequestLoader);
-          if(this.formInput == undefined || this.formInput.id != partner.quizId) {
-            this.previewForm(partner.quizId);
+          if(this.formInput == undefined || this.formInput.id != formAnalytics.quizId) {
+            this.previewForm(formAnalytics.quizId);
           } else {
-            this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, partner.quizId, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
+            this.detailedAnalyticsLoader.isLoading = false;
+            this.formPreviewWithSubmittedAnswersComponent.showFormWithAnswers(this.selectedPartnerFormAnswers, formAnalytics.quizId, this.formInput, this.formBackgroundImage, this.pageBackgroundColor);
           }
         } else {
           this.referenceService.stopLoader(this.httpRequestLoader);
@@ -261,6 +272,7 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
         }
       });
     (error: any) => {
+      this.detailedAnalyticsLoader.isLoading = false;
       this.referenceService.stopLoader(this.httpRequestLoader);
       this.customResponse = new CustomResponse('ERROR', 'Unable to get data.Please Contact Admin.', true);
     }
@@ -307,9 +319,11 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
                     this.formError = true;
                     this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
                 }
+                this.detailedAnalyticsLoader.isLoading = false;
                 this.referenceService.stopLoader(this.httpRequestLoader);
               },
             (error: string) => {
+              this.detailedAnalyticsLoader.isLoading = false;
               this.referenceService.stopLoader(this.httpRequestLoader);
               this.customResponse = new CustomResponse('ERROR', 'Unable to load the data.Please Contact Admin', true);
             }

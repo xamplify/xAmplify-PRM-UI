@@ -200,7 +200,7 @@
                     <img *ngIf="!detailedAnalytics.typeQuiz" alt="Image not found" [src]="detailedAnalytics.assetThumbnail">
                     <img *ngIf="detailedAnalytics.typeQuiz" src="assets/images/form.png" alt="Image not found">
                   </div>
-                  <div class="timeline-panel">
+                  <div class="timeline-panel" [ngClass]="{'disable-click': detailedAnalytics.type !== 'SUBMITTED'}" (click)="showFormAnalyticsFromPopup(detailedAnalytics)">
                     <div class="timeline-heading name-wrap">
                       <span class="timeline-title">
                         <label><span *ngIf="!detailedAnalytics.typeQuiz">Asset</span><span *ngIf="detailedAnalytics.typeQuiz">Quiz</span>
@@ -224,6 +224,13 @@
                         </span>
                         <app-timestamp [showInLine]="'true'" [dateAndTime]="detailedAnalytics.createdTime">
                         </app-timestamp>
+                        <div *ngIf="detailedAnalytics.type == 'SUBMITTED'">
+                          <div class="quiz-score-margin-popup">
+                            <h6 class="view-banner" style="background-color: #5cb85c; font-size: 12px;" translate>
+                              {{detailedAnalytics.learningTrackScore}} out of {{detailedAnalytics.learningTrackMaxScore}}
+                            </h6>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
