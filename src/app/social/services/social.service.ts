@@ -197,9 +197,7 @@ export class SocialService {
   }
 
   private extractData(res: Response) {
-	console.log(res);
     const body = res.json();
-    console.log(body);
     return body || {};
   }
 

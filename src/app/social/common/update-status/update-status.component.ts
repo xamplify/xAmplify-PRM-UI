@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild,Renderer } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
@@ -116,8 +116,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		public authenticationService: AuthenticationService, private contactService: ContactService,
 		private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
 		private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-		public referenceService: ReferenceService, public campaignService: CampaignService,public utilService:UtilService) {
-		
+		public referenceService: ReferenceService, public campaignService: CampaignService,
+		public utilService:UtilService,public renderer:Renderer) {
+		this.referenceService.renderer = this.renderer;
 		this.socialCampaign.emailNotification = true;
 		this.location = this.router.url;
 		this.resetCustomResponse();
@@ -1023,9 +1024,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	toggleSocialStatusProvider(socialStatusProvider: SocialStatusProvider) {
 		socialStatusProvider.selected = !socialStatusProvider.selected;
 		this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
-
-
-
+		this.updateButtonText();
 		if (this.isSocialCampaign && this.alias) {
 			if (socialStatusProvider.selected) {
 				let likeSocialAccount = 0;
