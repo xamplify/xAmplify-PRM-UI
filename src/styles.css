@@ -1809,6 +1809,9 @@ transition: background 300ms ease-in-out;
 .image-padding{
   height: 64px;padding: 10px 34px;
 }
+.image-padding-size{
+  height: 64px;padding: 10px 43px;
+}
 .top{
   padding-top:5px;
 }
@@ -1845,4 +1848,8 @@ border: 1px solid #ddd !important;
 .table tr.contact-list-selected td {
 	background-color: #00a6e8;
 	color: white;
+}
+/* 28-3-2023 */
+.button-border{
+  border: 1px solid #fff;
 }

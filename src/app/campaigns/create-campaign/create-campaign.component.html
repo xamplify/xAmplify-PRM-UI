@@ -1821,7 +1821,7 @@
                                                                 </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
-                                                                <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
+                                                                <a class="btn btn-primary btn-sm btn btn-primary" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -2612,7 +2612,7 @@
                                 <div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let schedule of sheduleCampaignValues">
-                                            <label class="btn btn-primary" style="border: 1px solid #fff;">
+                                            <label class="btn btn-primary button-border">
                                                 <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
                                                     [value]="schedule" formControlName="scheduleCampaign"
                                                     ngDefaultControl style=" margin-right:1.5em; " />{{schedule}}

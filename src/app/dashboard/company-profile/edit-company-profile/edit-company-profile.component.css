@@ -197,3 +197,12 @@ svg {
 /* .disabled {
     cursor:not-allowed;
  } */
+ .image-border{
+    padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea;border-radius: 4px!important;
+ }
+ .dotted-image-border{
+    cursor: pointer;text-align:center;color:#fff;
+ }
+ .company-details-border{
+    padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea;padding-bottom: 48px!important;
+ }

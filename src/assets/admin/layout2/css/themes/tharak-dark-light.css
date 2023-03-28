@@ -299,8 +299,7 @@ table tr:nth-child(even) td{
   border-color: #2f4857 !important;
 }
 .modal .modal-header,
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a,
-.text {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu .dropdown-menu-list > li > a{
   border-bottom: 1px solid #2f4857 !important;
 }
 /*** Left Menu ***/
@@ -403,6 +402,7 @@ table tr:nth-child(even) td{
 }
 .profile-image-wrapper{
   background-color: #2b3c46 !important;
+  border:2px dotted #2f4857!important;
 }
 .color-inline{
   background-color: #2b3c46 !important;
@@ -413,6 +413,7 @@ table tr:nth-child(even) td{
 .write-new textarea{
   background-color: #2b3c46 !important;
   color:white !important;
+  border-color: #2f4857 !important;
 }
 label{
   color:white !important;
@@ -488,4 +489,68 @@ label{
  }
 .alert-spf{
   color:white !important;
+}
+/* 28-3-2023 */
+.image-border{
+  border:1px solid #2f4857!important;
+}
+.panel-default{
+  border-color: #2f4857!important;
+}
+.company-details-border{
+  border:1px solid #2f4857!important;
+}
+.profile-usermenu ul li{
+  border-bottom: 1px solid #2f4857!important;
+}
+.card{
+  border:1px solid #2f4857!important;
+}
+.card-bgcolor{
+  background-color: #2b3c46 !important;
+}
+.close-circle{
+  border:1px solid #2f4857!important;
+}
+.asset-thumbnail-div-sm{
+  border:2px dotted #2f4857!important;
+}
+.breadcrumb-border{
+  border:1px solid #2f4857!important;
+}
+.button-border{
+  border: 1px solid #2f4857!important;
+}
+.update-status-content{
+  border: 1px solid #2f4857!important;
+}
+.merge-tag-input-border{
+  border: 1px solid #2f4857!important;
+}
+.btn-default > i,
+.btn-default{
+  color: white !important;
+  background-color: #2b3c46 !important;
+  border-color: #2f4857 !important;
+}
+.input-group .btn-default{
+  border-color: #2f4857 !important;
+}
+.social-feeds{
+  border-bottom: 1px solid #2f4857 !important;
+}
+.head-h{
+  border: 1px solid #2f4857!important;
+}
+.rss-border{
+  border-color: #2f4857!important;
+}
+hr{
+  border-top: 0.5px solid #2f4857!important;
+}
+.divider{
+  border: 1px solid #2f4857!important;
+}
+.shared-feeds-border{
+  border-color: #2f4857!important;
 }

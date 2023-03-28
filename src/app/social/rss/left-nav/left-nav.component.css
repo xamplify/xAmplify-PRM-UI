@@ -73,3 +73,6 @@ img {
 .dashboard-stat2 {
     border-radius: 5px;
 }
+.social-feeds{
+    font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;
+}

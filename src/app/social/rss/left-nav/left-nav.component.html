@@ -7,7 +7,7 @@
             <div class="single category">
                 <!--Feeds Shared By Vendor-->
                     <ng-container *ngIf="showVendorFeeds">
-                        <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">VENDOR FEEDS</h4>
+                        <h4 aria-expanded="false" class="social-feeds">VENDOR FEEDS</h4>
                          <div class="heading-top" style="border-bottom: solid 1px white;">
                             <a (click)="goToAllCustomFeeds('p', 0)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                                 All Shared Feeds
@@ -29,7 +29,7 @@
                 <!--All Feeds---->
                 <ng-container *ngIf="showFeeds">
                     <hr>
-                    <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">YOUR FEEDS</h4>
+                    <h4 aria-expanded="false" class="social-feeds">YOUR FEEDS</h4>
                     <div class="heading-top" style="border-bottom: solid 1px white;">
                     <a (click)="goToAllCustomFeeds('v', 0)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                         All Feeds <span class="circled-number" id="vpc">{{vendorFeedsCount}}</span>
@@ -50,7 +50,7 @@
                 <br>
                 <hr>
                 <!----Rss Feeds----->
-                <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
+                <h4 aria-expanded="false" class="social-feeds">RSS FEEDS </h4>
                 <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
                     <div class="row">
                         <div class="col-md-12" style="text-align: center;padding-top:11px;">
