@@ -131,7 +131,8 @@ h1, h2, h3, h4, h5, h6 {
 .portlet.light > .portlet-title > .caption > i {
   color: white !important;
 }
-.sparkline-chart .title, .easy-pie-chart .title {
+.sparkline-chart .title, .easy-pie-chart .title,
+.alert-info {
   color: white !important
 }
 .partners-text,
@@ -175,7 +176,7 @@ input,
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-filter.contact-filter-selected{
+.mix-filter li.contact-filter-selected{
   background-color: #22313a !important;
 }
 .mix-filter li:hover, .mix-filter li.active,
@@ -228,7 +229,8 @@ filter.contact-filter-selected{
 .col-block.col-block-active {
  background-color: #00a8e7 !important;
 }
-.col-block {
+.col-block,
+.alert-info {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important
 }
@@ -291,7 +293,8 @@ table tr:nth-child(even) td{
   border: dotted 3px #2f4857 !important;
  color: white !important;
 }
-.panel {
+.panel,
+.custom-alert {
   background-color: #2b3c46 !important;
   border-color: #2f4857 !important;
 }
