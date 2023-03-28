@@ -421,10 +421,20 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			scrollTop: $('#us-right').offset().top
 		}, 500);
 		if (this.validate()) {
-			this.loading = true;
+			if(this.socialCampaign.channelCampaign && this.selectedAccounts==0){
+				this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
+			}else if(this.selectedAccounts>0){
+				this.referenceService.showSweetAlertProcessingLoader(this.properties.postingOnSocialMedia);
+			}
 			this.socialStatusResponse = [];
 			this.socialCampaign.userId = this.userId;
 			this.socialCampaign.socialStatusList = this.socialStatusList;
+			if(this.socialCampaign.socialStatusProviderList.length==0){
+				this.socialStatusProviders.forEach(data => {
+					if (data.selected)
+						this.socialCampaign.socialStatusProviderList.push(data)
+				});
+			}
 			this.socialService.createSocialCampaign(this.socialCampaign)
 				.subscribe(
 					data => {
@@ -449,11 +459,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.customResponse.statusArray = [];
 						this.customResponse.statusArray.push(error);
 						this.loading = false;
+						this.referenceService.closeSweetAlert();
 					},
 					() => {
 						this.initializeSocialStatus();
 						this.socialCampaign.userListIds = [];
 						this.loading = false;
+						this.referenceService.closeSweetAlert();
 					}
 				);
 		}
@@ -945,7 +957,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		if (campaignName === undefined)
 			return false;
 		const lowerCaseCampaignName = $.trim(campaignName.toLowerCase()); //Remove all spaces
-		this.isCampaignNameExist = this.campaignNames[0].includes(lowerCaseCampaignName) ? true : false;
+		this.isCampaignNameExist = this.campaignNames!=undefined && this.campaignNames.length>0 && this.campaignNames[0].includes(lowerCaseCampaignName) ? true : false;
 	}
 
 	ngOnInit() {
