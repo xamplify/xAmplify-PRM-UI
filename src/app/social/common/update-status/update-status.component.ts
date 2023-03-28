@@ -443,7 +443,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 							this.socialStatusResponse = data.socialStatusList;
 							if (data.publishStatus !== 'FAILURE') {
 								let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
-								this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+								if(this.socialCampaign.shareNow){
+									this.setCustomResponse(ResponseType.Success, this.properties.campaignLaunchedMessage);
+								}else{
+									this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+								}
+								
 							}
 							else if (data.publishStatus === 'FAILURE')
 								this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
