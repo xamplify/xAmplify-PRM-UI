@@ -136,9 +136,8 @@
                                             </ng-container>
                                             <ng-container *ngIf="isTrackQuizSubmitted && learningTrackId !== undefined && learningTrackId > 0 && columnInfo.description !== undefined && columnInfo.description.length > 0 ">
                                                 <div class="form-group">
-                                                    <!-- <label class="control-label">Description</label> -->
-                                                    <textarea type="text" [(ngModel)]="columnInfo.description" class="form-control" maxlength="500"
-                                                        style="height: 150px;" disabled="disabled"></textarea>
+                                                    <label class="control-label">Explanation</label>
+                                                    <div>{{columnInfo.description}}</div>
                                                 </div>
                                             </ng-container>
                                         </ng-container>
