@@ -5,13 +5,12 @@ import { UserService } from "./core/services/user.service";
 import { ReferenceService } from './core/services/reference.service';
 import { AuthenticationService } from "./core/services/authentication.service";
 import { Title }     from '@angular/platform-browser';
-
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
-
 import { Idle, DEFAULT_INTERRUPTSOURCES, IdleExpiry, LocalStorageExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { RouteConfigLoadStart,GuardsCheckStart,GuardsCheckEnd,RouteConfigLoadEnd,Event as RouterEvent } from "@angular/router";
 import {VersionCheckService} from "app/version-check/version-check.service";
+import { UtilService } from './core/services/util.service';
 
 declare var $: any;
 
@@ -34,7 +33,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   sessionExpireMessage = "Your session has timed out. Please login again.";
   xamplifygif = "assets/images/xamplify-icon.gif";
    
-constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive, private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router,private referenceService:ReferenceService) {
+constructor(private versionCheckService:VersionCheckService,private idle: Idle, private keepalive: Keepalive,public userService: UserService,
+  public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService,
+   private router: Router,private utilService:UtilService) {
       //this.checkIdleState(idle,keepalive);
     this.addLoaderForAuthGuardService();
 		this.addLoaderForLazyLoadingModules(router);
@@ -202,7 +203,6 @@ constructor(private versionCheckService:VersionCheckService,private idle: Idle, 
             }else{
               this.authenticationService.sessinExpriedMessage = "";
             }
-           
           }
         }, false);
     }

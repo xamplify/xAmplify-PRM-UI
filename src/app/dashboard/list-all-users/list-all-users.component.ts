@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UtilService } from '../../core/services/util.service';
-declare var $, swal: any;
+declare var $:any, swal: any;
 
 
 @Component({
@@ -99,6 +99,7 @@ export class ListAllUsersComponent implements OnInit {
 	}
 
 	loginAs(result: any) {
+		this.utilService.addLoginAsLoader();
 		this.loginAsTeamMember(result.emailId, false, result.userId);
 
 	}
