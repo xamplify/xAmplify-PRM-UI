@@ -109,7 +109,12 @@ export class LandingPageService {
     }
     
     getHtmlContentByCampaignLandingPageAlias( alias: string ) {
-        return this.http.get( this.authenticationService.REST_URL + "/getCampaignLandingPageContent/" + alias, "" )
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        let url = this.authenticationService.REST_URL + "/getCampaignLandingPageContent/" + alias;
+        if(vanityUrlFilter){
+            url+="/"+vanityUrlFilter;
+        }
+        return this.http.get(url, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
