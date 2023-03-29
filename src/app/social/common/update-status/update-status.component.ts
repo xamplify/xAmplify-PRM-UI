@@ -1046,16 +1046,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			if (socialStatusProvider.selected) {
 				let likeSocialAccount = 0;
 				this.socialCampaign.socialStatusList.forEach(data => {
-					if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source)
+					if (data.socialStatusProvider!=null && data.socialStatusProvider.socialConnection!=null &&
+						data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source)
 						likeSocialAccount++;
 				})
 
 				if (likeSocialAccount >= 1) {
 					socialStatusProvider.socialStatusList = [];
 					this.socialCampaign.socialStatusList.forEach(data => {
-						if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source) {
+						if (data.socialStatusProvider!=null && data.socialStatusProvider.socialConnection!=null &&
+							data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source) {
 							let socialStatus = JSON.parse(JSON.stringify(data));
-							socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+							socialStatus.statusMessage = data.statusMessage;
 							socialStatusProvider.socialStatusList.push(socialStatus);
 						}
 					})
@@ -1063,7 +1065,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					socialStatusProvider.socialStatusList = [];
 					this.socialCampaign.socialStatusList.forEach(data => {
 						let socialStatus = JSON.parse(JSON.stringify(data));
-						socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+						socialStatus.statusMessage = data.statusMessage;
 						socialStatusProvider.socialStatusList.push(socialStatus);
 					})
 				}
