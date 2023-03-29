@@ -367,6 +367,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
+		console.log("sudha",fileObj);
       }else{
         //   this.refService.showSweetAlertErrorMessage("Please upload an image");
 		this.errorUploadCropper = false;

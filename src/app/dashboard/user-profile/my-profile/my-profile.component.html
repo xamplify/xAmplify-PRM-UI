@@ -453,7 +453,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px">
                                                             <span *ngIf="integrateRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                class="integration-cards">
                                                                     <a (click)="marketoSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Marketo Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -488,7 +488,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                class="integration-cards">
                                                                     <a (click)="hubspotSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="HubSpot Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -523,7 +523,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                 class="integration-cards">
                                                                     <a (click)="salesforceSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Salesforce Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -559,7 +559,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="microsoftRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                  class="integration-cards">
                                                                     <a (click)="microsoftSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Microsoft Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>

@@ -76,3 +76,9 @@ img {
 .social-feeds{
     font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;
 }
+.social-feeds-text-color{
+    text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54;
+}
+.heading-top-border{
+    border-bottom: solid 1px white;
+}

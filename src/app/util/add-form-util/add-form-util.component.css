@@ -1572,3 +1572,6 @@ div.switch5>input.switch:focus~label:before {
 .design-bgcolor{
     padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;
 }
+.form-border{
+    border: 1px solid #eaeaea;padding-top: 5px;
+}

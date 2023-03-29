@@ -53,7 +53,7 @@ body {
   background-color:  #22313a !important;
 }
 .portlet.light {
-  background-color:  #2b3c46 !important;
+  background-color:   #22313a !important;
   border:1px solid #2f4857 !important;  
 }
 .add-options .portlet-title ,
@@ -93,7 +93,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color:  #2b3c46 !important;
   border:1px solid #2f4857 !important;  
 }
-.bar,.tile {
+.bar,.tile,.heading-top {
   background-color: #22313a !important;
 }
 .text-primary {
@@ -251,7 +251,8 @@ fieldset,
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,
 .modal-footer,
 .list__item .item__actions,
-.folder-modal-footer {
+.folder-modal-footer,
+.table>tbody+tbody {
   border-top: 1px solid #2f4857!important;
 }
 .table tbody tr.active td, .table tbody tr.active th {
@@ -373,12 +374,17 @@ table tr:nth-child(even) td{
 #router-loader {
   background-color: #2b3c46 !important;
 }
+.loader {
+  border: 3px solid #22313a !important;
+}
 /* ss */
 /** 26-03-2023 **/
 .button-color{
   background-color:  #2b3c46 !important;
 }
-.plus-color{
+.plus-color,
+.exclusion-text-color,
+.swal2-content{
   color:white !important;
 }
 .port-heading{
@@ -448,6 +454,7 @@ label{
  }
  legend {
   color:white !important;
+  border: 1px solid #2f4857!important;
  }
  /* .list-group-item{
   background-color: #2b3c46 !important;
@@ -461,13 +468,16 @@ label{
  }
  .text-color{
   color:white !important;
+  background-color: #22313a !important;
 }
 .input-group .input-group-addon{
   color:white !important;
   background-color:  #2b3c46 !important;
+  border: 1px solid #2f4857!important;
 }
 .design-bgcolor{
   background-color:  #2b3c46 !important;
+  border: 1px solid #2f4857!important;
 }
 .selected{
   background-color:  #2b3c46 !important;
@@ -484,9 +494,9 @@ label{
 .bg-color{
   background-color: #2b3c46 !important;
 }
- nav a:visited, a:link{
-  color:#5b9bd1 !important;
- }
+ /* nav a:visited, a:link{
+  color:#5b9bd1;
+ } */
 .alert-spf{
   color:white !important;
 }
@@ -542,8 +552,7 @@ label{
 .head-h{
   border: 1px solid #2f4857!important;
 }
-.rss-border{
-  border-color: #2f4857!important;
+.rss-border{  border-color: #2f4857!important;
 }
 hr{
   border-top: 0.5px solid #2f4857!important;
@@ -553,4 +562,97 @@ hr{
 }
 .shared-feeds-border{
   border-color: #2f4857!important;
+}
+.grid-box-team{
+  border: 1px solid #2f4857 !important;
+}
+.bar a{
+  border: 1px solid #2f4857!important;
+}
+.integration-cards{
+  border: 1px solid #2f4857!important;
+}
+.xamplify-dropdown-content{
+  background-color: #2b3c46 !important;
+}
+.preview-edit-color,
+.wrap-asset-name{
+  color: white !important;
+}
+.custom{
+  border: 1px solid #2f4857!important;
+}
+.item__preview.item__preview--image.custom{
+  background-color: #2b3c46 !important;
+}
+.img-class-list{
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857!important;
+}
+.item__select-box-wrapper .select-box::before{
+  background-color: #2b3c46 !important;
+}
+.color-css{
+  color: white !important;
+}
+.ext-css,.social-feeds-text-color{
+  color: white !important;
+}
+/* .text{
+    border-bottom: 1px solid #2f4857!important;
+} */
+.pricing,.heading-top-border{
+  border: 1px solid #2f4857!important;
+}
+.alert-warning{
+  background-color: #22313a !important; 
+  border: 1px solid #2f4857!important;
+  color: white !important;
+}
+.form-border{
+  border: 1px solid #2f4857!important;
+}
+.label-box,.amount-border{
+  border: 1px solid #2f4857!important;
+}
+.imageClass{
+  border: 1px solid #2f4857!important;
+  background-color: #22313a !important;
+}
+.profile-usermenu ul li a:hover{
+  background-color: #2b3c46 !important;
+}
+.timeline > li > .timeline-panel{
+  border: 1px solid  #2f4857 !important;
+  box-shadow: none !important;
+}
+.timeline:before{
+  background-color:#2f4857 !important;
+}
+.item__select-box-wrapper .select-box-asset::before{
+  background-color: #2b3c46 !important;
+}
+.tab-bg{
+  background-color: #2b3c46 !important;
+  border-bottom: 1px solid #2f4857 !important;
+  border-right: 1px solid #2f4857 !important;
+  border-left: 1px solid #2f4857 !important;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color:white !important;
+}
+.nav-tabs{
+  border-bottom: 1px solid #2f4857 !important;
+}
+.text-border{
+  border-bottom: 1px solid #2f4857 !important;
+}
+.actions-block i:hover, .circled-number:hover,
+.actions-block i:hover, .circled-number:hover{
+  background-color:  #22313a !important;
+}
+.gray{
+  background-color: #2b3c46 !important;
 }
