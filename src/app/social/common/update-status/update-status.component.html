@@ -339,10 +339,10 @@
                                 <li *ngFor="let socialStatus of ssp.socialStatusList" class="list-group-item profile-box"
                                     [ngClass]="{'checked': socialStatus.selected, 'unchecked': !socialStatus.selected}">
                                     <div class="col-sm-4 col-xs-12 p0">
-                                        <div class="profile-selected" (click)="socialStatus.selected = !socialStatus.selected;">
+                                        <div class="profile-selected" (click)="$event.stopPropagation();socialStatus.selected = !socialStatus.selected;">
                                             <i class="fa fa-square-o" *ngIf="!socialStatus.selected" aria-hidden="true"></i>
                                             <i class="fa fa-check-square" *ngIf="socialStatus.selected" aria-hidden="true"></i>
-                                            <i class="fa fa-pencil" (click)="" aria-hidden="true"></i>
+                                            <i class="fa fa-pencil" (click)="$event.stopPropagation();socialStatus.editSharedPost = !socialStatus.editSharedPost" aria-hidden="true"></i>
                                         </div>
                                         <div class="profile-image-box">
                                             <img class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection?.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
@@ -389,7 +389,7 @@
                                         </div>
                                     </div>
                                     <!--XNFR-222 Partner Content-->
-                                    <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="partner-social-content" style="display: none;">
+                                    <div *ngIf="socialStatus?.editSharedPost" class="col-sm-12 dashboard-stat2 p0 clearfix" id="partner-social-content">
                                         <div id="partner-social-content-{{socialStatus?.id}}">
                                             <textarea placeholder="What's happening?" rows="5" class="update-status-content col-xs-10 col-sm-11 form-control form-group rounded-0 mb5"
                                             [(ngModel)]="socialStatus.statusMessage" (input)="onKeyPress(socialStatus)"></textarea>
