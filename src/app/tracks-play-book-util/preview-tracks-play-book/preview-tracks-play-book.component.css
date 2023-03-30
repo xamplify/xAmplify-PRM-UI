@@ -497,3 +497,6 @@ body {
 .text-color{
     color: #888;
 }
+.border{
+    padding: 8px 5px 8px 10px;margin-bottom: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom: 1px solid #eee;
+}

@@ -814,3 +814,15 @@ a:link, nav a:visited {
 .integration-cards{
   float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;
 }
+.border-none{
+  border:none !important;
+}
+.button-align{
+  float:left; padding:0;margin-top: 17px;margin-bottom: 7px;
+}
+.def-player-border{
+  border-bottom: 1px solid #e5e5e5;
+}
+.btn-align{
+  padding-left: 5px !important;
+}

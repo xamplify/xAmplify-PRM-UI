@@ -1394,7 +1394,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #eee !important;
+  background-color: #eee;
   color: white;
 }
 
@@ -1418,7 +1418,7 @@ strong {
 }
 
 .table tr.row-selected td {
-  background-color: #eee !important;
+  background-color: #eee;
   color: white;
 }
 .info-text-color {

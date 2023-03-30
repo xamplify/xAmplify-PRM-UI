@@ -1084,7 +1084,7 @@
                             </tr>
                             <tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
                               <td colspan="9">
-                                <table cellpadding="5" cellspacing="0" style="padding-left: 50px; margin-left: 55px;" aria-describedby="">
+                                <table cellpadding="5" cellspacing="0" class="border" style="border:none !important;" aria-describedby="">
                                   <tbody>
                                     <tr>
                                       <td class='pt10 pb10 bold' translate>Address: </td>
@@ -1264,7 +1264,7 @@
         <!-- end  -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
+        <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate>Close</button>
         <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" [disabled]="assignLeads && disableSave" translate>Save changes</button>
       </div>
     </div>

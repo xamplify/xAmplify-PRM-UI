@@ -414,7 +414,7 @@
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn btn-primay btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -460,7 +460,7 @@
                 <!-- XNFR-108 -->
                 <div class="form-group">
                     <label>Team Member Group</label>
-                    <p style="color: #888; font-size: 12px;" translate>
+                    <p class="pencil-color" style="font-size: 12px;" translate>
                         Selected team members will receive form submit notifications.
                     </p>
                     <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"

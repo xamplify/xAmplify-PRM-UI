@@ -1575,3 +1575,6 @@ div.switch5>input.switch:focus~label:before {
 .form-border{
     border: 1px solid #eaeaea;padding-top: 5px;
 }
+.pencil-color{
+    color: #888;
+}

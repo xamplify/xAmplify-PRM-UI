@@ -196,3 +196,9 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 .pencil-color{
 	color: #4d5b69;margin-right: -19px;
 }
+.gear-icon{
+	margin-top: 4px; color: #000000;padding-right: 8px;
+}
+.border{
+	padding-left: 50px; margin-left: 55px;
+}

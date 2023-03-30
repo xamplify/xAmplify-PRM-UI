@@ -104,7 +104,8 @@ h1, h2, h3, h4, h5, h6 {
   color: white !important;
   border: 1px solid #2f4857 !important
 }
-.pagination .active > a, .pagination .active > a:hover {
+.pagination .active > a, .pagination .active > a:hover,
+.nav-tabs>li>a:hover {
   background: #22313a !important;
   border-color: #2f4857 !important;
   color: white !important;
@@ -155,7 +156,8 @@ ul.alt-row-style1 li a{
   color: #2b3c46 !important;
 } */
 .search-box-item-click,
-.table tr.contact-list-selected td {
+.table tr.contact-list-selected td,
+.div-background-color {
   background-color: #22313a !important;
   color: white !important;
 }
@@ -374,6 +376,7 @@ table tr:nth-child(even) td{
 #router-loader {
   background-color: #2b3c46 !important;
 }
+#process-loader,
 .loader {
   border: 3px solid #22313a !important;
 }
@@ -592,10 +595,13 @@ hr{
 .item__select-box-wrapper .select-box::before{
   background-color: #2b3c46 !important;
 }
-.color-css{
+.color-css,
+.design-name{
   color: white !important;
 }
-.ext-css,.social-feeds-text-color{
+.ext-css,
+.social-feeds-text-color,
+.portlet > .portlet-title > .caption > i{
   color: white !important;
 }
 /* .text{
@@ -604,7 +610,8 @@ hr{
 .pricing,.heading-top-border{
   border: 1px solid #2f4857!important;
 }
-.alert-warning{
+.alert-warning,
+.register_deal{
   background-color: #22313a !important; 
   border: 1px solid #2f4857!important;
   color: white !important;
@@ -612,7 +619,8 @@ hr{
 .form-border{
   border: 1px solid #2f4857!important;
 }
-.label-box,.amount-border{
+.label-box,.amount-border,
+.image-preview{
   border: 1px solid #2f4857!important;
 }
 .imageClass{
@@ -643,16 +651,79 @@ hr{
   border: 1px solid #2f4857 !important;
   color:white !important;
 }
-.nav-tabs{
+.nav-tabs,
+.def-player-border{
   border-bottom: 1px solid #2f4857 !important;
 }
-.text-border{
+.text-border,
+.border-line{
   border-bottom: 1px solid #2f4857 !important;
 }
 .actions-block i:hover, .circled-number:hover,
 .actions-block i:hover, .circled-number:hover{
   background-color:  #22313a !important;
+  /* color:#5bb2f5 !important; */
 }
 .gray{
   background-color: #2b3c46 !important;
 }
+.button:disabled{
+  color: #000000 !important;
+}
+.profile-usermenu ul li.active a{
+  background-color: #22313a !important;
+  color: white !important;
+  border-left : 2px solid #2f4857 !important;
+}
+.reload-btn{
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+a,
+.gear-icon,
+.e-multi-select-wrapper .e-delim-values .e-remain,
+.white-text,
+.csv-list-name,
+.rss-summary{
+  color: white !important;
+  /* background-color: #2b3c46 !important; */
+}
+.bootstrap-switch,
+.bootstrap-switch .bootstrap-switch-container,
+.bootstrap-switch .bootstrap-switch-label{
+  border-color: #2f4857 !important;
+  background-color: #2b3c46 !important;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default{
+  color: #fff !important;
+    background: #22313a !important;
+}
+.form-check-label[_ngcontent-c30]{
+  border:1px solid #2f4857 !important;
+}
+.circled-number{
+  color: #5bb2f5 !important;
+}
+.btn-hvr-text,
+button:disabled{
+  color:black !important
+}
+.table tr.row-selected td{
+  background-color: #2b3c46 !important;
+}
+input.cmn-toggle-round-flat + label,
+input.cmn-toggle-round-flat:checked + label{
+  background-color:#2f4857 !important;
+}
+input.cmn-toggle-round-flat + label:before{
+  background-color: #2b3c46 !important;
+}
+/* .emailtemplate-selected{
+  background-color: #2b3c46 !important;
+    border: 1px solid #2f4857 !important;
+} */
+/* .nav-tabs>li>a:hover{
+  background-color: #2f4857 !important;
+  border: 1px solid #2f4857 !important;
+} */
