@@ -1,3 +1,5 @@
+import { Form } from "app/forms/models/form";
+
 export class TracksPlayBookDto {
     id:number= 0;
     name:string = "";
@@ -8,4 +10,7 @@ export class TracksPlayBookDto {
     thumbnailPath:string = "";
     displayName:string = "";
     displayTime:any;
+    typeQuizId: boolean = false;
+    dam:any;
+    quiz:any;
 }

@@ -57,4 +57,6 @@ export class Form {
     selectedTeamMemberIds:any[] = [];
     selectedGroupIds:any[] = [];
 
+    selected: boolean = false;
+
 }

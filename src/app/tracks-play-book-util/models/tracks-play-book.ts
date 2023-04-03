@@ -13,6 +13,7 @@ export class TracksPlayBook {
     published:boolean = false;
     quizId:number;
     contentIds:Array<number> = new Array<number>();
+    contentAndQuizData = {};
     groupIds:Array<number> = new Array<number>();
     companyIds:Array<number> = new Array<number>();
     partnershipIds:Array<number> = new Array<number>();
@@ -35,4 +36,6 @@ export class TracksPlayBook {
     category:any;
     canUpdate:boolean = false;
     canDelete:boolean = false;
+
+    typeQuizId: boolean = false;
 }
