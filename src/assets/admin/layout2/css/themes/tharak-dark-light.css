@@ -49,7 +49,9 @@ body {
   border:1px solid #2f4857!important;
 }
 .page-container-bg-solid .page-content,
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external,
+.disabled-background-color,
+.label-box:hover {
   background-color:  #22313a !important;
 }
 .portlet.light {
