@@ -249,7 +249,8 @@ fieldset,
 .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
   border: 1px solid #2f4857 !important ;
 }
-.table thead > tr > th {
+.table thead > tr > th,
+.ng2-tag-input {
   border-bottom: 2px solid #2f4857!important;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,
@@ -272,7 +273,8 @@ fieldset,
 }
 .table-striped>tbody>tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
-table tr:nth-child(even) td{
+table tr:nth-child(even) td,
+.search-box-item-clear{
   background-color: #2b3c46 !important ;
 }
 .table-hover>tbody>tr:hover,
@@ -594,11 +596,13 @@ hr{
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857!important;
 }
-.item__select-box-wrapper .select-box::before{
+.item__select-box-wrapper .select-box::before,
+.xamplify-dropdown-content-odd{
   background-color: #2b3c46 !important;
 }
 .color-css,
-.design-name{
+.design-name,
+.xamplify-dropdown-option{
   color: white !important;
 }
 .ext-css,
@@ -662,7 +666,8 @@ hr{
   border-bottom: 1px solid #2f4857 !important;
 }
 .actions-block i:hover, .circled-number:hover,
-.actions-block i:hover, .circled-number:hover{
+.actions-block i:hover, .circled-number:hover,
+.xamplify-dropdown-option:hover{
   background-color:  #22313a !important;
   /* color:#5bb2f5 !important; */
 }
