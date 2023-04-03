@@ -63,7 +63,7 @@
 .text-dropdown{
     cursor: auto;
     display: inline-block;
-    background-color: #fff !important;
+    background-color: #fff;
 }
 .disabled-dropdown{
     pointer-events: none;

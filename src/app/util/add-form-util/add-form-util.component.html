@@ -424,7 +424,7 @@
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn btn-primay btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -470,7 +470,7 @@
                 <!-- XNFR-108 -->
                 <div class="form-group">
                     <label>Team Member Group</label>
-                    <p style="color: #888; font-size: 12px;" translate>
+                    <p class="pencil-color" style="font-size: 12px;" translate>
                         Selected team members will receive form submit notifications.
                     </p>
                     <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
@@ -623,7 +623,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12" style="border: 1px solid #eaeaea;padding-top: 5px;">
+                        <div class="col-md-12 col-lg-12 form-border">
                             <div class="form-group" id="formSubmissionUrlDiv">
                                 <label>Redirect Url After Form Submission :</label><br>
                                 <input class="form-control" placeholder="Enter Url" [(ngModel)]="form.formSubmissionUrl" (input)="validateFormSubmissionUrl(form.formSubmissionUrl)" />
@@ -634,7 +634,7 @@
                             </div>
                         </div>
                         <br>
-                        <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;">
+                        <div class="col-md-12 col-lg-12 design-bgcolor">
                             <div class="form-group">
                                 <label>Form Submit Message:</label>
                                 <textarea class="form-control" placeholder="Form Submit Message" [(ngModel)]="form.formSubmitMessage" maxlength="1000" rows="5" (input)="characterSize()"></textarea>

@@ -29,14 +29,15 @@
 }
 .custom-font-weight{
 	font-weight: 600 !important;
+	white-space: inherit !important;
 }
 .custom-font-size {
 	font-size: 16px !important;
 }
 
-.re-distributed-high-level:hover{
+/* .re-distributed-high-level:hover{
   background-color: #ffffff !important;
-}
+} */
 
 .campaign-refresh-style-fl{
     margin-left: 6px;

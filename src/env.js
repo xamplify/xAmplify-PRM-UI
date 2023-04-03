@@ -27,6 +27,7 @@
 	 window.__env.SERVER_URL =  'https://aravindu.com/';
 	 window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
+
 	/*********************Release**********************/
 	// window.__env.CLIENT_URL = 'https://xtremand.com/';
 	// window.__env.SERVER_URL =  'https://release.xamp.io/';
