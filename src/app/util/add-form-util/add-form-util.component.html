@@ -404,6 +404,16 @@
                                                         </legend>
                                                     </form>
                                                 </fieldset>
+                                                <!-- ----------------Explanation-------------- -->
+                                                <fieldset class="default-fieldset" *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Explanation</label>
+                                                        <textarea type="text" [(ngModel)]="selectedColumn.description" class="form-control" maxlength="500"
+                                                            style="height: 330px;" (input)="descriptionCharacterSize(selectedColumn)"></textarea>
+                                                        <label class="character-left-text">{{selectedColumn.descriptionCharacterleft}} characters
+                                                            left</label>
+                                                    </div>
+                                                </fieldset>
                                             </div>
                                         </div>
                                     </div>

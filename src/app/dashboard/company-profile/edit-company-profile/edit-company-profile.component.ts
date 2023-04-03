@@ -133,6 +133,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     aboutUsError = false;
     aboutUsErrorMessage = "";
 
+    eventUrlDivClass: string = this.formGroupDefaultClass;
+    eventUrlError = false;
+    eventUrlErrorMessage = "";
+
     logoDivClass: string = this.formGroupDefaultClass;
     logoError = false;
     logoErrorMessage = "";
@@ -191,6 +195,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     scale = 1;
     canvasRotation = 0;
     rotation = 0;
+    marketing: boolean;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -739,6 +744,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validatePattern('twitterLink');
       this.validatePattern('city');
       this.validatePattern('state');
+      this.validatePattern('eventUrl');
       this.validateCompanyLogo();
     }
 
@@ -1037,6 +1043,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             } else if (columnName == "aboutUs") {
                 this.aboutUsError = false;
                 this.aboutUsDivClass = this.refService.successClass;
+            }else if(columnName=="eventUrl"){
+                this.eventUrlError = false;
+                this.eventUrlDivClass = this.refService.successClass;
             }
             this.enableOrDisableButton();
         }
@@ -1111,6 +1120,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     addAboutUsError(){
         this.aboutUsError = true;
         this.aboutUsDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
+
+    addEventUrlError() {
+        this.eventUrlError = true;
+        this.eventUrlDivClass = this.refService.errorClass;
         this.disableButton();
     }
     
@@ -1196,6 +1211,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.countryDivClass = this.refService.successClass;
         this.enableOrDisableButton();
     }
+
+    removeEventUrlError() {
+        this.eventUrlError = false;
+        this.eventUrlDivClass = this.refService.successClass;
+        this.enableOrDisableButton();
+    }
+
+    
 
     validateEmailId() {
         if ($.trim(this.companyProfile.emailId).length > 0) {
@@ -1714,6 +1737,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let roleId =  $('#selectedRole option:selected').val();
           this.prm = roleId==20;
           this.vendorTier = roleId==19;
+          this.marketing = roleId==18;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -1732,6 +1756,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
           }else if(this.vendorTier){
               this.campaignAccess.shareLeads = false;
+          }else if(this.marketing){
+              this.campaignAccess.loginAsPartner = false;
           }
       }
 

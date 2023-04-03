@@ -266,6 +266,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	croppedImage: any = '';
 	showCropper = false;
 
+	// XNFR-215
+	pipedriveRibbonText: string;
+	/****XNFR-224****/
+	loginAsPartnerOptionEnabledForVendor = false;
+	supportSettingCustomResponse : CustomResponse = new CustomResponse();
+	loginAsPartnerEmailNotification = false;
+	showSupportSettingOption = false;
+	isLoggedInAsPartner = false;
+	/****XNFR-224****/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -273,6 +282,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -290,7 +300,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.containWithinAspectRatio = !this.containWithinAspectRatio;
 		}else{
         this.showCropper = false;
-      //  this.errorUploadCropper = true;
         }
     }
     zoomOut() {
@@ -1652,7 +1661,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMarketoIntegration();
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
-		this.checkMicrosoftIntegration();		
+		this.checkMicrosoftIntegration();
+		this.checkPipedriveIntegration();		
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -1735,6 +1745,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.integrateRibbonText = "configure";
 		})
 	}
+
+	// XNFR-215
+	checkPipedriveIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.integrationService.checkConfigurationByType("pipedrive").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.pipedriveRibbonText = "configured";
+			}
+			else {
+				this.pipedriveRibbonText = "configure";
+			}			
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkPipedriveIntegration() for pipedrive");
+		}, () => this.logger.log("Pipedrive Integration Configuration Checking done"));
+	}
+	// XNFR-215
 
 	configmarketo() {
 		this.integrationTabIndex = 1;
@@ -1825,9 +1855,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showNotifyPartnersOption = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName == "support"){
+			this.ngxloading = true;
+			this.showSupportSettingOption = false;
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showSupportSettingOption = true;
+				  self.ngxloading = false;
+ 			}, 500);
+			this.activeTabHeader = this.properties.supportText;
 		}
 		this.referenceService.goToTop();
 	}
+	
+
 
 	ngOnDestroy() {
 		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
@@ -1871,6 +1912,11 @@ configHubSpot() {
 		this.integrationTabIndex = 3;
 		//let providerName = 'microsoft';
 		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+	}
+
+	// XNFR-215
+	configurePipedrive() {
+		this.integrationTabIndex = 6;	
 	}
 
 	closeMicrosoftForm(event: any) {
@@ -1987,6 +2033,7 @@ configSalesforce() {
 	}
 
 	saveGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.companyId = this.referenceService.companyId;
 		this.gdprSetting.createdUserId = this.loggedInUserId;
@@ -2015,6 +2062,7 @@ configSalesforce() {
 
 
 	updateGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.updatedUserId = this.loggedInUserId;
 		this.userService.updateGdprSetting(this.gdprSetting)
@@ -2484,6 +2532,15 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'MICROSOFT';
+		this.integrationTabIndex = 5;		
+	}
+
+	// xnfr-215
+	pipedriveSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'PIPEDRIVE';
 		this.integrationTabIndex = 5;		
 	}
 
@@ -3793,5 +3850,9 @@ configSalesforce() {
 		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
 		pipelineStage.defaultStage = true;
 	}
+
+	
+
+	
 
 }

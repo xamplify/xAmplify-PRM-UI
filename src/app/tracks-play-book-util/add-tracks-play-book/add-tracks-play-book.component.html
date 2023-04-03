@@ -312,7 +312,7 @@
           <div class="col-lg-12">
             <div class="page-toolbar">
               <div class="inline mToolBarPad" style="margin-left: -15px;">
-                <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets</button>
+                <button class="btn btn-primary" (click)="openOrderAssetsPopup()">Order Assets And Quiz</button>
                 <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary"
                   (click)="openQuizPopup()">Select Quiz</button>
               </div>
@@ -656,7 +656,7 @@
                 <thead>
                   <tr>
                     <th class="" colspan="2" style="width: 35%" id="border-bottom">
-                      <span class="gridHeader" translate>Asset Details</span>
+                      <span class="gridHeader" translate>Details</span>
                     </th>
                     <th class="text-center" translate scope="col">Type</th>
                     <th class="text-center" translate scope="col">Created On</th>
@@ -665,37 +665,72 @@
                 </thead>
                 <tbody [dragula]='"assetsDragula"' [dragulaModel]='selectedAssets'>
                   <tr *ngFor="let asset of selectedAssets; let i = index" style="cursor: move;">
-                    <td class="text-cente" style="width: 10%;">
-                      <div class="thumbnail-wrapper">
-                        <img class="img-asset-list" alt="Image not found" [src]="asset.thumbnailPath">
-                      </div>
-                    </td>
-                    <td>
-                      <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.assetName}}" translate>
-                        <span><strong>{{asset.assetName}}</strong></span>
-                      </h4>
-                      <h6 class="moreipsis" title="{{asset.displayName}}">
-                        <span translate> Created By
-                          <strong>{{asset.displayName}}</strong></span>
-                      </h6>
-                    </td>
-                    <td class="text-center">
-                      {{asset.assetType}}
-                    </td>
-                    <td class="text-center">
-                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.displayTime">
-                      </app-timestamp>
-                    </td>
-                    <td id="actions-row " class="mActionsAlign" style="text-align: center;">
-                      <div class="actions-block override-actions custom-width-icon" style="float: none;">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset, true)">
-                          <i class="fa fa-eye" aria-hidden="true"></i>
-                        </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset); validateAssets(); validateAllSteps()">
-                          <i class="fa fa-times remove-button" aria-hidden="true "></i>
-                        </a>
-                      </div>
-                    </td>
+                    <ng-container *ngIf="asset.typeQuizId">
+                      <td class="text-cente" style="width: 10%;">
+                        <div class="thumbnail-wrapper">
+                          <img class="img-asset-list" alt="Image not found" [src]="asset.quiz.thumbnailImage">
+                        </div>
+                      </td>
+                      <td>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.quiz.name}}" translate>
+                          <span><strong>{{asset.quiz.name}}</strong></span>
+                        </h4>
+                        <h6 class="moreipsis" title="{{asset.displayName}}">
+                          <span translate> Created By
+                            <strong>{{asset.quiz.createdName}}</strong></span>
+                        </h6>
+                      </td>
+                      <td class="text-center">
+                        Quiz
+                      </td>
+                      <td class="text-center">
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.quiz.createdDateString">
+                        </app-timestamp>
+                      </td>
+                      <td id="actions-row " class="mActionsAlign" style="text-align: center;">
+                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                          <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(asset.quiz.id)">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                          <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="selectedQuiz(asset.quiz); validateAssets(); validateAllSteps()">
+                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                          </a>
+                        </div>
+                      </td>
+                    </ng-container>
+                    <ng-container *ngIf="!asset.typeQuizId">
+                      <td class="text-cente" style="width: 10%;">
+                        <div class="thumbnail-wrapper">
+                          <img class="img-asset-list" alt="Image not found" [src]="asset.dam.thumbnailPath">
+                        </div>
+                      </td>
+                      <td>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.dam.assetName}}" translate>
+                          <span><strong>{{asset.dam.assetName}}</strong></span>
+                        </h4>
+                        <h6 class="moreipsis" title="{{asset.dam.displayName}}">
+                          <span translate> Created By
+                            <strong>{{asset.dam.displayName}}</strong></span>
+                        </h6>
+                      </td>
+                      <td class="text-center">
+                        {{asset.dam.assetType}}
+                      </td>
+                      <td class="text-center">
+                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="asset.dam.displayTime">
+                        </app-timestamp>
+                      </td>
+                      <td id="actions-row " class="mActionsAlign" style="text-align: center;">
+                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                          <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset.dam, true)">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                          </a>
+                          <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset.dam); validateAssets(); validateAllSteps()">
+                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                          </a>
+                        </div>
+                      </td>
+                    </ng-container>
                   </tr>
                 </tbody>
               </table>
@@ -766,7 +801,7 @@
                   <tbody>
                     <tr *ngFor="let form of quizFormPagination.pagedItems ;let i =index" (click)="selectedQuiz(form)">
                       <td>
-                        <input type="radio" [checked]="this.tracksPlayBook.quizId === form.id">
+                        <input type="checkbox" [checked]="form.selected">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" title="{{form.name}}">

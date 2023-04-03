@@ -35,4 +35,6 @@ export class CampaignAccess {
   agency = false;
   customSkinSettings = false;
   maxAdmins = 2;
+  /*** XNFR-224 ****/
+  loginAsPartner = false;
 }

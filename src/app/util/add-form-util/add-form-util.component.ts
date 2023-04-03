@@ -594,6 +594,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             //columnInfo.choiceType = column.choiceType;
         }
     }
+    if(column.description !== undefined){
+        columnInfo.description = column.description;
+        this.descriptionCharacterSize(columnInfo);
+    }
       this.allItems.push(columnInfo.divId);
       return columnInfo;
   }
@@ -1760,6 +1764,10 @@ addOrUpdate(){
 UpdateFormTeamMemberGroupData(form: Form){
     this.form.selectedTeamMemberIds = form.selectedTeamMemberIds;
     this.form.selectedGroupIds = form.selectedGroupIds;
+}
+
+descriptionCharacterSize(column: ColumnInfo){
+    column.descriptionCharacterleft = 500 - column.description.length;
 }
 
 }

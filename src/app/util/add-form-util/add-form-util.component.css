@@ -1569,6 +1569,7 @@ div.switch5>input.switch:focus~label:before {
 .margin{
     margin-right: 12px;
 }
+
 .design-bgcolor{
     padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;
 }
@@ -1578,3 +1579,13 @@ div.switch5>input.switch:focus~label:before {
 .pencil-color{
     color: #888;
 }
+
+
+.character-left-text {
+    float: right;
+      font-size: 11px;
+      position: relative;
+      left: -4px;
+      color: #7b8894;
+      bottom: 22px;
+  }

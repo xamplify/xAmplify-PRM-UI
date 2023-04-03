@@ -187,3 +187,7 @@ margin: 10px 10px 10px 10px;
 #logoutButton{
  background-color: #e8edf2;
 }
+.topnav-button-css{
+  margin-top: 17px;
+  margin-right: 5px;
+}

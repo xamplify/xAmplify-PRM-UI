@@ -53,11 +53,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	skin:CustomSkin = new CustomSkin();
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	showResellar = false;
+	/*** XNFR-224***/
+	isLoggedInAsPartner = false;
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
 	) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.sourceType = this.authenticationService.getSource();
 		this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal();
 		this.isSuperAdmin = this.authenticationService.getUserId() == 1;
@@ -176,6 +179,16 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.authenticationService.module.isTeamMember = data.teamMember;
 					this.authenticationService.module.isPartnerCompany = data.partnerCompany;
 					this.authenticationService.module.isAdminAndPartnerCompany = data.adminAndPartnerCompany;
+					/*****XNFR-224*****/
+					this.authenticationService.module.loginAsPartner = data.loginAsPartner;
+					this.authenticationService.module.showSupportSettingOption = data.showSupportSettingOption;
+					let loginAsPartnerOptionEnabledForVendor = data.loginAsPartnerOptionEnabledForVendor;
+					if(this.isLoggedInAsPartner && !loginAsPartnerOptionEnabledForVendor){
+						this.referenceService.showSweetAlertProcessingLoader("Login as is not available for this account. We are redirecting you to the login page.");
+						setTimeout(() => {
+							this.authenticationService.logout();
+						}, 7000);
+					}
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
