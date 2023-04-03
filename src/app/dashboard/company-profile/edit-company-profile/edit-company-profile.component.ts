@@ -258,7 +258,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+		//	this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -270,7 +270,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+		//	this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -284,7 +284,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+       // this.errorUploadCropper = true;
         }
     }
     zoomInBgImage() {
@@ -297,7 +297,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
         }
     }
     resetImage() {
@@ -308,7 +308,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+    //    this.errorUploadCropper = true;
     }
     }
     resetImageBgImage() {
@@ -319,7 +319,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
     }
     }
     validateUserUsingEmailId(){
@@ -1711,7 +1711,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
-        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.imageChangedEvent = event;
         } else {
@@ -1724,7 +1724,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
-        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.bgImageChangedEvent = event;
         } else {

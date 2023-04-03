@@ -9,7 +9,7 @@
     </div>
     <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
     <div class="row" *ngIf="!loading && hasAccess">
-        <div class="page-bar portlet light border-radius-0 shadow mmtp">
+        <div class="">
             <!---The Below Logic For Only PRM Company-->
             <ng-container *ngIf="authenticationService?.module?.isPrmCompany">
                 <ng-container *ngIf="authenticationService?.mdf || authenticationService?.leadsAndDeals">

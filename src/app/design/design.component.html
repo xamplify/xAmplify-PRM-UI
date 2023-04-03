@@ -15,8 +15,8 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div class="portlet light padding" style="border: none;background: none;">
-                <div class="portlet-title" style="border:none;">
+            <div class="portlet padding">
+                <div class="portlet-title">
                     <div class="caption" translate style="font-size:20px !important;">
                         <!-- <i class="fa fa-cogs mt" aria-hidden="true"></i> -->
                         Create a Design
@@ -37,14 +37,14 @@
                                         <div class="img1">
                                             <img alt="Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/templates.svg">
                                         </div>
-                                        <div class="text">
+                                        <div class="text text-border">
                                             <h4 class="header-text-css" translate>Templates
                                             </h4>
                                             <p class="header-description-css" translate>
                                                 Ideal for utilization in email marketing, video campaigns, and event promotions.
                                             </p>
                                         </div>
-                                        <div class="text mMobileDisable">
+                                        <div class="text mMobileDisable text-border">
                                             <h5>
                                                 <a class="mDisableColor" [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
                                  <span class="design-name mDisableColor" translate>Design Templates</span></a>
@@ -68,13 +68,13 @@
                                         <div class="img1">
                                             <img alt="Forms" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/forms.svg">
                                         </div>
-                                        <div class="text">
+                                        <div class="text text-border">
                                             <h4 class="header-text-css" translate>Forms</h4>
                                             <p class="header-description-css" translate>
                                                 Gather information such as contact details, newsletters, customer feedback effectively.
                                             </p>
                                         </div>
-                                        <div class="text mMobileDisable">
+                                        <div class="text mMobileDisable text-border">
                                             <h5>
                                                 <a class="mDisableColor" [routerLink]="['../../forms/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
                                    <span class="design-name mDisableColor" translate>Design Forms</span></a>
@@ -99,14 +99,14 @@
                                         <div class="img1">
                                             <img alt="Pages" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/pages.svg">
                                         </div>
-                                        <div class="text">
+                                        <div class="text text-border">
                                             <h4 class="header-text-css" translate>Pages
                                             </h4>
                                             <p class="header-description-css" translate>
                                                	Transform web visitors into potential leads and enhance the success rate of conversions.
                                             </p>
                                         </div>
-                                        <div class="text mMobileDisable" *ngIf="landingPage">
+                                        <div class="text mMobileDisable text-border" *ngIf="landingPage">
                                             <h5>
 
                                                 <a class="mDisableColor" [routerLink]="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;

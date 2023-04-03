@@ -1361,8 +1361,8 @@ b, strong {
 }
 
 .table tr.row-selected td {
-	background-color: #eee !important;
-	color: white;
+  background-color: #eee;
+  color: white;
 }
 
 .beige {
@@ -1385,8 +1385,8 @@ b, strong {
 }
 
 .table tr.row-selected td {
-	background-color: #eee !important;
-	color: white;
+  background-color: #eee;
+  color: white;
 }
 
 .info-text-color {
@@ -1766,23 +1766,67 @@ b, strong {
 }
 
 .img1 {
-	background: #34495a;
-	text-align: center;
-	border-radius: 10px 10px 0px 0px;
-	background-image: linear-gradient(30deg, #34495a 50%, transparent 50%)
-		!important;
-	background-size: 1090px;
-	background-repeat: no-repeat;
-	background-position: 0;
-	transition: background 300ms ease-in-out;
+  background: #34495a;
+  text-align: center;
+  border-radius: 10px 10px 0px 0px;
+  background-image: linear-gradient( 30deg,#34495a  50%, transparent 50%) !important;
+background-size: 1090px;
+background-repeat: no-repeat;
+background-position: 0;
+transition: background 300ms ease-in-out;
 }
-
-.d-flex {
-	display: flex;
+.d-flex{
+  display:flex;
 }
-
-.justify-content-between {
-	justify-content: space-between;
+.justify-content-between{
+  justify-content: space-between;
+}
+.image-padding{
+  height: 64px;padding: 10px 34px;
+}
+.image-padding-size{
+  height: 64px;padding: 10px 43px;
+}
+.top{
+  padding-top:5px;
+}
+/** 20-03-2023 **/
+ .re-distributed-high-level:hover {
+	background-color: #ffffff !important;
+} 
+.camp-card-bg{
+  background-color: #f2f4f9!important;
+  border-bottom: solid 1px #ddd !important;
+  height: 195px;
+  border-radius: 8px 8px 0 0  !important;
+} 
+.pricing {
+border: 1px solid #ddd !important;
+}
+#vendor-details-tile {
+  border: lightgrey 1px solid;
+  height: 102px;
+  border-radius: 10px;
+  padding-top: 15px;
+  background-color: #fff;
+}
+.form-body label {
+  color: #000 !important
+}
+.form-group label {
+  font-weight: 500 !important;
+  color: #999 !important;
+}
+.panel-default>.panel-heading {
+    background-color: #ffffff!important;
+}
+.table tr.contact-list-selected td {
+	background-color: #00a6e8;
+	color: white;
+}
+/* 28-3-2023 */
+.button-border{
+  border: 1px solid #fff;
 }
 
 /****** XNFR-224*****/

@@ -1,11 +1,11 @@
-#vendor-details-tile {
+/* #vendor-details-tile {
     border: lightgrey 1px solid;
     border-style: solid;
     height: 102px;
     border-radius: 10px;
     padding-top: 15px;
     background-color: #fff;
-}
+} */
 .profile {
     background: #9079d2;
     border-radius: 30px;

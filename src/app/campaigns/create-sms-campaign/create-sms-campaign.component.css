@@ -1,7 +1,7 @@
-.form-group label {
+/* .form-group label {
 	font-weight: 500 !important;
 	color: #999 !important;
-}
+} */
 
 .btn-reply {
 	margin: 7px 0;
@@ -221,10 +221,10 @@ a.disabled {
 	cursor: not-allowed;
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
 	background-color: #00a6e8 !important;
 	color: white;
-}
+} */
 
 .ui-switch-custom-div {
 	width: 7%;
@@ -973,9 +973,9 @@ h3 {
 	color: #00a8e7;
 }
 
-.form-body label {
+/* .form-body label {
 	color: #000 !important
-}
+} */
 
 .portlet.box {
 	border: 1px solid #c4c1bb;

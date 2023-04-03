@@ -105,3 +105,6 @@ margin-top: 9px !important;
 p{
     margin:0px;
 }
+.portlet > .portlet-title {
+    border-bottom:none !important;
+}

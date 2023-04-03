@@ -410,7 +410,8 @@
                     *ngIf="searchKey" (click)="searchKey='';search()"></button>
                 <button type="submit" class="search-box-item-click"
                     (click)="search()">
-                    <i class="fa fa-search" style="color: black !important"
+                    <!-- Removed style="color: black !important"-->
+                    <i class="fa fa-search"
                         aria-hidden="true"></i>
                 </button>
             </div>
@@ -548,8 +549,8 @@
                                         <tr *ngIf="pagedItems"
                                             [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
                                             <td colspan="12">
-                                                <table cellpadding="5" cellspacing="0"
-                                                    style="padding-left: 50px; margin-left: 55px;">
+                                                <table cellpadding="5" cellspacing="0" class="border"
+                                                    style="border:none !important;">
                                                     <tbody>
                                                         <tr *ngIf="user?.company">
                                                             <td class='pt10 pb10 bold' translate>Company:</td>
@@ -852,7 +853,8 @@
                                             *ngIf="searchKey" (click)="searchKey='';search()"></button>
                                         <button type="submit" class="search-box-item-click"
                                             (click)="search()">
-                                            <i class="fa fa-search" style="color: black !important"
+                                            <!-- REmoved style="color: black !important"-->
+                                            <i class="fa fa-search"
                                                 aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -1000,8 +1002,8 @@
                                                 <tr
                                                     [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
                                                     <td colspan="12">
-                                                        <table cellpadding="5" cellspacing="0"
-                                                            style="padding-left: 50px; margin-left: 55px;">
+                                                        <table cellpadding="5" cellspacing="0" class="border"
+                                                            style="border:none !important;">
                                                             <tbody>
                                                                 <tr class="hidden-sm hidden-md hidden-lg">
                                                                     <td class='pt10 pb10 bold' translate>Vertical:</td>
@@ -1490,7 +1492,7 @@
                         agree</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Decline</button>
                     <button type="button" [disabled]="!isCheckTC"
                         class="btn btn-primary" (click)="saveContactsWithPermission()"
@@ -1591,7 +1593,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Cancel</button>
                     <button type="button" [disabled]="!cloudPartnersModalCheckBox"
                         class="btn btn-primary" (click)="proceed()" translate>Accept</button>

@@ -385,7 +385,7 @@ td h5 {
 .imageClass {
 	background: #f2f4f9;
 	border: solid 1px #008fd5;
-	border-radius: 3px;
+	border-radius: 5px;
 	height: 60px !important;
 }
 
@@ -458,9 +458,9 @@ td h5 {
 	font-size: 16px !important;
 }
 
-.re-distributed-high-level:hover {
+/* .re-distributed-high-level:hover {
 	background-color: #ffffff !important;
-}
+} */
 
 table tr:nth-child(odd) td {
 	background: rgb(240 240 240)

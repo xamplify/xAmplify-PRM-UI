@@ -1,5 +1,5 @@
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
-    <div class="page-bar" style="border-radius: 3px !important; border: 1px solid #e0e0e0 !important;">
+    <div class="page-bar breadcrumb-border">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter" translate>Home</a>

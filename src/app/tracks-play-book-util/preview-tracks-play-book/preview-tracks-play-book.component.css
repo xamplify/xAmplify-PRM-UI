@@ -491,3 +491,12 @@ body {
     max-height: 100%;
     max-width: 100%;
 }
+.color-inline{
+    padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: white;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;border-bottom: 1px solid #eee;
+}
+.text-color{
+    color: #888;
+}
+.border{
+    padding: 8px 5px 8px 10px;margin-bottom: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom: 1px solid #eee;
+}

@@ -1303,15 +1303,22 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   uploadBackgroundImage() {
-      this.loadingcrop = true;
-      if (this.popupOpenedFor == 'formBackgroundImage') {
+    if(this.popupOpenedFor == 'formBackgroundImage' && this.croppedBackgroundImage === ""){
+        this.showCropper = false;
+      }  
+    else if (this.popupOpenedFor == 'formBackgroundImage') {
+         this.loadingcrop = true;
           this.backgroundImageFileObj = this.utilService.convertBase64ToFileObject(this.croppedBackgroundImage);
           this.backgroundImageFileObj = this.utilService.blobToFile(this.backgroundImageFileObj);
           console.log(this.backgroundImageFileObj.size)
           this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
           this.formBackgroundImagePath = null;
           this.backgroundImageChangedEvent = null;
-      } else if (this.popupOpenedFor == 'companyLogo') {
+      }else if(this.popupOpenedFor == 'companyLogo' && this.croppedCompanyLogoImage === ""){
+        this.showCropper = false;
+      }
+      else if (this.popupOpenedFor == 'companyLogo') {
+          this.loadingcrop = true;
           this.companyLogoFileObj = this.utilService.convertBase64ToFileObject(this.croppedCompanyLogoImage);
           this.companyLogoFileObj = this.utilService.blobToFile(this.companyLogoFileObj);
           this.uploadFile(this.companyLogoFileObj, 'companyLogo')

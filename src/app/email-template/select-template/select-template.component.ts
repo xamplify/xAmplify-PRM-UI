@@ -627,8 +627,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.emailTemplateService.emailTemplate.body = response.data[0].content;
             this.emailTemplateService.emailTemplate.marketoTemplate = true;
             this.emailTemplateService.emailTemplate.createdBy = this.authenticationService.getUserId().toString();
-           // this.router.navigate(["/home/emailtemplates/marketo/upload"]);
-            this.router.navigate([this.marketoUploadUrl]);
+           // this.router.navigate(["/home/emailtemplates/marketo/upload"]); 
+           this.router.navigate([this.marketoUploadUrl]);
         })
     }
 

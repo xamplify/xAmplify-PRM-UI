@@ -79,10 +79,10 @@
 					<div class="row">
 						<div class="col-sm-3 col-xs-12 mPad1">
 							<div class="image blur-content" id="image-blur-content-div">
-								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;" >
+								<div class="portlet light border-radius-0 shadow image-border">
 									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
 										<label class="control-label">Upload Logo</label>
-										<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+										<div class="profile-image-wrapper dotted-image-border"
 											(click)="imageClick()">
 											<span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
 											<span *ngIf="!croppedImage">
@@ -171,7 +171,7 @@
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
 									<label class="control-label">Upload Fav Icon</label>
-									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="openFavIconFileId()">
+									<div class="profile-image-wrapper dotted-image-border" (click)="openFavIconFileId()">
 									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">
 									<span *ngIf="!companyFavIconPath; else showFavIconImage">
 										<img
@@ -193,7 +193,7 @@
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
 									<label class="control-label">Upload Background Image</label>
-									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+									<div class="profile-image-wrapper dotted-image-border"
 											(click)="bgImageClick()">
 												<span
 												*ngIf="(squareDataForBgImage | json) == '{}'"> <img
@@ -419,8 +419,7 @@
 						</div>
 						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;">
 							<!-- ---Start Of Admin Panel -->
-							<div class="portlet light"
-							style="padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea!important;padding-bottom: 48px!important;">
+							<div class="portlet light company-details-border">
 							<div class="row" *ngIf="isFromAdminPanel">
 								<div class="col-xs-12 col-md-12 col-lg-12">
 									<div class="form-group" [attr.class]="userEmailIdDivClass">
@@ -864,6 +863,9 @@
 							white rectangle.</li>
 						<li>If you would like to use a different logo in an email
 							template, you can change it during the template design process.</li>
+							<li>
+								Please Upload .jpg, .jpeg, .png, .webp files only.
+							</li>
 					</ul>
 				</div>
 			</div>
@@ -992,6 +994,9 @@
 							white rectangle.</li>
 						<li>The uploaded image should have the pixels in any of the given dimensions
 							1024×768, 1280×960, 1400×1050, 1440×1080 , 1600×1200, 1856×1392, 1920×1440
+						</li>
+						<li>
+							Please Upload .jpg, .jpeg, .png, .webp files only.
 						</li>
 					</ul>
 				</div>

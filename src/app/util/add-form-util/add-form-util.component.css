@@ -1570,6 +1570,17 @@ div.switch5>input.switch:focus~label:before {
     margin-right: 12px;
 }
 
+.design-bgcolor{
+    padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;
+}
+.form-border{
+    border: 1px solid #eaeaea;padding-top: 5px;
+}
+.pencil-color{
+    color: #888;
+}
+
+
 .character-left-text {
     float: right;
       font-size: 11px;
