@@ -50,7 +50,7 @@
 }
 
 .table tr.row-selected td {
-    background-color: #00a6e847 !important;
+    background-color: #00a6e847;
     color: white;
 }
 
