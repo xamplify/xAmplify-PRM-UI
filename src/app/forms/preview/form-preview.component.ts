@@ -450,11 +450,11 @@ export class FormPreviewComponent implements OnInit {
             if (self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
               value.value = self.selectedPartnerFormAnswers[value.id];
               let choices: any;
-              if (value.labelType == 'quiz_radio' || 'quiz_checkbox') {
+              if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
                 choices = value.choices;
-              } else if (value.labelType == 'radio') {
+              } else if (value.labelType === "radio") {
                 choices = value.radioButtonChoices;
-              } else if (value.labelType == 'checkbox') {
+              } else if (value.labelType === "checkbox") {
                 choices = value.checkBoxChoices;
               }
               $.each(choices, function (index: number, choice: any) {

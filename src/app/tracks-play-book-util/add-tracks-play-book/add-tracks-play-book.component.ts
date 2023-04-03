@@ -445,6 +445,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
     this.referenceService.goToTop();
     this.startLoaders();
+    this.referenceService.loading(this.assetLoader, true);
     this.damService.list(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
@@ -468,7 +469,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         pagination = this.pagerService.getPagedItems(pagination, data.assets);
       }
       this.stopLoaders();
+      this.referenceService.loading(this.assetLoader, false);
     }, error => {
+      this.referenceService.loading(this.assetLoader, false);
       this.stopLoadersAndShowError(error);
     });
   }
@@ -476,6 +479,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   listPublishedAssets(pagination: Pagination) {
     this.referenceService.goToTop();
     this.startLoaders();
+    this.referenceService.loading(this.assetLoader, true);
     this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
@@ -486,7 +490,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         pagination = this.pagerService.getPagedItems(pagination, data.assets);
       }
       this.stopLoaders();
+      this.referenceService.loading(this.assetLoader, false);
     }, error => {
+      this.referenceService.loading(this.assetLoader, false);
       this.stopLoadersAndShowError(error);
     });
   }
