@@ -1569,3 +1569,12 @@ div.switch5>input.switch:focus~label:before {
 .margin{
     margin-right: 12px;
 }
+
+.character-left-text {
+    float: right;
+      font-size: 11px;
+      position: relative;
+      left: -4px;
+      color: #7b8894;
+      bottom: 22px;
+  }

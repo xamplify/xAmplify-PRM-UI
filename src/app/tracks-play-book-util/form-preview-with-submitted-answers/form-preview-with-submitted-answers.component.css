@@ -112,3 +112,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.label-value-correct {
+    color: green;
+    font-weight: 600;
+}
+
+.label-value-incorrect {
+    color: red;
+    font-weight: 600;
+}
