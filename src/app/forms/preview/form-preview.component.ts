@@ -32,7 +32,7 @@ declare var $,swal: any;
   selector: 'app-form-preview',
   templateUrl: './form-preview.component.html',
   styleUrls: ['./form-preview.component.css', '../../../assets/css/loader.css'],
-  providers: [HttpRequestLoader, FormService, Processor, LandingPageService],
+  providers: [HttpRequestLoader, FormService, Processor, LandingPageService, TracksPlayBookUtilService],
 })
 export class FormPreviewComponent implements OnInit {
   deviceInfo: any;
@@ -86,7 +86,7 @@ export class FormPreviewComponent implements OnInit {
     public authenticationService: AuthenticationService, private formService: FormService,
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
     private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService,
-     public tracksPlayBookUtilService: TracksPlayBookUtilService) {
+     private tracksPlayBookUtilService: TracksPlayBookUtilService) {
       this.siteKey = this.envService.captchaSiteKey;
       this.notifyParent = new EventEmitter<any>();
       this.captchaValue = new EventEmitter<any>();

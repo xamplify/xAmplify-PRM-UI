@@ -241,3 +241,11 @@
 .disable-click {
     pointer-events: none;
 }
+
+.form-image {
+    height: 50px;
+    width: fit-content;
+    right: 7px;
+    margin-left: -12px;
+    margin-top: 12px;
+}
