@@ -990,7 +990,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 					if (this.alias) {
 						this.nurtureCampaign = true;
-						
 						this.getSocialCampaign(this.alias);
 					} else {
 						this.nurtureCampaign = false;
