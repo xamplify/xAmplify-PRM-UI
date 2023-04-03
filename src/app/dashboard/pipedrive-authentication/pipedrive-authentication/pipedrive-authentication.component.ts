@@ -103,7 +103,8 @@ export class PipedriveAuthenticationComponent implements OnInit {
         },
         error => {
           this.loading = false;
-          this.customResponse = new CustomResponse('ERROR', "Failed to save", true);
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', errorMessage, true);
         },
         () => { }
       );
