@@ -53,6 +53,7 @@ CKEDITOR.editorConfig = function( config ) {
 								{'value': '{{state}}', 'name': 'State'},
 								{'value': '{{country}}', 'name': 'Country'},
 	                           { 'name': 'Sender First Name', 'value': '{{senderFirstName}}' },
+							   { 'name': 'Sender Middle Name', 'value': '{{senderMiddleName}}' },
 	                           { 'name': 'Sender Last Name', 'value': '{{senderLastName}}' },
 	                           { 'name': 'Sender Full Name', 'value': '{{senderFullName}}' },
 	                           { 'name': 'Sender Title', 'value': '{{senderTitle}}' },
@@ -62,6 +63,7 @@ CKEDITOR.editorConfig = function( config ) {
 	                           { 'name': 'Sender Company Url', 'value': '{{senderCompanyUrl}}' },
 							   { 'name': 'Sender Company Contact Number', 'value': '{{senderCompanyContactNumber}}' },
 							   { 'name': 'Sender About Us ', 'value': '{{senderAboutUs}}' },
+							   { 'name': 'Sender Event Url ', 'value': '{{senderAboutUs}}' },
 	                           { 'name': 'Partner About Us ', 'value': '{{partnerAboutUs}}' },
 	                           { 'name': 'Sender Privacy Policy', 'value': '{{senderPrivacyPolicy}}' },
 	                           { 'name': 'Unsubscribe Link', 'value': '{{unsubscribeLink}}' }

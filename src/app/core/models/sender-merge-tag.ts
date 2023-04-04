@@ -1,6 +1,7 @@
 export class SenderMergeTag {
     
     senderFirstName = "{{senderFirstName}}";
+    senderMiddleName = "{{senderMiddleName}}";
     senderLastName = "{{senderLastName}}";
     senderFullName = "{{senderFullName}}";
     senderTitle = "{{senderTitle}}";
@@ -16,6 +17,7 @@ export class SenderMergeTag {
     senderEventUrl = "{{senderEventUrl}}";
     
     senderFirstNameGlobal = /{{senderFirstName}}/g;
+    senderMiddleNameGlobal = /{{senderMiddleName}}/g;
     senderLastNameGlobal = /{{senderLastName}}/g;
     senderFullNameGlobal = /{{senderFullName}}/g;
     senderTitleGlobal = /{{senderTitle}}/g;
