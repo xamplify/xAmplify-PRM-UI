@@ -377,7 +377,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			if (data.selected)
 				this.socialCampaign.socialStatusProviderList.push(data)
 		});
-		if (this.isValidSocialCampaign()) {
+		if (this.validate()) {
 			this.loading = true;
 			this.socialService.redistributeSocialCampaign(this.socialCampaign)
 				.subscribe(
