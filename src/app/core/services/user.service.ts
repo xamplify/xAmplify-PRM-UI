@@ -89,7 +89,6 @@ export class UserService {
     }
 
     updateUserProfile(data: any, userId: number) {
-
         return this.http.post(this.URL + "admin/updateUser/" + userId + "?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);

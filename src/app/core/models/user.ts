@@ -6,6 +6,7 @@ export class User {
     password: string;
     firstName: string;
     lastName: string;
+    middleName:string;
     fullName: string;
     contactCompany: string;
     jobTitle: string;
