@@ -110,6 +110,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	isHeaderCheckBoxChecked: boolean;
 	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
 	buttonText = "Post Now";
+	socialStatusProvidersForRedistribution = new Array<SocialStatusProvider>();
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -661,6 +662,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				const socialStatusProvider = new SocialStatusProvider();
 				socialStatusProvider.socialConnection = this.socialConnections[i];
 				this.socialStatusProviders.push(socialStatusProvider);
+				/****XNFR-222***/
+				this.socialStatusProvidersForRedistribution.push(socialStatusProvider);
 			}
 		}
 	}

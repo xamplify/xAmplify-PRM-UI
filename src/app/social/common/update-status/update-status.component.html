@@ -344,7 +344,7 @@
                                             <i class="fa fa-check-square" *ngIf="socialStatus.selected" aria-hidden="true"></i>
                                             <!--XNFR-222-->
                                             <i *ngIf="socialCampaign?.allowPartnerToEditThePost &&!(socialStatus?.socialStatusProvider?.socialConnection?.source=='TWITTER' && ssp?.socialConnection?.source=='TWITTER')"
-                                             class="fa fa-pencil" (click)="$event.stopPropagation();socialStatus.editSharedPost = !socialStatus.editSharedPost" aria-hidden="true"></i>
+                                             class="fa fa-pencil" title="Edit" (click)="$event.stopPropagation();socialStatus.editSharedPost = !socialStatus.editSharedPost" aria-hidden="true"></i>
                                         </div>
                                         <div class="profile-image-box" *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source?.length>0">
                                             <img class="profile-image" src="{{socialStatus?.socialStatusProvider?.socialConnection?.profileImage}}" onError="this.src='assets/images/social/avatar.png';" alt="">
