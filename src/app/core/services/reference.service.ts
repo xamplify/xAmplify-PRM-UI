@@ -2102,7 +2102,6 @@ export class ReferenceService {
       );
     }
     /************My Merge Tags Info**********/
-    console.log(campaign.myMergeTagsInfo);
     updatedBody = this.replaceMyMergeTags(
       campaign.myMergeTagsInfo,
       updatedBody
@@ -2115,6 +2114,10 @@ export class ReferenceService {
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderFirstNameGlobal,
         myMergeTags.myFirstName
+      );
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderMiddleNameGlobal,
+        myMergeTags.myMiddleName
       );
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderLastNameGlobal,
@@ -2145,6 +2148,10 @@ export class ReferenceService {
         myMergeTags.myCompanyUrl
       );
       updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyAddressGlobal,
+        myMergeTags.myCompanyAddress
+      );
+      updatedBody = updatedBody.replace(
         this.senderMergeTag.senderCompanyContactNumberGlobal,
         myMergeTags.myCompanyContactNumber
       );
@@ -2153,8 +2160,12 @@ export class ReferenceService {
         myMergeTags.privacyPolicy
       );
       updatedBody = updatedBody.replace(
-        this.senderMergeTag.senderAboutUs,
+        this.senderMergeTag.senderAboutUsGlobal,
         myMergeTags.aboutUs
+      );
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderEventUrlGlobal,
+        myMergeTags.eventUrl
       );
     }
     return updatedBody;
@@ -2175,6 +2186,7 @@ export class ReferenceService {
     return (
       body.indexOf(this.senderMergeTag.senderFirstName) > -1 ||
       body.indexOf(this.senderMergeTag.senderLastName) > -1 ||
+      body.indexOf(this.senderMergeTag.senderMiddleName) > -1 ||
       body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
       body.indexOf(this.senderMergeTag.senderTitle) > -1 ||
       body.indexOf(this.senderMergeTag.senderEmailId) > -1 ||
@@ -2184,7 +2196,9 @@ export class ReferenceService {
       body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 ||
       body.indexOf(this.senderMergeTag.aboutUs) > -1 ||
       body.indexOf(this.senderMergeTag.privacyPolicy) > -1 ||
-      body.indexOf(this.senderMergeTag.senderAboutUs) > -1
+      body.indexOf(this.senderMergeTag.senderAboutUs) > -1 ||
+      body.indexOf(this.senderMergeTag.senderEventUrl) > -1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyAddress) > -1
     );
   }
 
@@ -2725,6 +2739,10 @@ export class ReferenceService {
       value: this.senderMergeTag.senderFirstName,
     });
     mergeTags.push({
+      name: "Sender Middle Name",
+      value: this.senderMergeTag.senderMiddleName,
+    });
+    mergeTags.push({
       name: "Sender Last Name",
       value: this.senderMergeTag.senderLastName,
     });
@@ -2786,6 +2804,11 @@ export class ReferenceService {
     mergeTags.push({
       name: "Sender Company Url",
       value: this.senderMergeTag.senderCompanyUrl,
+    });
+
+    mergeTags.push({
+      name: "Sender Company Address",
+      value: this.senderMergeTag.senderCompanyAddress,
     });
 
     mergeTags.push({
