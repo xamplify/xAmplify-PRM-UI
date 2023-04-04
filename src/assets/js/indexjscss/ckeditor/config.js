@@ -56,7 +56,7 @@ CKEDITOR.editorConfig = function( config ) {
 							   { 'name': 'Sender Middle Name', 'value': '{{senderMiddleName}}' },
 	                           { 'name': 'Sender Last Name', 'value': '{{senderLastName}}' },
 	                           { 'name': 'Sender Full Name', 'value': '{{senderFullName}}' },
-	                           { 'name': 'Sender Title', 'value': '{{senderTitle}}' },
+	                           { 'name': 'Sender Job Title', 'value': '{{senderTitle}}' },
 	                           { 'name': 'Sender Email Id', 'value': '{{senderEmailId}}' },
 	                           { 'name': 'Sender Contact Number', 'value': '{{senderContactNumber}}' },
 	                           { 'name': 'Sender Company', 'value': '{{senderCompany}}' },

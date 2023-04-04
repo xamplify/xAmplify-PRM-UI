@@ -2751,7 +2751,7 @@ export class ReferenceService {
       value: this.senderMergeTag.senderFullName,
     });
     mergeTags.push({
-      name: "Sender Title",
+      name: "Sender Job Title",
       value: this.senderMergeTag.senderTitle,
     });
     mergeTags.push({
