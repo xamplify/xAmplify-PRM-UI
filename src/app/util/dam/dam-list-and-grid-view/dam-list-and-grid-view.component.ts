@@ -81,6 +81,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	SuffixHeading:string = "";
 	titleHeader:string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
+	public fileTypes:Array<any> = new Array<any>();
+	selectedFileType = "";
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -199,9 +201,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 								this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
 								this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 							}
+							this.findFileTypesForPartnerView();
 							this.pagination.userId = this.loggedInUserId;
 							this.listPublishedAssets(this.pagination);
 						} else {
+							this.findFileTypes();
 							this.pagination.userId = this.loggedInUserId;
 							this.listAssets(this.pagination);
 						}
@@ -214,6 +218,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.router.navigate(["/home/dashboard"]);
 		}
 	}
+
+
+	
 
 	stopLoadersAndShowError(error: any) {
 		this.stopLoaders();
@@ -671,5 +678,29 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	 }
 
+	 findFileTypes(){
+		 this.damService.findFileTypes(this.loggedInUserCompanyId).subscribe(
+			 response=>{
+				this.fileTypes = response.data;
+			 },error=>{
+				this.fileTypes = [];
+			 }
+		 );
+	 }
 
+	 findFileTypesForPartnerView() {
+		this.damService.findFileTypesForPartnerView(this.vanityLoginDto).subscribe(
+			response=>{
+			   this.fileTypes = response.data;
+			},error=>{
+			   this.fileTypes = [];
+			}
+		);
+	}
+
+	 filterAssetsByFileType(event:any){
+		this.pagination.pageIndex = 1;
+		this.pagination.filterBy = event;
+		this.listItems(this.pagination);
+	 }
 }
