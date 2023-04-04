@@ -2147,3 +2147,6 @@ div.tab{
 .preview-edit-color{
   color: #5a5a5a;
 }
+.button-border{
+  border: 1px solid #fff;
+}

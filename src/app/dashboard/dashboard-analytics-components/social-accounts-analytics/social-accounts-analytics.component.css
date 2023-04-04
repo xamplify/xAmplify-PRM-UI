@@ -428,3 +428,6 @@ a.social-stats{text-align: center;}
 		transform: scale(0.9);
 	}
 }
+.social-border{
+	background-color: #e5e5e5; height: 1px; border: 0; margin: 8px 0 0 0;
+}

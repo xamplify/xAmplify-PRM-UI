@@ -825,7 +825,7 @@
                                                                 <div class="btn-group pull-right">
                                                                     <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
                                                                         (click)="syncPipelines()">
-                                                                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
+                                                                        <button class="btn btn-white read" data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
                                                                             <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                                                                         </button>
                                                                     </a>
@@ -1350,7 +1350,7 @@
                                                             </div>
                                                             <div class="col-xs-12 button-align" style="padding-left: 10px;">
                                                                 <button type="submit" class="btn green-haze" [disabled]="hasVideoRole" translate>Save Changes</button>
-                                                                <button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
+                                                                <button type="button" class="btn default" style="color:black !important;" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
                                                             </div>
                                                         </fieldset>
                                                     </div>
@@ -1370,7 +1370,7 @@
                                                     <fieldset>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
-                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right;margin-top: 5px;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                                             Download User CSV Template
                                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                                         </button>
@@ -1529,7 +1529,7 @@
                                                     <fieldset>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
-                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right;margin-top: 5px;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                             Download Domain CSV Template
                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                         </button>

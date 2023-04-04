@@ -30,7 +30,7 @@
 
                         <div *ngIf="!formSubmitted">
                             <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
-                                <a class="close-circle" (click)="refreshForm()" title="Refresh">
+                                <a class="close-circle" style="margin-top:-5px;" (click)="refreshForm()" title="Refresh">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
                                 </a>
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>

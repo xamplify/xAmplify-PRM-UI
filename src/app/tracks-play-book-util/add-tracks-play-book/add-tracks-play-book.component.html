@@ -142,7 +142,7 @@
                         (click)="showDropDown();filterFolders(folderSearchValue)" readonly
                         style="cursor: auto; display: inline-block;">
                       <i class="fa fa-angle-down dropdown-icon" aria-hidden="true"></i>
-                      <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller">
+                      <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller video">
                         <input type="text" placeholder="Search.." id="myInput"
                           (input)="filterFolders(folderSearchValue)" #folderSearchValue>
                         <div class="dropdown-option" [ngClass]="{'dropdown-content-odd': 0 === i % 2}"

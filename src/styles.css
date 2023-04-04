@@ -1232,7 +1232,7 @@ b, strong {
 
 .black-blue-c {
 	color: #7f2ca3 !important;
-	border-color: #008fd5 !important;
+	border-color: #008fd5;
 }
 
 .pure-g-c {

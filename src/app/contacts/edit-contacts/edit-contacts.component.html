@@ -1261,10 +1261,10 @@
 							</div>
 							<div class="row col-sm-1" style="margin-left: 30px;">
 							<div data-toggle="tooltip" data-placement="left" title="Add a condition">
-								<button [disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
+								<span [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
 									<i class="fa fa-plus-square" aria-hidden="true"
 										style="color: #0196da"></i>
-								</button>
+								</span>
 								</div>
 							</div>
 						</div>

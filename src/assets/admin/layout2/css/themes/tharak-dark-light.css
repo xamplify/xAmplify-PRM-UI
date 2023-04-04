@@ -51,7 +51,8 @@ body {
 .page-container-bg-solid .page-content,
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external,
 .disabled-background-color,
-.label-box:hover {
+.label-box:hover,
+.video {
   background-color:  #22313a !important;
 }
 .portlet.light {
@@ -66,7 +67,9 @@ body {
 }
 
 .portlet > .portlet-title,
-.header-text-css {
+.header-text-css,
+.black-blue-c:hover,
+.lineplayercontrol {
   border-bottom: 1px solid #2f4857 !important;
 }
 .portlet.box > .portlet-body {
@@ -84,21 +87,26 @@ h1, h2, h3, h4, h5, h6 {
 .text-center {
   color: white !important;
 }
-.grid-box-team {
+.grid-box-team,
+.gu-block:hover, .gu-transit {
   background-color:  #2b3c46 !important;
 }
 .total-records-bg-color {
   color: white !important;
 }
 .grid-box,
-#vendor-details-tile{
+#vendor-details-tile,
+.xamplify-dropdown-content{
   background-color:  #2b3c46 !important;
   border:1px solid #2f4857 !important;  
 }
-.bar,.tile,.heading-top {
+.bar,.tile,
+.heading-top,
+.progress {
   background-color: #22313a !important;
 }
-.text-primary {
+.text-primary,
+.special-progress-bar span {
   color: white !important;
 }
 .pagination>li>a, .pagination>li>span {
@@ -121,11 +129,13 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #2f4857 !important;
 }
 #header-custom-li-font,
-.caption-subject.font-red-sunglo {
+.caption-subject.font-red-sunglo,
+#asset-preview-content {
   color: white !important;
 }
-#notification {
-  background-color:#2b3c46 !important ;
+#notification,
+#notification-list {
+  background-color:#22313a !important ;
   /* border: 1px solid #2f4857 !important; */
 }
 .portlet.light > .portlet-title > .caption , .portlet-title > .caption {
@@ -135,7 +145,8 @@ h1, h2, h3, h4, h5, h6 {
   color: white !important;
 }
 .sparkline-chart .title, .easy-pie-chart .title,
-.alert-info {
+.alert-info,
+.btn.default {
   color: white !important
 }
 .partners-text,
@@ -170,7 +181,7 @@ td > button {
 .mix-filter li,
 .list-group-item,
 .read,
-input,
+/* input, */
 .card {
   color: white !important;
   background-color: #2b3c46 !important;
@@ -274,7 +285,8 @@ fieldset,
 .table-striped>tbody>tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
-.search-box-item-clear{
+.search-box-item-clear,
+input{
   background-color: #2b3c46 !important ;
 }
 .table-hover>tbody>tr:hover,
@@ -523,7 +535,8 @@ label{
 .card{
   border:1px solid #2f4857!important;
 }
-.card-bgcolor{
+.card-bgcolor,
+.content-bg{
   background-color: #2b3c46 !important;
 }
 .close-circle{
@@ -677,10 +690,8 @@ hr{
 .button:disabled{
   color: #000000 !important;
 }
-.profile-usermenu ul li.active a{
-  background-color: #22313a !important;
-  color: white !important;
-  border-left : 2px solid #2f4857 !important;
+.profile-usermenu ul li a{
+  color: #93a3b5 !important;
 }
 .reload-btn{
   background-color: #22313a !important;
@@ -706,14 +717,15 @@ hr{
   color: #fff !important;
     background: #22313a !important;
 }
-.form-check-label[_ngcontent-c30]{
+.form-check-label,
+.gu-block{
   border:1px solid #2f4857 !important;
 }
 .circled-number{
   color: #5bb2f5 !important;
 }
-.btn-hvr-text,
-button:disabled{
+/* remved ,button:disabled */
+.btn-hvr-text{
   color:black !important
 }
 .table tr.row-selected td{
@@ -729,6 +741,28 @@ input.cmn-toggle-round-flat + label:before{
 .timeline-item {
   background: #2f4857 !important ;
   border-color: #2f4857 !important ;
+}
+.social-border{
+  background-color: #2f4857!important;
+}
+.active-tab-anchor-text{
+  background-color: #80808047 !important;
+}
+.dropdown-content{
+  border: 1px solid #2f4857 !important;
+}
+.dropdown-content-odd{
+  background-color: #22313a !important;
+  border:1px solid #2f4857 !important;
+}
+.dropdown-option{
+  color:white !important;
+}
+.dropdown-option:hover{
+  background-color:  #2b3c46 !important;
+}
+#myInput{
+border:1px solid #2f4857 !important;
 }
 /* .emailtemplate-selected{
   background-color: #2b3c46 !important;
