@@ -1,6 +1,7 @@
 export class SenderMergeTag {
     
     senderFirstName = "{{senderFirstName}}";
+    senderMiddleName = "{{senderMiddleName}}";
     senderLastName = "{{senderLastName}}";
     senderFullName = "{{senderFullName}}";
     senderTitle = "{{senderTitle}}";
@@ -8,6 +9,7 @@ export class SenderMergeTag {
     senderContactNumber = "{{senderContactNumber}}";
     senderCompany = "{{senderCompany}}";
     senderCompanyUrl = "{{senderCompanyUrl}}";
+    senderCompanyAddress = "{{senderCompanyAddress}}";
     senderCompanyContactNumber = "{{senderCompanyContactNumber}}";
     aboutUs = "{{partnerAboutUs}}";
     privacyPolicy = "{{senderPrivacyPolicy}}";
@@ -16,6 +18,7 @@ export class SenderMergeTag {
     senderEventUrl = "{{senderEventUrl}}";
     
     senderFirstNameGlobal = /{{senderFirstName}}/g;
+    senderMiddleNameGlobal = /{{senderMiddleName}}/g;
     senderLastNameGlobal = /{{senderLastName}}/g;
     senderFullNameGlobal = /{{senderFullName}}/g;
     senderTitleGlobal = /{{senderTitle}}/g;
@@ -23,6 +26,7 @@ export class SenderMergeTag {
     senderContactNumberGlobal = /{{senderContactNumber}}/g;
     senderCompanyGlobal = /{{senderCompany}}/g;
     senderCompanyUrlGlobal = /{{senderCompanyUrl}}/g;
+    senderCompanyAddressGlobal = /{{senderCompanyAddress}}/g;
     senderCompanyContactNumberGlobal = /{{senderCompanyContactNumber}}/g;
     aboutUsGlobal = /{{partnerAboutUs}}/g;
     privacyPolicyGlobal = /{{senderPrivacyPolicy}}/g;

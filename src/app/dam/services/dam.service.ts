@@ -9,6 +9,7 @@ import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { HttpClient, HttpRequest } from "@angular/common/http";
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 @Injectable()
 export class DamService {
@@ -209,6 +210,17 @@ export class DamService {
     let url = this.findApiPrefixUrlByModule(moduleName);
     return this.callGetMethod(url+"isPublishedToPartnerGroups/"+damId);
   }
+
+  findFileTypes(companyId: number) {
+    return this.utilGetMethod("findFileTypes/" + companyId);
+   }
+
+   findFileTypesForPartnerView(vanityLoginDto:VanityLoginDto){
+     vanityLoginDto.userId = this.authenticationService.getUserId();
+    return this.http.post(this.URL + "findFileTypesForPartnerView" + "?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
   private findApiPrefixUrlByModule(moduleName:string){
     let url = "";
