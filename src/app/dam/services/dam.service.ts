@@ -211,13 +211,19 @@ export class DamService {
     return this.callGetMethod(url+"isPublishedToPartnerGroups/"+damId);
   }
 
-  findFileTypes(companyId: number) {
-    return this.utilGetMethod("findFileTypes/" + companyId);
+  findFileTypes(companyId: number,categoryId:number) {
+    if(undefined==categoryId){
+      categoryId = 0;
+    }
+    return this.utilGetMethod("findFileTypes/" + companyId+"/"+categoryId);
    }
 
-   findFileTypesForPartnerView(vanityLoginDto:VanityLoginDto){
+   findFileTypesForPartnerView(vanityLoginDto:VanityLoginDto,categoryId:number){
      vanityLoginDto.userId = this.authenticationService.getUserId();
-    return this.http.post(this.URL + "findFileTypesForPartnerView" + "?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+     if(undefined==categoryId){
+      categoryId = 0;
+    }
+    return this.http.post(this.URL + "findFileTypesForPartnerView/"+categoryId+ "?access_token=" + this.authenticationService.access_token, vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
    }

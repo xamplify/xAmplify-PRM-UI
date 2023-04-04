@@ -583,6 +583,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
+		if(this.isPartnerView){
+			this.findFileTypesForPartnerView();
+		}else{
+			this.findFileTypes();
+		}
 		this.listAssets(this.pagination);
 		this.callFolderListViewEmitter();
 		}else if(response.statusCode==401){
@@ -679,20 +684,26 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	 }
 
 	 findFileTypes(){
-		 this.damService.findFileTypes(this.loggedInUserCompanyId).subscribe(
+		this.loading = true;
+		 this.damService.findFileTypes(this.loggedInUserCompanyId,this.categoryId).subscribe(
 			 response=>{
 				this.fileTypes = response.data;
+				this.loading = false;
 			 },error=>{
 				this.fileTypes = [];
+				this.loading = false;
 			 }
 		 );
 	 }
 
 	 findFileTypesForPartnerView() {
-		this.damService.findFileTypesForPartnerView(this.vanityLoginDto).subscribe(
+		this.loading = true;
+		this.damService.findFileTypesForPartnerView(this.vanityLoginDto,this.categoryId).subscribe(
 			response=>{
 			   this.fileTypes = response.data;
+			   this.loading = false;
 			},error=>{
+				this.loading = false;
 			   this.fileTypes = [];
 			}
 		);
