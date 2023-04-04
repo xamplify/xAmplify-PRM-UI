@@ -88,7 +88,7 @@
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}" class="form-check-input"
 																(click)="columnInfo.value = radioButton.id"
-																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || choice.isSelected">
+																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || radioButton.isSelected">
 															{{radioButton.name}}
 														</label>
                                                 </div>
@@ -103,7 +103,7 @@
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}"
-																[checked]="checkBox.isChecked || choice.isSelected" class="form-check-input"
+																[checked]="checkBox.isChecked || checkBox.isSelected" class="form-check-input"
 																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)" >
 															{{checkBox.name}}
 														</label>
