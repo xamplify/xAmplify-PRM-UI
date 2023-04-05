@@ -42,43 +42,7 @@
       </div>
     </div>
   </div>
-  <div class="portlet light container"
-    style="width: 100%;padding-bottom: 10px;">
-    <!-- <div style="display: flex;padding-top: 1em;">
-      <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
-        <div class="cenetered-block">
-          <span>
-            <i class="fa fa-th-list" aria-hidden="true"></i>
-          </span>
-          <h5 class="hidden-xs" translate>Details</h5>
-        </div>
-      </div>
-      <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
-        <div class="cenetered-block">
-          <span>
-            <i class="fa fa-th-large" aria-hidden="true"></i>
-          </span>
-          <h5 class="hidden-xs" translate>Description</h5>
-        </div>
-      </div>
-      <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
-        <div class="cenetered-block">
-          <span>
-            <i class="fa fa-th-large" aria-hidden="true"></i>
-          </span>
-          <h5 class="hidden-xs" translate>Assets</h5>
-        </div>
-      </div>
-      <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
-        <div class="cenetered-block">
-          <span>
-            <i class="fa fa-users" aria-hidden="true"></i>
-          </span>
-          <h5 class="hidden-xs" translate>Share</h5>
-        </div>
-      </div>
-    </div> -->
-
+  <div class="portlet light container"  style="width: 100%;padding-bottom: 10px;">
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <div style="margin-top: 10px;">
@@ -190,7 +154,7 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
+                                  <div class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
                                     {{tag.tagName}}</div>
                                 </div>
                               </td>
@@ -205,7 +169,7 @@
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 5px !important;">
                                   <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
+                                    class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
                                     {{tagsListSecondColumn[i].tagName}}</div>
                                 </div>
                               </td>
@@ -279,10 +243,8 @@
           </div>
         <div class="input-icon right pull-right cebp">
           <ul class="button-align inline">
-            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
-                Media</button></li>
-            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add
-                Forms</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add Media</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add Forms</button></li>
           </ul>
         </div>
        </div>
@@ -329,6 +291,15 @@
                         {{option.name}}</option>
                     </select>
                   </div>
+
+                  <div id="left" *ngIf="fileTypesForFilter?.length>0">
+                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
+                        style="position: relative; right: -3px;">
+                      <option value="">Select Asset Type</option>
+                      <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
+                    </select> 
+                  </div>
+                  
                   <div class="portlet-input input-inline" id="search-div">
                     <div class="input-icon right" id="icon" style="padding-left: 5px;">
                       <input type="text" [(ngModel)]="assetSortOption.searchKey" [ngModelOptions]="{standalone: true}"
@@ -1032,6 +1003,14 @@
                         {{option.name}}</option>
                     </select>
                   </div>
+                  <!--Filter Types---->
+                  <div id="left" class="mSortAlign ml10" *ngIf="fileTypesForFilter?.length>0">
+                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+                      <option value="">Select Asset Type</option>
+                      <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
+                    </select> 
+                  </div>
+
                   <div class="portlet-input input-inline input-small mSearchAlign" id="search">
                     <div class="input-icon right" id="search-icon">
                       <input type="text" id="search-text" class="form-control" [(ngModel)]="assetSortOption.searchKey"

@@ -169,6 +169,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  selectedFileType = "";
+  fileTypesForFilter:Array<any> = new Array<any>();
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -250,6 +252,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepThreeTabClass = this.activeTabClass;
       this.assetPagination = new Pagination();
       this.assetSortOption = new SortOption();
+      this.findFileTypes();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
@@ -1398,9 +1401,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetPagination = new Pagination();
     this.assetSortOption = new SortOption();
     this.isAssestPopUpOpen = true;
+    this.findFileTypes();
     this.listAssets(this.assetPagination);
     $('#media-asset-list').modal('show');
   }
+
+ 
 
   closeAssetModal(){
     this.isAssestPopUpOpen = false;
@@ -1481,5 +1487,25 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           console.log("Description"+this.tracksPlayBook.description);
       }
     }
+  }
+
+  findFileTypes(){
+    this.selectedFileType = "";
+		this.loading = true;
+		 this.damService.findFileTypes(this.loggedInUserCompanyId,this.categoryId).subscribe(
+			 response=>{
+				this.fileTypesForFilter = response.data;
+				this.loading = false;
+			 },error=>{
+				this.fileTypesForFilter = [];
+				this.loading = false;
+			 }
+		 );
+	 }
+
+  filterAssetsByFileType(event:any){
+    this.assetPagination.pageIndex = 1;
+		this.assetPagination.filterBy = event;
+    this.listAssets(this.assetPagination);
   }
 }

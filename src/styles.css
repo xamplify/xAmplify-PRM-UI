@@ -1845,3 +1845,10 @@ border: 1px solid #ddd !important;
 	opacity: 0.5;
 	filter: blur(15px);
 }
+
+.text-wrap {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 100%;
+  }
