@@ -252,6 +252,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepThreeTabClass = this.activeTabClass;
       this.assetPagination = new Pagination();
       this.assetSortOption = new SortOption();
+      this.findFileTypes();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
@@ -1489,6 +1490,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   findFileTypes(){
+    this.selectedFileType = "";
 		this.loading = true;
 		 this.damService.findFileTypes(this.loggedInUserCompanyId,this.categoryId).subscribe(
 			 response=>{

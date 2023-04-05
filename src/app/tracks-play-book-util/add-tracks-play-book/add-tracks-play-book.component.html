@@ -291,6 +291,15 @@
                         {{option.name}}</option>
                     </select>
                   </div>
+
+                  <div id="left" *ngIf="fileTypesForFilter?.length>0">
+                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
+                        style="position: relative; right: -3px;">
+                      <option value="">Select Asset Type</option>
+                      <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
+                    </select> 
+                  </div>
+                  
                   <div class="portlet-input input-inline" id="search-div">
                     <div class="input-icon right" id="icon" style="padding-left: 5px;">
                       <input type="text" [(ngModel)]="assetSortOption.searchKey" [ngModelOptions]="{standalone: true}"
