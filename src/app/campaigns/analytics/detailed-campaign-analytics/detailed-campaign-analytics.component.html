@@ -852,7 +852,7 @@
                     </div>
                     <div *ngIf="'LANDINGPAGE'!=campaignType"
                       [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
-                      class="btn-group pull-right col-xs-1" style="margin-top: -9px; cursor:pointer; color: #7d8c98">
+                      class="btn-group pull-right col-xs-1 gear-icon" style="margin-top: -9px; cursor:pointer;">
                       <span class="dropdown-toggle" data-toggle="dropdown"
                         style="box-shadow:none;margin-top: 14px; float:right;display: inline-flex;">
                         <i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
@@ -1274,8 +1274,7 @@
     <div class="portlet light" style="background: white;padding:2px 0px;"
       *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
       <div class="col-xs-12 p0">
-        <div class="portlet-title col-xs-12"
-          style="padding: 10px 0px 10px 0px;background-color: white;border-bottom: 1px solid #eee;">
+        <div class="portlet-title col-xs-12 header">
           <div class="caption col-xs-12 col-sm-8" style="padding-top: 4px;padding-left: 3px;">
             <span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
               <span>
@@ -1305,7 +1304,7 @@
           </div>
 
           <div [class.disabled]="leadsFormHeaders?.length == 0 || isLeadListDownloadProcessing"
-            class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+            class="btn-group pull-right col-xs-1 gear-icon" style="margin-top: -10px; cursor:pointer;">
             <span class="dropdown-toggle" data-toggle="dropdown"
               style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;display: inline-flex;">
               <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2028,7 +2027,7 @@
             <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
           </div>
           <div class='col-xs-2 col-sm-1 col-lg-1 p0'>
-            <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
+            <div class="btn-group pull-right gear-icon" style="margin-top: 20px; cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2324,7 +2323,7 @@
             <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
           </div>
           <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+            <div class="btn-group gear-icon" style="cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none; position: absolute; display: inline-flex;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2435,7 +2434,7 @@
           </div>
 
           <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-            <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
+            <div class="btn-group pull-right gear-icon" style="margin-top: 20px; cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2538,7 +2537,7 @@
           </div>
 
           <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+            <div class="btn-group gear-icon" style="cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none; position: absolute;display: inline-flex;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2848,7 +2847,7 @@
             <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
           </div>
           <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-            <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+            <div class="btn-group gear-icon" style="cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none; position: absolute; display: inline-flex;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2996,7 +2995,7 @@
             </div>
 
             <div [class.disabled]="partnerLeadsFormHeaders?.length == 0 || isLeadListDownloadProcessing"
-              class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+              class="btn-group pull-right col-xs-1 gear-icon" style="margin-top: -10px; cursor:pointer;">
               <span class="dropdown-toggle" data-toggle="dropdown"
                 style="box-shadow:none;margin-top: 14px;margin-right: 21px;display: inline-flex;margin-left: -4px;">
                 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i

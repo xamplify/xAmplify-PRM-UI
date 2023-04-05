@@ -148,7 +148,7 @@
 
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' && activeCRMDetails?.type != 'PIPEDRIVE'" (click)="syncLeadsWithActiveCRM()">
 
-                        <button class="btn btn-white button" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
+                        <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>

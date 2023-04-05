@@ -645,7 +645,7 @@ label {
 	white-space: nowrap;
 	vertical-align: middle;
 	height: 39% !important;
-	border: 1px solid #eaeaea !important;
+	border: 1px solid #eaeaea;
 	border-radius: 3px !important;
 }
 

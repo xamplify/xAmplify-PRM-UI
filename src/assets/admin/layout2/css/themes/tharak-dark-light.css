@@ -96,7 +96,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 .grid-box,
 #vendor-details-tile,
-.xamplify-dropdown-content{
+.xamplify-dropdown-content,
+.header{
   background-color:  #2b3c46 !important;
   border:1px solid #2f4857 !important;  
 }
@@ -230,6 +231,7 @@ ul.alt-row-style1 li:hover,
   border: 1px solid #2f4857 !important;
 }
 .pricing,
+.edit-field-prefix,
 .with-nav-tabs.panel-default .nav-tabs > li.active > a, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover, .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
   border: 1px solid #2f4857 !important;
 }
@@ -303,7 +305,9 @@ input{
   color: white !important;
 
 }
-.upload-asset-div{
+.upload-asset-div,
+.well,
+.my-drop-zone{
   background-color: #2b3c46 !important;
   border: dotted 3px #2f4857 !important;
 }
@@ -494,6 +498,11 @@ label{
   background-color:  #2b3c46 !important;
   border: 1px solid #2f4857!important;
 }
+.input-group-addon{
+  color:white !important;
+  background-color:  #22313a !important;
+  border: 1px solid #2f4857!important;
+}
 .design-bgcolor{
   background-color:  #2b3c46 !important;
   border: 1px solid #2f4857!important;
@@ -520,7 +529,8 @@ label{
   color:white !important;
 }
 /* 28-3-2023 */
-.image-border{
+.image-border,
+#partner-analytics{
   border:1px solid #2f4857!important;
 }
 .panel-default{
@@ -713,7 +723,10 @@ hr{
   background-color: #2b3c46 !important;
 }
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default{
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger,
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning{
   color: #fff !important;
     background: #22313a !important;
 }
@@ -764,6 +777,76 @@ input.cmn-toggle-round-flat + label:before{
 #myInput{
 border:1px solid #2f4857 !important;
 }
+textarea::placeholder {
+  color: white !important;
+}
+input::placeholder{
+  color: white !important;
+}
+textarea:active, textarea:focus {
+   border-radius: 1px; 
+  border-color: #2f4857  !important ;
+  outline: 1px solid #2f4857 !important;
+}
+input:active, input:focus{
+  border-color: #2f4857  !important ;
+  outline: 1px solid #2f4857 !important;
+}
+.user-comment p:after,
+.comment.user-comment p,
+.comment.author-comment p,
+.author-comment p:after{
+  background-color:  #2b3c46 !important;
+  border:2px solid #2f4857 !important;
+}
+.salesforce-btn{
+  background-color:  #22313a !important;
+  border:1px solid #2f4857 !important;
+  color:white !important;
+}
+.flatpickr-days{
+  background: #22313a !important;
+  border-left: 1px solid #2f4857;
+  border-right: 1px solid #2f4857;
+}
+.flatpickr-day.disabled, .flatpickr-day.disabled:hover, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay, .flatpickr-day.notAllowed, .flatpickr-day.notAllowed.prevMonthDay, .flatpickr-day.notAllowed.nextMonthDay{
+  color:white !important;
+}
+.flatpickr-day.today{
+  border-color: #2f4857 !important;
+}
+.flatpickr-innerContainer{
+  border: 0px !important;
+}
+.flatpickr-day.today:hover, .flatpickr-day.today:focus{
+    background: #2b3c46 !important;
+}
+.flatpickr-day.inRange, .flatpickr-day.prevMonthDay.inRange, .flatpickr-day.nextMonthDay.inRange, .flatpickr-day.today.inRange, .flatpickr-day.prevMonthDay.today.inRange, .flatpickr-day.nextMonthDay.today.inRange, .flatpickr-day:hover, .flatpickr-day.prevMonthDay:hover, .flatpickr-day.nextMonthDay:hover, .flatpickr-day:focus, .flatpickr-day.prevMonthDay:focus, .flatpickr-day.nextMonthDay:focus{
+  background: #2b3c46 !important;
+  border-color: #2f4857 !important;
+}
+.flatpickr-time input,
+.flatpickr-time .flatpickr-time-separator, .flatpickr-time .flatpickr-am-pm{
+  color:white !important;
+  background-color: #2b3c46 !important;
+}
+.flatpickr-calendar.showTimeInput.hasTime .flatpickr-time,
+.input-group-addon, .input-group-btn{
+  border:1px solid #2f4857 !important;
+}
+.panel-info > .panel-heading{
+  background-color:  #22313a !important;
+  border-color:#2f4857 !important;
+}
+.e-input-group:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-input-group.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-input-group.e-control-wrapper:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-float-input.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-float-input.e-control-wrapper.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap{
+  border-color:#2f4857 !important;
+}
+/* .col-block-active:hover{
+  background-color: #00a8e7 !important;
+}
+.col-block-active{
+  background-color: #0c84ae !important;
+} */
 /* .emailtemplate-selected{
   background-color: #2b3c46 !important;
     border: 1px solid #2f4857 !important;

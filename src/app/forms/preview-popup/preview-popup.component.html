@@ -88,7 +88,7 @@
                                             <td [hidden]="!showEmbedLink || authenticationService.isShowForms">
                                                 <div style="display:flex">
                                                     <span>
-                                                        <textarea id="text-area" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                                                        <textarea id="text-area" class="video" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
                                                     </span>
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
                                                         <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" 
