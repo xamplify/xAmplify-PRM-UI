@@ -243,10 +243,8 @@
           </div>
         <div class="input-icon right pull-right cebp">
           <ul class="button-align inline">
-            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
-                Media</button></li>
-            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add
-                Forms</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add Media</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add Forms</button></li>
           </ul>
         </div>
        </div>
@@ -996,6 +994,14 @@
                         {{option.name}}</option>
                     </select>
                   </div>
+                  <!--Filter Types---->
+                  <div id="left" class="mSortAlign ml10" *ngIf="fileTypesForFilter?.length>0">
+                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+                      <option value="">Select Asset Type</option>
+                      <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
+                    </select> 
+                  </div>
+
                   <div class="portlet-input input-inline input-small mSearchAlign" id="search">
                     <div class="input-icon right" id="search-icon">
                       <input type="text" id="search-text" class="form-control" [(ngModel)]="assetSortOption.searchKey"
