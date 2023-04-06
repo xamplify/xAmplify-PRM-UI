@@ -225,7 +225,7 @@
                                                  <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                     data-toggle="tooltip" data-placement="top"
                                                     title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(campaign)">
-                                                    <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                    <i class="fa fa-external-link-square preview-edit-color"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px;"></i>
                                                  </a>
                                               </span>
                                            </div>
@@ -273,7 +273,7 @@
                                               <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                  data-toggle="tooltip" data-placement="top"
                                                  title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
-                                              <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                              <i class="fa fa-external-link-square preview-edit-color"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px;"></i>
                                               </a>
                                               </span>
                                            </div>
@@ -338,7 +338,7 @@
                            </tbody>
                         </table>
                      </div>
-                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0" style="background:white">
+                     <div *ngIf="campaignPartnersOrContactsPagination.totalRecords > 0">
                         <div *ngIf="campaignPartnersOrContactsPagination.pagedItems.length !== 0">
                            <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
                         </div>
@@ -463,7 +463,7 @@
                                                                 <span>
                                                                 <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
                                                                    title="Preview"  (click)="$event.stopPropagation();showEmailTemplate(campaign,reply.emailTemplate)">
-                                                                <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 5px !important; font-size:15px; color: #5a5a5a"></i>
+                                                                <i class="fa fa-external-link-square preview-edit-color"  aria-hidden="true" style="padding-top: 5px !important; font-size:15px;"></i>
                                                                 </a>
                                                                 </span>
                                                              </div>
@@ -561,7 +561,7 @@
                                                                 <span>
                                                                 <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
                                                                    title="Preview"  (click)="$event.stopPropagation();showEmailTemplate(campaign,url.emailTemplate)">
-                                                                <i class="fa fa-external-link-square preview-btn"  aria-hidden="true"></i>
+                                                                <i class="fa fa-external-link-square preview-btn preview-edit-color"  aria-hidden="true"></i>
                                                                 </a>
                                                                 </span>
                                                              </div>

@@ -52,7 +52,8 @@ body {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external,
 .disabled-background-color,
 .label-box:hover,
-.video {
+.video,
+.table tr.xamp-tr-selected td {
   background-color:  #22313a !important;
 }
 .portlet.light {
@@ -69,7 +70,8 @@ body {
 .portlet > .portlet-title,
 .header-text-css,
 .black-blue-c:hover,
-.lineplayercontrol {
+.lineplayercontrol,
+.row-space {
   border-bottom: 1px solid #2f4857 !important;
 }
 .portlet.box > .portlet-body {
@@ -407,7 +409,8 @@ input{
 }
 .plus-color,
 .exclusion-text-color,
-.swal2-content{
+.swal2-content,
+.auto-resp{
   color:white !important;
 }
 .port-heading{
@@ -777,14 +780,18 @@ input.cmn-toggle-round-flat + label:before{
 #myInput{
 border:1px solid #2f4857 !important;
 }
-textarea::placeholder {
+/* textarea::placeholder {
   color: white !important;
 }
 input::placeholder{
   color: white !important;
-}
+} */
 textarea:active, textarea:focus {
    border-radius: 1px; 
+  border-color: #2f4857  !important ;
+  outline: 1px solid #2f4857 !important;
+}
+.swal2-input:not([type=file]), .swal2-textarea{
   border-color: #2f4857  !important ;
   outline: 1px solid #2f4857 !important;
 }
@@ -840,6 +847,29 @@ input:active, input:focus{
 }
 .e-input-group:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-input-group.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-input-group.e-control-wrapper:not(.e-success):not(.e-warning):not(.e-error):not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-float-input.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap, .e-float-input.e-control-wrapper.e-float-icon-left:not(.e-success):not(.e-warning):not(.e-error) .e-input-in-wrap{
   border-color:#2f4857 !important;
+}
+.message-auto{
+  border:1px solid #2f4857 !important;
+  background-color:  #22313a !important;
+}
+.has-error{
+  border:1px solid #2f4857 !important;
+  box-shadow: inset 0 1px 1px #2f4857, 0 0 5px #2f4857 !important;
+}
+.border-right,
+.right-border{
+  border-right: 1px solid #2f4857 !important;
+}
+.h5-heading,
+.border-bottom{
+  border-bottom: 1px solid #2f4857 !important;
+}
+.cards{
+  border: 1px solid #2f4857 !important;
+  background-image: linear-gradient(to top, #f1f2f5, rgba(255, 255, 255, 0)), linear-gradient(to bottom, #2f4758, #2f4758) !important;
+}
+.phone {
+  color:#fff !important;
 }
 /* .col-block-active:hover{
   background-color: #00a8e7 !important;

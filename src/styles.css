@@ -1520,7 +1520,7 @@ b, strong {
 }
 
 .table tr.xamp-tr-selected td {
-	background-color: #00a6e8 !important;
+	background-color: #00a6e8;
 	color: white;
 }
 

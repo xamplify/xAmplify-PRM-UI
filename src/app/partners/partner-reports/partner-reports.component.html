@@ -645,7 +645,7 @@
 
 
             <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
-              style="background:white">
+             class="bg-card-header">
               <app-pagination [pagination]="throughPartnerCampaignPagination" (notifyParent)="setPartnerCampaignsPageByType($event,'through-partner')" (notifyParentDropDown)="listThroughPartnerCampaigns($event)">
               </app-pagination>
             </div>

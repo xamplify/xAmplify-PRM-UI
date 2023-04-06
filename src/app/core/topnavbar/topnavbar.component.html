@@ -147,6 +147,11 @@
                             <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
                                 <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                             </li>
+                            <li (click)="darkTheme(cskin.defaultSkin)">
+                                <a translate *ngIf="cskin.defaultSkin"> <i class="icon-key" aria-hidden="true"></i> Dark Theme</a>
+                               <a translate *ngIf="!cskin.defaultSkin"> <i class="icon-key" aria-hidden="true"></i> Default Theme</a>
+                                 </li>
+                                
                             </ng-container>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
