@@ -2128,7 +2128,7 @@ export class ReferenceService {
         myMergeTags.myFullName
       );
       updatedBody = updatedBody.replace(
-        this.senderMergeTag.senderTitleGlobal,
+        this.senderMergeTag.senderJobTitleGlobal,
         myMergeTags.myTitle
       );
       updatedBody = updatedBody.replace(
@@ -2162,6 +2162,10 @@ export class ReferenceService {
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderAboutUsGlobal,
         myMergeTags.aboutUs
+      );
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderEventUrlGlobal,
+        myMergeTags.eventUrl
       );
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderEventUrlGlobal,
@@ -2751,8 +2755,8 @@ export class ReferenceService {
       value: this.senderMergeTag.senderFullName,
     });
     mergeTags.push({
-      name: "Sender Job Title",
-      value: this.senderMergeTag.senderTitle,
+      name: this.senderMergeTag.senderJobTitleKey,
+      value: this.senderMergeTag.senderJobTitle,
     });
     mergeTags.push({
       name: "Sender Email Id",
