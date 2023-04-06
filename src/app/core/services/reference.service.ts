@@ -2129,7 +2129,7 @@ export class ReferenceService {
       );
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderJobTitleGlobal,
-        myMergeTags.myTitle
+        myMergeTags.senderJobTitle
       );
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderEmailIdGlobal,
