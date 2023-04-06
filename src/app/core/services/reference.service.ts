@@ -2192,7 +2192,7 @@ export class ReferenceService {
       body.indexOf(this.senderMergeTag.senderLastName) > -1 ||
       body.indexOf(this.senderMergeTag.senderMiddleName) > -1 ||
       body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
-      body.indexOf(this.senderMergeTag.senderTitle) > -1 ||
+      body.indexOf(this.senderMergeTag.senderJobTitle) > -1 ||
       body.indexOf(this.senderMergeTag.senderEmailId) > -1 ||
       body.indexOf(this.senderMergeTag.senderContactNumber) > -1 ||
       body.indexOf(this.senderMergeTag.senderCompany) > -1 ||
