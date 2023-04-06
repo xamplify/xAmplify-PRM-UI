@@ -475,6 +475,9 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     this.deal.pipelineStageId = 0;
     this.getStages();
+    this.pipelineStageId = "form-group has-error has-feedback";
+    this.pipelineStageIdError = true;
+    this.isDealRegistrationFormValid = false;
   }
 
   getStages() {

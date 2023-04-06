@@ -1972,7 +1972,7 @@
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
                                                 <span style="margin-right: 5px;">Default</span>
-                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
+                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
                                                     <option value="lost">Lost</option>
