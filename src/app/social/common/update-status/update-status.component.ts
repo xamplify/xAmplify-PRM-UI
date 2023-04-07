@@ -110,7 +110,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	isHeaderCheckBoxChecked: boolean;
 	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
 	buttonText = "Post Now";
-	socialStatusProvidersForRedistribution = new Array<SocialStatusProvider>();
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -369,7 +368,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.resetCustomResponse();
 		this.socialCampaign.socialStatusProviderList = [];
 		this.socialCampaign.userId = this.userId;
-
 		this.socialCampaign.parentCampaignId = this.socialCampaign.campaignId;
 		this.socialCampaign.campaignId = null;
 		this.socialCampaign.channelCampaign = false;
@@ -378,7 +376,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			if (data.selected)
 				this.socialCampaign.socialStatusProviderList.push(data)
 		});
-		if (this.validate()) {
+		if (!this.validate()) {
 			this.loading = true;
 			this.socialService.redistributeSocialCampaign(this.socialCampaign)
 				.subscribe(
@@ -662,8 +660,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				const socialStatusProvider = new SocialStatusProvider();
 				socialStatusProvider.socialConnection = this.socialConnections[i];
 				this.socialStatusProviders.push(socialStatusProvider);
-				/****XNFR-222***/
-				this.socialStatusProvidersForRedistribution.push(socialStatusProvider);
 			}
 		}
 	}
@@ -1538,7 +1534,24 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 	
 	/***XNFR-222****/
-
+	resetPost(socialStatus:any){
+		this.loading = true;
+		this.socialService.getSocialStatusById(socialStatus.id).subscribe(
+			response=>{
+				if(response.statusCode==200){
+					let data = response.data;
+					socialStatus.statusMessage = data.statusMessage;
+					socialStatus.socialStatusContents = data.socialStatusContents;
+				}else{
+					this.referenceService.showSweetAlertErrorMessage("Post Not Found");
+				}
+				this.loading = false;
+			},error=>{
+				this.loading = false;
+				this.referenceService.showSweetAlertServerErrorMessage();
+			}
+		);
+	}
 
 }
 

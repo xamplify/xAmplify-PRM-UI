@@ -372,5 +372,10 @@ export class SocialService {
         .map(this.extractData)
         .catch(this.handleError);
 }
+
+getSocialStatusById(socialStatusId:number){
+  return this.http.get( this.URL + 'social/findSocialStatusById/'+socialStatusId+'?access_token=' + this.authenticationService.access_token,"" )
+    		.map( this.extractData ).catch( this.handleError );
+}
   
 }
