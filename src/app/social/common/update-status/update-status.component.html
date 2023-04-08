@@ -6,9 +6,30 @@
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
             </li>
-      <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
-        <i class="fa fa-angle-right" aria-hidden="true"></i>
-        Update Status</li>
+            <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            Update Status
+            </li>
+            <ng-container *ngIf="!showNavigationBreadCrumbToPartner">
+                <li>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a [routerLink]="['../../campaigns/select']">Select Campaign</a>
+                </li>
+                <li  style="color: #808680;">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    Create Social Campaign
+                </li>
+            </ng-container>
+            <ng-container *ngIf="showNavigationBreadCrumbToPartner">
+                <li>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <a [routerLink]="['/home/campaigns/partner/social']">Campaigns shared by Vendors</a>
+                </li>
+                <li  style="color: #808680;">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                   Redistribute Social Campaign
+                </li>
+            </ng-container>
         </ul>
         <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
             <button class="btn btn custom" id="right" style="padding-bottom: 2px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>

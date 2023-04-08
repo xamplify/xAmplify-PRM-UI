@@ -110,6 +110,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	isHeaderCheckBoxChecked: boolean;
 	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
 	buttonText = "Post Now";
+	showNavigationBreadCrumbToPartner = false;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -126,6 +127,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.countries = this.referenceService.getCountries();
 		this.countryId = this.countries[0].id;
 		this.onSelectCountry(this.countryId);
+		
 	}
 	resetCustomResponse() {
 		this.customResponse.type = null;
@@ -965,7 +967,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		
+		this.showNavigationBreadCrumbToPartner = this.alias!=undefined;
 		flatpickr('.flatpickr', {
 			enableTime: true,
 			minDate: new Date(),
