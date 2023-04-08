@@ -120,7 +120,7 @@
                                 <h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
                             </label>
                             <input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
-                            <span *ngIf="isCampaignNameExist required">Campaign already exists</span>
+                            <span class="red" *ngIf="isCampaignNameExist">Campaign already exists</span>
                         </div>
                     </div>
                     <div class="col-sm-5 col-xs-12">

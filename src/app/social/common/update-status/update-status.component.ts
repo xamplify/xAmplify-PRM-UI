@@ -324,13 +324,28 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	validate() {
 		let isValid = true;
-		this.socialStatusList.forEach(data => {
-			if (!data.statusMessage && data.socialStatusContents.length === 0) {
-				this.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
-				isValid = false;
-				return false;
-			}
-		})
+		if(this.showNavigationBreadCrumbToPartner){
+			let self = this;
+			$.each(this.socialStatusProviders,function(index:number,socialStatusProvider:any){
+				let soicalStatusList = socialStatusProvider.socialStatusList;
+				soicalStatusList.forEach(data => {
+					if (!data.statusMessage && data.socialStatusContents.length === 0) {
+						self.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
+						self.referenceService.scrollSmoothToDiv('content-div');
+						isValid = false;
+						return false;
+					}
+				});
+			});
+		}else{
+			this.socialStatusList.forEach(data => {
+				if (!data.statusMessage && data.socialStatusContents.length === 0) {
+					this.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
+					isValid = false;
+					return false;
+				}
+			});
+		}
 		if (isValid)
 			return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
 	}
@@ -378,7 +393,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			if (data.selected)
 				this.socialCampaign.socialStatusProviderList.push(data)
 		});
-		if (!this.validate()) {
+		if (this.validate()) {
 			this.loading = true;
 			this.socialService.redistributeSocialCampaign(this.socialCampaign)
 				.subscribe(
