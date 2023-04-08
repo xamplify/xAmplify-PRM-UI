@@ -331,7 +331,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				soicalStatusList.forEach(data => {
 					if (!data.statusMessage && data.socialStatusContents.length === 0) {
 						self.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
-						self.referenceService.scrollSmoothToDiv('content-div');
 						isValid = false;
 						return false;
 					}
@@ -744,7 +743,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	loadContactLists(contactListsPagination: Pagination) {
 		this.recipientsLoader.isHorizontalCss = true;
         this.referenceService.loading(this.recipientsLoader, true);
-		
 		if (this.alias != undefined) {
 			this.loadContactsLeadsAndPartners(contactListsPagination);
 		} else {
@@ -807,6 +805,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					let data = response.data;
 					contactListsPagination.totalRecords = data.totalRecords;
 					contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.list);
+					this.referenceService.loading(this.recipientsLoader, false);
 				},
 				(error: string) => this.logger.errorPage(error),
 				() => this.logger.info("Finished loadContactList()")

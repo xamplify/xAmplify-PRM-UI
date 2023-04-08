@@ -120,7 +120,7 @@
                                 <h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
                             </label>
                             <input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
-                            <span class="red" *ngIf="isCampaignNameExist">Campaign already exists</span>
+                            <span class="required" *ngIf="isCampaignNameExist">Campaign already exists</span>
                         </div>
                     </div>
                     <div class="col-sm-5 col-xs-12">
@@ -561,10 +561,8 @@
                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                             List Info
                                         </th>
-                                        <th scope="row" class="text-center"  *ngIf="showContactType" translate>Type
-                                        </th>
                                         <th scope="row" class="text-center" translate>Created On</th>
-                                        <th scope="row" class="text-center" translate>Count</th>
+                                        <th *ngIf="!showNavigationBreadCrumbToPartner" scope="row" class="text-center" translate>Count</th>
                                         <th scope="row" class="text-center" translate>Preview </th>
                                     </tr>
                                 </thead>
@@ -599,7 +597,7 @@
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contactList?.name}}">
                                                 <span><strong>{{contactList?.name}}</strong></span>
                                             </h4>
-                                            <h6 class="moreipsis" title="{{contactList?.createdName}}">
+                                            <h6 *ngIf="!showNavigationBreadCrumbToPartner" class="moreipsis" title="{{contactList?.createdName}}">
                                                 <span translate> Created By <strong>{{contactList?.creatorName}}</strong></span>
                                             </h6>
                                             <ng-container *ngIf="!contactList?.partnerList">
@@ -612,26 +610,22 @@
                                                             title="{{actionsDescription?.contact_list_private}}" translate>Private
                                                         </span>
                                                     </h6> 
-                                                    <h6 *ngIf="contactList?.formList" class="view-banner view-banner-green" translate>
-                                                        <span data-toggle="tooltip" data-placement="top"
-                                                            title="This list is associated with a form." translate>Form Contact List
-                                                        </span>
-                                                    </h6>                                                                           
-                                                </div>                                                                        
+                                                </div>    
+                                                <h6 *ngIf="contactList?.formList" class="view-banner view-banner-green mt5" translate>
+                                                    <span data-toggle="tooltip" data-placement="top"
+                                                        title="This list is associated with a form." translate>Form Contact List
+                                                    </span>
+                                                </h6>                                                                        
                                             </ng-container>
                                         </td>
-                                        <td class="text-center" *ngIf="showContactType">
-                                            <ng-container *ngIf="contacts?.listType=='Partners'">
-                                                {{authenticationService?.partnerModule?.customName}}
-                                            </ng-container>    
-                                            <ng-container *ngIf="contacts?.listType!='Partners'">
-                                                {{contacts?.listType}}
-                                            </ng-container>                                                                                                                                       
-                                        </td>
-                                        <td class="text-center">
+                                       
+                                        <td class="text-center" *ngIf="!showNavigationBreadCrumbToPartner">
                                             <app-display-date-and-time [dateAndTimeUTCString]="contactList?.createdTimeInString"></app-display-date-and-time>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="text-center" *ngIf="showNavigationBreadCrumbToPartner">
+                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList?.createdDate"> </app-timestamp>
+                                        </td>
+                                        <td class="text-center" *ngIf="!showNavigationBreadCrumbToPartner">
                                             {{contactList?.count}}
                                         </td>
                                         <td class='text-center'>
