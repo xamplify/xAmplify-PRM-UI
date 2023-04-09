@@ -258,22 +258,22 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		const uploadedFilesCount = files.length;
 		const existingFilesCount = socialStatus.socialStatusContents.length;
 		if ((uploadedFilesCount + existingFilesCount) > 4) {
-			this.setCustomResponse(ResponseType.Warning, 'You can upload maximum 4 images.');
+			this.setCustomResponse(ResponseType.Error, 'You can upload maximum 4 images.');
 			return false;
 		} else if ((socialStatus.socialStatusContents.length === 1) &&
 			(Array.from(socialStatus.socialStatusContents)[0].fileType === 'video')) {
-			this.setCustomResponse(ResponseType.Warning, 'You can include up to 4 photos or 1 video in a post.');
+			this.setCustomResponse(ResponseType.Error, 'You can include up to 4 photos or 1 video in a post.');
 			return false;
 		} else {
 			for (const file of files) {
 				if (file.size > 3145728) {
 					// File size should not be more than 3 MB
-					this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
+					this.setCustomResponse(ResponseType.Error, 'Accepted image size is less than 3MB');
 					this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
 					return false;
 				}
 				if (!file.type.startsWith("image")) {
-					this.setCustomResponse(ResponseType.Warning, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
+					this.setCustomResponse(ResponseType.Error, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
 					return false;
 				}
 				console.log(file.name + ': ' + file.size);
@@ -330,7 +330,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				let soicalStatusList = socialStatusProvider.socialStatusList;
 				soicalStatusList.forEach(data => {
 					if (!data.statusMessage && data.socialStatusContents.length === 0) {
-						self.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
+						self.setCustomResponse(ResponseType.Error, 'Status can not be empty');
 						isValid = false;
 						return false;
 					}
@@ -339,7 +339,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}else{
 			this.socialStatusList.forEach(data => {
 				if (!data.statusMessage && data.socialStatusContents.length === 0) {
-					this.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
+					this.setCustomResponse(ResponseType.Error, 'Status can not be empty');
 					isValid = false;
 					return false;
 				}
@@ -351,7 +351,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	isSocialAccountsSelected() {
 		if (this.selectedAccounts < 1 && (!this.socialCampaign.channelCampaign && !this.socialCampaign.nurtureCampaign)) {
-			this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
+			this.setCustomResponse(ResponseType.Error, 'Please select the accounts to post the status.');
 			return false;
 		} else {
 			return true;
@@ -365,13 +365,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 		if (!this.socialCampaign.campaignName) {
 			isValid = false;
-			this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
+			this.setCustomResponse(ResponseType.Error, 'Please provide campaign name');
 		} else if (this.isCampaignNameExist) {
 			isValid = false;
-			this.setCustomResponse(ResponseType.Warning, 'Please provide another campaign name');
+			this.setCustomResponse(ResponseType.Error, 'Please provide another campaign name');
 		} else if (!this.alias && (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0)) {
 			isValid = false;
-			this.setCustomResponse(ResponseType.Warning, 'Please select one or more recipient lists.');
+			this.setCustomResponse(ResponseType.Error, 'Please select one or more recipient lists.');
 		}
 		return isValid;
 	}
@@ -394,6 +394,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		});
 		if (this.validate()) {
 			this.loading = true;
+			this.referenceService.showSweetAlertProceesor("We are posting on social media");
 			this.socialService.redistributeSocialCampaign(this.socialCampaign)
 				.subscribe(
 					data => {
@@ -418,11 +419,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 						this.customResponse.statusArray = [];
 						this.customResponse.statusArray.push(error);
 						this.loading = false;
+						this.referenceService.closeSweetAlert();
 					},
 					() => {
 						this.initializeSocialStatus();
 						this.socialCampaign.userListIds = [];
 						this.loading = false;
+						this.referenceService.closeSweetAlert();
 					}
 				);
 		}
@@ -543,12 +546,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		let isValid = true;
 		if (this.countryId === 0) {
 			isValid = false;
-			this.setCustomResponse(ResponseType.Warning, 'Please select your country from the dropdown list');
+			this.setCustomResponse(ResponseType.Error, 'Please select your country from the dropdown list');
 		}
 
 		if (!this.scheduledTimeInString) {
 			isValid = false;
-			this.setCustomResponse(ResponseType.Warning, 'Please select schedule date and time');
+			this.setCustomResponse(ResponseType.Error, 'Please select schedule date and time');
 		}
 		if (isValid) {
 			this.socialCampaign.shareNow = false;
