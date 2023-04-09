@@ -330,7 +330,13 @@ export class FormPreviewComponent implements OnInit {
             if (response.statusCode == 200) {
               this.addHeaderMessage(response.message, this.successAlertClass);
               this.formSubmitted = true;
-              let formSubmissionUrl = this.form.formSubmissionUrl;
+              //this.notifyParent.emit(new CustomResponse('SUCCESS', response.message, true));
+              this.isTrackQuizSubmitted = true;
+              if (this.learningTrackId !== undefined && this.learningTrackId > 0 && this.isTrackQuizSubmitted) {
+                this.getPartnerFormAnalytics();
+                this.ngxLoading = true;
+              } else {
+                let formSubmissionUrl = this.form.formSubmissionUrl;
               if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0 && !formSubmissionUrl.startsWith("https://")){
                 formSubmissionUrl = "https://"+formSubmissionUrl;
               }
@@ -354,8 +360,7 @@ export class FormPreviewComponent implements OnInit {
                 swal.close();
                 }, 3000);
               }
-              this.notifyParent.emit(new CustomResponse('SUCCESS', response.message, true));
-
+              }
             } else if (response.statusCode == 404) {
               this.addHeaderMessage(response.message, this.errorAlertClass);
               this.notifyParent.emit(new CustomResponse('ERROR', response.message, true));
@@ -448,7 +453,11 @@ export class FormPreviewComponent implements OnInit {
           this.selectedPartnerFormAnswers = data;
           $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
             if (self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
-              value.value = self.selectedPartnerFormAnswers[value.id];
+              if (value.labelType === "select") {
+                value.value = self.selectedPartnerFormAnswers[value.id][0];
+              } else {
+                value.value = self.selectedPartnerFormAnswers[value.id];
+              }
               let choices: any;
               if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
                 choices = value.choices;
@@ -471,7 +480,6 @@ export class FormPreviewComponent implements OnInit {
         } else {
           this.referenceService.showSweetAlertErrorMessage(response.message);
         }
-        console.log(this.selectedPartnerFormAnswers)
         this.ngxLoading = false;
       });
     (error: any) => {

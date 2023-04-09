@@ -13,7 +13,7 @@
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor" style=" border-radius: 0px!important;">
-                        <div *ngIf="formSubmitted">
+                        <div *ngIf="formSubmitted && learningTrackId === undefined && 0 >= learningTrackId && !isTrackQuizSubmitted">
                             <div class="panel-body">
                                 <h4 class="alert alert-success" id="header-center">
                                     <div *ngIf="form.formSubmitMessage?.length>0;then customMessage else defaultMessage">
@@ -28,7 +28,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="!formSubmitted">
+                        <div *ngIf="(!formSubmitted) || (formSubmitted && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)">
                             <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                 <a class="close-circle" (click)="refreshForm()" title="Refresh">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
@@ -114,10 +114,10 @@
                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='select'">
                                             <select class="form-control" [(ngModel)]="columnInfo.value"
-                                            [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">													<option *ngFor="let dropDownValue of columnInfo.dropDownChoices"
-														[ngValue]="dropDownValue.id">
-														{{dropDownValue.name}}</option>
-												</select>
+                                                [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id">
+                                                    {{dropDownValue.name}}</option>
+                                            </select>
                                         </ng-container>
                                         <!-- ---------------------------Quiz----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
