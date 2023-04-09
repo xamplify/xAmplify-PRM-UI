@@ -2128,8 +2128,8 @@ export class ReferenceService {
         myMergeTags.myFullName
       );
       updatedBody = updatedBody.replace(
-        this.senderMergeTag.senderTitleGlobal,
-        myMergeTags.myTitle
+        this.senderMergeTag.senderJobTitleGlobal,
+        myMergeTags.senderJobTitle
       );
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderEmailIdGlobal,
@@ -2167,6 +2167,10 @@ export class ReferenceService {
         this.senderMergeTag.senderEventUrlGlobal,
         myMergeTags.eventUrl
       );
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderEventUrlGlobal,
+        myMergeTags.eventUrl
+      );
     }
     return updatedBody;
   }
@@ -2188,7 +2192,7 @@ export class ReferenceService {
       body.indexOf(this.senderMergeTag.senderLastName) > -1 ||
       body.indexOf(this.senderMergeTag.senderMiddleName) > -1 ||
       body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
-      body.indexOf(this.senderMergeTag.senderTitle) > -1 ||
+      body.indexOf(this.senderMergeTag.senderJobTitle) > -1 ||
       body.indexOf(this.senderMergeTag.senderEmailId) > -1 ||
       body.indexOf(this.senderMergeTag.senderContactNumber) > -1 ||
       body.indexOf(this.senderMergeTag.senderCompany) > -1 ||
@@ -2751,8 +2755,8 @@ export class ReferenceService {
       value: this.senderMergeTag.senderFullName,
     });
     mergeTags.push({
-      name: "Sender Job Title",
-      value: this.senderMergeTag.senderTitle,
+      name: this.senderMergeTag.senderJobTitleKey,
+      value: this.senderMergeTag.senderJobTitle,
     });
     mergeTags.push({
       name: "Sender Email Id",
