@@ -506,7 +506,7 @@
                   </div>
                 </button>
               </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
+              <div *ngIf="campaignType != 'SOCIAL'" class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                 [ngClass]="{'forbidden' :!isDataShare ?true:null}">
                 <button class="portlet light color1-invert crcb vlt-blue-c"
                   [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -586,7 +586,7 @@
                 </button>
               </div>
               <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
-                *ngIf="campaignType === 'SOCIAL'">
+                *ngIf="campaignType === 'SOCIAL' && !socialCampaign?.nurtureCampaign">
                 <button class="portlet light color1-invert crcb g-b-c" data-toggle="modal" data-target="#scrModal"
                   [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                   [disabled]="redistributedAccounts.size < 1 || !isDataShare">
@@ -816,7 +816,8 @@
                     <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important;">
                       <span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
                         <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-                        <span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+                        <span *ngIf="campaignType==='SOCIAL' && !socialCampaign?.nurtureCampaign ">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+                        <span *ngIf="campaignType==='SOCIAL' && socialCampaign?.nurtureCampaign ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
                         <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                         <span
                           *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName}}
@@ -850,7 +851,7 @@
                         <i class="fa fa-search" style="padding: 4px; color: black !important" aria-hidden="true"></i>
                       </button>
                     </div>
-                    <div *ngIf="'LANDINGPAGE'!=campaignType"
+                    <div *ngIf="'LANDINGPAGE'!=campaignType && 'SOCIAL'!=campaignType"
                       [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
                       class="btn-group pull-right col-xs-1" style="margin-top: -9px; cursor:pointer; color: #7d8c98">
                       <span class="dropdown-toggle" data-toggle="dropdown"
@@ -963,8 +964,7 @@
                                 <th id="table-header" *ngIf="campaignType==='EVENT'">ATTENDEES <br>
                                   <h6 class="m0" style="font-size:9px"><strong>( including guests )</strong></h6>
                                 </th>
-                                <th id="table-header" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest
-                                  View</th>
+                                <th id="table-header" *ngIf="campaignType==='VIDEO'">Latest View</th>
                                 <th id="table-header" *ngIf="campaignType!=='EVENT'">
                                   <span *ngIf="campaignType==='VIDEO'">Views</span>
                                   <span
@@ -1040,7 +1040,7 @@
                                     <span
                                       *ngIf="item.rsvpMap.additionalCount === 0 || item.rsvpMap.additionalCount === null"><b>-</b></span>
                                   </td>
-                                  <td class="td-chart" *ngIf="campaignType!=='EVENT'">
+                                  <td class="td-chart" *ngIf="campaignType=='VIDEO'">
                                     <h6>
                                       <app-timestamp *ngIf="item?.latestView" [dateAndTime]="item.latestView">
                                       </app-timestamp>
@@ -1066,10 +1066,6 @@
                                       <ng-container *ngFor="let socialStatus of socialCampaign.socialStatusList">
                                         <ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
                                           <ng-container *ngIf="socialStatus.userId === item.userId">
-
-
-
-
                                             <div class="social-profile"
                                               [ngStyle]="{'background-image': 'url(' + socialStatus.socialStatusProvider.socialConnection.profileImage + ')'}"
                                               data-toggle="tooltip" data-placement="top"

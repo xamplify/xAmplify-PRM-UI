@@ -1173,10 +1173,10 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         .subscribe(
           data => {
             this.socialCampaign = data;
-            this.loading = false;
             this.socialCampaign.socialStatusList.forEach(data => {
               data.socialStatusList.forEach(data => this.redistributedAccounts.add(data.userId))
-            })
+            });
+            this.loading = false;
           },
           error => this.xtremandLogger.error(error),
           () => { }
