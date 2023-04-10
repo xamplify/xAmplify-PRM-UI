@@ -37,5 +37,8 @@ export class ColumnInfo {
     sfCustomField:boolean;
     labelLength:string;
     correctValues: string = "";
+    
+    description: string = "";
+    descriptionCharacterleft: number = 500;
 
 }

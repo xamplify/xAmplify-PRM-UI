@@ -4,7 +4,7 @@
 
 .text {
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    /* border-bottom: 1px solid #ddd; */
 }
 
 h4 {
@@ -119,4 +119,7 @@ h5 {
 }
 p{
     margin:0px;
+}
+.text-border{
+    border-bottom: 1px solid #ddd;
 }

@@ -30,7 +30,7 @@
     line-height: 23px;
     }
     .border-none{
-    border:none;
+    border:none !important;
     }
     .checkbox-size{
     width:16px;
@@ -97,4 +97,10 @@
 
     .closebtn {
         float: right;
+    }
+    .disable-btn-text-color{
+        color: #000000 !important;
+    }
+    .reload-btn{
+        color: #488fd6; border: 1px solid #eaeaea; padding: 3px; border-radius: 2px; font-size: 15px;
     }

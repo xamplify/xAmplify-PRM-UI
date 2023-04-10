@@ -58,6 +58,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     'ts', 'mov', 'qt', 'wmv', 'yuv', 'rm', 'rmvb', 'viv', 'asf', 'amv', 'mp4', 'm4p', 'm4v', 'mpg', 'mp2', 'mpeg', 'mpe', 'mpv', 'mpg',
     'mpeg', 'm2v', 'm4v', 'svi', '3gp', '3g2', 'mxf', 'roq', 'nsv', 'flv', 'f4v', 'f4p', 'f4a', 'f4b'];
   contentIndexInView: number;
+  isCurrentQuizSubmitted: boolean = false;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -170,27 +171,34 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   viewContent(asset: any, index: number) {
-    this.contentIndexInView = index;
-    this.showTracksPlayBook = false;
-    this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
-    this.assetDetails = asset;
-    this.showAsset = true;
-    this.notifyShowAsset.emit(this.showAsset);
-    this.referenceService.goToTop();
-    this.setProgressAndUpdate(asset.id, ActivityType.OPENED);
+    if (!asset.typeQuizId) {
+      this.contentIndexInView = index;
+      this.showTracksPlayBook = false;
+      this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
+      this.assetDetails = asset.dam;
+      this.showAsset = true;
+      this.notifyShowAsset.emit(this.showAsset);
+      this.referenceService.goToTop();
+      this.setProgressAndUpdate(asset.id, ActivityType.OPENED, false);
+    } else if (asset.typeQuizId) {
+      //this.assetDetails = asset.quiz;
+      this.viewQuiz(asset);
+    }
   }
 
-  viewQuiz() {
+  viewQuiz(asset: any) {
+    let quiz = asset.quiz;
     if (!this.isCreatedUser) {
+      this.isCurrentQuizSubmitted = asset.finished;
       this.showTracksPlayBook = false;
       this.notifyShowTracksPlayBook.emit(this.showTracksPlayBook);
       this.showAsset = false;
       this.notifyShowAsset.emit(this.showAsset);
-      this.authenticationService.formAlias = this.tracksPlayBook.quiz.alias;
+      this.authenticationService.formAlias = quiz.alias;
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse();
     } else {
-      this.previewPopupComponent.previewForm(this.tracksPlayBook.quiz.id)
+      this.previewPopupComponent.previewForm(quiz.id)
     }
   }
 
@@ -244,7 +252,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         //this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
       }
     }
-    this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
+    this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
     // if (this.showFilePreview || assetDetails.beeTemplate) {
     //   this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
     // }
@@ -263,19 +271,20 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       if (!assetDetails.beeTemplate && assetDetails.assetType == 'mp4') {
           let videoUrl = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
           window.open(assetDetails.assetPath, '_blank');
-          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
+          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else if (!assetDetails.beeTemplate) {
           window.open(assetDetails.assetPath, '_blank');
-          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED)
+          this.setProgressAndUpdate(assetDetails.id, ActivityType.DOWNLOADED, false)
       } else {
           this.downloadBeeTemplate(assetDetails);
     }
   }
 
-  setProgressAndUpdate(id: number, status: ActivityType) {
+  setProgressAndUpdate(id: number, status: ActivityType, typeQuizId: boolean) {
     let progress: TracksPlayBook = new TracksPlayBook();
     progress.contentId = id;
     progress.status = status;
+    progress.typeQuizId = typeQuizId;
     this.updatePartnerProgress(progress);
     this.customResponse = new CustomResponse();
   }

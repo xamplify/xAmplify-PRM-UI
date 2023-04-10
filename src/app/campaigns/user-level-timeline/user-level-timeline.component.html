@@ -2,7 +2,8 @@
 <section>
 <div id="timeline-view" class="page-content">
   <app-modal-popup-loader *ngIf="dataLoader"></app-modal-popup-loader>
-  <div class="page-bar" style="border: 1px solid #CCC;" *ngIf="!dataLoader">
+  <!--REMOVED style="border: 1px solid #CCC;"-->
+  <div class="page-bar white-co"  *ngIf="!dataLoader">
     <a (click)="goBack()" class="pull-right close-circle custom-css">
     <i class="fa fa-times" aria-hidden="true"> </i>
   </a>

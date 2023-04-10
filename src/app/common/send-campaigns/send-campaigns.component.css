@@ -25,7 +25,7 @@
 }
 
 .table tr.row-selected td {
-    background-color: #00a6e8 !important;
+    background-color: #00a6e8;
     color: white;
 }
 

@@ -1,5 +1,5 @@
 .form-control {
-  border: 1px solid #CCC !important;
+  border: 1px solid #CCC;
 }
 
 .text-danger {
@@ -91,14 +91,14 @@
 }
 
 .labal-css {
-  color: #2c3f52 !important;
+  color: #2c3f52;
   font-weight: 600;
   margin-top: 4px;
   font-size: 13px;
 }
 
 .color-css {
-  color: #111 !important;
+  color: #111;
 }
 
 .title-css {
@@ -139,7 +139,7 @@
 
 .boxes .portlet-title {
   font-weight: 600 !important;
-  background: #eaeaea !important;
+  background: #eaeaea;
   margin-bottom: 0 !important;
   border-radius: 0 !important;
   min-height: auto !important;
@@ -292,10 +292,10 @@ a.icons-link:hover {
   }
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
   background-color: #00a6e8 !important;
   color: white !important;
-}
+} */
 
 .h4-text {
   margin: 20px 20px 0 33px !important;
@@ -337,7 +337,7 @@ a.icons-link:hover {
 .campaign-email-template-filter-icon {
   font-size: 16px !important;
   right: 38px;
-  background: #f1f3fa !important;
+  background: #f1f3fa;
   width: 39px !important;
   padding-top: 3px !important;
   position: absolute;
@@ -467,4 +467,7 @@ fieldset{
 	background-color: #008fd5 ;
 	color: #fff;
 	border: 1px solid #3575b5;
+  }
+  .preview-edit-color{
+    color: #5a5a5a;
   }

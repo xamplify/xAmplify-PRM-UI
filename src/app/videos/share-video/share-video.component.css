@@ -47,8 +47,8 @@
 }
 .imageClass{
     position: absolute;
-    width: 91px !important;
-    height: 50px !important;
+    width: 90px !important;
+    height: auto !important;
     right: 20px !important;
     top: 1px !important;
     z-index: 99 !important;

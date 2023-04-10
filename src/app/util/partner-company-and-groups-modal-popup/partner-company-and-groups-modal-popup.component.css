@@ -50,7 +50,7 @@
 }
 
 .table tr.row-selected td {
-    background-color: #00a6e847 !important;
+    background-color: #00a6e847;
     color: white;
 }
 
@@ -230,9 +230,9 @@
     margin-bottom: 0px!important;
 }
 
-.panel-default>.panel-heading {
-    background-color: #ffffff!important;
-}
+/* .panel-default>.panel-heading {
+    background-color: #ffffff;
+} */
 
 .none-float {
     float: none !important;

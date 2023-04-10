@@ -310,7 +310,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+			//this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -325,7 +325,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
         }
     }
     resetImage() {
@@ -336,7 +336,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+       // this.errorUploadCropper = true;
     }
     }
 	imageCroppedMethod(event: ImageCroppedEvent) {
@@ -376,6 +376,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
+		console.log("sudha",fileObj);
       }else{
         //   this.refService.showSweetAlertErrorMessage("Please upload an image");
 		this.errorUploadCropper = false;
@@ -906,8 +907,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.updateUserProfileForm = this.fb.group({
 			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 			'lastName': [this.userData.lastName],
-			// 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-			//'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
+			'middleName':[this.userData.middleName],
 			'mobileNumber': [this.userData.mobileNumber],
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
@@ -948,10 +948,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	updateUserProfile() {
-		console.log(this.updateUserProfileForm.value);
 		this.referenceService.goToTop();
 		this.ngxloading = true;
-
 		if (this.userData.mobileNumber) {
 			if (this.userData.mobileNumber.length > 6) {
 				this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
@@ -959,7 +957,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.updateUserProfileForm.value.mobileNumber = ""
 			}
 		}
-
 		this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
 			.subscribe(
 				data => {
