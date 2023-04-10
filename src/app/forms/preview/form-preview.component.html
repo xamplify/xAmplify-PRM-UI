@@ -13,7 +13,7 @@
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor" style=" border-radius: 0px!important;">
-                        <div *ngIf="formSubmitted && learningTrackId === undefined && 0 >= learningTrackId && !isTrackQuizSubmitted">
+                        <div *ngIf="formSubmitted && (learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted)">
                             <div class="panel-body">
                                 <h4 class="alert alert-success" id="header-center">
                                     <div *ngIf="form.formSubmitMessage?.length>0;then customMessage else defaultMessage">
@@ -76,8 +76,13 @@
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                            <input type="file" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}" (change)="onFileChangeEvent($event,columnInfo,i)"
-                                            [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                            <input *ngIf="learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted" type="file"
+                                                class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}"
+                                                (change)="onFileChangeEvent($event,columnInfo,i)"
+                                                [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                            <div><a *ngIf="columnInfo.value && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"
+                                                    [href]="columnInfo.value" target="_blank" style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
+                                            </div>
                                         </ng-container>
                                         <!-- ---------------------------Radio Button----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">

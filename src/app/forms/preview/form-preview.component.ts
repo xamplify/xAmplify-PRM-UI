@@ -337,29 +337,30 @@ export class FormPreviewComponent implements OnInit {
                 this.ngxLoading = true;
               } else {
                 let formSubmissionUrl = this.form.formSubmissionUrl;
-              if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0 && !formSubmissionUrl.startsWith("https://")){
-                formSubmissionUrl = "https://"+formSubmissionUrl;
-              }
-              let openLinkInNewTab = this.form.openLinkInNewTab;
-              if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0){
-                let redirectMessage = '<strong> You are being redirect to '+formSubmissionUrl+'</strong>' ;
-                let text = !openLinkInNewTab ? redirectMessage:redirectMessage+' <br>(opens in new window)';
-                swal( {
-                  title:'Please Wait',
-                  text: text,
-                  allowOutsideClick: false, 
-                  showConfirmButton: false, 
-                  imageUrl: 'assets/images/loader.gif',
-              });
-                setTimeout(function() {
-                if(openLinkInNewTab){
-                  window.open(formSubmissionUrl, '_blank');
-                }else{
-                  window.parent.location.href = formSubmissionUrl;
+                if (formSubmissionUrl != undefined && $.trim(formSubmissionUrl).length > 0 && !formSubmissionUrl.startsWith("https://")) {
+                  formSubmissionUrl = "https://" + formSubmissionUrl;
                 }
-                swal.close();
-                }, 3000);
-              }
+                let openLinkInNewTab = this.form.openLinkInNewTab;
+                if (formSubmissionUrl != undefined && $.trim(formSubmissionUrl).length > 0) {
+                  let redirectMessage = '<strong> You are being redirect to ' + formSubmissionUrl + '</strong>';
+                  let text = !openLinkInNewTab ? redirectMessage : redirectMessage + ' <br>(opens in new window)';
+                  swal({
+                    title: 'Please Wait',
+                    text: text,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    imageUrl: 'assets/images/loader.gif',
+                  });
+                  setTimeout(function () {
+                    if (openLinkInNewTab) {
+                      window.open(formSubmissionUrl, '_blank');
+                    } else {
+                      window.parent.location.href = formSubmissionUrl;
+                    }
+                    swal.close();
+                  }, 3000);
+                }
+                this.ngxLoading = false;
               }
             } else if (response.statusCode == 404) {
               this.addHeaderMessage(response.message, this.errorAlertClass);
@@ -457,6 +458,11 @@ export class FormPreviewComponent implements OnInit {
                 value.value = self.selectedPartnerFormAnswers[value.id][0];
               } else {
                 value.value = self.selectedPartnerFormAnswers[value.id];
+                if (value.labelType === "upload") {
+                  let lastIndex = value.value.lastIndexOf("/");
+                  let fileName = value.value.substring(lastIndex + 1);
+                  value['fileName'] = fileName;
+                }
               }
               let choices: any;
               if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {

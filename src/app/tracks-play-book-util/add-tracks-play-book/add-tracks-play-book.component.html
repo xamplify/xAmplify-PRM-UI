@@ -642,8 +642,8 @@
                   <tr *ngFor="let asset of selectedAssets; let i = index" style="cursor: move;">
                     <ng-container *ngIf="asset.typeQuizId">
                       <td class="text-cente" style="width: 10%;">
-                        <div class="thumbnail-wrapper">
-                          <img class="img-asset-list" alt="Image not found" [src]="asset.quiz.thumbnailImage">
+                        <div class="thumbnail-wrapper-form" style="overflow: hidden;">
+                          <img class="fit-form-image" onerror="this.src='assets/images/form.png';" alt="Image not found" [src]="asset.quiz.thumbnailImage">
                         </div>
                       </td>
                       <td>

@@ -944,7 +944,7 @@ input.cmn-toggle-round-flat:checked+label:after {
     font-size: medium !important;
 }
 
-.thumbnail-wrapper {
+.thumbnail-wrapper, .thumbnail-wrapper-form {
     float: left;
     width: 144px;
     height: 81px;
@@ -1093,3 +1093,7 @@ input.cmn-toggle-round-flat:checked+label:after {
   .tags-min-width{
     padding-left: 5px !important;min-width: 150px
   }
+
+  .fit-form-image {
+    width: 100%;
+}
