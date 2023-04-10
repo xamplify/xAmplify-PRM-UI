@@ -68,6 +68,7 @@ export class DonutPieChartComponent implements OnInit {
     Highcharts.chart("donut-chart-container", {
       chart: {
         type: "pie",
+    //    backgroundColor: this.authenticationService.isDarkForCharts ? "#2f4857" : "#fff",
         options3d: {
           enabled: false,
         },

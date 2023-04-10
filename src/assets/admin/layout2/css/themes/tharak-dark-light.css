@@ -181,7 +181,6 @@ td > button {
   background-color: #00a99d !important;
   border-radius: 3px !important;
 }
-.mix-filter li,
 .list-group-item,
 .read,
 /* input, */
@@ -197,11 +196,7 @@ ul.alt-row-style1 li:hover,
 .mix-filter li.contact-filter-selected{
   background-color: #22313a !important;
 }
-.mix-filter li:hover, .mix-filter li.active,
-.mix-filter li.campaign-type-selected,
-.mix-filter li.emailtemplate-selected {
-  background: #22313a !important;
-}
+
 .re-distributed-high-level,
 .list__item > .flex-row{
   background-color: #2b3c46 !important;
@@ -817,6 +812,9 @@ input:active, input:focus{
   border-right: 1px solid #2f4857;
 }
 .flatpickr-day.disabled, .flatpickr-day.disabled:hover, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay, .flatpickr-day.notAllowed, .flatpickr-day.notAllowed.prevMonthDay, .flatpickr-day.notAllowed.nextMonthDay{
+  color:#484848 !important;
+}
+.flatpickr-day{
   color:white !important;
 }
 .flatpickr-day.today{
@@ -871,8 +869,50 @@ input:active, input:focus{
 .phone {
   color:#fff !important;
 }
-
-
+.c-btn{
+  border: 1px solid #2f4857 !important;
+  background-color:  #22313a !important;
+  color:white !important;
+}
+.list-area{
+  border: 1px solid #2f4857 !important;
+  background-color:  #22313a !important;
+  box-shadow: 0px 1px 5px #22313a !important;
+}
+.selected-list .c-btn{
+  box-shadow: 0px 1px 5px #22313a !important;
+}
+.arrow-up, .arrow-down{
+  border-bottom: 15px solid #2b3c46 !important;
+}
+.dropdown-list ul li:hover{
+  background-color:  #2b3c46 !important;
+}
+.select-all,
+.list-filter{
+  border-bottom: 1px solid #2b3c46 !important;
+}
+/* .filter-box-selected{
+  background-color: #22313a !important;
+} */
+.mix-filter li{
+  color: white !important;
+  background-color: #2b3c46;
+  border: 1px solid #2f4857 !important;
+}
+ .mix-filter li:hover, 
+  .mix-filter li.active, 
+.mix-filter li.campaign-type-selected,
+.mix-filter li.emailtemplate-selected {
+  background: #22313a !important;
+}
+.filter-box-selected {
+  background-color: #22313a !important;
+}
+.flatpickr-months input{
+  background: #1bbc9b !important;
+  border-style : none !important;
+}
 /* .col-block-active:hover{
   background-color: #00a8e7 !important;
 }

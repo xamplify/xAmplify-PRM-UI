@@ -85,6 +85,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       },
       chart: {
         type: "funnel3d",
+   //     backgroundColor: this.authenticationService.isDarkForCharts ? "#2f4857" : "#fff",
         options3d: {
           enabled: true,
           alpha: 10,
