@@ -542,7 +542,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	shareLater() {
 		this.resetCustomResponse();
-
 		let isValid = true;
 		if (this.countryId === 0) {
 			isValid = false;
@@ -557,7 +556,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			this.socialCampaign.shareNow = false;
 			this.socialCampaign.scheduledTimeInString = this.scheduledTimeInString;
 			this.socialCampaign.timeZone = $('#timezoneId option:selected').val();
-
+			this.socialCampaign.country = $.trim($('#social-campaign-countryName option:selected').text());
 			this.socialStatusList.forEach(data => {
 				data.shareNow = false;
 				data.scheduledTimeInString = this.scheduledTimeInString;

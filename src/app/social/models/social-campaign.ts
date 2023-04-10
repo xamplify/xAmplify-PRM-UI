@@ -27,4 +27,5 @@ export class SocialCampaign {
 
   /****XNFR-222****/
   allowPartnerToEditThePost = false;
+  country = "";
 }
