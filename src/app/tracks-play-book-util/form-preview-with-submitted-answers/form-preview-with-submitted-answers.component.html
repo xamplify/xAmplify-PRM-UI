@@ -50,7 +50,8 @@
                                       </ng-container>
                                       <!-- ---------------------------Upload----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                          <input type="file" class="form-control" disabled="disabled">
+                                        <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank"
+                                          style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
                                       </ng-container>
                                       <!-- ---------------------------Radio Button----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='radio'">
