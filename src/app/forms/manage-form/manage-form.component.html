@@ -198,8 +198,8 @@
                                         <td id="actions-row">
                                             <div class="actions-block custom-width-icon ActionAlign mActionAlign">
                                                 <div class="mMobileAlignAction2">
-                                                <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                                    (click)="edit(form.id)">
+                                                <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId) && !form.associatedWithTrack" data-toggle="tooltip" data-placement="top" title="Edit"
+                                                    (click)="edit(form.id)" >
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
@@ -291,8 +291,8 @@
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
                             <div class="bar">
-                                <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                    (click)="edit(form.id)">
+                                <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId) && !form.associatedWithTrack" data-toggle="tooltip" data-placement="top" title="Edit"
+                                    (click)="edit(form.id)" >
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                 </a>
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
