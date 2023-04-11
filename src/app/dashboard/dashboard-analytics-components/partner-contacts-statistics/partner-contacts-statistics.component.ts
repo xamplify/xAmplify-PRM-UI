@@ -65,10 +65,12 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 			const data = treeMapData;
 			Highcharts.chart(treeMapId, {
 				colorAxis: {
-					//minColor: '#FFFFFF',
-					backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+					minColor: '#FFFFFF',
 					maxColor: Highcharts.getOptions().colors[0]
 				},
+				chart: {
+					backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+				  },
 				credits: {
 					enabled: false
 				},

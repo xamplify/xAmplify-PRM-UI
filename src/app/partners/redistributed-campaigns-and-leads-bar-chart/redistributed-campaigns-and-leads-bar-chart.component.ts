@@ -123,20 +123,26 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         enabled:false
       },
       chart: {
-          zoomType: 'xy'
+          zoomType: 'xy',
+          backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
       },
       title:{
           text:''
       },
       xAxis: [{
           categories: xAxis,
-          crosshair: true
+          crosshair: true,
+          labels:{
+            style:{
+                color: this.authenticationService.isDarkForCharts ? "#fff" : "#666666"
+            }
+          }
       }],
       yAxis: [{ // Primary yAxis
           labels: {
               format: '{value}',
               style: {
-                  color: Highcharts.getOptions().colors[1]
+                  color: this.authenticationService.isDarkForCharts ? "#fff" : Highcharts.getOptions().colors[1]
               }
           },
           allowDecimals: false, 
@@ -144,7 +150,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
           title: {
               text: primaryYAxisText,
               style: {
-                  color: secondaryAxisColor
+                  color: this.authenticationService.isDarkForCharts ? "#fff" : secondaryAxisColor
               }
           }
       }, 

@@ -68,7 +68,7 @@ export class DonutPieChartComponent implements OnInit {
     Highcharts.chart("donut-chart-container", {
       chart: {
         type: "pie",
-        backgroundColor: this.authenticationService.isDarkForCharts ? "#2f4857" : "#fff",
+        backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
         options3d: {
           enabled: false,
         },
@@ -86,6 +86,11 @@ export class DonutPieChartComponent implements OnInit {
         pie: {
           innerSize: 70,
           depth: 10,
+          dataLabels:{
+            style:{
+              color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+            }
+          }
         },
       },
       credits: {
