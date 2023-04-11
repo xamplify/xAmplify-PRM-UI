@@ -157,12 +157,12 @@ export class CustomSkinComponent implements OnInit {
   }
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
-  //  this.authenticationService.isDarkForCharts = false;
+    this.authenticationService.isDarkForCharts = false;
     this.saveSkin(form);
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
-   // this.authenticationService.isDarkForCharts = true;
+    this.authenticationService.isDarkForCharts = true;
     this.saveSkin(form);
   }
   

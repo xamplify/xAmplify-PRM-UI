@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from "app/core/services/authentication.service";
 declare var Highcharts: any;
 
 @Component({
@@ -14,20 +15,22 @@ export class WorldmapComponent implements OnInit {
   worldmapMessage: string;
   titleName = 'Views';
 
-  constructor(public router:Router) {
+  constructor(public router:Router,public authenticationService: AuthenticationService,) {
     this.notifyParent = new EventEmitter<any>();
   }
   renderWorldMap(data: any, message) {
     const self = this;
     Highcharts.mapChart('world-map', {
       chart: {
-        map: 'custom/world'
+        map: 'custom/world',
+        backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
       },
       exporting: { enabled: false },
       title: {
         text: message,
         style: {
-          color: '#696666',
+          color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+        //  color: '#696666',
           fontWeight: 'normal',
           fontSize: '14px'
         }
@@ -41,7 +44,12 @@ export class WorldmapComponent implements OnInit {
         }
       },
       colorAxis: {
-        min: 0
+        min: 0,
+        labels: {
+          style: {
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666", // Change the text color of color axis labels here
+          }
+      }
       },
       credits: {
         enabled: false
@@ -85,6 +93,7 @@ export class WorldmapComponent implements OnInit {
       this.worldmapMessage = 'Check out where your videos are being watched';
     }else if(this.router.url.includes('home/pages')){
         this.worldmapMessage = 'Check out where your pages are viewed';
+        
         this.titleName = 'Viewers';
     }
     else {
