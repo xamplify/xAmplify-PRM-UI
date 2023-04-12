@@ -197,7 +197,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.onDropModel(value);
       });
       this.siteKey = this.envService.captchaSiteKey;
-      this.customResponseForFormUpdate = new CustomResponse('INFO', "Can not update the form as it is associated with a track.", true);
+      this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
   }
 
 
