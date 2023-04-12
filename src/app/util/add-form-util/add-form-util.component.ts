@@ -180,6 +180,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   showQuizField= true;
   descriptionColor: string;
   isValidDescriptionColor = true;
+  customResponseForFormUpdate: CustomResponse = new CustomResponse();
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -196,7 +197,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.onDropModel(value);
       });
       this.siteKey = this.envService.captchaSiteKey;
-      
+      this.customResponseForFormUpdate = new CustomResponse('INFO', "Can not update the form as it is associated with a track.", true);
   }
 
 
