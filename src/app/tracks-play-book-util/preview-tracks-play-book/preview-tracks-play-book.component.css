@@ -19,11 +19,11 @@
     padding-bottom: 10px;
 }
 
-.text-wrap {
-    overflow-wrap: break-word;
-    padding: 5px;
-    min-height: 255px;
-    height: auto;
+.text-wrap-track-description {
+    overflow-wrap: break-word !important;
+    padding: 5px !important;
+    min-height: 255px !important;
+    height: auto !important;
 }
 
 .cpdam {
