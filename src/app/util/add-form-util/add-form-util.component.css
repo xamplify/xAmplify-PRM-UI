@@ -96,7 +96,7 @@ LEGEND {
 }
 
 .selected {
-    background-color: #e5e5e5;
+    /* background-color: #e5e5e5; */
     cursor: move;
 }
 
@@ -1588,4 +1588,12 @@ div.switch5>input.switch:focus~label:before {
       left: -4px;
       color: #7b8894;
       bottom: 22px;
+  }
+  /* .input-group-addon{
+    color:white !important;
+    background-color:  #22313a !important;
+    border: 1px solid #2f4857!important;
+  } */
+  .preview-edit-color{
+    color: #5a5a5a;
   }

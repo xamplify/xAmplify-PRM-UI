@@ -123,7 +123,8 @@
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <!-- removed class="form-check-label" -->
+                                                    <label class="" [style.color]="form.labelColor"
                                                         [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted), 'label-value-correct': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct, 'label-value-incorrect': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && !choice.correct && choice.isSelected}">
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                             [checked]="choice.isChecked || choice.isSelected" class="form-check-input"

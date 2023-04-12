@@ -74,7 +74,7 @@
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
-                                                                <div class="form-group label-box" [class.selected]="columnInfo.divId==selectedColumn.divId">
+                                                                <div class="form-group label-box" [style.background]="form.backgroundColor" [class.selected]="columnInfo.divId==selectedColumn.divId">
                                                                     <a id="drag-div">
                                                                         <h4 class="dflex">
                                                                             <span class="label-text">
@@ -173,7 +173,8 @@
                                                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label" [style.color]="form.labelColor">
+                                                                                    <label class="" [style.color]="form.labelColor">  
+                                                                                        <!-- removed class="form-check-label" -->
                                                                                         <input
                                                                                             type="{{columnInfo.labelType.split('_')[1]}}"
                                                                                             name="{{columnInfo.labelId}}"
@@ -1008,13 +1009,13 @@
                                                         data-placement="top" [title]="actionsDescription.preview_item"
                                                         (click)="$event.stopPropagation();" href="{{file.filePath}}"
                                                         target="_blank">
-                                                        <i class="fa fa-external-link" aria-hidden="true"
-                                                            style="font-size: 20px; color: #5a5a5a"></i>
+                                                        <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
+                                                            style="font-size: 20px;"></i>
                                                     </a> <a class="fm delete" data-toggle="tooltip" data-placement="top"
                                                         [title]="actionsDescription.delete_item"
                                                         (click)="$event.stopPropagation();delete(file,file.id)">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"
-                                                            style="font-size: 20px; color: #5a5a5a"></i>
+                                                        <i class="fa fa-trash-o preview-edit-color" aria-hidden="true"
+                                                            style="font-size: 20px;"></i>
                                                     </a>
                                                 </span>
                                             </div>
