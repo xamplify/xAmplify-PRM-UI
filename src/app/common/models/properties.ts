@@ -253,7 +253,8 @@ export class Properties {
 	deployingCampaignMessage = "We are deploying the campaign";
 
 	/***XNFR-222*****/
-	postingOnSocialMedia = "We are posting on social media "+" and "+this.deployingCampaignMessage;
+	postingOnSocialMedia = "We are posting on social media  and  deploying the campaign";
+	schedulingCampaignMessage = "We are scheduling the campaign";
 
 
 

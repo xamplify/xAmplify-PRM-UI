@@ -4,9 +4,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { CallActionSwitch } from './../../videos/models/call-action-switch';
 import { CustomResponse } from './../../common/models/custom-response';
-import { TabHeadingDirective } from "ngx-bootstrap";
 import { Properties } from './../../common/models/properties';
-import { emit } from "process";
+import { ReferenceService } from "app/core/services/reference.service";
 
 declare var $:any;
 @Component({
@@ -27,7 +26,8 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
   dataUpdated = false;
-  constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch) {}
+  constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch,
+    public referenceService:ReferenceService) {}
   
 
   ngOnInit() {
@@ -49,6 +49,8 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
         }
       },error=>{
         this.loader = false;
+        this.closePopup();
+        this.referenceService.showSweetAlertServerErrorMessage();
       }
     )
   }
@@ -69,6 +71,8 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
       this.campaignDetailsDto.videoPlayed = event;
     }else if(4==type){
       this.campaignDetailsDto.rsvpReceived = event;
+    }else if(5==type){
+      
     }
   }
 

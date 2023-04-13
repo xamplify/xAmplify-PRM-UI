@@ -13,4 +13,12 @@ export class CampaignDetailsDto {
     oneClickLaunch = false;
     channelCampaign = false;
     oneClickLaunchChannelCampaign = false;
+    allowPartnerToEditThePost = false;
+    launched = false;
+    timezone = "";
+    country="";
+    scheduledTimeInString = "";
+    scheduledDateInString = "";
+    scheduledDateAndTimeInString = "";
+    campaignScheduleType = "";
 }

@@ -439,10 +439,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			scrollTop: $('#us-right').offset().top
 		}, 500);
 		if (this.validate()) {
-			if(this.socialCampaign.channelCampaign && this.selectedAccounts==0){
-				this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
-			}else if(this.selectedAccounts>0){
-				this.referenceService.showSweetAlertProcessingLoader(this.properties.postingOnSocialMedia);
+			if(this.socialCampaign.shareNow){
+				if(this.socialCampaign.channelCampaign && this.selectedAccounts==0){
+					this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
+				}else if(this.selectedAccounts>0){
+					this.referenceService.showSweetAlertProcessingLoader(this.properties.postingOnSocialMedia);
+				}
+			}else{
+				this.referenceService.showSweetAlertProcessingLoader(this.properties.schedulingCampaignMessage);
 			}
 			this.socialStatusResponse = [];
 			this.socialCampaign.userId = this.userId;
@@ -529,7 +533,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					},
 					error => {
 						this.loading = false;
-						console.log(error);
 						this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
 					},
 					() => {
@@ -606,9 +609,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialStatusList = [];
 		this.isAllSelected = false;
 		this.selectedAccounts = 0;
-		//added by Ajay
 		this.socialStatus = new SocialStatus();
-
 		let socialStatus = new SocialStatus();
 		socialStatus.userId = this.userId;
 		this.socialCampaign.userListIds = [];
@@ -1127,7 +1128,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider) {
 		let socialStatus = new SocialStatus();
 
-		socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? targetSocialStatus.statusMessage.substring(0, 280) : targetSocialStatus.statusMessage;
+		socialStatus.statusMessage = targetSocialStatus.statusMessage;
 		targetSocialStatus.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
 		socialStatus.socialStatusProvider = socialStatusProvider;
 		socialStatus.userId = this.userId;

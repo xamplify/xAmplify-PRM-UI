@@ -96,6 +96,17 @@
                                             <label translate>Guests RSVP</label>
                                         </div>
                                     </div>
+                                    <!---XNFR-222-->
+                                    <div class="email-options-checkbox clearfix" *ngIf="campaignDetailsDto.campaignType=='SOCIAL'">
+                                        <div class="col-sm-4 ui-switch-custom-div">
+                                            <switch [status]="campaignDetailsDto.allowPartnerToEditThePost" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+                                                (statusChange)="setOptionByType($event,5)">
+                                            </switch>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <label translate>Guests RSVP</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
