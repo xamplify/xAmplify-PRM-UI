@@ -422,7 +422,7 @@
 												<a *ngIf="pipedriveImageBlur"
 													id="pipedriveContact_button" style="background-color: white"
 													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
 													src="assets/images/crm/pipedrive.png"
@@ -436,7 +436,7 @@
 													id="pipedrive_buttonNormal"
 													style="background-color: white"
 													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
 													<img
 													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
 													src="assets/images/crm/pipedrive.png"
@@ -848,14 +848,14 @@
 														<th translate>LAST NAME</th>
 														<th *ngIf="selectedAddContactsOption === 5" translate>COMPANY</th>
 														<th
-															*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10"></th>
+															*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"></th>
 													</tr>
 												</thead>
 												<tbody>
 													<ng-container *ngFor="let user of pagedItems;let i = index">
 													<tr>
 														<td align="center"
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10"><input
+															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11"><input
 															type="checkbox"
 															[checked]="selectedContactListIds.indexOf(user.id)>-1"
 															class="chk"
@@ -865,7 +865,7 @@
 															(click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,user.company,user.contactCompany,$event)" />
 														</td>
 														<td align="center"
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10"><input
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"><input
 															type="checkbox"
 															[checked]="selectedContactListIds.indexOf(user.id)>-1"
 															class="chk"
@@ -874,15 +874,15 @@
 															value="{{user.id}}" id="{{user.id}}"
 															(click)="highlightMarketoRow(user)" /></td>
 														<td
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10">{{user.emailId}}</td>
+															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption !=11">{{user.emailId}}</td>
 														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10">{{user.email}}</td>
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">{{user.email}}</td>
 														<td>{{user.firstName}}</td>
 														<td>{{user.lastName}}</td>
 														<td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
 														<!--<td>{{user.contactCompany}}</td> -->
 														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10">
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
 															<button id='more_less_button_{{i}}'
 																(click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span> <span

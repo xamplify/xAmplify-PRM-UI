@@ -730,6 +730,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }else if(this.contactOption == 'microsoftSelectedContacts'){
             this.saveExternalSelectedContactsWithPermission();
         }
+        else if(this.contactOption == 'pipedriveContacts'){
+            this.saveExternalContactsWithPermission('pipedrive');
+        }else if(this.contactOption == 'pipedriveSelectedContacts'){
+            this.saveExternalSelectedContactsWithPermission();
+        }
     }
 
     navigateToTermsOfUse(){
@@ -1303,6 +1308,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     this.saveExternalContacts('microsoft');
                 } else{
                     this.saveExternalContactSelectedUsers('microsoft');
+                }
+            }
+
+            if(this.selectedAddContactsOption == 11){
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveExternalContacts('pipedrive');
+                } else{
+                    this.saveExternalContactSelectedUsers('pipedrive');
                 }
             }
 
@@ -4739,6 +4752,7 @@ vanityCheckingMarketoContactsAuthentication(){
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.pipedriveImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
@@ -4771,13 +4785,53 @@ vanityCheckingMarketoContactsAuthentication(){
                 this.customResponse = new CustomResponse( 'ERROR', data.message, true );
             } else {
                 let response = data.data;
-                this.selectedAddContactsOption = 10;
+                this.selectedAddContactsOption = 11;
                 this.disableOtherFuctionality = true;
                 this.pipedriveImageBlur = false;
                 this.pipedriveImageNormal = true;
-                // this.frameMicrosoftPreview(response);
+                this.framePipedrivePreview(response);
             }
         });
     }
+
+    framePipedrivePreview(response:any){
+        if ( !response.contacts ) {
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+        } else {
+            this.socialContactUsers = [];            
+            for ( var i = 0; i < response.contacts.length; i++ ) {
+                this.xtremandLogger.log("Contact :" + response.contacts[i].firstName );
+                let socialContact = new SocialContact();
+                socialContact = response.contacts[i];
+                socialContact.id = i;
+                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+                        this.socialContactUsers.push( socialContact );
+                    }
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                    //$( "#Gfile_preview" ).show();
+                    this.showFilePreview();
+                    $( "button#cancel_button" ).prop( 'disabled', false );
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.marketoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.microsoftImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.hubspotImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            }
+        }
+            this.setPage( 1 );
+            this.selectedAddContactsOption = 11;
+            this.disableOtherFuctionality = true;
+            this.socialContact.contacts = this.socialContactUsers;
+            console.log("Social Contact Users for Pipedrive ::" + this.socialContactUsers);
+    }
+
     //XNFR-230
 }

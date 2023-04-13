@@ -98,7 +98,7 @@ export class PipedriveAuthenticationPopupComponent implements OnInit {
         response => { 
           this.loading = false;         
           if (response.statusCode == 200) {            
-            this.closeForm();
+            $( "#pipedrivePreSettingsForm" ).modal( 'hide' );
           } else if (response.statusCode == 403){
             this.customResponse = new CustomResponse('INFO', response.message, true);
           } else {
