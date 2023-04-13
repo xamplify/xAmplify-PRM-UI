@@ -136,7 +136,11 @@
                                 style="padding-bottom: 33px !important;">
                                 <div class="portlet-title" translate>Import
                                     {{authenticationService?.partnerModule?.customName}} from the
-                                    cloud:</div>
+                                    cloud:
+                                    <a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
+										class="fa fa-chevron-down" aria-hidden="true"
+										style="display: contents !important; font-size: 15px !important"></i></a>
+                                </div>
                                 <div class="portlet-body">
                                     <div class="row">
     
@@ -349,6 +353,39 @@
                                                 title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
                                                 height="86" width="90">
                                             </a>
+                                        </div>
+                                        <!-- XNFR-230 -->
+                                        <div id="showCRM" class="collapse">
+                                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                                style="margin-top: 10px;">
+                                            <a *ngIf="pipedriveImageBlur"
+                                                id="pipedriveContact_button" style="background-color: white"
+                                                (click)="checkingPipedriveContactsAuthentication()"
+                                                [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+                                                <img
+                                                [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+                                                src="assets/images/crm/pipedrive.png"
+                                                class="pipedriveImageClass" data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Pipedrive account"
+                                                height="86" width="90"
+                                                onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                onmouseout="this.src='assets/images/crm/pipedrive.png';">
+                                            </a> <a *ngIf="pipedriveImageNormal"
+                                                id="pipedrive_buttonNormal"
+                                                style="background-color: white"
+                                                (click)="checkingPipedriveContactsAuthentication()"
+                                                [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+                                                <img
+                                                [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+                                                src="assets/images/crm/pipedrive.png"
+                                                class="pipedriveImageClass" data-toggle="tooltip"
+                                                data-placement="bottom"
+                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your pipedrive account"
+                                                height="86" width="90">
+                                            </a>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -1456,6 +1493,11 @@
         <app-microsoft-authentication-popup
             (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
     </div>
+    <!-- XNFR-230-->
+	<div *ngIf="showPipedriveAuthenticationForm">
+		<app-pipedrive-authentication-popup
+			(closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
+	</div>
     
     <!-- T&C Modal -->
     <div class="modal fade" id="tcModal" tabindex="-1"
