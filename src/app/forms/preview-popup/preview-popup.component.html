@@ -228,7 +228,7 @@
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor">
+                                                    <label class="form-check-label" style="border: 0px !important;" [style.color]="form.labelColor">
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                             disabled="disabled">
                                                         {{choice.name}}
