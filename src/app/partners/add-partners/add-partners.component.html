@@ -361,7 +361,7 @@
                                             <a *ngIf="pipedriveImageBlur"
                                                 id="pipedriveContact_button" style="background-color: white"
                                                 (click)="checkingPipedriveContactsAuthentication()"
-                                                [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 11">
                                                 <img
                                                 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
                                                 src="assets/images/crm/pipedrive.png"
@@ -375,7 +375,7 @@
                                                 id="pipedrive_buttonNormal"
                                                 style="background-color: white"
                                                 (click)="checkingPipedriveContactsAuthentication()"
-                                                [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+                                                [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 11">
                                                 <img
                                                 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
                                                 src="assets/images/crm/pipedrive.png"
@@ -574,7 +574,7 @@
                                             <td>{{user.lastName}}</td>
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
-                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9">
+                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11">
                                                 <button id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
