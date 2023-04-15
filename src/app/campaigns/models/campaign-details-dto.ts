@@ -21,4 +21,6 @@ export class CampaignDetailsDto {
     scheduledDateInString = "";
     scheduledDateAndTimeInString = "";
     campaignScheduleType = "";
+    countryId:number = 0;
+    launchTime:any;
 }
