@@ -38,7 +38,9 @@
     <div class="row" [hidden]="isRedirectEnabled">
         <div class="col-md-3 col-sm-12">
             <div class="col-sm-12 dashboard-stat2 pt0" [ngClass]="{'disabled': isEditSocialStatus}">
-                <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS</h6>
+                <h6 class="caption-subject font-red-sunglo uppercase bold mt0">SOCIAL ACCOUNTS 
+                    <span *ngIf="socialCampaign?.channelCampaign">(OPTIONAL)</span>
+                </h6>
                 <!---XNFR-222-->
                 <app-modal-popup-loader *ngIf="socialAccountsLoader?.isLoading" [height]="220"></app-modal-popup-loader>
                 <ng-container *ngIf="!socialAccountsLoader.isLoading">
@@ -179,7 +181,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="content-div">
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="content-div" *ngIf="showPostDiv">
                 <div class="clearfix">
                 <button class="pull-right mr10" *ngIf="socialStatusResponse?.length > 0" (click)="resetCustomResponse()">Clear All</button></div>
                 <section class='col-sm-12 p10'>

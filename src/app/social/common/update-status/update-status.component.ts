@@ -111,6 +111,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	socialAccountsLoader:HttpRequestLoader = new HttpRequestLoader();
 	buttonText = "Post Now";
 	showNavigationBreadCrumbToPartner = false;
+	showPostDiv = false;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -326,7 +327,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		let isValid = true;
 		if(this.showNavigationBreadCrumbToPartner){
 			let self = this;
-			$.each(this.socialStatusProviders,function(index:number,socialStatusProvider:any){
+			$.each(this.socialStatusProviders,function(_index:number,socialStatusProvider:any){
 				let soicalStatusList = socialStatusProvider.socialStatusList;
 				soicalStatusList.forEach(data => {
 					if (!data.statusMessage && data.socialStatusContents.length === 0) {
@@ -336,6 +337,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 				});
 			});
+			if(isValid){
+				this.socialStatusList = this.socialStatusList.filter(data => data.selected);
+				if(this.socialStatusList.length==0){
+					isValid  = false;
+					self.setCustomResponse(ResponseType.Error, 'Please select one or more posts');
+					return false;
+				}
+			}
 		}else{
 			this.socialStatusList.forEach(data => {
 				if (!data.statusMessage && data.socialStatusContents.length === 0) {
@@ -435,9 +444,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.resetCustomResponse();
 		this.socialCampaign.socialCampaign = this.isSocialCampaign;
 		this.socialCampaign.nurtureCampaign = false;
-		$('html, body').animate({
-			scrollTop: $('#us-right').offset().top
-		}, 500);
 		if (this.validate()) {
 			if(this.socialCampaign.shareNow){
 				if(this.socialCampaign.channelCampaign && this.selectedAccounts==0){
@@ -985,6 +991,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.showNavigationBreadCrumbToPartner = this.alias!=undefined;
+		this.showOrHidePostOption();
 		flatpickr('.flatpickr', {
 			enableTime: true,
 			minDate: new Date(),
@@ -1025,6 +1032,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		/*************Check Rss Feed Access*********** */
 		this.showRssFeedButton();
 
+	}
+
+	private showOrHidePostOption() {
+		if (this.showNavigationBreadCrumbToPartner) {
+			this.showPostDiv = this.selectedAccounts >= 1;
+		} else {
+			this.showPostDiv = true;
+		}
 	}
 
 	showRssFeedButton() {
@@ -1123,6 +1138,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		}
 
 		this.isAllSelected = (this.selectedAccounts === this.socialStatusProviders.length) ? true : false;
+		this.showOrHidePostOption();
 	}
 
 	copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider) {
@@ -1189,6 +1205,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			this.socialStatusList.length = 1;
 			this.socialStatusProviders.forEach(data => data.selected = false);
 		}
+		this.showOrHidePostOption();
+		
 	}
 
 	isUrl(s): boolean {
