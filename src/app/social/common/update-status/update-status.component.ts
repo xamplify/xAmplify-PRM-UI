@@ -324,6 +324,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	}
 
 	validate() {
+		this.referenceService.scrollSmoothToDiv("content-div");
 		let isValid = true;
 		if(this.showNavigationBreadCrumbToPartner){
 			let self = this;
@@ -337,14 +338,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 				});
 			});
-			if(isValid){
-				this.socialStatusList = this.socialStatusList.filter(data => data.selected);
-				if(this.socialStatusList.length==0){
-					isValid  = false;
-					self.setCustomResponse(ResponseType.Error, 'Please select one or more posts');
-					return false;
-				}
-			}
 		}else{
 			this.socialStatusList.forEach(data => {
 				if (!data.statusMessage && data.socialStatusContents.length === 0) {
@@ -402,42 +395,52 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				this.socialCampaign.socialStatusProviderList.push(data)
 		});
 		if (this.validate()) {
-			this.loading = true;
-			this.referenceService.showSweetAlertProceesor("We are posting on social media");
-			this.socialService.redistributeSocialCampaign(this.socialCampaign)
-				.subscribe(
-					data => {
-						if (data.access) {
-							this.isRedirectEnabled = true;
-							this.socialStatusResponse = data.socialStatusList;
-							if (data.publishStatus !== 'FAILURE') {
-								let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
-								this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-							}
-							else if (data.publishStatus === 'FAILURE')
-								this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-							$('input:checkbox').removeAttr('checked');
-							$('#contact-list-table tr').removeClass("highlight");
-						} else {
-							this.authenticationService.forceToLogout();
-						}
-
-					},
-					error => {
-						this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-						this.customResponse.statusArray = [];
-						this.customResponse.statusArray.push(error);
-						this.loading = false;
-						this.referenceService.closeSweetAlert();
-					},
-					() => {
-						this.initializeSocialStatus();
-						this.socialCampaign.userListIds = [];
-						this.loading = false;
-						this.referenceService.closeSweetAlert();
-					}
-				);
+			let selectedPostsLength = $('#selected-posts').length;
+			if(selectedPostsLength>0){
+				this.redistribute();
+			}else{
+				this.setCustomResponse(ResponseType.Error, 'Please select one or more posts');
+			}
 		}
+	}
+
+	private redistribute() {
+		this.loading = true;
+		this.referenceService.showSweetAlertProceesor("We are posting on social media");
+		this.socialCampaign.alias =  this.alias;
+		this.socialService.redistributeSocialCampaign(this.socialCampaign)
+			.subscribe(
+				data => {
+					if (data.access) {
+						this.isRedirectEnabled = true;
+						this.socialStatusResponse = data.socialStatusList;
+						if (data.publishStatus !== 'FAILURE') {
+							let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
+							this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+						}
+						else if (data.publishStatus === 'FAILURE')
+							this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+						$('input:checkbox').removeAttr('checked');
+						$('#contact-list-table tr').removeClass("highlight");
+					} else {
+						this.authenticationService.forceToLogout();
+					}
+
+				},
+				error => {
+					this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+					this.customResponse.statusArray = [];
+					this.customResponse.statusArray.push(error);
+					this.loading = false;
+					this.referenceService.closeSweetAlert();
+				},
+				() => {
+					this.initializeSocialStatus();
+					this.socialCampaign.userListIds = [];
+					this.loading = false;
+					this.referenceService.closeSweetAlert();
+				}
+			);
 	}
 
 	createSocialCampaign() {
@@ -1590,6 +1593,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		);
 	}
 
+				
+	
 }
 
 

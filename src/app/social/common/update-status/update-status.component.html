@@ -364,7 +364,7 @@
                                     <div class="col-sm-6 col-xs-12 p0">
                                         <div class="profile-selected" (click)="$event.stopPropagation();socialStatus.selected = !socialStatus.selected;">
                                             <i class="fa fa-square-o" *ngIf="!socialStatus.selected" aria-hidden="true"></i>
-                                            <i class="fa fa-check-square" *ngIf="socialStatus.selected" aria-hidden="true"></i>
+                                            <i class="fa fa-check-square success" id="selected-posts" *ngIf="socialStatus.selected" aria-hidden="true"></i>
                                             <!--XNFR-222-->
                                             <i *ngIf="socialCampaign?.allowPartnerToEditThePost &&!(socialStatus?.socialStatusProvider?.socialConnection?.source=='TWITTER' && ssp?.socialConnection?.source=='TWITTER')"
                                              class="fa fa-pencil" title="Edit" (click)="$event.stopPropagation();socialStatus.editSharedPost = !socialStatus.editSharedPost" aria-hidden="true"></i>

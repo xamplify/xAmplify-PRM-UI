@@ -23,4 +23,6 @@ export class CampaignDetailsDto {
     campaignScheduleType = "";
     countryId:number = 0;
     launchTime:any;
+    showAllowPartnerToEditThePostOption = false;
+    showScheduleOptions = false;
 }

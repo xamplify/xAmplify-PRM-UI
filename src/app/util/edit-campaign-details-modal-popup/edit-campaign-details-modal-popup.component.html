@@ -103,7 +103,7 @@
 
 
                          <!---XNFR-222-->
-                         <div [hidden]="campaignDetailsDto.campaignType!='SOCIAL'">
+                         <div [hidden]="!campaignDetailsDto?.showAllowPartnerToEditThePostOption">
                              <!--Edit The Post-->
                             <div class="form-group">
                                 <label class="control-label col-sm-3" translate>Allow {{authenticationService?.partnerModule?.customName}} To Edit The Post</label>
@@ -120,8 +120,7 @@
                                 </div>
                             </div> 
 
-
-                            <div [hidden]="launched || campaignDetailsDto.campaignScheduleType=='SAVE'">
+                            <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
 
                             <!--Schedule Date & Time-->
                             <div class="form-group">
