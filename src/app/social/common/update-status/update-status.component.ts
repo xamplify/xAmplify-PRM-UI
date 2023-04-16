@@ -1018,7 +1018,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}
 					if (this.alias) {
 						this.nurtureCampaign = true;
-						this.getSocialCampaign(this.alias);
+						this.checkAliasAccess(this.alias);
 					} else {
 						this.nurtureCampaign = false;
 						this.loadContactLists(this.contactListsPagination);
@@ -1592,6 +1592,25 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			}
 		);
 	}
+/***XNFR-222****/
+checkAliasAccess(socialCampaignAlias: string) {
+	let statusCode = 404;
+		this.socialService.checkAliasAccess(socialCampaignAlias)
+			.subscribe(
+				response => {
+					statusCode = response.statusCode;
+				},
+				error => this.router.navigate(['/home/error/404']),
+				() => {
+					if(statusCode==200){
+						this.getSocialCampaign(socialCampaignAlias);
+					}else{
+						this.router.navigate(['/home/error/404']);
+					}
+				}
+			);
+	}
+
 
 				
 	
