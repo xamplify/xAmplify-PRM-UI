@@ -119,7 +119,8 @@
                     <div class="col-sm-7 col-xs-12">
                         <div class="form-group m0">
                             <label for="campaignName">
-                                <h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
+                                <label class="caption-subject font-red-sunglo uppercase bold m0">Campaign</label>
+                                <span style="color: red"><strong> * </strong></span>
                             </label>
                             <input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)" maxlength="255">
                             <span class="required" *ngIf="isCampaignNameExist">Campaign already exists</span>
@@ -159,10 +160,31 @@
                                 <h5 class="pl10  font-red-sunglo inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To {{authenticationService?.partnerModule?.customName}}</h5>
                     </div>
 
+                    <div class="col-sm-7 col-xs-12 margin-top-folder">
+                        <div class="form-group">
+                            <label class="caption-subject font-red-sunglo uppercase bold m0">From Name</label>
+                            <span style="color: red"><strong> * </strong></span>
+                            <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="socialCampaign.fromName" name="fromName" (input)="validateFromName(socialCampaign.fromName)" maxlength="200" />
+                            <span class="required" *ngIf="!isValidFromName">Please provide from name</span>
+                        </div>
+                    </div>
 
                     <div class="col-sm-7 col-xs-12 margin-top-folder">
                         <div class="form-group">
-                            <label class="font-red-sunglo">Folder</label>
+                            <label class="caption-subject font-red-sunglo uppercase bold m0">From Email</label>
+                            <span style="color: red"><strong> * </strong></span>
+                            <select class="form-control" placeholder="From Email" name="fromEmail" [(ngModel)]="socialCampaign.fromEmail" (change)="setFromName()">
+                                <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
+                                {{teamMember.emailId}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-7 col-xs-12 margin-top-folder">
+                        <div class="form-group">
+                            <label class="caption-subject font-red-sunglo uppercase bold m0">Folder</label>
                             <select class="form-control" name="socialCampaign.categoryId" [(ngModel)]="socialCampaign.categoryId" style="width: 100%">
                                 <option *ngFor="let category of categoryNames"
                                     [ngValue]="category.id">

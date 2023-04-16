@@ -112,6 +112,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	buttonText = "Post Now";
 	showNavigationBreadCrumbToPartner = false;
 	showPostDiv = false;
+	loggedInUserId = 0;
+	teamMemberEmailIds:any[] = [];
+	isValidFromName = true;
 	/***XNFR-222 ***/
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -121,6 +124,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		public referenceService: ReferenceService, public campaignService: CampaignService,
 		public utilService:UtilService,public renderer:Renderer) {
 		this.referenceService.renderer = this.renderer;
+		this.loggedInUserId = this.authenticationService.getUserId();
 		this.socialCampaign.emailNotification = true;
 		this.location = this.router.url;
 		this.resetCustomResponse();
@@ -371,6 +375,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		} else if (this.isCampaignNameExist) {
 			isValid = false;
 			this.setCustomResponse(ResponseType.Error, 'Please provide another campaign name');
+		}else if(!this.isValidFromName){
+			isValid = false;
+			this.setCustomResponse(ResponseType.Error, 'Please provide from name');
 		} else if (!this.alias && (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0)) {
 			isValid = false;
 			this.setCustomResponse(ResponseType.Error, 'Please select one or more recipient lists.');
@@ -966,9 +973,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					this.socialCampaign.userListIds = [];
 					this.socialStatusList = [];
 					this.isCustomizeButtonClicked = true;
+					let categoryIds = this.categoryNames.map(function(a: any) { return a.id; });
+					this.socialCampaign.categoryId = categoryIds[0];
 				},
 				error => this.router.navigate(['/home/error/404']),
 				() => {
+					this.listAllTeamMemberEmailIds();
 					this.loadContactLists(this.contactListsPagination);
 					this.listSocialStatusProviders();
 				}
@@ -1016,17 +1026,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					}else{
 						this.socialCampaign.channelCampaign = true;
 					}
+					this.loadCampaignNames(this.userId);
+					this.listCategories();
+					/****XNFR-222*****/
+					this.updateButtonText();
 					if (this.alias) {
 						this.nurtureCampaign = true;
 						this.checkAliasAccess(this.alias);
 					} else {
 						this.nurtureCampaign = false;
+						this.listAllTeamMemberEmailIds();
 						this.loadContactLists(this.contactListsPagination);
 					}
-					this.loadCampaignNames(this.userId);
-					this.listCategories();
-					/****XNFR-222*****/
-					this.updateButtonText();
 				}
 			}
 		);
@@ -1611,8 +1622,55 @@ checkAliasAccess(socialCampaignAlias: string) {
 			);
 	}
 
+	
 
-				
+	listAllTeamMemberEmailIds(){
+		this.loading = true;
+        this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
+        .subscribe(
+        data => {
+          let self = this;
+          $.each(data,function(index:number,_value:any){
+              self.teamMemberEmailIds.push(data[index]);
+          });
+		  let teamMember = this.teamMemberEmailIds.filter((teamMember)=> teamMember.id ==this.loggedInUserId)[0];
+		  this.socialCampaign.fromEmail = teamMember.emailId;
+		  this.socialCampaign.fromName = $.trim(teamMember.firstName+" "+teamMember.lastName);
+		  this.setEmailIdAsFromName();
+        },
+        error => {this.loading = false;},
+        () => {this.loading = false;}
+        );
+    }
+
+	setLoggedInUserEmailId(){
+        const userProfile = this.authenticationService.userProfile;
+        this.socialCampaign.fromEmail = userProfile.emailId;
+        if(userProfile.firstName !== undefined && userProfile.lastName !== undefined)
+            this.socialCampaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+        else if(userProfile.firstName !== undefined && userProfile.lastName == undefined)
+            this.socialCampaign.fromName = $.trim(userProfile.firstName);
+        else
+            this.socialCampaign.fromName = $.trim(userProfile.emailId);
+        this.setEmailIdAsFromName();
+    }
+
+    setFromName(){
+        let user = this.teamMemberEmailIds.filter((teamMember)=> teamMember.emailId == this.socialCampaign.fromEmail)[0];
+        this.socialCampaign.fromName = $.trim(user.firstName+" "+user.lastName);
+        this.setEmailIdAsFromName();
+    }
+
+	setEmailIdAsFromName() {
+        if (this.socialCampaign.fromName.length == 0) {
+            this.socialCampaign.fromName = this.socialCampaign.fromEmail;
+        }
+    }
+	
+	validateFromName(fromName:string){
+		let trimmedFromName = this.referenceService.replaceMultipleSpacesWithSingleSpace($.trim(fromName));
+		this.isValidFromName = trimmedFromName!=undefined && trimmedFromName.length>0;
+	}
 	
 }
 

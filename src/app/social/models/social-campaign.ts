@@ -29,4 +29,6 @@ export class SocialCampaign {
   allowPartnerToEditThePost = false;
   country = "";
   alias = "";
+  fromName = "";
+  fromEmail = "";
 }
