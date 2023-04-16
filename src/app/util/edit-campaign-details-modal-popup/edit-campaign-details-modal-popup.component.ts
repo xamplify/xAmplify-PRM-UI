@@ -4,11 +4,12 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { CampaignDetailsDto } from 'app/campaigns/models/campaign-details-dto';
 import { CallActionSwitch } from './../../videos/models/call-action-switch';
 import { CustomResponse } from './../../common/models/custom-response';
-import { TabHeadingDirective } from "ngx-bootstrap";
 import { Properties } from './../../common/models/properties';
-import { emit } from "process";
+import { ReferenceService } from "app/core/services/reference.service";
+import { Country } from "app/core/models/country";
+import { Timezone } from "app/core/models/timezone";
 
-declare var $:any;
+declare var $:any, flatpickr:any;
 @Component({
   selector: "app-edit-campaign-details-modal-popup",
   templateUrl: "./edit-campaign-details-modal-popup.component.html",
@@ -27,31 +28,69 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   customResponse:CustomResponse = new CustomResponse();
   properties:Properties = new Properties();
   dataUpdated = false;
-  constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch) {}
+  countries: Country[];
+	timezones: Timezone[];
+  countryId: number = 0;
+  constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch,
+    public referenceService:ReferenceService) {}
   
 
   ngOnInit() {
     this.loader = true;
+    this.countries = this.referenceService.getCountries();
+    flatpickr('.flatpickr', {
+			enableTime: true,
+			dateFormat: 'm/d/Y h:i K',
+			time_24hr: false,
+      static: true
+		});
     $('#edit-campaign-details-popup').modal('show');
-    this.campaignService.getCampaignDetailsById(this.campaignId)
-    .subscribe(
-      response=>{
-        let statusCode = response.statusCode;
-        if(statusCode==200){
-          let map = response.map;
-          this.campaignDetailsDto = map['campaignDetailsDto'];
-          this.teamMemberEmailIds = map['adminAndTeamMembers'];
-          this.categories = map['categories'];
-          this.loader = false;
-        }else{
-          this.closePopup();
-          this.authenticationService.forceToLogout();
-        }
-      },error=>{
-        this.loader = false;
-      }
-    )
+    this.getCampaignDetailsById();
   }
+
+
+  private getCampaignDetailsById() {
+    this.campaignService.getCampaignDetailsById(this.campaignId)
+      .subscribe(
+        response => {
+          let statusCode = response.statusCode;
+          if (statusCode == 200) {
+            let map = response.map;
+            this.campaignDetailsDto = map['campaignDetailsDto'];
+            this.teamMemberEmailIds = map['adminAndTeamMembers'];
+            this.categories = map['categories'];
+            if (this.campaignDetailsDto.timezone == undefined) {
+              this.campaignDetailsDto.countryId = this.countries[0].id;
+              this.onSelectCountry(this.campaignDetailsDto.countryId);
+            } else {
+              let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
+              let countryIndex = countryNames.indexOf(this.campaignDetailsDto.country);
+              if (countryIndex > -1) {
+                this.campaignDetailsDto.countryId = this.countries[countryIndex].id;
+                this.onSelectCountry(this.campaignDetailsDto.countryId);
+              } else {
+                this.campaignDetailsDto.countryId = this.countries[0].id;
+                this.onSelectCountry(this.campaignDetailsDto.countryId);
+              }
+            }
+            this.loader = false;
+          }
+          else {
+            this.closePopup();
+            this.authenticationService.forceToLogout();
+          }
+        }, error => {
+          this.loader = false;
+          this.closePopup();
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+      );
+  }
+
+  onSelectCountry(countryId:number) {
+		this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
+	}
+
   setFromName(){
     let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaignDetailsDto.fromEmail)[0];
     this.campaignDetailsDto.fromName = $.trim(user.firstName + " " + user.lastName);
@@ -69,6 +108,8 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
       this.campaignDetailsDto.videoPlayed = event;
     }else if(4==type){
       this.campaignDetailsDto.rsvpReceived = event;
+    }else if(5==type){
+      this.campaignDetailsDto.allowPartnerToEditThePost = event;
     }
   }
 
@@ -90,12 +131,20 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   update(){
     this.loader = true;
     this.customResponse = new CustomResponse();
+    this.campaignDetailsDto.timezone = $('#timezoneId option:selected').val();
+    this.campaignDetailsDto.country = $.trim($('#edit-social-campaign-countryName option:selected').text());
     this.campaignService.updateCampaignDetails(this.campaignDetailsDto)
     .subscribe(
       response=>{
-        this.buttonClicked = false;
+        let statusCode = response.statusCode;
         this.loader = false;
-        this.dataUpdated = true;
+        this.buttonClicked = false;
+        if(statusCode==200){
+          this.dataUpdated = true;
+        }else{
+          this.customResponse = new CustomResponse('ERROR',response.message,true);
+        }
+        
       },error=>{
         this.loader = false;
         this.buttonClicked = false;

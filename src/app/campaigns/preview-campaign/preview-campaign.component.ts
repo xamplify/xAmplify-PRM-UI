@@ -823,7 +823,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     editCampaign(campaign: any) {
       this.ngxloading = true;
       this.campaignErrorResponse = new CustomResponse();
-      if(campaign.launched){
+      if(campaign.launched || campaign.campaignType.indexOf('SOCIAL') > -1){
         this.editButtonClicked = true;
         this.selectedCampaignId = this.previewCampaignId;
         this.ngxloading = false;
