@@ -330,9 +330,14 @@
                                 <i class="fa fa-image" aria-hidden="true"></i>
                                 <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
                             </label>
-                            <span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
+                            <ng-container *ngIf="!showNavigationBreadCrumbToPartner">
+                                <span *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember &&
+                                 !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" 
+                                 class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
                                 <i class="fa fa-video-camera" aria-hidden="true"></i>
                             </span>
+                            </ng-container>
+                            
                             <span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
                                 <i class="fa fa-rss-square" aria-hidden="true"></i>
                             </span>
@@ -532,7 +537,7 @@
                         <div class="col-sm-8 col-xs-12">
                             <div class="social-campaign-search-css">
                                 <!--Sort-->
-                                <select class="form-control cc mTopSort mr10" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                <select *ngIf="!showNavigationBreadCrumbToPartner" class="form-control cc mTopSort mr10" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                 (ngModelChange)="sortRecipientsList($event)">                                                    
                                 <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
                                     [ngValue]="option">{{option.name}}</option>
