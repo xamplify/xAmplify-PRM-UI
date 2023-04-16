@@ -118,6 +118,7 @@ export class SocialService {
   }
 
   createSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
@@ -125,7 +126,13 @@ export class SocialService {
 
 
 
+  private setVanityLoginOptions(socialCampaign: SocialCampaign) {
+    socialCampaign.vanityUrlCampaign = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+    socialCampaign.vanityUrlDomainName = this.authenticationService.companyProfileName;
+  }
+
   redistributeSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
@@ -197,9 +204,7 @@ export class SocialService {
   }
 
   private extractData(res: Response) {
-	console.log(res);
     const body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -373,6 +378,17 @@ export class SocialService {
         return this.http.get(url, "")
         .map(this.extractData)
         .catch(this.handleError);
+}
+
+getSocialStatusById(socialStatusId:number){
+  return this.http.get( this.URL + 'social/findSocialStatusById/'+socialStatusId+'?access_token=' + this.authenticationService.access_token,"" )
+    		.map( this.extractData ).catch( this.handleError );
+}
+
+checkAliasAccess(alias: string) {
+  return this.http.get(this.URL + 'social/checkAliasAccess/' + alias + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
 }
   
 }

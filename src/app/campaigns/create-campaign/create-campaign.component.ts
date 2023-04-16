@@ -1607,8 +1607,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
     highlightRow(contactList: any, event: any) {
         let contactId = contactList.id;
-        let count = contactList.count;
-       
         let isChecked = $('#' + contactId).is(':checked');
         if (isChecked) {
             $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
