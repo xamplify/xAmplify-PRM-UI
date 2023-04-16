@@ -118,6 +118,7 @@ export class SocialService {
   }
 
   createSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
@@ -125,7 +126,13 @@ export class SocialService {
 
 
 
+  private setVanityLoginOptions(socialCampaign: SocialCampaign) {
+    socialCampaign.vanityUrlCampaign = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+    socialCampaign.vanityUrlDomainName = this.authenticationService.companyProfileName;
+  }
+
   redistributeSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);

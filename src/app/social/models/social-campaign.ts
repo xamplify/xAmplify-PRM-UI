@@ -31,4 +31,6 @@ export class SocialCampaign {
   alias = "";
   fromName = "";
   fromEmail = "";
+  vanityUrlCampaign = false;
+  vanityUrlDomainName = "";
 }
