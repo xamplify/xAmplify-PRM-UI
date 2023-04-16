@@ -112,3 +112,27 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.label-value-correct {
+    color: green;
+    font-weight: 600;
+}
+
+.label-value-incorrect {
+    color: red;
+    font-weight: 600;
+}
+
+.label-box {
+    border: #ddd solid 1px;
+    border-radius: 3px !important;
+    padding: 20px;
+}
+
+.label-box:hover {
+    background-color: #e6e5e5;
+}
+
+.disabled-background-color {
+    background-color: #f7f6f6;
+}

@@ -112,3 +112,6 @@ h5{
 .portlet.light > .portlet-title > .caption{
 	padding: 8px 0px !important;
 }
+.border{
+	padding-left: 50px; margin-left: 55px;
+}

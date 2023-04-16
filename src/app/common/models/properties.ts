@@ -204,7 +204,7 @@ export class Properties {
 	zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
 	googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
 	salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
+	manualImage: string = 'assets/admin/pages/media/works/contacts2.svg';
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
@@ -252,9 +252,14 @@ export class Properties {
 	campaignLaunchedMessage = "The campaign was successfully deployed. Please wait until the campaign is processed and launched. We will send you email updates in timely manner."
 	deployingCampaignMessage = "We are deploying the campaign";
 
+
 	/***XNFR-222*****/
 	postingOnSocialMedia = "We are posting on social media  and  deploying the campaign";
 	schedulingCampaignMessage = "We are scheduling the campaign";
+
+	/****XNFR-224****/
+	supportText = "Enable support access to vendor";
+
 
 
 

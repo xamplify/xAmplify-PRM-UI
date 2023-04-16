@@ -13,6 +13,7 @@ import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-
 import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
+import { LoginAsPartnerDto } from './models/login-as-partner-dto';
 
 @Injectable()
 export class DashboardService {
@@ -816,4 +817,35 @@ export class DashboardService {
         .catch(this.handleError);
     }
 
+    // xnfr-215
+    saveApiTokenForPipedrive(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `pipedrive/saveApiKey?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getApiTokenForPipedrive(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `pipedrive/apiKey/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    // xnfr-215
+
+    
+    /****XNFR-224*****/
+    findLoginAsPartnerSettingsOptions(companyProfileName:string) {
+        let userId = this.authenticationService.getUserId();
+        return this.http.get(this.authenticationService.REST_URL + "/module/findLoginAsPartnerSettingsOptions/" + companyProfileName + "/"+userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+        
+    }
+
+    /****XNFR-224*****/
+    updateLoginAsPartnerSettingsOptions(loginAsPartnerDto:LoginAsPartnerDto) {
+        loginAsPartnerDto.loggedInUserId = this.authenticationService.getUserId();
+		return this.http.post(this.authenticationService.REST_URL + "/module/updateLoginAsPartnerSettingsOptions/?access_token=" + this.authenticationService.access_token,loginAsPartnerDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+	}
 }

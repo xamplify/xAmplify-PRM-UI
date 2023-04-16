@@ -1,7 +1,7 @@
-.form-group label {
+/* .form-group label {
   font-weight: 500 !important;
   color: #999 !important;
-}
+} */
 
 .btn-reply {
   margin: 7px 0;
@@ -988,9 +988,9 @@ h3 {
   color: #00a8e7;
 }
 
-.form-body label {
+/* .form-body label {
   color: #000 !important;
-}
+} */
 
 .portlet.box {
   border: 1px solid #c4c1bb;
@@ -1915,7 +1915,7 @@ legend {
 .campaign-email-template-filter-icon {
   font-size: 16px !important;
   right: 30px;
-  background: #f1f3fa !important;
+  background: #f1f3fa ;
   width: 39px !important;
   padding-top: 3px !important;
   position: absolute;
@@ -2136,11 +2136,14 @@ div.tab{
   margin-top: 2px;
 }
 .table tr.contact-list-selected td {
-  background-color: #ddd !important;
-  color:#000 !important;
+  background-color: #ddd;
+  color:#000;
 }
 .custom{
   background-color: #008fd5 ;
   color: #fff;
   border: 1px solid #3575b5;
+}
+.preview-edit-color{
+  color: #5a5a5a;
 }

@@ -62,7 +62,7 @@ export class ImgCropprV2Component implements OnChanges, OnInit{
     @Input() imageBase64: string;
     @Input() imageFile: File;
 
-    @Input() format: 'png' | 'jpeg' | 'bmp' | 'webp' | 'ico' = 'png';
+    @Input() format: 'png' | 'jpeg' | 'bmp' | 'webp' | 'ico' | 'svg' = 'png';
     @Input() maintainAspectRatio = true;
     @Input() transform: ImageTransform = {};
     @Input() aspectRatio = 1;
@@ -222,7 +222,7 @@ export class ImgCropprV2Component implements OnChanges, OnInit{
     }
 
     private isValidImageType(type: string): boolean {
-        return /image\/(png|jpg|jpeg|bmp|gif|tiff|svg)/.test(type);
+        return /image\/(png|jpg|jpeg|bmp|gif|tiff|webp)/.test(type);
     }
 
     private loadBase64Image(imageBase64: string): void {

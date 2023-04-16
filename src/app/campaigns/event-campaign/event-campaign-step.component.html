@@ -1234,9 +1234,9 @@
 																	data-toggle="tooltip" data-placement="top"
 																	title="Preview"
 																	(click)="$event.stopPropagation();previewEventCampaignEmailTemplate(emailTemplate.id)">
-																		<i class="fa fa-external-link-square"
+																		<i class="fa fa-external-link-square preview-edit-color"
 																		aria-hidden="true"
-																		style="font-size: 20px; color: #5a5a5a"></i>
+																		style="font-size: 20px;"></i>
 																</a>
 																<a style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
 																	title="Edit" (click)="$event.stopPropagation();editTemplate(emailTemplate)">
@@ -1540,7 +1540,7 @@
 												  <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 												data-toggle="tooltip" data-placement="top"
 												title="Preview"  (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)">
-												  <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+												  <i class="fa fa-external-link-square preview-edit-color"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; "></i>
 											   </a>
 											   <a *ngIf=" !reDistributeEventManage && !reDistributeEvent && !isPreviewEvent" style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
 														title="Edit" (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)">
@@ -1592,7 +1592,7 @@
 										  <span> <a class="fm external-link" target="_BLANK"
 											  data-toggle="tooltip" data-placement="top" title="Preview" (click)="$event.stopPropagation();
 											  getTemplateById(emailTemplate)">
-											  <i class="fa fa-external-link-square" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
+											  <i class="fa fa-external-link-square preview-edit-color" aria-hidden="true" style="font-size: 20px;"></i>
 										  </a>
 										  <a *ngIf="!reDistributeEventManage && !reDistributeEvent && !isPreviewEvent" style="right: -15px;"  class="fm external-link" target="_BLANK"    data-toggle="tooltip" data-placement="top"
 														title="Edit" (click)="$event.stopPropagation();editTemplate(emailTemplate)">
@@ -1643,7 +1643,7 @@
 	
 			  <div class="col-xs-12" style="text-align: center;" *ngIf="isEventUpdate">
 			  <div class="btn-group" [class.disabled]="eventError.eventExpiredError || !isEnableUpdateButton" (click)="createEventCampaign(eventCampaign, 'NOW')">
-			   <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+			   <label class="btn btn-primary button-border" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
 			   Update
 			  </label>
 			  </div>
@@ -1654,7 +1654,7 @@
 			<div class="col-xs-12 p0 mEventPadTemplate" *ngIf="!isEventUpdate">
 				<div class="btn-group btn-group-justified" [class.disabled]="eventError.eventExpiredError">
 				   <ng-container *ngFor="let options of launchOptions">
-					  <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError" >
+					  <label class="btn btn-primary button-border" [class.disabled]="isPreviewEvent || eventError.eventExpiredError" >
 						<input type="radio"[checked]="eventCampaign.campaignScheduleType === options" class="text-center" (input)="resetTabClass()" name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
 						style=" margin-right:0.5em; " />{{options}}
 					  </label>

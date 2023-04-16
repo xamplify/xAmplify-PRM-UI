@@ -26,10 +26,10 @@ fieldset {
 	border-color: red
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
 	background-color: #00a6e8 !important;
 	color: white;
-}
+} */
   .blur {
 	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);

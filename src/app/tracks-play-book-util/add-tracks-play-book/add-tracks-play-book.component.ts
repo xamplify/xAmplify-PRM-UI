@@ -169,6 +169,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  selectedFileType = "";
+  fileTypesForFilter:Array<any> = new Array<any>();
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -250,6 +252,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepThreeTabClass = this.activeTabClass;
       this.assetPagination = new Pagination();
       this.assetSortOption = new SortOption();
+      this.findFileTypes();
       this.listAssets(this.assetPagination);
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
@@ -391,11 +394,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.referenceService.startLoader(this.httpRequestLoader);
     this.formService.quizList(pagination).subscribe(
       (response: any) => {
+        let self = this;
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
         this.quizFormSortOption.totalRecords = data.totalRecords;
         $.each(data.forms, function (index, form) {
           form.createdDateString = new Date(form.createdDateString);
+          form.selected = self.isQuizSelected(form);
         });
         pagination = this.pagerService.getPagedItems(pagination, data.forms);
         this.referenceService.loading(this.quizFormsLoader, false);
@@ -443,6 +448,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     pagination.excludeBeePdf = this.isAssestPopUpOpen;
     this.referenceService.goToTop();
     this.startLoaders();
+    this.referenceService.loading(this.assetLoader, true);
     this.damService.list(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
@@ -466,7 +472,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         pagination = this.pagerService.getPagedItems(pagination, data.assets);
       }
       this.stopLoaders();
+      this.referenceService.loading(this.assetLoader, false);
     }, error => {
+      this.referenceService.loading(this.assetLoader, false);
       this.stopLoadersAndShowError(error);
     });
   }
@@ -474,6 +482,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   listPublishedAssets(pagination: Pagination) {
     this.referenceService.goToTop();
     this.startLoaders();
+    this.referenceService.loading(this.assetLoader, true);
     this.damService.listPublishedAssets(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
         let data = result.data;
@@ -484,7 +493,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         pagination = this.pagerService.getPagedItems(pagination, data.assets);
       }
       this.stopLoaders();
+      this.referenceService.loading(this.assetLoader, false);
     }, error => {
+      this.referenceService.loading(this.assetLoader, false);
       this.stopLoadersAndShowError(error);
     });
   }
@@ -689,16 +700,33 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
 
 
   setSelectedAsset(asset: any) {
-    let index = this.selectedAssets.findIndex(x => x.id == asset.id);
+    let index = -1;
+    if (this.selectedAssets !== undefined && this.selectedAssets.length > 0) {
+      $.each(this.selectedAssets, function (i: number, selectedAsset: any) {
+        if (!selectedAsset.typeQuizId && selectedAsset.id == asset.id) {
+          index = i;
+          return false;
+        }
+      });
+    }
     if (index < 0) {
-      this.selectedAssets.push(asset);
+      let tracksPlayBookDto =  new TracksPlayBookDto();
+      tracksPlayBookDto.typeQuizId = false;
+      tracksPlayBookDto.dam = asset;
+      tracksPlayBookDto.id = asset.id;
+      this.selectedAssets.push(tracksPlayBookDto);
     } else if (index > -1) {
       this.selectedAssets.splice(index, 1);
     }
+    console.log(this.selectedAssets);
   }
 
   isAssetSelected(asset: any) {
-    return (this.selectedAssets != undefined && this.selectedAssets.findIndex(x => x.id == asset.id) > -1)
+    return (this.selectedAssets != undefined && this.selectedAssets.filter(x => !x.typeQuizId).findIndex(x => x.id == asset.id) > -1)
+  }
+
+  isQuizSelected(form: any) {
+    return (this.selectedAssets != undefined && this.selectedAssets.filter(x => x.typeQuizId).findIndex(x => x.id == form.id) > -1)
   }
 
   openOrderAssetsPopup() {
@@ -712,12 +740,32 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     $('#quiz-list').modal('show');
   }
 
-  selectedQuiz(form: Form) {
-    if (this.tracksPlayBook.quizId == undefined || this.tracksPlayBook.quizId < 1 || this.tracksPlayBook.quizId != form.id) {
-      this.tracksPlayBook.quizId = form.id;
-    } else if (this.tracksPlayBook.quizId == form.id) {
-      this.tracksPlayBook.quizId = 0;
+  selectedQuiz(form: any) {
+    form.selected = !form.selected;
+    let index = -1;
+    if(this.selectedAssets !== undefined && this.selectedAssets.length > 0){
+      $.each(this.selectedAssets, function (i: number, selectedAsset: any) {
+        if(selectedAsset.typeQuizId && selectedAsset.id == form.id){
+          index = i;
+          return false;
+        }
+      });
     }
+    if (index < 0 && form.selected) {
+      let tracksPlayBookDto =  new TracksPlayBookDto();
+      tracksPlayBookDto.typeQuizId = true;
+      tracksPlayBookDto.quiz = form;
+      tracksPlayBookDto.id = form.id;
+      this.selectedAssets.push(tracksPlayBookDto);
+    } else if (index > -1 && !form.selected) {
+      this.selectedAssets.splice(index, 1);
+    }
+    console.log(this.selectedAssets);
+    // if (this.tracksPlayBook.quizId == undefined || this.tracksPlayBook.quizId < 1 || this.tracksPlayBook.quizId != form.id) {
+    //   this.tracksPlayBook.quizId = form.id;
+    // } else if (this.tracksPlayBook.quizId == form.id) {
+    //   this.tracksPlayBook.quizId = 0;
+    // }
   }
 
   updateDescription(form: Form) {
@@ -798,13 +846,16 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   uploadImage() {
+    if(this.croppedImage!=""){
     this.loadingcrop = true;
     this.fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
     this.fileObj = this.utilService.blobToFile(this.fileObj);
     this.loadingcrop = false;
+    }
     if (!this.isAdd) {
       this.tracksPlayBook.removeFeaturedImage = true;
     }
+    this.showCropper = false;
     this.featuredImagePath = "";
     $('#cropImage').modal('hide');
   }
@@ -1122,12 +1173,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   constructLearningTrack() {
-    let contentIds: Array<number> = new Array<number>();
+    //let contentIds: Array<number> = new Array<number>();
+    let contentAndQuizData = {};
     $.each(this.selectedAssets, function (index: number, lmsDto: any) {
-      contentIds.push(lmsDto.id);
+      contentAndQuizData[index] = lmsDto;
     });
-    this.tracksPlayBook.contentIds = contentIds;
+    //this.tracksPlayBook.contentIds = contentIds;
+    this.tracksPlayBook.contentAndQuizData = contentAndQuizData;
     this.tracksPlayBook.type = this.type;
+    console.log(contentAndQuizData);
   }
 
   saveAndPublish() {
@@ -1187,6 +1241,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
       this.referenceService.startLoader(this.httpRequestLoader);
+      console.log(this.tracksPlayBook)
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
@@ -1346,9 +1401,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetPagination = new Pagination();
     this.assetSortOption = new SortOption();
     this.isAssestPopUpOpen = true;
+    this.findFileTypes();
     this.listAssets(this.assetPagination);
     $('#media-asset-list').modal('show');
   }
+
+ 
 
   closeAssetModal(){
     this.isAssestPopUpOpen = false;
@@ -1429,5 +1487,25 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           console.log("Description"+this.tracksPlayBook.description);
       }
     }
+  }
+
+  findFileTypes(){
+    this.selectedFileType = "";
+		this.loading = true;
+		 this.damService.findFileTypes(this.loggedInUserCompanyId,this.categoryId).subscribe(
+			 response=>{
+				this.fileTypesForFilter = response.data;
+				this.loading = false;
+			 },error=>{
+				this.fileTypesForFilter = [];
+				this.loading = false;
+			 }
+		 );
+	 }
+
+  filterAssetsByFileType(event:any){
+    this.assetPagination.pageIndex = 1;
+		this.assetPagination.filterBy = event;
+    this.listAssets(this.assetPagination);
   }
 }

@@ -180,6 +180,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   showQuizField= true;
   descriptionColor: string;
   isValidDescriptionColor = true;
+  customResponseForFormUpdate: CustomResponse = new CustomResponse();
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -196,7 +197,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.onDropModel(value);
       });
       this.siteKey = this.envService.captchaSiteKey;
-      
+      this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
   }
 
 
@@ -593,6 +594,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             columnInfo.allChoicesCount = column.choices.length + 1;
             //columnInfo.choiceType = column.choiceType;
         }
+    }
+    if(column.description !== undefined){
+        columnInfo.description = column.description;
+        this.descriptionCharacterSize(columnInfo);
     }
       this.allItems.push(columnInfo.divId);
       return columnInfo;
@@ -1299,15 +1304,22 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   uploadBackgroundImage() {
-      this.loadingcrop = true;
-      if (this.popupOpenedFor == 'formBackgroundImage') {
+    if(this.popupOpenedFor == 'formBackgroundImage' && this.croppedBackgroundImage === ""){
+        this.showCropper = false;
+      }  
+    else if (this.popupOpenedFor == 'formBackgroundImage') {
+         this.loadingcrop = true;
           this.backgroundImageFileObj = this.utilService.convertBase64ToFileObject(this.croppedBackgroundImage);
           this.backgroundImageFileObj = this.utilService.blobToFile(this.backgroundImageFileObj);
           console.log(this.backgroundImageFileObj.size)
           this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
           this.formBackgroundImagePath = null;
           this.backgroundImageChangedEvent = null;
-      } else if (this.popupOpenedFor == 'companyLogo') {
+      }else if(this.popupOpenedFor == 'companyLogo' && this.croppedCompanyLogoImage === ""){
+        this.showCropper = false;
+      }
+      else if (this.popupOpenedFor == 'companyLogo') {
+          this.loadingcrop = true;
           this.companyLogoFileObj = this.utilService.convertBase64ToFileObject(this.croppedCompanyLogoImage);
           this.companyLogoFileObj = this.utilService.blobToFile(this.companyLogoFileObj);
           this.uploadFile(this.companyLogoFileObj, 'companyLogo')
@@ -1753,6 +1765,10 @@ addOrUpdate(){
 UpdateFormTeamMemberGroupData(form: Form){
     this.form.selectedTeamMemberIds = form.selectedTeamMemberIds;
     this.form.selectedGroupIds = form.selectedGroupIds;
+}
+
+descriptionCharacterSize(column: ColumnInfo){
+    column.descriptionCharacterleft = 500 - column.description.length;
 }
 
 }

@@ -14,6 +14,7 @@ import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-
 
 @Injectable()
 export class UserService {
+	
     private token: string;
     pagination: Pagination;
 
@@ -88,7 +89,6 @@ export class UserService {
     }
 
     updateUserProfile(data: any, userId: number) {
-
         return this.http.post(this.URL + "admin/updateUser/" + userId + "?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
@@ -489,5 +489,22 @@ export class UserService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    /****XNFR-224*****/
+    isLoginAsPartnerOptionEnabledForVendor(companyProfileName:string) {
+        let userId = this.authenticationService.getUserId();
+        return this.http.get(this.MODULE_URL + "isLoginAsPartnerOptionEnabledForVendor/" + companyProfileName + "/"+userId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+        
+    }
+
+    /****XNFR-224*****/
+    updateLoginAsPartnerOptionEnabledForVendor(companyProfileName: string, loginAsPartnerOptionEnabledForVendor: boolean) {
+        let userId = this.authenticationService.getUserId();
+		return this.http.get(this.MODULE_URL + "updateLoginAsPartnerOptionEnabledForVendor/" + companyProfileName +"/"+userId+ "/"+loginAsPartnerOptionEnabledForVendor+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+	}
 
 }

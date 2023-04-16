@@ -12,7 +12,7 @@
                 <ng-container *ngIf="!addTagLoader.isLoading">
                     <span *ngIf="!tag.isValid" class="required">{{tagErrorMessage}}</span>
                     <div class="form-group" id="tagNamesDiv">
-                        <label>Name <font class="required">*</font></label>
+                        <label>Name <span class="required">*</span></label>
                         <div *ngIf="isAddTag">
                             <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag" 
                             (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)" required></tag-input>

@@ -58,7 +58,7 @@
         transition: all 0.3s ease-in-out;
         /*make the smooth transition in 0.3s*/
         color: #eeaaee;
-        border-radius: 3px;
+        border-radius: 8px;
     }
     
     .box-wrapper:hover .box-content {
@@ -69,18 +69,19 @@
     .pricing {
         position: relative;
         margin-bottom: 15px;
-        border: 1px solid #008fd5!important;
+        border: 1px solid #ddd;
+        background: #34495a;
     }
     .camp-card{
         height: 242px;
-        border-radius: 3px;
+        border-radius: 10px;
     }
-    .camp-card-bg{
+    /* .camp-card-bg{
         background-color: #f2f4f9!important;
-        border-bottom: solid 1px #71bade !important;
+        border-bottom: solid 1px #ddd !important;
         height: 195px;
-        border-radius: 3px !important;
-    }
+        border-radius: 8px 8px 0 0  !important;
+    } */
     
     .custom{
   background-color: #008fd5 ;
@@ -108,17 +109,15 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div  class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
+            <div  class="">
                 <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
                 <ng-container *ngIf="!loading">
                 <div class="portlet-title">
-                    <div class="caption" translate>
-                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a campaign <small style="font-size: 12px" translate>Which type of campaign would you like to create?</small>
-                    </div>
-                    <div>
-                        <button class="btn btn custom" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-                    </div>
+                    <div class="caption" style="padding-top: 10px;padding-bottom: 25px;font-size: 18px;" translate>
+                        <b>Create a campaign</b>&nbsp;&nbsp; <small style="font-size: 14px" translate>Which type of campaign would you like to create?</small>
+                        <button class="btn btn custom" id="right" style="margin-top: -7px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                 </div>
+            </div>
                 <div class="portlet-body">
                     <div class="row clearfix">
                         <!-- Pricing -->
@@ -127,22 +126,22 @@
                                 <div class="pricing-head ">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive	" style="padding-top: 19px;" src="assets/images/video-email.png"></h4>
+                                        <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/video-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
                                         <li translate><i class="fa fa-video-camera"  aria-hidden="true"></i> Select a video <span class="important">*</span></li>
                                         <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
                                         <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                        <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
+                                        <li translate style="border-bottom:none !important;" ><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
                                     </ul>
                                 </div>
 
                                 <div class="pricing-footer">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>Video</h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Video</h4>
                                 </div>
                             </div>
                         </div>
@@ -151,11 +150,11 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/regular-email.png"></h4>
+                                        <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/regular-email.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
 
@@ -165,7 +164,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>E-mail </h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>E-mail </h4>
                                 </div>
                             </div>
                         </div>
@@ -174,11 +173,11 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/social-campaign.png"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/social-campaign.svg"></h4>
 
                                 </div>
-                                <div class="box-content" style="position: absolute !important;width: 99% !important;height: 193px !important;left: 2px !important;">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                <div class="box-content" style="position: absolute !important;width: 100% !important;height: 193px !important;">
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
                                         <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
@@ -186,7 +185,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px;  font-size: 15px; font-weight: 600;" translate>Social Media </h4>
+                                    <h4 style="padding-top: 4px;  font-size: 15px;font-weight: 600;color: #fff !important;" translate>Social Media </h4>
                                 </div>
                             </div> 
                         </div>
@@ -195,11 +194,11 @@
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/event-campaign.png"></h4>
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/event-campaign.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
                                         <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
@@ -208,7 +207,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;    font-weight: 600;" translate>Event</h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Event</h4>
                                 </div>
                             </div>
                         </div>                       
@@ -216,12 +215,12 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('landingPage')">
                                 <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
-                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/landing-page.png"></h4>
+                                    <h4 class="camp-card-bg">
+                                        <img alt="Social Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/landing-page.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
                                         <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
@@ -230,7 +229,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px;font-weight: 600;" translate>Page</h4>
+                                    <h4 style="padding-top: 4px;font-weight: 600;color: #fff !important;" translate>Page</h4>
                                 </div>
                             </div>
                         </div>
@@ -238,11 +237,11 @@
                             <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('survey')">
                                 <div class="pricing-head">
                                     <h4 class="camp-card-bg">
-                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/survey.png"></h4>
+                                        <img alt="Survey Campaign" class="pricing-head-img img-responsive" style="margin-top: 44px;height: 80px;" src="assets/images/survey.svg"></h4>
 
                                 </div>
                                 <div class="box-content">
-                                    <h5><span style="padding-left:5px;color: #696565;font-weight: 600;" translate> Steps involved:</span></h5>
+                                    <h5><span style="padding-left:5px;font-weight: 600;" translate> Steps involved:</span></h5>
                                     <ul class="pricing-content list-unstyled">
                                         <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
 
@@ -252,7 +251,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;" translate>Survey </h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Survey </h4>
                                 </div>
                             </div>
                         </div>

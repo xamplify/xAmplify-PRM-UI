@@ -101,7 +101,7 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                            <li *ngIf="customSkinSettingOption && !authenticationService.isOnlyPartner()"  [ngClass]="{'active': activeTabName == 'customskin'}">
+                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
                                 <a (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
@@ -157,6 +157,9 @@
                             <!--Saml Settings-->
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}"  *ngIf="authenticationService?.module?.allBoundSamlSettings && authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
+                            </li>
+                            <li  *ngIf="authenticationService?.vanityURLEnabled && authenticationService?.module?.showSupportSettingOption && !isLoggedInAsPartner" [ngClass]="{'active-tab': activeTabName == 'support'}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'support'}" (click)="activateTab('support');clearCustomResponse()">{{properties.supportText}}</a>
                             </li>
                             <!--------------Admin----------------------->
                             <div class="my-profile-header-text">Admin</div>
@@ -276,6 +279,7 @@
                                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                                 </app-response-message>
                                 <div class="tab-content">
+                                    <!---Personal Info-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
                                         <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
                                             <div class="form-group">
@@ -285,6 +289,14 @@
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Middle Name</label>
+                                                <input type="text" placeholder="Middle Name" class="form-control" formControlName="middleName" maxlength="50">
+                                                <div *ngIf="formErrors.middleName" class="alert alert-danger">
+                                                    {{ formErrors.middleName }}</div>
+                                            </div>
+
                                             <div class="form-group">
                                                 <label class="control-label" translate>Last Name</label>
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
@@ -304,8 +316,8 @@
                                                     {{ formErrors.interests }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label" translate>Title</label>
-                                                <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Title" class="form-control" formControlName="occupation" />
+                                                <label class="control-label" translate>Job Title</label>
+                                                <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Job Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
@@ -334,7 +346,7 @@
                                                 Save Changes</button>
                                         </form>
                                     </div>
-
+                                    <!---Deal Types-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'dealTypes'}">
                                         <app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
                                         <form role="form" aria-labelledby="form-label">
@@ -445,15 +457,15 @@
                                             <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
                                         </form>
                                     </div>
-
+                                    <!---Integrations-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
-                                        <section class="pricing py-5" *ngIf="integrationTabIndex == 0">
+                                        <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
                                             <div class="col-xs-12 integration-row">
                                                 <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px">
                                                             <span *ngIf="integrateRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                class="integration-cards">
                                                                     <a (click)="marketoSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Marketo Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -488,7 +500,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                class="integration-cards">
                                                                     <a (click)="hubspotSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="HubSpot Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -523,7 +535,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                 class="integration-cards">
                                                                     <a (click)="salesforceSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Salesforce Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -559,7 +571,7 @@
                                                     <div [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="microsoftRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                  class="integration-cards">
                                                                     <a (click)="microsoftSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Microsoft Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
@@ -588,7 +600,37 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                    <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                        <div class="card-body" style="padding:10px;">    
+                                                            <span *ngIf="pipedriveRibbonText == 'configured'" 
+                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                                    <a (click)="pipedriveSettings()" data-toggle="tooltip"
+                                                            data-placement="top" title="Pipedrive Settings"><i class="fa fa-cog"
+                                                                    style="font-size: 20px !important;"></i></a>
+                                                                </span>                                                       
+                                                            <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Pipedrive</h5>
+
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{pipedriveRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{pipedriveRibbonText}}</span>
+                                                            </div>
+                                                            <div style="height: 120px;">
+                                                                <div>
+                                                                    <img src="assets/images/crm/pipedrive-xamplify.png" style="margin-top:20px; text-align: center;width:100%">
+                                                                </div>
+                                                            </div>
+
+                                                            <a (click)="configurePipedrive()" class="btn btn-block btn-primary text-uppercase" *ngIf="pipedriveRibbonText == 'configure'" translate>configure</a>
+                                                            <a (click)="configurePipedrive()" class="btn btn-block btn-primary text-uppercase" *ngIf="pipedriveRibbonText == 'configured'" translate>re configure</a>
+                                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            
 	
                                         </section>
 
@@ -684,7 +726,7 @@
                                             <app-microsoft-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="closeMicrosoftForm($event)">
                                             </app-microsoft-authentication>
                                         </div>
-
+                                        
                                         <div *ngIf="integrationTabIndex == 4">                                            
                                             <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
                                             </app-response-message>
@@ -767,9 +809,15 @@
                                          <!---XNFR-146-->  
                                         <div *ngIf="integrationTabIndex == 5">
                                             <app-integration-settings [integrationType]="integrationType" (refreshEvent)="checkIntegrations()" (closeEvent)="refreshIntegrationSettings($event)" (unlinkEvent)="refreshIntegrationSettings($event)"></app-integration-settings>
+                                        </div>   
+                                        
+                                        <!-- XNFR-215 -->
+                                        <div *ngIf="integrationTabIndex == 6">
+                                            <app-pipedrive-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="refreshIntegrationSettings($event)">
+                                            </app-pipedrive-authentication>
                                         </div>
                                     </div>
-
+                                    <!---Lead Pipe Lines-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'leadPipelines' || activeTabName == 'dealPipelines'}">
                                         <ng-container>
                                             <app-response-message class="pg8" [customResponse]="pipelineResponse" *ngIf="pipelineResponse.isVisible">
@@ -783,12 +831,12 @@
                                                         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                             <div class="page-toolbar">
                                                                 <div class="btn-group pull-right">
-                                                                    <a *ngIf="activeCRMDetails?.activeCRM && activeCRMDetails?.type == 'HUBSPOT' && activeTabName == 'dealPipelines'" (click)="syncPipelines()">
-                                                                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom"
-                                                                          title="Synchronize" translate>
-                                                                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                                                                    <a *ngIf="activeCRMDetails?.activeCRM && (activeCRMDetails?.type == 'HUBSPOT' || activeCRMDetails?.type == 'PIPEDRIVE') && activeTabName == 'dealPipelines'"
+                                                                        (click)="syncPipelines()">
+                                                                        <button class="btn btn-white" data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
+                                                                            <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                                                                         </button>
-                                                                      </a>
+                                                                    </a>
                                                                     <div class="inputs float-right" style="display: inline-flex;">                                                                        
                                                                         <div class="portlet-input input-inline" id="search-div">
                                                                             <div class="input-icon right" id="icon">
@@ -875,7 +923,7 @@
                                             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>                                            
                                         </ng-container>
                                     </div>
-
+                                    <!--Pasword-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
                                             <div class="form-group" *ngIf="userData.hasPassword">
@@ -948,12 +996,7 @@
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-                                    <!--Start Custom Skin Tab-->
-                                    <!--End custom skin tab-->
-                                     <!-- <div class="ta-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
-                                        <app-custom-skin></app-custom-skin>
-                                     </div> -->
-                                     
+
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
@@ -991,87 +1034,6 @@
                                                             </div>
                                                         </tr>
                                                     </fieldset><br>
-                                                    <!-- <fieldset *ngIf="gdprSetting.gdprStatus">
-                                                        <legend>Available Options</legend>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        Unsubscribe links &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Add/Remove Unsubscribe links in email.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600">
-                                                                        GDPR-ready forms &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">GDPR-ready forms.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Terms & Conditions &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">Terms & Condtions.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Delete Functionality &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Delete Functionality.
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                        <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
-                                                            <div class="flex row">
-                                                                <div class="col-md-9 col-lg-9">
-                                                                    <h5 style="color: #847d7d;" class="f-w-600"> GDPR Event &nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;"> GDPR Event.</h5>
-                                                                </div>
-                                                                <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
-                                                                    <section>
-                                                                        <switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                                                            (statusChange)="setAllGdprStatus()">
-                                                                        </switch>
-                                                                    </section>
-                                                                </div>
-                                                            </div>
-                                                        </tr>
-                                                    </fieldset> -->
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
@@ -1266,8 +1228,9 @@
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
-                                   <!--Notify Partners--> 
+                                    <!--Notify Partners--> 
                                     <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners" class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
+                                  
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>
@@ -1328,7 +1291,8 @@
                                                             </div>
                                                         </fieldset>
                                                     </div>
-                                                    <div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
+                                                    <!-- removed bg-color white and shadow white (ss) -->
+                                                    <div class="col-xs-12" style="padding:0;">
                                                         <fieldset>
                                                             <legend translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
@@ -1392,7 +1356,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+                                                            <div class="col-xs-12 button-align" style="padding-left: 10px;">
                                                                 <button type="submit" class="btn green-haze" [disabled]="hasVideoRole" translate>Save Changes</button>
                                                                 <button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
                                                             </div>
@@ -1402,9 +1366,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <!--Exclude functionality code-->
-                                    <div class="tab-pane hidden-xs"
-                                        [ngClass]="{'active': activeTabName == 'exclude'}">
+                                    <div class="tab-pane hidden-xs"[ngClass]="{'active': activeTabName == 'exclude'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
                                         </app-dashboard-loader>
                                         <app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
@@ -1412,7 +1376,7 @@
                                                 style="border: 0px !important; background-color: transparent !important">
                                                 <tbody>
                                                     <fieldset>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;"> 
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
                                                         <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                                             Download User CSV Template
@@ -1421,7 +1385,7 @@
                                                         </div>
                                                             
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <button  class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
@@ -1571,7 +1535,7 @@
                                                 style="border: 0px !important; background-color: transparent !important" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <tbody>
                                                     <fieldset>
-                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #e5e5e5;">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                             Download Domain CSV Template
@@ -1582,7 +1546,7 @@
                                                         <!-- new -->
             
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
@@ -1727,6 +1691,10 @@
 
 
                                     </div>
+
+                                     <!-- Support Settings -->
+                                     <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane" [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
+                                     
                                 </div>
                             </div>
                         </div>
@@ -1957,7 +1925,7 @@
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
                                             placeholder="Enter Stage Name" style="width: 240px;
                                                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)">
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color">
                                         </span>
                                         <span class="col-lg-6">
                                             <div>

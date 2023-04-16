@@ -131,12 +131,7 @@ width:150%;
   border: none;
 }
 
-.text-wrap {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 100%;
-}
+
 
 @media screen and (max-width:600px){
   .mScroll{

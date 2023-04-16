@@ -133,7 +133,7 @@
                         <div class="input-icon right">
                            <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="searchAnalytics()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                           <button type="submit" class="search-box-item-click" (click)="searchAnalytics()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>
                   </div>

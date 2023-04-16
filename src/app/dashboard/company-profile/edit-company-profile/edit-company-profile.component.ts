@@ -195,6 +195,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     scale = 1;
     canvasRotation = 0;
     rotation = 0;
+    marketing: boolean;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -257,7 +258,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+		//	this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -269,7 +270,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 				scale: this.scale       
 			};
 		}else{
-			this.errorUploadCropper = true;
+		//	this.errorUploadCropper = true;
 			this.showCropper = false; 
 		}
     }
@@ -283,7 +284,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+       // this.errorUploadCropper = true;
         }
     }
     zoomInBgImage() {
@@ -296,7 +297,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 			
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
         }
     }
     resetImage() {
@@ -307,7 +308,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+    //    this.errorUploadCropper = true;
     }
     }
     resetImageBgImage() {
@@ -318,7 +319,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.transform = {};
 		}else{
         this.showCropper = false;
-        this.errorUploadCropper = true;
+      //  this.errorUploadCropper = true;
     }
     }
     validateUserUsingEmailId(){
@@ -1710,7 +1711,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
-        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.imageChangedEvent = event;
         } else {
@@ -1723,7 +1724,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         const image:any = new Image();
         const file:File = event.target.files[0];
         const isSupportfile = file.type;
-        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
             this.errorUploadCropper = false;
             this.bgImageChangedEvent = event;
         } else {
@@ -1736,6 +1737,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
           let roleId =  $('#selectedRole option:selected').val();
           this.prm = roleId==20;
           this.vendorTier = roleId==19;
+          this.marketing = roleId==18;
           if(this.prm){
             this.campaignAccess.emailCampaign = false;
             this.campaignAccess.videoCampaign = false;
@@ -1754,6 +1756,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.campaignAccess.oneClickLaunch = false;
           }else if(this.vendorTier){
               this.campaignAccess.shareLeads = false;
+          }else if(this.marketing){
+              this.campaignAccess.loginAsPartner = false;
           }
       }
 

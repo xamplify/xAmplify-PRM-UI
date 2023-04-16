@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Pagination } from '../models/pagination';
 import { CropperSettings} from 'ng2-img-cropper';
-
+declare var $:any;
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
@@ -154,6 +154,19 @@ export class UtilService {
     isLoggedInFromAdminPortal(){
         return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
        
+    }
+
+    isLoggedAsPartner(){
+        let adminId = this.getLoggedInVendorAdminCompanyUserId();
+        return adminId!=null;
+    }
+
+    getLoggedInVendorAdminCompanyUserId(){
+        return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
+    }
+
+    addLoginAsLoader(){
+        $("body").addClass("login-as-loader");
     }
     
 

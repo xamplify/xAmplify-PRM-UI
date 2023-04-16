@@ -98,7 +98,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
       if (this.isAddTag) {
         let lastEntry = this.tagNames[this.tagNames.length - 1]['value'];
         let name = "";
-        name =  lastEntry.toLowerCase().substring(0,15);
+        name =  lastEntry.toLowerCase().substring(0,55);
         this.tagNames[this.tagNames.length - 1] = name;
         let index = this.tagNames.findIndex(item => name.toLowerCase() === item.toLowerCase());
           if(index > -1 && index != this.tagNames.length-1){
@@ -117,8 +117,8 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
         }
         if(event.target.value.length > 0) {
           let value = event.target.value;
-          if(event.target.value.length > 15){
-            value = event.target.value.substring(0,15);
+          if(event.target.value.length > 55){
+            value = event.target.value.substring(0,55);
           }
           event.target.value = value;
         }
@@ -126,8 +126,8 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
         if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {
           this.tag.isTagNameValid = false;
         } else {
-          if(this.tag.tagName != undefined && this.tag.tagName .length > 15){
-            this.tag.tagName = this.tag.tagName.substring(0,15);
+          if(this.tag.tagName != undefined && this.tag.tagName .length > 55){
+            this.tag.tagName = this.tag.tagName.substring(0,55);
           }
           this.tag.isTagNameValid = true;
         }
@@ -139,8 +139,8 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
     this.referenceService.startLoader(this.addTagLoader);
     if (this.tag.id > 0) {
       this.tag.updatedBy = this.loggedInUserId;
-      if(this.tag.tagName != undefined && this.tag.tagName .length > 15){
-        this.tag.tagName = this.tag.tagName.substring(0,15);
+      if(this.tag.tagName != undefined && this.tag.tagName .length > 55){
+        this.tag.tagName = this.tag.tagName.substring(0,55);
       }
     } else {
       this.tag.createdBy = this.loggedInUserId;

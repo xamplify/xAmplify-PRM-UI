@@ -362,3 +362,6 @@ body {
 .badge{
 	color: #fff !important;
 }
+.breadcrumb-border{
+	border-radius: 3px !important; border: 1px solid #e0e0e0;
+}

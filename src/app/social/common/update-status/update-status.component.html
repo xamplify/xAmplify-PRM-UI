@@ -342,8 +342,8 @@
                             <div class="col-sm-9"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
                                     <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
                             </a>
-                            <textarea [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
-                            <textarea [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
+                            <textarea class="div-background-color" [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
+                            <textarea class="div-background-color" [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
                             </div>
                         </section>
 
