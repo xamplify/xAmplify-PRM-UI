@@ -154,8 +154,9 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div title="{{tag?.tagName}}" class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
-                                    {{tag.tagName}}</div>
+                                  <div title="{{tag?.tagName}}" class="btn btn-primary text-wrap-tag"
+                                    style="padding: 4px 10px;border-radius: 2px !important;">
+                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
                                 </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -169,8 +170,9 @@
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 5px !important;">
                                   <div title="{{tagsListSecondColumn[i]?.tagName}}" *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
-                                    {{tagsListSecondColumn[i].tagName}}</div>
+                                    class="btn btn-primary text-wrap-tag" style="padding: 4px 10px;border-radius: 2px !important;">
+                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
+                                  </div>
                                 </div>
                               </td>
                             </tr>

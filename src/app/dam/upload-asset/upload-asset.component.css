@@ -184,3 +184,9 @@ width:150%;
   color: #fff;
   border: 1px solid #3575b5;
 }
+
+.text-wrap-tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
