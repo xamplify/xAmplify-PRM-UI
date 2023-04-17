@@ -69,7 +69,7 @@
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content">
-                                                    <div class="form-name-wrap" style="padding-bottom:10px;" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
+                                                    <h5 class="form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                                                     <div [dragula]='"form-options"' [dragulaModel]='columnInfos'>
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
@@ -78,10 +78,10 @@
                                                                     <a id="drag-div">
                                                                         <h4 class="dflex">
                                                                             <span class="label-text">
-                                                                                <div class="color-label" style="font-size:14px;" [style.color]="form.labelColor">{{columnInfo.labelName}}
+                                                                                <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
                                                                                     <span class="required"
                                                                                         *ngIf="columnInfo.required">*</span>
-                                                                                </div>
+                                                                                </label>
                                                                             </span>
 
                                                                             <span>
@@ -134,13 +134,13 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <div class="form-check-label" style="border:0px !important;font-size:14px;" [style.color]="form.labelColor">
+                                                                                    <label class="form-check-label" style="border:0px !important;" [style.color]="form.labelColor">
                                                                                         <input
                                                                                             type="{{columnInfo.labelType}}"
                                                                                             name="{{columnInfo.labelId}}"
                                                                                             class="form-check-input">
                                                                                         {{radioButton.name}}
-                                                                                    </div>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <br>
                                                                             </ng-container>
@@ -149,13 +149,13 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <div class="form-check-label" style="border:0px !important;font-size:14px;" [style.color]="form.labelColor">
+                                                                                    <label class="form-check-label" style="border:0px !important;" [style.color]="form.labelColor">
                                                                                         <input
                                                                                             type="{{columnInfo.labelType}}"
                                                                                             name="{{columnInfo.labelId}}"
                                                                                             class="form-check-input">
                                                                                         {{checkBox.name}}
-                                                                                    </div>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <br>
                                                                             </ng-container>
@@ -173,7 +173,7 @@
                                                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <div class="" style="border:0px !important;font-size:14px;" [style.color]="form.labelColor">  
+                                                                                    <label class="" style="border:0px !important;" [style.color]="form.labelColor">  
                                                                                         <!-- removed class="form-check-label" -->
                                                                                         <input
                                                                                             type="{{columnInfo.labelType.split('_')[1]}}"
@@ -182,7 +182,7 @@
                                                                                             [checked]="choice.correct"
                                                                                             disabled="true">
                                                                                         {{choice.name}}
-                                                                                    </div>
+                                                                                    </label>
                                                                                 </div>
                                                                                 <br>
                                                                             </ng-container>
