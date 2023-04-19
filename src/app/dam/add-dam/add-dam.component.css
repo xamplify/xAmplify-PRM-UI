@@ -37,3 +37,9 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+
+.text-wrap-tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}

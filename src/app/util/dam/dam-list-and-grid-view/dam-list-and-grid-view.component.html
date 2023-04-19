@@ -45,7 +45,7 @@
 												alt="Image Not Found">
 										</div>
 										<div class="title-div" style="width: 50%;">
-												<h4 class="moreipsis mt5 mb5 f-w-600"
+												<h4 class="mt5 mb5 f-w-600"
 													title="{{asset?.assetName}}">
 													<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 													<span *ngIf="asset?.assetName?.length>25">...</span>
@@ -72,15 +72,16 @@
 												<h6 style="padding-top: 5px;">
 													<ng-container *ngIf="asset.tagNames?.length > 0">
 														<div class="tag" title="{{asset.tagNames[0]}}">
-															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0]}}
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
+																*ngIf="asset.tagNames[0]?.length>20">..</span>
 															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:15}} <span
-																	*ngIf="asset.tagNames[0]?.length>15">..</span>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
+																	*ngIf="asset.tagNames[0]?.length>10">..</span>
 															</ng-container>
 														</div>
 														<ng-container *ngIf="asset.tagNames.length > 1">
 															<div class="tag" title="{{asset.tagNames[1]}}">
-																{{asset.tagNames[1] | slice:0:15}} <span *ngIf="asset.tagNames[1]?.length>15">..</span>
+																{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
 															</div>
 														</ng-container>
 														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"

@@ -252,8 +252,14 @@ export class Properties {
 	campaignLaunchedMessage = "The campaign was successfully deployed. Please wait until the campaign is processed and launched. We will send you email updates in timely manner."
 	deployingCampaignMessage = "We are deploying the campaign";
 
+
+	/***XNFR-222*****/
+	postingOnSocialMedia = "We are posting on social media  and  deploying the campaign";
+	schedulingCampaignMessage = "We are scheduling the campaign";
+
 	/****XNFR-224****/
 	supportText = "Enable support access to vendor";
+
 
 
 

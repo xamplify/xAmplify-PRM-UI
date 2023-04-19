@@ -1097,3 +1097,9 @@ input.cmn-toggle-round-flat:checked+label:after {
   .fit-form-image {
     width: 100%;
 }
+
+.text-wrap-tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
