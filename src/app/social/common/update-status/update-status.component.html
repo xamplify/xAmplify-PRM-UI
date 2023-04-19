@@ -203,7 +203,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="content-div" *ngIf="showPostDiv">
+            <div class="col-sm-12 dashboard-stat2 p0 clearfix" id="content-div" [hidden]="!showPostDiv">
                 <div class="clearfix">
                 <button class="pull-right mr10" *ngIf="socialStatusResponse?.length > 0" (click)="resetCustomResponse()">Clear All</button></div>
                 <section class='col-sm-12 p10'>

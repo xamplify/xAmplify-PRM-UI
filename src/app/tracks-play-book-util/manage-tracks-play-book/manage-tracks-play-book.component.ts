@@ -284,32 +284,44 @@ setViewType(viewType: string) {
     this.referenceService.showSweetAlertInfoMessage();
   }
 
-  confirmChangePublish(id: number, isPublish: boolean) {
-    let text = "";
-    if (isPublish) {
-      text = "You want to publish.";
-    } else {
-      text = "You want to unpublish.";
-    }
-    try {
-      let self = this;
+  confirmChangePublish(id: number, isPublish: boolean, learningTrack: any) {
+    if (isPublish && this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK] && !learningTrack.hasDamContent) {
       swal({
-        title: 'Are you sure?',
-        text: text,
+        title: 'Add assets to publish.',
         type: 'warning',
-        showCancelButton: true,
         swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes'
+        confirmButtonText: 'Ok'
 
-      }).then(function () {
-        self.ChangePublish(id, isPublish);
-      }, function (dismiss: any) {
+      }).then(function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
-    } catch (error) {
-      this.logger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
-      this.referenceService.showServerError(this.httpRequestLoader);
+    } else {
+      let text = "";
+      if (isPublish) {
+        text = "You want to publish.";
+      } else {
+        text = "You want to unpublish.";
+      }
+      try {
+        let self = this;
+        swal({
+          title: 'Are you sure?',
+          text: text,
+          type: 'warning',
+          showCancelButton: true,
+          swalConfirmButtonColor: '#54a7e9',
+          swalCancelButtonColor: '#999',
+          confirmButtonText: 'Yes'
+
+        }).then(function () {
+          self.ChangePublish(id, isPublish);
+        }, function (dismiss: any) {
+          console.log('you clicked on option' + dismiss);
+        });
+      } catch (error) {
+        this.logger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+      }
     }
   }
 

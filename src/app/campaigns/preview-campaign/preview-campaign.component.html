@@ -120,7 +120,7 @@
                         </div>
 
                         <!--Allow To Edit The Post (XNFR-222)-->
-                        <div class="col-xs-6 col-sm-6" *ngIf="campaign?.campaignTypeInString=='SOCIAL'">
+                        <div class="col-xs-6 col-sm-6" *ngIf="campaign?.campaignTypeInString=='SOCIAL' && campaign?.channelCampaign">
                            <div class="ml10">
                               <h5>Allow {{authenticationService?.partnerModule?.customName}} To Edit The Post</h5>
                            </div>

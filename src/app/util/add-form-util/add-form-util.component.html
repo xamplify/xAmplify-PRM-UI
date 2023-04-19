@@ -633,7 +633,7 @@
                                 <span *ngIf="!form.isValidFormSubmissionUrl" class="required">{{formSubmissionUrlErrorMessage}}</span>
                                 <br>
                                 <label>Open in new tab</label>
-                                <input type="checkbox" [(ngModel)]="form.openLinkInNewTab">
+                                <input [disabled]="form.quizForm" type="checkbox" [(ngModel)]="form.openLinkInNewTab">
                             </div>
                         </div>
                         <br>
