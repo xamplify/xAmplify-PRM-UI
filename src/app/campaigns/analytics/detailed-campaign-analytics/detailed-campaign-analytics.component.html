@@ -970,7 +970,7 @@
                                   <span
                                     *ngIf="campaignType==='REGULAR' || campaignType==='LANDINGPAGE' || campaignType === 'SURVEY'">Email
                                     Opened</span>
-                                  <span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
+                                  <span *ngIf="campaignType==='SOCIAL' && !socialCampaign?.nurtureCampaign">Redistributed</span>
                                 </th>
                                 <th id="table-header" *ngIf="campaignType === 'VIDEO'">Email Opened</th>
                                 <th id="table-header"
