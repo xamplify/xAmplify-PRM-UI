@@ -324,19 +324,20 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     editCampaign(campaign: any) {
         this.isloading = true;
         this.customResponse = new CustomResponse();
-        if(campaign.launched){
+        if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.editButtonClicked = true;
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
         }else{
-            if(campaign.campaignType.indexOf('SOCIAL') > -1){
+            if(campaign.launched){
+                this.editButtonClicked = true;
+                this.selectedCampaignId = campaign.campaignId;
                 this.isloading = false;
-                this.customResponse = new CustomResponse();
-                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
             }else{
                 this.editCampaignsWhichAreNotLaunched(campaign);
             }
         }
+        
     }
 
     editCampaignsWhichAreNotLaunched(campaign:any){
