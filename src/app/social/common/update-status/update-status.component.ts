@@ -409,7 +409,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	private redistribute() {
 		this.loading = true;
-		this.referenceService.showSweetAlertProceesor("We are posting on social media");
+		let message = this.socialCampaign.userListIds.length>0 ? 'We are posting on social media and deploying the campaign':'We are posting on social media';
+		this.referenceService.showSweetAlertProceesor(message);
 		this.socialCampaign.alias =  this.alias;
 		this.socialService.redistributeSocialCampaign(this.socialCampaign)
 			.subscribe(
