@@ -1,6 +1,5 @@
 <div class="modal right fade" id="pipedrivePreSettingsForm" tabindex="-1" role="dialog"
   aria-labelledby="pipedriveModalLabel" data-keyboard="false" data-backdrop="static">
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -19,6 +18,8 @@
       <div class="modal-body">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
         </app-response-message>
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
         <form class="form-horizontal" autocomplete="off">
           <div class="form-group">
             <label class="control-label col-sm-3" for="apiKey">API Token:</label>
