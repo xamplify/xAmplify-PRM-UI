@@ -1004,7 +1004,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.showOrHidePostOption();
 		flatpickr('.flatpickr', {
 			enableTime: true,
-			minDate: new Date(),
 			dateFormat: 'm/d/Y h:i K',
 			time_24hr: false
 		});

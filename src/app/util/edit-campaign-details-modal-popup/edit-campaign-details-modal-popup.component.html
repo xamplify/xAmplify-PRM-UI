@@ -103,9 +103,9 @@
 
 
                          <!---XNFR-222-->
-                         <div [hidden]="!campaignDetailsDto?.showAllowPartnerToEditThePostOption">
+                         <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
                              <!--Edit The Post-->
-                            <div class="form-group">
+                            <div class="form-group" [hidden]="!campaignDetailsDto?.showAllowPartnerToEditThePostOption">
                                 <label class="control-label col-sm-3" translate>Allow {{authenticationService?.partnerModule?.customName}} To Edit The Post</label>
                                 <div class="col-sm-9">
                                     <div class="email-options-checkbox-group email-options-notify">
@@ -121,7 +121,6 @@
                             </div> 
 
                             <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
-
                             <!--Schedule Date & Time-->
                             <div class="form-group">
                                 <label class="control-label col-sm-3" translate>Select Date & Time<span class="required">*</span></label>
