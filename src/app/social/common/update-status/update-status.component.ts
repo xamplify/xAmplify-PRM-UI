@@ -281,14 +281,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					this.setCustomResponse(ResponseType.Error, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
 					return false;
 				}
-				console.log(file.name + ': ' + file.size);
 			}
 			return true;
 		}
 	}
 	fileChange(event: any, socialStatus: SocialStatus) {
-		console.log(socialStatus);
-		console.log(this.socialStatusList);
 		const files = event.target.files;
 		if (this.validateImageUpload(files, socialStatus)) {
 			if (files.length > 0) {
@@ -308,7 +305,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 									socialStatus.socialStatusContents.push(socialStatusContent);
 								}
 							}
-							console.log(socialStatus);
 						},
 						error => console.log(error),
 						() => console.log('Finished')
@@ -335,7 +331,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			$.each(this.socialStatusProviders,function(_index:number,socialStatusProvider:any){
 				let soicalStatusList = socialStatusProvider.socialStatusList;
 				soicalStatusList.forEach(data => {
-					if (!data.statusMessage && data.socialStatusContents.length === 0) {
+					if (!data.statusMessage && data.socialStatusContents.length === 0 && !data.validLink) {
 						self.setCustomResponse(ResponseType.Error, 'Status can not be empty');
 						isValid = false;
 						return false;
@@ -344,7 +340,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			});
 		}else{
 			this.socialStatusList.forEach(data => {
-				if (!data.statusMessage && data.socialStatusContents.length === 0) {
+				if (!data.statusMessage && data.socialStatusContents.length === 0 && !data.validLink) {
 					this.setCustomResponse(ResponseType.Error, 'Status can not be empty');
 					isValid = false;
 					return false;
@@ -413,7 +409,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 	private redistribute() {
 		this.loading = true;
-		this.referenceService.showSweetAlertProceesor("We are posting on social media");
+		let message = this.socialCampaign.userListIds.length>0 ? 'We are posting on social media and deploying the campaign':'We are posting on social media';
+		this.referenceService.showSweetAlertProceesor(message);
 		this.socialCampaign.alias =  this.alias;
 		this.socialService.redistributeSocialCampaign(this.socialCampaign)
 			.subscribe(
@@ -1061,7 +1058,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialService.hasRssFeedAccess(this.userId)
 			.subscribe(
 				data => {
-					this.showRssFeed = data.access;
+					//this.showRssFeed = data.access;
+					this.showRssFeed = false;
 				},
 				error => {
 					this.loading = false;
@@ -1294,6 +1292,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 				data.ogt = true;
 			});
 		} else {
+			console.log(feed);
 			let selectedSocialStatus = this.socialStatusList.filter(item => item.socialStatusProvider.socialConnection.id == this.selectedSocialProviderId)[0];
 			selectedSocialStatus.statusMessage = feed.link;
 			selectedSocialStatus.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';

@@ -44,7 +44,7 @@
 				*ngFor="let socialStatusContent of socialStatus?.socialStatusContents">
 			<div class="image-wrapper col-xs-6">
 				<img async *ngIf="socialStatusContent?.fileType === 'image'" src="{{authenticationService?.MEDIA_URL}}{{socialStatusContent?.filePath}}">
-				<img async src="{{socialStatusContent?.filePath}}" *ngIf="socialStatusContent?.fileType == 'video'">
+				<img async src="{{authenticationService?.MEDIA_URL}}{{socialStatusContent?.filePath}}" *ngIf="socialStatusContent?.fileType == 'video'">
 			</div>
 			</ng-container>
 		</div>
