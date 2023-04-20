@@ -816,8 +816,8 @@
                     <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important;">
                       <span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
                         <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
-                        <span *ngIf="campaignType==='SOCIAL' && !socialCampaign?.nurtureCampaign ">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
-                        <span *ngIf="campaignType==='SOCIAL' && socialCampaign?.nurtureCampaign ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
+                        <span *ngIf="campaignType==='SOCIAL' && isChannelCampaign ">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
+                        <span *ngIf="campaignType==='SOCIAL' && !isChannelCampaign">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
                         <span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                         <span
                           *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{authenticationService?.partnerModule?.customName}}
