@@ -316,7 +316,7 @@
                            <thead>
                               <tr>
                                  <th scope="row">{{tableHeader}}</th>
-                                 <th scope="row">Analytics</th>
+                                 <th scope="row" *ngIf="previewCampaignType!='SOCIAL'">Analytics</th>
                                  <th scope="row" class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">Action</th>
                               </tr>
                            </thead>
@@ -326,7 +326,7 @@
                                     <td>
                                        <app-user-info [userInfo]="campaignUser"></app-user-info>
                                     </td>
-                                    <td (click)="viewCampaigns(campaignUser,campaign)" title="Campaign Analytics">
+                                    <td *ngIf="previewCampaignType!='SOCIAL'" (click)="viewCampaigns(campaignUser,campaign)" title="Campaign Analytics">
                                        <div class="actions-block override-actions">
                                           <a><i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                        </div>
@@ -601,7 +601,7 @@
                       <h1>{{campaignReport.totalRecipients}}</h1>
                       <h5>Total Recipients</h5>
                    </div>
-                   <div (click)="showAnalyticsModal('Active Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailOpenCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+                   <div *ngIf="campaignType!='SOCIAL'" (click)="showAnalyticsModal('Active Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailOpenCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
                    <h1>{{campaignReport.emailOpenCount}}</h1>
                    <h5>Active Recipients</h5>
           </div>
@@ -638,7 +638,7 @@
           <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
           <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
           </a>
-          <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
+          <a *ngIf="(previewCampaignType!=='EVENT' && previewCampaignType!=='SOCIAL') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
           data-toggle="tooltip" data-placement="top" title="Analytics">
           <i class="fa fa-line-chart"></i>
           </a>
