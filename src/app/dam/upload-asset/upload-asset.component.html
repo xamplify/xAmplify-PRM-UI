@@ -251,7 +251,7 @@
                                               </label>
                                             </div>
                                             <div class="col-sm-5" style="padding-left: 0px !important;" title="{{tag.tagName}}">
-                                              <div class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
+                                              <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                                 {{tag.tagName}}</div>
                                             </div>
                                           </td>
@@ -266,7 +266,7 @@
                                             </div>
                                             <div class="col-sm-5" style="padding-left: 5px !important;">
                                               <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"  title="{{tagsListSecondColumn[i].tagName}}"
-                                                class="btn btn-primary text-wrap" style="padding: 4px 10px;border-radius: 2px !important;">
+                                                class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                                 {{tagsListSecondColumn[i].tagName}}</div>
                                             </div>
                                           </td>
@@ -295,7 +295,7 @@
                                 <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
                                   style="opacity: 0.0; position: absolute;">
                                 <span *ngIf="showDefaultLogo && !croppedImage">
-                                  <img src="assets/images/content/image.png" class="profile-image asset-img-grid-sm" alt="">
+                                  <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
                                 </span>
                                 <span *ngIf="croppedImage">
                                   <a class="close-circle" (click)="$event.stopPropagation();clearThumbnailImage();" title="Remove">

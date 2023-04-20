@@ -240,11 +240,13 @@
 
 .thumbnail-wrapper {
 	float: left;
-	width: 144px;
-	height: 81px;
-	background-color: #f1f1f1;
+	width: 175px;
+	height: 60px;
+	background-color: #ffffff;
 	text-align: center;
 	position: relative;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .thumbnail-wrapper>img {
@@ -252,7 +254,7 @@
 	max-height: 100%;
 	height: 100%;
 	width: auto;
-	margin: 0 auto;
+	margin: 0 auto; 
 }
 
 .unClick {

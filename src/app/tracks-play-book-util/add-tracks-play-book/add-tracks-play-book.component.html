@@ -42,8 +42,8 @@
       </div>
     </div>
   </div>
-  <div class="container"
-    style="width: 100%;padding-bottom: 10px;    padding-left: 2px;
+  <div class="tracks-bg-color container"
+    style="width: 100%;padding-bottom: 0px;padding-left: 2px;border-radius: 5px;
     padding-right: 2px;">
     <!-- <div style="display: flex;padding-top: 1em;">
       <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
@@ -84,7 +84,7 @@
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <div style="margin-top: 10px;">
         <div class="portlet box mPortlet" style="border-radius:5px;">
-          <div class="portlet-body form mPortlet-body">
+          <div class=" form mPortlet-body">
             <div class="row">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
@@ -121,7 +121,7 @@
                       <div class="inline link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" (click)="editSlug()"
+                        <button type="button" class="right-border" (click)="editSlug()"
                           style="border-top-left-radius: 3px;border-bottom-left-radius: 3px"><i
                             class="fa fa-edit"></i></button>
                         <button type="button" (click)="copyInputMessage(link)"
@@ -191,7 +191,7 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
+                                  <div class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                     {{tag.tagName}}</div>
                                 </div>
                               </td>
@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 5px !important;">
                                   <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary" style="padding: 4px 10px;border-radius: 2px !important;">
+                                    class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                     {{tagsListSecondColumn[i].tagName}}</div>
                                 </div>
                               </td>
@@ -222,7 +222,7 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
-                <div class="portlet light mImageWid">
+                <div class="portlet light mImageWid feature-img">
                   <div class="portlet-title tabbable-line ">
                     <div class="caption caption-md ">
                       <i class="icon-globe theme-font hide " aria-hidden="true "></i>
@@ -232,17 +232,17 @@
                       <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
                     </div>
                   </div>
-                  <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+                  <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
                     <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
                       <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">
-                      <img class="img-grid" [src]="croppedImage" alt="">
+                      <img class="img-grids" [src]="croppedImage" alt="">
                     </div>
                     <ng-template #showImage>
-                      <img class="img-grid" [src]="featuredImagePath" alt="">
+                      <img class="img-grids" [src]="featuredImagePath" alt="">
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
@@ -272,15 +272,15 @@
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
       <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet bg-card-header" style="padding-bottom: 25px;border-radius: 5px;background-color:#fff;">
-        <div class="portlet-title" style="padding-bottom: 10px;
+        <div class="portlet-title" style="padding-bottom: 5px;
         margin-right: 12px;
         margin-left: 12px;">
           <div class="col-xs-4 p0">
-            <h4 claass="text-primary pull-left" style="padding-left: 10px;
-            padding-top: 5px;">Description</h4>
+            <h4 claass="text-primary pull-left" style="padding-left: 0px;
+            padding-top: 2px;">Description</h4>
           </div>
-        <div class="input-icon right pull-right cebp" style="margin-right: 8px;
-        padding-top: 8px;">
+        <div class="input-icon right pull-right cebp" style="margin-right: -2px;
+        padding-top: 5px;">
           <ul class="button-align inline">
             <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
                 Media</button></li>
@@ -359,12 +359,14 @@
                       <span class="select-box-asset"> <label>
                           <input type="checkbox" (click)="$event.stopPropagation();">
                         </label>
-                      </span> <span class="ng-scope"> <a style="cursor: default;"
+                      </span> <span class="ng-scope"> <a style="cursor: default;border-radius:5px;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
+                          <div class="image">
                           <img
                             ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
-                            id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)" class="thumb ng-scope"
+                            id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)" class="thumb ng-scope img-format"
                             src="{{file.thumbnailPath}}" alt="">
+                          </div>
                         </a> <a href="javascript:;"> </a>
                       </span>
                     </div>
@@ -409,7 +411,7 @@
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
                               (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
                               <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
-                                style="font-size: 20px;"></i>
+                                style="font-size: 18px;"></i>
                             </a>
                           </span>
                         </div>

@@ -134,6 +134,7 @@ export class FormPreviewComponent implements OnInit {
               this.pageBackgroundColor = "";
             } else {
               this.pageBackgroundColor = this.form.pageBackgroundColor;
+              this.authenticationService.formBackground = this.pageBackgroundColor ;
               this.formBackgroundImage = "";
             }
             if (!this.isSubmittedAgain) {

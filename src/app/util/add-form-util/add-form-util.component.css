@@ -66,7 +66,7 @@
 
 .default-fieldset {
     margin: 8px;
-    border: 1px solid #97A6B1;
+    border: 1px solid #ddd;
     padding: 8px;
     border-radius: 4px;
     margin-right: 1px;
@@ -656,7 +656,7 @@ label {
     white-space: nowrap;
     vertical-align: middle;
     height: 39%!important;
-    border: 1px solid #eaeaea!important;
+    border: 1px solid #eaeaea;
     border-radius: 3px!important;
 }
 

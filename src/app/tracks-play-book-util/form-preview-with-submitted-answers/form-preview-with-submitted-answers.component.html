@@ -54,7 +54,7 @@
                                       <ng-container *ngIf="columnInfo.labelType=='radio'">
                                         <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                           <div class="form-check">
-                                            <label class="form-check-label" [style.color]="form.labelColor">
+                                            <label class="form-check-label" style="border:0px !important;" [style.color]="form.labelColor">
                                               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 disabled="disabled" [checked]="columnInfo?.value?.indexOf(radioButton.id) > -1">
                                               {{radioButton.name}}
@@ -67,7 +67,7 @@
                                       <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                         <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                           <div class="form-check">
-                                            <label class="form-check-label" [style.color]="form.labelColor">
+                                            <label class="form-check-label" style="border:0px !important;"  [style.color]="form.labelColor">
                                               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 disabled="disabled" [checked]="columnInfo?.value?.indexOf(checkBox.id) > -1">
                                               {{checkBox.name}}
@@ -87,7 +87,7 @@
                                       <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                           <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                               <div class="form-check">
-                                                  <label class="form-check-label" [style.color]="form.labelColor"
+                                                  <label class="form-check-label" style="border:0px !important;"  [style.color]="form.labelColor"
                                                   [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
                                                       <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                           disabled="disabled" [checked]="columnInfo?.value?.indexOf(choice.id) > -1">

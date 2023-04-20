@@ -190,5 +190,5 @@ legend.scheduler-border {
   margin-top: 10px !important;
 }
 .button-border{
-  border: 1px solid #fff !important;
+  border: 1px solid #fff;
 }

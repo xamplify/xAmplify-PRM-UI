@@ -41,12 +41,12 @@
                <ng-container *ngFor="let campaign of pagination.pagedItems;let i = index">
                  <tr>
                   <td style="width: 10%;" class="hidden-xs">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 " src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" src="assets/images/social-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" src="assets/images/landing-page.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" src="assets/images/survey.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 " src="assets/images/video-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" src="assets/images/social-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" src="assets/images/landing-page.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" src="assets/images/survey.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
                     <br>
                     <h6 class="view-banner banner-top mt5" *ngIf="campaign.channelCampaign" translate>Through Campaign</h6>
                     <h6 class="view-banner banner-top mt5" *ngIf="!campaign.channelCampaign && !campaign.nurtureCampaign" translate>To Campaign</h6>

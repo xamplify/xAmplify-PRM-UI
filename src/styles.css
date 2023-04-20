@@ -1445,12 +1445,15 @@ b, strong {
 
 .thumbnail-wrapper {
 	float: left;
-	width: 144px;
-	height: 81px;
-	background-color: #f1f1f1;
+	width: 175px;
+	height: 60px;
+	background-color: #fff;
 	text-align: center;
 	position: relative;
+	border: 1px solid #ccc;
+	border-radius:5px;
 }
+
 
 .thumbnail-wrapper>img {
 	max-width: 100%;
@@ -1828,7 +1831,14 @@ border: 1px solid #ddd !important;
 .button-border{
   border: 1px solid #fff;
 }
-
+/* Track images */
+.img-format{
+	height: 100%;
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 /****** XNFR-224*****/
 .login-as-loader {
 	position: fixed;

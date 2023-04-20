@@ -1,13 +1,28 @@
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 </app-response-message>
 <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="portlet-title" style="border-bottom: 0px !important ;"  *ngIf="!showTracksPlayBook">
+    <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 20px;">
+        <a (click)="closeView()" class="pull-right close-circle" style="padding: 4px 5px; margin: 5px -8px 2px 0px;">
+            <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
+            top: 4px;" aria-hidden="true"></span></a>
+        <div class="page-bar" style="padding: 3px;margin-bottom: 1px;margin-right: -15px;margin-left: -15px; ">
+            <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
+                <div class="title-class" style="color: #888;font-size: 13px;text-shadow: none;">Track's Title:</div>
+                <a class="title padding_bottom" style="color: #888;font-size: 13px;text-shadow: none; padding-top: 10px;">{{tracksPlayBook.title}}</a>
+            </div>                    
+        </div>
+    </div>
+    <br>
+</div>
+
 <div [ngClass]="{'blur-content' : showFilePreview}">
     <ng-container *ngIf="tracksPlayBook != undefined && !httpRequestLoader.isLoading">
             <div class="row">
                 <section *ngIf="showTracksPlayBook">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-right: 0px;">
-                        <div class="page-bar card-shadow" style="padding: 0px;">
-                            <div class="col-md-12 col-lg-12 border-line"
+                        <div class="page-bar" style="padding: 0px;">
+                            <div class="col-md-12 col-lg-12 border-line" style="border:0px !important"
                                 >
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 track-title text-color content-bg" title="{{tracksPlayBook.title}}">
@@ -21,8 +36,8 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_bottom">
                                 <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-none">
                                     <img class="img-asset-class" [src]="tracksPlayBook.featuredImage" alt=""
-                                        onerror="this.src='assets/images/lms-thumbnail.png';" style="height: 140px !important;
-                                                                                                       width: 100% !important;">
+                                        onerror="this.src='assets/images/lms-thumbnail.png';" style="height: 123px !important;
+                                                                                                       width: 200px !important;">
                                 </div>
                                 <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                     <div class="center" style="padding-top: 10px;" title="{{tracksPlayBook.createdByName}}"
@@ -57,9 +72,10 @@
             
                     </div>
                 </section>
-                <section *ngIf="!showTracksPlayBook">
-                    <div *ngIf="!showAsset" class="portlet light page-bar">
-                        <div class="portlet-title">
+                <section *ngIf="!showTracksPlayBook" style="margin:0 15px 0 15px; ">
+                    <div *ngIf="!showAsset" class="portlet light page-bar Form-BgImg" style="margin-top:45px;"
+                    [style.backgroundColor]="authenticationService.formBackground">
+                        <!-- <div class="portlet-title">
                             <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <a (click)="closeView()" class="pull-right close-circle" style="padding: 3px 5px; margin: 4px 0px 0px 0px;">
                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
@@ -70,8 +86,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="portlet-body">
+                        </div> -->
+                        <div class="portlet-body Form-BgImg">
                         <div class="col-md-12 col-lg-12" style="padding-top: 30px;">
                             <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id"
                                 [isTrackQuizSubmitted]="isCurrentQuizSubmitted" [partnerId]="loggedInUserId" (notifyParent)="closeView($event)">
@@ -87,11 +103,11 @@
                                     <div [hidden]="assetViewLoader">
                                         <div style="margin-bottom: 10px!important;padding:0px 0px !important;">
                                             <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px;">
-                                                    <div class="portlet light cphdam page-bar card-shadow">
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px;padding-left:0px;">
+                                                    <div class="portlet light cphdam page-bar">
                                                         <div class="portlet-title">
-                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="color: #888;">
-                                                                <a (click)="closeView()" class="pull-right close-circle" style="padding: 3.4px 4.4px; margin: 7px 0px 5px 0px;">
+                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" style="color: #888;padding-right:5px;">
+                                                                <a (click)="closeView()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
                                                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
                                                                 <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;" title="{{tracksPlayBook.title}}">
                                                                     <div class="title-class">Track's Title:</div>
@@ -139,7 +155,7 @@
                 <section class="col-xs-6 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
                     <div class="col-md-12 col-lg-12 color-inline border-line">
                         <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
-                            <a class="title padding_bottom text-color content-bg" style="font-size: 15px; padding-top: 10px;">Content</a>
+                            <a class="title padding_bottom text-color content-bg row-space" style="font-size: 15px; padding-top: 10px;">Content</a>
                         </div>
                         <!-- <div class="btn-group pull-right">
                             <ng-container class='m10'>
@@ -155,7 +171,7 @@
                             </ng-container>
                         </div> -->
                     </div>
-                    <div class="page-bar card-shadow">
+                    <div class="page-bar">
                         <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
                         </app-list-loader>
                         <!-- <app-grid-loader *ngIf="trackViewLoader && modulesDisplayType.isGridView">
@@ -415,8 +431,8 @@
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
     <div class="overlay page-content">
-        <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
-            <i class="fa fa-times" aria-hidden="true"></i>
+        <button type="button" class="close-circle" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
+            <i style="padding-bottom: 3px;" class="fa fa-times" aria-hidden="true"></i>
         </button>
         <div class="overlay-content">
             <ng-container *ngIf="isImage">

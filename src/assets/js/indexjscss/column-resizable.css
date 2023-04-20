@@ -118,8 +118,8 @@ span.ui-column-resizer {
 	height: 80px;
 	width: auto;
 	margin: 0;
-	background: #f2f4f9;
-	border: solid 1px #008fd5;
+	/* background: #f2f4f9; */
+	/* border: solid 1px #008fd5; */
 	border-radius: 1px;
 }
 

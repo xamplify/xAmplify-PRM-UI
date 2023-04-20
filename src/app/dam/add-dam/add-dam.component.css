@@ -37,3 +37,9 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+.btn-primary-light{
+  background-color: #cdcdcd;
+}
+.btn-primary-light:hover{
+  background-color: #c0c0c0;
+}
