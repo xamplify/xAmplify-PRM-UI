@@ -845,7 +845,7 @@
                       <div class="portlet-body">
                         <div class="pt10">
                           <div style="display: block; height: 20px;">
-                            <img src="https://image.flaticon.com/icons/svg/291/291201.svg" width="20px" alt="selected" [hidden]="!socialConnection.active">
+                            <i  class="fa fa-check-circle fa-2x pull-left" aria-hidden="true"  style="color: rgb(106, 194, 89);" [hidden]="!socialConnection.active"></i>
                             <i class="fa fa-social pull-right fa-{{socialConnection.source | lowercase}} fa-{{socialConnection.source | lowercase}}-color"></i>
                              </div>
                           <img class="img-responsive img-circle profile-picture center-block" src="{{socialConnection.profileImage}}" alt="{{socialConnection.profileName}}"
