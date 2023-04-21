@@ -266,8 +266,11 @@ ul.alt-row-style1 li:hover,
   border: 1px solid #2f4857 !important
 }
 .form-body label,
-.form-group label {
+.form-group label{
   color: white !important
+}
+.form-group label.color {
+  color:#999 !important;
 }
 /*** table ***/
 table,

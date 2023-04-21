@@ -119,7 +119,7 @@
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <label class="form-check-label color" style="border:0px !important;" [style.color]="form.labelColor"
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}" class="form-check-input"
@@ -135,7 +135,7 @@
                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <label class="form-check-label color" style="border:0px !important;" [style.color]="form.labelColor"
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}"
@@ -158,7 +158,7 @@
                                         <!-- ---------------------------Quiz----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
-                                                <div class="form-check" style="padding: 5px ; border-radius: 5px;"  *ngIf="!(columnInfo.value =='')"
+                                                <div class="form-check" style="padding: 5px ; border-radius: 5px;border:0px !important;"  *ngIf="!(columnInfo.value =='')"
                                                     [style.background-color]="(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted) &&  choice.correct && choice.isSelected == true  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#fce8e6'  : choice.correct && choice.isSelected == false ? '#fcfcfc': ''"
                                                     [style.border-bottom] = "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct&& choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                                     [style.border-top] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
@@ -166,7 +166,7 @@
                                                     [style.border-left] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                                     >
                                                     <!-- removed class="form-check-label" -->
-                                                    <label class="form-check-label" style="color :'#110202' !important "
+                                                    <label class="form-check-label color" style="color :'#110202' !important;border:0px !important;"
                                                         [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted), 'label-value-correct': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct, 'label-value-incorrect': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && !choice.correct && choice.isSelected}">
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                         [checked]="choice.isChecked  || choice.isSelected" class="form-check-input"
@@ -178,14 +178,14 @@
                                                     <i *ngIf="choice.correct && choice.isSelected " class="fas fa-check fa-lg label-value-correct" aria-hidden="true"></i></span>
                                                 </div>
                                                 <!-- for skipped> -->
-                                                <div class="form-check" style="padding: 5px ; border-radius: 5px; " *ngIf="(columnInfo.value =='')"
+                                                <div class="form-check" style="padding: 5px ; border-radius: 5px;border:0px !important;" *ngIf="(columnInfo.value =='')"
                                                 [style.background-color]="((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted) &&  choice.correct  ) ? '#fcfcfc' :'' "
                                                 [style.border-bottom] = "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct) ? '3px solid #1e8e3e' : ''"
                                                 [style.border-top] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct  )? '1px solid #bfdcc8' :''"
                                                 [style.border-right] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct  )? '1px solid #bfdcc8' :''"
                                                 [style.border-left] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct  )? '1px solid #bfdcc8' :''"
                                                 >
-                                                <label class="form-check-label" style="color :'#110202' !important "
+                                                <label class="form-check-label color" style="color :'#110202' !important;border:0px !important;"
                                                 [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted), 'label-value-correct': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct, 'label-value-incorrect': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && !choice.correct && choice.isSelected}">
                                                 <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 class="form-check-input"
