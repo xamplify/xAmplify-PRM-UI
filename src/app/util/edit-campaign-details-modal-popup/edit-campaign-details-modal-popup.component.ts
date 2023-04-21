@@ -38,7 +38,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   ngOnInit() {
     this.loader = true;
     this.countries = this.referenceService.getCountries();
-    flatpickr('.flatpickr', {
+    flatpickr('.edit-campaign-flatpicker', {
 			enableTime: true,
 			dateFormat: 'm/d/Y h:i K',
 			time_24hr: false,
