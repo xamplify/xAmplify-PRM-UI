@@ -24,7 +24,7 @@
 			<span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source ==='TWITTER'">{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}</span>
 			<span *ngIf="socialStatus?.socialStatusProvider?.socialConnection?.source ==='GOOGLE'">{{socialStatus?.socialStatusProvider?.socialConnection?.firstName}}&nbsp;{{socialStatus?.socialStatusProvider?.socialConnection?.lastName}}</span>
 		</h5>
-		<h5 class="status-time">{{socialStatus?.scheduledTime | date:'short'}}
+		<h5 class="status-time">
 		<span *ngIf="socialStatus?.publishStatus!='NOT_APPLICABLE'" class="badge" data-toggle="tooltip" data-placement="auto" title="{{socialStatus?.publishMessage}}" 
 			[ngClass]="{'badge-danger': socialStatus?.publishStatus === 'FAILURE', 
 				'badge-primary': socialStatus?.publishStatus === 'SUCCESS'}" >{{socialStatus?.publishStatus | titlecase }}</span>

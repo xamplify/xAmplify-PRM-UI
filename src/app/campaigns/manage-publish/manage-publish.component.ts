@@ -358,20 +358,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editCampaign(campaign: any) {
         this.isloading = true;
         this.customResponse = new CustomResponse();
-        if(campaign.campaignType.indexOf('SOCIAL') > -1){
+        if(campaign.launched){
             this.editButtonClicked = true;
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
         }else{
-            if(campaign.launched){
-                this.editButtonClicked = true;
-                this.selectedCampaignId = campaign.campaignId;
-                this.isloading = false;
-            }else{
-                this.editCampaignsWhichAreNotLaunched(campaign);
-            }
+            this.editCampaignsWhichAreNotLaunched(campaign);
         }
-        
     }
 
     editCampaignsWhichAreNotLaunched(campaign:any){
@@ -409,7 +402,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 .subscribe(
                 data => {
                     if (data.campaignType === 'SOCIAL') {
-                        this.router.navigate(["/home/campaigns/social"]);
+                        let isLaunched = data.launched;
+                        if (isLaunched || data.campaignProcessing) {
+                            this.isScheduledCampaignLaunched = true;
+                            this.isloading = false;
+                        }else{
+                            this.editButtonClicked = true;
+                            this.selectedCampaignId = campaign.campaignId;
+                            this.isloading = false;
+                        }
                     } else {
                         this.campaignService.campaign = data;
                         let endDate = this.campaignService.campaign.endDate;
