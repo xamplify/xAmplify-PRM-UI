@@ -57,21 +57,28 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
           if (statusCode == 200) {
             let map = response.map;
             this.campaignDetailsDto = map['campaignDetailsDto'];
-            this.teamMemberEmailIds = map['adminAndTeamMembers'];
-            this.categories = map['categories'];
-            if (this.campaignDetailsDto.timezone == undefined) {
-              this.campaignDetailsDto.countryId = this.countries[0].id;
-              this.onSelectCountry(this.campaignDetailsDto.countryId);
-            } else {
-              let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
-              let countryIndex = countryNames.indexOf(this.campaignDetailsDto.country);
-              if (countryIndex > -1) {
-                this.campaignDetailsDto.countryId = this.countries[countryIndex].id;
-                this.onSelectCountry(this.campaignDetailsDto.countryId);
-              } else {
+            let campaignId = this.campaignDetailsDto.id;
+            if(campaignId>0){
+              this.teamMemberEmailIds = map['adminAndTeamMembers'];
+              this.categories = map['categories'];
+              if (this.campaignDetailsDto.timezone == undefined) {
                 this.campaignDetailsDto.countryId = this.countries[0].id;
                 this.onSelectCountry(this.campaignDetailsDto.countryId);
+              } else {
+                let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
+                let countryIndex = countryNames.indexOf(this.campaignDetailsDto.country);
+                if (countryIndex > -1) {
+                  this.campaignDetailsDto.countryId = this.countries[countryIndex].id;
+                  this.onSelectCountry(this.campaignDetailsDto.countryId);
+                } else {
+                  this.campaignDetailsDto.countryId = this.countries[0].id;
+                  this.onSelectCountry(this.campaignDetailsDto.countryId);
+                }
               }
+            }else{
+              this.referenceService.showSweetAlertErrorMessage("This campaign does not exist");
+              this.referenceService.loadingPreview = false;
+              this.resetEmitter.emit('updated');
             }
             this.loader = false;
           }

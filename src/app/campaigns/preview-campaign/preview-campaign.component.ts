@@ -189,7 +189,20 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                 if(this.previewCampaignType === 'EVENT') { this.setEventCampaignData(data.data); }
                 else { this.setCampaignData(data);}
             },
-            error => { this.xtremandLogger.errorPage( error ) },
+            error => {
+              $('#myModal').modal('hide');
+              let statusCode = JSON.parse(error["status"]);
+              if (statusCode == 400) {
+                let errorResponse = JSON.parse(error["_body"]);
+                let message = errorResponse["message"];
+                this.referenceService.showSweetAlertErrorMessage(message);
+                this.referenceService.loadingPreview = false;
+                this.ngxloading = false;
+                this.closeNotifyParent.emit({'updated':true});
+              } else {
+                  this.xtremandLogger.errorPage(error);
+              }
+              },
           () => {
           let campaignType:any;
            if(this.previewCampaignType !== 'EVENT') {  campaignType = this.campaign.campaignType.toLocaleString(); }
