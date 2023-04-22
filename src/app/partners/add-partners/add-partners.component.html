@@ -955,19 +955,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
-                                                            <a id="envolope_{{i}}"
-                                                                *ngIf="!contact.signedUp || !contact.notifyPartners"
-                                                                (click)="sendMail(contact.id)"> <i
-                                                                class="fa fa-envelope"
-                                                                *ngIf="contact.notifyPartners && !contact.signedUp"
-                                                                aria-hidden="true" data-toggle="tooltip"
-                                                                data-placement="bottom"
-                                                                title="{{actionsDescription.partner_reSendMail}}"></i> <i
-                                                                class="fa fa-envelope" style="color: #ff0000"
-                                                                *ngIf="!contact.notifyPartners" aria-hidden="true"
+                                                            <a id="envolope_{{i}}" (click)="sendMail(contact.id)">
+                                                                <i class="fa fa-envelope" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Send Email Notification"></i>
-                                                            </a> <a id="edit_{{i}}" data-toggle="tooltip"
+                                                            </a>
+                                                             <a id="edit_{{i}}" data-toggle="tooltip"
                                                                 data-placement="bottom"
                                                                 title="Edit {{authenticationService?.partnerModule?.customName}}"
                                                                 (click)="editUserDetails(contact)"> <i
