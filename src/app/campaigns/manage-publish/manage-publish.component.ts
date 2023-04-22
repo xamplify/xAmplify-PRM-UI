@@ -670,11 +670,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.refService.loadingPreview = true;
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             this.campaignType = 'EVENT';
-            // this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         } else {
             this.campaignType = campaign.campaignType.toLocaleString();
-            // this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         }
     }

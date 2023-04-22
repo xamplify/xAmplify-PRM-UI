@@ -997,9 +997,8 @@
                                 </button>
                                 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
                                   <ng-container *ngIf="contact?.validEmail">
-                                    <a  *ngIf="!contact.signedUp || !contact.notifyPartners" (click)="sendMail(contact.id)">
-                                      <i class="fa fa-envelope" *ngIf="contact.notifyPartners && !contact.signedUp" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription.partner_reSendMail}}"></i>
-                                      <i class="fa fa-envelope" style="color:#ff0000" *ngIf="!contact.notifyPartners" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
+                                    <a  (click)="sendMail(contact.id)">
+                                      <i class="fa fa-envelope"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
                                     </a>
                                   </ng-container>
                                   <ng-container *ngIf="!contact?.validEmail">

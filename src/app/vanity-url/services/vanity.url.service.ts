@@ -11,6 +11,7 @@ import { VanityEmailTempalte } from "app/email-template/models/vanity-email-temp
 import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
+import { SweetAlertParameterDto } from "app/common/models/sweet-alert-parameter-dto";
 @Injectable()
 export class VanityURLService {
 
@@ -98,7 +99,7 @@ export class VanityURLService {
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && this.envService.CLIENT_URL.indexOf('localhost')>-1;
     if(isLocalHost){
       let domainName = this.envService.domainName;
-      if(domainName!=""){
+      if(domainName!="" && domainName!=window.location.hostname){
         url = this.envService.domainName+".xamplify.com";
       }
     }
