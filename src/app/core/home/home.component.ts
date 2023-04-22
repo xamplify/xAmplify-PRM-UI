@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   token: any;
   loggedInThroughVanityUrl = false;
   loader = false;
-  skin:CustomSkin = new CustomSkin();
+  customSkinDto:CustomSkin = new CustomSkin();
   footerSkin:CustomSkin =new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
@@ -308,20 +308,143 @@ export class HomeComponent implements OnInit {
           }
          this.vanityURLService.isVanityURLEnabled();  
          this.getCompanyId();  
-         this.getMainContent(this.userId);  
+         this.getDefaultSkin();
+         //this.getMainContent(this.userId);  
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  
   }
   
-  getMainContent(userId:number){
-    this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-      (response) =>{
-       let cskinMap  = response.data;
-       this.skin  = cskinMap.MAIN_CONTENT;
-       this.footerSkin = cskinMap.FOOTER;
-    }
-    )
+  // getMainContent(userId:number){
+  //   this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+  //     (response) =>{
+  //      let cskinMap  = response.data;
+  //      this.skin  = cskinMap.MAIN_CONTENT;
+  //      this.footerSkin = cskinMap.FOOTER;
+  //      document.documentElement.style.setProperty('--page-content', this.skin.backgroundColor);
+	// 	   document.documentElement.style.setProperty('--div-bg-color', this.skin.divBgColor);
+	// 	   document.documentElement.style.setProperty('--title-heading--text', this.skin.headerTextColor);
+	// 	   document.documentElement.style.setProperty('--border-color', this.skin.buttonBorderColor);
+  //      document.documentElement.style.setProperty('---text-color', this.skin.textColor);
+  //     // //  this.authenticationService.isDefaultTheme = this.skin.defaultSkin;
+  //     // //  this.authenticationService.isDarkForCharts = this.skin.darkTheme;
+  //     //  if(this.skin.defaultSkin && !this.skin.darkTheme){
+  //     //   require("style-loader!../../../assets/admin/layout2/css/layout.css");
+  //     //  } else if(!this.skin.defaultSkin && !this.skin.darkTheme) {
+  //     //   require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+  //     //  } else if(this.skin.darkTheme && this.skin.defaultSkin) {
+  //     //   require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
+  //     //  }else{
+  //     //  require("style-loader!../../../assets/admin/layout2/css/layout.css");
+  //     //  }
+  //   }
+  //   )
+  // }
+  /*********** XNFR-238********** */
+  isTop:boolean = false;
+  isLeft:boolean = false;
+  isFooter:boolean = false;
+  isMain:boolean = false;
+  topCustom:CustomSkin = new CustomSkin();
+  leftCustom:CustomSkin = new CustomSkin();
+  footerCustom:CustomSkin = new CustomSkin();
+  maincontentCustom:CustomSkin = new CustomSkin();
+  getDefaultSkin(){
+     //this.ngxloading = true;
+     this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)
+     .subscribe(
+         (data:any) =>{
+       //this.ngxloading = false;
+            let skinMap = data.data;
+          this.topCustom = skinMap.TOP_NAVIGATION_BAR;
+           this.leftCustom = skinMap.LEFT_SIDE_MENU;
+           this.footerCustom = skinMap.FOOTER;
+           this.footerSkin = skinMap.FOOTER;
+           this.maincontentCustom = skinMap.MAIN_CONTENT;
+
+     if(this.topCustom.moduleTypeString === "TOP_NAVIGATION_BAR"){
+       this.customSkinDto = skinMap.TOP_NAVIGATION_BAR;
+       if(!this.topCustom.defaultSkin && !this.topCustom.darkTheme) {
+        this.authenticationService.isTop = true;
+       document.documentElement.style.setProperty('--top-bg-color', this.customSkinDto.backgroundColor);
+       document.documentElement.style.setProperty('--top-buton-color', this.customSkinDto.buttonColor);
+       document.documentElement.style.setProperty('--top-button-border-color', this.customSkinDto.buttonBorderColor);
+       document.documentElement.style.setProperty('--top-button-value-color', this.customSkinDto.buttonValueColor); 
+       document.documentElement.style.setProperty('--top-button-icon-color', this.customSkinDto.iconColor);
+       require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
+       this.isTop = true;
+       this.isMain = false;
+       this.isLeft = false;
+       this.isFooter = false;
+         } 
+        }
+       if(this.leftCustom.moduleTypeString === "LEFT_SIDE_MENU"){
+       this.customSkinDto = skinMap.LEFT_SIDE_MENU;
+       if(!this.leftCustom.defaultSkin && !this.leftCustom.darkTheme){
+        this.authenticationService.isLeft = true;
+       document.documentElement.style.setProperty('--left-bg-color', this.customSkinDto.backgroundColor);
+       document.documentElement.style.setProperty('--left-text-color', this.customSkinDto.textColor);
+       document.documentElement.style.setProperty('--left-border-color', this.customSkinDto.buttonBorderColor);
+       document.documentElement.style.setProperty('--left-icon-color', this.customSkinDto.iconColor);
+       require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
+       
+       this.isLeft = true;
+       this.isMain = false;
+       this.isTop = false;
+       this.isFooter = false;
+         }
+       }
+       if(this.footerCustom.moduleTypeString === "FOOTER"){
+       this.customSkinDto = skinMap.FOOTER;
+        this.footerSkin = skinMap.FOOTER;
+       this.authenticationService.isCustomFooter = this.customSkinDto.showFooter;
+       if( !this.footerCustom.defaultSkin && !this.footerCustom.darkTheme){
+        this.authenticationService.isFoter = true;
+
+       document.documentElement.style.setProperty('--footer-bg-color', this.customSkinDto.backgroundColor);
+       document.documentElement.style.setProperty('--footer-text-color', this.customSkinDto.textColor);
+       document.documentElement.style.setProperty('--footer-border-color', this.customSkinDto.buttonBorderColor);
+       require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+       this.isFooter = true;
+       this.isMain = false;
+       this.isTop = false;
+       this.isLeft = false;
+       }
+        } 
+        if(this.maincontentCustom.moduleTypeString === "MAIN_CONTENT"){
+       this.customSkinDto = skinMap.MAIN_CONTENT;
+              if(!this.maincontentCustom.defaultSkin && !this.maincontentCustom.darkTheme){
+                this.authenticationService.isMain = true;
+       document.documentElement.style.setProperty('--page-content', this.customSkinDto.backgroundColor);
+       document.documentElement.style.setProperty('--div-bg-color', this.customSkinDto.divBgColor);
+       document.documentElement.style.setProperty('--title-heading--text', this.customSkinDto.textColor);
+       document.documentElement.style.setProperty('--border-color', this.customSkinDto.buttonBorderColor);
+       document.documentElement.style.setProperty('---text-color', this.customSkinDto.textColor);
+        require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
+      
+
+        this.isMain = true;
+        this.isTop = false;
+        this.isLeft = false;
+        this.isFooter = false;
+          }
+        }
+        
+      
+        if(this.isTop || this.isLeft || this.isFooter || this.isMain){
+        this.authenticationService.isCustomTheme = true;
+        } else if(this.customSkinDto.darkTheme){
+       this.authenticationService.isDarkTheme = true;
+       this.authenticationService.isDarkForCharts = true;
+       require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");	
+        }
+        else{
+       this.authenticationService.isLightTheme = true;
+        }
     
-  }
+         },error=>{
+      
+         });
+   }
+ /************* XNFR-238 *********************/
 }

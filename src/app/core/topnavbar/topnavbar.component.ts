@@ -282,7 +282,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
-      this.getTopNavigationColor(this.userId);
+      //this.getTopNavigationColor(this.userId);
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -504,13 +504,27 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
 
  
 
-  getTopNavigationColor(userId:number){
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-      (response) =>{
-     let cskinMap  = response.data;
-     this.cskin = cskinMap.TOP_NAVIGATION_BAR;
-      }
-    )
+  // getTopNavigationColor(userId:number){
+  //   this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+  //     (response) =>{
+  //    let cskinMap  = response.data;
+  //    this.cskin = cskinMap.TOP_NAVIGATION_BAR;
+  //    document.documentElement.style.setProperty('--top-bg-color', this.cskin.backgroundColor);
+  //    document.documentElement.style.setProperty('--top-buton-color', this.cskin.buttonColor);
+  //    document.documentElement.style.setProperty('--top-button-border-color', this.cskin.buttonBorderColor);
+  //    document.documentElement.style.setProperty('--top-button-value-color', this.cskin.buttonValueColor); 
+  //    document.documentElement.style.setProperty('--top-button-icon-color', this.cskin.iconColor);
+  //    this.authenticationService.isDefaultTheme = this.cskin.defaultSkin;
+  //    this.authenticationService.isDarkForCharts = this.cskin.darkTheme;
+  //    if(!this.cskin.defaultSkin && !this.cskin.darkTheme){
+  //     require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
+  //    } else if(this.cskin.darkTheme && this.cskin.defaultSkin) {
+  //     require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
+  //    } else{
+  //     require("../../../assets/admin/layout2/css/layout.css");
+  //    }
+  //     }
+  //   )
   
-  }
+  // }
 }

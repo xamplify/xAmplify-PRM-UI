@@ -760,7 +760,7 @@ export class DashboardService {
     .map(this.extractData)
     .catch(this.handleError);
     }
-    /** XNFR-134 */
+    /*********** XNFR-134 ****************/
         getTopNavigationBarCustomSkin(vanityLoginDto:VanityLoginDto){
         const url = this.authenticationService.REST_URL + 'custom/skin/find/?access_token=' + this.authenticationService.access_token;
         return this.http.post(url,vanityLoginDto)
@@ -779,7 +779,23 @@ export class DashboardService {
         .map(this.extractData)
         .catch(this.handleError);
         }
-
+/************XNFR-134*****************/
+/*************XNFR-238****************/
+ /********* Dark Theme********** */
+ setDarkorLightTheme(custom:any) {
+    const url = this.authenticationService.REST_URL + 'custom/skin/dark?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,custom)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/**** Chnage Custom Colors*****/
+changeCustomSettingTheme(custom:any) {
+    const url = this.authenticationService.REST_URL + 'custom/skin/light?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,custom)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+/*************XNFR-238****************/
     getVendors(pagination: Pagination) {
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)

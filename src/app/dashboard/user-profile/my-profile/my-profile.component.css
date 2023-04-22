@@ -826,3 +826,200 @@ a:link, nav a:visited {
 .btn-align{
   padding-left: 5px !important;
 }
+
+.selected-border {
+  border: 2px solid #00bcd4 !important;
+}
+
+.portlet > .portlet-title {
+  min-height: 30px;
+}
+.border-radius {
+  border-radius: 0px 0px 3px 3px;
+}
+.border-cu {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  box-shadow: 2px 2px 8px 2px #d1d1d1;
+}
+/* .border-cu:hover {
+  box-shadow: 2px 2px 8px 2px #d1d1d1;
+} */
+.protlet-bg {
+  background-color: #f1f5f9;
+}
+.btn-success-cu {
+  background-color: #28cf28;
+}
+.card-use {
+  border: 1px solid #337ab7
+}
+.card-notuse {
+  border: 1px solid #ddd;
+}
+.btn-primary-gr {
+  background-image: linear-gradient(to right, #f5f4f4 0%, #f1f1f1  51%, #f5f4f4  100%) !important;
+  color: #000;
+}
+.btn-cus {
+  padding: 3px 14px !important;
+}
+/* .sel-shadow {
+  box-shadow: 2px 2px 8px 2px #d1d1d1;
+} */
+.cu-card {
+  background: #d1d1d1;
+  height: 100px;
+  width: 100%;
+  position: relative;
+  /* top: 44px; */
+  border-radius: 10px;
+}
+.cu-img {
+  /* float: right;
+  top: -103px;
+  right: -16px; */
+  /* margin: 0px;
+  padding:0px; */
+  border-radius: 10px;
+}
+.preview-btn {
+
+}
+/* .expan-img-custom {
+  border-radius: 10px;width: -webkit-fill-available;object-fit:cover;margin-top: -20px;
+} */
+.in-use {
+  padding: 0px 5px 0px 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.view-cu {
+  position: absolute;
+  bottom: 10px;
+}
+
+/******XNFR 238 *********/
+/*theme selection css*/
+.card {
+  background: #ffffff;
+  width: 100%;
+  padding: 9px;
+  border-radius: 7px;
+  /* box-shadow: 2px 2px 10px 2px #d1d1d1; */
+  height: auto;
+}
+img.img-custome {
+  float: right;
+  width: 53%;
+}
+.img_padding {
+  position: relative;
+  right: 0px;
+  top: -8px;
+}
+.top-bottom-margins {
+  margin: 30px 0px 0px 0px;
+}
+.selectcolor {
+  background-color: #0091d6;
+  font-weight: 400;
+}
+.notselectcolor {
+  background-color: #eeeeee;
+  color: #000;
+  font-weight: 400;
+}
+.btn-selectcolor1 {
+  background: #0077b5;
+  color: #fff;
+}
+.btn-dark {
+  background-color: #000;
+  color: #fff;
+}
+.notselected {border: 1px solid #ddd;}
+.selected {border: 1px solid #0077b5;}
+
+.btn-size{
+  padding: 5px 8px;
+  font-size: 13px;
+}
+.themefont {
+  font-size: 15px;
+}
+.div.thembgc {
+  background: #f0f5f9;
+  padding: 30px 20px 10px 20px;
+  border-radius: 10px;
+  margin: 0px 15px 0px 15px;
+}
+.family-style {
+  font-family: 'Gantari', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+i.fa.fa-cog {
+  font-size: 11px;
+}
+.text-bottom {
+  padding-bottom: 10px;
+}
+ 
+@media (min-width: 1200px) and (max-width: 1240px)  {
+  img.img-custome {width: 52%;}
+  .family-style {font-size: 11px;}
+  .img_padding{right: 10px;top: 11px;}
+}
+ 
+@media (min-width: 1000px) and (max-width: 1199px)  {img.img-custome {width: 34%;} .img_padding { right: 12px; top: 13px;}.family-style {font-size: 10px;}span.label {font-size: 10px;}.btn-size {font-size: 9px;}.themefont {font-size: 12px;}i.fa.fa-eye {font-size: 10px;}i.fa.fa-cog {font-size: 9px;}.card {height: 97px;}.text-bottom {padding-bottom: 5px;}}
+@media (min-width: 1200px) and (max-width: 1229px)  {img.img-custome {width: 39%;} .img_padding { right: 12px; top: 13px;}}
+@media (min-width: 1230px) and (max-width: 1299px)  {img.img-custome {width: 39%;} .img_padding { right: 10px; top: 16px;} }
+@media (min-width: 1300px) and (max-width: 1316px)  {img.img-custome {width: 52%;}  .img_padding {top: 0px;}} 
+@media (min-width: 1317px) and (max-width: 1331px)  {img.img-custome {width: 51%;}  .img_padding {top: 0px;}} 
+@media (min-width: 1332px) and (max-width: 1344px)  {img.img-custome {width: 54%;}} 
+@media (min-width: 1345px) and (max-width: 1375px)  {img.img-custome {width: 53%;} .card {height: 106px;}} 
+@media (min-width: 1374px) and (max-width: 1383px)  {img.img-custome {width: 52%;}} 
+@media (min-width: 1384px) and (max-width: 1406px)  {img.img-custome {width: 51%;}} 
+@media (min-width: 1407px) and (max-width: 1422px)  {img.img-custome {width: 49%;}} 
+@media (min-width: 1423px) and (max-width: 1441px)  {img.img-custome {width: 48%;}} 
+@media (min-width: 1441px) and (max-width: 1459px)  {img.img-custome {width: 47%;}} 
+@media (min-width: 1460px) and (max-width: 1478px)  {img.img-custome {width: 46%;}} 
+@media (min-width: 1479px) and (max-width: 1499px)  {img.img-custome {width: 44%;}}
+@media (min-width: 1500px) and (max-width: 1515px)  {img.img-custome {width: 44%;}}
+@media (min-width: 1516px) and (max-width: 1535px)  {img.img-custome {width: 44%;}}
+@media (min-width: 1536px) and (max-width: 1564px)  {img.img-custome {width: 42%;}}
+@media (min-width: 1565px) and (max-width: 1589px)  {img.img-custome {width: 41%;}}
+@media (min-width: 1590px) and (max-width: 1641px)  {img.img-custome {width: 39%;}}
+@media (min-width: 1642px) and (max-width: 1664px)  {img.img-custome {width: 38%;}}
+@media (min-width: 1665px) and (max-width: 1699px)  {img.img-custome {width: 37%;}}
+@media (min-width: 1700px) and (max-width: 1723px)  {img.img-custome {width: 36%;}}
+@media (min-width: 1724px) and (max-width: 1759px)  {img.img-custome {width: 35%;}}
+@media (min-width: 1760px) and (max-width: 1779px)  {img.img-custome {width: 34%;}}
+@media (min-width: 1780px) and (max-width: 1800px)  {img.img-custome {width: 33%;}}
+@media (min-width: 1801px) and (max-width: 1812px)  {img.img-custome {width: 33%;}}
+@media (min-width: 1813px) and (max-width: 1844px)  {img.img-custome {width: 33%;}}
+@media (min-width: 1845px) and (max-width: 1881px)  {img.img-custome {width: 31%;}}
+@media (min-width: 1882px) and (max-width: 1920px)  {img.img-custome {width: 30%;}}
+
+
+
+/* tablet */
+@media screen and (max-width: 768px)  {
+  .img_padding {left: -10px;top: 24px;}img.img-custome { width: 42%;}.top-bottom-margins {margin: 0px;}.div.thembgc {padding: 15px 15px 15px 15px;}.card {margin: 10px 0px 10px 0px;}}
+
+/* mobile */
+@media screen and (max-width: 480px) {.img_padding {left: -16px;top: 10px;}.card {margin: 10px 0px 10px 0px;}.top-bottom-margins {margin: 0px;}.div.thembgc {padding: 15px 15px 15px 15px;}img.img-custome { width: 46%;}}
+
+
+
+.btn-notselectcolor1 {
+  background: #eeeeee;
+  color: #000;
+}
+.cus-black{
+  color:#000;
+}
+.cus-white{
+  color:#fff;
+}
+/********* XNFR 238******/

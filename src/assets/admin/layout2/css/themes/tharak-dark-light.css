@@ -33,7 +33,9 @@ h1, h2, h3, h4, h5, h6 {
 .profile-details b,
 .field-icon,
 .list__item .item__name,
-.list__item > .flex-row
+.list__item > .flex-row,
+.font-blue-madison,
+.copyright-css
  {
   color : white !important;
 }
@@ -53,7 +55,8 @@ body {
 .disabled-background-color,
 /* .label-box:hover, */
 .video,
-.table tr.xamp-tr-selected td {
+.table tr.xamp-tr-selected td,
+.div.thembgc {
   background-color:  #22313a !important;
 }
 .portlet.light {
@@ -74,7 +77,8 @@ body {
 .row-space {
   border-bottom: 1px solid #2f4857 !important;
 }
-.portlet.box > .portlet-body {
+.portlet.box > .portlet-body,
+.copyright-css {
   background-color: #2b3c46 !important;
 }
 .page-bar .page-breadcrumb > li > a, .page-bar .page-breadcrumb > li > span {
@@ -999,3 +1003,6 @@ input:active, input:focus{
 /* .btn:hover{
   color:#0b7dda !important;
 } */
+.border-cu {
+  box-shadow: 0px 0px 0px 0px #d1d1d1 !important;
+}

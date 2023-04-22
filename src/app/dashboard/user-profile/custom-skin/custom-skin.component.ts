@@ -14,7 +14,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { Properties } from 'app/common/models/properties';
 
-declare var $ : any,CKEDITOR: any;
+declare var $ : any,CKEDITOR: any,swal:any;
 @Component({
   selector: 'app-custom-skin',
   templateUrl: './custom-skin.component.html',
@@ -63,7 +63,8 @@ export class CustomSkinComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   ngxloading = false;
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
-                           "ui-sans-serif","ui-monospace","Open Sans, sans-serif"]
+                           "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
+
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -111,6 +112,10 @@ export class CustomSkinComponent implements OnInit {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
   } 
+  changeFooter(){
+    this.form.showFooter = false;
+    this.showFooter = false;
+  }
   // footerBody:string;
   // onChange(event:any){
   //  this.footerBody= CKEDITOR.instances.editor1.document.getBody().getText();
@@ -124,7 +129,7 @@ export class CustomSkinComponent implements OnInit {
   // }
 
   message:string="";
-  
+
   saveSkin(form:CustomSkin){
     this.ngxloading = true;
     this.message = ""; 
@@ -137,35 +142,84 @@ export class CustomSkinComponent implements OnInit {
           form.textContent = CKEDITOR.instances[instanceName].getData();
       }
     }
+    
+  
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       this.sucess = true;
-      this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
-      this.router.navigate(['/home/dashboard/myprofile']);
+      this.ngxloading = false;
+      //this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
+      if(!form.defaultSkin){
+        this.message = "Data Saved Successfully";
+        //this.showSweetAlertSuccessMessage("Settings updated successfully.");
+        }
+      //this.router.navigate(['/home/dashboard/myprofile']);
       this.minLength = form.textContent.length;
       },
      error =>{
-      this.referenceService.scrollSmoothToTop();
+      //this.referenceService.scrollSmoothToTop();
       if(this.form.textContent.length > 225){
         this.message = this.properties.serverErrorMessage;
       }else{
         this.message = this.properties.serverErrorMessage;
       }
+      this.referenceService.scrollSmoothToTop();
       this.statusCode = 500;
       this.ngxloading = false;
      });
   }
+  /********** Sucess Alert (XNFR-238)************/
+  showSweetAlertSuccessMessage(message: string) {
+    swal({
+      title: message,
+      type: "success",
+      allowOutsideClick: false,
+    }).then(
+      function (allowOutsideClick) {
+        if (allowOutsideClick) {
+          console.log('CONFIRMED');
+           window.location.reload();
+        }
+      });
+  }
+  /******* Reload Alert ******/
+  sweetAlertDefaultSettings(form:CustomSkin){
+    let self = this;
+    swal({
+      title: "Confirm?",
+      text: "Are you sure Refresh Browser?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Back"
+      }
+    ).then(
+      function (isConfirm) {
+        if (isConfirm) {
+          console.log('CONFIRMED');
+          console.log(self.form.defaultSkin);
+          self.form.defaultSkin = true;
+          self.saveSkin(form);
+           window.location.reload();
+        }
+      },
+      function() {
+         console.log('BACK');
+      }
+    );
+      }
+  /********** Close Sucess Alert  (XNFR-238)*************/
   saveCustomSkin(form:CustomSkin){
     this.form.defaultSkin = false;
-    this.authenticationService.isDarkForCharts = false;
+    this.form.darkTheme = false;
     this.saveSkin(form);
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
-    this.authenticationService.isDarkForCharts = true;
-    this.saveSkin(form);
+    this.sweetAlertDefaultSettings(form)
   }
-  
+  important = "!important";
   getDefaultSkin(){
     this.ngxloading = true;
     this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)

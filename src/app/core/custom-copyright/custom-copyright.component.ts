@@ -41,6 +41,14 @@ export class CustomCopyrightComponent implements OnInit {
         let skinMap = data.data;
         this.skin = skinMap.FOOTER;
         this.footerContent = this.sanitizer.bypassSecurityTrustHtml(this.skin.textContent);
+        // document.documentElement.style.setProperty('--footer-bg-color', this.skin.backgroundColor);
+        // document.documentElement.style.setProperty('--footer-text-color', this.skin.textColor);
+        // document.documentElement.style.setProperty('--footer-border-color', this.skin.buttonBorderColor);
+        // if(!this.skin.defaultSkin && !this.skin.darkTheme){
+        //  require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+        // }else {
+        //  require("style-loader!../../../assets/admin/layout2/css/layout.css")
+        // }
       }
     )
   }

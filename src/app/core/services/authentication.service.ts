@@ -25,6 +25,7 @@ import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-deta
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { CommentDto } from 'app/common/models/comment-dto';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
 
 @Injectable()
 export class AuthenticationService {
@@ -119,8 +120,22 @@ export class AuthenticationService {
   beePageClientId = "";
   beePageClientSecret = "";
   vendorCompanyId = 0;
-  isDarkForCharts = true;
+  /***** XNFR-238 *********** */
+  isDarkForCharts : boolean = false;
+  isDefaultTheme :boolean = true;
+  isCustomFooter:boolean = false;
+  isCustomTheme:boolean = false;
+  isLightTheme:boolean = false;
+  isDarkTheme:boolean = false;
+
+ isTop:boolean= false;
+ isLeft:boolean = false;
+ isFoter:boolean = false;
+ isMain:boolean = false;
+
+  /***** XNFR-238*********** */
   formBackground="";
+  
   
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
@@ -631,6 +646,7 @@ export class AuthenticationService {
           this.closeSwal();
           let self = this;
           if(this.envService.CLIENT_URL=="http://localhost:4200/"){
+            window.location.href = 'http://localhost:4200/login';
             setTimeout(() => {
               self.router.navigate(['/']);
               $("body").removeClass("logout-loader");

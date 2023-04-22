@@ -52,6 +52,7 @@ import { FileUtil } from '../../../core/models//file-util';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -275,6 +276,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSupportSettingOption = false;
 	isLoggedInAsPartner = false;
 	/****XNFR-224****/
+	/**** XNFR-238*** */
+	customSkinDto :CustomSkin = new CustomSkin();
+	selectedThemeIndex:number= 0;
+	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -291,7 +296,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.onDropModel(value);
 		});
 	}
-
 	private onDropModel(args) {
 	}
 
@@ -1775,11 +1779,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.integrationTabIndex = 0;
 		}			
 	}
-
+	themeName = "Light Theme";
+   showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
+		} else if(this.activeTabName == "customTheme"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeName = "Custom Theme";
+		} else if(this.activeTabName == "lightTheme"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeName = "Light Theme";
+		} else if(this.activeTabName == "DarkTheme"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeName = "Dark Theme";
+		} else if(this.activeTabName == "neumorphismLight"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeName = "Neumorphism Light";
+		} else if(this.activeTabName == "neumorphismDark"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeName = "Neumorphism Dark";
 		} else if (this.activeTabName == "password") {
 			this.activeTabHeader = this.properties.changePassword;
 		} else if (this.activeTabName == "settings") {
@@ -1817,6 +1837,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.tags;
 		} else if(this.activeTabName == "customskin"){
 			this.activeTabHeader = this.properties.customskin;
+			this.themeName = "";
 		}else if (this.activeTabName == "exclude") {
             this.activeTabHeader = this.properties.exclude;
             this.excludeUserPagination= new Pagination();
@@ -3850,9 +3871,128 @@ configSalesforce() {
 		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
 		pipelineStage.defaultStage = true;
 	}
-
+	/************* XNFR-238 *********************/
+	customAppShow = false;
 	
+	tabNames = ""
+	customskinSettingsEnable(tabNames:string){
+		this.ngxloading = true;
+		this.customSkinDto.createdBy = this.loggedInUserId;
+		if(tabNames == "lightTheme"){
+			this.ngxloading = false;
+			this.selectedThemeIndex = 1;
+			this.customAppShow = false;
+			this.customSkinDto.darkTheme = false;
+		    this.customSkinDto.defaultSkin = true;
+			this.authenticationService.isDarkForCharts = true;
+			this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex)
 
+		}else if (tabNames == "customTheme"){
+			this.ngxloading = false;
+			this.customAppShow = true;
+			this.selectedThemeIndex = 0;
+			this.customSkinDto.darkTheme = false;
+			this.changeCustomSettings(this.customSkinDto,this.selectedThemeIndex);
+
+		}else if(tabNames == "DarkTheme") {
+			this.customAppShow = false;
+			this.selectedThemeIndex = 2;
+			this.ngxloading = false;
+			this.customSkinDto.darkTheme = true;
+			this.customSkinDto.defaultSkin = true;
+			this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex);
 	
+		}	
+	}
+	changeCustomSettings(form:CustomSkin,selectedThemeIndex:number){
+		this.ngxloading = true;
+		form.defaultSkin = this.customSkinDto.defaultSkin;
+		this.dashBoardService.changeCustomSettingTheme(form).subscribe(
+			(data:any) =>{
+				this.ngxloading = false;
+				 if( form.darkTheme && selectedThemeIndex == 1)
+				 {
+				   window.location.reload();
+				//   require("style-loader!../../../../assets/admin/layout2/css/themes/tharak-dark-light.css");	
+				 }else {
+					this.customAppShow = true;
+				// 	require("style-loader!../../../../assets/admin/layout2/css/layout.css");				
+				 }
+			},error=>{
+				this.ngxloading = false;
+			}
+			)	
+	}
+    saveDarkTheme(form:CustomSkin,selectedThemeIndex:number){
+		this.ngxloading = true;
+	this.dashBoardService.setDarkorLightTheme(form).subscribe(
+		(data:any) =>{
+			this.ngxloading = false;
+			window.location.reload();
+			//  if(form.defaultSkin && !form.darkTheme && selectedThemeIndex == 0) {
+			// 	//window.location.reload();
+			// 	//require("style-loader!../../../../assets/admin/layout2/css/layout.css");				
+			// }else {
+			// 	//require("style-loader!../../../../assets/admin/layout2/css/layout.css");
+			// }
+		},error=>{
+			this.ngxloading = false;
+		}
+		)	
+    }
+	saveskincolors:CustomSkin = new CustomSkin();
+	message:string="";
+	activateCustomskin(){
+         this.showRefreshSweetAlertSuccessMessage("Refresh Windows")
+	}
+	// saveCustomSkins(form:CustomSkin){
+	// 	this.ngxloading = true;
+	// 	this.message = ""; 
+	// this.dashBoardService.saveCustomSkin(form).subscribe(
+    //   (data:any)=> {
+    //   if(!form.defaultSkin){
+    //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
+    //     }
+    //   this.router.navigate(['/home/dashboard/myprofile']);
+    //   //this.minLength = form.textContent.length;
+    //   },
+    //  error =>{
+    //   this.referenceService.scrollSmoothToTop();
+    //   if(form.textContent.length > 225){
+    //     this.message = this.properties.serverErrorMessage;
+    //   }else{
+    //     this.message = this.properties.serverErrorMessage;
+    //   }
+    //   this.statusCode = 500;
+    //   this.ngxloading = false;
+    //  });
+	// }
+	// showSweetAlertSuccessMessage(message: string) {
+	// 	swal({
+	// 	  title: message,
+	// 	  type: "success",
+	// 	  allowOutsideClick: false,
+	// 	}).then(
+	// 	  function (allowOutsideClick) {
+	// 		if (allowOutsideClick) {
+	// 		  console.log('CONFIRMED');
+	// 		//    window.location.reload();
+	// 		}
+	// 	  });
+	//   }
+	  showRefreshSweetAlertSuccessMessage(message: string) {
+		swal({
+		  title: message,
+		  type: "success",
+		  allowOutsideClick: false,
+		}).then(
+		  function (allowOutsideClick) {
+			if (allowOutsideClick) {
+			  console.log('CONFIRMED');
+		    window.location.reload();
+			}
+		  });
+	  }
 
+ /************* XNFR-238 *********************/	
 }
