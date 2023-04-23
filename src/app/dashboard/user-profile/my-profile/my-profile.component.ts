@@ -3943,30 +3943,34 @@ configSalesforce() {
 	saveskincolors:CustomSkin = new CustomSkin();
 	message:string="";
 	activateCustomskin(){
-         this.showRefreshSweetAlertSuccessMessage("Refresh Windows")
+
+		this.authenticationService.customMap.forEach((value, key) => {
+			this.customSkinDto = value;
+			this.customSkinDto.defaultSkin = false;
+			this.customSkinDto.darkTheme = false;
+			if(this.customSkinDto.moduleTypeString === "MAIN_CONTENT"){
+				if(this.customSkinDto.divBgColor == "#fff" && this.customSkinDto.textColor == "#fff"){
+					this.customSkinDto.textColor = "#000";
+				}
+			}
+			this.saveDarkTheme(this.customSkinDto,1);
+			console.log(this.customSkinDto, key);
+		  });
+	
+		//this.showRefreshSweetAlertSuccessMessage("Refresh Windows");
 	}
-	// saveCustomSkins(form:CustomSkin){
-	// 	this.ngxloading = true;
-	// 	this.message = ""; 
-	// this.dashBoardService.saveCustomSkin(form).subscribe(
-    //   (data:any)=> {
-    //   if(!form.defaultSkin){
-    //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
-    //     }
-    //   this.router.navigate(['/home/dashboard/myprofile']);
-    //   //this.minLength = form.textContent.length;
-    //   },
-    //  error =>{
-    //   this.referenceService.scrollSmoothToTop();
-    //   if(form.textContent.length > 225){
-    //     this.message = this.properties.serverErrorMessage;
-    //   }else{
-    //     this.message = this.properties.serverErrorMessage;
-    //   }
-    //   this.statusCode = 500;
-    //   this.ngxloading = false;
-    //  });
-	// }
+	
+	saveCustomSkins(form:CustomSkin){
+		this.ngxloading = true;
+	this.dashBoardService.saveCustomSkin(form).subscribe(
+       (data:any)=> { 
+       this.router.navigate(['/home/dashboard/myprofile']);
+       },
+     error =>{
+      this.referenceService.scrollSmoothToTop();
+      this.ngxloading = false;
+     });
+	}
 	// showSweetAlertSuccessMessage(message: string) {
 	// 	swal({
 	// 	  title: message,

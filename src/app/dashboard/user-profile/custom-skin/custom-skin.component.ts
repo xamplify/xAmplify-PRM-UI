@@ -64,7 +64,7 @@ export class CustomSkinComponent implements OnInit {
   ngxloading = false;
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
-
+  saveAlert:boolean = false;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -147,10 +147,12 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       this.sucess = true;
+      this.saveAlert = false;
       this.ngxloading = false;
       //this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
       if(!form.defaultSkin){
         this.message = "Data Saved Successfully";
+        this.saveAlert = true;
         //this.showSweetAlertSuccessMessage("Settings updated successfully.");
         }
       //this.router.navigate(['/home/dashboard/myprofile']);

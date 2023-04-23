@@ -6,7 +6,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div> 
-<div class="alert alert-success" *ngIf="sucess" role="alert">
+<div class="alert alert-success" *ngIf="saveAlert" role="alert">
 	{{message}}
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
 									[style.background]="form.buttonColor" [cpWidth]="'200px'"
 									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
-									[cpPosition]="'top'" readonly></span>
+									[cpPosition]="'bottom'" readonly></span>
 							</div>
 						</div>
 						<div class="col-md-12 col-lg-12">
@@ -172,7 +172,7 @@
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
 								<label>Application Background Color</label> <input class="form-control"
-									[value]="backgroundColor" [(ngModel)]="form.backgroundColor"
+									[value]="backgroundColor" [(ngModel)]="backgroundColor"
 									style="margin-bottom: 10px; padding-left: 40px;"
 									(input)="checkValidColorCode(backgroundColor,'backgroundColor')"
 									maxlength="7" /> <span class="input-group-addon color-pick"
@@ -186,7 +186,7 @@
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
 								<label>Card Background Color</label> <input class="form-control"
-									[value]="divBgColor" [(ngModel)]="form.divBgColor"
+									[value]="divBgColor" [(ngModel)]="divBgColor"
 									style="padding-left: 40px;"
 									(input)="checkValidColorCode(divBgColor,'divBgColor')"
 									maxlength="7"> <span
@@ -226,7 +226,7 @@
 									style="padding-left: 0px;">
 									<div class="portlet light main-content"
 										style="display: flex; justify-content: center;"
-										[ngStyle]="{'background-color':form.backgroundColor,'color':form.textColor}">
+										[ngStyle]="{'background-color':backgroundColor,'color':textColor}">
 										<h6 style="margin: auto;"
 											[ngStyle]="{'color':form.headerTextColor}">Page Content</h6>
 									</div>
@@ -243,7 +243,7 @@
 					<div class="col-md-6 col-lg-6">
 						<div class="form-group">
 							<label>Text Color</label> <input class="form-control"
-								[value]="textColor" [(ngModel)]="form.textColor"
+								[value]="textColor" [(ngModel)]="textColor"
 								style="margin-bottom: 10px; padding-left: 40px;"
 								(input)="checkValidColorCode(textColor,'textColor')"
 								maxlength="7" /> <span class="input-group-addon color-pick"
@@ -310,7 +310,7 @@
 									[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
 									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
-									[cpPosition]="'top'" readonly></span>
+									[cpPosition]="'bottom'" readonly></span>
 							</div>
 						</div>
 						<!-- Text Color-->

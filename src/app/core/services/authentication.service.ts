@@ -132,7 +132,7 @@ export class AuthenticationService {
  isLeft:boolean = false;
  isFoter:boolean = false;
  isMain:boolean = false;
-
+ customMap = new Map<string, CustomSkin>();
   /***** XNFR-238*********** */
   formBackground="";
   

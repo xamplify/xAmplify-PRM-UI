@@ -356,11 +356,16 @@ export class HomeComponent implements OnInit {
          (data:any) =>{
        //this.ngxloading = false;
             let skinMap = data.data;
+           // this.authenticationService.customMap = data.data;
           this.topCustom = skinMap.TOP_NAVIGATION_BAR;
            this.leftCustom = skinMap.LEFT_SIDE_MENU;
            this.footerCustom = skinMap.FOOTER;
            this.footerSkin = skinMap.FOOTER;
            this.maincontentCustom = skinMap.MAIN_CONTENT;
+           this.authenticationService.customMap.set("top",skinMap.TOP_NAVIGATION_BAR);
+           this.authenticationService.customMap.set("left",skinMap.LEFT_SIDE_MENU);
+           this.authenticationService.customMap.set("footer",skinMap.FOOTER);
+           this.authenticationService.customMap.set("main",skinMap.MAIN_CONTENT);
 
      if(this.topCustom.moduleTypeString === "TOP_NAVIGATION_BAR"){
        this.customSkinDto = skinMap.TOP_NAVIGATION_BAR;
