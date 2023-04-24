@@ -156,3 +156,9 @@
 }
 
 
+span.quiz_optionname {
+    float: right;
+    clear: none;
+    display: block;
+    padding: 0px 0px 0px 8px;
+}

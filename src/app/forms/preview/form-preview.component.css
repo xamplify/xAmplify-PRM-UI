@@ -196,3 +196,11 @@ label.questionclass {
     display: inline;
     font-size:16px;
 }
+
+.score {
+    float: right;
+    margin: 0px 40px 0px -110px;
+    border: 1px solid black;
+    padding: 2px 5px 2px 5px;
+    background: #e6e5e5;
+}

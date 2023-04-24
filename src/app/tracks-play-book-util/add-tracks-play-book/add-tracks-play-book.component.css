@@ -1119,3 +1119,13 @@ input.cmn-toggle-round-flat:checked+label:after {
   .btn-primary-light:hover{
     background-color: #c0c0c0;
   }
+  
+span.quiz_optionname {
+    float: right;
+    clear: none;
+    display: block;
+    padding: 0px 0px 0px 8px;
+}
+.btn-border-radius{
+    border-radius: 5px;
+}

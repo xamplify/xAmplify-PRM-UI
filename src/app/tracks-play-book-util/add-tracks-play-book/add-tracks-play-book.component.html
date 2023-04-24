@@ -974,7 +974,7 @@
                           <label class="form-check-label" style="border:0px !important;" [style.color]="form.labelColor">
                             <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                            {{choice.name}}
+                              <span class="quiz_optionname">{{choice.name}} </span>
                           </label>
                         </div>
                         <br>
@@ -987,13 +987,15 @@
                 </div>
                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                 <ng-template #show>
-                  <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                  <button type="submit" disabled="disabled" class="button-padding btn-border-radius" id="bottom-right"
                     [style.backgroundColor]="form.buttonColor"
-                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                    [style.color]="form.buttonValueColor"
+                    >{{form.buttonValue}}</button>
                 </ng-template>
                 <ng-template #dontShow>
-                  <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right"
-                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                  <button type="submit" disabled="disabled" class="btn green-haze btn-border-radius" id="bottom-right"
+                    [style.color]="form.buttonValueColor"
+                    >{{form.buttonValue}}</button>
                 </ng-template>
               </div>
             </div>
