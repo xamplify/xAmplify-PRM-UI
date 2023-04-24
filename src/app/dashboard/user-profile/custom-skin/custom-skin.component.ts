@@ -65,6 +65,7 @@ export class CustomSkinComponent implements OnInit {
   fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
   saveAlert:boolean = false;
+  defaultAlert :boolean = false;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -96,6 +97,8 @@ export class CustomSkinComponent implements OnInit {
   clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
     this.ngxloading = true;
+    this.saveAlert = false;
+    this.defaultAlert = false;
   this.activeTabName = activateTab;
   if(this.activeTabName == "header"){
     this.form.moduleTypeString = this.moduleStatusList[2];
@@ -112,10 +115,10 @@ export class CustomSkinComponent implements OnInit {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
   } 
-  changeFooter(){
-    this.form.showFooter = false;
-    this.showFooter = false;
-  }
+  // changeFooter(){
+  //   this.form.showFooter = false;
+  //   this.showFooter = false;
+  // }
   // footerBody:string;
   // onChange(event:any){
   //  this.footerBody= CKEDITOR.instances.editor1.document.getBody().getText();
@@ -147,7 +150,6 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.saveCustomSkin(form).subscribe(
       (data:any)=> {
       this.sucess = true;
-      this.saveAlert = false;
       this.ngxloading = false;
       //this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
       if(!form.defaultSkin){
@@ -189,7 +191,7 @@ export class CustomSkinComponent implements OnInit {
     let self = this;
     swal({
       title: "Confirm?",
-      text: "Are you sure Refresh Browser?",
+      text: "Do you want Activate Theme?",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
@@ -219,7 +221,23 @@ export class CustomSkinComponent implements OnInit {
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
-    this.sweetAlertDefaultSettings(form)
+    //this.sweetAlertDefaultSettings(form)
+    this.form.darkTheme = false;
+    this.updateUserDefaultSettings(form);
+  }
+  updateUserDefaultSettings(form:CustomSkin){
+    this.ngxloading = true;
+    this.form.createdBy = this.loggedInUserId;
+    this.form.updatedBy = this.loggedInUserId;
+    this.dashboardService.updateCustomDefaultSettings(form).subscribe(
+      (data:any) =>{
+        this.defaultAlert = true;
+        this.message="Default Settings Updated."
+        this.ngxloading =false;
+      },error=>{
+        this.ngxloading =false;
+        this.message = this.properties.serverErrorMessage;
+      });
   }
   important = "!important";
   getDefaultSkin(){

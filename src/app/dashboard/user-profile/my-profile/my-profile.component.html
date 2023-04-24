@@ -289,6 +289,7 @@
                                     </span> -->
                                 </div>
                             </div>
+                            <!-- XNFR-238-->
                             <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
                                 Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
                                 Based on selecting color in below tab.
@@ -297,57 +298,63 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                       <div class="img_padding">
-                                      <img  alt="" class="img-custome" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" src="assets/images/final/active/01.webp">
-                                      <img  alt="" class="img-custome" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme " src="assets/images/final/white/light.webp">
-
+                                      <!-- <img  alt="" class="img-custome" src="assets/images/theme/2/webp/01.webp"> -->
+                                      <img  alt="" class="img-custome" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" src="assets/images/theme/2/Webp/01.webp">
+                                      <img  alt="" class="img-custome" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme " src="assets/images/theme/1/Webp/01.webp">
                                     </div>
                                       <div class="card selected">
                                         <div class="card-body">
+                                          <!-- <span class="label label-info selectcolor">Select</span> -->
                                           <span class="label label-info selectcolor"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme">In Use</span>
                                           <span class="label label-info notselectcolor"  *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme">Select</span>
-
+                                          <!-- <span class="label label-info selectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
                                           <span class="label label-info selectcolor" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-white">View</a></span>
                                           <span class="label label-info notselectcolor" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black" >View</a></span>
-
+                                          <!-- <h5 class="card-title themefont">Light</h5> -->
                                           <h5 class="card-title themefont"  *ngIf="authenticationService?.isCustomTheme">Custom</h5>
                                           <h5 class="card-title themefont"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isDarkTheme" (click)="activateTab('lightTheme')">Light</h5>
-                                          <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">06 Style </span></i> &nbsp; 
-                                          <button type="button" class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor1':'btn-notselectcolor1'"  (click)="activateTab('customTheme')"> <i class="fa fa-cog" aria-hidden="true"></i>
+                                          <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">01 Style </span></i> &nbsp; 
+                                          <button type="button" class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"  (click)="activateTab('customTheme')"> <i class="fa fa-cog" aria-hidden="true"></i>
                                             Custome</button>
                                         </div>
                                       </div>
                                     </div>  
                                     <div class="col-lg-6 col-md-6 col-sm-6 ">
                                         <div class="img_padding">
-                                        <img  alt="" class="img-custome" *ngIf="authenticationService?.isDarkTheme" src="assets/images/final/active/03.webp">
-                                        <img  alt="" class="img-custome"  *ngIf="!authenticationService?.isDarkTheme" src="assets/images/final/white/dark.webp">
+                                        <!-- <img  alt="" class="img-custome" src="assets/images/theme/1/02.png"> -->
+                                        <img  alt="" class="img-custome" *ngIf="authenticationService?.isDarkTheme" src="assets/images/theme/2/Webp/02.webp">
+                                        <img  alt="" class="img-custome"  *ngIf="!authenticationService?.isDarkTheme" src="assets/images/theme/1/Webp/02.webp">
 
                                       </div>
                                         <div class="card notselected">
                                           <div class="card-body">
+                                            <!-- <span class="label label-info notselectcolor">In Use</span> -->
                                             <span class="label label-info selectcolor" *ngIf="authenticationService?.isDarkTheme">In Use</span>
                                             <span class="label label-info notselectcolor" *ngIf="!authenticationService?.isDarkTheme">Select</span>
 
+                                            <!-- <span class="label label-info notselectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
                                             <span class="label label-info selectcolor"  *ngIf="authenticationService?.isDarkTheme" (click)="activateTab('DarkTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-white" >View</a></span>
                                             <span class="label label-info notselectcolor"  *ngIf="!authenticationService?.isDarkTheme" (click)="activateTab('DarkTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black" >View</a></span>
 
-                                            <h5 class="card-title  text-bottom themefont">Dark</h5>
+                                            <h5 class="card-title text-bottom">Dark</h5>
                                             <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">02 Style </span></i> &nbsp; 
-                                            <!-- <button type="button" class="btn btn-dark graycolor btn-size"> <i class="fa fa-cog" aria-hidden="true"></i>
-                                                Custome</button> -->
+                                            <!-- <button type="button" class="btn btn-notselectcolor btn-size"> <i class="fa fa-cog" aria-hidden="true"></i>
+                                                Edit</button> -->
                                           </div>
                                         </div>
                                       </div>
                          
                                       <div class="col-lg-6 col-md-6 col-sm-6 top-bottom-margins" style="cursor: not-allowed;">
                                         <div class="img_padding">
-                                        <img  alt="" class="img-custome" src="assets/images/final/white/nl.webp">
+                                        <img  alt="" class="img-custome" src="assets/images/theme/1/Webp/03.webp">
                                       </div>
                                         <div class="card notselected">
                                           <div class="card-body">
+                                            <!-- <span class="label label-info notselectcolor family-style">In Use</span>
+                                            <span class="label label-info notselectcolor family-style">View</span> -->
                                             <span class="label label-info notselectcolor">Select</span>
                                             <span class="label label-info notselectcolor" (click)="activateTab('neumorphismLight')" style="pointer-events: none;"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black">View</a></span>
-                                            <h5 class="card-title  text-bottom themefont">Neumorphisum Light</h5>
+                                            <h5 class="card-title text-bottom">Neumorphisum Light</h5>
                                             <i class="fa fa-chevron-circle-down" aria-hidden="true"><span class="family-style"> 03 Style</span></i> &nbsp; 
                                             <!-- <button type="button" class="btn btn-dark graycolor btn-size"> <i class="fa fa-cog" aria-hidden="true"></i>
                                                 Custome</button> -->
@@ -357,13 +364,15 @@
                   
                                       <div class="col-lg-6 col-md-6 col-sm-6 top-bottom-margins" style="cursor: not-allowed;">
                                         <div class="img_padding">
-                                        <img  alt="" class="img-custome" src="assets/images/final/white/dark.webp">
+                                        <img  alt="" class="img-custome" src="assets/images/theme/1/Webp/04.webp">
                                       </div>
                                         <div class="card notselected">
                                           <div class="card-body">
-                                            <span class="label label-info notselectcolor">In Use</span>
+                                            <!-- <span class="label label-info notselectcolor">In Use</span>
+                                            <span class="label label-info notselectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
+                                            <span class="label label-info notselectcolor">Select</span>
                                             <span class="label label-info notselectcolor" (click)="activateTab('neumorphismDark')" style="pointer-events: none;"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black">View</a></span>
-                                            <h5 class="card-title  text-bottom themefont">Neumorphisum Dark</h5>
+                                            <h5 class="card-title text-bottom">Neumorphisum Dark</h5>
                                             <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">04 Style</span></i> &nbsp; 
                                             <!-- <button type="button" class="btn btn-dark graycolor btn-size"> <i class="fa fa-cog" aria-hidden="true"></i>
                                                 Custome</button> -->
@@ -373,6 +382,7 @@
                                   </div>
                                 </div>
                               </div>
+                              <!-- XNFR-238-->
 
                            
                             <div class="portlet-body clearfix">

@@ -795,6 +795,12 @@ changeCustomSettingTheme(custom:any) {
     .map(this.extractData)
     .catch(this.handleError);
 }
+updateCustomDefaultSettings(custom:any) {
+    const url = this.authenticationService.REST_URL + 'custom/skin/default?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,custom)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;

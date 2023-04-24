@@ -369,7 +369,7 @@ export class HomeComponent implements OnInit {
 
      if(this.topCustom.moduleTypeString === "TOP_NAVIGATION_BAR"){
        this.customSkinDto = skinMap.TOP_NAVIGATION_BAR;
-       if(!this.topCustom.defaultSkin && !this.topCustom.darkTheme) {
+       if(!this.topCustom.defaultSkin && !this.topCustom.darkTheme && this.topCustom.updatedBy != 1) {
         this.authenticationService.isTop = true;
        document.documentElement.style.setProperty('--top-bg-color', this.customSkinDto.backgroundColor);
        document.documentElement.style.setProperty('--top-buton-color', this.customSkinDto.buttonColor);
@@ -385,7 +385,7 @@ export class HomeComponent implements OnInit {
         }
        if(this.leftCustom.moduleTypeString === "LEFT_SIDE_MENU"){
        this.customSkinDto = skinMap.LEFT_SIDE_MENU;
-       if(!this.leftCustom.defaultSkin && !this.leftCustom.darkTheme){
+       if(!this.leftCustom.defaultSkin && !this.leftCustom.darkTheme && this.leftCustom.updatedBy != 1){
         this.authenticationService.isLeft = true;
        document.documentElement.style.setProperty('--left-bg-color', this.customSkinDto.backgroundColor);
        document.documentElement.style.setProperty('--left-text-color', this.customSkinDto.textColor);
@@ -403,7 +403,7 @@ export class HomeComponent implements OnInit {
        this.customSkinDto = skinMap.FOOTER;
         this.footerSkin = skinMap.FOOTER;
        this.authenticationService.isCustomFooter = this.customSkinDto.showFooter;
-       if( !this.footerCustom.defaultSkin && !this.footerCustom.darkTheme){
+       if( !this.footerCustom.defaultSkin && !this.footerCustom.darkTheme && this.footerCustom.updatedBy != 1){
         this.authenticationService.isFoter = true;
 
        document.documentElement.style.setProperty('--footer-bg-color', this.customSkinDto.backgroundColor);
@@ -418,7 +418,7 @@ export class HomeComponent implements OnInit {
         } 
         if(this.maincontentCustom.moduleTypeString === "MAIN_CONTENT"){
        this.customSkinDto = skinMap.MAIN_CONTENT;
-              if(!this.maincontentCustom.defaultSkin && !this.maincontentCustom.darkTheme){
+              if(!this.maincontentCustom.defaultSkin && !this.maincontentCustom.darkTheme && this.maincontentCustom.updatedBy != 1){
                 this.authenticationService.isMain = true;
        document.documentElement.style.setProperty('--page-content', this.customSkinDto.backgroundColor);
        document.documentElement.style.setProperty('--div-bg-color', this.customSkinDto.divBgColor);
@@ -434,7 +434,9 @@ export class HomeComponent implements OnInit {
         this.isFooter = false;
           }
         }
-        
+        if(this.customSkinDto.updatedBy === 1){
+          require("style-loader!../../../assets/admin/layout2/css/layout.css");
+        }
       
         if(this.isTop || this.isLeft || this.isFooter || this.isMain){
         this.authenticationService.isCustomTheme = true;

@@ -3925,6 +3925,8 @@ configSalesforce() {
 	}
     saveDarkTheme(form:CustomSkin,selectedThemeIndex:number){
 		this.ngxloading = true;
+		form.createdBy = this.loggedInUserId;
+		form.updatedBy = this.loggedInUserId;
 	this.dashBoardService.setDarkorLightTheme(form).subscribe(
 		(data:any) =>{
 			this.ngxloading = false;
@@ -3948,11 +3950,11 @@ configSalesforce() {
 			this.customSkinDto = value;
 			this.customSkinDto.defaultSkin = false;
 			this.customSkinDto.darkTheme = false;
-			if(this.customSkinDto.moduleTypeString === "MAIN_CONTENT"){
-				if(this.customSkinDto.divBgColor == "#fff" && this.customSkinDto.textColor == "#fff"){
-					this.customSkinDto.textColor = "#000";
-				}
-			}
+			// if(this.customSkinDto.moduleTypeString === "MAIN_CONTENT"){
+			// 	if(this.customSkinDto.divBgColor == "#fff" && this.customSkinDto.textColor == "#fff"){
+			// 		this.customSkinDto.textColor = "#000";
+			// 	}
+			// }
 			this.saveDarkTheme(this.customSkinDto,1);
 			console.log(this.customSkinDto, key);
 		  });
