@@ -585,20 +585,6 @@
                   </div>
                 </button>
               </div>
-              <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
-                *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">
-                <button class="portlet light color1-invert crcb g-b-c" data-toggle="modal" data-target="#scrModal"
-                  [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-                  [disabled]="redistributedAccounts.size < 1 || !isDataShare">
-                  <div class="portlet-body text-center">
-                    <i class="fa fa-share-alt"></i>
-                    <h1>
-                      <b>{{redistributedAccounts.size}}</b>
-                    </h1>
-                    <h5>Redistributed</h5>
-                  </div>
-                </button>
-              </div>
               <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x"
                 *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
                 <button class="portlet light color1-invert crcb b-b-c"
