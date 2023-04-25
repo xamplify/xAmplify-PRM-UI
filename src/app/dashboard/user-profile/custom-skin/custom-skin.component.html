@@ -6,7 +6,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div> 
-<div class="alert alert-success" *ngIf="saveAlert" role="alert">
+<div class="alert alert-success" *ngIf="saveAlert && !defaultAlert" role="alert">
 	{{message}}
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
@@ -215,7 +215,7 @@
 									[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
 									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
-									[cpPosition]="'bottom'" readonly></span>
+									[cpPosition]="'top'" readonly></span>
 							</div>
 						</div>
 					</div>
