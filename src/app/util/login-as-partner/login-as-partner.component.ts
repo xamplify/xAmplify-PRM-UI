@@ -101,22 +101,7 @@ export class LoginAsPartnerComponent implements OnInit {
 
 
   findRolesAndSetLocalStroageDataAndLogInAsPartner(emailId: any, logoutButtonClicked: boolean) {
-    let vanityLogin = false;
-    let url = window.location.hostname;
-    let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && this.envService.CLIENT_URL.indexOf('localhost')>-1;
-    if(isLocalHost){
-      let domainName = this.envService.domainName;
-      if(domainName!="" && domainName!=window.location.hostname){
-        url = this.envService.domainName+".xamplify.com";
-      }
-    }
-    
-    if (!url.includes("192.168")) {
-      let domainName = url.split('.');
-      vanityLogin = domainName.length > 2;
-    }
-
-    if(vanityLogin){
+    if (this.isLoggedInThroughVanityUrl) {
       this.teamMemberService.getVanityUrlRoles(emailId)
       .subscribe(response => {
         this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
