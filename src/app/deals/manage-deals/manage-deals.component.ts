@@ -885,6 +885,13 @@ export class ManageDealsComponent implements OnInit {
     mapInput.setAttribute("value", this.dealsPagination.stageFilter);
     mapForm.appendChild(mapInput);
     
+    //vendorCompanyIdFilter
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "createdForCompanyId";
+    mapInput.setAttribute("value", this.vendorCompanyIdFilter);
+    mapForm.appendChild(mapInput);
+    
     // partnerTeamMemberGroupFilter
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
@@ -1181,6 +1188,7 @@ export class ManageDealsComponent implements OnInit {
   syncLeadsWithActiveCRM() {
     this.dealsResponse = new CustomResponse('SUCCESS', "Synchronization is in progress. This might take few minutes. Please wait...", true);
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.loading(this.campaignRequestLoader,true);
     this.leadsService.syncLeadsWithActiveCRM(this.loggedInUserId)
       .subscribe(
         data => {

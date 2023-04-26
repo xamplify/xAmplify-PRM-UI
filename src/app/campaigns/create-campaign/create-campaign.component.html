@@ -1955,7 +1955,7 @@
                                                                         </option>
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
-                                                                                *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
+                                                                                *ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))" translate>
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                                 </option>
                                                                             <ng-container *ngIf="campaignType=='video'">

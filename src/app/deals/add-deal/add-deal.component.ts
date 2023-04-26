@@ -589,7 +589,7 @@ export class AddDealComponent implements OnInit {
 
   validateComment(property: DealDynamicProperties) {
 
-      if (property.key.length > 0 && property.value.length > 0) {
+      if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
           property.validationStausKey = this.successClass;
           property.error = false;
       } else {

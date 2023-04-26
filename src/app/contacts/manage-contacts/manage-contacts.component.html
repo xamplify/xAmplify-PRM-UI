@@ -185,7 +185,7 @@
               <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                 <button class="btn-block dashboard-stat red"
                   [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
-                  (click)="loadContactsByType('unsubscribe')"
+                  (click)="loadContactsByType('unsubscribe')" 
                   [disabled]="contactsByType.unsubscribedContactsCount == 0">
                   <div class="visual">
                     <i class="fa fa-check-circle"
