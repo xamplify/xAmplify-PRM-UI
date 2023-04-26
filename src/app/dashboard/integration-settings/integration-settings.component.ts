@@ -132,6 +132,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				error => {
 					this.ngxloading = false;
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 				},
 				() => { }
 			);

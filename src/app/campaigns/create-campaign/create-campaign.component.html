@@ -1230,6 +1230,8 @@
                                                                     <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE'" src="{{properties?.pipedriveImage}}" alt="Pipedrive" class="img-class-list">
+
                                                                   </td>
                                                                   <td style="text-align: left;">
                                                                     <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
@@ -1953,7 +1955,7 @@
                                                                         </option>
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
-                                                                                *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
+                                                                                *ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))" translate>
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                                 </option>
                                                                             <ng-container *ngIf="campaignType=='video'">

@@ -120,6 +120,7 @@ import { DamListAndGridViewComponent } from 'app/util/dam/dam-list-and-grid-view
 import { CountStatisticsComponent } from 'app/util/count-statistics/count-statistics.component';
 import { ImgCropprV2Component } from './image-cropper-v2/img-croppr-v2/img-croppr-v2.component';
 import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-partner.component';
+import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-authentication-popup/pipedrive-authentication-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -142,7 +143,7 @@ import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-part
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent],
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -164,7 +165,7 @@ import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-part
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent]
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent]
 
 
 
