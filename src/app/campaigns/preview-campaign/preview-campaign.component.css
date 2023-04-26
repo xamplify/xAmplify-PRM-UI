@@ -26,10 +26,10 @@ fieldset {
 	border-color: red
 }
 
-.table tr.contact-list-selected td {
+/* .table tr.contact-list-selected td {
 	background-color: #00a6e8 !important;
 	color: white;
-}
+} */
   .blur {
 	-webkit-filter: blur(1px);
 	-moz-filter: blur(1px);
@@ -69,11 +69,7 @@ fieldset {
   .colorRed{
   background: #5bb1d4;
   }
-  /* @media only screen and (max-width:768px){ .modal-template { width: 95% !important;}}
-  @media only screen and (min-width:768px){ .modal-template { width: 65% !important;}} */
-/*
-  @media only screen and (max-width:768px){ .modal-user { width: 100% !important;}}
-  @media only screen and (min-width:768px){ .modal-user { width: 42% !important;}} */
+
   @media screen and (min-width:601px){.modal-css{  width: 52% !important; right: 0 !important;}
   .modal-template { width: 52% !important;}
   .modal-user { width: 52% !important;}
@@ -126,7 +122,6 @@ fieldset img {height: 137px}
 .preview-btn{  padding-top: 5px !important;; font-size: 15px; color: #5a5a5a;}
 .auto-resp {
   font-size: 13px;color: #3d3c4c; font-weight: 600;
-  /* text-decoration: underline; */
 }
 .message-auto{
   border: 1px solid #b7b5b5;padding: 5px 8px; background: #ebebe4;overflow: auto;

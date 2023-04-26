@@ -26,7 +26,7 @@
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
-                <div class="portlet-title" style="border-bottom:none;padding-top: 10px;">
+                <div class="portlet-title" style="border-bottom:none !important;padding-top: 10px;">
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6" style="padding-left: 11px;">
                             <div>
@@ -65,7 +65,7 @@
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
                                         <i class="fa fa-th-list p10"  aria-hidden="true"></i>
-                                    </span> &nbsp;
+                                    </span>
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
                                         <i class="fa fa-th-large p10"  aria-hidden="true"></i></span>
 
@@ -367,7 +367,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
-                        <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')"  translate>Copy Embed
                             Link</a>

@@ -33,7 +33,8 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
-declare var $, Papa, swal, Swal: any;
+import { UtilService } from 'app/core/services/util.service';
+declare var $:any, Papa:any, swal:any;
 
 @Component({
 	selector: 'app-add-partners',
@@ -224,28 +225,46 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	selectedFilterIndex: number = 1;
 	showFilter = true;
 	collapseAll = false;
-  /****XNFR-130*****/
-  selectAllTeamMemberIds = [];
-  selectAllTeamMemberGroupId = 0;
-  applyForAllClicked = false;
-  sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
-  showSweetAlert = false;
-  selectedPartner: any;
+	/****XNFR-130*****/
+	selectAllTeamMemberIds = [];
+	selectAllTeamMemberGroupId = 0;
+	applyForAllClicked = false;
+	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	showSweetAlert = false;
+	selectedPartner: any;
 	microsoftDynamicsImageBlur: boolean = false;
     microsoftDynamicsImageNormal: boolean = false;
     microsoftDynamicsSelectContactListOption:any;
     microsoftDynamicsContactListName: string;
     showMicrosoftAuthenticationForm: boolean = false;
-    
+    /*** XNFR-224***/
+	isLoggedInAsPartner = false;
 
+//XNFR-230.
+   //pipedrive
+
+   pipedriveImageBlur: boolean = false;
+   pipedriveImageNormal: boolean = false;
+   pipedriveSelectContactListOption:any;
+   pipedriveContactListName: string;
+   pipedriveServie: any;
+   showPipedriveAuthenticationForm: boolean = false;
+   pipedriveApiKey: string;
+   pipedriveApiKeyClass: string;
+   pipedriveApiKeyError: boolean;
+   pipedriveCurrentUser: string;
+   pipedriveLoading: boolean = false;
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
 		public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
 		public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService, private hubSpotService: HubSpotService, public userService: UserService,
-		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, public campaignService: CampaignService, public integrationService: IntegrationService, private dashBoardService: DashboardService) {
+		public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService, 
+		public campaignService: CampaignService, public integrationService: IntegrationService, 
+		private utilService: UtilService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		//Added for Vanity URL
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -268,11 +287,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 
 		this.parentInput = {};
+		/*********XNFR-224*********/
 		const currentUser = localStorage.getItem('currentUser');
 		let campaginAccessDto = JSON.parse(currentUser)['campaignAccessDto'];
 		if (campaginAccessDto != undefined) {
 			this.companyId = campaginAccessDto.companyId;
 		}
+		/*********XNFR-224*********/
+		
 	}
 
 
@@ -336,7 +358,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					},
 					error => this.xtremandLogger.error(error),
 					() => {
-						console.log('loadContacts() finished');
 						this.loadPartnerList(this.pagination);
 					}
 				);
@@ -556,7 +577,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
-					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9) {
+					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11) {
 					if (this.newPartnerUser[i].contactCompany.trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
@@ -854,6 +875,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.marketoImageClass').attr('style', 'opacity: 1;');
 		$('.hubspotImageClass').attr('style', 'opacity: 1;');
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 1;');
+		$('.pipedriveImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
 		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -962,6 +984,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1057,6 +1080,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1279,7 +1303,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 
 	deleteUserShowAlert(contactId: number) {
-		this.xtremandLogger.info("contactListId in sweetAlert() " + contactId);
 		let self = this;
 		swal({
 			title: 'Are you sure?',
@@ -1300,6 +1323,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers1(contactId: number) {
 		try {
+		    this.pageLoader = true;
 			this.partnerId[0] = contactId;
 			this.contactService.removeContactListUsers(this.partnerListId, this.partnerId)
 				.subscribe(
@@ -1308,6 +1332,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							let message = "Your " + this.authenticationService.partnerModule.customName + "(s) have been deleted successfully";
 							this.customResponse = new CustomResponse('SUCCESS', message, true);
 							this.loadPartnerList(this.pagination);
+							this.pageLoader = false;
 						} else {
 							this.authenticationService.forceToLogout();
 						}
@@ -1411,6 +1436,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 							this.microsoftDynamicsImageNormal = true;
 						} else {
 							this.microsoftDynamicsImageBlur = true;
+						}
+						if (this.storeLogin.PIPEDRIVE == true) {
+							this.pipedriveImageNormal = true;
+						} else {
+							this.pipedriveImageBlur = true;
 						}
 					},
 					(error: any) => {
@@ -1548,6 +1578,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -1995,6 +2026,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
@@ -2069,6 +2101,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2120,7 +2153,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10) {
+			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
 				this.openCloudPartnerPopUp();
 			}
 
@@ -2178,6 +2211,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.saveMicrosoftContacts();
 			} else {
 				this.saveMicrosoftContactSelectedUsers();
+			}
+		}
+
+		if (this.selectedAddPartnerOption == 11) {
+			if (this.allselectedUsers.length == 0) {
+				this.savePipedriveContacts();
+			} else {
+				this.savePipedriveContactSelectedUsers();
 			}
 		}
 
@@ -2325,7 +2366,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		} else {
 			$('#row_' + contactId).removeClass('contact-list-selected');
 			this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
-			//this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
 			this.allselectedUsers = this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers, email);
 		}
 		if (this.selectedContactListIds.length == this.pagedItems.length) {
@@ -2602,40 +2642,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			// this.setHighlightLetter();
 			this.socialContactImage();
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
-			if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
-				this.pagination.partnerTeamMemberGroupFilter = true;
-			}
-			this.defaultPartnerList(this.loggedInUserId);
-			/*if (localStorage.getItem('vanityUrlFilter')) {
-				localStorage.removeItem('vanityUrlFilter');
-	             if (this.contactService.vanitySocialProviderName == 'google'
-	                    || this.contactService.vanitySocialProviderName == 'salesforce'
-	                    || this.contactService.vanitySocialProviderName == 'zoho') {
-	                    let message: string = '';
-	                    message = localStorage.getItem('oauthCallbackValidationMessage');
-	                    localStorage.removeItem('oauthCallbackValidationMessage');
-	                    if (message != null && message.length > 0) {
-	                        this.customResponse = new CustomResponse('ERROR', message, true);
-	                    } else if (this.contactService.vanitySocialProviderName == 'google') {
-	                        this.getGoogleContactsUsers();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    } else if (this.contactService.vanitySocialProviderName == 'salesforce') {
-	                        this.showModal();
-	                        console.log("AddContactComponent salesforce() Authentication Success");
-	                        this.checkingPopupValues();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    } else if (this.contactService.vanitySocialProviderName == 'zoho') {
-	                        this.zohoShowModal();
-	                        this.contactService.vanitySocialProviderName = "nothing";
-	                    }
-	                }
-			}
-			else*/ if (this.contactService.socialProviderName == 'google') {
+				if (this.authenticationService.loggedInUserRole === "Team Member" && !this.authenticationService.isPartnerTeamMember) {
+					this.pagination.partnerTeamMemberGroupFilter = true;
+				}
+				this.defaultPartnerList(this.loggedInUserId);
+			if (this.contactService.socialProviderName == 'google') {
 				if (this.contactService.oauthCallbackMessage.length > 0) {
 					let message = this.contactService.oauthCallbackMessage;
 					this.contactService.oauthCallbackMessage = '';
@@ -2916,6 +2931,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+						$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3371,6 +3387,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 					$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');					
 					$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3426,6 +3443,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		else {
 			this.xtremandLogger.error("AddContactComponent saveMicrosoftContactSelectedUsers() ContactList Name Error");
+		}
+	}
+
+	savePipedriveContacts() {
+		this.socialPartners.socialNetwork = "PIPEDRIVE";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contacts = this.socialPartnerUsers;
+		if (this.socialPartnerUsers.length > 0) {
+			this.newPartnerUser = this.socialPartners.contacts;
+			this.saveValidEmails();
+		} else
+			this.xtremandLogger.error("AddContactComponent savePipedriveContacts() Contacts Null Error");
+
+	}
+
+	savePipedriveContactSelectedUsers() {
+		this.newPartnerUser = this.allselectedUsers;
+		if (this.allselectedUsers.length != 0) {
+			this.newPartnerUser = this.allselectedUsers;
+			this.saveValidEmails();
+		}
+		else {
+			this.xtremandLogger.error("AddContactComponent savePipedriveContactSelectedUsers() ContactList Name Error");
 		}
 	}
 
@@ -4110,14 +4150,15 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.customResponse.isVisible = false;
-			this.selectedAddPartnerOption = 9;
-			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
+			this.selectedAddPartnerOption = 10;
+			console.log("Social Contact Users for Microsoft::" + this.socialPartnerUsers);
 		}
 	}
 
@@ -4156,28 +4197,103 @@ getTeamMembersByGroupId(partner: any, index: number) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
-//   setHighlightLetter() {
-// 	if (this.isPartnerInfo) {
-// 		if (this.userInfo.contactCompany != undefined && this.userInfo.contactCompany != null && this.userInfo.contactCompany.trim().length > 0) {
-// 			this.highlightLetter = this.userInfo.contactCompany.slice(0,1);
-// 		}else if(this.userInfo.companyName!=undefined && this.userInfo.companyName!=null && $.trim(this.userInfo.companyName).length>0){
-// 			this.highlightLetter = this.userInfo.companyName.slice(0,1);
-// 		}else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 			this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 		}
-// 	}
-//  else if (this.isExclusion) {
-// 	if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 	}
-// } else {
-// 	if (this.userInfo.firstName != undefined && this.userInfo.firstName != null && this.userInfo.firstName.trim().length > 0 ) {
-// 		this.highlightLetter = this.userInfo.firstName.slice(0,1);
-// 	} else if (this.userInfo.emailId != undefined && this.userInfo.emailId != null && this.userInfo.emailId.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.emailId.slice(0,1);
-// 	} else if (this.userInfo.email != undefined && this.userInfo.email != null && this.userInfo.email.trim().length > 0) {
-// 		this.highlightLetter = this.userInfo.email.slice(0,1);
-// 	}
-// }
-// }
+
+  //XNFR-230
+  checkingPipedriveContactsAuthentication() {
+	if (this.selectedAddPartnerOption == 5) {
+		this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.xtremandLogger.info("isAuthorize true");
+				this.getPipedriveContacts();
+			}
+			else {
+				this.showPipedrivePreSettingsForm();
+			}
+		}, (error: any) => {
+			this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
+		}, () => this.xtremandLogger.log("Pipedrive Configuration Checking done"));
+	}
+}
+showPipedrivePreSettingsForm() {               
+	this.showPipedriveAuthenticationForm = true;
+ }
+ closePipedriveForm (event: any) {
+	if (event === "0") {
+		this.showPipedriveAuthenticationForm = false;
+	}		
+}
+getPipedriveContacts() {
+	this.loading = true;
+	this.integrationService.getContacts('pipedrive').subscribe(data => {
+		this.loading = false;
+		if (data.statusCode == 401) {
+			this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+		} else {
+			let response = data.data;
+			this.selectedAddPartnerOption = 11;
+			this.disableOtherFuctionality = true;
+			this.pipedriveImageBlur = false;
+			this.pipedriveImageNormal = true;
+			this.framePipedrivePreview(response);
+		}
+	});
+}
+framePipedrivePreview(response: any) {
+	if (!response.contacts) {
+		this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+	} else {			
+		this.getGoogleConatacts = response.contacts.length;
+		if (response.contacts.length == 0) {
+			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+		} else {
+			for (var i = 0; i < response.contacts.length; i++) {
+				let socialPartner = new SocialContact();
+				let user = new User();
+				socialPartner.id = i;
+				if (this.validateEmailAddress(response.contacts[i].email)) {
+					socialPartner.emailId = response.contacts[i].email;
+					socialPartner.firstName = response.contacts[i].firstName;
+					socialPartner.lastName = response.contacts[i].lastName;
+
+					socialPartner.country = response.contacts[i].country;
+					socialPartner.city = response.contacts[i].city;
+					socialPartner.state = response.contacts[i].state;
+					socialPartner.postalCode = response.contacts[i].postalCode;
+					socialPartner.address = response.contacts[i].address;
+					socialPartner.company = response.contacts[i].company;
+					socialPartner.title = response.contacts[i].title;
+					socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+					this.socialPartnerUsers.push(socialPartner);
+				}
+			}
+
+			$("button#sample_editable_1_new").prop('disabled', false);
+			// $( "#Gfile_preview" ).show();
+			this.showFilePreview();
+			$("button#cancel_button").prop('disabled', false);
+			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+			$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+		}
+		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
+		this.selectedAddPartnerOption = 11;
+		console.log("Social Contact Users for Pipedrive::" + this.socialPartnerUsers);
+	}
+}
+
+//XNFR-230
+
 }

@@ -201,6 +201,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         let checkVideoTag: any
                         console.log(this.templatehtml);
                         let updatedBody = this.templatehtml;
+                        updatedBody = updatedBody.replace(".image_block img+div{display:none}", ".image_block img+div {display: block !important;}");
+               
                         if (updatedBody.includes("video-tag")) {
                             this.templateName = 'defaultTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);

@@ -24,7 +24,7 @@
                                   <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('l')">
-                                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
+                                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('g')">
                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                     </span>
@@ -34,7 +34,8 @@
                                             <i  class="fa fa-folder p10" aria-hidden="true"></i>
                                         </span>
                                         <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View"  (click)="setViewType('fl')">
-                                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="No Image Found"/>
+                                            <i class="fa fa-th p10" aria-hidden="true"></i>
+                                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="No Image Found"/> -->
                                         </span>
                                     </ng-container>
                                     <!-- <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
@@ -151,12 +152,12 @@
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
                                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
                                                 <div>
-                                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share" aria-hidden="true"></i>
                                                 </a>
                                                 <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
@@ -244,12 +245,12 @@
                                 <a class="mMobileDisable mDisableColor" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
                                 </div>
                                 <div>
-                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">

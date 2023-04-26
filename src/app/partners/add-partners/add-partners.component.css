@@ -38,11 +38,6 @@
 	}
 }
 
-.gray-color {
-	position: relative;
-	color: grey;
-}
-
 .cloud-items {
 	position: relative;
 	font-size: 19px;
@@ -54,30 +49,10 @@
 	white-space: nowrap;
 }
 
-.mr8 {
-	margin-right: 20px !important;
-}
-
-#customWidth {
-	width: 53%;
-}
-
 .danger {
 	color: red;
 }
 
-.img-cloud {
-	width: 100% !important;
-	height: auto !important;
-}
-
-.popup-header-title-font {
-	font-weight: 600;
-}
-
-.cwosn {
-	width: 161px;
-}
 
 #download-partners-csv {
 	margin-top: 2px;
@@ -86,14 +61,10 @@
 
 .cct {
 	display: block;
-	margin-top: 22px !important;
+	margin-top: 0px !important;
 	text-align: center;
 	font-size: 24px;
 	margin: 0 auto 10px
-}
-
-.e9eef2{
-	background-color: #e9eef2;
 }
 
 @media screen and (max-width:600px){
@@ -113,11 +84,9 @@
   }
 
   .sbi-click-child{
-    /* top:45px !important; */
 	right: 16px !important;
   }
   .sbi-clear-child{
-	/* top:48px !important; */
 	right: 50px !important;
 
   }
@@ -125,9 +94,6 @@
 	margin-bottom: 0px;
   }
   
-/* .portlet.light .portlet-body{
-	padding-top:0px;
-} */
 .text-center{
 	text-align: center;
 }
@@ -145,4 +111,7 @@ h5{
 }
 .portlet.light > .portlet-title > .caption{
 	padding: 8px 0px !important;
+}
+.border{
+	padding-left: 50px; margin-left: 55px;
 }

@@ -44,16 +44,22 @@
             <!-- END HEADER SEARCH BOX -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
-               
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
-                    <!-- BEGIN NOTIFICATION DROPDOWN -->
-                    <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">
+                    <!---XNFR-222-->
+                    <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
+                        <div class="alert alert-info">
+                            <strong>You are logged in as {{loggedInAsUserEmailId}}
+                                <app-login-as-partner  [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember" [showLoginAsButton]="false"></app-login-as-partner>
+                            </strong>
+                        </div>
+                    </li>
+                    <!---XNFR-222-->
+                    <li *ngIf="isLoggedInFromAdminSection" class="topnav-button-css">
 						<button class="btn btn-primary" (click)="goBackToAdminPanel()">
 							<span class="hidden-xs">Go back to admin panel</span>
 							<i class="fa fa-power-off" aria-hidden="true"></i>
 						</button>
 					</li>
-
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
@@ -63,13 +69,12 @@
                         </div>
                     </li>
                    
-                    <li class="btnShare"  style="margin-top: 17px;margin-right: 5px;" *ngIf="authenticationService?.module?.hasSocialStatusRole">
+                    <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole && !isLoggedInAsPartner">
                         <button class="btn btn custom"  [ngStyle] = "{'background-color': cskin?.buttonColor,  'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs"  translate>Update Status</span>
 							<i class="fa fa-share" [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor}"  button data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
                     </li>
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -90,71 +95,7 @@
                         </ul>
                     </li>
 
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                    <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar" style="display: none;">
-                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-info"></i>
-                        </a>
-                        <ul class="dropdown-menu extended tasks">
-                            <li class="external">
-                                <h3> <span class="bold">Frequently Asked Questions</span></h3>
-                                <a routerLink="/home/dashboard/extrafaq">view all</a>
-                            </li>
-                            <li>
-                                <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">1. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry ? </span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">2. Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry ?</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">3.Mobile app release</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">4. Database migration</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">5.Web server upgrade</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">6.Mobile development</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a routerLink="/home/dashboard/extrafaq">
-                                            <span class="task">
-										<span class="desc">7. New UI release</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                   
                     <!-- END TODO DROPDOWN -->
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
@@ -166,7 +107,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <app-lefside-navigation-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [topNavbarLoader]="true"></app-lefside-navigation-loader>
+                            <app-modal-popup-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [height]="180"></app-modal-popup-loader>
                             <ng-container *ngIf="!authenticationService?.module?.contentLoader && !myVendorsLoader">
                             <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>

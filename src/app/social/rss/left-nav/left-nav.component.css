@@ -14,7 +14,6 @@ img {
 #leftbar{
     min-height: 820px!important;
     background-color: #ffffff!important;
-    /* box-shadow: 0px 5px 5px 5px #eae9e9; */
     border-radius: 5px;
     max-height: 820px!important;
     overflow-y: auto;
@@ -22,7 +21,6 @@ img {
 
 .single {
     padding: 10px 15px;
-    /* margin-top: 10px; */
     margin-bottom: 15px;
 }
 
@@ -74,4 +72,13 @@ img {
 
 .dashboard-stat2 {
     border-radius: 5px;
+}
+.social-feeds{
+    font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;
+}
+.social-feeds-text-color{
+    text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54;
+}
+.heading-top-border{
+    border-bottom: solid 1px white;
 }

@@ -13,7 +13,7 @@
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor" style=" border-radius: 0px!important;">
-                        <div *ngIf="formSubmitted">
+                        <div *ngIf="formSubmitted && (learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted)">
                             <div class="panel-body">
                                 <h4 class="alert alert-success" id="header-center">
                                     <div *ngIf="form.formSubmitMessage?.length>0;then customMessage else defaultMessage">
@@ -28,7 +28,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="!formSubmitted">
+                        <div *ngIf="(!formSubmitted) || (formSubmitted && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)">
                             <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                 <a class="close-circle" (click)="refreshForm()" title="Refresh">
                                     <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
@@ -39,17 +39,18 @@
                                 <h5 class="mb15 form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                                 <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
                                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                                    <div class="form-group label-box">
+                                    <div class="form-group label-box" [ngClass]="{'disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                         <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
 												<span class="required" *ngIf="columnInfo.required">*</span>
 											</label>
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-                                          
-                                            <input type="{{columnInfo.labelType}}" class="form-control" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" [disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp"  placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
-                                                (input)="validateEmail(columnInfo)">
+
+                                            <input type="{{columnInfo.labelType}}" class="form-control" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [class.disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
+                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                             
-                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
-                                                (input)="validateEmail(columnInfo)">
+                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [class.disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
+                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+
 
                                             <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please
 													enter a
@@ -57,11 +58,12 @@
                                         </ng-container>
 
                                         <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                            <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"></textarea>
+                                            <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"
+                                            [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}"></textarea>
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker [(dataField)]="columnInfo.value" [isFromForm]='true'>
+                                            <app-date-picker [(dataField)]="columnInfo.value" [isFromForm]='true' [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                             </app-date-picker>
                                         </ng-container>
 
@@ -70,22 +72,30 @@
                                             <div class="input-group prefix">
                                                 <span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
                                                 <input type="number" min="0" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
-                                                    placeholder="{{columnInfo.placeHolder}}" (keypress)="omitNegativeCharacters($event)">
+                                                    placeholder="{{columnInfo.placeHolder}}" (keypress)="omitNegativeCharacters($event)"
+                                                    [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                             </div>
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                            <input type="file" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}" (change)="onFileChangeEvent($event,columnInfo,i)">
+                                            <input *ngIf="learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted" type="file"
+                                                class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}"
+                                                (change)="onFileChangeEvent($event,columnInfo,i)"
+                                                [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                            <div><a *ngIf="columnInfo.value && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"
+                                                    [href]="columnInfo.value" target="_blank" style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
+                                            </div>
                                         </ng-container>
                                         <!-- ---------------------------Radio Button----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor">
+                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}" class="form-check-input"
 																(click)="columnInfo.value = radioButton.id"
-																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
+																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || radioButton.isSelected">
 															{{radioButton.name}}
 														</label>
                                                 </div>
@@ -96,11 +106,12 @@
                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor">
+                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}"
-																[checked]="checkBox.isChecked" class="form-check-input"
-																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
+																[checked]="checkBox.isChecked || checkBox.isSelected" class="form-check-input"
+																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)" >
 															{{checkBox.name}}
 														</label>
                                                 </div>
@@ -109,25 +120,33 @@
                                         </ng-container>
                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='select'">
-                                            <select class="form-control" [(ngModel)]="columnInfo.value">
-													<option *ngFor="let dropDownValue of columnInfo.dropDownChoices"
-														[ngValue]="dropDownValue.id">
-														{{dropDownValue.name}}</option>
-												</select>
+                                            <select class="form-control" [(ngModel)]="columnInfo.value"
+                                                [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id">
+                                                    {{dropDownValue.name}}</option>
+                                            </select>
                                         </ng-container>
                                         <!-- ---------------------------Quiz----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor">
-															<input type="{{columnInfo.labelType.split('_')[1]}}"
-																name="{{columnInfo.labelId}}" class="form-check-input"
-																[checked]="choice.isChecked" class="form-check-input"
-																(click)="updateQuizModel(columnInfo,choice,$event)">
-															{{choice.name}}
-														</label>
+                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                        [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted), 'label-value-correct': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct, 'label-value-incorrect': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && !choice.correct && choice.isSelected}">
+                                                        <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                                                            [checked]="choice.isChecked || choice.isSelected" class="form-check-input"
+                                                            (click)="updateQuizModel(columnInfo,choice,$event)">
+                                                        {{choice.name}} <span *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"  style="margin-left: 5px;"  ><i
+                                                                *ngIf="!choice.correct && choice.isSelected" class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
+                                                            <i *ngIf="choice.correct" class="fas fa-check fa-lg label-value-correct" aria-hidden="true"></i></span>
+                                                    </label>
                                                 </div>
                                                 <br>
+                                            </ng-container>
+                                            <ng-container *ngIf="isTrackQuizSubmitted && learningTrackId !== undefined && learningTrackId > 0 && columnInfo.description !== undefined && columnInfo.description.length > 0 ">
+                                                <div class="form-group">
+                                                    <label class="control-label">Explanation</label>
+                                                    <div>{{columnInfo.description}}</div>
+                                                </div>
                                             </ng-container>
                                         </ng-container>
                                     </div>
@@ -137,11 +156,11 @@
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>
-                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton)" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor"
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton) || (isTrackQuizSubmitted)" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor"
                                         (click)="submitForm()">{{form.buttonValue}}</button>
                                 </ng-template>
                                 <ng-template #dontShow>
-                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton)" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton) || (isTrackQuizSubmitted)" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
                                 </ng-template>
                             </div>
                         </div>

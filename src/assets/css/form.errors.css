@@ -6,10 +6,6 @@
   border-left: 2px solid #a94442 !important; /* red */
 }
 
-/* .portlet.light[_ngcontent-c5] {
-    border-radius: 0;
-} */
-
 .portlet.light > .portlet-title > .caption > .caption-subject {
     font-size: 14px;
     margin: 0;

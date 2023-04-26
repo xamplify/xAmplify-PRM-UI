@@ -106,7 +106,6 @@ h3 {
 }
 
 .icon-div {
-	/* margin-left: -1em; */
 	margin-top: 0em;
 }
 
@@ -291,7 +290,6 @@ a.social-stats{text-align: center;}
 
 .email-action-desscription {
 	font-size: 12px;
-	/* text-transform: lowercase; */
 }
 .capitalize {
   text-transform: capitalize;

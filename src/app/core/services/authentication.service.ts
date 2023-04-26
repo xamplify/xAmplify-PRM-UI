@@ -24,6 +24,7 @@ import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
 import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { CommentDto } from 'app/common/models/comment-dto';
+import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -983,11 +984,21 @@ findCampaignAccessDataByDomainName(domainName:string){
   return this.callGetMethod(url);
 }
 
-
+/****XNFR-224****/
+sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto:LoginAsEmailNotificationDto){
+  let url = this.REST_URL +"admin/sendLoginAsPartnerEmailNotification"+"?access_token=" + this.access_token;
+  return this.callPostMethod(url,loginAsEmailNotificationDto);
+}
 
 
 private callGetMethod(url: string) {
   return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+private callPostMethod(url: string,requestDto:any) {
+  return this.http.post(url,requestDto)
     .map(this.extractData)
     .catch(this.handleError);
 }

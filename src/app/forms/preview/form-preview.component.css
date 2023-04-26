@@ -65,11 +65,6 @@ body {
     line-height: 15px;
 }
 
-/* .disabled {
-    pointer-events: none;
-    cursor: not-allowed;
-} */
-
 #form-preview-company-logo {
     vertical-align: middle;
     position: relative;
@@ -138,4 +133,23 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.disable-click {
+    pointer-events: none;
+    opacity: 1;
+}
+
+.disabled-background-color {
+    background-color: #f7f6f6;
+}
+
+.label-value-correct {
+    color: green;
+    font-weight: 600;
+}
+
+.label-value-incorrect {
+    color: red;
+    font-weight: 600;
 }

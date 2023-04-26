@@ -81,7 +81,7 @@
 
 .tm-count {
 	font-weight: 600;
-	color: grey;
+	/* color: grey; */
 }
 
 .module-text-color {
@@ -175,4 +175,12 @@
     .grid-box-team{
         height: 285px!important;
     }
+}
+.pd-align{
+    top: 0px !important;
+    padding-left: 16px;
+    padding-right: 13px;
+}
+.tm-count-color{
+    color:grey;
 }

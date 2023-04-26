@@ -150,16 +150,19 @@
     </div>
   </div>
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
-  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0">
+  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;padding-bottom: 10px;">
     <div class="row">
-      <div class="page-bar portlet light mmtp">
-        <div class="col-xs-12 col-sm-5 p5">
+      <div class="">
+        <!---XNFR-220----->
+        <!-- <app-view-partners></app-view-partners> -->
+        <!---XNFR-220----->
+        <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
-          <div class="portlet light">
+          <div class="portlet light" style="margin-bottom: 20px;max-height: 355px;">
             <div class="portlet-title">
               <div class="caption">
                 <i class="icon-bar-chart font-green-sharp hide" aria-hidden="true"></i>
-                <span class="caption-subject font-green-sharp uppercase">
+                <span class="caption-subject font-red-sunglo uppercase">
                   {{authenticationService?.partnerModule?.customName}} by Country
                 </span>
               </div>
@@ -174,9 +177,9 @@
             </div>
           </div>
           <!---Bar Chart-->
-          <div class="portlet light mAlignGraph">
+          <div class="portlet light mAlignGraph" style="margin-bottom: 15px;">
             <div class="portlet-body" style="padding-top: 0;">
-              <div id="campaign-type-chart" class="campaign-type mGraphwidth"></div>
+              <div id="campaign-type-chart" class="campaign-type mGraphwidth" style="margin: -5px;"></div>
             </div>
           </div>
           <!-- END PORTLET-->
@@ -200,7 +203,7 @@
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12 p5">
-        <div class="portlet light">
+        <div class="portlet light" style="padding: 10px !important;">
           <div class="portlet-title">
             <div class="caption">
               <span class="caption-subject font-red-sunglo uppercase">Inactive

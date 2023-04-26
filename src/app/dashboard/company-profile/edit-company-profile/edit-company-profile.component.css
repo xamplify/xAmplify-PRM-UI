@@ -59,14 +59,9 @@
     max-height: 100%;
 }
 .profile-pic {
-       /* margin-top: 8px;
     position: absolute;
-        left: -10px;
-    top: 89px;
-    border: none; */
-    position: absolute;
-    margin-top: 48px;
-    left: -16px;
+    margin-top: 9px;
+    left: -2px;
     border: none;
 }
 
@@ -116,8 +111,8 @@ svg {
     font-size: 23px!important;
     padding-top: 8px!important;
     position: absolute!important;
-    left: 16px!important;
-    bottom: 19px!important;
+    left: 2px!important;
+    bottom: 4px!important;
 }
 .fileContainer {
     overflow: hidden;
@@ -199,3 +194,15 @@ svg {
         padding-right: 0px!important;
     }
 }
+/* .disabled {
+    cursor:not-allowed;
+ } */
+ .image-border{
+    padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea;border-radius: 4px!important;
+ }
+ .dotted-image-border{
+    cursor: pointer;text-align:center;color:#fff;
+ }
+ .company-details-border{
+    padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea;padding-bottom: 48px!important;
+ }

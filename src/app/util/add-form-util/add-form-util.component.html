@@ -32,6 +32,9 @@
 
 
                 <div class="portlet-body" id="add-form-parent-div">
+                    <app-response-message class="pg8" [customResponse]="customResponseForFormUpdate" *ngIf="form?.associatedWithTrack"
+                        [showCloseIcon]="false">
+                    </app-response-message>
                     <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                     </app-response-message>
                     <div class="profile-content">
@@ -43,7 +46,7 @@
                                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6 padding-none">
                                             <div class="caption caption-md" style="width: 100%;display: inline-flex;">
                                                 <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong title="{{form.name}}" [style.color]="form.descriptionColor">{{form.name}}</strong>
+                                                <h4 [attr.class]="formNameClass" style="padding-bottom: 6px;"><strong title="{{form.name}}">{{form.name}}</strong>
                                                 </h4>
                                                 <a *ngIf="!isMdfForm" class="icon-margin" style="padding-left: 5px;padding-top: 3px;"data-toggle="tooltip" data-placement="top" title="Change Form Details"
                                                         (click)="showAddForm()">
@@ -404,6 +407,16 @@
                                                         </legend>
                                                     </form>
                                                 </fieldset>
+                                                <!-- ----------------Explanation-------------- -->
+                                                <fieldset class="default-fieldset" *ngIf="selectedColumn.labelType.split('_')[0]=='quiz'">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Explanation</label>
+                                                        <textarea type="text" [(ngModel)]="selectedColumn.description" class="form-control" maxlength="500"
+                                                            style="height: 330px;" (input)="descriptionCharacterSize(selectedColumn)"></textarea>
+                                                        <label class="character-left-text">{{selectedColumn.descriptionCharacterleft}} characters
+                                                            left</label>
+                                                    </div>
+                                                </fieldset>
                                             </div>
                                         </div>
                                     </div>
@@ -412,9 +425,9 @@
                         </div>
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
-                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
+                            <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn btn-primay btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -460,7 +473,7 @@
                 <!-- XNFR-108 -->
                 <div class="form-group">
                     <label>Team Member Group</label>
-                    <p style="color: #888; font-size: 12px;" translate>
+                    <p class="pencil-color" style="font-size: 12px;" translate>
                         Selected team members will receive form submit notifications.
                     </p>
                     <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
@@ -613,18 +626,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12" style="border: 1px solid #eaeaea;padding-top: 5px;">
+                        <div class="col-md-12 col-lg-12 form-border">
                             <div class="form-group" id="formSubmissionUrlDiv">
                                 <label>Redirect Url After Form Submission :</label><br>
                                 <input class="form-control" placeholder="Enter Url" [(ngModel)]="form.formSubmissionUrl" (input)="validateFormSubmissionUrl(form.formSubmissionUrl)" />
                                 <span *ngIf="!form.isValidFormSubmissionUrl" class="required">{{formSubmissionUrlErrorMessage}}</span>
                                 <br>
                                 <label>Open in new tab</label>
-                                <input type="checkbox" [(ngModel)]="form.openLinkInNewTab">
+                                <input [disabled]="form.quizForm" type="checkbox" [(ngModel)]="form.openLinkInNewTab">
                             </div>
                         </div>
                         <br>
-                        <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;">
+                        <div class="col-md-12 col-lg-12 design-bgcolor">
                             <div class="form-group">
                                 <label>Form Submit Message:</label>
                                 <textarea class="form-control" placeholder="Form Submit Message" [(ngModel)]="form.formSubmitMessage" maxlength="1000" rows="5" (input)="characterSize()"></textarea>

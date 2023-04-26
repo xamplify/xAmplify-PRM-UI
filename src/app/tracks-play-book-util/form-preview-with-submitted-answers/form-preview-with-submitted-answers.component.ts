@@ -66,10 +66,14 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
 
     setFormSubmitValues() {
         let self = this;
-        console.log(self.selectedPartnerFormAnswers[2313]);
         $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
            if(self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
                value.value = self.selectedPartnerFormAnswers[value.id];
+               if (value.labelType === "upload") {
+                   let lastIndex = value.value.lastIndexOf("/");
+                   let fileName = value.value.substring(lastIndex + 1);
+                   value['fileName'] = fileName;
+               }
            } else {
             value.value = "";
            }

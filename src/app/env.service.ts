@@ -59,6 +59,8 @@ export class EnvService {
   
   // Whether or not to enable debug mode
   public enableDebug = false;
+  /****XNFR-224****/
+  domainName = window.location.hostname;
 
   constructor() {
   }

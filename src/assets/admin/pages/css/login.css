@@ -6,9 +6,6 @@
 Login page
 ***/
 /* bg color */
-.login {
-  /*background-color: #364150 !important;*/
-}
 .custom-label{
 	color: #fff;
 }
@@ -40,14 +37,14 @@ Login page
 }
 
 .login .content h3 {
-  color: #4db3a5;
+  color: #fff !important;
   text-align: center;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 400 !important;
 }
 
 .login .content h4 {
-  color: #ffffff;
+  color: #ffffff  !important;
 }
 
 .login .content .hint {
@@ -66,7 +63,6 @@ Login page
   border: none;
   background-color: #dde3ec;
   height: 43px;
-  /* color: #8290a3; */
   color: #333333;
   border: 1px solid #dde3ec;
 }
@@ -244,7 +240,6 @@ Login page
   }
 
   .login-options .social-icons {
-    /*float: left;*/
     padding-top: 3px;
   }
 

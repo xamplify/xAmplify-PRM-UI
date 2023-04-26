@@ -493,12 +493,6 @@ input:checked + .slider:before {
   pointer-events: none;
   opacity: 0.6;
 }
-/* .switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-} */
 
 .switch input {
   display: none;
@@ -808,4 +802,27 @@ input:checked + .slider-new:before {
 
 .red {
   color: #f76c6c
+}
+.custom{
+  background-color: #008fd5 ;
+  color: #fff;
+  border: 1px solid #3575b5;
+}
+a:link, nav a:visited {
+  color:#5b9bd1 !important;
+}
+.integration-cards{
+  float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;
+}
+.border-none{
+  border:none !important;
+}
+.button-align{
+  float:left; padding:0;margin-top: 17px;margin-bottom: 7px;
+}
+.def-player-border{
+  border-bottom: 1px solid #e5e5e5;
+}
+.btn-align{
+  padding-left: 5px !important;
 }

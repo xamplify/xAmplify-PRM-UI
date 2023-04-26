@@ -49,6 +49,9 @@ import { PipelineStage } from '../../models/pipeline-stage';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ExcludeUser } from "../../models/exclude-user";
 import { FileUtil } from '../../../core/models//file-util';
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -254,14 +257,32 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isUpgradedRequestSubmitted = false;
 	activeCRMDetails: any;
 	integrationType: string = "";
+	containWithinAspectRatio = false;
+	transform: ImageTransform = {};
+    scale = 1;
+    canvasRotation = 0;
+    rotation = 0;
+	imageChangedEvent: any = '';
+	croppedImage: any = '';
+	showCropper = false;
 
+	// XNFR-215
+	pipedriveRibbonText: string;
+	/****XNFR-224****/
+	loginAsPartnerOptionEnabledForVendor = false;
+	supportSettingCustomResponse : CustomResponse = new CustomResponse();
+	loginAsPartnerEmailNotification = false;
+	showSupportSettingOption = false;
+	isLoggedInAsPartner = false;
+	/****XNFR-224****/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
+		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
@@ -274,6 +295,65 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	private onDropModel(args) {
 	}
 
+	toggleContainWithinAspectRatio() {
+		if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+        }
+    }
+    zoomOut() {
+		if(this.croppedImage!=""){
+			this.scale -= .1;
+			this.transform = {
+				...this.transform,
+				scale: this.scale       
+			};
+		}else{
+			//this.errorUploadCropper = true;
+			this.showCropper = false; 
+		}
+    }
+
+    zoomIn() {
+		if(this.croppedImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+			
+		}else{
+        this.showCropper = false;
+      //  this.errorUploadCropper = true;
+        }
+    }
+    resetImage() {
+		if(this.croppedImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+		}else{
+        this.showCropper = false;
+       // this.errorUploadCropper = true;
+    }
+    }
+	imageCroppedMethod(event: ImageCroppedEvent) {
+		this.croppedImage = event.base64;
+		console.log(event, base64ToFile(event.base64));
+	  }
+	  imageLoaded() {
+		this.showCropper = true;
+		console.log('Image loaded')
+	  }
+	  cropperReady(sourceImageDimensions: Dimensions) {
+        console.log('Cropper ready', sourceImageDimensions);
+    }
+	loadImageFailed () {
+		console.log('Load failed');
+	  }
+
 	cropperSettings() {
 		this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
 		this.circleCropperSettings.noFileInput = true;
@@ -285,15 +365,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	closeModal() {
 		this.cropRounded = !this.cropRounded;
 		this.circleData = {};
+		this.imageChangedEvent = null;
+		 this.croppedImage = '';
 	}
 	fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
 	uploadProfileImage() {
-		this.loadingcrop = true;
-		let fileObj: any;
-		fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
-		fileObj = this.utilService.blobToFile(fileObj);
-		console.log(fileObj);
-		this.fileUploadCode(fileObj);
+		if(this.croppedImage!=""){
+        this.loadingcrop = true;
+        let fileObj:any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+        fileObj = this.utilService.blobToFile(fileObj);
+        this.fileUploadCode(fileObj);
+		console.log("sudha",fileObj);
+      }else{
+        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
+		this.errorUploadCropper = false;
+            this.showCropper = false;
+      }
+      
 	}
 	fileUploadCode(fileObj: File) {
 		this.userService.saveUserProfileLogo(fileObj).subscribe(
@@ -318,6 +407,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		const isSupportfile: any = file.type;
 		if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
 			this.errorUploadCropper = false;
+			this.imageChangedEvent = event;
 			const myReader: FileReader = new FileReader();
 			const that = this;
 			myReader.onloadend = function(loadEvent: any) {
@@ -817,8 +907,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.updateUserProfileForm = this.fb.group({
 			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 			'lastName': [this.userData.lastName],
-			// 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-			//'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
+			'middleName':[this.userData.middleName],
 			'mobileNumber': [this.userData.mobileNumber],
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
@@ -859,10 +948,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	updateUserProfile() {
-		console.log(this.updateUserProfileForm.value);
 		this.referenceService.goToTop();
 		this.ngxloading = true;
-
 		if (this.userData.mobileNumber) {
 			if (this.userData.mobileNumber.length > 6) {
 				this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
@@ -870,7 +957,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				this.updateUserProfileForm.value.mobileNumber = ""
 			}
 		}
-
 		this.userService.updateUserProfile(this.updateUserProfileForm.value, this.authenticationService.getUserId())
 			.subscribe(
 				data => {
@@ -1571,7 +1657,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkMarketoIntegration();
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
-		this.checkMicrosoftIntegration();		
+		this.checkMicrosoftIntegration();
+		this.checkPipedriveIntegration();		
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -1654,6 +1741,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.integrateRibbonText = "configure";
 		})
 	}
+
+	// XNFR-215
+	checkPipedriveIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.integrationService.checkConfigurationByType("pipedrive").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.pipedriveRibbonText = "configured";
+			}
+			else {
+				this.pipedriveRibbonText = "configure";
+			}			
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkPipedriveIntegration() for pipedrive");
+		}, () => this.logger.log("Pipedrive Integration Configuration Checking done"));
+	}
+	// XNFR-215
 
 	configmarketo() {
 		this.integrationTabIndex = 1;
@@ -1744,9 +1851,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.showNotifyPartnersOption = true;
 				  self.ngxloading = false;
  			}, 500);
+		}else if(this.activeTabName == "support"){
+			this.ngxloading = true;
+			this.showSupportSettingOption = false;
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showSupportSettingOption = true;
+				  self.ngxloading = false;
+ 			}, 500);
+			this.activeTabHeader = this.properties.supportText;
 		}
 		this.referenceService.goToTop();
 	}
+	
+
 
 	ngOnDestroy() {
 		if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
@@ -1790,6 +1908,11 @@ configHubSpot() {
 		this.integrationTabIndex = 3;
 		//let providerName = 'microsoft';
 		//this.configureCRM(providerName, this.microsoftRedirectURL);		
+	}
+
+	// XNFR-215
+	configurePipedrive() {
+		this.integrationTabIndex = 6;	
 	}
 
 	closeMicrosoftForm(event: any) {
@@ -1906,6 +2029,7 @@ configSalesforce() {
 	}
 
 	saveGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.companyId = this.referenceService.companyId;
 		this.gdprSetting.createdUserId = this.loggedInUserId;
@@ -1934,6 +2058,7 @@ configSalesforce() {
 
 
 	updateGdprSetting() {
+		this.gdprCustomResponse = new CustomResponse();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		this.gdprSetting.updatedUserId = this.loggedInUserId;
 		this.userService.updateGdprSetting(this.gdprSetting)
@@ -2403,6 +2528,15 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'MICROSOFT';
+		this.integrationTabIndex = 5;		
+	}
+
+	// xnfr-215
+	pipedriveSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'PIPEDRIVE';
 		this.integrationTabIndex = 5;		
 	}
 
@@ -2881,6 +3015,7 @@ configSalesforce() {
 	}
 
 	listAllPipelines(pagination: Pagination) {
+		this.ngxloading = true;
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -2998,8 +3133,9 @@ configSalesforce() {
 				},
 				error => {
 					this.ngxloading = false;
-					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+					this.referenceService.loading(this.httpRequestLoader, false);
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);
 				},
 				() => { }
 			);
@@ -3702,7 +3838,9 @@ configSalesforce() {
 					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
 					this.listAllPipelines(this.pipelinePagination);
 				}, error=>{
-					this.ngxloading = false;					
+					this.ngxloading = false;
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);					
 				}
 			);
 
@@ -3712,5 +3850,9 @@ configSalesforce() {
 		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
 		pipelineStage.defaultStage = true;
 	}
+
+	
+
+	
 
 }

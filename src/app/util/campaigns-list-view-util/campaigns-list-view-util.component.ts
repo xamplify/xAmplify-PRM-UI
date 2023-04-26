@@ -329,13 +329,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
         }else{
-            if(campaign.campaignType.indexOf('SOCIAL') > -1){
-                this.isloading = false;
-                this.customResponse = new CustomResponse();
-                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
-            }else{
-                this.editCampaignsWhichAreNotLaunched(campaign);
-            }
+            this.editCampaignsWhichAreNotLaunched(campaign);
         }
     }
 
@@ -372,7 +366,15 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 .subscribe(
                 data => {
                     if (data.campaignType === 'SOCIAL') {
-                        this.router.navigate(["/home/campaigns/social"]);
+                        let isLaunched = data.launched;
+                        if (isLaunched || data.campaignProcessing) {
+                            this.isScheduledCampaignLaunched = true;
+                            this.isloading = false;
+                        }else{
+                            this.editButtonClicked = true;
+                            this.selectedCampaignId = campaign.campaignId;
+                            this.isloading = false;
+                        }
                     } else {
                         this.campaignService.campaign = data;
                         let endDate = this.campaignService.campaign.endDate;

@@ -39,4 +39,6 @@ export class SocialStatus {
   originalOgImage: string;
   ogImagePath: string;
   removeOgTags: boolean;
+  /***XNFR-222****/
+  editSharedPost = false;
 }

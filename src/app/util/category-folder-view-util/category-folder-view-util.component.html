@@ -9,28 +9,28 @@
                 <div class="btn-group pull-right">
                     <div class="group-dropdown" style="padding-right:5px">
                         <button
-                        [ngClass]="folderViewType=='List' ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :folderViewType=='Grid' ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                        folderViewType=='Folder-List' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType=='Folder-Grid' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
-                        style="padding: 10px !important"></button>
+                        [ngClass]="folderViewType=='List' ? 'fa fa-th-list' :folderViewType=='Grid' ?'fa fa-th-large':
+                        folderViewType=='Folder-List' ? 'fa fa-th': folderViewType=='Folder-Grid' ?'fa fa-folder':'fa fa-th-list'"
+                        style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>
                         <!-- <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button> -->
                     <div class="group-dd-content" style="min-width: max-content;">
                     <ng-container class='m10'>
-                        <button *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
+                        <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class=" btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
                             <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
-                        </button>
-                        <button class="btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
+                        </span>
+                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
                             <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                        </button>
-                        <button class="btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')">
+                        </span>
+                        <span class="btn btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')">
                             <i  class="fa fa-th-large p10" aria-hidden="true"></i>
-                        </button>
-                        <button class="btn-xs hidden-xs l-g-view margin-right-calendar" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
+                        </span>
+                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
-                        </button>
-                        <button class="btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width" [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
+                        </span>
+                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width " [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
                             <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
                             <i class="fa fa-th p10" aria-hidden="true"></i>
-                        </button>
+                        </span>
                     </ng-container>
                     </div>
                 </div>

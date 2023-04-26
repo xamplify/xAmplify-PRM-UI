@@ -45,7 +45,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="card-body p-0">
+								<div class="card-body p-0 card-bgcolor">
 									<div class="flex-row pl10 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
 										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0"
 											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">

@@ -475,6 +475,9 @@ export class AddDealComponent implements OnInit {
   resetStages() {
     this.deal.pipelineStageId = 0;
     this.getStages();
+    this.pipelineStageId = "form-group has-error has-feedback";
+    this.pipelineStageIdError = true;
+    this.isDealRegistrationFormValid = false;
   }
 
   getStages() {
@@ -810,11 +813,11 @@ setSfFormFieldValues() {
           let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
           let sfCfDataList = [];
           for (let formLabel of sfCustomFields) {
-            if (formLabel.labelId === "dealname") {
+            if (formLabel.labelId === "dealname" || formLabel.labelId === "title") {
               this.deal.title = formLabel.value;
-            } else if (formLabel.labelId === "amount") {
+            } else if (formLabel.labelId === "amount" || formLabel.labelId === "value") {
               this.deal.amount = formLabel.value;
-            }  else if (formLabel.labelId === "closedate") {
+            }  else if (formLabel.labelId === "closedate" || formLabel.labelId === "expected_close_date") {
               this.deal.closeDateString = formLabel.value;
             }
               let sfCfData = new SfCustomFieldsDataDTO();
@@ -926,8 +929,8 @@ getActiveCRMDetails() {
       response => {
         if (response.statusCode == 200) {          
           this.activeCRMDetails = response.data;
-          if (this.activeCRMDetails.activeCRM 
-            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type)) {
+          if (this.activeCRMDetails.activeCRM
+            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type || "PIPEDRIVE" === this.activeCRMDetails.type)) {
             this.showCustomForm = true;
           }
         } 

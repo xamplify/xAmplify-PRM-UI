@@ -25,7 +25,7 @@
         <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary activated-btn" *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
-        <button type="button" class="btn btn-secondary unlink-btn" (click)="unlinkCRM()" [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
+        <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color" (click)="unlinkCRM()" [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
       </div>
     </div>
 
@@ -37,8 +37,7 @@
       <div class="col-md-6">
         <div style="margin-bottom:20px">
           <h3>{{ integrationType }} custom fields
-            <span
-              style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
+            <span class="reload-btn">
               <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
                 title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 15px !important;"></i>
                 Reload</a>
@@ -106,7 +105,7 @@
     <div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
       <span>There are no custom fields in your {{ integrationType | titlecase }} account.</span>
     </div>
-    <div class="modal-footer">      
+    <div class="modal-footer border-none">      
       <button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length"
         (click)="saveCustomFieldsSelection()">Submit</button>
     </div>

@@ -116,7 +116,6 @@ a {
     line-height: 36px;
     letter-spacing: -1px;
     margin-bottom: 0px;
-    /* font-weight: 300; */
 }
 
 .dashboard-stat .details .number {
@@ -285,7 +284,6 @@ a {
     text-overflow: ellipsis;
     white-space: nowrap;
     float: left !important;
-    /* overflow: hidden; */
 }
 
 .margin-flex {
@@ -516,7 +514,7 @@ a {
 }
 
 .panel-default>.panel-heading {
-    background-color: #ffffff!important;
+    background-color: #ffffff;
 }
 
 /****Add Balance Form Rleated Css*********/
@@ -542,14 +540,14 @@ a {
     margin-right: 5px;
 }
 
-#vendor-details-tile {
+/* #vendor-details-tile {
     border-color: lightgrey;
     border-style: solid;
     height: 102px;
     border-radius: 10px;
     padding-top: 15px;
     background-color: #fff;
-}
+} */
 
 .fund-added {
     color: #fff;
@@ -609,7 +607,6 @@ html {
 .comment {
     display: flex;
     border-radius: 3px;
-    /* margin-bottom: 45px; */
     flex-wrap: wrap;
 }
 
@@ -619,7 +616,6 @@ html {
 
 .comment.author-comment {
     color: #60686d;
-    /* justify-content: flex-end; */
 }
 
 /* User and time info */

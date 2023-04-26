@@ -116,15 +116,12 @@
 .stylish-panel>div>div {
     border: 1px solid transparent;
     border-radius: 8px;
-    /* transition: 0.2s; */
 }
 
 .stylish-panel>div:hover>div {
-    /* margin-top: -10px; */
     border: 1px solid rgb(200, 200, 200);
     box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 2px;
     background: rgba(200, 200, 200, 0.1);
-    /* transition: 0.5s; */
 }
 
 .form-control-borderless {
@@ -396,9 +393,6 @@
 .page-bar {
     border-radius: 5px !important;
 }
-/* .portlet.light {
-    border-radius: 5px !important;
-} */
 
 .head-h{
     font-size: 16px!important;
@@ -409,4 +403,7 @@
 
 .pb-m{
     margin-left: 5px !important;
+}
+.rss-border{
+    border-color: #fff;
 }

@@ -72,11 +72,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
-
 import { AddLeadComponent } from '../leads/add-lead/add-lead.component';
-//import { AddDealComponent } from '../deals/add-deal/add-deal.component';
-//import { SfDealComponent } from '../deal-registration/sf-deal/sf-deal.component';
-
 import { BeeTemplateUtilComponent } from 'app/util/bee-template-util/bee-template-util.component';
 import { CampaignTemplateDownloadHistoryComponent } from 'app/campaigns/campaign-template-download-history/campaign-template-download-history.component';
 import { ShareLeadsComponent } from './share-leads/share-leads.component';
@@ -122,6 +118,9 @@ import { CommentsComponent } from 'app/util/comments/comments.component';
 import { FolderTypeViewUtilComponent } from 'app/util/folder-type-view-util/folder-type-view-util.component';
 import { DamListAndGridViewComponent } from 'app/util/dam/dam-list-and-grid-view/dam-list-and-grid-view.component';
 import { CountStatisticsComponent } from 'app/util/count-statistics/count-statistics.component';
+import { ImgCropprV2Component } from './image-cropper-v2/img-croppr-v2/img-croppr-v2.component';
+import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-partner.component';
+import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-authentication-popup/pipedrive-authentication-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -144,7 +143,7 @@ import { CountStatisticsComponent } from 'app/util/count-statistics/count-statis
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent],
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -166,7 +165,7 @@ import { CountStatisticsComponent } from 'app/util/count-statistics/count-statis
 		TeamMemberGroupPreviewPopupComponent,PartnerTeamMemberGroupTeamMembersComponent,TeamMemberFilterOptionComponent,TeamMemberFilterOptionModalPopupComponent,
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
-		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent]
+		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent]
 
 
 

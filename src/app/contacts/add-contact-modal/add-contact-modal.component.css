@@ -16,13 +16,7 @@
 padding-right: 0 !important;
 display: block;
 }
-/* /deep/ .input-group > .form-control {
-    border-left: none;
-    height: 36px;
-}
-/deep/ .input-group > .form-control:focus {
-    border-color: #e5e5e5;
-} */
+
 @media only screen and (max-width:600px){ .email-xs{ left: 4px}}
 @media only screen and (min-width:601px){.email-xs{ left: 6px}}
 

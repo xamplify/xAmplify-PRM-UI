@@ -7,10 +7,6 @@
 	max-width: 1378px;
 }
 
-/* .portlet-body {
-	overflow-x: auto;
-} */
-
 .close-circle {
 	margin-left: 5px;
 }
@@ -76,9 +72,3 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-/* .table{
-	margin-bottom: 1px;
-} */
-/* .pg8{
-	top:6px !important;
-} */

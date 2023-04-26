@@ -1,12 +1,4 @@
-.img-class-list{
-	height: 50px;
-    width: auto;
-    background: #f2f4f9;
-    border: solid 1px #008fd5;
-    border-radius: 1px;
-}
 .img-class{
-	/* height: 50px; */
     width: auto;
 }
 #actions-row{
@@ -15,17 +7,6 @@
 
 #min-width{
 	min-width: 145px;
-}
-
-#right-corner{
-	float: right;
-}
-
-
-#disabled-icon{
-border: none;
-margin: 0px 15px 0 0;
-cursor: default;
 }
 
 .cursor{
@@ -97,9 +78,6 @@ cursor: default;
 	padding: 2px !important;
 	margin: 10px 4px !important;
 }
-.custom-width-icon{
-	min-width: 130px;
-}
 
 .thumbnail-wrapper {
 	float: left;
@@ -119,23 +97,7 @@ cursor: default;
 }
 
 .custom-image-css{
-    /* max-height: 55% !important; */
-   /*  max-width: 69px !important; */
     position: relative;
-    /* top: 16px; */
-}
-
-.custom-image-css-grid{
-  border: 0px solid rgb(90, 90, 90);
-    max-height: 27% !important;
-}
-
-.top10{
-  margin-top: 5px;
-}
-
-.icon-grid-xcss{
-  font-size: 20px; color: #5a5a5a
 }
 
 .published{
@@ -152,37 +114,11 @@ cursor: default;
   background-color: #d3d3d317;
 }
 
-.ml5{
-  margin-left: 5px;
-}
-
-
-.port-heading {
-  padding-left: 10px!important;
-  padding-top: 10px!important;
-  background: #f1f1f1;
-}
-
-.cpdam{
-  padding: 40px 40px 0px 17px;
-}
-
-.cphdam{
-  padding: 0px 0px!important;min-height: 200px;
-}
 .min-h{
   min-height: 245px;
 }
 
-.edit-cancel{
-  margin-right: 95px;
-}
-.edit-submit{
-  margin-right: 5px;
-}
-
 .ref-mar{
-  /* margin-top: 3px !important; */
   margin-left: -1px !important;
 }
 
@@ -198,7 +134,7 @@ cursor: default;
   text-align: center;
   margin: 2px 2px 2px 0px;
   border-radius: 20px;
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
   display: inline;
 }
 
@@ -226,9 +162,7 @@ cursor: default;
     margin-top: 45px;
   }
   .mAlignView{
-    /* white-space: pre-line!important; */
     line-height: 1.0px;
-    /* text-align: center; */
   }
   .mActionWidth{
     min-width: 140px!important;
@@ -250,16 +184,6 @@ cursor: default;
     margin-left: -16px !important;
     margin-right: 2px;
 }
-}
-
-
-.mix-filter {
-	margin: 5px;
-}
-
-.mix-filter li {
-	font-size: 12px;
-	text-transform: uppercase;
 }
 
 .draft-video{
@@ -286,9 +210,6 @@ cursor: default;
   font-size: 12px;
 }
 
-.min-width-thtwpx{
-  min-width: 320px;
-}
 /* sudha sri */
 @media (max-width:320px){
   .pb3{

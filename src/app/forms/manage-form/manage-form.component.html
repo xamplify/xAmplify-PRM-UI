@@ -73,7 +73,7 @@
                                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                                             title="List View" [class.disabled]="modulesDisplayType.isListView"
                                             (click)="setViewType('List')">
-                                            <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
+                                            <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                         <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" style="margin-right: -2px;"
                                             data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
                                             (click)="setViewType('Grid')">
@@ -89,7 +89,8 @@
                                             <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
                                                 data-toggle="tooltip" data-placement="bottom" title="Folder List View"
                                                 [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                                <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" />
+                                                <i class="fa fa-th p10" aria-hidden="true"></i>
+                                                <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> -->
                                             </span>
                                         </ng-container>
                     
@@ -198,7 +199,7 @@
                                             <div class="actions-block custom-width-icon ActionAlign mActionAlign">
                                                 <div class="mMobileAlignAction2">
                                                 <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                                    (click)="edit(form.id)">
+                                                    (click)="edit(form.id)" >
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
@@ -291,7 +292,7 @@
                             </div>
                             <div class="bar">
                                 <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                    (click)="edit(form.id)">
+                                    (click)="edit(form.id)" >
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                 </a>
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
@@ -373,7 +374,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
-                        <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>

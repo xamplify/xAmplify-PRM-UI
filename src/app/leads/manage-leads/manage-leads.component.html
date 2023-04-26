@@ -24,7 +24,7 @@
               <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" translate>Vendor View</li>
               <p class="filter" style="float: right;
-            						margin: 10px;background-color: white" translate>Opportunities as:   </p>
+            						margin: 10px;" translate>Opportunities as:   </p>
             </ul>
           </div>
         </div>
@@ -133,7 +133,8 @@
           <div class="page-bar p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
-                <div class="" style="padding-bottom: 45px;">
+                <!-- XNFR-148 -->
+                <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
                   <!-- <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4> -->
                   <div class="col-xs-12 col-sm-6 col-lg-5 p0">
                     <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
@@ -165,9 +166,11 @@
                         </button>
                       </a>
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white padding mt button" style="margin-left: 3px;"  data-toggle="tooltip" data-placement="bottom"
-                          title="Synchronize" translate>
+                      <!-- XNFR-215 -->
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
+                        (click)="syncLeadsWithActiveCRM()">                      
+                        <button class="btn btn-white padding mt button" style="margin-left: 3px;" data-toggle="tooltip"
+                          data-placement="bottom" title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>
@@ -358,7 +361,7 @@
                               </div>
 
                               <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
-                                <a style="color: #008fd5;" (click)="showDealRegistrationForm(lead)" translate>
+                                <a style="color: #008fd5;padding-left: 6px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
 
@@ -433,22 +436,22 @@
                           <tr>
                             <td style="width: 10%;" class="hidden-xs">
                               <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
-                                src="assets/images/video-email.png" style="height: 50px;"
+                                src="assets/images/video-email.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
                               <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
-                                src="assets/images/regular-email.png" style="height: 50px;"
+                                src="assets/images/regular-email.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
                               <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 "
-                                src="assets/images/social-campaign.png" style="height: 50px;"
+                                src="assets/images/social-campaign.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
                               <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 "
-                                src="assets/images/event-campaign.png" style="height: 50px;"
+                                src="assets/images/event-campaign.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
                               <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
-                                src="assets/images/landing-page.png" style="height: 50px;"
+                                src="assets/images/landing-page.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.png"
-                                style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.svg"
+                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
                               <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;"

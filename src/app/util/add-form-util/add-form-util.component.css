@@ -97,17 +97,14 @@ LEGEND {
 
 .selected {
     background-color: #e5e5e5;
-    /* cursor: default; */
     cursor: move;
 }
 
 #form-div:hover {
-    /* cursor: pointer; */
     cursor: move;
 }
 
 .form-control.disabled {
-    /* cursor: default; */
     cursor: move;
 }
 
@@ -121,8 +118,6 @@ LEGEND {
 }
 
 .blur-content {
-    /* -webkit-filter: url(#svg-blur);
-	filter: url(#svg-blur); */
     filter: blur(0px);
     -webkit-filter: blur(0px);
 }
@@ -533,7 +528,6 @@ label {
     cursor: pointer;
     width: 26px;
     height: 30px;
-    /* background: url(../assets/cbe16914.svg) 50% no-repeat; */
     -webkit-background-size: contain;
     background-size: contain;
     display: inline-block;
@@ -545,7 +539,6 @@ label {
 }
 
 .fm.external-link {
-    /* background: url("assets/images/icon-img-preview.svg") 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;
@@ -553,7 +546,6 @@ label {
 }
 
 .fm.delete {
-    /* background: url(https://app.getbee.io/v18.09.03.1427/assets/28fa3e8f.svg) 50% no-repeat; */
     background-size: auto auto;
     -webkit-background-size: contain;
     background-size: contain;
@@ -1577,3 +1569,23 @@ div.switch5>input.switch:focus~label:before {
 .margin{
     margin-right: 12px;
 }
+
+.design-bgcolor{
+    padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;margin-top: 10px;
+}
+.form-border{
+    border: 1px solid #eaeaea;padding-top: 5px;
+}
+.pencil-color{
+    color: #888;
+}
+
+
+.character-left-text {
+    float: right;
+      font-size: 11px;
+      position: relative;
+      left: -4px;
+      color: #7b8894;
+      bottom: 22px;
+  }

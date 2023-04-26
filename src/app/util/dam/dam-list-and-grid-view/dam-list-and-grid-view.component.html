@@ -45,7 +45,7 @@
 												alt="Image Not Found">
 										</div>
 										<div class="title-div" style="width: 50%;">
-												<h4 class="moreipsis mt5 mb5 f-w-600"
+												<h4 class="mt5 mb5 f-w-600"
 													title="{{asset?.assetName}}">
 													<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 													<span *ngIf="asset?.assetName?.length>25">...</span>
@@ -72,15 +72,16 @@
 												<h6 style="padding-top: 5px;">
 													<ng-container *ngIf="asset.tagNames?.length > 0">
 														<div class="tag" title="{{asset.tagNames[0]}}">
-															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0]}}
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
+																*ngIf="asset.tagNames[0]?.length>20">..</span>
 															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:15}} <span
-																	*ngIf="asset.tagNames[0]?.length>15">..</span>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
+																	*ngIf="asset.tagNames[0]?.length>10">..</span>
 															</ng-container>
 														</div>
 														<ng-container *ngIf="asset.tagNames.length > 1">
 															<div class="tag" title="{{asset.tagNames[1]}}">
-																{{asset.tagNames[1] | slice:0:15}} <span *ngIf="asset.tagNames[1]?.length>15">..</span>
+																{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
 															</div>
 														</ng-container>
 														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
@@ -438,11 +439,11 @@
 <ng-template #damHeaderOptions>
 	<div class="portlet-title mb10">
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-xs-3">
 				<h4 class="pull-left m10 text-primary">{{SuffixHeading}}
-					<span >Assets</span></h4>
+					<span>Assets</span></h4>
 			</div>
-			<div class="page-toolbar col-xs-6">
+			<div class="page-toolbar col-xs-9">
 				<div class="btn-group pull-right">
 					<div class="">
 					<div class="group-dropdown">
@@ -451,7 +452,7 @@
 					<div class="group-dd-content">
 					<ng-container class='m10'>
 						 <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
-							<i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp; 
+							<i class="fa fa-th-list p10" aria-hidden="true"></i></span> 
 							<span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
 								<i class="fa fa-th-large p10" aria-hidden="true"></i>
 							</span>
@@ -460,13 +461,9 @@
 									<i  class="fa fa-folder p10" aria-hidden="true"></i>
 								</span>
 								<span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View"  (click)="setViewType('fl')">
-									<!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="Image Not Found"/> -->
 									<i  class="fa fa-th p10" aria-hidden="true"></i>
 								</span>
 							</ng-container>
-							<!-- <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
-								<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-							</span> -->
 					</ng-container>
 				 </div>
 				</div>
@@ -477,7 +474,7 @@
 					<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
 						<i class="fa fa-refresh" aria-hidden="true"></i>
 					</a>
-					<div class="pb3" style="float: left;">
+					<div class="pb3 float-left">
 						<ng-container *ngIf="isPartnerView">
 							<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
@@ -486,6 +483,15 @@
 						<ng-container *ngIf="!isPartnerView">
 							<select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+							</select> 
+						</ng-container>
+					</div>
+					<!--Filter Type---->
+					<div class="pb3 float-left ml5">
+						<ng-container *ngIf="fileTypes?.length>0">
+							<select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+								<option value="">Select Asset Type</option>
+								<option	*ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}</option>
 							</select> 
 						</ng-container>
 					</div>
@@ -500,32 +506,6 @@
 					</div>
 				</div>
 			    </div>
-					<!-- <div class="inputs mDamTop" style="float: right">
-						<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
-							<i class="fa fa-refresh" aria-hidden="true"></i>
-						</a>
-						<div class="pb3" style="float: left;">
-							<ng-container *ngIf="isPartnerView">
-								<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
-									<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
-								</select> 
-							</ng-container>
-							<ng-container *ngIf="!isPartnerView">
-								<select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
-									<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
-								</select> 
-							</ng-container>
-						</div>
-						<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
-							<div class="input-icon right mDamSearch rSearch" style="position: relative; right: -6px;">
-								<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-								<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
-								<button type="submit" class="search-box-item-click"	(click)="searchAssets()">
-									<i class="fa fa-search" aria-hidden="true"></i>
-								</button>
-							</div>
-						</div>
-					</div> -->
 				</div>
 			</div>
 		</div>

@@ -19,11 +19,11 @@
     padding-bottom: 10px;
 }
 
-.text-wrap {
-    overflow-wrap: break-word;
-    padding: 5px;
-    min-height: 255px;
-    height: auto;
+.text-wrap-track-description {
+    overflow-wrap: break-word !important;
+    padding: 5px !important;
+    min-height: 255px !important;
+    height: auto !important;
 }
 
 .cpdam {
@@ -53,7 +53,6 @@
 .disable {
     cursor: not-allowed;
     opacity: 0.6;
-    /* pointer-events: none; */
 }
 
 .blur-content {
@@ -149,12 +148,6 @@
     background-position: top;
     margin: 0px;
     border-radius: 4px 4px 0px 0px;
-    /* padding: 5px 25px;
-    object-fit: contain;
-    height: 100%;
-    width: 100%!important;
-    min-height: 170px; 
-    max-height: 170px; */
     max-width: 100%;
     min-height: 170px; 
     max-height: 170px;
@@ -181,8 +174,6 @@
 
 .portlet.light {
     padding: 5px 5px 10px 10px;
-    /* background-color: #fff;
-    border-radius: 6px !important; */
 }
 
 .page-content-wrapper .page-content {
@@ -373,10 +364,7 @@ body {
 }
 
 .custom-image-css{
-    /* max-height: 55% !important; */
-   /*  max-width: 69px !important; */
     position: relative;
-    /* top: 16px; */
 }
 
 .banner {
@@ -502,4 +490,13 @@ body {
 :host ::ng-deep .form-preview * {
     max-height: 100%;
     max-width: 100%;
+}
+.color-inline{
+    padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: white;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;border-bottom: 1px solid #eee;
+}
+.text-color{
+    color: #888;
+}
+.border{
+    padding: 8px 5px 8px 10px;margin-bottom: 10px;border-top-left-radius: 5px;border-top-right-radius: 5px;border-bottom: 1px solid #eee;
 }

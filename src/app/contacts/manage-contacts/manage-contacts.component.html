@@ -346,10 +346,12 @@
                                 <img *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                   src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
                                   *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"
-                                  alt="manual" style="height: 70px;">
+                                  alt="manual" style="height: 54px;">
                                 <img *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList" src="{{properties?.hubspotImage}}"
                                   alt="manual" style="height: 70px;">
                                   <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
+                                  alt="manual" style="height: 70px;">
+                                  <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
                                   alt="manual" style="height: 70px;">
                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
@@ -551,12 +553,13 @@
                     *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                     <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
                       <div class="grid-box" id="contactListDiv_{{contactList.id}}">
-                        <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
+                        <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
                           <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"> 
                           <img alt=""  class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"   src="{{properties?.googleImage}}">
                           <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList" src="{{properties?.salesforceImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"  src="{{properties?.hubspotImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"  src="{{properties?.microsoftImage}}">
+                          <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"  src="{{properties?.pipedriveImage}}">
                           <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
                           *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
@@ -803,7 +806,7 @@
                   <div class="loader"></div>
                   <h4 translate>please wait while we process your request</h4>
                 </div>
-                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="alert alert-info">
+                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
                 </div>
                 <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
@@ -837,7 +840,7 @@
                           <div *ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember ||
                           authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() ||
                           authenticationService.isOrgAdminPartner()) && !sharedLeads">
-                      <span class="dropdown-toggle" data-toggle="dropdown"
+                      <span class="dropdown-toggle white-co" data-toggle="dropdown"
                         style="box-shadow: none; margin-top: 8px; float: right;display: flex;">
                         <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px" aria-hidden="true"></i><i class="fa fa-angle-down"
                           style="font-size: 14px; float: right" aria-hidden="true"></i>
@@ -997,9 +1000,8 @@
                                 </button>
                                 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
                                   <ng-container *ngIf="contact?.validEmail">
-                                    <a  *ngIf="!contact.signedUp || !contact.notifyPartners" (click)="sendMail(contact.id)">
-                                      <i class="fa fa-envelope" *ngIf="contact.notifyPartners && !contact.signedUp" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription.partner_reSendMail}}"></i>
-                                      <i class="fa fa-envelope" style="color:#ff0000" *ngIf="!contact.notifyPartners" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
+                                    <a  (click)="sendMail(contact.id)">
+                                      <i class="fa fa-envelope"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
                                     </a>
                                   </ng-container>
                                   <ng-container *ngIf="!contact?.validEmail">
@@ -1084,7 +1086,7 @@
                             </tr>
                             <tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
                               <td colspan="9">
-                                <table cellpadding="5" cellspacing="0" style="padding-left: 50px; margin-left: 55px;" aria-describedby="">
+                                <table cellpadding="5" cellspacing="0" class="border" style="border:none !important;" aria-describedby="">
                                   <tbody>
                                     <tr>
                                       <td class='pt10 pb10 bold' translate>Address: </td>
@@ -1264,7 +1266,7 @@
         <!-- end  -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
+        <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate>Close</button>
         <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()" [disabled]="assignLeads && disableSave" translate>Save changes</button>
       </div>
     </div>
@@ -1299,7 +1301,7 @@
         </div>
       </div>
       <div class="modal-body clearfix">
-        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;">
+        <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block;margin-left: 0px !important;">
           <div class="table-responsive">
             <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
             <ng-container *ngIf="!httpRequestLoader.isLoading">

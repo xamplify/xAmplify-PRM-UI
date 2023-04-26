@@ -154,9 +154,6 @@ label img {
 	border-radius: 50%
 }
 
-/* .form-group label {
-	font-weight: 700
-} */
 .padding-10px {
 	padding: 10px
 }
@@ -268,13 +265,7 @@ body {
 	border-right: 1px solid rgba(0, 0, 0, .2)
 }
 
-
-/* .portlet {
-	border-radius: 0
-} */
-
 .portlet.light {
-	/* box-shadow: 0 0 1px rgba(0, 0, 0, 0.4); */
 	padding: 5px
 }
 
@@ -300,9 +291,6 @@ body {
 .portlet.light.block:hover {
 	-webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
 	box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
-	/*-webkit-transform: translateY(-.5rem);
-	-ms-transform: translateY(-.5rem);
-	transform: translateY(-.5rem);*/
 	cursor: pointer;
 	opacity: 1
 }
@@ -372,23 +360,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* social-manage css */
 .box {
 	padding: 5px;
@@ -401,9 +372,7 @@ body {
 .portlet-title h4{margin: 0.5em 0;
     font-weight: 600;
     color: #999;}
-/* .portlet.light {
-	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
-} */
+
 
 .text-center {
 	text-align: center;

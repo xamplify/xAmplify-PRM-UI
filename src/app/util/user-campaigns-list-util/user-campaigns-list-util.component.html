@@ -113,7 +113,8 @@
                        <div class="input-icon right p-top">
                           <input style="height: 35px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                          <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                          <!--Removed color:black !important-->
+                          <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="" aria-hidden="true"></i></button>
                        </div>
                     </div>
                  </div>
@@ -146,8 +147,8 @@
                               <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
                                 <tr>
                                   <td>
-                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active" src="assets/images/regular-email.png" alt="Regular Campaign Logo Not Found">
-                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active" src="assets/images/video-email.png" alt="Video Campaign Logo Not Found">
+                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
+                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
                                      <a class="campaign-name-padding" title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
                                        {{campaignAnalytics?.campaignName | slice:0:15}}
                                        <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span> 
