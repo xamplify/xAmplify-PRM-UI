@@ -133,7 +133,7 @@ export class IntegrationService {
     }
 
     getactiveCRMCustomForm(companyId: any, dealId: any) {
-        return this._http.get(this.authenticationService.REST_URL + "crm/active/custom/form/" + companyId + "/" + dealId + "?access_token=" + this.authenticationService.access_token)
+        return this._http.get(this.authenticationService.REST_URL + "crm/active/custom/form/" + companyId + "/" + dealId + "/" +this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
       }  

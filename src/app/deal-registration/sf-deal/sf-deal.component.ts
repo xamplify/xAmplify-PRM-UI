@@ -87,10 +87,13 @@ export class SfDealComponent implements OnInit {
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
-      }
+      } 
       
     }, error => {
       console.log(error);
+      this.isLoading = false;
+      this.showSFFormError = true; 
+      this.sfFormError = this.referenceService.getApiErrorMessage(error);       
     });
   }
 

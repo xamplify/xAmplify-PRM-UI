@@ -351,6 +351,8 @@
                                   alt="manual" style="height: 70px;">
                                   <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
                                   alt="manual" style="height: 70px;">
+                                  <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
+                                  alt="manual" style="height: 70px;">
                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
                                   <!-- XNFR-211 -->
@@ -557,6 +559,7 @@
                           <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList" src="{{properties?.salesforceImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"  src="{{properties?.hubspotImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"  src="{{properties?.microsoftImage}}">
+                          <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"  src="{{properties?.pipedriveImage}}">
                           <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
                           *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">

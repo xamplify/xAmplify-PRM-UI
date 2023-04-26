@@ -208,6 +208,7 @@ export class Properties {
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
+	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
 
 	teamMemberGroups = 'Team Member Groups';
 
