@@ -14,6 +14,7 @@ import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
+import { UtilService } from 'app/core/services/util.service';
 
 @Injectable()
 export class DashboardService {
@@ -30,7 +31,7 @@ export class DashboardService {
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
-    constructor(private http: Http, private authenticationService: AuthenticationService) { }
+    constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
         return this.http.get(this.authenticationService.REST_URL + "twitter/gender-demographics" + this.QUERY_PARAMETERS
@@ -326,6 +327,9 @@ export class DashboardService {
 
     /******27/03/2020. To get all modules count in dashboard */
     getModuleAnalytics(dto: DashboardAnalyticsDto) {
+        /***XNFR-252****/
+        dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        alert(dto.loginAsUserId);
         const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
