@@ -53,6 +53,8 @@ import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfac
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -279,6 +281,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**** XNFR-238*** */
 	customSkinDto :CustomSkin = new CustomSkin();
 	selectedThemeIndex:number= 0;
+   
+	themeDto: ThemeDto= new ThemeDto();
+	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+	themeNames : string = '';
+	dummyData = this.properties.serverErrorMessage;
 	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -3999,6 +4006,17 @@ configSalesforce() {
 			}
 		  });
 	  }
+      
+	//   saveThemeName(themeData: ThemePropertiesListWrapper){
+	// 	this.themeDto.name= this.themeNames;
+	// 	this.dashBoardService.saveMultipleTheme(themeData).subscribe(
+	// 		(response) =>{
+	// 			this.status = true;
+	// 	},
+	// 	error =>{
+	// 		this.ngxloading = false;
+	// 	}
+	//   );};
 
  /************* XNFR-238 *********************/	
 }

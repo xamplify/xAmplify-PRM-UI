@@ -379,6 +379,30 @@
                                           </div>
                                         </div>
                                       </div>
+
+                                      <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="img_padding">
+                                        <!-- <img  alt="" class="img-custome" src="assets/images/theme/2/webp/01.webp"> -->
+                                        <img  alt="" class="img-custome" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" src="assets/images/theme/2/Webp/01.webp">
+                                        <img  alt="" class="img-custome" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme " src="assets/images/theme/1/Webp/01.webp">
+                                      </div>
+                                        <div class="card selected">
+                                          <div class="card-body">
+                                            <!-- <span class="label label-info selectcolor">Select</span> -->
+                                            <span class="label label-info selectcolor"  *ngIf="authenticationService?.isCustomTheme">In Use</span>
+                                            <span class="label label-info notselectcolor"  *ngIf="!authenticationService?.isLightTheme || authenticationService?.isCustomTheme">Select</span>
+                                            <button type="button" class="label label-info btn-range" [ngClass]="authenticationService?.isCustomTheme?'selectcolor':'notselectcolor'"  (click)="activateTab('customTheme')">
+                                                Edit&nbsp; <i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                                 <h5 class="card-title themefont">{{themeName}}</h5>
+                                            <!-- <span class="label label-info selectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
+                                            <!-- <span class="label label-info selectcolor" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-white">View</a></span>
+                                            <span class="label label-info notselectcolor" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black" >View</a></span> -->
+                                            <!-- <h5 class="card-title themefont">Light</h5> -->
+                                            <!-- <h5 class="card-title themefont"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isDarkTheme" (click)="activateTab('lightTheme')">Light</h5> -->
+                                            <!-- <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">01 Style </span></i> &nbsp;  -->
+                                          </div>
+                                        </div>
+                                      </div>  
                                   </div>
                                 </div>
                               </div>
