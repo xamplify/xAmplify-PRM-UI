@@ -7,13 +7,15 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+declare var $;
 
 @Component({
-  selector: 'app-pipedrive-authentication',
-  templateUrl: './pipedrive-authentication.component.html',
-  styleUrls: ['./pipedrive-authentication.component.css']
+  selector: 'app-pipedrive-authentication-popup',
+  templateUrl: './pipedrive-authentication-popup.component.html',
+  styleUrls: ['./pipedrive-authentication-popup.component.css'],
+  providers: [RegularExpressions],
 })
-export class PipedriveAuthenticationComponent implements OnInit {
+export class PipedriveAuthenticationPopupComponent implements OnInit {
 
   @Input() loggedInUserId: any;
   @Output() closeEvent = new EventEmitter<any>();
@@ -30,7 +32,9 @@ export class PipedriveAuthenticationComponent implements OnInit {
     private integrationService: IntegrationService) { }
 
   ngOnInit() {
-    this.checkAuthorization(); 
+    this.loggedInUserId = this.authenticationService.getUserId();
+    $("#pipedrivePreSettingsForm").modal('show');
+    // this.checkAuthorization(); 
   }
 
   checkAuthorization() {
@@ -94,7 +98,7 @@ export class PipedriveAuthenticationComponent implements OnInit {
         response => { 
           this.loading = false;         
           if (response.statusCode == 200) {            
-            this.closeForm();
+            $( "#pipedrivePreSettingsForm" ).modal( 'hide' );
           } else if (response.statusCode == 403){
             this.customResponse = new CustomResponse('INFO', response.message, true);
           } else {
@@ -115,4 +119,12 @@ export class PipedriveAuthenticationComponent implements OnInit {
     this.closeEvent.emit("0");
   }
 
+  hidePipedrivePresettingForm() {
+    $("#pipedrivePreSettingsForm").hide();
+    console.log("Closed")
+    this.closeEvent.emit("0");
+  }
+
+
 }
+

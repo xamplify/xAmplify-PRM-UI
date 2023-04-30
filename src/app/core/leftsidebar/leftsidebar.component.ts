@@ -99,6 +99,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			vanityUrlPostDto['vanityUrlFilter'] = true;
 		}
 		vanityUrlPostDto['userId'] = this.authenticationService.getUserId();
+		vanityUrlPostDto['loginAsUserId'] = this.utilService.getLoggedInVendorAdminCompanyUserId();
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {

@@ -55,7 +55,7 @@ export class Properties {
 
 	SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
 	SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
-	CONTACT_LIST_VALIDATION = 'Please select how you would like to add your contacts.';
+	CONTACT_LIST_VALIDATION = 'Please click on verify data.';
 	CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
 
 	/* For Partners*/
@@ -208,6 +208,7 @@ export class Properties {
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
+	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
 
 	teamMemberGroups = 'Team Member Groups';
 

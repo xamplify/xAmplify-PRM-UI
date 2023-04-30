@@ -3015,6 +3015,7 @@ configSalesforce() {
 	}
 
 	listAllPipelines(pagination: Pagination) {
+		this.ngxloading = true;
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -3132,8 +3133,9 @@ configSalesforce() {
 				},
 				error => {
 					this.ngxloading = false;
-					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+					this.referenceService.loading(this.httpRequestLoader, false);
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);
 				},
 				() => { }
 			);
@@ -3836,7 +3838,9 @@ configSalesforce() {
 					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
 					this.listAllPipelines(this.pipelinePagination);
 				}, error=>{
-					this.ngxloading = false;					
+					this.ngxloading = false;
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);					
 				}
 			);
 

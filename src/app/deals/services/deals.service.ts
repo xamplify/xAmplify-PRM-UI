@@ -7,12 +7,13 @@ import { Pagination } from '../../core/models/pagination';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DealDynamicProperties } from 'app/deal-registration/models/deal-dynamic-properties';
+import { UtilService } from 'app/core/services/util.service';
 
 @Injectable()
 export class DealsService {
 	URL = this.authenticationService.REST_URL + "deal/";
 
-  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService) { }
   
   listDealsForVendor(pagination: Pagination) {
     return this.http.post(this.URL + `/list/v?access_token=${this.authenticationService.access_token}`, pagination)
@@ -21,6 +22,13 @@ export class DealsService {
   }
 
   listDealsForPartner(pagination: Pagination) {
+     /****XNFR-252*****/
+     let companyProfileName = this.authenticationService.companyProfileName;
+     let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+     if(xamplifyLogin){
+         pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+     }
+     /****XNFR-252*****/
     return this.http.post(this.URL + `/list/p?access_token=${this.authenticationService.access_token}`, pagination)
       .map(this.extractData)
       .catch(this.handleError);
@@ -79,13 +87,15 @@ changeDealStatus(deal: Deal) {
  .catch(this.handleError);
 }
 
-// getCounts(userId:number) {
-//   return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
-//   .map(this.extractData)
-//   .catch(this.handleError);
-// }
 
 getCounts(vanityLoginDto:VanityLoginDto) {
+   /****XNFR-252*****/
+   let companyProfileName = this.authenticationService.companyProfileName;
+   let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+   if(xamplifyLogin){
+    vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+  }
+   /***XNFR-252***/
   return this.http.post(this.URL + `/counts?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
   .map(this.extractData)
   .catch(this.handleError);
@@ -116,6 +126,13 @@ listCampaignLeads(pagination: Pagination) {
 }
 
 listCampaignsForPartner(pagination: Pagination) {
+  /****XNFR-252*****/
+  let companyProfileName = this.authenticationService.companyProfileName;
+  let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+  if(xamplifyLogin){
+      pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+  }
+  /****XNFR-252*****/
   return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
     .map(this.extractData)
     .catch(this.handleError);

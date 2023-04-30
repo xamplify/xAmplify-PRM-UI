@@ -4,6 +4,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { EnvService } from 'app/env.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { TeamMemberService } from 'app/team/services/team-member.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
@@ -29,7 +30,7 @@ export class LoginAsPartnerComponent implements OnInit {
   loginAsEmailNotificationDto:LoginAsEmailNotificationDto = new LoginAsEmailNotificationDto();
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
     private referenceService:ReferenceService,private vanityUrlService:VanityURLService,
-    private utilService:UtilService,private xtremandLogger:XtremandLogger) {
+    private utilService:UtilService,private xtremandLogger:XtremandLogger,public envService: EnvService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
@@ -100,16 +101,30 @@ export class LoginAsPartnerComponent implements OnInit {
 
 
   findRolesAndSetLocalStroageDataAndLogInAsPartner(emailId: any, logoutButtonClicked: boolean) {
-    this.teamMemberService.getVanityUrlRoles(emailId)
-    .subscribe(response => {
-      this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
-      this.setLocalStorageAndRedirectToDashboard(emailId, response.data);
-    },
+    if (this.isLoggedInThroughVanityUrl) {
+      this.teamMemberService.getVanityUrlRoles(emailId)
+      .subscribe(response => {
+        this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
+        this.setLocalStorageAndRedirectToDashboard(emailId, response.data);
+      },
+        (error: any) => {
+          this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+          this.loading = false;
+        }
+      );
+    }else{
+      this.authenticationService.getUserByUserName(emailId).subscribe
+      (response=>{
+        this.addOrRemoveVendorAdminDetails(logoutButtonClicked);
+        this.setLocalStorageAndRedirectToDashboard(emailId, response);
+      },
       (error: any) => {
         this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
         this.loading = false;
       }
-    );
+      );
+    }
+    
     
   }
 

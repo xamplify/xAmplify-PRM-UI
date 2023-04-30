@@ -185,7 +185,7 @@
               <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                 <button class="btn-block dashboard-stat red"
                   [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
-                  (click)="loadContactsByType('unsubscribe')"
+                  (click)="loadContactsByType('unsubscribe')" 
                   [disabled]="contactsByType.unsubscribedContactsCount == 0">
                   <div class="visual">
                     <i class="fa fa-check-circle"
@@ -350,6 +350,8 @@
                                 <img *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList" src="{{properties?.hubspotImage}}"
                                   alt="manual" style="height: 70px;">
                                   <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
+                                  alt="manual" style="height: 70px;">
+                                  <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
                                   alt="manual" style="height: 70px;">
                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
@@ -557,6 +559,7 @@
                           <img class="imageClassCss" alt=""    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList" src="{{properties?.salesforceImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"  src="{{properties?.hubspotImage}}">
                           <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"  src="{{properties?.microsoftImage}}">
+                          <img alt="" class="imageClassCss" *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"  src="{{properties?.pipedriveImage}}">
                           <img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"  src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                         <div id="container"
                           *ngIf="contactList.uploadInProgress || contactList.validationInProgress || (!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">

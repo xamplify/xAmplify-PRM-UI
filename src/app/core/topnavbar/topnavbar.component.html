@@ -48,7 +48,7 @@
                     <!---XNFR-222-->
                     <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
                         <div class="alert alert-info">
-                            <strong>You are logged in as {{loggedInAsUserEmailId}}
+                            <strong> <span title="{{vendorAdminCompanyUserEmailId}}" class="success">You</span> are logged in as {{loggedInAsUserEmailId}}
                                 <app-login-as-partner  [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember" [showLoginAsButton]="false"></app-login-as-partner>
                             </strong>
                         </div>
