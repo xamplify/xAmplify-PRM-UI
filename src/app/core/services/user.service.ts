@@ -4,14 +4,11 @@ import { Observable } from 'rxjs/Observable';
 import { User } from '../models/user';
 import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { AuthenticationService } from '../services/authentication.service';
-import { ReferenceService } from './reference.service';
-import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
 import { RequestDemo } from '../../authentication/request-demo/request-demo';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
-import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
-
+import { UtilService } from './util.service';
 @Injectable()
 export class UserService {
 	
@@ -31,7 +28,7 @@ export class UserService {
     
     constructor(
         private http: Http,
-        private authenticationService: AuthenticationService, public httpClient: HttpClient) {
+        private authenticationService: AuthenticationService, public httpClient: HttpClient,private utilService:UtilService) {
     }
 
     getUsers(): Observable<User[]> {
@@ -290,6 +287,13 @@ export class UserService {
     }
 
     getCategories(pagination: Pagination) {
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleServerError);

@@ -6,4 +6,5 @@ export class DashboardAnalyticsDto {
 	vendorCompanyProfileName = "";
 	vendorCompanyId = 0;
 	applyFilter = false;
+	loginAsUserId = 0;
 }
