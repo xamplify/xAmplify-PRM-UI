@@ -67,7 +67,11 @@ export class CampaignService {
     listCampaign(pagination: Pagination, userId: number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         /****XNFR-252*****/
-        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         /****XNFR-252*****/
         let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -364,9 +368,13 @@ export class CampaignService {
 
 
     listPartnerCampaigns(pagination: Pagination, userId: number) {
-        /***XNFR-252****/
-        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-        /***XNFR-252****/
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         let url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)

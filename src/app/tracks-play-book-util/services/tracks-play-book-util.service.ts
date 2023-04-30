@@ -60,9 +60,13 @@ export class TracksPlayBookUtilService {
     let url = this.trackURL + "/list/";
     if (isPartner) {
       url = url + "p";
-       /***XNFR-252****/
-       pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-       /***XNFR-252****/
+      /****XNFR-252*****/
+      let companyProfileName = this.authenticationService.companyProfileName;
+      let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+      if(xamplifyLogin){
+          pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+      }
+      /****XNFR-252*****/
     } else {
       url = url + "v";
     }

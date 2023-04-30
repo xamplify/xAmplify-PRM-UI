@@ -96,9 +96,13 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
-       /***XNFR-252****/
-       pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-       /***XNFR-252****/
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         const url = this.authenticationService.REST_URL + 'vendor/details?partnerId=' + userId + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -330,8 +334,14 @@ export class DashboardService {
 
     /******27/03/2020. To get all modules count in dashboard */
     getModuleAnalytics(dto: DashboardAnalyticsDto) {
-        /***XNFR-252****/
-        dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+
+        }
+        /****XNFR-252*****/
         const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -339,9 +349,14 @@ export class DashboardService {
     }
 
     getVendorActivityAnalytics(dto: DashboardAnalyticsDto) {
-        /***XNFR-252****/
-        dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-        dto.vanityUrlFilter = dto.loginAsUserId!=null && dto.loginAsUserId>0;
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+            dto.vanityUrlFilter = dto.loginAsUserId!=null && dto.loginAsUserId>0;
+ 
+         }
         /***XNFR-252****/
         const url = this.dashboardAnalytics + 'vendorActivityAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
@@ -791,9 +806,13 @@ export class DashboardService {
         }
 
     getVendors(pagination: Pagination) {
-         /***XNFR-252****/
-         pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-         /***XNFR-252****/
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         }
+         /****XNFR-252*****/
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -802,8 +821,12 @@ export class DashboardService {
     }
 
     getVendorCount(vanityLoginDto: VanityLoginDto) {
-        /***XNFR-252****/
-        vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         }
        /***XNFR-252****/
         return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
             .map(this.extractData)

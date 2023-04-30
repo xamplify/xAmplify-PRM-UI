@@ -23,8 +23,13 @@ export class LeadsService {
   }
 
   listLeadsForPartner(pagination: Pagination) {
-    /***XNFR-252****/
-    pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    /****XNFR-252*****/
+  let companyProfileName = this.authenticationService.companyProfileName;
+  let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+  if(xamplifyLogin){
+      pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+  }
+  /****XNFR-252*****/
     return this.http.post(this.URL + `/list/p?access_token=${this.authenticationService.access_token}`, pagination)
       .map(this.extractData)
       .catch(this.handleError);
@@ -85,8 +90,14 @@ export class LeadsService {
 
 
   getCounts(vanityLoginDto:VanityLoginDto) {
-    /***XNFR-252***/
+    /****XNFR-252*****/
+  let companyProfileName = this.authenticationService.companyProfileName;
+  let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+  if(xamplifyLogin){
     vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+
+  }
+    /***XNFR-252***/
     return this.http.post(this.URL + `/counts?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
@@ -147,8 +158,13 @@ export class LeadsService {
   }
 
   listCampaignsForPartner(pagination: Pagination) {
-    /***XNFR-252***/
-    pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    /****XNFR-252*****/
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+    if(xamplifyLogin){
+        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    }
+    /****XNFR-252*****/
     return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
       .map(this.extractData)
       .catch(this.handleError);

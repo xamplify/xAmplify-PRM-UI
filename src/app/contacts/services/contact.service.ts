@@ -92,8 +92,13 @@ export class ContactService {
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
         this.logger.info("Service class loadContact() completed");
-        /***XNFR-252****/
-        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
 
          /***XNFR-252****/
         return this._http.post(this.contactsUrl + '?userId=' + userId + "&access_token=" + this.authenticationService.access_token, pagination)
@@ -143,9 +148,13 @@ export class ContactService {
     listContactsByType(userListPaginationWrapper: UserListPaginationWrapper) {
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        /****XNFR-252****/
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
         userListPaginationWrapper.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         userListPaginationWrapper.pagination.vanityUrlFilter = userListPaginationWrapper.pagination.loginAsUserId>0;
+        }
         /****XNFR-252****/
         var requestoptions = new RequestOptions({
             body: userListPaginationWrapper
@@ -164,11 +173,18 @@ export class ContactService {
     loadContactsCount(contactListObject: ContactList) {
         let userId = this.authenticationService.user.id;
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        /****XNFR-252****/
-        contactListObject.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-        if(contactListObject.loginAsUserId>0){
-            contactListObject.vanityUrlFilter = true;
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            contactListObject.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+            if(contactListObject.loginAsUserId>0){
+                contactListObject.vanityUrlFilter = true;
+            }
         }
+        /****XNFR-252****/
+
+        
         this.logger.info("Service class loadContactCount() completed");
         return this._http.post(this.contactsUrl + "contacts_count/" + userId + "?access_token=" + this.authenticationService.access_token, contactListObject)
             .map(this.extractData)
