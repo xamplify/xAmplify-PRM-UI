@@ -23,6 +23,8 @@ export class LeadsService {
   }
 
   listLeadsForPartner(pagination: Pagination) {
+    /***XNFR-252****/
+    pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
     return this.http.post(this.URL + `/list/p?access_token=${this.authenticationService.access_token}`, pagination)
       .map(this.extractData)
       .catch(this.handleError);
@@ -149,6 +151,8 @@ export class LeadsService {
   }
 
   listCampaignsForPartner(pagination: Pagination) {
+    /***XNFR-252***/
+    pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
     return this.http.post(this.URL + `campaign/list/p?access_token=${this.authenticationService.access_token}`, pagination)
       .map(this.extractData)
       .catch(this.handleError);
