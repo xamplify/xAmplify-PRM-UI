@@ -7,12 +7,14 @@ import { Pagination } from '../../core/models/pagination';
 import { Lead } from '../models/lead';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DealComments } from 'app/deal-registration/models/deal-comments';
+import { UtilService } from 'app/core/services/util.service';
 
 @Injectable()
 export class LeadsService {
   
   URL = this.authenticationService.REST_URL + "lead/";
-  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService,
+     private logger: XtremandLogger,private utilService:UtilService) { }
 
   listLeadsForVendor(pagination: Pagination) {
     return this.http.post(this.URL + `/list/v?access_token=${this.authenticationService.access_token}`, pagination)
@@ -85,6 +87,8 @@ export class LeadsService {
   // }
 
   getCounts(vanityLoginDto:VanityLoginDto) {
+    /***XNFR-252***/
+    vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
     return this.http.post(this.URL + `/counts?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);

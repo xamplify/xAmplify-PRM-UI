@@ -206,7 +206,6 @@ export class ManageLeadsComponent implements OnInit {
       });
     });
 
-    console.log(this.authenticationService.getRoles());
   }
 
   showVendor() {
@@ -214,8 +213,6 @@ export class ManageLeadsComponent implements OnInit {
       this.isVendorVersion = true;
       this.isPartnerVersion = false;
       this.getActiveCRMDetails();
-      //this.checkSalesforceIntegration();    
-      //this.checkMicrosoftIntegration();  
       this.showLeads();
       if (this.prm) {
         this.listView = true;
@@ -227,7 +224,6 @@ export class ManageLeadsComponent implements OnInit {
   showPartner() {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
-    //this.getPartnerCounts();    
     this.showLeads();
   }
 
