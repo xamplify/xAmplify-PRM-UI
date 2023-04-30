@@ -4,4 +4,5 @@ export class VanityLoginDto {
 	vendorCompanyProfileName:string;
 	vanityUrlFilter:boolean;
 	applyFilter:boolean;
+	loginAsUserId:number;
 }

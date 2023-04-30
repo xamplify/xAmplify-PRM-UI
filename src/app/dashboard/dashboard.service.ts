@@ -96,6 +96,9 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
+       /***XNFR-252****/
+       pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+       /***XNFR-252****/
         const url = this.authenticationService.REST_URL + 'vendor/details?partnerId=' + userId + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -329,7 +332,6 @@ export class DashboardService {
     getModuleAnalytics(dto: DashboardAnalyticsDto) {
         /***XNFR-252****/
         dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-        alert(dto.loginAsUserId);
         const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -785,6 +787,9 @@ export class DashboardService {
         }
 
     getVendors(pagination: Pagination) {
+         /***XNFR-252****/
+         pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         /***XNFR-252****/
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -793,6 +798,9 @@ export class DashboardService {
     }
 
     getVendorCount(vanityLoginDto: VanityLoginDto) {
+        /***XNFR-252****/
+        vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+       /***XNFR-252****/
         return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
             .map(this.extractData)
             .catch(this.handleError);
