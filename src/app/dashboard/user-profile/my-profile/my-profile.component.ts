@@ -55,6 +55,7 @@ import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cro
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -542,6 +543,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
 			this.geoLocation();
+			this.showThemes();
 			this.videoUtilService.normalVideoJsFiles();
 			if (!this.referenceService.isMobileScreenSize()) {
 				this.isGridView(this.authenticationService.getUserId());
@@ -4017,6 +4019,46 @@ configSalesforce() {
 	// 		this.ngxloading = false;
 	// 	}
 	//   );};
+	themeDtoList:ThemeDto[];
+	showThemes() {
+		this.dashBoardService.multipleThemesShow().subscribe(
+			(response) => {
+				this.themeDtoList = response.data;
+			},
+			error => {
+				this.ngxloading = false;
+			}
+		);
+	}
+	showActivateButton:boolean;
+	showDto(dto:ThemeDto){
+        this.themeDto = dto;
+		for (var char of this.themeDtoList) {
+			if(char.name === this.themeDto.name){
+              this.showActivateButton = true;
+			}
+		  }
+		//alert(this.themeDto.name);
+	}
+	activateTheme:CompanyThemeActivate;
+	activateThemeForCompany(id:number){
+     this.activateTheme.themeId =id;
+	 this.activateTheme.createdBy = this.loggedInUserId;
+	 this.activateThemeApi(this.activateTheme);
+	}
+	activateThemeApi(theme:CompanyThemeActivate) {
+
+    //  this.activateTheme.themeId = id;
+	//  this.activateTheme.createdBy = this.loggedInUserId;
+		this.dashBoardService.activateThemeForCompany (theme).subscribe(
+			(data: any) => {
+				this.router.navigate(['/home/dashboard/myprofile']);
+			},
+			error => {
+				this.referenceService.scrollSmoothToTop();
+				this.ngxloading = false;
+			});
+	}
 
  /************* XNFR-238 *********************/	
 }

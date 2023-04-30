@@ -6,7 +6,8 @@
 		<span class="star">*</span>                       
 	</label>
 	<div class="form-group" style="padding-left:113px;margin-top: -40px;">
-		<input type="name" placeholder="Enter Name"  class="form-control border-alignment" [(ngModel)]="themeName">
+		<input type="name" placeholder="Enter Name"  class="form-control border-alignment"[value]="themeName"  [(ngModel)]="themeDTO.name"
+		(ngModelChange)="changEvent($event)">
 		<div class="textCss"></div>
 	 </div>
 </div>
@@ -107,7 +108,7 @@
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
 								<label>Button Border color</label> <input class="form-control"
-									[value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor"
+									[value]="buttonBorderColor" [(ngModel)]="buttonBorderColor"
 									style="padding-left: 40px;"
 									(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')">
 								<span class="input-group-addon color-pick"
@@ -181,7 +182,7 @@
 				</div>
 				<div class="col-md-6 col-lg-6" style="padding: 10px 10px">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveHeader(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -294,7 +295,7 @@
 				</div>
 				<div class="col-md-6 col-lg-6" style="margin-left: -4px;">
 					<button type="button" class="btn btn-primary"
-						(click)="saveMainContent(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -411,7 +412,7 @@
 				</div>
 				<div class="col-md-12 col-lg-12"  style="margin-left: -4px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveLeftMenu(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -506,7 +507,7 @@
 
 				<div class="col-md-12" style="padding: 15px;margin-left: -3px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveFooter(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>

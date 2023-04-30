@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -16,6 +16,7 @@ import { Properties } from 'app/common/models/properties';
 import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
+import { NumericBlurEventArgs } from '@syncfusion/ej2-angular-inputs';
 
 declare var $ : any,CKEDITOR: any,swal:any;
 @Component({
@@ -27,6 +28,8 @@ declare var $ : any,CKEDITOR: any,swal:any;
 export class CustomSkinComponent implements OnInit {
   form :ThemePropertiesDto = new ThemePropertiesDto();
   @ViewChild("myckeditor") ckeditor: any;
+  @Input() themeDTO:ThemeDto;
+  @Input() themeId:number;
   isValidDivBgColor = true;
   isValidHeaderTextColor =true;
   isValidBackgroundColor= true;
@@ -70,25 +73,23 @@ export class CustomSkinComponent implements OnInit {
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
   saveAlert:boolean = false;
   defaultAlert :boolean = false;
-  themeName : string;
+  themeName  = "Light";
   themePropertiesListWrapper: ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
   themeDtoObj: ThemeDto;
-  public createdBy: any;
-  public tname: any;
-  public description: any;
-  public updatedBy: any;
-  public createdDate: any;
-  public updatedDate: any;
-
-  themeDtoList = [];
+  // public createdBy: any;
+  // public description: any;
+  // public updatedBy: any;
+  // public createdDate: any;
+  // public updatedDate: any;
+  
+  themeDtoList : ThemePropertiesDto[];
   themeDto : ThemeDto = new ThemeDto();
   themeWrapper : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
-  footerForm :ThemePropertiesDto = new ThemePropertiesDto();
-  MainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
-  HeaderForm :ThemePropertiesDto = new ThemePropertiesDto();
-  leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
-  sudha : Array<ThemePropertiesDto>;
-
+  // footerForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // MainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // HeaderForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // sudha : Array<ThemePropertiesDto>;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -108,7 +109,7 @@ export class CustomSkinComponent implements OnInit {
      }
 
   ngOnInit() {
-    this. saveAll();
+   // this. saveAll();
     this.activeTabNav(this.activeTabName);
     try {
       this.ckeConfig = {
@@ -116,8 +117,37 @@ export class CustomSkinComponent implements OnInit {
       };
   } catch ( errr ) { }
   }
+  save(form:ThemePropertiesDto){
+    if(CKEDITOR!=undefined){
+      for (var instanceName in CKEDITOR.instances) {
+          CKEDITOR.instances[instanceName].updateElement();
+          form.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
+    this.saveThemePropertiesToList(form);
+  }
+  colorsdto:ThemePropertiesDto;
+  saveThemePropertiesToList(form:ThemePropertiesDto){
+    this.saveAlert = false;
+    this.colorsdto = new ThemePropertiesDto();
+    let self = this;
+    
+    self.colorsdto.backgroundColor = form.backgroundColor;
+    self.colorsdto.textColor = form.textColor;
+    self.colorsdto.buttonColor = form.buttonColor;
+    self.colorsdto.divBgColor = form.divBgColor;
+    self.colorsdto.iconColor = form.iconColor;
+    self.colorsdto.buttonBorderColor = form.buttonBorderColor;
+    self.colorsdto.buttonValueColor = form.buttonValueColor;
+    self.colorsdto.showFooter = form.showFooter;
+    self.colorsdto.moduleTypeString = form.moduleTypeString;
+    self.textContent = form.textContent;
+    self.colorsdto.createdBy = this.loggedInUserId;
+    this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
+    this.saveAlert = true;
+    this.message = "Data saved Sucessfulley"
 
-  
+  }
   clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
    // this.ngxloading = true;
@@ -133,7 +163,7 @@ export class CustomSkinComponent implements OnInit {
   }else if (this.activeTabName == "footer"){
     this.form.moduleTypeString = this.moduleStatusList[3];
   }
- //  this.getDefaultSkin();
+  this.getDefaultSkin(this.themeId);
   }
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
@@ -157,45 +187,43 @@ export class CustomSkinComponent implements OnInit {
 
   message:string="";
 
-  saveSkin(color:ThemePropertiesDto){
-    this.ngxloading = true;
-    this.message = ""; 
-   // this.form.createdBy = this.loggedInUserId;
-    this.form.updatedBy = this.loggedInUserId;
-   // this.form.companyId = this.loggedInUserId;
-    if(CKEDITOR!=undefined){
-      for (var instanceName in CKEDITOR.instances) {
-          CKEDITOR.instances[instanceName].updateElement();
-       //   form.textContent = CKEDITOR.instances[instanceName].getData();
-      }
-    }
-    
-  
-    // this.dashboardService.saveCustomSkin(form).subscribe(
-    //   (data:any)=> {
-    //   this.sucess = true;
-    //   this.ngxloading = false;
-    //   this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
-    //   if(!form.defaultSkin){
-    //     this.message = "Data Saved Successfully";
-    //     this.saveAlert = true;
-    //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
-    //    }
-    //   this.router.navigate(['/home/dashboard/myprofile']);
-    //   this.minLength = form.textContent.length;
-    //   },
-    //  error =>{
-    //   //this.referenceService.scrollSmoothToTop();
-    //   if(this.form.textContent.length > 225){
-    //     this.message = this.properties.serverErrorMessage;
-    //   }else{
-    //     this.message = this.properties.serverErrorMessage;
-    //   }
-    //   this.referenceService.scrollSmoothToTop();
-    //   this.statusCode = 500;
-    //   this.ngxloading = false;
-    //  });
-  }
+  // saveSkin(color:ThemePropertiesDto){
+  //   this.ngxloading = true;
+  //   this.message = ""; 
+  //  // this.form.createdBy = this.loggedInUserId;
+  //   this.form.updatedBy = this.loggedInUserId;
+  //  // this.form.companyId = this.loggedInUserId;
+  //   if(CKEDITOR!=undefined){
+  //     for (var instanceName in CKEDITOR.instances) {
+  //         CKEDITOR.instances[instanceName].updateElement();
+  //      //   form.textContent = CKEDITOR.instances[instanceName].getData();
+  //     }
+  //   }
+  //   // this.dashboardService.saveCustomSkin(form).subscribe(
+  //   //   (data:any)=> {
+  //   //   this.sucess = true;
+  //   //   this.ngxloading = false;
+  //   //   this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
+  //   //   if(!form.defaultSkin){
+  //   //     this.message = "Data Saved Successfully";
+  //   //     this.saveAlert = true;
+  //   //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
+  //   //    }
+  //   //   this.router.navigate(['/home/dashboard/myprofile']);
+  //   //   this.minLength = form.textContent.length;
+  //   //   },
+  //   //  error =>{
+  //   //   //this.referenceService.scrollSmoothToTop();
+  //   //   if(this.form.textContent.length > 225){
+  //   //     this.message = this.properties.serverErrorMessage;
+  //   //   }else{
+  //   //     this.message = this.properties.serverErrorMessage;
+  //   //   }
+  //   //   this.referenceService.scrollSmoothToTop();
+  //   //   this.statusCode = 500;
+  //   //   this.ngxloading = false;
+  //   //  });
+  // }
   /********** Sucess Alert (XNFR-238)************/
   showSweetAlertSuccessMessage(message: string) {
     swal({
@@ -211,48 +239,48 @@ export class CustomSkinComponent implements OnInit {
       });
   }
   /******* Reload Alert ******/
-  sweetAlertDefaultSettings(form:CustomSkin){
-    let self = this;
-    swal({
-      title: "Confirm?",
-      text: "Do you want Activate Theme?",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Back"
-      }
-    ).then(
-      function (isConfirm) {
-        if (isConfirm) {
-          console.log('CONFIRMED');
-        //  console.log(self.form.defaultSkin);
-         // self.form.defaultSkin = true;
-         // self.saveSkin(form);
-           window.location.reload();
-        }
-      },
-      function() {
-         console.log('BACK');
-      }
-    );
-      }
+  // sweetAlertDefaultSettings(form:CustomSkin){
+  //   let self = this;
+  //   swal({
+  //     title: "Confirm?",
+  //     text: "Do you want Activate Theme?",
+  //     type: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#DD6B55",
+  //     confirmButtonText: "Confirm",
+  //     cancelButtonText: "Back"
+  //     }
+  //   ).then(
+  //     function (isConfirm) {
+  //       if (isConfirm) {
+  //         console.log('CONFIRMED');
+  //       //  console.log(self.form.defaultSkin);
+  //        // self.form.defaultSkin = true;
+  //        // self.saveSkin(form);
+  //          window.location.reload();
+  //       }
+  //     },
+  //     function() {
+  //        console.log('BACK');
+  //     }
+  //   );
+  //     }
   /********** Close Sucess Alert  (XNFR-238)*************/
-  saveCustomSkin(form:ThemePropertiesDto){
-  //  this.form.defaultSkin = false;
-   // this.form.darkTheme = false;
-   this.form.backgroundColor =this.backgroundColor;
-   this.form.buttonBorderColor = this.buttonBorderColor;
-   this.form.buttonColor = this.buttonColor;
-   this.form.buttonValueCOlor = this.buttonValueColor;
-   this.form.iconColor = this.iconColor;
-   this.form.textContent = this.textContent;
-   this.form.divBgColor = this.divBgColor;
-    // this.themeDtoList.push(form);
-   alert(this.form.backgroundColor);
-   alert(form);
-   this.saveSkin(form);
-  }
+  // saveCustomSkin(form:ThemePropertiesDto){
+  // //  this.form.defaultSkin = false;
+  //  // this.form.darkTheme = false;
+  //  this.form.backgroundColor =this.backgroundColor;
+  //  this.form.buttonBorderColor = this.buttonBorderColor;
+  //  this.form.buttonColor = this.buttonColor;
+  //  this.form.buttonValueColor = this.buttonValueColor;
+  //  this.form.iconColor = this.iconColor;
+  //  this.form.textContent = this.textContent;
+  //  this.form.divBgColor = this.divBgColor;
+  //   // this.themeDtoList.push(form);
+  //  alert(this.form.backgroundColor);
+  //  alert(form);
+  //  this.saveSkin(form);
+  // }
   // saveCustomSkins(form:ThemePropertiesDto){
   //   this.themeDtoList.push(form);
   //   alert(this.form.backgroundColor);
@@ -260,53 +288,64 @@ export class CustomSkinComponent implements OnInit {
   //   console.log(form,'form result');
   //   console.log(this.themeDtoList,'list result');
   // }
-  saveHeader(form:ThemePropertiesDto){
-    // this.themeDtoHeaderList.push(form);
-    this.HeaderForm = form;
-    console.log(this.HeaderForm);
+  // saveHeader(form:ThemePropertiesDto){
+  //   // this.themeDtoHeaderList.push(form);
+  //   this.HeaderForm = form;
+  //   console.log(this.HeaderForm);
+  // }
+  // saveLeftMenu(form:ThemePropertiesDto){
+  //   // this.themeDtoLeftMenu.push(form);
+  //   this.leftSideForm = form;
+  //   console.log(this.leftSideForm);
+  // }
+  // saveFooter(form:ThemePropertiesDto){
+  //   //this.themeDtoFooterList.push(form);
+  //   this.footerForm = form;
+
+  // }
+  // saveMainContent(form:ThemePropertiesDto){
+  //  // this.themeDtoMainContent.push(form);
+  //  this.MainContentForm = form;
+ 
+  // }
+  // saveAll(){
+  //   // this.themeDtoList.push(this.HeaderForm);
+  //   // this.themeDtoList.push(this.leftSideForm);
+  //   // this.themeDtoList.push(this.MainContentForm);
+  //   // this.themeDtoList.push(this.footerContent);
+  //   // this.sudha.push(this.leftSideForm);
+  //   // this.sudha.push(this.HeaderForm);
+  //   // this.sudha.push(this.footerForm);
+  //   // this.sudha.push(this.MainContentForm)
+  //   //return this.sudha;
+  //   }
+  changEvent(ev:any){
+    this.themeName = ev;
   }
-  saveLeftMenu(form:ThemePropertiesDto){
-    // this.themeDtoLeftMenu.push(form);
-    this.leftSideForm = form;
-    console.log(this.leftSideForm);
-  }
-  saveFooter(form:ThemePropertiesDto){
-    //this.themeDtoFooterList.push(form);
-    this.footerForm = form;
-    console.log(this.footerForm);
-  }
-  saveMainContent(form:ThemePropertiesDto){
-   // this.themeDtoMainContent.push(form);
-   this.MainContentForm = form;
-   console.log(this.MainContentForm);
-  }
-  saveAll(){
-    this.themeDtoList.push(this.HeaderForm);
-    this.themeDtoList.push(this.leftSideForm);
-    this.themeDtoList.push(this.MainContentForm);
-    this.themeDtoList.push(this.footerContent);
-    }
   saveTheme(){
     // alert(this.themeName);
+    this.defaultAlert = false;
     this.themeDto.name = this.themeName;
+   // alert(this.themeDto.name)
     this.themeDto.description = 'Hi';
     this.themeDto.defaultTheme = false;
     this.themeDto.createdBy = this.loggedInUserId;
+    this.defaultAlert = true;
+    this.saveAlert = false;
    // console.log(this.themeDto);
   }
 //   saveThemeWrapper(){
 //     this.themeWrapper = this.getThemePropertiesWrapperObj(this.themePropertiesListWrapper);
 // }
-  
-getThemePropertiesWrapperObj(theme:Array<ThemePropertiesDto>){
+
+getThemePropertiesWrapperObj(){
   this.saveTheme();
-  this.themeWrapper.themeDto = this.themeDto;
-  this.themeWrapper.propertieslist.push(this.HeaderForm);
-  //console.log(this.themeWrapper);
-  console.log(this.themeDtoList);
-  this.dashboardService.saveMultipleTheme(this.themeWrapper).subscribe(
+this.themePropertiesListWrapper.themeDto = this.themeDto;
+ console.log(this.themePropertiesListWrapper);
+  this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
         (data:any)=> {
-          this.message = "Data Saved Successfully";
+          this.router.navigate(['/home/dashboard/myprofile']);
+          this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
         },
         error =>{
           this.statusCode = 500;
@@ -335,32 +374,30 @@ getThemePropertiesWrapperObj(theme:Array<ThemePropertiesDto>){
       });
   }
   important = "!important";
-  getDefaultSkin(){
-    this.ngxloading = true;
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)
-    .subscribe(
+  getDefaultSkin(id:number){
+   // this.ngxloading = true;
+  this.dashboardService.getPropertiesById(id)
+        .subscribe(
         (data:any) =>{
-           let skinMap = data.data;
+          let skinMAp = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-            this.form = skinMap.TOP_NAVIGATION_BAR;
+            this.form = skinMAp.TOP_NAVIGATION_BAR;
            }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
-            this.form = skinMap.LEFT_SIDE_MENU;
+            this.form = skinMAp.LEFT_SIDE_MENU;
            }else if(this.form.moduleTypeString === "FOOTER"){
-            this.form = skinMap.FOOTER;
+            this.form = skinMAp.FOOTER;
            } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
-            this.form = skinMap.MAIN_CONTENT;
+            this.form = skinMAp.MAIN_CONTENT;
            }
            this.iconColor = this.form.iconColor;
            this.backgroundColor = this.form.backgroundColor;
            this.textColor = this.form.textColor;
            this.buttonBorderColor = this.form.buttonBorderColor;
            this.buttonColor = this.form.buttonColor;
-        //   this.buttonValueColor = this.form.buttonValueColor;
-        //   this.fontFamily = this.form.fontFamily
+           this.buttonValueColor = this.form.buttonValueColor;
            this.divBgColor = this.form.divBgColor;
            this.footerContent = this.form.textContent;
-           this.minLength = this.form.textContent.length;
-        //   this.headerTextColor = this.form.headerTextColor;
+           this.textContent = this.form.textContent;
            this.ngxloading =false;
         },error=>{
           this.ngxloading =false;

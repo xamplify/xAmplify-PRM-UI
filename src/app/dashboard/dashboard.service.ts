@@ -14,6 +14,8 @@ import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
+import { ThemePropertiesListWrapper } from './models/theme-properties-list-wrapper';
+import { CompanyThemeActivate } from './models/company-theme-activate';
 
 @Injectable()
 export class DashboardService {
@@ -798,6 +800,40 @@ changeCustomSettingTheme(custom:any) {
 updateCustomDefaultSettings(custom:any) {
     const url = this.authenticationService.REST_URL + 'custom/skin/default?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,custom)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+/*************** Neew Changes *****************/
+saveMultipleTheme(wrapper:ThemePropertiesListWrapper){
+    const url = this.authenticationService.REST_URL + 'custom/skin/savetheme?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,wrapper)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+multipleThemesShow(){
+    let userId = this.authenticationService.getUserId();
+    const url = this.authenticationService.REST_URL + 'custom/skin/theme/'+ userId +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+getPropertiesById(id:number){
+    const url = this.authenticationService.REST_URL + 'custom/skin/getProperties/themeId/'+ id +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+getPropertiesByThemeName(name:string){
+    const url = this.authenticationService.REST_URL + 'custom/skin/getProperties/'+ name +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+activateThemeForCompany(wrapper:CompanyThemeActivate){
+    const url = this.authenticationService.REST_URL + 'custom/skin/activateTheme?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,wrapper)
     .map(this.extractData)
     .catch(this.handleError);
 }

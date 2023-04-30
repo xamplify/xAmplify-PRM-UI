@@ -274,11 +274,13 @@
                                      <div class="btn-toolbar" style="float: right;" *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                      || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                      <div class="btn-group">
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;"  *ngIf="activeTabName === 'customTheme'" (click)="activateCustomskin()">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'lightTheme'" (click)="customskinSettingsEnable('lightTheme')">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'DarkTheme'" (click)="customskinSettingsEnable('DarkTheme')">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismLight'" (click)="customskinSettingsEnable('neumorphismLight')">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismDark'" (click)="customskinSettingsEnable('neumorphismDark')">Activate Theme</button>
+                                    <!--<button class="btn btn-primary padding align" style="border-radius: 6px;"  *ngIf="activeTabName === 'customTheme'" (click)="activateCustomskin()">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'lightTheme'" (click)="activateCustomskin()">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'DarkTheme'" (click)="activateCustomskin()">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismLight'" (click)="activateCustomskin()">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismDark'" (click)="activateCustomskin()">Activate Theme</button> -->
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;"  (click)="activateThemeForCompany(themeDto.id)">Activate Theme</button>
+
                                    </div>
                                    <div class="btn-group">
                                     <button class="btn btn-primary padding align" style="border-radius: 6px; float: right;font-size: 13px;" (click)="activateTab('customskin')">Go Back</button>
@@ -404,6 +406,37 @@
                                         </div>
                                       </div>  
                                   </div>
+                                </div>
+                                <br><br>
+                                <div class="div thembgc">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let dto of themeDtoList">
+                                            <div class="img_padding">
+                                            <!-- <img  alt="" class="img-custome" src="assets/images/theme/2/webp/01.webp"> -->
+                                            <!-- <img  alt="" class="img-custome" *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme" src="assets/images/theme/2/Webp/01.webp"> -->
+                                            <img  alt="" class="img-custome"  src="assets/images/theme/1/Webp/01.webp">
+
+                                          </div>
+                                            <div class="card selected">
+                                              <div class="card-body">
+                                                <!-- <span class="label label-info selectcolor">Select</span> -->
+                                                <!-- <span class="label label-info selectcolor"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme">In Use</span> -->
+                                                <span class="label label-info notselectcolor">Select</span>
+                                                <!-- <span class="label label-info selectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
+                                                <span class="label label-info selectcolor"  (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-white">View</a></span>
+                                                <!-- <span class="label label-info notselectcolor" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black" >View</a></span> -->
+                                                <!-- <h5 class="card-title themefont">Light</h5> -->
+                                                <h5 class="card-title themefont"  >{{dto.name}}</h5>
+                                                <!-- <h5 class="card-title themefont"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isDarkTheme" (click)="activateTab('lightTheme')">Light</h5> -->
+                                                <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">01 Style </span></i> &nbsp; 
+                                                <button type="button" *ngIf="dto.defaultTheme"  class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"  (click)="activateTab('customTheme');showDto(dto);"> <i class="fa fa-cog" aria-hidden="true"></i>
+                                                  Custome</button>
+                                                  <button type="button" *ngIf="!dto.defaultTheme"  class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"  (click)="activateTab('customTheme');showDto(dto);"> <i class="fa fa-cog" aria-hidden="true"></i>
+                                                  Edit</button>
+                                              </div>
+                                            </div>
+                                          </div> 
+                                    </div>
                                 </div>
                               </div>
                               <!-- XNFR-238-->
@@ -1358,7 +1391,7 @@
                                     <div  class="tab-pane img-shadpw" [ngClass]="{'active': activeTabName == 'neumorphismLight'}"  style="border-radius: 10px;">
                                         <img src="assets/images/xnl.webp" class="loader-image-tag border-cu"  style="border-radius: 10px;width: -webkit-fill-available;object-fit:cover;">
                                     </div>
-                                    <app-custom-skin class="tab-pane" [ngClass]="{'active': activeTabName == 'customTheme'}"></app-custom-skin>
+                                    <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id" [ngClass]="{'active': activeTabName == 'customTheme'}" *ngIf="activeTabName == 'customTheme'"></app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
