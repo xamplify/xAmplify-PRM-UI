@@ -82,11 +82,7 @@ export class LeadsService {
       .catch(this.handleError);
   }
 
-  // getCounts(userId:number) {
-  //   return this.http.get(this.URL + `/counts/${userId}?access_token=${this.authenticationService.access_token}`)
-  //   .map(this.extractData)
-  //   .catch(this.handleError);
-  // }
+
 
   getCounts(vanityLoginDto:VanityLoginDto) {
     /***XNFR-252***/
