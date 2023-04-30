@@ -339,6 +339,10 @@ export class DashboardService {
     }
 
     getVendorActivityAnalytics(dto: DashboardAnalyticsDto) {
+        /***XNFR-252****/
+        dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        dto.vanityUrlFilter = dto.loginAsUserId!=null && dto.loginAsUserId>0;
+        /***XNFR-252****/
         const url = this.dashboardAnalytics + 'vendorActivityAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)

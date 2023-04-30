@@ -152,7 +152,6 @@ export class VanityURLService {
       dto.userId = this.authenticationService.getUserId();
     }
     let companyProfileName = this.authenticationService.companyProfileName;
-    // let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
     if (companyProfileName != undefined && companyProfileName != "") {
       dto.vanityUrlFilter = true;
       dto.vendorCompanyProfileName = companyProfileName;
