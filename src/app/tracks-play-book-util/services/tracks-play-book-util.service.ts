@@ -10,7 +10,9 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { TracksPlayBook } from '../models/tracks-play-book';
 import { HttpClient } from "@angular/common/http";
-import { TracksPlayBookType } from '../models/tracks-play-book-type.enum'
+import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { UtilService } from 'app/core/services/util.service';
+
 
 @Injectable()
 export class TracksPlayBookUtilService {
@@ -18,7 +20,7 @@ export class TracksPlayBookUtilService {
   trackURL = this.authenticationService.REST_URL + "lms";
   playBookURL = this.authenticationService.REST_URL + "playbook";
 
-  constructor(private http: HttpClient,private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: HttpClient,private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService) { }
 
   saveOrUpdate(formData: FormData, tracksPlayBook: TracksPlayBook) {
     let url = this.trackURL;
@@ -58,6 +60,9 @@ export class TracksPlayBookUtilService {
     let url = this.trackURL + "/list/";
     if (isPartner) {
       url = url + "p";
+       /***XNFR-252****/
+       pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+       /***XNFR-252****/
     } else {
       url = url + "v";
     }
