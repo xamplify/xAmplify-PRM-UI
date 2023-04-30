@@ -66,6 +66,9 @@ export class CampaignService {
 
     listCampaign(pagination: Pagination, userId: number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        /****XNFR-252*****/
+        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        /****XNFR-252*****/
         let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
