@@ -48,7 +48,17 @@ export class LeadsService {
   }
 
   getVendorList(userId:number) {
-    return this.http.get(this.URL + `/${userId}/vendors?access_token=${this.authenticationService.access_token}`)
+    let url = this.URL + "/"+userId+"/vendors";
+     /****XNFR-252*****/
+   let subDomain = this.authenticationService.getSubDomain();
+    if(subDomain.length==0){
+        let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        if(loginAsUserId>0){
+          url+="/loginAsUserId/"+loginAsUserId;
+        }
+    }
+  /****XNFR-252*****/
+    return this.http.get(url+"?access_token="+this.authenticationService.access_token)
     .map(this.extractData)
     .catch(this.handleError);
   }
