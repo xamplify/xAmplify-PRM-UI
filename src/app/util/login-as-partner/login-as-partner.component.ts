@@ -28,6 +28,7 @@ export class LoginAsPartnerComponent implements OnInit {
   isLoggedInAsTeamMember = false;
   title = "";
   loginAsEmailNotificationDto:LoginAsEmailNotificationDto = new LoginAsEmailNotificationDto();
+  isLoggedInAsPartnerFromXamplify = false;
   constructor(public authenticationService:AuthenticationService,private router:Router,private teamMemberService:TeamMemberService,
     private referenceService:ReferenceService,private vanityUrlService:VanityURLService,
     private utilService:UtilService,private xtremandLogger:XtremandLogger,public envService: EnvService) {
@@ -35,6 +36,8 @@ export class LoginAsPartnerComponent implements OnInit {
       this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
       this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
       this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
+      let subDomain = this.authenticationService.getSubDomain();
+      this.isLoggedInAsPartnerFromXamplify = subDomain.length==0 && (this.isLoggedInAsPartner);
 
      }
 
@@ -42,6 +45,8 @@ export class LoginAsPartnerComponent implements OnInit {
     this.isPartner = this.router.url.includes('home/partners');
     if(this.isLoggedInAsTeamMember){
       this.title = "Login as disabled as you are already logged in as team member";
+    }else if(this.isLoggedInAsPartnerFromXamplify){
+      this.title = "Login as disabled as you are already logged in as partner";
     }else{
       if(this.contact!=undefined){
         if(!this.contact.loginAsPartnerOptionEnabledForVendor && (this.contact.signedUp && this.contact.companyId>0)){

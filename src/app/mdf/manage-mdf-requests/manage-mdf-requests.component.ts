@@ -50,6 +50,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   showMdfFormAnalyticsForVendorView = false;
   vanityLogin = false;
   countLoader = 3;
+  loginAsPartner: any;
   /******XNFR-85******/
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -146,9 +147,15 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       let data = result.data;
       pagination.totalRecords = data.totalRecords;
       pagination = this.pagerService.getPagedItems(pagination, data.vendors);
-      if(this.vanityLogin){
+      let subDomaiName = this.authenticationService.getSubDomain();
+      if(subDomaiName.length==0){
+        let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        this.loginAsPartner = loginAsUserId;
+      }
+      if(this.vanityLogin || this.loginAsPartner){
         this.viewRequests(data.vendors[0]);
       }
+    
       this.loading = false;
       this.referenceService.loading(this.listLoader, false);
     }, error => {
@@ -156,6 +163,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       this.xtremandLogger.errorPage(error);
     });
   }
+  
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
@@ -216,6 +224,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       this.partnershipId = mdfRequestVendorDto.partnershipId;
       this.referenceService.goToTop();
   }
+
+ 
   goToManageRequest(){
     this.showMdfFormAnalyticsForParnterView = false;
     this.mdfRequestVendorDto = new MdfRequestVendorDto();

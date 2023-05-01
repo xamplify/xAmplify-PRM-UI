@@ -80,7 +80,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     this.loggedInAsUserEmailId = userName;
-    this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInVendorAdminCompanyEmailId();
+    if(this.isLoggedInAsTeamMember){
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInAdminCompanyEmailId();
+    }else{
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInVendorAdminCompanyEmailId();
+    }
     this.userId = this.authenticationService.getUserId();
     /*** XNFR-134** */
     this.vanityLoginDto.userId = this.userId;

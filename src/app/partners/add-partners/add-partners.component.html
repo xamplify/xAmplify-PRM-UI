@@ -869,7 +869,7 @@
                                 style="float: right; padding: 4px;display:flex;"
                                 *ngIf="!referenceService.isMobileScreenSize()">
                                 <!---XNFR-222-->
-                                <app-team-member-filter-option *ngIf="showFilter && !isLoggedInAsPartner"
+                                <app-team-member-filter-option *ngIf="showFilter"
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 
                                 <div style="float: left; margin: 0 10px;">
