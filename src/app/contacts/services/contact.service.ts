@@ -58,13 +58,8 @@ export class ContactService {
 
 
     loadUsersOfContactList(contactListId: number, pagination: Pagination) {
-        /*****XNFR-224 */
-        let vendorAdminCompanyUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         let userId = this.authenticationService.user.id;
-        userId = this.authenticationService.checkLoggedInUserId(userId);
-        if(vendorAdminCompanyUserId!=null){
-            userId = vendorAdminCompanyUserId;
-        }
+         userId = this.authenticationService.checkLoggedInUserId(userId);
         return this._http.post(this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token + "&userId=" + userId, pagination)
             .map(this.extractData)
             .catch(this.handleError);
