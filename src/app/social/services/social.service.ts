@@ -13,6 +13,8 @@ import {SocialCampaign} from '../models/social-campaign';
 
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { Pagination } from '../../core/models/pagination';
+import { UtilService } from 'app/core/services/util.service';
+
 
 @Injectable()
 export class SocialService {
@@ -24,7 +26,8 @@ export class SocialService {
   partnerFeed:any;
 
   constructor(private http: Http, private router: Router,
-    private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
+    private authenticationService: AuthenticationService,
+     private activatedRoute: ActivatedRoute,private utilService:UtilService) {
     this.socialConnections = new Array<SocialConnection>();
   }
 
@@ -315,7 +318,19 @@ export class SocialService {
   }
 
   listAllVendors(userId:number){
-    return this.http.get( this.URL + 'social/partner/'+userId+'/vendors?access_token=' + this.authenticationService.access_token,"" )
+    let subDomain = this.authenticationService.getSubDomain();
+    let isVanityLogin = subDomain.length>0;
+    let isLoginAsPartner =  !isVanityLogin;
+    let url = this.URL + 'social/partner/'+userId+'/vendors';
+    if(isVanityLogin){
+      url+="/subDomain/"+subDomain;
+    }else if(isLoginAsPartner){
+      let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+      if(loginAsUserId>0){
+        url+="/loginAsUserId/"+loginAsUserId;
+      }
+    }
+    return this.http.get(url+'?access_token=' + this.authenticationService.access_token,"" )
     .map( this.extractData )
     .catch( this.handleError );
   }
