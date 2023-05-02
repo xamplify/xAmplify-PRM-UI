@@ -13,6 +13,7 @@ import { LandingPageGetDto } from '../models/landing-page-get-dto';
 import {LandingPageAnalyticsPostDto} from '../models/landing-page-analytics-post-dto';
 import { Router } from '@angular/router';
 import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
+import { UtilService } from 'app/core/services/util.service';
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
@@ -21,7 +22,8 @@ export class LandingPageService {
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/"
-    constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger, private router: Router) { }
+    constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
+         private router: Router,private utilService:UtilService) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "default?access_token=" + this.authenticationService.access_token, pagination )
@@ -33,6 +35,14 @@ export class LandingPageService {
         let url = "list";
         if(isPartnerLandingPage){
             url = "partner";
+        /******XNFR-252*****/
+        let subDomain = this.authenticationService.getSubDomain();
+        if(subDomain.length==0){
+            let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+            if(loginAsUserId>0){
+                pagination.loginAsUserId = loginAsUserId;
+            }
+        }
         }
         return this.http.post( this.URL +url+"?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
