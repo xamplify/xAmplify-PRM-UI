@@ -292,6 +292,12 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
+							<!-- XNFR-255 -->
+							<tr *ngIf="!marketing">
+								<th scope="row">Share White Labeled Content</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 							
 						</tbody>
 					</table>
