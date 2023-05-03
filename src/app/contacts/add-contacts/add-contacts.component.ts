@@ -1856,7 +1856,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10) {
+        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption !=11) {
             if ( ev.target.checked ) {
                 console.log( "checked" );
                 $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -3885,10 +3885,15 @@ vanityCheckingMarketoContactsAuthentication(){
                     this.showMiscrosoftPreSettingsForm();
                 }
             }, (error: any) => {
-                this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
-            }, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
-        }
+                this.loading = false;
+                let errorMessage = this.referenceService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+            this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
+        }, () =>                 
+        this.xtremandLogger.log("Microsoft Configuration Checking done")
+        );
     }
+}
    
     //XNFR-230
     checkingPipedriveContactsAuthentication() {
@@ -3903,10 +3908,15 @@ vanityCheckingMarketoContactsAuthentication(){
                     this.showPipedrivePreSettingsForm();
                 }
             }, (error: any) => {
-                this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
-            }, () => this.xtremandLogger.log("Pipedrive Configuration Checking done"));
-        }
+                this.loading = false;
+                let errorMessage = this.referenceService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+            this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
+        }, () =>                 
+        this.xtremandLogger.log("Pipedrive Configuration Checking done")
+        );
     }
+}
 
 	hubSpotVanityAuthentication() {
 		this.contactService.vanitySocialProviderName = 'hubspot';
@@ -4726,8 +4736,14 @@ vanityCheckingMarketoContactsAuthentication(){
                 this.microsoftDynamicsImageNormal = true;
                 this.frameMicrosoftPreview(response);
             }
-        });
-    }
+        },(error: any) => {
+            this.loading = false;
+            let errorMessage = this.referenceService.getApiErrorMessage(error);
+            this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+    }, () =>                 
+    this.xtremandLogger.log("Microsoft Configuration Checking done")
+    );
+}
 
     frameMicrosoftPreview(response:any){
         if ( !response.contacts ) {
@@ -4791,8 +4807,14 @@ vanityCheckingMarketoContactsAuthentication(){
                 this.pipedriveImageNormal = true;
                 this.framePipedrivePreview(response);
             }
-        });
-    }
+        },(error: any) => {
+            this.loading = false;
+            let errorMessage = this.referenceService.getApiErrorMessage(error);
+            this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+    }, () =>                 
+    this.xtremandLogger.log("Pipedrive Configuration Checking done")
+    );
+}
 
     framePipedrivePreview(response:any){
         if ( !response.contacts ) {

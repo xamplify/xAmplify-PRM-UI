@@ -452,10 +452,8 @@
                         aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="col-xs-12" style="margin-top: -18px;">
-                <app-response-message [customResponse]="customResponse"
+            <app-response-message [customResponse]="customResponse"
                     *ngIf="customResponse.isVisible"></app-response-message>
-            </div>
             <div *ngIf="deleteErrorMessage" id="campaignError"
                 class="col-xs-12 alert alert-danger alert-dismissable">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

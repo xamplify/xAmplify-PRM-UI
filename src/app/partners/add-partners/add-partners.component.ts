@@ -4085,10 +4085,15 @@ getTeamMembersByGroupId(partner: any, index: number) {
 					this.showMiscrosoftPreSettingsForm();
 				}
 			}, (error: any) => {
-				this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
-			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
-		}
-	}
+                this.loading = false;
+                let errorMessage = this.referenceService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+            this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
+        }, () =>                 
+        this.xtremandLogger.log("Microsoft Configuration Checking done")
+        );
+    }
+}
 
 	getMicrosoftContacts() {
 		this.loading = true;
@@ -4104,8 +4109,14 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				this.microsoftDynamicsImageNormal = true;
 				this.frameMicrosoftPreview(response);
 			}
-		});
-	}
+		},(error: any) => {
+            this.loading = false;
+            let errorMessage = this.referenceService.getApiErrorMessage(error);
+            this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+    }, () =>                 
+    this.xtremandLogger.log("Microsoft Configuration Checking done")
+    );
+}
 
 	frameMicrosoftPreview(response: any) {
 		if (!response.contacts) {
@@ -4211,9 +4222,14 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				this.showPipedrivePreSettingsForm();
 			}
 		}, (error: any) => {
-			this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
-		}, () => this.xtremandLogger.log("Pipedrive Configuration Checking done"));
-	}
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+		this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
+	}, () =>                 
+	this.xtremandLogger.log("Pipedrive Configuration Checking done")
+	);
+}
 }
 showPipedrivePreSettingsForm() {               
 	this.showPipedriveAuthenticationForm = true;
@@ -4237,7 +4253,13 @@ getPipedriveContacts() {
 			this.pipedriveImageNormal = true;
 			this.framePipedrivePreview(response);
 		}
-	});
+	},(error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+	}, () =>                 
+	this.xtremandLogger.log("Pipedrive Configuration Checking done")
+	);
 }
 framePipedrivePreview(response: any) {
 	if (!response.contacts) {
