@@ -13,7 +13,7 @@
 </div>
 
 <div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" style="border-radius: 6px;" (click)="getThemePropertiesWrapperObj()">Create Theme</button>
+	<button class="btn btn-primary padding align" style="border-radius: 6px;" (click)="getThemePropertiesWrapperObj(form)">Save Theme</button>
 </div>
 </div>
 
@@ -180,12 +180,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-lg-6" style="padding: 10px 10px">
+				<!-- <div class="col-md-6 col-lg-6" style="padding: 10px 10px">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="save(form)">Save</button>
+						(click)="saveHeader(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="tab-pane"
@@ -293,12 +293,12 @@
 						</div>
 					</div> -->
 				</div>
-				<div class="col-md-6 col-lg-6" style="margin-left: -4px;">
+				<!-- <div class="col-md-6 col-lg-6" style="margin-left: -4px;">
 					<button type="button" class="btn btn-primary"
-						(click)="save(form)">Save</button>
+						(click)="saveMainForm(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="tab-pane"
@@ -410,12 +410,12 @@
 					</div>
 
 				</div>
-				<div class="col-md-12 col-lg-12"  style="margin-left: -4px;">
+				<!-- <div class="col-md-12 col-lg-12"  style="margin-left: -4px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="save(form)">Save</button>
+						(click)="saveLeftForm(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
@@ -505,12 +505,12 @@
 					</div>
 				</div>
 
-				<div class="col-md-12" style="padding: 15px;margin-left: -3px;">
+				<!-- <div class="col-md-12" style="padding: 15px;margin-left: -3px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="save(form)">Save</button>
+						(click)="saveFooter(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div>
+				</div> -->
 				<!-- <span *ngIf="isValid" style="color:red ;">please check two colors are same make you sure change any one color. </span> -->
 				<!-- <div *ngIf="isValid" class="alert alert-danger">
               please check two colors are same,please change any one color.
