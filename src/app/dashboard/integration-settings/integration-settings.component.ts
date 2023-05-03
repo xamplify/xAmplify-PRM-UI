@@ -433,6 +433,8 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.listExternalCustomFields();
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
+						}else{
+							this.ngxloading = false;
 						}
 					}
 				}
