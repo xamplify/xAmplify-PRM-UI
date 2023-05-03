@@ -85,10 +85,10 @@ export class CustomSkinComponent implements OnInit {
   themeDtoList : ThemePropertiesDto[];
   themeDto : ThemeDto = new ThemeDto();
   themeWrapper : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
-  // footerForm :ThemePropertiesDto = new ThemePropertiesDto();
-  // MainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
-  // HeaderForm :ThemePropertiesDto = new ThemePropertiesDto();
-  // leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
+  footerForm :ThemePropertiesDto = new ThemePropertiesDto();
+  mainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
+  headerForm :ThemePropertiesDto = new ThemePropertiesDto();
+  leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
   // sudha : Array<ThemePropertiesDto>;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
@@ -109,7 +109,7 @@ export class CustomSkinComponent implements OnInit {
      }
 
   ngOnInit() {
-   // this. saveAll();
+   //this. saveAll();
     this.activeTabNav(this.activeTabName);
     try {
       this.ckeConfig = {
@@ -143,9 +143,9 @@ export class CustomSkinComponent implements OnInit {
     self.colorsdto.moduleTypeString = form.moduleTypeString;
     self.textContent = form.textContent;
     self.colorsdto.createdBy = this.loggedInUserId;
-    this.themePropertiesListWrapper.propertieslist.push(self.colorsdto);
+    //this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
     this.saveAlert = true;
-    this.message = "Data saved Sucessfulley"
+    this.message = "Data saved Sucessfully"
 
   }
   clearCustomResponse(){this.customResponse = new CustomResponse();}
@@ -169,61 +169,10 @@ export class CustomSkinComponent implements OnInit {
     this.form.showFooter = !this.form.showFooter;
     this.showFooter = !this.form.showFooter;
   } 
-  // changeFooter(){
-  //   this.form.showFooter = false;
-  //   this.showFooter = false;
-  // }
-  // footerBody:string;
-  // onChange(event:any){
-  //  this.footerBody= CKEDITOR.instances.editor1.document.getBody().getText();
-  //  this.minLength = this.footerBody.length;
-  // if(this.footerBody.length === 1){
-  //   this.isValid = true;
-  // }
-  // else{
-  //   this.isValid = false;
-  // }
-  // }
-
+  
   message:string="";
 
-  // saveSkin(color:ThemePropertiesDto){
-  //   this.ngxloading = true;
-  //   this.message = ""; 
-  //  // this.form.createdBy = this.loggedInUserId;
-  //   this.form.updatedBy = this.loggedInUserId;
-  //  // this.form.companyId = this.loggedInUserId;
-  //   if(CKEDITOR!=undefined){
-  //     for (var instanceName in CKEDITOR.instances) {
-  //         CKEDITOR.instances[instanceName].updateElement();
-  //      //   form.textContent = CKEDITOR.instances[instanceName].getData();
-  //     }
-  //   }
-  //   // this.dashboardService.saveCustomSkin(form).subscribe(
-  //   //   (data:any)=> {
-  //   //   this.sucess = true;
-  //   //   this.ngxloading = false;
-  //   //   this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
-  //   //   if(!form.defaultSkin){
-  //   //     this.message = "Data Saved Successfully";
-  //   //     this.saveAlert = true;
-  //   //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
-  //   //    }
-  //   //   this.router.navigate(['/home/dashboard/myprofile']);
-  //   //   this.minLength = form.textContent.length;
-  //   //   },
-  //   //  error =>{
-  //   //   //this.referenceService.scrollSmoothToTop();
-  //   //   if(this.form.textContent.length > 225){
-  //   //     this.message = this.properties.serverErrorMessage;
-  //   //   }else{
-  //   //     this.message = this.properties.serverErrorMessage;
-  //   //   }
-  //   //   this.referenceService.scrollSmoothToTop();
-  //   //   this.statusCode = 500;
-  //   //   this.ngxloading = false;
-  //   //  });
-  // }
+  
   /********** Sucess Alert (XNFR-238)************/
   showSweetAlertSuccessMessage(message: string) {
     swal({
@@ -239,120 +188,85 @@ export class CustomSkinComponent implements OnInit {
       });
   }
   /******* Reload Alert ******/
-  // sweetAlertDefaultSettings(form:CustomSkin){
-  //   let self = this;
-  //   swal({
-  //     title: "Confirm?",
-  //     text: "Do you want Activate Theme?",
-  //     type: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#DD6B55",
-  //     confirmButtonText: "Confirm",
-  //     cancelButtonText: "Back"
-  //     }
-  //   ).then(
-  //     function (isConfirm) {
-  //       if (isConfirm) {
-  //         console.log('CONFIRMED');
-  //       //  console.log(self.form.defaultSkin);
-  //        // self.form.defaultSkin = true;
-  //        // self.saveSkin(form);
-  //          window.location.reload();
-  //       }
-  //     },
-  //     function() {
-  //        console.log('BACK');
-  //     }
-  //   );
-  //     }
+  
   /********** Close Sucess Alert  (XNFR-238)*************/
-  // saveCustomSkin(form:ThemePropertiesDto){
-  // //  this.form.defaultSkin = false;
-  //  // this.form.darkTheme = false;
-  //  this.form.backgroundColor =this.backgroundColor;
-  //  this.form.buttonBorderColor = this.buttonBorderColor;
-  //  this.form.buttonColor = this.buttonColor;
-  //  this.form.buttonValueColor = this.buttonValueColor;
-  //  this.form.iconColor = this.iconColor;
-  //  this.form.textContent = this.textContent;
-  //  this.form.divBgColor = this.divBgColor;
-  //   // this.themeDtoList.push(form);
-  //  alert(this.form.backgroundColor);
-  //  alert(form);
-  //  this.saveSkin(form);
-  // }
-  // saveCustomSkins(form:ThemePropertiesDto){
-  //   this.themeDtoList.push(form);
-  //   alert(this.form.backgroundColor);
-  //   console.log( this.themeDto.name);
-  //   console.log(form,'form result');
-  //   console.log(this.themeDtoList,'list result');
-  // }
-  // saveHeader(form:ThemePropertiesDto){
-  //   // this.themeDtoHeaderList.push(form);
-  //   this.HeaderForm = form;
-  //   console.log(this.HeaderForm);
-  // }
-  // saveLeftMenu(form:ThemePropertiesDto){
-  //   // this.themeDtoLeftMenu.push(form);
-  //   this.leftSideForm = form;
-  //   console.log(this.leftSideForm);
-  // }
-  // saveFooter(form:ThemePropertiesDto){
-  //   //this.themeDtoFooterList.push(form);
-  //   this.footerForm = form;
 
-  // }
-  // saveMainContent(form:ThemePropertiesDto){
-  //  // this.themeDtoMainContent.push(form);
-  //  this.MainContentForm = form;
- 
-  // }
+  saveHeader(form:ThemePropertiesDto){
+    // this.themeDtoHeaderList.push(form);
+    this.headerForm = form;
+    this.themePropertiesListWrapper.propertieslist.push(this.headerForm);
+    //this.saveThemePropertiesToList(this.headerForm);
+    console.log(this.headerForm);
+  }
+  saveLeftForm(form:ThemePropertiesDto){
+    // this.themeDtoLeftMenu.push(form);
+    this.leftSideForm = form;
+    this.themePropertiesListWrapper.propertieslist.push(this.leftSideForm)
+    //this.saveThemePropertiesToList(this.leftSideForm);
+    console.log(this.leftSideForm);
+  }
+  saveFooter(form:ThemePropertiesDto){
+    //this.themeDtoFooterList.push(form);
+    this.footerForm = form;
+    this.themePropertiesListWrapper.propertieslist.push(this.footerForm);
+   //this.saveThemePropertiesToList(this.footerForm);
+  }
+  saveMainForm(form:ThemePropertiesDto){
+   // this.themeDtoMainContent.push(form);
+   this.mainContentForm = form;
+   this.themePropertiesListWrapper.propertieslist.push(this.mainContentForm);
+   //.saveThemePropertiesToList(this.mainContentForm);
+
+  }
+  allProperties:any;
   // saveAll(){
-  //   // this.themeDtoList.push(this.HeaderForm);
-  //   // this.themeDtoList.push(this.leftSideForm);
-  //   // this.themeDtoList.push(this.MainContentForm);
-  //   // this.themeDtoList.push(this.footerContent);
-  //   // this.sudha.push(this.leftSideForm);
-  //   // this.sudha.push(this.HeaderForm);
-  //   // this.sudha.push(this.footerForm);
-  //   // this.sudha.push(this.MainContentForm)
-  //   //return this.sudha;
+
+  //   this.headerForm = this.allProperties.TOP_NAVIGATION_BAR;
+  //   this.headerForm.createdBy = this.loggedInUserId;
+  //   this.leftSideForm = this.allProperties.LEFT_SIDE_MENU;
+  //   this.leftSideForm.createdBy = this.loggedInUserId;
+  //   this.footerForm = this.allProperties.FOOTER;
+  //   this.footerForm.createdBy = this.loggedInUserId;
+  //   this.mainContentForm = this.allProperties.MAIN_CONTENT;
+  //   this.mainContentForm.createdBy = this.loggedInUserId;
   //   }
   changEvent(ev:any){
     this.themeName = ev;
   }
-  saveTheme(){
-    // alert(this.themeName);
-    this.defaultAlert = false;
-    this.themeDto.name = this.themeName;
-   // alert(this.themeDto.name)
-    this.themeDto.description = 'Hi';
-    this.themeDto.defaultTheme = false;
-    this.themeDto.createdBy = this.loggedInUserId;
-    this.defaultAlert = true;
-    this.saveAlert = false;
-   // console.log(this.themeDto);
-  }
-//   saveThemeWrapper(){
-//     this.themeWrapper = this.getThemePropertiesWrapperObj(this.themePropertiesListWrapper);
-// }
+  // saveTheme(){
+  //   // alert(this.themeName);
+  //   this.defaultAlert = false;
+  //   this.themeDto.name = this.themeName;
+  //  // alert(this.themeDto.name)
+  //   this.themeDto.description = 'Hi';
+  //   this.themeDto.defaultTheme = false;
+  //   this.themeDto.createdBy = this.loggedInUserId;
+  //   this.defaultAlert = true;
+  //   this.saveAlert = false;
+  //  // console.log(this.themeDto);
+  // }
 
-getThemePropertiesWrapperObj(){
-  this.saveTheme();
-this.themePropertiesListWrapper.themeDto = this.themeDto;
- console.log(this.themePropertiesListWrapper);
-  this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
-        (data:any)=> {
-          this.router.navigate(['/home/dashboard/myprofile']);
-          this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
-        },
-        error =>{
-          this.statusCode = 500;
-          this.message = "Oops!Something went wrong";
-        }
-    )
-}
+id : number;
+// getThemePropertiesWrapperObj(){
+//   this.saveTheme();
+//   this.getDefaultSkin(this.id);
+// // this.themePropertiesListWrapper.propertieslist.push(this.headerForm);
+// // this.themePropertiesListWrapper.propertieslist.push(this.leftSideForm);
+// // this.themePropertiesListWrapper.propertieslist.push(this.footerForm);
+// // this.themePropertiesListWrapper.propertieslist.push(this.mainContentForm)
+// this.themePropertiesListWrapper.themeDto = this.themeDto;
+//  console.log(this.themePropertiesListWrapper);
+//   this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
+//         (data:any)=> {
+//           this.router.navigate(['/home/dashboard/myprofile']);
+//           this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
+//         },
+//         error =>{
+//           this.statusCode = 500;
+//           this.message = "Oops!Something went wrong";
+//         }
+//     )
+// }
   saveDefaultSkin(form:CustomSkin){
   // this.form.defaultSkin = true;
     //this.sweetAlertDefaultSettings(form)
@@ -374,36 +288,38 @@ this.themePropertiesListWrapper.themeDto = this.themeDto;
       });
   }
   important = "!important";
-  getDefaultSkin(id:number){
-   // this.ngxloading = true;
-  this.dashboardService.getPropertiesById(id)
-        .subscribe(
-        (data:any) =>{
-          let skinMAp = data.data;
-           if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-            this.form = skinMAp.TOP_NAVIGATION_BAR;
-           }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
-            this.form = skinMAp.LEFT_SIDE_MENU;
-           }else if(this.form.moduleTypeString === "FOOTER"){
-            this.form = skinMAp.FOOTER;
-           } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
-            this.form = skinMAp.MAIN_CONTENT;
-           }
-           this.iconColor = this.form.iconColor;
-           this.backgroundColor = this.form.backgroundColor;
-           this.textColor = this.form.textColor;
-           this.buttonBorderColor = this.form.buttonBorderColor;
-           this.buttonColor = this.form.buttonColor;
-           this.buttonValueColor = this.form.buttonValueColor;
-           this.divBgColor = this.form.divBgColor;
-           this.footerContent = this.form.textContent;
-           this.textContent = this.form.textContent;
-           this.ngxloading =false;
-        },error=>{
-          this.ngxloading =false;
-          this.message = this.properties.serverErrorMessage;
-        });
-  }
+  // getDefaultSkin(id:number){
+  //  // this.ngxloading = true;
+  // this.dashboardService.getPropertiesById(id)
+  //       .subscribe(
+  //       (data:any) =>{
+  //         let skinMAp = data.data;
+  //         this.allProperties = data.data;
+  //          if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
+  //           this.form = skinMAp.TOP_NAVIGATION_BAR;
+  //          }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
+  //           this.form = skinMAp.LEFT_SIDE_MENU;
+  //          }else if(this.form.moduleTypeString === "FOOTER"){
+  //           this.form = skinMAp.FOOTER;
+  //          } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
+  //           this.form = skinMAp.MAIN_CONTENT;
+  //          }
+  //          this.iconColor = this.form.iconColor;
+  //          this.backgroundColor = this.form.backgroundColor;
+  //          this.textColor = this.form.textColor;
+  //          this.buttonBorderColor = this.form.buttonBorderColor;
+  //          this.buttonColor = this.form.buttonColor;
+  //          this.buttonValueColor = this.form.buttonValueColor;
+  //          this.divBgColor = this.form.divBgColor;
+  //          this.footerContent = this.form.textContent;
+  //          this.textContent = this.form.textContent;
+  //          this.saveAll()
+  //          this.ngxloading =false;
+  //       },error=>{
+  //         this.ngxloading =false;
+  //         this.message = this.properties.serverErrorMessage;
+  //       });
+  // }
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
         if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
@@ -553,5 +469,94 @@ changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
   this.checkValideColorCodes();
   this.disabledSaveButton();
 }
+
+
+
+
+                                         //  Newly Changes
+
+
+                            //  saves name
+saveTheme(){
+    this.defaultAlert = false;
+    this.themeDto.name = this.themeName;
+    this.themeDto.description = 'Hi';
+    this.themeDto.defaultTheme = false;
+    this.themeDto.createdBy = this.loggedInUserId;
+    this.defaultAlert = true;
+    this.saveAlert = false;
+  }
+
+                           
+                      // gives default values
+
+
+  saveAll(){
+    this.headerForm = this.allProperties.TOP_NAVIGATION_BAR;
+    this.headerForm.createdBy = this.loggedInUserId;
+    this.leftSideForm = this.allProperties.LEFT_SIDE_MENU;
+    this.leftSideForm.createdBy = this.loggedInUserId;
+    this.footerForm = this.allProperties.FOOTER;
+    this.footerForm.createdBy = this.loggedInUserId;
+    this.mainContentForm = this.allProperties.MAIN_CONTENT;
+    this.mainContentForm.createdBy = this.loggedInUserId;
+    }
+
+
+                       // saves db colors
+
+
+    getDefaultSkin(id:number){
+      // this.ngxloading = true;
+     this.dashboardService.getPropertiesById(id)
+           .subscribe(
+           (data:any) =>{
+             let skinMAp = data.data;
+             this.allProperties = data.data;
+              if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
+               this.form = skinMAp.TOP_NAVIGATION_BAR;
+              }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
+               this.form = skinMAp.LEFT_SIDE_MENU;
+              }else if(this.form.moduleTypeString === "FOOTER"){
+               this.form = skinMAp.FOOTER;
+              } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
+               this.form = skinMAp.MAIN_CONTENT;
+              }
+              this.iconColor = this.form.iconColor;
+              this.backgroundColor = this.form.backgroundColor;
+              this.textColor = this.form.textColor;
+              this.buttonBorderColor = this.form.buttonBorderColor;
+              this.buttonColor = this.form.buttonColor;
+              this.buttonValueColor = this.form.buttonValueColor;
+              this.divBgColor = this.form.divBgColor;
+              this.footerContent = this.form.textContent;
+              this.textContent = this.form.textContent;
+              this.saveAll()
+              this.ngxloading =false;
+           },error=>{
+             this.ngxloading =false;
+             this.message = this.properties.serverErrorMessage;
+           });
+     }
+
+
+
+                         // save theme
+
+  getThemePropertiesWrapperObj(){
+    this.saveTheme();
+  this.themePropertiesListWrapper.themeDto = this.themeDto;
+   console.log(this.themePropertiesListWrapper);
+    this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
+          (data:any)=> {
+            this.router.navigate(['/home/dashboard/myprofile']);
+            this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
+          },
+          error =>{
+            this.statusCode = 500;
+            this.message = "Oops!Something went wrong";
+          }
+      )
+  }
 
 }

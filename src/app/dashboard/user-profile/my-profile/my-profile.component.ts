@@ -3982,6 +3982,9 @@ configSalesforce() {
       this.ngxloading = false;
      });
 	}
+	goBack(){
+		this.router.navigate(['/home/dashboard/myprofile']);
+	}
 	// showSweetAlertSuccessMessage(message: string) {
 	// 	swal({
 	// 	  title: message,
