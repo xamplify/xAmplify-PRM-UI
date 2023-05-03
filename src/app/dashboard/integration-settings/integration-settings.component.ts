@@ -111,7 +111,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					// this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -299,11 +299,11 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
 		.subscribe(
 		  data => {
-			this.ngxloading = false;
 		    this.referenceService.loading(this.httpRequestLoader, false);
 		    if (data.statusCode == 200) {
 				this.integrationPipelines = data.data;
 		    }
+			this.ngxloading = false;
 		  },
 		  error => {
 			this.ngxloading = false;
@@ -418,7 +418,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					// this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.integrationDetails = data.data;
 					}
