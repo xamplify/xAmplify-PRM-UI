@@ -323,33 +323,38 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 	activateCRMBySelectingDealPipeline() {
-		let self = this;
-		let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
-		let dropDown = '<div class="form-group">';
-		dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select default deal pipeline </label>';
-		dropDown += '<select class="form-control" id="deal-pipeline-dropdown" style="max-height: 50px;">';
-		$.each(this.integrationPipelines, function (_index: number, pipeline: any) {
-			dropDown += '<option value=' + pipeline.id + '>' + pipeline.name + '</option>';
-			$.each(pipeline.stages, function (_index: number, stage: any) {
-				dropDown += '<option disabled style="font-style:italic">&nbsp;&nbsp;&nbsp;' + stage.stageName + '</option>';
-			});
+		if (this.integrationPipelines != undefined && this.integrationPipelines != null
+			&& this.integrationPipelines.length > 0) {
+			let self = this;
+			let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
+			let dropDown = '<div class="form-group">';
+			dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select default deal pipeline </label>';
+			dropDown += '<select class="form-control" id="deal-pipeline-dropdown" style="max-height: 50px;">';
+			$.each(this.integrationPipelines, function (_index: number, pipeline: any) {
+				dropDown += '<option value=' + pipeline.id + '>' + pipeline.name + '</option>';
+				$.each(pipeline.stages, function (_index: number, stage: any) {
+					dropDown += '<option disabled style="font-style:italic">&nbsp;&nbsp;&nbsp;' + stage.stageName + '</option>';
+				});
 
-		});
-		dropDown += '</select>';
-		dropDown += '</div><br>';
-		modalPopUp.append(dropDown);
-		modalPopUp.append(self.createButton('Activate', function () {
-			swal.close();
-			let request: any = {};
-			request.userId = self.loggedInUserId;
-			request.type = self.integrationType;
-			request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
-			self.setActiveCRM(request);
-		})).append(self.createButton('Cancel', function () {
-			//self.buttonName = "CANCEL";
-			swal.close();
-		}));
-		swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
+			});
+			dropDown += '</select>';
+			dropDown += '</div><br>';
+			modalPopUp.append(dropDown);
+			modalPopUp.append(self.createButton('Activate', function () {
+				swal.close();
+				let request: any = {};
+				request.userId = self.loggedInUserId;
+				request.type = self.integrationType;
+				request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
+				self.setActiveCRM(request);
+			})).append(self.createButton('Cancel', function () {
+				//self.buttonName = "CANCEL";
+				swal.close();
+			}));
+			swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
+		} else {
+			this.customFieldsResponse = new CustomResponse('ERROR', "Activation failed as there are no deal pipelines.", true);
+		}
 	}
 
 	createButton(text, cb) {
