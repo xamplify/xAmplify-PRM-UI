@@ -1,3 +1,21 @@
+<div class="portlet-title tabbable-line">
+	<div class="caption caption-md col-xs-12"></div>
+
+<div class="form-group">Theme Name
+	<label class="control-label">
+		<span class="star">*</span>                       
+	</label>
+	<div class="form-group" style="padding-left:113px;margin-top: -40px;">
+		<input type="name" placeholder="Enter Name"  class="form-control border-alignment"[value]="themeName"  [(ngModel)]="themeDTO.name"
+		(ngModelChange)="changEvent($event)">
+		<div class="textCss"></div>
+	 </div>
+</div>
+
+<div class="btn-group" style="float: right;margin-top: -60px;">
+	<button class="btn btn-primary padding align" style="border-radius: 6px;" (click)="getThemePropertiesWrapperObj()">Create Theme</button>
+</div>
+</div>
 
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="alert alert-danger" *ngIf="statusCode==500"  role="alert">
@@ -6,7 +24,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div> 
-<div class="alert alert-success" *ngIf="saveAlert" role="alert">
+<div class="alert alert-success" *ngIf="saveAlert && !defaultAlert" role="alert">
 	{{message}}
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
@@ -90,7 +108,7 @@
 						<div class="col-md-12 col-lg-12">
 							<div class="form-group">
 								<label>Button Border color</label> <input class="form-control"
-									[value]="buttonBorderColor" [(ngModel)]="form.buttonBorderColor"
+									[value]="buttonBorderColor" [(ngModel)]="buttonBorderColor"
 									style="padding-left: 40px;"
 									(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')">
 								<span class="input-group-addon color-pick"
@@ -164,7 +182,7 @@
 				</div>
 				<div class="col-md-6 col-lg-6" style="padding: 10px 10px">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveCustomSkin(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -215,7 +233,7 @@
 									[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
 									[cpHeight]="'265px'"
 									(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
-									[cpPosition]="'bottom'" readonly></span>
+									[cpPosition]="'top'" readonly></span>
 							</div>
 						</div>
 					</div>
@@ -277,7 +295,7 @@
 				</div>
 				<div class="col-md-6 col-lg-6" style="margin-left: -4px;">
 					<button type="button" class="btn btn-primary"
-						(click)="saveCustomSkin(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -394,7 +412,7 @@
 				</div>
 				<div class="col-md-12 col-lg-12"  style="margin-left: -4px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveCustomSkin(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>
@@ -489,7 +507,7 @@
 
 				<div class="col-md-12" style="padding: 15px;margin-left: -3px;">
 					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveCustomSkin(form)">Save</button>
+						(click)="save(form)">Save</button>
 					<button type="button" class="btn btn-secondary"
 						(click)="saveDefaultSkin(form)">User Default Settings</button>
 				</div>

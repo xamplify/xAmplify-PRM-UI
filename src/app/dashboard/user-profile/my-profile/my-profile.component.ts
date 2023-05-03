@@ -53,6 +53,9 @@ import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfac
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -279,6 +282,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**** XNFR-238*** */
 	customSkinDto :CustomSkin = new CustomSkin();
 	selectedThemeIndex:number= 0;
+   
+	themeDto: ThemeDto= new ThemeDto();
+	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+	themeNames : string = '';
+	dummyData = this.properties.serverErrorMessage;
 	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -535,6 +543,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
 			this.geoLocation();
+			this.showThemes();
 			this.videoUtilService.normalVideoJsFiles();
 			if (!this.referenceService.isMobileScreenSize()) {
 				this.isGridView(this.authenticationService.getUserId());
@@ -3999,6 +4008,57 @@ configSalesforce() {
 			}
 		  });
 	  }
+      
+	//   saveThemeName(themeData: ThemePropertiesListWrapper){
+	// 	this.themeDto.name= this.themeNames;
+	// 	this.dashBoardService.saveMultipleTheme(themeData).subscribe(
+	// 		(response) =>{
+	// 			this.status = true;
+	// 	},
+	// 	error =>{
+	// 		this.ngxloading = false;
+	// 	}
+	//   );};
+	themeDtoList:ThemeDto[];
+	showThemes() {
+		this.dashBoardService.multipleThemesShow().subscribe(
+			(response) => {
+				this.themeDtoList = response.data;
+			},
+			error => {
+				this.ngxloading = false;
+			}
+		);
+	}
+	showActivateButton:boolean;
+	showDto(dto:ThemeDto){
+        this.themeDto = dto;
+		for (var char of this.themeDtoList) {
+			if(char.name === this.themeDto.name){
+              this.showActivateButton = true;
+			}
+		  }
+		//alert(this.themeDto.name);
+	}
+	activateTheme:CompanyThemeActivate;
+	activateThemeForCompany(id:number){
+     this.activateTheme.themeId =id;
+	 this.activateTheme.createdBy = this.loggedInUserId;
+	 this.activateThemeApi(this.activateTheme);
+	}
+	activateThemeApi(theme:CompanyThemeActivate) {
+
+    //  this.activateTheme.themeId = id;
+	//  this.activateTheme.createdBy = this.loggedInUserId;
+		this.dashBoardService.activateThemeForCompany (theme).subscribe(
+			(data: any) => {
+				this.router.navigate(['/home/dashboard/myprofile']);
+			},
+			error => {
+				this.referenceService.scrollSmoothToTop();
+				this.ngxloading = false;
+			});
+	}
 
  /************* XNFR-238 *********************/	
 }

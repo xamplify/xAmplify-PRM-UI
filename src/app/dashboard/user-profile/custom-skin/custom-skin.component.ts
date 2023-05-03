@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -13,6 +13,10 @@ import { EmailTemplateService } from 'app/email-template/services/email-template
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { Properties } from 'app/common/models/properties';
+import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
+import { NumericBlurEventArgs } from '@syncfusion/ej2-angular-inputs';
 
 declare var $ : any,CKEDITOR: any,swal:any;
 @Component({
@@ -22,8 +26,10 @@ declare var $ : any,CKEDITOR: any,swal:any;
   providers: [EmailTemplate,Properties]
 })
 export class CustomSkinComponent implements OnInit {
+  form :ThemePropertiesDto = new ThemePropertiesDto();
   @ViewChild("myckeditor") ckeditor: any;
-  form :CustomSkin = new CustomSkin();
+  @Input() themeDTO:ThemeDto;
+  @Input() themeId:number;
   isValidDivBgColor = true;
   isValidHeaderTextColor =true;
   isValidBackgroundColor= true;
@@ -41,6 +47,7 @@ export class CustomSkinComponent implements OnInit {
   buttonBorderColor:string;
   buttonValueColor:string;
   buttonColor :string;
+  textContent :string;
   loggedInUserId:any;
   fontFamily:string;
   isValidColorCode = true;
@@ -66,6 +73,23 @@ export class CustomSkinComponent implements OnInit {
                            "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
   saveAlert:boolean = false;
   defaultAlert :boolean = false;
+  themeName  = "Light";
+  themePropertiesListWrapper: ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+  themeDtoObj: ThemeDto;
+  // public createdBy: any;
+  // public description: any;
+  // public updatedBy: any;
+  // public createdDate: any;
+  // public updatedDate: any;
+  
+  themeDtoList : ThemePropertiesDto[];
+  themeDto : ThemeDto = new ThemeDto();
+  themeWrapper : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+  // footerForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // MainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // HeaderForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
+  // sudha : Array<ThemePropertiesDto>;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
@@ -85,6 +109,7 @@ export class CustomSkinComponent implements OnInit {
      }
 
   ngOnInit() {
+   // this. saveAll();
     this.activeTabNav(this.activeTabName);
     try {
       this.ckeConfig = {
@@ -92,11 +117,40 @@ export class CustomSkinComponent implements OnInit {
       };
   } catch ( errr ) { }
   }
+  save(form:ThemePropertiesDto){
+    if(CKEDITOR!=undefined){
+      for (var instanceName in CKEDITOR.instances) {
+          CKEDITOR.instances[instanceName].updateElement();
+          form.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
+    this.saveThemePropertiesToList(form);
+  }
+  colorsdto:ThemePropertiesDto;
+  saveThemePropertiesToList(form:ThemePropertiesDto){
+    this.saveAlert = false;
+    this.colorsdto = new ThemePropertiesDto();
+    let self = this;
+    
+    self.colorsdto.backgroundColor = form.backgroundColor;
+    self.colorsdto.textColor = form.textColor;
+    self.colorsdto.buttonColor = form.buttonColor;
+    self.colorsdto.divBgColor = form.divBgColor;
+    self.colorsdto.iconColor = form.iconColor;
+    self.colorsdto.buttonBorderColor = form.buttonBorderColor;
+    self.colorsdto.buttonValueColor = form.buttonValueColor;
+    self.colorsdto.showFooter = form.showFooter;
+    self.colorsdto.moduleTypeString = form.moduleTypeString;
+    self.textContent = form.textContent;
+    self.colorsdto.createdBy = this.loggedInUserId;
+    this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
+    this.saveAlert = true;
+    this.message = "Data saved Sucessfulley"
 
-  
+  }
   clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
-    this.ngxloading = true;
+   // this.ngxloading = true;
     this.saveAlert = false;
     this.defaultAlert = false;
   this.activeTabName = activateTab;
@@ -109,7 +163,7 @@ export class CustomSkinComponent implements OnInit {
   }else if (this.activeTabName == "footer"){
     this.form.moduleTypeString = this.moduleStatusList[3];
   }
-   this.getDefaultSkin();
+  this.getDefaultSkin(this.themeId);
   }
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
@@ -133,45 +187,43 @@ export class CustomSkinComponent implements OnInit {
 
   message:string="";
 
-  saveSkin(form:CustomSkin){
-    this.ngxloading = true;
-    this.message = ""; 
-    this.form.createdBy = this.loggedInUserId;
-    this.form.updatedBy = this.loggedInUserId;
-    this.form.companyId = this.loggedInUserId;
-    if(CKEDITOR!=undefined){
-      for (var instanceName in CKEDITOR.instances) {
-          CKEDITOR.instances[instanceName].updateElement();
-          form.textContent = CKEDITOR.instances[instanceName].getData();
-      }
-    }
-    
-  
-    this.dashboardService.saveCustomSkin(form).subscribe(
-      (data:any)=> {
-      this.sucess = true;
-      this.ngxloading = false;
-      //this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
-      if(!form.defaultSkin){
-        this.message = "Data Saved Successfully";
-        this.saveAlert = true;
-        //this.showSweetAlertSuccessMessage("Settings updated successfully.");
-        }
-      //this.router.navigate(['/home/dashboard/myprofile']);
-      this.minLength = form.textContent.length;
-      },
-     error =>{
-      //this.referenceService.scrollSmoothToTop();
-      if(this.form.textContent.length > 225){
-        this.message = this.properties.serverErrorMessage;
-      }else{
-        this.message = this.properties.serverErrorMessage;
-      }
-      this.referenceService.scrollSmoothToTop();
-      this.statusCode = 500;
-      this.ngxloading = false;
-     });
-  }
+  // saveSkin(color:ThemePropertiesDto){
+  //   this.ngxloading = true;
+  //   this.message = ""; 
+  //  // this.form.createdBy = this.loggedInUserId;
+  //   this.form.updatedBy = this.loggedInUserId;
+  //  // this.form.companyId = this.loggedInUserId;
+  //   if(CKEDITOR!=undefined){
+  //     for (var instanceName in CKEDITOR.instances) {
+  //         CKEDITOR.instances[instanceName].updateElement();
+  //      //   form.textContent = CKEDITOR.instances[instanceName].getData();
+  //     }
+  //   }
+  //   // this.dashboardService.saveCustomSkin(form).subscribe(
+  //   //   (data:any)=> {
+  //   //   this.sucess = true;
+  //   //   this.ngxloading = false;
+  //   //   this.referenceService.showSweetAlertSuccessMessage("Settings updated successfully.");
+  //   //   if(!form.defaultSkin){
+  //   //     this.message = "Data Saved Successfully";
+  //   //     this.saveAlert = true;
+  //   //     this.showSweetAlertSuccessMessage("Settings updated successfully.");
+  //   //    }
+  //   //   this.router.navigate(['/home/dashboard/myprofile']);
+  //   //   this.minLength = form.textContent.length;
+  //   //   },
+  //   //  error =>{
+  //   //   //this.referenceService.scrollSmoothToTop();
+  //   //   if(this.form.textContent.length > 225){
+  //   //     this.message = this.properties.serverErrorMessage;
+  //   //   }else{
+  //   //     this.message = this.properties.serverErrorMessage;
+  //   //   }
+  //   //   this.referenceService.scrollSmoothToTop();
+  //   //   this.statusCode = 500;
+  //   //   this.ngxloading = false;
+  //   //  });
+  // }
   /********** Sucess Alert (XNFR-238)************/
   showSweetAlertSuccessMessage(message: string) {
     swal({
@@ -187,47 +239,129 @@ export class CustomSkinComponent implements OnInit {
       });
   }
   /******* Reload Alert ******/
-  sweetAlertDefaultSettings(form:CustomSkin){
-    let self = this;
-    swal({
-      title: "Confirm?",
-      text: "Do you want Activate Theme?",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Confirm",
-      cancelButtonText: "Back"
-      }
-    ).then(
-      function (isConfirm) {
-        if (isConfirm) {
-          console.log('CONFIRMED');
-          console.log(self.form.defaultSkin);
-          self.form.defaultSkin = true;
-          self.saveSkin(form);
-           window.location.reload();
-        }
-      },
-      function() {
-         console.log('BACK');
-      }
-    );
-      }
+  // sweetAlertDefaultSettings(form:CustomSkin){
+  //   let self = this;
+  //   swal({
+  //     title: "Confirm?",
+  //     text: "Do you want Activate Theme?",
+  //     type: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#DD6B55",
+  //     confirmButtonText: "Confirm",
+  //     cancelButtonText: "Back"
+  //     }
+  //   ).then(
+  //     function (isConfirm) {
+  //       if (isConfirm) {
+  //         console.log('CONFIRMED');
+  //       //  console.log(self.form.defaultSkin);
+  //        // self.form.defaultSkin = true;
+  //        // self.saveSkin(form);
+  //          window.location.reload();
+  //       }
+  //     },
+  //     function() {
+  //        console.log('BACK');
+  //     }
+  //   );
+  //     }
   /********** Close Sucess Alert  (XNFR-238)*************/
-  saveCustomSkin(form:CustomSkin){
-    this.form.defaultSkin = false;
-    this.form.darkTheme = false;
-    this.saveSkin(form);
+  // saveCustomSkin(form:ThemePropertiesDto){
+  // //  this.form.defaultSkin = false;
+  //  // this.form.darkTheme = false;
+  //  this.form.backgroundColor =this.backgroundColor;
+  //  this.form.buttonBorderColor = this.buttonBorderColor;
+  //  this.form.buttonColor = this.buttonColor;
+  //  this.form.buttonValueColor = this.buttonValueColor;
+  //  this.form.iconColor = this.iconColor;
+  //  this.form.textContent = this.textContent;
+  //  this.form.divBgColor = this.divBgColor;
+  //   // this.themeDtoList.push(form);
+  //  alert(this.form.backgroundColor);
+  //  alert(form);
+  //  this.saveSkin(form);
+  // }
+  // saveCustomSkins(form:ThemePropertiesDto){
+  //   this.themeDtoList.push(form);
+  //   alert(this.form.backgroundColor);
+  //   console.log( this.themeDto.name);
+  //   console.log(form,'form result');
+  //   console.log(this.themeDtoList,'list result');
+  // }
+  // saveHeader(form:ThemePropertiesDto){
+  //   // this.themeDtoHeaderList.push(form);
+  //   this.HeaderForm = form;
+  //   console.log(this.HeaderForm);
+  // }
+  // saveLeftMenu(form:ThemePropertiesDto){
+  //   // this.themeDtoLeftMenu.push(form);
+  //   this.leftSideForm = form;
+  //   console.log(this.leftSideForm);
+  // }
+  // saveFooter(form:ThemePropertiesDto){
+  //   //this.themeDtoFooterList.push(form);
+  //   this.footerForm = form;
+
+  // }
+  // saveMainContent(form:ThemePropertiesDto){
+  //  // this.themeDtoMainContent.push(form);
+  //  this.MainContentForm = form;
+ 
+  // }
+  // saveAll(){
+  //   // this.themeDtoList.push(this.HeaderForm);
+  //   // this.themeDtoList.push(this.leftSideForm);
+  //   // this.themeDtoList.push(this.MainContentForm);
+  //   // this.themeDtoList.push(this.footerContent);
+  //   // this.sudha.push(this.leftSideForm);
+  //   // this.sudha.push(this.HeaderForm);
+  //   // this.sudha.push(this.footerForm);
+  //   // this.sudha.push(this.MainContentForm)
+  //   //return this.sudha;
+  //   }
+  changEvent(ev:any){
+    this.themeName = ev;
   }
+  saveTheme(){
+    // alert(this.themeName);
+    this.defaultAlert = false;
+    this.themeDto.name = this.themeName;
+   // alert(this.themeDto.name)
+    this.themeDto.description = 'Hi';
+    this.themeDto.defaultTheme = false;
+    this.themeDto.createdBy = this.loggedInUserId;
+    this.defaultAlert = true;
+    this.saveAlert = false;
+   // console.log(this.themeDto);
+  }
+//   saveThemeWrapper(){
+//     this.themeWrapper = this.getThemePropertiesWrapperObj(this.themePropertiesListWrapper);
+// }
+
+getThemePropertiesWrapperObj(){
+  this.saveTheme();
+this.themePropertiesListWrapper.themeDto = this.themeDto;
+ console.log(this.themePropertiesListWrapper);
+  this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
+        (data:any)=> {
+          this.router.navigate(['/home/dashboard/myprofile']);
+          this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
+        },
+        error =>{
+          this.statusCode = 500;
+          this.message = "Oops!Something went wrong";
+        }
+    )
+}
   saveDefaultSkin(form:CustomSkin){
-    this.form.defaultSkin = true;
-    this.sweetAlertDefaultSettings(form)
-    // this.form.darkTheme = false;
-    // this.updateUserDefaultSettings(form);
+  // this.form.defaultSkin = true;
+    //this.sweetAlertDefaultSettings(form)
+   // this.form.darkTheme = false;
+    this.updateUserDefaultSettings(form);
   }
   updateUserDefaultSettings(form:CustomSkin){
     this.ngxloading = true;
-    this.form.createdBy = this.loggedInUserId;
+   // this.form.createdBy = this.loggedInUserId;
     this.form.updatedBy = this.loggedInUserId;
     this.dashboardService.updateCustomDefaultSettings(form).subscribe(
       (data:any) =>{
@@ -240,20 +374,20 @@ export class CustomSkinComponent implements OnInit {
       });
   }
   important = "!important";
-  getDefaultSkin(){
-    this.ngxloading = true;
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)
-    .subscribe(
+  getDefaultSkin(id:number){
+   // this.ngxloading = true;
+  this.dashboardService.getPropertiesById(id)
+        .subscribe(
         (data:any) =>{
-           let skinMap = data.data;
+          let skinMAp = data.data;
            if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-            this.form = skinMap.TOP_NAVIGATION_BAR;
+            this.form = skinMAp.TOP_NAVIGATION_BAR;
            }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
-            this.form = skinMap.LEFT_SIDE_MENU;
+            this.form = skinMAp.LEFT_SIDE_MENU;
            }else if(this.form.moduleTypeString === "FOOTER"){
-            this.form = skinMap.FOOTER;
+            this.form = skinMAp.FOOTER;
            } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
-            this.form = skinMap.MAIN_CONTENT;
+            this.form = skinMAp.MAIN_CONTENT;
            }
            this.iconColor = this.form.iconColor;
            this.backgroundColor = this.form.backgroundColor;
@@ -261,11 +395,9 @@ export class CustomSkinComponent implements OnInit {
            this.buttonBorderColor = this.form.buttonBorderColor;
            this.buttonColor = this.form.buttonColor;
            this.buttonValueColor = this.form.buttonValueColor;
-           this.fontFamily = this.form.fontFamily
            this.divBgColor = this.form.divBgColor;
            this.footerContent = this.form.textContent;
-           this.minLength = this.form.textContent.length;
-           this.headerTextColor = this.form.headerTextColor;
+           this.textContent = this.form.textContent;
            this.ngxloading =false;
         },error=>{
           this.ngxloading =false;
@@ -291,7 +423,7 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
     this.form.divBgColor = colorCode;
     this.isValidDivBgColor = true;
   }else if(type === "headerTextColor"){
-    this.form.headerTextColor = colorCode;
+  //  this.form.headerTextColor = colorCode;
     this.isValidHeaderTextColor = true;
   }else if (type === "butttonBorderColor") {
       this.form.buttonBorderColor = colorCode;
@@ -300,7 +432,7 @@ removeColorCodeErrorMessage(colorCode: string, type: string) {
       this.form.buttonColor = colorCode;
       this.isValidButtonColor = true;
   } else if (type === "buttonValueColor") {
-      this.form.buttonValueColor = colorCode;
+     // this.form.buttonValueColor = colorCode;
       this.isValidButtonValueColor = true;
   } else if (type === "textColor") {
       this.form.textColor = colorCode;
@@ -338,8 +470,8 @@ disabledSaveButton(){
 checkValideColorCodes(){
   if(this.form.backgroundColor=== this.form.buttonColor){
     this.isValid = true; 
-    }else if(this.form.buttonValueColor === this.form.buttonColor){
-      this.isValid = true;
+  //  }else if(this.form.buttonValueColor === this.form.buttonColor){
+  //    this.isValid = true;
     }else if(this.form.iconColor === this.form.buttonColor){
       this.isValid = true;
     }else{
@@ -360,13 +492,13 @@ private addColorCodeErrorMessage(type: string) {
     this.form.divBgColor = "";
     this.isValidDivBgColor = false;
   }else if(type === "headerTextColor"){
-    this.form.headerTextColor = "";
+  //  this.form.headerTextColor = "";
     this.isValidHeaderTextColor = false;
   }  else if (type === "buttonColor") {
       this.form.buttonColor = "";
       this.isValidButtonColor = false;
   } else if (type === "buttonValueColor") {
-      this.form.buttonValueColor = "";
+   //   this.form.buttonValueColor = "";
       this.isValidButtonValueColor = false;
   } else if (type === "textColor") {
       this.form.textColor = "";
@@ -379,7 +511,7 @@ private addColorCodeErrorMessage(type: string) {
     this.isValidButtonBorderColor = false;
   }
 }
-changeControllerColor(event: any, form: CustomSkin, type: string) {
+changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
   try {
       const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
       $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
@@ -392,7 +524,7 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
         form.divBgColor = event;
         this.isValidDivBgColor = true;
       }else if(type === "headerTextColor"){
-        form.headerTextColor = event;
+       // form.headerTextColor = event;
         this.headerTextColor = event;
         this.isValidHeaderTextColor = true;
       }
@@ -406,7 +538,7 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
           this.isValidButtonColor = true;
       } else if (type === "buttonValueColor") {
           this.buttonValueColor = event;
-          form.buttonValueColor = event;
+       //   form.buttonValueColor = event;
           this.isValidButtonValueColor = true;
       } else if (type === "textColor") {
           this.textColor = event;
@@ -421,6 +553,5 @@ changeControllerColor(event: any, form: CustomSkin, type: string) {
   this.checkValideColorCodes();
   this.disabledSaveButton();
 }
-
 
 }

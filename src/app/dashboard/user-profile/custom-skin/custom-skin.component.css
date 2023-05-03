@@ -1680,3 +1680,13 @@ input:checked+.slider:before {
 .notValid {
 	background-color: none !important;
 }
+.star {
+	color: red !important;
+	font-weight: 600;
+  }
+.border-alignment{
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 35.5%;
+}

@@ -951,6 +951,9 @@ img.img-custome {
   padding: 5px 8px;
   font-size: 13px;
 }
+.btn-range{
+  padding-bottom: 4px;
+}
 .themefont {
   font-size: 15px;
 }
