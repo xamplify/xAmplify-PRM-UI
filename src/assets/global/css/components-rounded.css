@@ -14564,8 +14564,9 @@ Transparent Button
 
 /** 26-01-2023 **/
 .modal-header {
-    padding: 10px;
+  padding: 0px 10px 10px 10px;
 }
+
 /* 26-01-2023 */
 .modal-header > button.close-circle,
 .modal-header > a.close-circle

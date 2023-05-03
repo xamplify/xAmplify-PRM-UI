@@ -221,9 +221,9 @@ export class CustomSkinComponent implements OnInit {
   }
   saveDefaultSkin(form:CustomSkin){
     this.form.defaultSkin = true;
-    //this.sweetAlertDefaultSettings(form)
-    this.form.darkTheme = false;
-    this.updateUserDefaultSettings(form);
+    this.sweetAlertDefaultSettings(form)
+    // this.form.darkTheme = false;
+    // this.updateUserDefaultSettings(form);
   }
   updateUserDefaultSettings(form:CustomSkin){
     this.ngxloading = true;

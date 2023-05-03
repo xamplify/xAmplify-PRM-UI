@@ -124,7 +124,7 @@
 .page-bar {
     /* padding: 0px 10px; */
     background-color: #ffffff;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 5px!important;
 }
 
@@ -362,7 +362,7 @@ body {
 	height: 100%;
 	width: auto;
 	margin: 0 auto;  */
-    border: solid 1px #cccccc;
+    /* border: solid 1px #cccccc; */
     border-radius: 5px;
 }
 
@@ -421,7 +421,7 @@ body {
 }
 
 .track-title {
-    padding: 3px 17px;
+    padding: 10px 17px;
     width: 95%;
     white-space: nowrap;
     overflow: hidden;
@@ -449,11 +449,12 @@ body {
 }
 
 .img-class {
-    height: 140px !important;
-    /* width: 100% !important; */
-    object-fit: contain;
+    height: 100px !important;
+    width: 100%;
+    object-fit: cover;
     background-color: #f1f1f1;
-    border-radius:5px;
+    border-radius: 5px;
+    border: 1px solid #ddd ;
 }
 
 .content-in-view {
@@ -497,7 +498,10 @@ body {
     max-width: 100%;
 }
 .color-inline{
-    padding: 5px 5px 5px 10px;margin-bottom: 10px;background-color: white;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;border: 1px solid #ddd;
+    padding: 5px 5px 5px 10px;margin-bottom:0px;background-color: white;border-top-left-radius: 5px;border-top-right-radius: 5px;height: 42px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 .text-color{
     color: #888;
@@ -514,4 +518,20 @@ img.custom-image-css {
 }
 .Form-BgImg {
     padding: 0px !important;
+}
+.table {
+  margin-bottom: 0px;
+}
+.overflow-control{
+    overflow: hidden !important;
+}
+.tgrid {
+    border: none;
+}
+.table>thead>tr>th {
+    border-bottom: none;
+}
+
+.leftBar{
+    border-radius: 5px !important;
 }

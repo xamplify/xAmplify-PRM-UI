@@ -30,7 +30,7 @@
                 </li>
             </ul>
             <div id="folder-margin-xamp">
-                <button class="btn btn custom" id="right" style="padding-bottom: 2px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                <button class="btn btn custom btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -43,36 +43,40 @@
             <div class="container" style="width: 100%;">
                 <div class="portlet light row steps-view">
                     <div id="s.2" class="width" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-1">
+                            <!-- <span>
                                 <i class="fa fa-th-list" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs" translate>Campaign Details</h5>
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/campaignDetails.svg">
+                            <h5 class="hidden-xs text-clr" translate>Campaign Details</h5>
                         </div>
                     </div>
 
                     <div *ngIf="!isCampaignDetailsFormValid && campaignType=='video'" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-1">
+                            <!-- <span>
                                 <i class="fa fa-video-camera" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs" translate>Select a Video</h5>
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/video.svg">
+                            <h5 class="hidden-xs text-clr" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-1">
+                            <!-- <span>
                                 <i class="fa fa-video-camera" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs" translate>Select a Video</h5>
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/video.svg">
+                            <h5 class="hidden-xs text-clr" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-2">
+                            <!-- <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs">
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
+                            <h5 class="hidden-xs text-clr">
                                 <!--XNFR-125-->
                                 <!--Partners & Share Leads-->
                                 <ng-container *ngIf="campaign.oneClickLaunch">
@@ -97,11 +101,12 @@
                     </div>
 
                     <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }"  (click)="resetActive($event, 60, 'step-4');">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-2">
+                            <!-- <span>
                                 <i class="fa fa-users" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs">
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
+                            <h5 class="hidden-xs text-clr">
                                 <!--XNFR-125-->
                                 <!--Partners & Share Leads-->
                                 <ng-container *ngIf="campaign.oneClickLaunch">
@@ -125,56 +130,62 @@
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
+                        <div class="cenetered-block colorbox-3">
                             <ng-container *ngIf="campaignType=='landingPage'">
-                                <span>
+                                <!-- <span>
                                     <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                </span>
-                                <h5 class="hidden-xs" translate>Page</h5>
+                                </span> -->
+                                <img  class="newicons" alt="" src="assets/images/campaignnew-icon/page.svg">
+                                <h5 class="hidden-xs text-clr" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
-                                <span>
+                                <!-- <span>
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </span>
-                                <h5 class="hidden-xs" translate>Email Template</h5>
+                                </span> -->
+                                <img  class="newicons" alt="" src="assets/images/campaignnew-icon/emailtemplate.svg">
+                                <h5 class="hidden-xs text-clr" translate>Email Template</h5>
                             </ng-container>
                         </div>
                     </div>
 
                     <div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 80, 'step-5');">
-                        <div class="cenetered-block">
+                        <div class="cenetered-block colorbox-3">
                             <ng-container *ngIf="campaignType=='landingPage'">
-                                <span>
+                                <!-- <span>
                                     <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                </span>
-                                <h5 class="hidden-xs" translate>Page</h5>
+                                </span> -->
+                                <img  class="newicons" alt="" src="assets/images/campaignnew-icon/page.svg">
+                                <h5 class="hidden-xs text-clr" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
-                                <span>
+                                <!-- <span>
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </span>
-                                <h5 class="hidden-xs" translate>Email Template</h5>
+                                </span> -->
+                                <img  class="newicons" alt="" src="assets/images/campaignnew-icon/emailtemplate.svg">
+                                <h5 class="hidden-xs text-clr" translate>Email Template</h5>
                             </ng-container>
                         </div>
                     </div>
 
                     <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate || !isLandingPage" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-4">
+                            <!-- <span>
                                 <i class="fa fa-flag" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs" translate>Launch</h5>
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/launch.svg">
+                            <h5 class="hidden-xs text-clr" translate>Launch</h5>
                         </div>
                     </div>
 
                     <div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate && isLandingPage" [attr.class]="launchCampaignTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
-                        <div class="cenetered-block">
-                            <span>
+                        <div class="cenetered-block colorbox-4">
+                            <!-- <span>
                                 <i class="fa fa-flag" aria-hidden="true"></i>
-                            </span>
-                            <h5 class="hidden-xs" translate>Launch</h5>
+                            </span> -->
+                            <img  class="newicons" alt="" src="assets/images/campaignnew-icon/launch.svg">
+                            <h5 class="hidden-xs text-clr" translate>Launch</h5>
                         </div>
                     </div>
                 </div>
@@ -1226,7 +1237,7 @@
                                                                     <img  *ngIf="contacts?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
-                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
                                                                     <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
@@ -1454,7 +1465,6 @@
                                                                                         class="item__preview item__preview--image img-container custom"
                                                                                         target="_BLANK"> <img
                                                                                             class="thumb ng-scope"
-                                                                                            style="width: 103px !important"
                                                                                             src="{{emailTemplate.subject}}" alt="">
                                                                                     </a> <a href="javascript:;"> </a>
                                                                                 </span>
@@ -1660,7 +1670,6 @@
                                                                                         class="item__preview item__preview--image img-container custom"
                                                                                         target="_BLANK"> <img
                                                                                             class="thumb ng-scope"
-                                                                                            style="width: 103px !important"
                                                                                             src="{{landingPage.thumbnailPath}}" alt="">
                                                                                     </a> <a href="javascript:;"> </a>
                                                                                 </span>
@@ -1781,7 +1790,8 @@
                                                         <tr>
                                                             <td style="width: 25%;">
                                                                 <div class="icon-border">
-                                                                    <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
+                                                                    <img  class="fullicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
+                                                                    <!-- <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i> -->
                                                                 </div>
                                                                 <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                                                     <ng-container *ngIf="contactListTabName=='Partners'">
@@ -1834,7 +1844,9 @@
                                                         <tr>
                                                             <td width="25%">
                                                                 <div class="icon-border">
-                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+                                                                    <i *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'" >
+                                                                        <img  class="fullicons" alt="" src="assets/images/campaignnew-icon/emailtemplate.svg">
+                                                                    </i>
                                                                     <i *ngIf="campaignType == 'landingPage'" class="fa fa-wpforms fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
                                                                 <ng-container class="h4-text" *ngIf="campaignType == 'video'" translate>Email Template
@@ -2157,7 +2169,7 @@
                                                                                                                                     class="item__preview item__preview--image img-container custom"
                                                                                                                                     target="_BLANK"> <img
                                                                                                                                         class="thumb ng-scope"
-                                                                                                                                        style="width: 103px !important"
+                                                                                                                                      
                                                                                                                                         src="{{emailTemplate.subject}}" alt="">
                                                                                                                                 </a> <a href="javascript:;"> </a>
                                                                                                                             </span>
@@ -2499,7 +2511,7 @@
                                                                                                                                      <a class="item__preview item__preview--image img-container custom"
                                                                                                                                         target="_BLANK"> <img
                                                                                                                                             class="thumb ng-scope"
-                                                                                                                                            style="width: 103px !important"
+                                                                                                                                          
                                                                                                                                             src="{{emailTemplate.subject}}" alt="">
                                                                                                                                     </a> <a href="javascript:;"></a>
                                                                                                                                 </span>

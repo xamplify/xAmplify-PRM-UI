@@ -45,8 +45,7 @@
                                 <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
                                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                                     <div class="form-group label-box"
-                                    [ngClass]="{'disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted),
-                                    'emailorName' : !columnInfo.choices 
+                                    [ngClass]="{'emailorName' : !columnInfo.choices 
                                    }">
                                    <span *ngIf="((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) ">
                                     <i *ngIf="!columnInfo.skipped && !columnInfo.submittedAnswerCorrect"
@@ -159,7 +158,7 @@
                                         <!-- ---------------------------Quiz----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
-                                                <div class="form-check" style="padding: 5px ; border-radius: 5px;border:0px !important;"  *ngIf="!(columnInfo.value =='')"
+                                                <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"  *ngIf="!(columnInfo.value =='')"
                                                     [style.background-color]="(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted) &&  choice.correct && choice.isSelected == true  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#fce8e6'  : choice.correct && choice.isSelected == false ? '#fcfcfc': ''"
                                                     [style.border-bottom] = "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct&& choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                                     [style.border-top] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
@@ -179,7 +178,7 @@
                                                     <i *ngIf="choice.correct && choice.isSelected " class="fas fa-check fa-lg label-value-correct" aria-hidden="true"></i></span>
                                                 </div>
                                                 <!-- for skipped> -->
-                                                <div class="form-check" style="padding: 5px ; border-radius: 5px;border:0px !important;" *ngIf="(columnInfo.value =='')"
+                                                <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;" *ngIf="(columnInfo.value =='')"
                                                 [style.background-color]="((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted) &&  choice.correct  ) ? '#fcfcfc' :'' "
                                                 [style.border-bottom] = "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct) ? '3px solid #1e8e3e' : ''"
                                                 [style.border-top] =  "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted &&  choice.correct  )? '1px solid #bfdcc8' :''"

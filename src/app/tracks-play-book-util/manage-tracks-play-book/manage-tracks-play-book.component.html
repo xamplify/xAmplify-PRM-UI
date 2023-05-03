@@ -212,7 +212,7 @@
                             <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
                                 {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
                             </h4>
-                            <div>
+                            <div class="CardDetailstext"> 
                                 <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 0px 15px 0px 15px;">
                                     <div class="progress">
                                         <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
@@ -240,7 +240,7 @@
                             <div class="ribbon">
                                 <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
-                            <div [ngClass]="{actionAlignment : !isPartnerView}" class="bar" style="padding: 9px 3px;">
+                            <div [ngClass]="{actionAlignment : !isPartnerView}" class="bar" style="padding: 0px 10px;">
                                 <div class="btnAlignPad mbtnAlignPad">
                                 <a class="mMobileDisable mDisableColor" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>

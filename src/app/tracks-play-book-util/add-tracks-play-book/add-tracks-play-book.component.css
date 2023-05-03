@@ -634,7 +634,7 @@
 .overlay-content {
     position: relative;
     top: 10%;
-    width: 100%;
+    width: 95%;
     text-align: center;
     margin-top: 30px;
 }
@@ -880,9 +880,9 @@ input.cmn-toggle-round-flat:checked+label:after {
 }
 
 .message-content {
-    border: dotted 3px lightgray;
-    min-height: 77px;
+    border: dotted 2px lightgray;
     padding: 4px 0px;
+    border-radius: 5px;
 }
 
 #myInput {
@@ -973,11 +973,11 @@ input.cmn-toggle-round-flat:checked+label:after {
 
 .fit-preview-asset {
     max-height: 600px;
-    height: 600px;
+    height: 485px;
     max-width: 100%;
-    width: 100%;
-    object-fit: contain;
-    border-radius:5px;
+    width: 98%;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 .wrap-asset-name {
@@ -999,7 +999,7 @@ input.cmn-toggle-round-flat:checked+label:after {
     padding: 4px;
     text-align: center;
     margin: 2px 2px 2px 0px;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 5px 10px;
     display: inline;
   }
@@ -1109,6 +1109,7 @@ input.cmn-toggle-round-flat:checked+label:after {
     margin: 0 auto;
     border: 2px dotted #ddd;
     position: relative;
+    border-radius: 5px;
   }
   .right-border{
     border-right: 1px solid #eee;
@@ -1129,3 +1130,4 @@ span.quiz_optionname {
 .btn-border-radius{
     border-radius: 5px;
 }
+

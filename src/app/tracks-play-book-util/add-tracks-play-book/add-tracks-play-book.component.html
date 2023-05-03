@@ -191,7 +191,7 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
+                                  <div class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
                                     {{tag.tagName}}</div>
                                 </div>
                               </td>
@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 5px !important;">
                                   <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
+                                    class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
                                     {{tagsListSecondColumn[i].tagName}}</div>
                                 </div>
                               </td>
@@ -234,7 +234,7 @@
                   </div>
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
-                    <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
+                    <div *ngIf="!croppedImage">
                       <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
                         class="profile-image img-grid" alt="">
                     </div>
@@ -944,7 +944,7 @@
                             {{radioButton.name}}
                           </label>
                         </div>
-                        <br>
+        
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------Check Box----------------------------- -->
@@ -957,7 +957,7 @@
                             {{checkBox.name}}
                           </label>
                         </div>
-                        <br>
+                        <!-- <br> -->
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
@@ -977,7 +977,6 @@
                               <span class="quiz_optionname">{{choice.name}} </span>
                           </label>
                         </div>
-                        <br>
                       </ng-container>
                     </ng-container>
                   </div>
@@ -1159,7 +1158,8 @@
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
   <div class="overlay page-content mFileLeft">
-    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+    <button type="button" class="close-circle" style="position: relative;top: 30px;  right: 26px;
+" data-dismiss="modal" (click)="closeAssetPreview()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </button>
     <div class="overlay-content">
@@ -1186,7 +1186,7 @@
 </ng-container>
 
 <!-- --------------Media link title popup--------------- -->
-<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">
+<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;  background-color: red;">
   <div class="modal-dialog modal-lg" style="width: 40% !important;">
     <div class="modal-content">
       <div class="modal-header">

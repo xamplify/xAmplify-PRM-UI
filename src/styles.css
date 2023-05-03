@@ -454,9 +454,9 @@ tr.highlight {
 	vertical-align: middle;
 }
 
-.tgrid {
+/* .tgrid {
 	border: 1px solid #e9eef2;
-}
+} */
 
 .tgrid>thead {
 	color: #8c9dad;
@@ -637,15 +637,15 @@ a {
 /* 09-01-2023 */
 .actions-block i, .circled-number {
 	border: 1px solid #5bb2f5;
-	color: #5bb2f5;
-	width: 28px;
-	height: 28px;
-	border-radius: 50%;
-	text-align: center;
-	line-height: 28px !important;
-	vertical-align: middle;
-	margin-right: 7px;
-	font-size: 13px !important;
+    color: #5bb2f5;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px !important;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 14px !important;
 }
 
 .actions-block .disable i {
@@ -1074,10 +1074,10 @@ b, strong {
 	transform: translate3d(0%, 0, 0) !important;
 }
 
-.modal.right .modal-content {
+/* .modal.right .modal-content {
 	height: 100%;
 	overflow-y: auto;
-}
+} */
 
 .modal.right.fade .modal-dialog {
 	right: -320px;
@@ -1142,9 +1142,22 @@ b, strong {
 	transition: opacity 0.3s linear, left 0.3s ease-out;
 }
 
+/* .modal-body {
+	max-height: calc(100vh - 122px);
+	overflow-y: auto;
+} */
+
 .modal-body {
 	max-height: calc(100vh - 122px);
 	overflow-y: auto;
+    position: relative ;
+    padding: 0px !important;
+    /* overflow: hidden !important; */
+}
+.modal.right .modal-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px !important;
 }
 
 .modal.left.fade.in .modal-dialog {
@@ -1855,3 +1868,24 @@ border: 1px solid #ddd !important;
 	opacity: 0.5;
 	filter: blur(15px);
 }
+
+/* 27-04-2023 */
+
+.tag {
+    font-size: 13px;
+    background-color: #d3d3d3;
+    color: #1b1b1b;
+    padding: 4px;
+    text-align: center;
+    width: fit-content;
+    margin: 2px auto;
+    border-radius: 3px;
+    padding: 2px 10px;
+}
+
+
+.modal-footer {
+	padding: 10px 10px 0px 10px !important;
+	margin-top: 22px !important;
+  }
+  
