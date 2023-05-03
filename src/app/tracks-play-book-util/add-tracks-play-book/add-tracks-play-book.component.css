@@ -118,17 +118,30 @@
     border: 1px solid #C0C0C0;
 }
 
+h5 {
+    color: inherit !important;
+  }
+  
 .col-block-active {
     color: #fff;
     vertical-align: central;
-    border: 1px solid #0c84ae;
-    background-color: #0c84ae;
-}
+    background: linear-gradient(to right, #b8def1, #b8def1, #00c4e1b0, #b8def1, #b8def1, #b8def1); 
+    background-size: 200% 200%;
+    animation: wave 4s linear infinite;
+  }
+  @keyframes wave {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+  }
 
 .col-block-active:hover {
-    background-color: #00a8e7;
-    color: #FFF;
-    border: 1px solid #00a8e7;
+    background-color: #b8def1;
+    /* color: #FFF;
+    border: 1px solid #00a8e7; */
 }
 
 .col-block-disable {
@@ -138,12 +151,12 @@
 }
 
 .col-block-complete {
-    color: #fff;
-    background-color: #00a8e7;
+    color: #fff !important;
+    background-color: #34495C;
 }
 
 .col-block-complete:hover {
-    background-color: #00a8e7;
+    background-color: #465460;
     color: #fff;
 }
 

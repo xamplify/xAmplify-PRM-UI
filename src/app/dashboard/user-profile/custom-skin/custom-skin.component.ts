@@ -143,7 +143,7 @@ export class CustomSkinComponent implements OnInit {
     self.colorsdto.moduleTypeString = form.moduleTypeString;
     self.textContent = form.textContent;
     self.colorsdto.createdBy = this.loggedInUserId;
-    this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
+    this.themePropertiesListWrapper.propertieslist.push(self.colorsdto);
     this.saveAlert = true;
     this.message = "Data saved Sucessfulley"
 
