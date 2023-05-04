@@ -190,6 +190,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 							this.authenticationService.logout();
 						}, 7000);
 					}
+					this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);

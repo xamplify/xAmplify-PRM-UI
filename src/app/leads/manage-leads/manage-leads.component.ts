@@ -99,28 +99,7 @@ export class ManageLeadsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-    // userService.getHomeRoles(url)
-    //     .subscribe(
-    //         response => {
-    //             if (response.statusCode == 200) {
-    //                 this.authenticationService.loggedInUserRole = response.data.role;
-    //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-    //                 this.authenticationService.superiorRole = response.data.superiorRole;
-    //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
-    //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-    //                         this.superiorId = response;
-    //                         this.init();
-    //                     });
-    //                 } else {
-    //                     this.superiorId = this.authenticationService.getUserId();
-    //                     this.init();
-    //                 }
-    //             }
-    //         })
-    //this.referenceService.loading(this.httpRequestLoader, true);
     this.init();
-
   }
 
   ngOnInit() {
@@ -129,7 +108,6 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   init() {
-
     const roles = this.authenticationService.getRoles();
     if (roles !== undefined) {
       if (this.authenticationService.loggedInUserRole != "Team Member") {
@@ -171,17 +149,10 @@ export class ManageLeadsComponent implements OnInit {
       }
     }
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
-      console.log(this.superiorId)
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
         this.enableLeads = data.enableLeads;
         if (!this.isOnlyPartner) {
           if (this.authenticationService.vanityURLEnabled) {
-            // if (this.authenticationService.isPartnerTeamMember) {
-            //   this.showPartner();
-            // } else {
-            //   this.isCompanyPartner = false;
-            //   this.showVendor();
-            // }
             this.leadsService.getViewType(this.vanityLoginDto).subscribe(
               response => {
                 if (response.statusCode == 200) {
@@ -205,6 +176,10 @@ export class ManageLeadsComponent implements OnInit {
         }
       });
     });
+
+    if(this.authenticationService.module.navigatedFromMyProfileSection){
+      this.addLead();
+    }
 
   }
 
