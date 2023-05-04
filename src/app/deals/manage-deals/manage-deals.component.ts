@@ -100,27 +100,6 @@ export class ManageDealsComponent implements OnInit {
         this.vanityLoginDto.userId = this.loggedInUserId;
         this.vanityLoginDto.vanityUrlFilter = false;
       }
-
-      // const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-      // userService.getHomeRoles(url)
-      //     .subscribe(
-      //         response => {
-      //             if (response.statusCode == 200) {
-      //                 this.authenticationService.loggedInUserRole = response.data.role;
-      //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-      //                 this.authenticationService.superiorRole = response.data.superiorRole;
-      //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
-      //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-      //                         this.superiorId = response;
-      //                         this.init();
-      //                     });
-      //                 } else {
-      //                     this.superiorId = this.authenticationService.getUserId();
-      //                     this.init();
-      //                 }
-      //             }
-      //         })
-
       this.init();
   }
 
@@ -190,12 +169,6 @@ export class ManageDealsComponent implements OnInit {
         this.enableLeads = data.enableLeads; 
         if (!this.isOnlyPartner) {
           if (this.authenticationService.vanityURLEnabled) {
-            // if (this.authenticationService.isPartnerTeamMember) {
-            //   this.showPartner();
-            // } else {
-            //   this.isCompanyPartner = false;
-            //   this.showVendor();
-            // }
             this.dealsService.getViewType(this.vanityLoginDto) .subscribe(
               response => {
                   if(response.statusCode==200){
@@ -219,14 +192,16 @@ export class ManageDealsComponent implements OnInit {
         }       
       });    
     });
+
+    if(this.authenticationService.module.navigatedFromMyProfileSection){
+      this.addDeal();
+    }
   }
 
     setEnableLeads() {
       this.referenceService.getOrgCampaignTypes(this.companyId).subscribe(data => {
         this.enableLeads = data.enableLeads;              
       });
-      
-      console.log(this.authenticationService.getRoles());
     }
 
   showVendor() {
