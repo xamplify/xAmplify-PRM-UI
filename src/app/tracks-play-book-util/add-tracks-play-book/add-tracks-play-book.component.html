@@ -11,39 +11,31 @@
   <div class="portlet light steps-view">
     <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-list" aria-hidden="true"></i>
-        </span>
+          <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Details1.svg">
         <h5 class="hidden-xs" translate>Details</h5>
       </div>
     </div>
     <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-large" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Description2.svg">
         <h5 class="hidden-xs" translate>Description</h5>
       </div>
     </div>
     <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-large" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Assets3.svg">
         <h5 class="hidden-xs" translate>Assets</h5>
       </div>
     </div>
     <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-users" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/share4.svg">
         <h5 class="hidden-xs" translate>Share</h5>
       </div>
     </div>
   </div>
   <div class="tracks-bg-color container"
-    style="width: 100%;padding-bottom: 2px;padding-left: 2px;border-radius: 5px;
+    style="width: 100%;padding-bottom: 10px;padding-left: 2px;border-radius: 5px;
     padding-right: 2px;">
     <!-- <div style="display: flex;padding-top: 1em;">
       <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
@@ -252,7 +244,7 @@
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row">
                 <div class="message-content mTextWid">
-                  <ul>
+                  <ul class="t-b-spacings">
                     <li translate>Maximum file size is 10 MB.</li>
                     <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
                   </ul>
@@ -443,7 +435,7 @@
     </div>
 
     <!-- step 4 -->
-    <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
+    <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin: 10px;">
       <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
