@@ -194,7 +194,7 @@
                                     <tbody>
                                         <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
                                             <tr
-                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
+                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
                                                 <ng-container *ngIf="!content.typeQuizId">
                                                     <td style="width: 10%;">
                                                         <div class="list-image-container">
@@ -205,7 +205,7 @@
                                                             <div *ngIf="content?.dam?.assetType != undefined && (videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
                                                                 class="overlay-icon">
                                                                 <button
-                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
                                                                     class="list-play-icon-wrap" title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-play list-play-icon"></i>
@@ -214,7 +214,7 @@
                                                             <div *ngIf="content?.dam?.assetType == undefined || !(videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
                                                                 class="overlay-icon">
                                                                 <button
-                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
                                                                     class="list-play-icon-wrap" title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-file list-file-icon"></i>
@@ -266,7 +266,7 @@
                                                 </ng-container>
                                                 <td id="actions-row" class="text-center">
                                                     <div class="actions-block override-actions custom-width-icon no-float">
-                                                        <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
+                                                        <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
                                                             data-toggle="tooltip" data-placement="top" title="View"
                                                             (click)="$event.stopPropagation();viewContent(content, i)">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>

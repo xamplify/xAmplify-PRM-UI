@@ -47,14 +47,13 @@
                                     <div class="form-group label-box"
                                     [ngClass]="{'emailorName' : !columnInfo.choices 
                                    }">
-                                   <span *ngIf="((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) ">
+                                <span
+                                    *ngIf="columnInfo.labelType.split('_')[0]=='quiz' && columnInfo.choices && columnInfo.choices.length > 0 && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted">
                                     <i *ngIf="!columnInfo.skipped && !columnInfo.submittedAnswerCorrect"
-                                        class="fas fa-times fa-lg label-value-incorrect"
+                                        class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
+                                    <i *ngIf="!columnInfo.skipped && columnInfo.submittedAnswerCorrect " class="fas fa-check fa-lg label-value-correct"
                                         aria-hidden="true"></i>
-                                    <i *ngIf="!columnInfo.skipped && columnInfo.submittedAnswerCorrect "
-                                        class="fas fa-check fa-lg label-value-correct"
-                                        aria-hidden="true"></i>
-                                </span> 
+                                </span>
                                 <!--  No  Options -->
                                 <ng-container *ngIf="!columnInfo.choices" >
                                     <label>

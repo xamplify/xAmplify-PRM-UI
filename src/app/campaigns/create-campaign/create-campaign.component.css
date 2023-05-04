@@ -896,7 +896,7 @@ h3 {
 /* NEW DESIGN CSS FOR CAMPAIGN STEPS  */
 
 .col-block {
-  background: #fff;
+  background: #f1f3fa;
   margin: 0 0px;
   cursor: pointer;
   /* border: 1px solid #eaecf3; */
@@ -906,7 +906,7 @@ h5 {
   color: inherit !important;
 }
 .col-block-active {
-  color: #fff;
+  color: black;
   vertical-align: central;
   background: linear-gradient(to right, #b8def1, #b8def1, #00c4e1b0, #b8def1, #b8def1, #b8def1); 
   background-size: 200% 200%;
