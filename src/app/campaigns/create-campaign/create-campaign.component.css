@@ -906,7 +906,7 @@ h5 {
   color: inherit !important;
 }
 .col-block-active {
-  color: #fff;
+  color: black;
   vertical-align: central;
   background: linear-gradient(to right, #b8def1, #b8def1, #00c4e1b0, #b8def1, #b8def1, #b8def1); 
   background-size: 200% 200%;
