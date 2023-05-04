@@ -58,11 +58,15 @@
     margin: 0 auto;
     text-align: center;
     padding: 1em;
+    height: 100px;
 }
 
 .cenetered-block>h5 {
     margin: 5px 0;
 }
+h5 {
+    color: inherit !important;
+  }
 
 .cenetered-block>span {
     font-size: 24px;
@@ -113,15 +117,11 @@
 
 .col-block {
     background: #fff;
-    margin: 0 1px;
+    /* margin: 0 1px; */
     cursor: pointer;
     border: 1px solid #C0C0C0;
 }
 
-h5 {
-    color: inherit !important;
-  }
-  
 .col-block-active {
     color: #fff;
     vertical-align: central;
@@ -137,28 +137,28 @@ h5 {
         background-position: -200% 0;
     }
   }
-
-.col-block-active:hover {
+  
+  .col-block-active:hover {
     background-color: #b8def1;
-    /* color: #FFF;
-    border: 1px solid #00a8e7; */
-}
+    /* color: #fff !important; */
+    /* border: 1px solid #465460; */
+  }
 
 .col-block-disable {
     cursor: not-allowed;
-    background: #ececec;
+    background: #f1f3fa;
     pointer-events: none;
 }
 
 .col-block-complete {
     color: #fff !important;
     background-color: #34495C;
-}
-
-.col-block-complete:hover {
+  }
+  
+  .col-block-complete:hover {
     background-color: #465460;
     color: #fff;
-}
+  }
 
 .width {
     width: 25%;
@@ -1143,4 +1143,11 @@ span.quiz_optionname {
 .btn-border-radius{
     border-radius: 5px;
 }
+
+/* 04-05-2023 */
+ul.t-b-spacings {
+    margin: 5px 0px;
+}
+
+
 
