@@ -179,6 +179,7 @@ export class ManageLeadsComponent implements OnInit {
 
     if(this.authenticationService.module.navigatedFromMyProfileSection){
       this.addLead();
+      this.authenticationService.module.navigatedFromMyProfileSection = false;
     }
 
   }

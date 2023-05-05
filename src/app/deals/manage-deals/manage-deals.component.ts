@@ -192,9 +192,9 @@ export class ManageDealsComponent implements OnInit {
         }       
       });    
     });
-
     if(this.authenticationService.module.navigatedFromMyProfileSection){
       this.addDeal();
+      this.authenticationService.module.navigatedFromMyProfileSection = false;
     }
   }
 
