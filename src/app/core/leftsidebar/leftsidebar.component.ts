@@ -369,6 +369,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, true, false, false, false, false);
 			}
 			else if (urlType === 'deal') {
+				this.authenticationService.module.navigatedFromMyProfileSection = false;
 				this.deals = this.router.url.includes('deal') ? true : (this.deals = !this.deals);
 				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, this.deals, false, false, false);
 			}
