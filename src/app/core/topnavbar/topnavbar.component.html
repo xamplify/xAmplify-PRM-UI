@@ -111,8 +111,8 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <app-modal-popup-loader *ngIf="myVendorsLoader" [height]="180"></app-modal-popup-loader>
-                            <ng-container *ngIf="!myVendorsLoader">
+                            <app-modal-popup-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [height]="180"></app-modal-popup-loader>
+                            <ng-container *ngIf="!authenticationService?.module?.contentLoader && !myVendorsLoader">
                             <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
                                      <i class="icon-user"></i> 
