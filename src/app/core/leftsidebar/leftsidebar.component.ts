@@ -191,6 +191,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 						}, 7000);
 					}
 					this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
+					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -370,6 +371,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			}
 			else if (urlType === 'deal') {
 				this.authenticationService.module.navigatedFromMyProfileSection = false;
+				this.authenticationService.module.navigateToPartnerSection = false;
 				this.deals = this.router.url.includes('deal') ? true : (this.deals = !this.deals);
 				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, this.deals, false, false, false);
 			}

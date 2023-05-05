@@ -111,5 +111,6 @@ export class Module {
     showSupportSettingOption = false;
     navigatedFromMyProfileSection = false;
     showAddLeadOrDealButtonInMyProfileSection = false;
+    navigateToPartnerSection = false;
 
 }

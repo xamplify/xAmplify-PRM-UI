@@ -189,13 +189,18 @@ export class ManageDealsComponent implements OnInit {
           }
         } else {
           this.showPartner();
-        }       
+        }     
+        if(this.authenticationService.module.navigatedFromMyProfileSection){
+          if(this.authenticationService.module.navigateToPartnerSection){
+            this.showPartner();
+          }
+          this.addDeal();
+          this.authenticationService.module.navigatedFromMyProfileSection = false;
+          this.authenticationService.module.navigateToPartnerSection = false;
+        }  
       });    
     });
-    if(this.authenticationService.module.navigatedFromMyProfileSection){
-      this.addDeal();
-      this.authenticationService.module.navigatedFromMyProfileSection = false;
-    }
+   
   }
 
     setEnableLeads() {
