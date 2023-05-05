@@ -126,12 +126,14 @@ export class ManageLeadsComponent implements OnInit {
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
-        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
+        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || 
+          this.authenticationService.isPartnerTeamMember) {
           this.isCompanyPartner = true;
         }
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing")&& !this.authenticationService.superiorRole.includes("Prm")
+         && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
@@ -140,7 +142,9 @@ export class ManageLeadsComponent implements OnInit {
         if (this.authenticationService.superiorRole.includes("Prm")) {
           this.prm = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| this.authenticationService.superiorRole.includes("Prm")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") ||
+           this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| 
+           this.authenticationService.superiorRole.includes("Prm")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
@@ -174,14 +178,20 @@ export class ManageLeadsComponent implements OnInit {
         } else {
           this.showPartner();
         }
+
+        if(this.authenticationService.module.navigatedFromMyProfileSection){
+          if(this.authenticationService.module.navigateToPartnerSection){
+            this.showPartner();
+          }
+          this.addLead();
+          this.authenticationService.module.navigatedFromMyProfileSection = false;
+          this.authenticationService.module.navigateToPartnerSection = false;
+        }
+    
       });
     });
 
-    if(this.authenticationService.module.navigatedFromMyProfileSection){
-      this.addLead();
-      this.authenticationService.module.navigatedFromMyProfileSection = false;
-    }
-
+    
   }
 
   showVendor() {
