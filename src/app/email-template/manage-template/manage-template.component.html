@@ -174,7 +174,16 @@
                                                 </h6>
                                             </ng-container>
                                             <h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft" translate>DRAFT</h5>
-                                            <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+                                            <!---XNFR-255-->
+                                            <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
+                                                <h6 class="moreipsis"  title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}">
+                                                    <span translate>Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}</strong></span>
+                                                </h6>
+                                                <h5 class="view-banner-green">White-Labeled</h5>
+                                            </ng-container>
+                                             <!---XNFR-255-->
+                                            <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore"
+                                             [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                                 data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
                                             </h5>
                                             <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'" translate>PARTNER</h5>
@@ -226,7 +235,7 @@
                         </div>
                     </ng-container>
                 </section>
-
+                <!---Grid View---->
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box">
@@ -275,20 +284,17 @@
                                 <div class="ribbon draft" *ngIf="emailTemplate.draft">
                                     <span  translate>DRAFT</span>
                                 </div>
-                                <div class="ribbon active" *ngIf="emailTemplate.type=='PARTNER'">
-                                    <span translate>PARTNER</span>
-                                </div>
-                                <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                    <h6 title="{{emailTemplate.vendorName}}" translate>
-                                        By <strong *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</strong>
-                                        <strong *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</strong>
-                                    </h6>
-                                    <h6 title="{{emailTemplate.vendorOrganizationName}}" translate>
-                                        From <strong>{{emailTemplate.vendorOrganizationName | slice:0:20}}</strong>
-                                        <span *ngIf="emailTemplate.vendorOrganizationName?.length>20">..</span>
+                                <!---XNFR-255-->
+                                <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
+                                    <div class="ribbon active">
+                                        <span translate>White-Labeled</span>
+                                    </div>
+                                    <h6 title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" translate>
+                                        Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName | slice:0:20}}</strong>
+                                        <span *ngIf="emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName?.length>20">..</span>
                                     </h6>
                                 </ng-container>
-
+                                 <!---XNFR-255-->
                             </div>
                             <div class="bar">
                                 <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
