@@ -1076,7 +1076,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
-        this.setWhiteLabeledOption(event);
+        this.campaign.whiteLabeled = false;
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
@@ -1091,10 +1091,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             this.setPartnerEmailNotification(true);
 
         }
-    }
-    /***XNFR-255*****/
-    setWhiteLabeledOption(channelCampaign: any) {
-        this.campaign.whiteLabeled = channelCampaign;
     }
 
     setSalesEnablementOptions(channelCampaign: boolean) {
