@@ -99,28 +99,7 @@ export class ManageLeadsComponent implements OnInit {
       this.vanityLoginDto.userId = this.loggedInUserId;
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-    const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-    // userService.getHomeRoles(url)
-    //     .subscribe(
-    //         response => {
-    //             if (response.statusCode == 200) {
-    //                 this.authenticationService.loggedInUserRole = response.data.role;
-    //                 this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-    //                 this.authenticationService.superiorRole = response.data.superiorRole;
-    //                 if (this.authenticationService.loggedInUserRole == "Team Member") {
-    //                     dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-    //                         this.superiorId = response;
-    //                         this.init();
-    //                     });
-    //                 } else {
-    //                     this.superiorId = this.authenticationService.getUserId();
-    //                     this.init();
-    //                 }
-    //             }
-    //         })
-    //this.referenceService.loading(this.httpRequestLoader, true);
     this.init();
-
   }
 
   ngOnInit() {
@@ -129,7 +108,6 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   init() {
-
     const roles = this.authenticationService.getRoles();
     if (roles !== undefined) {
       if (this.authenticationService.loggedInUserRole != "Team Member") {
@@ -148,12 +126,14 @@ export class ManageLeadsComponent implements OnInit {
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
-        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
+        if (roles.indexOf(this.roleName.companyPartnerRole) > -1 || this.authenticationService.isCompanyPartner || 
+          this.authenticationService.isPartnerTeamMember) {
           this.isCompanyPartner = true;
         }
       } else {
         if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
-        && !this.authenticationService.superiorRole.includes("Marketing") && this.authenticationService.superiorRole.includes("Partner")) {
+        && !this.authenticationService.superiorRole.includes("Marketing")&& !this.authenticationService.superiorRole.includes("Prm")
+         && this.authenticationService.superiorRole.includes("Partner")) {
           this.isOnlyPartner = true;
         }
         if (this.authenticationService.superiorRole.includes("OrgAdmin")) {
@@ -162,7 +142,9 @@ export class ManageLeadsComponent implements OnInit {
         if (this.authenticationService.superiorRole.includes("Prm")) {
           this.prm = true;
         }
-        if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| this.authenticationService.superiorRole.includes("Prm")) {
+        if (this.authenticationService.superiorRole.includes("Vendor") ||
+           this.authenticationService.superiorRole.includes("OrgAdmin")|| this.authenticationService.superiorRole.includes("Marketing")|| 
+           this.authenticationService.superiorRole.includes("Prm")) {
           this.isVendor = true;
         }
         if (this.authenticationService.superiorRole.includes("Partner")) {
@@ -171,17 +153,10 @@ export class ManageLeadsComponent implements OnInit {
       }
     }
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
-      console.log(this.superiorId)
       this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
         this.enableLeads = data.enableLeads;
         if (!this.isOnlyPartner) {
           if (this.authenticationService.vanityURLEnabled) {
-            // if (this.authenticationService.isPartnerTeamMember) {
-            //   this.showPartner();
-            // } else {
-            //   this.isCompanyPartner = false;
-            //   this.showVendor();
-            // }
             this.leadsService.getViewType(this.vanityLoginDto).subscribe(
               response => {
                 if (response.statusCode == 200) {
@@ -203,9 +178,20 @@ export class ManageLeadsComponent implements OnInit {
         } else {
           this.showPartner();
         }
+
+        if(this.authenticationService.module.navigatedFromMyProfileSection){
+          if(this.authenticationService.module.navigateToPartnerSection){
+            this.showPartner();
+          }
+          this.addLead();
+          this.authenticationService.module.navigatedFromMyProfileSection = false;
+          this.authenticationService.module.navigateToPartnerSection = false;
+        }
+    
       });
     });
 
+    
   }
 
   showVendor() {

@@ -729,8 +729,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						}
 					},
 					(error: any) => {
-						this.xtremandLogger.error(error);
-						this.xtremandLogger.errorPage(error);
+						// this.xtremandLogger.error(error);
+						// this.xtremandLogger.errorPage(error);
+						swal.close();
+						let errorMessage = this.referenceService.getApiErrorMessage(error);
+                		this.customResponse = new CustomResponse('ERROR',errorMessage,true);
 					},
 					() => this.xtremandLogger.info("googleContactsSyncronize() completed")
 				);
