@@ -531,4 +531,17 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
     this.refService.goToRouter("/home/deal/manage");
     
   }
+
+  /****Add Leads****/
+  navigateAndOpenAddLeadsModalPopUp(){
+    this.authenticationService.module.navigatedFromMyProfileSection = true;
+    this.refService.goToRouter("/home/leads/manage");
+  }
+
+  /****Add Deals****/
+  navigateAndOpenAddDealsModalPopUp(){
+    this.authenticationService.module.navigatedFromMyProfileSection = true;
+    this.refService.goToRouter("/home/deal/manage");
+
+  }
 }

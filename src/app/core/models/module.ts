@@ -109,6 +109,10 @@ export class Module {
     /*******XNFR-224*******/
     loginAsPartner = false;
     showSupportSettingOption = false;
-    navigatedFromMyProfileSection =  false;
+
+    navigatedFromMyProfileSection = false;
+    showAddLeadOrDealButtonInMyProfileSection = false;
+    navigateToPartnerSection = false;
+
 
 }

@@ -97,6 +97,29 @@
 
             <!------------Dashbaord Button Carusel---------------------->
             <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
+             <!--Opportunity Stats-->
+             <div *ngIf="!authenticationService?.module?.deletedPartner 
+             &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)" class="clearfix" style="padding-top: 6px;">
+                 <div class="portlet light">
+                     <div class="portlet-title">
+                         <div class="caption">
+                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                             <span class="caption-subject" translate>Opportunity Stats</span>
+                         </div>
+                     </div>
+                 <div class="portlet-body clearfix">
+                     <div class="row">
+                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                         <app-funnel-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+                     </div>
+                     <!----Opportunity Stats--------->
+                     <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;margin-top: 10px;">
+                         <app-pie-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-pie-chart-analytics>
+                     </div>
+                     </div>
+                 </div>
+                 </div>
+             </div>
             <!------------Vendor Activity---------------------->
             <app-vendor-activity-analytics></app-vendor-activity-analytics>
 
@@ -185,7 +208,9 @@
                             </section>
                         </ng-container>
                     </div>
-                 </div>
+
+                </div>
+
                     <!---Campaign Statistics-->
                     <!---Campaign Statistics And Email Statistics-->
                     <div class="clearfix">
@@ -241,7 +266,7 @@
                             </div>
                         </div>
                     </ng-container>
-                </div>
+            </div>
             <!--End of row-->
 
             <!----Show Anlaytics For PRM-->
