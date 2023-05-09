@@ -517,8 +517,9 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
      this.cskin = cskinMap.TOP_NAVIGATION_BAR;
       }
     )
-  
   }
+
+  
 
   /****Add Leads****/
   navigateAndOpenAddLeadsModalPopUp(){
