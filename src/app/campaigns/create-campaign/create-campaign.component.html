@@ -265,7 +265,7 @@
                                             </div>
 
                                             <!--White Labeled XNFR-255-->
-                                            <div class="form-group" *ngIf="campaign.channelCampaign && shareWhiteLabeledContent">
+                                            <div class="form-group" *ngIf="campaign.channelCampaign && shareWhiteLabeledContent && campaignType=='regular'">
                                                 <label class="control-label col-sm-4" translate>White Labeled</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
