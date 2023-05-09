@@ -44,7 +44,9 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
     pageBackgroundColor = "";
     siteKey = "";
     showDefaultForms = false;
-    selectedPartnerFormAnswers : Map<number, any> = new Map<number, any>();
+    selectedPartnerFormAnswers : any;
+    quizScore:number;
+    maxScore: number;
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
@@ -64,24 +66,52 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
               console.log(captchaResponse)
     }
 
-    setFormSubmitValues() {
-        let self = this;
-        console.log(self.selectedPartnerFormAnswers[2313]);
+    setFormSubmitValues(data: any) {
+        this.quizScore = data.score;
+        this.maxScore = data.maxScore;
+        let answers = data.submittedData;
         $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-           if(self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
-               value.value = self.selectedPartnerFormAnswers[value.id];
-           } else {
+          if (answers !== undefined && answers[value.id] !== undefined) {
+            if (value.labelType === "select") {
+              value.value = answers[value.id].submittedAnswer[0];
+            } else {
+              value.value = answers[value.id].submittedAnswer;
+              if (value.labelType === "upload") {
+                let lastIndex = value.value.lastIndexOf("/");
+                let fileName = value.value.substring(lastIndex + 1);
+                value['fileName'] = fileName;
+              }
+            }
+            let choices: any;
+            if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
+              choices = value.choices;
+            } else if (value.labelType === "radio") {
+              choices = value.radioButtonChoices;
+            } else if (value.labelType === "checkbox") {
+              choices = value.checkBoxChoices;
+            }
+            $.each(choices, function (index: number, choice: any) {
+              if (value.value.indexOf(choice.id) > -1) {
+                choice.isSelected = true;
+              } else {
+                choice.isSelected = false;
+              }
+            });
+            value.skipped = answers[value.id].skipped;
+            value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
+          } else {
             value.value = "";
-           }
+            value.skipped = true;
+          }
         });
-    }
+      }
 
     showFormWithAnswers(selectedPartnerFormAnswers: Map<number, any>, formId: number, formInput: Form, formBackgroundImage: string, pageBackgroundColor: string){
         this.form = formInput;
         this.selectedPartnerFormAnswers = selectedPartnerFormAnswers;
         this.formBackgroundImage = formBackgroundImage;
         this.pageBackgroundColor = pageBackgroundColor;
-        this.setFormSubmitValues();
+        this.setFormSubmitValues(this.selectedPartnerFormAnswers);
         $('#form-preview-modal').modal('show');
     }
  }
