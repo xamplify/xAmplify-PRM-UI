@@ -70,6 +70,8 @@
                 <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
                     (notifyLeadSuccess)="showSubmitLeadSuccess()" [applyFilter]="applyFilter"></app-module-analytics>
             </div>
+            <!------------Dashbaord Button Carusel---------------------->
+            <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
              <!--Opportunity Stats-->
              <div *ngIf="!authenticationService?.module?.deletedPartner 
              &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)" class="clearfix" style="padding-top: 6px;">
@@ -93,8 +95,6 @@
                  </div>
                  </div>
              </div>
-            <!------------Dashbaord Button Carusel---------------------->
-            <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
             <!------------Vendor Activity---------------------->
             <app-vendor-activity-analytics></app-vendor-activity-analytics>
 
@@ -239,7 +239,7 @@
                             </div>
                         </div>
                     </ng-container>
-                </div>
+            </div>
             <!--End of row-->
 
             <!----Show Anlaytics For PRM-->
