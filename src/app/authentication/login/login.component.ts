@@ -30,23 +30,30 @@ export class LoginComponent implements OnInit, OnDestroy {
   loading = false;
   resendActiveMail = false;
   mainLoader: boolean;
-  socialProviders = [{ "name": "Salesforce", "iconName": "salesforce" },
+  socialProviders = [{ "name": "Salesforce", "iconName": "salesforce", "value": "salesforce" },
   { "name": "Facebook", "iconName": "facebook", "value": "facebook" },
   { "name": "twitter", "iconName": "twitter", "value": "twitter" },
   { "name": "google", "iconName": "googleplus", "value": "googleplus" },
   { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" },
   { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" }];
 
-  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" }];
+  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" },
+  { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" }];
 
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;  
   signInText = "Sign In";
+
+  //xnfr-256
+  SERVER_URL: any;
+  APP_URL: any;
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
-    this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
+    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService,) {
+      this.SERVER_URL = this.envService.SERVER_URL;
+      this.APP_URL = this.envService.CLIENT_URL;
+      this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -294,7 +301,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
       let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
-        let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+0+"/"+window.location.hostname;
+        let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+window.location.hostname;
         let x = screen.width / 2 - 700 / 2;
         let y = screen.height / 2 - 450 / 2;
         window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -332,8 +339,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       client_id = "81ujzv3pcekn3t";
       client_secret = "bfdJ4u0j6izlWSyd";
     } else if (providerName === "microsoftsso") {
-      client_id = "f4598ddb-daaf-48a5-be86-74b80d791f05";
-      client_secret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
+      if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
+        console.log("production keys are used");        
+        client_id = this.envService.microsoftProdClientId;
+        client_secret = this.envService.microsoftProdClientSecret;
+      }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
+        console.log("QA keys are used");
+        client_id = this.envService.microsoftQAClientId;
+        client_secret = this.envService.microsoftQAClientSecret;
+      }else{
+        console.log("dev keys are used");
+        client_id = this.envService.microsoftDevClientId;
+        client_secret = this.envService.microsoftDevClientSecret;
+      }
     }
 
     const authorization = 'Basic' + btoa(client_id + ':');
