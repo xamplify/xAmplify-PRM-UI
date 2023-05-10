@@ -103,7 +103,7 @@ export class VanityURLService {
         url = this.envService.domainName+".xamplify.com";
       }
     }
-    if (!url.includes("192.168")) {
+    if (!url.includes("192.168") || !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;

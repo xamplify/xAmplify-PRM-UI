@@ -15,6 +15,11 @@ export class VanitySocialLoginComponent implements OnInit {
     let providerName = this.route.snapshot.params['socialProvider'];
     let parentWindowUserId = this.route.snapshot.params['userId'];
     let vanityUrlDomainName = this.route.snapshot.params['vud'];
+    if (parentWindowUserId == undefined || parentWindowUserId == null || parentWindowUserId == 0) {
+      localStorage.setItem('loginPage','true');
+    } else {
+      localStorage.setItem('loginPage','false');
+    }
     localStorage.setItem('parentWindowUserId',parentWindowUserId);
     localStorage.setItem('vanityUrlDomain',vanityUrlDomainName);
     localStorage.setItem('vanityUrlFilter','true');

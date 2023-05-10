@@ -40,17 +40,35 @@ export class SocialCallbackComponent implements OnInit {
             .subscribe(
             result => {
                 this.socialConnection = result;
-                if(this.isLoggedInVanityUrl=="true"){
-                    let url = "";
-                    if(vanityUrlDomain.indexOf('192')>-1){
-                        url = "http://"+vanityUrlDomain+":4200/home/social/manage/"+this.providerName;
-                    }else{
-                        url = "https://"+vanityUrlDomain+"/home/social/manage/"+this.providerName;
-                    }
+                if(this.isLoggedInVanityUrl=="true"){                    
                     localStorage.removeItem('parentWindowUserId');
                     localStorage.removeItem('vanityUrlDomain');
                     localStorage.removeItem('vanityUrlFilter');
-                    this.refService.closeChildWindowAndRefreshParentWindow(url);
+
+                    if (localStorage.getItem('loginPage') == 'true') {
+                        let trargetWindow = window.opener;
+                        var obj = {
+                            emailId: result["emailId"],
+                            providerName: providerName                            
+                          }
+                        trargetWindow.postMessage(obj, "*");
+                        let url = "";
+                        if (vanityUrlDomain.indexOf('172') > -1) {
+                            url = "http://" + vanityUrlDomain + ":4200/login" ;
+                        } else {
+                            url = "https://" + vanityUrlDomain + "/login";
+                        }
+                        self.close();
+                    } else {
+                        let url = "";
+                        if (vanityUrlDomain.indexOf('192') > -1) {
+                            url = "http://" + vanityUrlDomain + ":4200/home/social/manage/" + this.providerName;
+                        } else {
+                            url = "https://" + vanityUrlDomain + "/home/social/manage/" + this.providerName;
+                        }
+                        this.refService.closeChildWindowAndRefreshParentWindow(url);
+                    }
+                    
                 }else{
                     if(localStorage.getItem( 'currentUser' )){
                         this.redirect();
@@ -71,6 +89,9 @@ export class SocialCallbackComponent implements OnInit {
                         } else if ( providerName === "linkedin" ) {
                             client_id = "81ujzv3pcekn3t";
                             client_secret = "bfdJ4u0j6izlWSyd";
+                        }  else if ( providerName === "microsoftsso" ) {
+                            client_id = "f4598ddb-daaf-48a5-be86-74b80d791f05";
+                            client_secret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
                         }
     
                         const authorization = 'Basic' + btoa( client_id + ':' );

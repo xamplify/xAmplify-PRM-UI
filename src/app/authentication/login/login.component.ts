@@ -31,11 +31,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   resendActiveMail = false;
   mainLoader: boolean;
   socialProviders = [{ "name": "Salesforce", "iconName": "salesforce" },
-  { "name": "Facebook", "iconName": "facebook" },
-  { "name": "twitter", "iconName": "twitter" },
-  { "name": "google", "iconName": "googleplus" },
-  { "name": "Linkedin", "iconName": "linkedin" }];
+  { "name": "Facebook", "iconName": "facebook", "value": "facebook" },
+  { "name": "twitter", "iconName": "twitter", "value": "twitter" },
+  { "name": "google", "iconName": "googleplus", "value": "googleplus" },
+  { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" },
+  { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" }];
 
+  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" }];
 
   roles: Array<Role>;
   vanityURLEnabled: boolean;
@@ -260,6 +262,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           }, error => {
             console.log(error);
           });
+          let self = this;
+          window.addEventListener('message', function (e) {
+            console.log('received message:  ' + e.data, e);
+            self.loginAfterSSOCallbackInVanity(e.data);
+          }, false);
         } else {
           this.isNotVanityURL = true;        
         }
@@ -281,8 +288,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (currentUser != undefined) {
       this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
     } else {
-      let loginUrl = "/" + socialProvider.name.toLowerCase() + "/login";
+      let socialProviderName = socialProvider.name.toLowerCase()
+      if (socialProviderName === "microsoft") {
+        socialProviderName = "microsoftsso"
+      }
+      let loginUrl = "/" + socialProviderName + "/login";
       if (this.isLoggedInVanityUrl) {
+        let loginUrl = this.authenticationService.APP_URL+"v/"+socialProviderName+"/"+0+"/"+window.location.hostname;
         let x = screen.width / 2 - 700 / 2;
         let y = screen.height / 2 - 450 / 2;
         window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
@@ -296,5 +308,56 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   redirectToXamplify(){    
     window.open("https://xamplify.co/login");
+  }
+
+  loginAfterSSOCallbackInVanity(data: any) {
+    this.loading = true;
+    this.referenceService.userName = data.emailId;
+    let providerName = data.providerName;
+    let client_id: string;
+    let client_secret: string;
+    if (providerName === "salesforce") {
+      client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
+      client_secret = "8542957351694434668";
+    } else if (providerName === "google") {
+      client_id = "1026586663522-tv2c457u9h9bj4ikc47u29g321dkjg6m.apps.googleusercontent.com";
+      client_secret = "yKAddi6F_xkiERVCnWna3bXT";
+    } else if (providerName === "facebook") {
+      client_id = "1348853938538956";
+      client_secret = "69202865ccc82e3cf43a5aa097c4e7bf";
+    } else if (providerName === "twitter") {
+      client_id = "J60F2OG6jZOEK33xK3MtiU4zI";
+      client_secret = "d3xQ5hPlPZtQdeMkNAjlejXFvwRrPSalwbpyApncxi49Pf4lFi";
+    } else if (providerName === "linkedin") {
+      client_id = "81ujzv3pcekn3t";
+      client_secret = "bfdJ4u0j6izlWSyd";
+    } else if (providerName === "microsoftsso") {
+      client_id = "f4598ddb-daaf-48a5-be86-74b80d791f05";
+      client_secret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
+    }
+
+    const authorization = 'Basic' + btoa(client_id + ':');
+    const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
+
+    this.authenticationService.login(authorization, body, this.referenceService.userName)
+      .subscribe(result => {
+        console.log("result: " + this.authenticationService.user);
+        if (this.authenticationService.user) {
+          const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          if (currentUser.hasCompany) {
+            this.router.navigate(['/home/dashboard/default']);
+          } else {
+            this.router.navigate(['/home/dashboard/add-company-profile']);
+          }
+        } else {
+          this.router.navigate(['/logout']);
+        }
+      },
+        error => {
+          console.log(error);
+          this.loading = false;
+        },
+        () => console.log('login() Complete'));
+    return false;
   }
 }
