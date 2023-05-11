@@ -143,14 +143,32 @@
                                             <ng-container *ngIf="dashboardType!='Welcome'">
                                                 {{dashboardType}}
                                             </ng-container>
-                                           
                                         </a>
                                     </li>
                                 </ng-container>
                             </ng-container>
                             <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                                <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                                <a (click)="goToRouter('/home/dashboard/vendors')" translate> 
+                                    <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                             </li>
+
+                            
+                            <ng-container *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection">
+                                <!--Add Leads-->
+                                <li>
+                                    <a (click)="navigateAndOpenAddLeadsModalPopUp()"> 
+                                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                        Add Leads
+                                    </a>
+                                </li>
+                                <!--Add Deals-->
+                                <li>
+                                    <a (click)=" navigateAndOpenAddDealsModalPopUp()"> 
+                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                        Add Deals
+                                    </a>
+                                </li>
+                            </ng-container>
                             </ng-container>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">

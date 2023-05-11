@@ -1019,6 +1019,11 @@ export class CampaignService {
     // Added by Vivek for Vanity URL
 
     getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dashboardAnalyticsDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         var url = this.URL + "dashboard/views/get-user-campaign-report?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)
@@ -1040,7 +1045,12 @@ export class CampaignService {
     }
 
 
-    listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {        
+    listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {  
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dashboardAnalyticsDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         var url = this.URL + "dashboard/views/list-campaign-interactions?access_token=" + this.authenticationService.access_token + '&limit=4'  + '&reportType=' + reportType;
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)

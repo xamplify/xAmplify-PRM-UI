@@ -39,4 +39,7 @@ export class CampaignAccess {
   loginAsPartner = false;
   /*** XNFR-256 ****/
   microsoftSSO = false;
+  /**** XNFR-255 *****/
+  shareWhiteLabeledContent = false;
+
 }
