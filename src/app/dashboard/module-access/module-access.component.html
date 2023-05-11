@@ -181,14 +181,7 @@
 									<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
-								<tr *ngIf="roleId!=19">
-									<th scope="row">Share Leads</th>
-									<td>
-									<ng-template *ngIf="showOneClickLaunchErrorMessage" [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
-									<input type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
-										[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
-									</td>
-								</tr>
+								
 								<!---XNFR-125---->
 								<tr *ngIf="campaignAccess.shareLeads">
 									<th scope="row">One-Click Launch</th>
@@ -205,6 +198,14 @@
 										[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 							</ng-container>
+							<tr>
+								<th scope="row">Share Leads</th>
+								<td>
+								<ng-template *ngIf="showOneClickLaunchErrorMessage" [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
+								<input type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
+									[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
+								</td>
+							</tr>
 							<!--Leads (Opportunities)-->
 							<tr>
 								<th scope="row">Leads (Opportunities)</th>
@@ -292,6 +293,13 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
+							<!-- XNFR-256 -->
+							<tr>
+								<th scope="row">Microsoft SSO</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+					
 							<!-- XNFR-255 -->
 							<tr *ngIf="!marketing">
 								<th scope="row">Share White Labeled Content</th>

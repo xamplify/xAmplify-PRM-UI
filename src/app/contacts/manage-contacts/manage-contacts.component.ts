@@ -230,6 +230,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
 	isTeamMemberPartnerList: boolean;
   downloadAssociatedPagination : Pagination = new Pagination();
+  /***XNFR-266***/
+  showDownloadOptionForSharedLeads = false;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -253,7 +255,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.isPartner = false;
             this.assignLeads = false;
             this.sharedLeads = true;
-            this.checkingContactTypeName = "Shared Lead"
+            this.checkingContactTypeName = "Shared Lead";
         } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
@@ -390,7 +392,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.contactService.loadContactLists(pagination)
                     .subscribe(
                     (data: any) => {
-                        this.xtremandLogger.info(data);
                         data.listOfUserLists.forEach((element, index) => { element.createdDate = new Date(element.createdDate); });
                         this.contactLists = data.listOfUserLists;
                         this.totalRecords = data.totalRecords;
@@ -399,15 +400,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                             this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
                         } else {
                             pagination.totalRecords = this.totalRecords;
+							this.showDownloadOptionForSharedLeads = data.downloadAccess && this.sharedLeads;
                             pagination = this.pagerService.getPagedItems(pagination, this.contactLists);
 
                         }
                         if (this.contactLists.length == 0) {
                             this.resetResponse();
-                            // this.responseMessage = ['INFO', 'No results found.','show'];
                             this.customResponse = new CustomResponse('INFO', this.properties.NO_RESULTS_FOUND, true);
                             this.pagedItems = null;
                         }
+
 						this.referenceService.loading(this.httpRequestLoader, false);
 						this.campaignLoader = false;
                     },
@@ -572,7 +574,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
     hasDownLoadAccess(contactListId: number, contactListName: any) {
-        if (this.assignLeads || this.authenticationService.module.deletedPartner) {
+        if (this.assignLeads || this.authenticationService.module.deletedPartner || this.showDownloadOptionForSharedLeads) {
             this.downloadContactList(contactListId, contactListName);
         } else {
             try {

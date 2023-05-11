@@ -490,7 +490,7 @@
                                     (click)="saveAsNewList(contactList)">
                                     <i class="fa fa-files-o" aria-hidden="true"></i>
                                   </a> 
-                                  <a [class.disabled]="contactList.noOfContacts == 0 " *ngIf="assignLeads || !sharedLeads"
+                                  <a [class.disabled]="contactList.noOfContacts == 0 " *ngIf="assignLeads || showDownloadOptionForSharedLeads"
                                     (click)="hasDownLoadAccess(contactList.id, contactList.name)" data-toggle="tooltip"
                                     data-placement="top" title="{{actionsDescription.contact_list_download}}"
                                     data-rel="fancybox-button"> 
@@ -661,7 +661,7 @@
                           </a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0" 
 
                             (click)="hasDownLoadAccess(contactList.id, contactList.name)"
-                            *ngIf="assignLeads || (!sharedLeads)"
+                            *ngIf="assignLeads || showDownloadOptionForSharedLeads"
                             data-toggle="tooltip" data-placement="top"
                             title="{{actionsDescription.contact_list_download}}" data-rel="fancybox-button">
                              <i class="fa fa-download" aria-hidden="true"></i>

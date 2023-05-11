@@ -69,7 +69,7 @@ export class SocialService {
     }
 
       if(loggedInThroughVanityUrl=="true"){
-        if(parentWindowUserId!=undefined && parentWindowUserId!=0){
+        if (parentWindowUserId != undefined && parentWindowUserId != null && parentWindowUserId > 0) {
           queryParam += '&userId=' + parentWindowUserId;
         }
       }else{

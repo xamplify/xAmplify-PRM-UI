@@ -111,9 +111,7 @@ export class SocialLoginComponent implements OnInit {
 				this.xtremandLogger.error(error);
 			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
 
-		}
-
-		else {
+		} else {
 			this.socialService.login(providerName)
 				.subscribe(
 					result => {

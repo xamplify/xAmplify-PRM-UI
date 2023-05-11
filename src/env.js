@@ -1,4 +1,4 @@
-(function(window) {
+(function (window) {
 	window.__env = window.__env || {};
 
 	// API url
@@ -11,10 +11,7 @@
 	//window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
 	//window.__env.imagesHost = "http://127.0.0.1:8887/images/";
 	window.__env.domainName = "";
-
-
-
-
+	
 	//USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
 	/********************Production************************/
 	// window.__env.CLIENT_URL = 'https://xamplify.io/'; // xamplify client app server
@@ -31,9 +28,9 @@
 	// window.__env.CLIENT_URL = 'https://xtremand.com/';
 	// window.__env.SERVER_URL =  'https://release.xamp.io/';
 	//  window.__env.imagesHost = "https://release.xamp.io/vod/images/";
-  
-  	/**********UI******************/
-  	// window.__env.CLIENT_URL = 'https://x-amplify.com/';
+
+	/**********UI******************/
+	// window.__env.CLIENT_URL = 'https://x-amplify.com/';
 	// window.__env.SERVER_URL =  'https://aravindu.com/';
 	//  window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
@@ -61,7 +58,7 @@
 	// window.__env.beePageProdClientSecret = "xwd1V6IXGx6kNX0QZ1t5niB7CGUrO4SQW46Qs9j4LyvmHePwG5o1";
 	window.__env.beePageProdClientId = "6639d69f-523f-44ca-b809-a00daa26b367";
 	window.__env.beePageProdClientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
-	
+
 	/******Auto Reload Deployment Configurations */
 	window.__env.reloadAfterDeployment = true;
 	window.__env.reloadIntervalInMilliSeconds = 1000 * 60 * 1;//1 Minute
@@ -72,5 +69,13 @@
 
 	// Whether or not to enable debug mode
 	window.__env.enableDebug = false;
+
+	/****Microsoft ******/
+	window.__env.microsoftQAClientId = "613ac844-3e95-4db2-b520-93baae0fc02c";
+	window.__env.microsoftQAClientSecret = "xY87Q~SJ86CtE5fpChyqp1rfKrnVjLxlnRMFY";
+	window.__env.microsoftProdClientId = "7f723bc5-b47e-4bc4-9c07-db9d1fdcb38d";
+	window.__env.microsoftProdClientSecret = "auh8Q~4-BZNl8RAOHdx1DNZ-5Zq8vfI9VEKCdbiz";
+	window.__env.microsoftDevClientId = "f4598ddb-daaf-48a5-be86-74b80d791f05";
+	window.__env.microsoftDevClientSecret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
 
 }(this));
