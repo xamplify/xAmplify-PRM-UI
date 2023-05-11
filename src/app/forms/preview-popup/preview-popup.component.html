@@ -164,9 +164,11 @@
                                 <h5 class="form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                                     <div class="form-group label-box">
-                                        <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
-                    						<span class="required" *ngIf="columnInfo.required">*</span>
-                  						</label>
+                                        <label class="control-label" [style.color]="form.labelColor"><span
+                                                *ngIf="learningTrackId !== undefined && learningTrackId > 0 && form.quizForm">{{i+1}}.
+                                            </span>{{columnInfo.labelName}}
+                                            <span class="required" *ngIf="columnInfo.required">*</span>
+                                        </label>
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
                                             <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
                                         </ng-container>

@@ -427,7 +427,7 @@
 </div>
 
 <!-- Form Preview Modal Popup -->
-<app-preview-popup #previewPopupComponent></app-preview-popup>
+<app-preview-popup #previewPopupComponent [learningTrackId]="tracksPlayBook.id"></app-preview-popup>
 
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">

@@ -56,7 +56,7 @@
                                 </span>
                                 <!--  No  Options -->
                                 <ng-container *ngIf="!columnInfo.choices" >
-                                    <label>
+                                    <label> <span *ngIf="form.quizForm">{{i+1}}. </span>
                                         {{columnInfo.labelName}}
                                         <span class="required" *ngIf="columnInfo.required">*</span>
                                     </label>      
@@ -65,7 +65,7 @@
                             <ng-container *ngIf="columnInfo.choices && columnInfo.choices.length > 0" >
                                 <label class="questionclass"
                                     [ngClass]="{'answer_correct':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && !columnInfo.skipped && columnInfo.submittedAnswerCorrect, 'answer_incorrect':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && !columnInfo.skipped && !columnInfo.submittedAnswerCorrect, 'question_skipped':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && columnInfo.skipped}">
-                                    {{columnInfo.labelName}}
+                                    <span *ngIf="form.quizForm">{{i+1}}. </span>{{columnInfo.labelName}}
                                     <span class="required" *ngIf="columnInfo.required">*</span>
                                 </label>
                             </ng-container> 
