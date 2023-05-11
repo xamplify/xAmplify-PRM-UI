@@ -315,12 +315,7 @@
 														[(ngModel)]="campaignAccess.landingPageCampaign"
 														[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-												<tr>
-													<th scope="col">Share Leads</th>
-													<td>
-														<input type="checkbox" id="share-leads-c" [(ngModel)]="campaignAccess.shareLeads"	[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
-													</td>
-												</tr>
+												
 												<tr *ngIf="campaignAccess?.shareLeads">
 													<th scope="col">One-Click Launch</th>
 													<td>
@@ -334,6 +329,12 @@
 														[ngModelOptions]="{standalone: true}"></td>
 												</tr>
 											</ng-container>
+											<tr>
+												<th scope="col">Share Leads</th>
+												<td>
+													<input type="checkbox" id="share-leads-c" [(ngModel)]="campaignAccess.shareLeads"	[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
+												</td>
+											</tr>
 											<tr>
 												<th scope="col">Leads (Opportunities)</th>
 												<td><input type="checkbox"
