@@ -26,6 +26,7 @@ import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { CommentDto } from 'app/common/models/comment-dto';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -133,9 +134,9 @@ export class AuthenticationService {
  isFoter:boolean = false;
  isMain:boolean = false;
  customMap = new Map<string, CustomSkin>();
+ themeMap = new Map<string, ThemeDto>();
   /***** XNFR-238*********** */
   formBackground="";
-  
   
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;

@@ -17,6 +17,8 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
 import { NumericBlurEventArgs } from '@syncfusion/ej2-angular-inputs';
+import { HeaderThemePropertiesDto } from 'app/dashboard/models/header-properties-dto';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 declare var $ : any,CKEDITOR: any,swal:any;
 @Component({
@@ -38,6 +40,10 @@ export class CustomSkinComponent implements OnInit {
   isValidButtonBorderColor= true; 
   isValidIconColor = true;
   isValidButtonColor = true;
+
+  saveBoolean = false;
+  updateBoolean = false;
+
   valueRange: number;
   backgroundColor :string;
   divBgColor:string;
@@ -81,18 +87,25 @@ export class CustomSkinComponent implements OnInit {
   // public updatedBy: any;
   // public createdDate: any;
   // public updatedDate: any;
-  
+ 
   themeDtoList : ThemePropertiesDto[];
   themeDto : ThemeDto = new ThemeDto();
+  colorProperties : ThemePropertiesDto[]= [];
   themeWrapper : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
   footerForm :ThemePropertiesDto = new ThemePropertiesDto();
   mainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
   headerForm :ThemePropertiesDto = new ThemePropertiesDto();
   leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
+  isValidContactName: boolean = false;
+  noOptionsClickError: boolean = false;
+  invalidContactNameError = "";
+  checkingContactTypeName: string;
+  isValidLegalOptions = true;
   // sudha : Array<ThemePropertiesDto>;
   constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService,public authenticationService:AuthenticationService,
     public referenceService: ReferenceService,
+    public xtremandLogger: XtremandLogger,
     public ustilService: UtilService,public router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal();
@@ -111,6 +124,10 @@ export class CustomSkinComponent implements OnInit {
   ngOnInit() {
    //this. saveAll();
     this.activeTabNav(this.activeTabName);
+    this.loadNames();
+    this.getDefaultNames(this.themeId);
+
+    this.getDefaultSkin(this.themeId);
     try {
       this.ckeConfig = {
           allowedContent: true,
@@ -127,27 +144,27 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemePropertiesToList(form);
   }
   colorsdto:ThemePropertiesDto;
-  saveThemePropertiesToList(form:ThemePropertiesDto){
-    this.saveAlert = false;
-    this.colorsdto = new ThemePropertiesDto();
-    let self = this;
+  // saveThemePropertiesToList(form:ThemePropertiesDto){
+  //   this.saveAlert = false;
+  //   this.colorsdto = new ThemePropertiesDto();
+  //   let self = this;
     
-    self.colorsdto.backgroundColor = form.backgroundColor;
-    self.colorsdto.textColor = form.textColor;
-    self.colorsdto.buttonColor = form.buttonColor;
-    self.colorsdto.divBgColor = form.divBgColor;
-    self.colorsdto.iconColor = form.iconColor;
-    self.colorsdto.buttonBorderColor = form.buttonBorderColor;
-    self.colorsdto.buttonValueColor = form.buttonValueColor;
-    self.colorsdto.showFooter = form.showFooter;
-    self.colorsdto.moduleTypeString = form.moduleTypeString;
-    self.textContent = form.textContent;
-    self.colorsdto.createdBy = this.loggedInUserId;
-    //this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
-    this.saveAlert = true;
-    this.message = "Data saved Sucessfully"
+  //   self.colorsdto.backgroundColor = 'pink';
+  //   self.colorsdto.textColor = 'red';
+  //   self.colorsdto.buttonColor = 'yellow';
+  //   self.colorsdto.divBgColor = 'green';
+  //   self.colorsdto.iconColor = 'purple';
+  //   self.colorsdto.buttonBorderColor = 'grey';
+  //   self.colorsdto.buttonValueColor = 'blue';
+  //   self.colorsdto.showFooter = form.showFooter;
+  //   self.colorsdto.moduleTypeString = form.moduleTypeString;
+  //   self.textContent = 'added colors';
+  //   self.colorsdto.createdBy = this.loggedInUserId;
+  //   this.themePropertiesListWrapper.propertieslist.push(self.colorsdto);
+  //   this.saveAlert = true;
+  //   this.message = "Data saved Sucessfully"
 
-  }
+  // }
   clearCustomResponse(){this.customResponse = new CustomResponse();}
   activeTabNav(activateTab:any){
    // this.ngxloading = true;
@@ -163,7 +180,7 @@ export class CustomSkinComponent implements OnInit {
   }else if (this.activeTabName == "footer"){
     this.form.moduleTypeString = this.moduleStatusList[3];
   }
-  this.getDefaultSkin(this.themeId);
+   //this.getDefaultSkin(this.themeId);
   }
   showFooterChange() {
     this.form.showFooter = !this.form.showFooter;
@@ -194,27 +211,27 @@ export class CustomSkinComponent implements OnInit {
   saveHeader(form:ThemePropertiesDto){
     // this.themeDtoHeaderList.push(form);
     this.headerForm = form;
-    this.themePropertiesListWrapper.propertieslist.push(this.headerForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
     //this.saveThemePropertiesToList(this.headerForm);
     console.log(this.headerForm);
   }
   saveLeftForm(form:ThemePropertiesDto){
     // this.themeDtoLeftMenu.push(form);
     this.leftSideForm = form;
-    this.themePropertiesListWrapper.propertieslist.push(this.leftSideForm)
-    //this.saveThemePropertiesToList(this.leftSideForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.leftSideForm)
+    this.saveThemePropertiesToList(this.leftSideForm);
     console.log(this.leftSideForm);
   }
   saveFooter(form:ThemePropertiesDto){
     //this.themeDtoFooterList.push(form);
     this.footerForm = form;
-    this.themePropertiesListWrapper.propertieslist.push(this.footerForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.footerForm);
    //this.saveThemePropertiesToList(this.footerForm);
   }
   saveMainForm(form:ThemePropertiesDto){
    // this.themeDtoMainContent.push(form);
    this.mainContentForm = form;
-   this.themePropertiesListWrapper.propertieslist.push(this.mainContentForm);
+   this.themePropertiesListWrapper.propertiesList.push(this.mainContentForm);
    //.saveThemePropertiesToList(this.mainContentForm);
 
   }
@@ -232,6 +249,7 @@ export class CustomSkinComponent implements OnInit {
   //   }
   changEvent(ev:any){
     this.themeName = ev;
+    this.getAllThemeNames(this.themeName);
   }
   // saveTheme(){
   //   // alert(this.themeName);
@@ -332,10 +350,11 @@ id : number;
     }
 }
 removeColorCodeErrorMessage(colorCode: string, type: string) {
-  if (type === "backgroundColor") {
-      this.form.backgroundColor = colorCode;
-      this.isValidBackgroundColor = true;
-  }else if(type === "divBgColor"){
+  if (type === "headerBackgroundColor") {
+    this.form.backgroundColor = colorCode;
+    this.isValidBackgroundColor = true;
+}
+  else if(type === "divBgColor"){
     this.form.divBgColor = colorCode;
     this.isValidDivBgColor = true;
   }else if(type === "headerTextColor"){
@@ -400,9 +419,9 @@ checkValideColorCodes(){
 }
 private addColorCodeErrorMessage(type: string) {
   this.isValidColorCode = false;
-  if (type === "backgroundColor") {
-      this.form.backgroundColor = "";
-      this.isValidBackgroundColor = false;
+  if (type === "headerBackgroundColor") {
+    this.form.backgroundColor = "";
+    this.isValidBackgroundColor = false;
   }
   else if(type === "divBgColor"){
     this.form.divBgColor = "";
@@ -431,11 +450,12 @@ changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
   try {
       const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
       $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-      if (type === "backgroundColor") {
-          this.backgroundColor = event;
-          form.backgroundColor = event;
-          this.isValidBackgroundColor = true;
-      }else if(type === "divBgColor"){
+      if (type === "headerBackgroundColor") {
+        this.backgroundColor = event;
+        form.headerBackgroundColor = event;
+        this.isValidBackgroundColor = true;
+    }
+      else if(type === "divBgColor"){
         this.divBgColor = event;
         form.divBgColor = event;
         this.isValidDivBgColor = true;
@@ -475,7 +495,7 @@ changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
 
                                          //  Newly Changes
 
-
+names: string[] = [];
                             //  saves name
 saveTheme(){
     this.defaultAlert = false;
@@ -485,10 +505,19 @@ saveTheme(){
     this.themeDto.createdBy = this.loggedInUserId;
     this.defaultAlert = true;
     this.saveAlert = false;
+
+  //   var list = this.names;
+    
+  //   if ($.inArray( this.themeName, list ) > -1 ) {
+  //     this.isValidContactName = true;
+  //     $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+  //     $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+  //     this.invalidContactNameError = this.checkingContactTypeName+" List name already exists";
+  // }
   }
 
                            
-                      // gives default values
+                      // gives default values with id
 
 
   saveAll(){
@@ -511,6 +540,8 @@ saveTheme(){
      this.dashboardService.getPropertiesById(id)
            .subscribe(
            (data:any) =>{
+            // console.log(data);
+            // alert(data);
              let skinMAp = data.data;
              this.allProperties = data.data;
               if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
@@ -522,6 +553,12 @@ saveTheme(){
               } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
                this.form = skinMAp.MAIN_CONTENT;
               }
+
+              this.headerForm = skinMAp.TOP_NAVIGATION_BAR;
+              this.leftSideForm = skinMAp.LEFT_SIDE_MENU;
+              this.mainContentForm = skinMAp.MAIN_CONTENT;
+              this.footerForm = skinMAp.FOOTER;
+              
               this.iconColor = this.form.iconColor;
               this.backgroundColor = this.form.backgroundColor;
               this.textColor = this.form.textColor;
@@ -531,7 +568,7 @@ saveTheme(){
               this.divBgColor = this.form.divBgColor;
               this.footerContent = this.form.textContent;
               this.textContent = this.form.textContent;
-              this.saveAll()
+             // this.saveAll()
               this.ngxloading =false;
            },error=>{
              this.ngxloading =false;
@@ -539,14 +576,43 @@ saveTheme(){
            });
      }
 
+                    //getting default values without calling id
 
+     saveThemePropertiesToList(form:ThemePropertiesDto){
+      this.saveAlert = false;
+      this.colorsdto = new ThemePropertiesDto();
+      let self = this;
+      
+      self.colorsdto.backgroundColor = form.backgroundColor;
+    self.colorsdto.textColor = form.textColor;
+    self.colorsdto.buttonColor = form.buttonColor;
+    self.colorsdto.divBgColor = form.divBgColor;
+    self.colorsdto.iconColor = form.iconColor;
+    self.colorsdto.buttonBorderColor = form.buttonBorderColor;
+    self.colorsdto.buttonValueColor = form.buttonValueColor;
+    self.colorsdto.showFooter = form.showFooter;
+    self.colorsdto.moduleTypeString = form.moduleTypeString;
+    self.textContent = form.textContent;
+    self.colorsdto.createdBy = this.loggedInUserId;
+      this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
+      this.saveAlert = true;
+      this.message = "Data saved Sucessfully"
+  
+    }
 
                          // save theme
 
   getThemePropertiesWrapperObj(){
-    this.saveTheme();
+  // this.saveTheme();
+    this.getDefaultNames(this.themeId);
   this.themePropertiesListWrapper.themeDto = this.themeDto;
-   console.log(this.themePropertiesListWrapper);
+  console.log(this.themePropertiesListWrapper,'wrapper');
+  console.log(this.themeDto,'dto');
+  this.saveThemePropertiesToList(this.headerForm);
+  this.saveThemePropertiesToList(this.leftSideForm);
+  this.saveThemePropertiesToList(this.footerForm);
+  this.saveThemePropertiesToList(this.mainContentForm);
+    
     this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
           (data:any)=> {
             this.router.navigate(['/home/dashboard/myprofile']);
@@ -558,5 +624,51 @@ saveTheme(){
           }
       )
   }
+nameAlreadyExist = "";
+  tnames: string[] = [];
+  sudha: string[] = [];
+  public themeNameDto:Array<ThemeDto>;
 
+  loadNames(){
+    this.dashboardService.getAllThemeNames().subscribe(
+      (data:any) =>{
+        this.xtremandLogger.info( data );
+        this.sudha = data.data;
+        for ( let i = 0; i < data.data.length; i++ ) {
+          this.tnames.push(data.data[i].replace( /\s/g, '' ) );
+      }
+      },
+      ( error: any ) => {
+        this.xtremandLogger.error( error );
+        this.xtremandLogger.errorPage( error );
+    },
+    )
+  }
+
+  getAllThemeNames(contactName:string){
+    this.noOptionsClickError = false;
+    var list = this.tnames;
+    this.xtremandLogger.log( list );
+    if ($.inArray( contactName, list ) > -1 ) {
+      this.isValidContactName = true;
+      $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+      $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+      this.invalidContactNameError = "name already exists";
+    }else {
+      $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
+      $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+      this.isValidContactName = false;
+  }
+    }
+    all:string;
+    sname = "name";
+getDefaultNames(themeId:number){
+  this.dashboardService.getThemeDTOById(this.themeId).subscribe(
+    (data:any) =>{
+      this.themeDto = data.data;
+      this.sname = this.themeDto.name + ' copy';
+      console.log(this.sname);
+    }
+  )
+}
 }

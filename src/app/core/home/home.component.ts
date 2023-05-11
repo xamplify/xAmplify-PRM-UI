@@ -10,9 +10,12 @@ import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
 import { Title }     from '@angular/platform-browser';
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
-import { CustomSkin } from "app/dashboard/models/custom-skin";
+//import { ThemePropertiesDto } from "app/dashboard/models/custom-skin";
 import { DashboardService } from "app/dashboard/dashboard.service";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
+import { ThemePropertiesDto } from "app/dashboard/models/theme-properties-dto";
+import { CompanyThemeActivate } from "app/dashboard/models/company-theme-activate";
+import { ThemeDto } from "app/dashboard/models/theme-dto";
 
 
 declare var $: any;
@@ -31,8 +34,8 @@ export class HomeComponent implements OnInit {
   token: any;
   loggedInThroughVanityUrl = false;
   loader = false;
-  customSkinDto:CustomSkin = new CustomSkin();
-  footerSkin:CustomSkin =new CustomSkin();
+  ThemePropertiesDtoDto:ThemePropertiesDto = new ThemePropertiesDto();
+  footerSkin:ThemePropertiesDto =new ThemePropertiesDto();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   loggedInUserId: number;
   constructor(
@@ -309,6 +312,8 @@ export class HomeComponent implements OnInit {
          this.vanityURLService.isVanityURLEnabled();  
          this.getCompanyId();  
          this.getDefaultSkin();
+         this.getThemeDTOById(this.activeThemeDetails.themeId)
+         this.getActiveThemeData();
          //this.getMainContent(this.userId);  
        } catch (error) {
          this.xtremandLogger.error("error" + error);
@@ -316,7 +321,7 @@ export class HomeComponent implements OnInit {
   }
   
   // getMainContent(userId:number){
-  //   this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+  //   this.dashBoardService.getTopNavigationBarThemePropertiesDto(this.vanityLoginDto).subscribe(
   //     (response) =>{
   //      let cskinMap  = response.data;
   //      this.skin  = cskinMap.MAIN_CONTENT;
@@ -341,17 +346,47 @@ export class HomeComponent implements OnInit {
   //   )
   // }
   /*********** XNFR-238********** */
+  theme:ThemeDto = new ThemeDto();
+  getThemeDTOById(id:number){
+    this.dashBoardService.getThemeDTOById(id).subscribe(
+      (data:any) =>{
+        this.theme = data.data;
+      }
+    )
+  }
+  activeThemeDetails:CompanyThemeActivate = new CompanyThemeActivate();
+	getActiveThemeData(){
+		this.dashBoardService.getActiveTheme().subscribe(
+			(data:any) =>{
+				this.activeThemeDetails = data.data;
+        //this.getThemeDTOById(this.activeThemeDetails.themeId);
+		},
+		error =>{
+			//this.statusCode = 500;
+		  }
+		)
+	}
+ 
   isTop:boolean = false;
   isLeft:boolean = false;
   isFooter:boolean = false;
   isMain:boolean = false;
-  topCustom:CustomSkin = new CustomSkin();
-  leftCustom:CustomSkin = new CustomSkin();
-  footerCustom:CustomSkin = new CustomSkin();
-  maincontentCustom:CustomSkin = new CustomSkin();
+  topCustom:ThemePropertiesDto = new ThemePropertiesDto();
+  topCustomChange:ThemeDto = new ThemeDto();
+  leftCustom:ThemePropertiesDto = new ThemePropertiesDto();
+  leftCustomChange:ThemeDto = new ThemeDto();
+  footerCustom:ThemePropertiesDto = new ThemePropertiesDto();
+  footerCustomChange:ThemeDto = new ThemeDto();
+  maincontentCustom:ThemePropertiesDto = new ThemePropertiesDto();
+  maincontentCustomChange:ThemeDto = new ThemeDto();
   getDefaultSkin(){
+    //this.getActiveThemeData()
+    this.topCustomChange = this.theme;
+    this.leftCustomChange = this.theme;
+    this.footerCustomChange = this.theme;
+    this.maincontentCustomChange = this.theme;
      //this.ngxloading = true;
-     this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto)
+     this.dashBoardService.getPropertiesById(2)
      .subscribe(
          (data:any) =>{
        //this.ngxloading = false;
@@ -368,79 +403,76 @@ export class HomeComponent implements OnInit {
            this.authenticationService.customMap.set("main",skinMap.MAIN_CONTENT);
 
      if(this.topCustom.moduleTypeString === "TOP_NAVIGATION_BAR"){
-       this.customSkinDto = skinMap.TOP_NAVIGATION_BAR;
-       if(!this.topCustom.defaultSkin && !this.topCustom.darkTheme && this.topCustom.updatedBy != 1) {
+       this.ThemePropertiesDtoDto = skinMap.TOP_NAVIGATION_BAR;
+       if(!this.topCustomChange.defaultTheme && this.topCustom.updatedBy != 1) {
         this.authenticationService.isTop = true;
-       document.documentElement.style.setProperty('--top-bg-color', this.customSkinDto.backgroundColor);
-       document.documentElement.style.setProperty('--top-buton-color', this.customSkinDto.buttonColor);
-       document.documentElement.style.setProperty('--top-button-border-color', this.customSkinDto.buttonBorderColor);
-       document.documentElement.style.setProperty('--top-button-value-color', this.customSkinDto.buttonValueColor); 
-       document.documentElement.style.setProperty('--top-button-icon-color', this.customSkinDto.iconColor);
+       document.documentElement.style.setProperty('--top-bg-color', this.ThemePropertiesDtoDto.backgroundColor);
+       document.documentElement.style.setProperty('--top-buton-color', this.ThemePropertiesDtoDto.buttonColor);
+       document.documentElement.style.setProperty('--top-button-border-color', this.ThemePropertiesDtoDto.buttonBorderColor);
+       document.documentElement.style.setProperty('--top-button-value-color', this.ThemePropertiesDtoDto.buttonValueColor); 
+       document.documentElement.style.setProperty('--top-button-icon-color', this.ThemePropertiesDtoDto.iconColor);
        require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
-       this.isTop = true;
-       this.isMain = false;
-       this.isLeft = false;
-       this.isFooter = false;
+      //  this.isTop = true;
+      //  this.isMain = false;
+      //  this.isLeft = false;
+      //  this.isFooter = false;
          } 
         }
        if(this.leftCustom.moduleTypeString === "LEFT_SIDE_MENU"){
-       this.customSkinDto = skinMap.LEFT_SIDE_MENU;
-       if(!this.leftCustom.defaultSkin && !this.leftCustom.darkTheme && this.leftCustom.updatedBy != 1){
+       this.ThemePropertiesDtoDto = skinMap.LEFT_SIDE_MENU;
+       if(!this.leftCustomChange.defaultTheme && this.leftCustom.updatedBy != 1){
         this.authenticationService.isLeft = true;
-       document.documentElement.style.setProperty('--left-bg-color', this.customSkinDto.backgroundColor);
-       document.documentElement.style.setProperty('--left-text-color', this.customSkinDto.textColor);
-       document.documentElement.style.setProperty('--left-border-color', this.customSkinDto.buttonBorderColor);
-       document.documentElement.style.setProperty('--left-icon-color', this.customSkinDto.iconColor);
+       document.documentElement.style.setProperty('--left-bg-color', this.ThemePropertiesDtoDto.backgroundColor);
+       document.documentElement.style.setProperty('--left-text-color', this.ThemePropertiesDtoDto.textColor);
+       document.documentElement.style.setProperty('--left-border-color', this.ThemePropertiesDtoDto.buttonBorderColor);
+       document.documentElement.style.setProperty('--left-icon-color', this.ThemePropertiesDtoDto.iconColor);
        require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
        
-       this.isLeft = true;
-       this.isMain = false;
-       this.isTop = false;
-       this.isFooter = false;
+      //  this.isLeft = true;
+      //  this.isMain = false;
+      //  this.isTop = false;
+      //  this.isFooter = false;
          }
        }
        if(this.footerCustom.moduleTypeString === "FOOTER"){
-       this.customSkinDto = skinMap.FOOTER;
+       this.ThemePropertiesDtoDto = skinMap.FOOTER;
         this.footerSkin = skinMap.FOOTER;
-       this.authenticationService.isCustomFooter = this.customSkinDto.showFooter;
-       if( !this.footerCustom.defaultSkin && !this.footerCustom.darkTheme && this.footerCustom.updatedBy != 1){
+       this.authenticationService.isCustomFooter = this.ThemePropertiesDtoDto.showFooter;
+       if( !this.footerCustomChange.defaultTheme && this.footerCustom.updatedBy != 1){
         this.authenticationService.isFoter = true;
 
-       document.documentElement.style.setProperty('--footer-bg-color', this.customSkinDto.backgroundColor);
-       document.documentElement.style.setProperty('--footer-text-color', this.customSkinDto.textColor);
-       document.documentElement.style.setProperty('--footer-border-color', this.customSkinDto.buttonBorderColor);
+       document.documentElement.style.setProperty('--footer-bg-color', this.ThemePropertiesDtoDto.backgroundColor);
+       document.documentElement.style.setProperty('--footer-text-color', this.ThemePropertiesDtoDto.textColor);
+       document.documentElement.style.setProperty('--footer-border-color', this.ThemePropertiesDtoDto.buttonBorderColor);
        require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
-       this.isFooter = true;
-       this.isMain = false;
-       this.isTop = false;
-       this.isLeft = false;
+      //  this.isFooter = true;
+      //  this.isMain = false;
+      //  this.isTop = false;
+      //  this.isLeft = false;
        }
         } 
         if(this.maincontentCustom.moduleTypeString === "MAIN_CONTENT"){
-       this.customSkinDto = skinMap.MAIN_CONTENT;
-              if(!this.maincontentCustom.defaultSkin && !this.maincontentCustom.darkTheme && this.maincontentCustom.updatedBy != 1){
+       this.ThemePropertiesDtoDto = skinMap.MAIN_CONTENT;
+              if(!this.maincontentCustomChange.defaultTheme && this.maincontentCustom.updatedBy != 1){
                 this.authenticationService.isMain = true;
-       document.documentElement.style.setProperty('--page-content', this.customSkinDto.backgroundColor);
-       document.documentElement.style.setProperty('--div-bg-color', this.customSkinDto.divBgColor);
-       document.documentElement.style.setProperty('--title-heading--text', this.customSkinDto.textColor);
-       document.documentElement.style.setProperty('--border-color', this.customSkinDto.buttonBorderColor);
-       document.documentElement.style.setProperty('---text-color', this.customSkinDto.textColor);
+       document.documentElement.style.setProperty('--page-content', this.ThemePropertiesDtoDto.backgroundColor);
+       document.documentElement.style.setProperty('--div-bg-color', this.ThemePropertiesDtoDto.divBgColor);
+       document.documentElement.style.setProperty('--title-heading--text', this.ThemePropertiesDtoDto.textColor);
+       document.documentElement.style.setProperty('--border-color', this.ThemePropertiesDtoDto.buttonBorderColor);
+       document.documentElement.style.setProperty('---text-color', this.ThemePropertiesDtoDto.textColor);
         require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
       
 
-        this.isMain = true;
-        this.isTop = false;
-        this.isLeft = false;
-        this.isFooter = false;
+        // this.isMain = true;
+        // this.isTop = false;
+        // this.isLeft = false;
+        // this.isFooter = false;
           }
         }
-        if(this.customSkinDto.updatedBy === 1){
+        if(this.topCustomChange.name === "Light"){
           require("style-loader!../../../assets/admin/layout2/css/layout.css");
         }
-      
-        if(this.isTop || this.isLeft || this.isFooter || this.isMain){
-        this.authenticationService.isCustomTheme = true;
-        } else if(this.customSkinDto.darkTheme){
+       else if(this.topCustomChange.name === "Dark"){
        this.authenticationService.isDarkTheme = true;
        this.authenticationService.isDarkForCharts = true;
        require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");	

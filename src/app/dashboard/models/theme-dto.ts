@@ -6,7 +6,7 @@ export class ThemeDto {
     companyId : number;
     description : string;
     defaultTheme : false;
-   themesProperties : Set<ThemePropertiesDto> = new Set<ThemePropertiesDto>();
+   //themesProperties : Set<ThemePropertiesDto> = new Set<ThemePropertiesDto>();
     createdBy : number;
     updatedBy : number;
     createdDate : number;

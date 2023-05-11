@@ -805,8 +805,9 @@ updateCustomDefaultSettings(custom:any) {
 }
 
 /*************** Neew Changes *****************/
-saveMultipleTheme(wrapper:ThemePropertiesListWrapper){
-    const url = this.authenticationService.REST_URL + 'custom/skin/savetheme?access_token=' + this.authenticationService.access_token;
+saveMultipleTheme(wrapper:any){
+    console.log(wrapper);
+    const url = this.authenticationService.REST_URL + 'custom/skin/savetheme/?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,wrapper)
     .map(this.extractData)
     .catch(this.handleError);
@@ -834,6 +835,30 @@ getPropertiesByThemeName(name:string){
 activateThemeForCompany(wrapper:CompanyThemeActivate){
     const url = this.authenticationService.REST_URL + 'custom/skin/activateTheme?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,wrapper)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+deleteThemeProperties(id:number){
+    const url = this.authenticationService.REST_URL + 'custom/skin/delete/'+ id +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.delete(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+getActiveTheme(){
+    const url = this.authenticationService.REST_URL + 'custom/skin/getactiveTheme/'+ this.authenticationService.getUserId() +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+getThemeDTOById(id:number){
+    const url = this.authenticationService.REST_URL + 'custom/skin/getThemeDto/'+ id +'/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+getAllThemeNames(){
+    const url = this.authenticationService.REST_URL + 'custom/skin/getNames/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);
 }

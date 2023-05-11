@@ -103,7 +103,7 @@ export class SendCampaignsComponent implements OnInit {
               const data = response.data;
               pagination.totalRecords = data.totalRecords;
               this.sortOption.totalRecords = data.totalRecords;
-              let campaigns = data.campaigns;
+              let campaigns = data.campaign;
               $.each(campaigns, function(_index: number, campaign: any) {
                   campaign.displayTime = new Date(campaign.launchTimeInString);
               });

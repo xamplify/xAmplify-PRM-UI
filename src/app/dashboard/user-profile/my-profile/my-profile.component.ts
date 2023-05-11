@@ -287,6 +287,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
 	themeNames : string = '';
 	dummyData = this.properties.serverErrorMessage;
+	statusCode: any;
+	saveAlert:boolean = false;
 	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -542,6 +544,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
+			this.getActiveThemeData();
 			this.geoLocation();
 			this.showThemes();
 			this.videoUtilService.normalVideoJsFiles();
@@ -1799,16 +1802,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.themeName = "Custom Theme";
 		} else if(this.activeTabName == "lightTheme"){
 			this.activeTabHeader = "Custom Skin Settings";
-			this.themeName = "Light Theme";
+			// this.themeName = "Light Theme";
 		} else if(this.activeTabName == "DarkTheme"){
 			this.activeTabHeader = "Custom Skin Settings";
-			this.themeName = "Dark Theme";
+			// this.themeName = "Dark Theme";
 		} else if(this.activeTabName == "neumorphismLight"){
 			this.activeTabHeader = "Custom Skin Settings";
-			this.themeName = "Neumorphism Light";
+			// this.themeName = "Neumorphism Light";
 		} else if(this.activeTabName == "neumorphismDark"){
 			this.activeTabHeader = "Custom Skin Settings";
-			this.themeName = "Neumorphism Dark";
+			// this.themeName = "Neumorphism Dark";
 		} else if (this.activeTabName == "password") {
 			this.activeTabHeader = this.properties.changePassword;
 		} else if (this.activeTabName == "settings") {
@@ -4026,7 +4029,11 @@ configSalesforce() {
 	showThemes() {
 		this.dashBoardService.multipleThemesShow().subscribe(
 			(response) => {
-				this.themeDtoList = response.data;
+				 this.themeDtoList = response.data;
+				// $.each(response.list, function(_index: number, list: any) {
+				// 	list.createdDate = new Date(list.createdDate);
+					// list.sharedDate = new Date(list.sharedTime);
+				// });
 			},
 			error => {
 				this.ngxloading = false;
@@ -4036,6 +4043,8 @@ configSalesforce() {
 	showActivateButton:boolean;
 	showDto(dto:ThemeDto){
         this.themeDto = dto;
+		this.themeName = dto.name;
+		//this.themeDto.name = this.themeDto.name+ "_copy"
 		for (var char of this.themeDtoList) {
 			if(char.name === this.themeDto.name){
               this.showActivateButton = true;
@@ -4043,16 +4052,16 @@ configSalesforce() {
 		  }
 		//alert(this.themeDto.name);
 	}
-	activateTheme:CompanyThemeActivate;
-	activateThemeForCompany(id:number){
-     this.activateTheme.themeId =id;
-	 this.activateTheme.createdBy = this.loggedInUserId;
+	activateTheme:CompanyThemeActivate = new CompanyThemeActivate();
+	activateThemeForCompany(companyThemeId:number){
+	 this.activateTheme.createdBy = this.authenticationService.getUserId();
+     this.activateTheme.themeId =companyThemeId; 
+
+	 console.log(companyThemeId ,'sudha');
+	 console.log( this.activateTheme.createdBy,'companyId');
 	 this.activateThemeApi(this.activateTheme);
 	}
 	activateThemeApi(theme:CompanyThemeActivate) {
-
-    //  this.activateTheme.themeId = id;
-	//  this.activateTheme.createdBy = this.loggedInUserId;
 		this.dashBoardService.activateThemeForCompany (theme).subscribe(
 			(data: any) => {
 				this.router.navigate(['/home/dashboard/myprofile']);
@@ -4062,6 +4071,36 @@ configSalesforce() {
 				this.ngxloading = false;
 			});
 	}
-
+	deleteByThemeId(id:number){
+		this.dashBoardService.deleteThemeProperties(id).subscribe(
+			response =>{
+				this.statusCode = 200;
+				this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
+				this.router.navigate(['/home/dashboard/myprofile']);
+				if(id != null){
+					this.showCropper = false;
+				}
+			},
+			error =>{
+				this.statusCode = 500;
+				this.message = "Oops!Something went wrong";
+			  }
+		)
+	}
+	
+	closeTheme(){
+		this.router.navigate(['/home/dashboard/myprofile']);
+	}
+	activeThemeDetails:CompanyThemeActivate = new CompanyThemeActivate();
+	getActiveThemeData(){
+		this.dashBoardService.getActiveTheme().subscribe(
+			(data:any) =>{
+				this.activeThemeDetails = data.data;
+		},
+		error =>{
+			this.statusCode = 500;
+		  }
+		)
+	}
  /************* XNFR-238 *********************/	
 }
