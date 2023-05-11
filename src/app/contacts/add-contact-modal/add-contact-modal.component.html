@@ -86,7 +86,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue;">
             <span class="star"> *</span>
           </label>
-          <div class="form-group col-xs-7 col-sm-7">
+          <div class="form-group col-xs-6 col-sm-6">
             <select class="form-control" id="sel-partner-tm" (ngModelChange)="validateTeamMemberGroupId($event)"
               [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}" placeholder="Select Team Member Group">
               <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">{{teamMemberGroup.name}} ({{teamMemberGroup?.teamMembersCount}})</option>

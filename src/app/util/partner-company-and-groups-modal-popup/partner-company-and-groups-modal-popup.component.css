@@ -6,10 +6,10 @@
     position: relative;
     top: -10px;
 }
-
+/* 
 .full-width {
     width: 100% !important;
-}
+} */
 
 .custom-user-width {
     width: 459px;
@@ -126,7 +126,9 @@
 #ignismyModal .modal-header {
     border: 0px;
 }
-
+.modal .modal-header {
+border-bottom: 1px solid #efefef00;
+}
 /*--thank you pop ends here--*/
 
 .event-success {
@@ -268,3 +270,11 @@
 
 }
 
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.modal.right .modal-content{
+    overflow-y: hidden ;
+    border: 1px solid #dddddd ;
+}

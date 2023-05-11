@@ -1560,9 +1560,9 @@ div.switch5>input.switch:focus~label:before {
     margin: 2% 0% 0% 0%;
 }
 
-.full-width-modal-popup {
+/* .full-width-modal-popup {
     width: 100%!important;
-}
+} */
 .xamp-margin-left-icon{
     margin: 0px 5px 5px 5px;
 }
@@ -1597,3 +1597,44 @@ div.switch5>input.switch:focus~label:before {
   .preview-edit-color{
     color: #5a5a5a;
   }
+  
+/* 09/05/23 */
+
+.popup-align {
+    position: relative !important;
+    top: 67px;
+    height: 89% !important;
+    float: right;
+}
+.modal-dialog {
+    width: 85% !important;
+}
+.modal-content{
+    box-shadow: 0 0 0 rgb(255 255 255 / 0%) !important;
+    border-radius: 0px !important
+} 
+
+#add-form-name-modal {
+    padding-right: 0px !important;
+}
+
+
+
+.rmv-overflow{
+    overflow-y: hidden !important;
+    background: #00000085;
+}
+.modal-content{
+    overflow-y: hidden !important;
+    border: 1px solid #dddddd !important;
+}
+.width-btn{
+    width: 112px;
+    margin-left: 18px
+}
+.btn {
+    font-size: 12px !important;
+}
+.title-pd{
+    padding-top: 5px;
+}

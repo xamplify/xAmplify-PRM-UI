@@ -142,7 +142,7 @@
 			<tbody>
 				<ng-container
 					*ngFor="let category of pagination.pagedItems ;let i =index">
-				<tr id="folder-row-{{i}}" class="child-row-list-view">
+				<tr id="folder-row-{{i}}" class="child-row-list-view border-cls" >
 					<td class="custom-icon-width"><a
 						(click)="$event.stopPropagation();viewFolderItems(category,i)"
 						title="View Items"> <i class="fa" id="fa-folder-custom-size"
@@ -172,7 +172,7 @@
 				</tr>
 				<tr [ngClass]="{'hidden': !category.expanded}"
 					id="list-folder-items">
-					<td colspan="5"><ng-container *ngIf="category.expanded">
+					<td class="td-netbg" colspan="5"><ng-container *ngIf="category.expanded">
 						<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
 							[folderListViewCategoryId]="category.id"
 							[folderListViewExpanded]="category.expanded"

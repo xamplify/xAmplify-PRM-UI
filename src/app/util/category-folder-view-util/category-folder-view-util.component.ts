@@ -209,7 +209,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
           $('.child-row-list-view').css("background-color", "#fff");          
         if (category.expanded) {
             this.folderListViewInput['categoryId'] = category.id;
-            $('#folder-row-' + selectedIndex).css("background-color", "#d3d3d357");
+            $('#folder-row-' + selectedIndex).css("background-color", "#f1f5f9");
         } else {
             $('#folder-row-' + selectedIndex).css("background-color", "#fff");
         }

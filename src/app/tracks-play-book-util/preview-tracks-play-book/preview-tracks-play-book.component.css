@@ -468,9 +468,17 @@ body {
     margin-right: 3px;
 }
 
+.Asset-title-class {
+    display: inline;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 3px;
+
+}
+
 .asset-name-class {
-    background-color: #f1f3fa;
-    color: #8c9dad !important;
+    background-color: #aee4ff;
+    color: #fff !important;
 }
 
 /* .card-shadow {

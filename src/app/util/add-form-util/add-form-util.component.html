@@ -437,51 +437,54 @@
 <!-- -End Of page-content -->
 
 <!--Modal Popup For Form Details------------>
-<div class="modal right" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width-modal-popup">
-        <div class="modal-content mPad">
+<div class="modal right rmv-overflow" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-sm popup-align">
+        <div class="modal-content mPad col-lg-12 col-md-12">
             <div class="modal-header">
-                <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title text-center">{{formTitle}}</h4>
+                <button type="button" class="btn grey  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
+                <button type="submit" [disabled]="!form.isValid"  class="btn green-haze col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <h4 class="modal-title text-center col-lg-8 col-md-8 title-pd">{{formTitle}}</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" id="formNameDiv">
-                    <label>Name <span class="invalid-form-name">*</span></label>
-                    <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
-                    <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
+                    <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
+                        <label>Name <span class="invalid-form-name">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
+                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                    </div>
+                    <div class="form-group  col-md-6 col-lg-6">
+                        <label>Select a folder <span class="invalid-form-name">*</span></label>
+                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
+                            <option  *ngFor="let category of categoryNames" [value]="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Select a folder <span class="invalid-form-name">*</span></label>
-                    <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
-                        <option *ngFor="let category of categoryNames" [value]="category.id">
-                            {{category.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
-                </div>
-                <div class="form-group" *ngIf="loggedInAsSuperAdmin">
-                    <input type="checkbox" [(ngModel)]="form.isSurvey">
-                    <label>Survey</label>
-                </div>
-                <!-- XNFR-108 -->
-                <div class="form-group">
-                    <label>Team Member Group</label>
-                    <p class="pencil-color" style="font-size: 12px;" translate>
-                        Selected team members will receive form submit notifications.
-                    </p>
-                    <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
-                        [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
-                    </app-form-team-member-group>
+                <div class="col-lg-12 col-md-12">    
+                    <div class="form-group col-lg-12 col-md-12">
+                        <label>Description</label>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12" *ngIf="loggedInAsSuperAdmin">
+                        <input type="checkbox" [(ngModel)]="form.isSurvey">
+                        <label>Survey</label>
+                    </div>
+                    <!-- XNFR-108 -->
+                    <div class="form-group col-lg-12 col-md-12">
+                        <label>Team Member Group</label>
+                        <p class="pencil-color" style="font-size: 12px;" translate>
+                            Selected team members will receive form submit notifications.
+                        </p>
+                        <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
+                            [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
+                        </app-form-team-member-group>
+                    </div>
                 </div>
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                
             </div>
         </div>
     </div>

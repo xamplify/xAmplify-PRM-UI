@@ -7,9 +7,9 @@
     top: -10px;
 }
 
-.full-width {
+/* .full-width {
     width: 100% !important;
-}
+} */
 
 .custom-user-width {
     width: 459px;
@@ -29,6 +29,7 @@
 
 #search-div {
     margin-right: 10px;
+    margin-top: 16px;
 }
 
 #icon {
@@ -272,11 +273,18 @@
 }
 
 
+.pr0{
+    padding-right: 15px !important;
+}
+
+.table-responsive{
+        overflow-x: initial !important;
+        position: relative;
+        top: 10px;
+}
 
 
-
-
-
-
-
-
+.modal.right .modal-content{
+    overflow-y: hidden ;
+    border: 1px solid #dddddd ;
+}

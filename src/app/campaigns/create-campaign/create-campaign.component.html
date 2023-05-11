@@ -2622,12 +2622,22 @@
                         <div class="col-xs-12">
                             <div>
                                 <div>
-                                    <div class="btn-group btn-group-justified">
-                                        <ng-container *ngFor="let schedule of sheduleCampaignValues">
-                                            <label class="btn btn-primary button-border">
+                                   <div class="btn-group btn-group-justified">
+                                        <ng-container>
+                                            <label  class="btn btn-primary button-border">
                                                 <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
-                                                    [value]="schedule" formControlName="scheduleCampaign"
-                                                    ngDefaultControl style=" margin-right:1.5em; " />{{schedule}}
+                                                    [value]="sheduleCampaignValues[0]" formControlName="scheduleCampaign"
+                                                    ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
+                                            </label>
+                                            <label  class="btn btn-warning button-border Sch-class" >
+                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                                                    [value]="sheduleCampaignValues[1]" formControlName="scheduleCampaign"
+                                                    ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
+                                            </label>
+                                            <label class="btn green mBtnAlign button-border">
+                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                                                    [value]="sheduleCampaignValues[2]" formControlName="scheduleCampaign"
+                                                    ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
                                             </label>
                                         </ng-container>
                                     </div>
@@ -2675,7 +2685,7 @@
                                         <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam Check</button>
                                     </div>
                                 </div>
                             </div>

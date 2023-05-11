@@ -2232,6 +2232,21 @@ img.thumb.ng-scope {
   border-radius: 3px;
   border: 1px solid #ddd !important;
 }
+
+
+.Sch-class{
+  background-color: #f76c1a !important;
+}
+.Sch-class:hover{
+  background-color: #dd804b !important;
+}
+
+span.text-algn {
+  position: relative;
+  bottom: 2px;
+}
+
+
   
 /* .colorbox-1 {
   background: linear-gradient(90deg, rgba(44,74,90,1) 0%, rgba(44,74,90,0.95) 47%, rgba(44,74,90,0.9) 100%);

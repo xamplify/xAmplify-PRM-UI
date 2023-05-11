@@ -123,6 +123,7 @@
 
 .actionAlignment{
     display: flex;
+    justify-content: space-evenly;
 }
 /* .btnAlignPad{
     padding-left: 35px;

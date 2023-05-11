@@ -441,6 +441,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   closeModal() {
       if (this.form.isValid) {
           this.removeBlurClass();
+            this.navigateBack();
       } else {
           this.addBlurClass();
           this.navigateBack();

@@ -132,3 +132,17 @@
     font-size: 25px;
     color: #15c1df;
 }
+.newbg-folder{
+    background-color: #f1f5f9 ;
+}
+.td-netbg{
+    background: #f9f9f9;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+.border-cls{
+    border-left : 1px solid #ddd;
+    border-right : 1px solid #ddd;
+    border-bottom : 1px solid #ddd;
+}
