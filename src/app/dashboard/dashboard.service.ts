@@ -704,6 +704,11 @@ export class DashboardService {
     }
     /*********funnel chart****** */
     getFunnelChartsAnalyticsData(vanityLoginDto:VanityLoginDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + 'dashboard/views/getFunnelChartsAnalyticsData?access_token=' + this.authenticationService.access_token;
         return this.http.post(url,vanityLoginDto)
         .map(this.extractData)
@@ -727,6 +732,11 @@ export class DashboardService {
 
    /************Pie chart ********* */
    getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -734,6 +744,11 @@ export class DashboardService {
    }
 
    getPieChartDealsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -741,6 +756,11 @@ export class DashboardService {
    }
 
    getPieChartStatisticsLeadAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartStatisticsLeadAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -748,6 +768,11 @@ export class DashboardService {
    }
 
    getPieChartStatisticsDealData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -755,6 +780,11 @@ export class DashboardService {
    }
 
    getPieChartDealStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -762,6 +792,11 @@ export class DashboardService {
    }
 
    getPieChartLeadsStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartLeadsStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
