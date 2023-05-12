@@ -136,3 +136,12 @@
 .disabled-background-color {
     background-color: #f7f6f6;
 }
+
+.form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }

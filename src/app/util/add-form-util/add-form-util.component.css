@@ -1589,3 +1589,13 @@ div.switch5>input.switch:focus~label:before {
       color: #7b8894;
       bottom: 22px;
   }
+
+  .form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  

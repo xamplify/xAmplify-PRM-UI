@@ -1103,3 +1103,12 @@ input.cmn-toggle-round-flat:checked+label:after {
     text-overflow: ellipsis;
     width: 100%;
 }
+
+.form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
