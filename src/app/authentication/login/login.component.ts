@@ -34,11 +34,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "Facebook", "iconName": "facebook", "value": "facebook" },
   { "name": "twitter", "iconName": "twitter", "value": "twitter" },
   { "name": "google", "iconName": "googleplus", "value": "googleplus" },
-  { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" },
-  { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" }];
-
-  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "facebook", "value": "microsoft" },
   { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" }];
+
+  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" }];
 
   roles: Array<Role>;
   vanityURLEnabled: boolean;
