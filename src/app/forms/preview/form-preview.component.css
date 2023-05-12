@@ -153,3 +153,12 @@ body {
     color: red;
     font-weight: 600;
 }
+
+.form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
