@@ -1,16 +1,28 @@
- <ngx-loading [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+ <ngx-loading class="col-xs-12" [show]="loader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="portlet-body">
-            <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
+            <app-modal-popup-loader   [hidden]="!loader"></app-modal-popup-loader>
             <ng-container *ngIf="!loader && statusCode!=200">
                 <div class="alert alert-danger">
                   <strong>{{properties?.serverErrorMessage}}</strong>
                 </div>
               </ng-container>
-              <div [hidden]="loader" *ngIf="pieChartGraphData?.length < 1" style="max-width: 100%;text-align: center; margin-top: 246px;">
-                <div class="alert alert-info" >
+              <div class="alert alert-info col-xs-12" *ngIf="pieChartGraphData?.length < 1" >
+                <div  style="max-width: 100%;text-align: center;">
                      <strong>No Data Found</strong>
+                     <span class="info-color-xampc" *ngIf="selectedTemplateTypeIndex === 0">
+                      <i class="fa fa-question-circle toggle-info-xampc" data-html="true"
+                          data-toggle="tooltip" data-placement="bottom"
+                          title="Here We Show Stage Wise Deals."
+                           aria-hidden="true"></i>
+                  </span>
+                  <span class="info-color-xampc" *ngIf="selectedTemplateTypeIndex === 1">
+                    <i class="fa fa-question-circle toggle-info-xampc" data-html="true"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Here We Show Stage Wise Leads."
+                         aria-hidden="true"></i>
+                </span>
                  </div>
-            </div>
+              </div>
             <div [hidden]="loader" class="highcharts-figure1">
                 <div [hidden]="!show" id="leads-deals-bar-graph">
                 </div>

@@ -15,20 +15,18 @@
                   </div>
                   <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
 
-                  <div  *ngIf="pieChartData?.length < 1  && sum == 0" style="max-width: 100%;text-align: center;">
+                  <!-- <div  *ngIf="pieChartData?.length < 1  && sum == 0" style="max-width: 100%;text-align: center;">
                     <div class="alert alert-info" >
                          <strong>No Data Found</strong>
                      </div>
-                </div>
+                </div> -->
           <!-- <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader> -->
 
                <div>
-
-              
-                    <figure [hidden]="loader" class="highcharts-figure-pie" *ngIf="show">
+                    <!-- <figure [hidden]="loader" class="highcharts-figure-pie" *ngIf="show">
                       <div  id="container">   
                       </div>
-                  </figure>
+                  </figure> -->
           
                   <!-- <app-modal-popup-loader *ngIf="statisticsLoader" [height]="75"  ></app-modal-popup-loader> -->
                   <app-box-loader [countLoader]=3 *ngIf="statisticsLoader"></app-box-loader>
@@ -58,7 +56,30 @@
                       </div>
                   </div>
                 </div>
-                 <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph> 
+                   <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>
+                  <figure [hidden]="loader" class="highcharts-figure-pie" *ngIf="show">
+                    <div  id="container">   
+                    </div>
+                </figure>
+                
+                  <div class="alert alert-info col-xs-12" *ngIf="pieChartData?.length < 1  && sum == 0" >
+                    <div  style="max-width: 100%;text-align: center;">
+                         <strong>No Data Found</strong>
+                         <span class="info-color-xampc" *ngIf="selectedTemplateTypeIndex === 0">
+                          <i class="fa fa-question-circle toggle-info-xampc" data-html="true"
+                              data-toggle="tooltip" data-placement="bottom"
+                              title="Here We show Only Lost Deals and Won Deals"
+                               aria-hidden="true"></i>
+                         </span>
+                         <span class="info-color-xampc" *ngIf="selectedTemplateTypeIndex === 1">
+                          <i class="fa fa-question-circle toggle-info-xampc" data-html="true"
+                              data-toggle="tooltip" data-placement="bottom"
+                              title="Here We show Only Won Leads,Lost Leads, Converted Leads"
+                               aria-hidden="true"></i>
+                      </span>
+                     </div>
+                </div>
+                 <!-- <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>  -->
             </div>
         </div>
     </div>
