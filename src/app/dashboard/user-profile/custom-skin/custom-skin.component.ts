@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild,Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -20,24 +20,24 @@ import { NumericBlurEventArgs } from '@syncfusion/ej2-angular-inputs';
 import { HeaderThemePropertiesDto } from 'app/dashboard/models/header-properties-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
-declare var $ : any,CKEDITOR: any,swal:any;
+declare var $: any, CKEDITOR: any, swal: any;
 @Component({
   selector: 'app-custom-skin',
   templateUrl: './custom-skin.component.html',
   styleUrls: ['./custom-skin.component.css'],
-  providers: [EmailTemplate,Properties]
+  providers: [EmailTemplate, Properties]
 })
 export class CustomSkinComponent implements OnInit {
-  form :ThemePropertiesDto = new ThemePropertiesDto();
+  form: ThemePropertiesDto = new ThemePropertiesDto();
   @ViewChild("myckeditor") ckeditor: any;
-  @Input() themeDTO:ThemeDto;
-  @Input() themeId:number;
+  @Input() themeDTO: ThemeDto;
+  @Input() themeId: number;
   isValidDivBgColor = true;
-  isValidHeaderTextColor =true;
-  isValidBackgroundColor= true;
-  isValidButtonValueColor= true;
-  isValidTextColor= true;
-  isValidButtonBorderColor= true; 
+  isValidHeaderTextColor = true;
+  isValidBackgroundColor = true;
+  isValidButtonValueColor = true;
+  isValidTextColor = true;
+  isValidButtonBorderColor = true;
   isValidIconColor = true;
   isValidButtonColor = true;
 
@@ -45,68 +45,87 @@ export class CustomSkinComponent implements OnInit {
   updateBoolean = false;
 
   valueRange: number;
-  backgroundColor :string;
-  divBgColor:string;
-  headerTextColor:string;
-  iconColor :string;
-  textColor:string;
-  buttonBorderColor:string;
-  buttonValueColor:string;
-  buttonColor :string;
-  textContent :string;
-  loggedInUserId:any;
-  fontFamily:string;
+  backgroundColor: string;
+  divBgColor: string;
+  iconColor: string;
+  textColor: string;
+  buttonBorderColor: string;
+  buttonValueColor: string;
+  /******* Header Colors***********/
+  headerBgColor: string;
+  headerBBorderColor: string;
+  headerBVColor: string;
+  headerBColor: string;
+  headerBIconColor: string;
+  /*******Header Color*************/
+  /*******Main_Content******** */
+  mainBgColor: string;
+  mainDivColor: string;
+  mainBorderColor: string;
+  mainTextColor: string;
+  /*******Main_Content******** */
+  /*******Left Menu***** */
+  leftBgColor: string;
+  leftIconColor: string;
+  leftTextColor: string;
+  leftBorderColor: string;
+  /*******Left Menu***** */
+  /******Footer*** */
+  footerBgColor: string;
+  footerTextColor: string;
+  footerTextContent: string;
+  /******Footer**** */
+  buttonColor: string;
+  textContent: string;
+  loggedInUserId: any;
+  fontFamily: string;
   isValidColorCode = true;
-  sucess:boolean = false;
+  sucess: boolean = false;
   name = 'ng2-ckeditor';
   ckeConfig: any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  lableForBgColor:string ="Background Color";
-  moduleStatusList: string[] =["--Select Type--","LEFT_SIDE_MENU","TOP_NAVIGATION_BAR","FOOTER","MAIN_CONTENT"];
+  lableForBgColor: string = "Background Color";
+  moduleStatusList: string[] = ["--Select Type--", "LEFT_SIDE_MENU", "TOP_NAVIGATION_BAR", "FOOTER", "MAIN_CONTENT"];
   isLoggedInFromAdminSection = false;
   loading = false;
   vanityLogin = false;
   activeTabName: string = "header";
-  showFooter:boolean;
-  footerContent:any;
+  showFooter: boolean;
+  footerContent: any;
   charactersLeft = 250;
-  minLength:number;
-  statusCode :any;
+  minLength: number;
+  statusCode: any;
   isValid = false;
   customResponse: CustomResponse = new CustomResponse();
   ngxloading = false;
-  fontStyles : string[] =["--select font style--","serif","sans-serif","monospace","cursive","fantasy","system-ui","ui-serif",
-                           "ui-sans-serif","ui-monospace","Open Sans, sans-serif"];
-  saveAlert:boolean = false;
-  defaultAlert :boolean = false;
-  themeName  = "Light";
+  fontStyles: string[] = ["--select font style--", "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui", "ui-serif",
+    "ui-sans-serif", "ui-monospace", "Open Sans, sans-serif"];
+  saveAlert: boolean = false;
+  defaultAlert: boolean = false;
+  themeName = "";
   themePropertiesListWrapper: ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
   themeDtoObj: ThemeDto;
-  // public createdBy: any;
-  // public description: any;
-  // public updatedBy: any;
-  // public createdDate: any;
-  // public updatedDate: any;
- 
-  themeDtoList : ThemePropertiesDto[];
-  themeDto : ThemeDto = new ThemeDto();
-  colorProperties : ThemePropertiesDto[]= [];
-  themeWrapper : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
-  footerForm :ThemePropertiesDto = new ThemePropertiesDto();
-  mainContentForm :ThemePropertiesDto = new ThemePropertiesDto();
-  headerForm :ThemePropertiesDto = new ThemePropertiesDto();
-  leftSideForm :ThemePropertiesDto = new ThemePropertiesDto();
+  headerBackgroundColor = "";
+
+  themeDtoList: ThemePropertiesDto[];
+  themeDto: ThemeDto = new ThemeDto();
+  colorProperties: ThemePropertiesDto[] = [];
+  themeWrapper: ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+  footerForm: ThemePropertiesDto = new ThemePropertiesDto();
+  mainContentForm: ThemePropertiesDto = new ThemePropertiesDto();
+  headerForm: ThemePropertiesDto = new ThemePropertiesDto();
+  leftSideForm: ThemePropertiesDto = new ThemePropertiesDto();
   isValidContactName: boolean = false;
   noOptionsClickError: boolean = false;
   invalidContactNameError = "";
   checkingContactTypeName: string;
   isValidLegalOptions = true;
   // sudha : Array<ThemePropertiesDto>;
-  constructor(public regularExpressions: RegularExpressions,public videoUtilService: VideoUtilService,
-    public dashboardService: DashboardService,public authenticationService:AuthenticationService,
+  constructor(public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService,
+    public dashboardService: DashboardService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService,
     public xtremandLogger: XtremandLogger,
-    public ustilService: UtilService,public router: Router,public properties:Properties) {
+    public ustilService: UtilService, public router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal();
     this.vanityLoginDto.userId = this.loggedInUserId;
@@ -115,14 +134,14 @@ export class CustomSkinComponent implements OnInit {
       this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
       this.vanityLoginDto.vanityUrlFilter = true;
       this.vanityLogin = true;
-    }else{
+    } else {
       this.vanityLoginDto.vanityUrlFilter = false;
     }
-   
-     }
+
+  }
 
   ngOnInit() {
-   //this. saveAll();
+    //this. saveAll();
     this.activeTabNav(this.activeTabName);
     this.loadNames();
     this.getDefaultNames(this.themeId);
@@ -130,25 +149,25 @@ export class CustomSkinComponent implements OnInit {
     this.getDefaultSkin(this.themeId);
     try {
       this.ckeConfig = {
-          allowedContent: true,
+        allowedContent: true,
       };
-  } catch ( errr ) { }
+    } catch (errr) { }
   }
-  save(form:ThemePropertiesDto){
-    if(CKEDITOR!=undefined){
+  save(form: ThemePropertiesDto) {
+    if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
-          CKEDITOR.instances[instanceName].updateElement();
-          form.textContent = CKEDITOR.instances[instanceName].getData();
+        CKEDITOR.instances[instanceName].updateElement();
+        form.textContent = CKEDITOR.instances[instanceName].getData();
       }
     }
     this.saveThemePropertiesToList(form);
   }
-  colorsdto:ThemePropertiesDto;
+  colorsdto: ThemePropertiesDto;
   // saveThemePropertiesToList(form:ThemePropertiesDto){
   //   this.saveAlert = false;
   //   this.colorsdto = new ThemePropertiesDto();
   //   let self = this;
-    
+
   //   self.colorsdto.backgroundColor = 'pink';
   //   self.colorsdto.textColor = 'red';
   //   self.colorsdto.buttonColor = 'yellow';
@@ -165,31 +184,39 @@ export class CustomSkinComponent implements OnInit {
   //   this.message = "Data saved Sucessfully"
 
   // }
-  clearCustomResponse(){this.customResponse = new CustomResponse();}
-  activeTabNav(activateTab:any){
-   // this.ngxloading = true;
+  headerModuleName = "TOP_NAVIGATION_BAR";
+  leftMenuModuleName = "LEFT_SIDE_MENU";
+  footerModuleName = "FOOTER";
+  mainModuleName = "MAIN_CONTENT";
+  clearCustomResponse() { this.customResponse = new CustomResponse(); }
+  activeTabNav(activateTab: any) {
+    // this.ngxloading = true;
     this.saveAlert = false;
     this.defaultAlert = false;
-  this.activeTabName = activateTab;
-  if(this.activeTabName == "header"){
-    this.form.moduleTypeString = this.moduleStatusList[2];
-  }else if(this.activeTabName == "leftmenu"){
-    this.form.moduleTypeString = this.moduleStatusList[1];
-  }else if(this.activeTabName == "pagecontent"){
-    this.form.moduleTypeString = this.moduleStatusList[4];
-  }else if (this.activeTabName == "footer"){
-    this.form.moduleTypeString = this.moduleStatusList[3];
-  }
-   //this.getDefaultSkin(this.themeId);
+    this.activeTabName = activateTab;
+    if (this.activeTabName == "header") {
+      this.form.moduleTypeString = this.moduleStatusList[2];
+      this.headerForm.moduleTypeString = "TOP_NAVIGATION_BAR";
+    } else if (this.activeTabName == "leftmenu") {
+      this.form.moduleTypeString = this.moduleStatusList[1];
+      this.leftSideForm.moduleTypeString = "LEFT_SIDE_MENU";
+    } else if (this.activeTabName == "pagecontent") {
+      this.form.moduleTypeString = this.moduleStatusList[4];
+      this.mainContentForm.moduleTypeString = "MAIN_CONTENT";
+    } else if (this.activeTabName == "footer") {
+      this.form.moduleTypeString = this.moduleStatusList[3];
+      this.footerForm.moduleTypeString = "FOOTER";
+    }
+    //this.getDefaultSkin(this.themeId);
   }
   showFooterChange() {
-    this.form.showFooter = !this.form.showFooter;
-    this.showFooter = !this.form.showFooter;
-  } 
-  
-  message:string="";
+    this.footerForm.showFooter = !this.footerForm.showFooter;
+    this.showFooter = !this.footerForm.showFooter;
+  }
 
-  
+  message: string = "";
+
+
   /********** Sucess Alert (XNFR-238)************/
   showSweetAlertSuccessMessage(message: string) {
     swal({
@@ -200,390 +227,415 @@ export class CustomSkinComponent implements OnInit {
       function (allowOutsideClick) {
         if (allowOutsideClick) {
           console.log('CONFIRMED');
-           window.location.reload();
+          window.location.reload();
         }
       });
   }
   /******* Reload Alert ******/
-  
+
   /********** Close Sucess Alert  (XNFR-238)*************/
 
-  saveHeader(form:ThemePropertiesDto){
-    // this.themeDtoHeaderList.push(form);
-    this.headerForm = form;
-    this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
-    //this.saveThemePropertiesToList(this.headerForm);
-    console.log(this.headerForm);
-  }
-  saveLeftForm(form:ThemePropertiesDto){
-    // this.themeDtoLeftMenu.push(form);
-    this.leftSideForm = form;
-    this.themePropertiesListWrapper.propertiesList.push(this.leftSideForm)
-    this.saveThemePropertiesToList(this.leftSideForm);
-    console.log(this.leftSideForm);
-  }
-  saveFooter(form:ThemePropertiesDto){
-    //this.themeDtoFooterList.push(form);
-    this.footerForm = form;
-    this.themePropertiesListWrapper.propertiesList.push(this.footerForm);
-   //this.saveThemePropertiesToList(this.footerForm);
-  }
-  saveMainForm(form:ThemePropertiesDto){
-   // this.themeDtoMainContent.push(form);
-   this.mainContentForm = form;
-   this.themePropertiesListWrapper.propertiesList.push(this.mainContentForm);
-   //.saveThemePropertiesToList(this.mainContentForm);
-
-  }
-  allProperties:any;
-  // saveAll(){
-
-  //   this.headerForm = this.allProperties.TOP_NAVIGATION_BAR;
-  //   this.headerForm.createdBy = this.loggedInUserId;
-  //   this.leftSideForm = this.allProperties.LEFT_SIDE_MENU;
-  //   this.leftSideForm.createdBy = this.loggedInUserId;
-  //   this.footerForm = this.allProperties.FOOTER;
-  //   this.footerForm.createdBy = this.loggedInUserId;
-  //   this.mainContentForm = this.allProperties.MAIN_CONTENT;
-  //   this.mainContentForm.createdBy = this.loggedInUserId;
-  //   }
-  changEvent(ev:any){
-    this.themeName = ev;
-    this.getAllThemeNames(this.themeName);
-  }
-  // saveTheme(){
-  //   // alert(this.themeName);
-  //   this.defaultAlert = false;
-  //   this.themeDto.name = this.themeName;
-  //  // alert(this.themeDto.name)
-  //   this.themeDto.description = 'Hi';
-  //   this.themeDto.defaultTheme = false;
-  //   this.themeDto.createdBy = this.loggedInUserId;
-  //   this.defaultAlert = true;
-  //   this.saveAlert = false;
-  //  // console.log(this.themeDto);
+  // saveHeader(form: ThemePropertiesDto) {
+  //   // this.themeDtoHeaderList.push(form);
+  //   this.headerForm = form;
+  //   this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
+  //   //this.saveThemePropertiesToList(this.headerForm);
+  //   console.log(this.headerForm);
   // }
-
-id : number;
-// getThemePropertiesWrapperObj(){
-//   this.saveTheme();
-//   this.getDefaultSkin(this.id);
-// // this.themePropertiesListWrapper.propertieslist.push(this.headerForm);
-// // this.themePropertiesListWrapper.propertieslist.push(this.leftSideForm);
-// // this.themePropertiesListWrapper.propertieslist.push(this.footerForm);
-// // this.themePropertiesListWrapper.propertieslist.push(this.mainContentForm)
-// this.themePropertiesListWrapper.themeDto = this.themeDto;
-//  console.log(this.themePropertiesListWrapper);
-//   this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
-//         (data:any)=> {
-//           this.router.navigate(['/home/dashboard/myprofile']);
-//           this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
-//         },
-//         error =>{
-//           this.statusCode = 500;
-//           this.message = "Oops!Something went wrong";
-//         }
-//     )
-// }
-  saveDefaultSkin(form:CustomSkin){
-  // this.form.defaultSkin = true;
-    //this.sweetAlertDefaultSettings(form)
-   // this.form.darkTheme = false;
-    this.updateUserDefaultSettings(form);
-  }
-  updateUserDefaultSettings(form:CustomSkin){
-    this.ngxloading = true;
-   // this.form.createdBy = this.loggedInUserId;
-    this.form.updatedBy = this.loggedInUserId;
-    this.dashboardService.updateCustomDefaultSettings(form).subscribe(
-      (data:any) =>{
-        this.defaultAlert = true;
-        this.message="Default Settings Updated."
-        this.ngxloading =false;
-      },error=>{
-        this.ngxloading =false;
-        this.message = this.properties.serverErrorMessage;
-      });
-  }
-  important = "!important";
-  // getDefaultSkin(id:number){
-  //  // this.ngxloading = true;
-  // this.dashboardService.getPropertiesById(id)
-  //       .subscribe(
-  //       (data:any) =>{
-  //         let skinMAp = data.data;
-  //         this.allProperties = data.data;
-  //          if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-  //           this.form = skinMAp.TOP_NAVIGATION_BAR;
-  //          }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
-  //           this.form = skinMAp.LEFT_SIDE_MENU;
-  //          }else if(this.form.moduleTypeString === "FOOTER"){
-  //           this.form = skinMAp.FOOTER;
-  //          } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
-  //           this.form = skinMAp.MAIN_CONTENT;
-  //          }
-  //          this.iconColor = this.form.iconColor;
-  //          this.backgroundColor = this.form.backgroundColor;
-  //          this.textColor = this.form.textColor;
-  //          this.buttonBorderColor = this.form.buttonBorderColor;
-  //          this.buttonColor = this.form.buttonColor;
-  //          this.buttonValueColor = this.form.buttonValueColor;
-  //          this.divBgColor = this.form.divBgColor;
-  //          this.footerContent = this.form.textContent;
-  //          this.textContent = this.form.textContent;
-  //          this.saveAll()
-  //          this.ngxloading =false;
-  //       },error=>{
-  //         this.ngxloading =false;
-  //         this.message = this.properties.serverErrorMessage;
-  //       });
+  // saveLeftForm(form: ThemePropertiesDto) {
+  //   // this.themeDtoLeftMenu.push(form);
+  //   this.leftSideForm = form;
+  //   this.themePropertiesListWrapper.propertiesList.push(this.leftSideForm)
+  //   this.saveThemePropertiesToList(this.leftSideForm);
+  //   console.log(this.leftSideForm);
   // }
+  // saveFooter(form: ThemePropertiesDto) {
+  //   //this.themeDtoFooterList.push(form);
+  //   this.footerForm = form;
+  //   this.themePropertiesListWrapper.propertiesList.push(this.footerForm);
+  //   //this.saveThemePropertiesToList(this.footerForm);
+  // }
+  // saveMainForm(form: ThemePropertiesDto) {
+  //   // this.themeDtoMainContent.push(form);
+  //   this.mainContentForm = form;
+  //   this.themePropertiesListWrapper.propertiesList.push(this.mainContentForm);
+  //   //.saveThemePropertiesToList(this.mainContentForm);
+
+  // }
+  changEvent(ev: any) {
+    this.sname = ev;
+    this.getAllThemeNames(this.sname);
+  }
+
   checkValidColorCode(colorCode: string, type: string) {
     if ($.trim(colorCode).length > 0) {
-        if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
-            this.addColorCodeErrorMessage(type);
-        } else {
-            this.removeColorCodeErrorMessage(colorCode, type);
-        }
-    } else {
+      if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
+        this.addColorCodeErrorMessage(type);
+      } else {
         this.removeColorCodeErrorMessage(colorCode, type);
-    }
-}
-removeColorCodeErrorMessage(colorCode: string, type: string) {
-  if (type === "headerBackgroundColor") {
-    this.form.backgroundColor = colorCode;
-    this.isValidBackgroundColor = true;
-}
-  else if(type === "divBgColor"){
-    this.form.divBgColor = colorCode;
-    this.isValidDivBgColor = true;
-  }else if(type === "headerTextColor"){
-  //  this.form.headerTextColor = colorCode;
-    this.isValidHeaderTextColor = true;
-  }else if (type === "butttonBorderColor") {
-      this.form.buttonBorderColor = colorCode;
-      this.isValidButtonBorderColor= true;
-  } else if (type === "buttonColor") {
-      this.form.buttonColor = colorCode;
-      this.isValidButtonColor = true;
-  } else if (type === "buttonValueColor") {
-     // this.form.buttonValueColor = colorCode;
-      this.isValidButtonValueColor = true;
-  } else if (type === "textColor") {
-      this.form.textColor = colorCode;
-      this.isValidTextColor = true;
-  } else if (type === "iconColor") {
-      this.form.iconColor = colorCode;
-      this.isValidIconColor = true;
-  } 
-  this.checkValideColorCodes();
-  this.disabledSaveButton();
-}
-
-disabledSaveButton(){
-    if(this.activeTabName ==='leftmenu'){
-      if(this.form.backgroundColor === this.form.textColor){
-        this.isValid = true;
-      }else if(this.form.backgroundColor===this.form.iconColor){
-        this.isValid = true;
-      }else{
-        this.isValid = false;
       }
+    } else {
+      this.removeColorCodeErrorMessage(colorCode, type);
     }
-    if(this.activeTabName === 'footer'){
-      if(this.form.textColor === this.form.backgroundColor){
-        this.isValid = true;
-      }else{
-        this.isValid = false;
-      }
-    }
-
-    if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
-      this.isValidColorCode = true;
   }
-}
-checkValideColorCodes(){
-  if(this.form.backgroundColor=== this.form.buttonColor){
-    this.isValid = true; 
-  //  }else if(this.form.buttonValueColor === this.form.buttonColor){
-  //    this.isValid = true;
-    }else if(this.form.iconColor === this.form.buttonColor){
+  removeColorCodeErrorMessage(colorCode: string, type: string) {
+
+    /********Top_Navigation_Bar***************/
+    if (type === "headerBgColor") {
+      this.headerForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
+    } else if (type === "headerBBorderColor") {
+      this.headerForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
+    } else if (type === "headerBVColor") {
+      this.headerForm.buttonValueColor = colorCode; this.isValidButtonValueColor = true;
+    } else if (type === "headerBColor") {
+      this.headerForm.buttonColor = colorCode; this.isValidButtonColor = true;
+    } else if (type === "headerBIconColor") {
+      this.headerForm.iconColor = colorCode; this.isValidIconColor = true;
+    }
+    /******Top_Naviagtion_Bar****************/
+    /*********Main_Content*************/
+    else if (type === "mainBgColor") {
+      this.mainContentForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
+    } else if (type === "mainDivColor") {
+      this.mainContentForm.divBgColor = colorCode; this.isValidDivBgColor = true;
+    } else if (type === "mainBorderColor") {
+      this.mainContentForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
+    } else if (type === "mainTextColor") {
+      this.mainContentForm.textColor = colorCode; this.isValidTextColor = true;
+    }
+    /*********Main_content********************/
+    /*******Left Menu************ */
+    else if (type === "leftBgColor") {
+      this.leftSideForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
+    } else if (type === "leftIconColor") {
+      this.leftSideForm.iconColor = colorCode; this.isValidIconColor = true;
+    } else if (type === "leftBorderColor") {
+      this.leftSideForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
+    } else if (type === "leftTextColor") {
+      this.leftSideForm.textColor = colorCode; this.isValidTextColor = true;
+    }
+    /*******Left Menu************ */
+    /*********Foter********* */
+    else if (type === "footerBgColor") {
+      this.footerForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
+    } else if (type === "footerTextColor") {
+      this.footerForm.textColor = colorCode; this.isValidTextColor = true;
+    }
+    /*********Foter********* */
+    // else if (type === "divBgColor") {
+    //   this.form.divBgColor = colorCode;
+    //   this.isValidDivBgColor = true;
+    // } else if (type === "butttonBorderColor") {
+    //   this.form.buttonBorderColor = colorCode;
+    //   this.isValidButtonBorderColor = true;
+    // } else if (type === "buttonColor") {
+    //   this.form.buttonColor = colorCode;
+    //   this.isValidButtonColor = true;
+    // } else if (type === "buttonValueColor") {
+    //   this.form.buttonValueColor = colorCode;
+    //   this.isValidButtonValueColor = true;
+    // } else if (type === "textColor") {
+    //   this.form.textColor = colorCode;
+    //   this.isValidTextColor = true;
+    // } else if (type === "iconColor") {
+    //   this.form.iconColor = colorCode;
+    //   this.isValidIconColor = true;
+    // }
+    this.checkValideColorCodes();
+    //this.disabledSaveButton();
+  }
+
+  // disabledSaveButton() {
+  //   if ((this.leftBgColor === this.leftTextColor) ||
+  //     (this.headerBgColor === (this.headerBColor || this.headerBIconColor || this.headerBVColor)) ||
+  //     (this.footerBgColor === this.footerTextColor) || (this.mainDivColor === (this.mainBgColor || this.mainTextColor))) {
+  //     this.isValid = true;
+  //     this.validMessage = "Color Already Exists."
+  //   } else {
+  //     this.isValid = false;
+  //   }
+
+  //   if (this.isValidBackgroundColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
+  //     this.isValidColorCode = true;
+  //   }
+  // }
+  validMessage: string;
+  checkValideColorCodes() {
+    // this.validMessage = "";
+    // this.isValid = false;
+    if (this.leftBgColor === this.leftTextColor) {
       this.isValid = true;
-    }else{
-      this.isValid = false;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    } 
+    else if (this.leftBgColor == this.leftIconColor){
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
     }
-    
-  if (this.isValidBackgroundColor  && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
+    else if (this.headerBgColor === this.headerBColor) {
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    }
+    else if  (this.headerBColor  ===this.headerBIconColor) {
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    }
+    else if  (this.headerBColor ===this.headerBVColor){
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    }
+    else if  (this.footerBgColor === this.footerTextColor) {
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    } 
+     else if (this.mainDivColor === this.mainBgColor) {
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+     }
+     else if (this.mainDivColor ===this.mainTextColor) {
+      this.isValid = true;
+      this.validMessage = "Please Change the color ,it was already exsits"
+    } else {
+      this.isValid = false;
+      this.validMessage = "";
+    }
+
+    if (this.isValidBackgroundColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
+    }
   }
-}
-private addColorCodeErrorMessage(type: string) {
-  this.isValidColorCode = false;
-  if (type === "headerBackgroundColor") {
-    this.form.backgroundColor = "";
-    this.isValidBackgroundColor = false;
+  private addColorCodeErrorMessage(type: string) {
+    this.isValidColorCode = false;
+
+    /*****Top_Navigation_bar**********/
+    if (type === "headerBgColor") { this.headerForm.backgroundColor = ""; this.isValidBackgroundColor = true; }
+    else if (type === "headerBBorderColor") {
+      this.headerForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
+    } else if (type === "headerBVColor") {
+      this.headerForm.buttonValueColor = ""; this.isValidButtonValueColor = true;
+    } else if (type === "headerBColor") {
+      this.headerForm.buttonColor = ""; this.isValidButtonColor = true;
+    } else if (type === "headerBIconColor") {
+      this.headerForm.iconColor = ""; this.isValidIconColor = true;
+    }
+    /*********Main_Content*************/
+    else if (type === "mainBgColor") {
+      this.mainContentForm.backgroundColor = ""; this.isValidBackgroundColor = true;
+    } else if (type === "mainDivColor") {
+      this.mainContentForm.divBgColor = ""; this.isValidDivBgColor = true;
+    } else if (type === "mainBorderColor") {
+      this.mainContentForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
+    } else if (type === "mainTextColor") {
+      this.mainContentForm.textColor = ""; this.isValidTextColor = true;
+    }
+    /*********Main_content********************/
+    /*******Left Menu************ */
+    else if (type === "leftBgColor") {
+      this.leftSideForm.backgroundColor = ""; this.isValidBackgroundColor = true;
+    } else if (type === "leftIconColor") {
+      this.leftSideForm.iconColor = ""; this.isValidIconColor = true;
+    } else if (type === "leftBorderColor") {
+      this.mainContentForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
+    } else if (type === "leftTextColor") {
+      this.leftSideForm.textColor = ""; this.isValidTextColor = true;
+    }
+    /*******Left Menu************ */
+    /*********Foter********* */
+    else if (type === "footerBgColor") {
+      this.footerForm.backgroundColor = ""; this.isValidBackgroundColor = true;
+    } else if (type === "footerTextColor") {
+      this.footerForm.textColor = ""; this.isValidTextColor = true;
+    }
+    /*********Foter********* */
+    // else if (type === "divBgColor") {
+    //   this.form.divBgColor = "";
+    //   this.isValidDivBgColor = false;
+    // } else if (type === "buttonColor") {
+    //   this.form.buttonColor = "";
+    //   this.isValidButtonColor = false;
+    // } else if (type === "buttonValueColor") {
+    //   this.form.buttonValueColor = "";
+    //   this.isValidButtonValueColor = false;
+    // } else if (type === "textColor") {
+    //   this.form.textColor = "";
+    //   this.isValidTextColor = false;
+    // } else if (type === "iconColor") {
+    //   this.form.iconColor = "";
+    //   this.isValidIconColor = false;
+    // } else if (type === "buttonBorderColor") {
+    //   this.form.buttonBorderColor = "";
+    //   this.isValidButtonBorderColor = false;
+    // }
   }
-  else if(type === "divBgColor"){
-    this.form.divBgColor = "";
-    this.isValidDivBgColor = false;
-  }else if(type === "headerTextColor"){
-  //  this.form.headerTextColor = "";
-    this.isValidHeaderTextColor = false;
-  }  else if (type === "buttonColor") {
-      this.form.buttonColor = "";
-      this.isValidButtonColor = false;
-  } else if (type === "buttonValueColor") {
-   //   this.form.buttonValueColor = "";
-      this.isValidButtonValueColor = false;
-  } else if (type === "textColor") {
-      this.form.textColor = "";
-      this.isValidTextColor = false;
-  } else if (type === "iconColor") {
-      this.form.iconColor = "";
-      this.isValidIconColor = false;
-  } else if (type === "buttonBorderColor"){
-    this.form.buttonBorderColor = "";
-    this.isValidButtonBorderColor = false;
-  }
-}
-changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
-  try {
+  changeControllerColor(event: any, form: ThemePropertiesDto, type: string) {
+    try {
       const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
       $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-      if (type === "headerBackgroundColor") {
-        this.backgroundColor = event;
-        form.headerBackgroundColor = event;
-        this.isValidBackgroundColor = true;
-    }
-      else if(type === "divBgColor"){
-        this.divBgColor = event;
-        form.divBgColor = event;
-        this.isValidDivBgColor = true;
-      }else if(type === "headerTextColor"){
-       // form.headerTextColor = event;
-        this.headerTextColor = event;
-        this.isValidHeaderTextColor = true;
-      }
-       else if (type === "iconColor") {
-          this.iconColor = event;
-          form.iconColor = event;
-          this.isValidIconColor = true;
-      } else if (type === "buttonColor") {
-          this.buttonColor = event;
-          form.buttonColor = event
-          this.isValidButtonColor = true;
-      } else if (type === "buttonValueColor") {
-          this.buttonValueColor = event;
-       //   form.buttonValueColor = event;
-          this.isValidButtonValueColor = true;
-      } else if (type === "textColor") {
-          this.textColor = event;
-          form.textColor = event;
-          this.isValidTextColor = true;
-      } else if( type === "buttonBorderColor"){
-        this.buttonBorderColor = event;
-        form.buttonBorderColor = event;
+      /*******Header Form*********8 */
+      if (type === "headerBgColor") { 
+        this.headerBgColor = event; 
+        this.headerForm.backgroundColor = event; this.isValidBackgroundColor = true; 
+      } else if (type === "headerBBorderColor") {
+        this.headerBBorderColor = event; this.headerForm.buttonBorderColor = event;
         this.isValidButtonBorderColor = true;
+      } else if (type === "headerBVColor") {
+        this.headerBVColor = event; this.headerForm.buttonValueColor = event;
+        this.isValidButtonValueColor = true;
+      } else if (type === "headerBColor") {
+        this.headerBColor = event; this.headerForm.buttonColor = event; this.isValidButtonColor = true;
+      } else if (type === "headerBIconColor") {
+        this.headerBIconColor = event; this.headerForm.iconColor = event; this.isValidIconColor = true;
       }
-  } catch (error) { console.log(error); }
-  this.checkValideColorCodes();
-  this.disabledSaveButton();
-}
-
-
-
-
-                                         //  Newly Changes
-
-names: string[] = [];
-                            //  saves name
-saveTheme(){
-    this.defaultAlert = false;
-    this.themeDto.name = this.themeName;
-    this.themeDto.description = 'Hi';
-    this.themeDto.defaultTheme = false;
-    this.themeDto.createdBy = this.loggedInUserId;
-    this.defaultAlert = true;
-    this.saveAlert = false;
-
-  //   var list = this.names;
-    
-  //   if ($.inArray( this.themeName, list ) > -1 ) {
-  //     this.isValidContactName = true;
-  //     $( "button#sample_editable_1_new" ).prop( 'disabled', true );
-  //     $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
-  //     this.invalidContactNameError = this.checkingContactTypeName+" List name already exists";
-  // }
+      /************Header Form ************** */
+      /*********Main_Content*************/
+      else if (type === "mainBgColor") {
+        this.mainBgColor = event;
+        this.mainContentForm.backgroundColor = event; this.isValidBackgroundColor = true;
+      } else if (type === "mainDivColor") {
+        this.mainDivColor = event
+        this.mainContentForm.divBgColor = event; this.isValidDivBgColor = true;
+      } else if (type === "mainBorderColor") {
+        this.mainBorderColor = event;
+        this.mainContentForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
+      } else if (type === "mainTextColor") {
+        this.mainTextColor = event;
+        this.mainContentForm.textColor = event; this.isValidTextColor = true;
+      }
+      /*********Main_content********************/
+      /*******Left Menu************ */
+      else if (type === "leftBgColor") {
+        this.leftBgColor = event;
+        this.leftSideForm.backgroundColor = event; this.isValidBackgroundColor = true;
+      } else if (type === "leftIconColor") {
+        this.leftIconColor = event;
+        this.leftSideForm.iconColor = event; this.isValidIconColor = true;
+      } else if (type === "leftBorderColor") {
+        this.leftBorderColor = event;
+        this.mainContentForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
+      } else if (type === "leftTextColor") {
+        this.leftTextColor = event;
+        this.leftSideForm.textColor = event; this.isValidTextColor = true;
+      }
+      /*******Left Menu************ */
+      /*********Foter********* */
+      else if (type === "footerBgColor") {
+        this.footerBgColor = event;
+        this.footerForm.backgroundColor = event; this.isValidBackgroundColor = true;
+      } else if (type === "footerTextColor") {
+        this.footerTextColor = event;
+        this.footerForm.textColor = event; this.isValidTextColor = true;
+      }
+     
+      // else if (type === "divBgColor") {
+      //   this.divBgColor = event;
+      //   form.divBgColor = event;
+      //   this.isValidDivBgColor = true;
+      // }
+      // else if (type === "iconColor") {
+      //   this.iconColor = event;
+      //   form.iconColor = event;
+      //   this.isValidIconColor = true;
+      // } else if (type === "buttonColor") {
+      //   this.buttonColor = event;
+      //   form.buttonColor = event
+      //   this.isValidButtonColor = true;
+      // } else if (type === "buttonValueColor") {
+      //   this.buttonValueColor = event;
+      //   form.buttonValueColor = event;
+      //   this.isValidButtonValueColor = true;
+      // } else if (type === "textColor") {
+      //   this.textColor = event;
+      //   form.textColor = event;
+      //   this.isValidTextColor = true;
+      // } else if (type === "buttonBorderColor") {
+      //   this.buttonBorderColor = event;
+      //   form.buttonBorderColor = event;
+      //   this.isValidButtonBorderColor = true;
+      // }
+    } catch (error) { console.log(error); }
+    this.checkValideColorCodes();
+    //this.disabledSaveButton();
   }
 
-                           
-                      // gives default values with id
+
+  //  Newly Changes
+  names: string[] = [];
+  //  saves name
+  saveThemeDto: ThemeDto = new ThemeDto()
+  saveTheme() {
+    this.defaultAlert = false;
+    this.saveThemeDto.name = this.sname;
+    this.saveThemeDto.description = 'Hi';
+    this.saveThemeDto.defaultTheme = false;
+    this.saveThemeDto.createdBy = this.loggedInUserId;
+    this.defaultAlert = true;
+    this.saveAlert = false;
+  }
 
 
-  saveAll(){
-    this.headerForm = this.allProperties.TOP_NAVIGATION_BAR;
-    this.headerForm.createdBy = this.loggedInUserId;
-    this.leftSideForm = this.allProperties.LEFT_SIDE_MENU;
-    this.leftSideForm.createdBy = this.loggedInUserId;
-    this.footerForm = this.allProperties.FOOTER;
-    this.footerForm.createdBy = this.loggedInUserId;
-    this.mainContentForm = this.allProperties.MAIN_CONTENT;
-    this.mainContentForm.createdBy = this.loggedInUserId;
-    }
+  // gives default values with id
+  getDefaultSkin(id: number) {
+    // this.ngxloading = true;
+    this.dashboardService.getPropertiesById(id)
+      .subscribe(
+        (data: any) => {
+          // console.log(data);
+          // alert(data);
+          let skinMAp = data.data;
 
+          this.headerForm = skinMAp.TOP_NAVIGATION_BAR;
+          this.headerForm.createdBy = this.loggedInUserId;
+          this.leftSideForm = skinMAp.LEFT_SIDE_MENU;
+          this.leftSideForm.createdBy = this.loggedInUserId;
+          this.mainContentForm = skinMAp.MAIN_CONTENT;
+          this.mainContentForm.createdBy = this.loggedInUserId;
+          this.footerForm = skinMAp.FOOTER;
+          this.footerForm.createdBy = this.loggedInUserId;
 
-                       // saves db colors
+          /***********Header Colors ************** */
+          this.headerBgColor = this.headerForm.backgroundColor;
+          this.headerBColor = this.headerForm.buttonColor;
+          this.headerBBorderColor = this.headerForm.buttonBorderColor;
+          this.headerBVColor = this.headerForm.buttonValueColor;
+          this.headerBIconColor = this.headerForm.iconColor;
+          /*******Left menu colors */
+          this.leftBgColor = this.leftSideForm.backgroundColor;
+          this.leftBorderColor = this.leftSideForm.buttonBorderColor;
+          this.leftIconColor = this.leftSideForm.iconColor;
+          this.leftTextColor = this.leftSideForm.textColor;
+          /*******footer colors*********/
+          this.footerBgColor = this.footerForm.backgroundColor;
+          this.footerTextColor = this.footerForm.textColor;
+          /**********Main Colors********* */
+          this.mainBgColor = this.mainContentForm.backgroundColor;
+          this.mainDivColor = this.mainContentForm.divBgColor;
+          this.mainBorderColor = this.mainContentForm.buttonBorderColor;
+          this.mainTextColor = this.mainContentForm.textColor;
 
+          // this.iconColor = this.form.iconColor;
+          // this.backgroundColor = this.form.backgroundColor;
+          // this.textColor = this.form.textColor;
+          // this.buttonBorderColor = this.form.buttonBorderColor;
+          // this.buttonColor = this.form.buttonColor;
+          // this.buttonValueColor = this.form.buttonValueColor;
+          // this.divBgColor = this.form.divBgColor;
+          // this.footerContent = this.form.textContent;
+          // this.textContent = this.form.textContent;
+          // this.saveAll()
+          this.ngxloading = false;
+        }, error => {
+          this.ngxloading = false;
+          this.message = this.properties.serverErrorMessage;
+        });
+  }
 
-    getDefaultSkin(id:number){
-      // this.ngxloading = true;
-     this.dashboardService.getPropertiesById(id)
-           .subscribe(
-           (data:any) =>{
-            // console.log(data);
-            // alert(data);
-             let skinMAp = data.data;
-             this.allProperties = data.data;
-              if(this.form.moduleTypeString === "TOP_NAVIGATION_BAR"){
-               this.form = skinMAp.TOP_NAVIGATION_BAR;
-              }else if(this.form.moduleTypeString === "LEFT_SIDE_MENU"){
-               this.form = skinMAp.LEFT_SIDE_MENU;
-              }else if(this.form.moduleTypeString === "FOOTER"){
-               this.form = skinMAp.FOOTER;
-              } else if(this.form.moduleTypeString === "MAIN_CONTENT"){
-               this.form = skinMAp.MAIN_CONTENT;
-              }
+  //getting default values without calling id
 
-              this.headerForm = skinMAp.TOP_NAVIGATION_BAR;
-              this.leftSideForm = skinMAp.LEFT_SIDE_MENU;
-              this.mainContentForm = skinMAp.MAIN_CONTENT;
-              this.footerForm = skinMAp.FOOTER;
-              
-              this.iconColor = this.form.iconColor;
-              this.backgroundColor = this.form.backgroundColor;
-              this.textColor = this.form.textColor;
-              this.buttonBorderColor = this.form.buttonBorderColor;
-              this.buttonColor = this.form.buttonColor;
-              this.buttonValueColor = this.form.buttonValueColor;
-              this.divBgColor = this.form.divBgColor;
-              this.footerContent = this.form.textContent;
-              this.textContent = this.form.textContent;
-             // this.saveAll()
-              this.ngxloading =false;
-           },error=>{
-             this.ngxloading =false;
-             this.message = this.properties.serverErrorMessage;
-           });
-     }
+  saveThemePropertiesToList(form: ThemePropertiesDto) {
+    this.saveAlert = false;
+    this.colorsdto = new ThemePropertiesDto();
+    let self = this;
 
-                    //getting default values without calling id
-
-     saveThemePropertiesToList(form:ThemePropertiesDto){
-      this.saveAlert = false;
-      this.colorsdto = new ThemePropertiesDto();
-      let self = this;
-      
-      self.colorsdto.backgroundColor = form.backgroundColor;
+    self.colorsdto.backgroundColor = form.backgroundColor;
     self.colorsdto.textColor = form.textColor;
     self.colorsdto.buttonColor = form.buttonColor;
     self.colorsdto.divBgColor = form.divBgColor;
@@ -594,81 +646,97 @@ saveTheme(){
     self.colorsdto.moduleTypeString = form.moduleTypeString;
     self.textContent = form.textContent;
     self.colorsdto.createdBy = this.loggedInUserId;
-      this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
-      this.saveAlert = true;
-      this.message = "Data saved Sucessfully"
-  
-    }
+    this.themePropertiesListWrapper.propertiesList.push(self.colorsdto);
+    this.saveAlert = true;
+    this.message = "Data saved Sucessfully"
 
-                         // save theme
-
-  getThemePropertiesWrapperObj(){
-  // this.saveTheme();
-    this.getDefaultNames(this.themeId);
-  this.themePropertiesListWrapper.themeDto = this.themeDto;
-  console.log(this.themePropertiesListWrapper,'wrapper');
-  console.log(this.themeDto,'dto');
-  this.saveThemePropertiesToList(this.headerForm);
-  this.saveThemePropertiesToList(this.leftSideForm);
-  this.saveThemePropertiesToList(this.footerForm);
-  this.saveThemePropertiesToList(this.mainContentForm);
-    
-    this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
-          (data:any)=> {
-            this.router.navigate(['/home/dashboard/myprofile']);
-            this.referenceService.showSweetAlertSuccessMessage("Theme Saved Successfully.");
-          },
-          error =>{
-            this.statusCode = 500;
-            this.message = "Oops!Something went wrong";
-          }
-      )
   }
-nameAlreadyExist = "";
+
+  // save theme
+  menuColors: ThemePropertiesDto[] = []
+  getThemePropertiesWrapperObj() {
+    this.saveTheme();
+    //this.getDefaultNames(this.themeId);
+    if (CKEDITOR != undefined) {
+      for (var instanceName in CKEDITOR.instances) {
+        CKEDITOR.instances[instanceName].updateElement();
+        this.footerForm.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
+    this.headerForm.moduleTypeString = this.headerModuleName;
+    this.leftSideForm.moduleTypeString = this.leftMenuModuleName;
+    this.footerForm.moduleTypeString = this.footerModuleName;
+    this.mainContentForm.moduleTypeString = this.mainModuleName
+    this.themePropertiesListWrapper.propertiesList.push(this.headerForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.leftSideForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.footerForm);
+    this.themePropertiesListWrapper.propertiesList.push(this.mainContentForm)
+    this.themePropertiesListWrapper.themeDto = this.saveThemeDto;
+    console.log(this.themePropertiesListWrapper, 'wrapper');
+    console.log(this.themeDto, 'dto');
+    // this.saveThemePropertiesToList(this.headerForm);
+    // this.saveThemePropertiesToList(this.leftSideForm);
+    // this.saveThemePropertiesToList(this.footerForm);
+    // this.saveThemePropertiesToList(this.mainContentForm);
+
+    this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
+      (data: any) => {
+        // this.statusCode = 200;
+        this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
+        this.router.navigate(['/home/dashboard/myprofile']);
+      },
+      error => {
+        this.statusCode = 500;
+        this.themePropertiesListWrapper.propertiesList = this.menuColors;
+        this.message = "Oops!Something went wrong";
+      }
+    )
+  }
+  nameAlreadyExist = "";
   tnames: string[] = [];
   sudha: string[] = [];
-  public themeNameDto:Array<ThemeDto>;
+  public themeNameDto: Array<ThemeDto>;
 
-  loadNames(){
+  loadNames() {
     this.dashboardService.getAllThemeNames().subscribe(
-      (data:any) =>{
-        this.xtremandLogger.info( data );
+      (data: any) => {
+        this.xtremandLogger.info(data);
         this.sudha = data.data;
-        for ( let i = 0; i < data.data.length; i++ ) {
-          this.tnames.push(data.data[i].replace( /\s/g, '' ) );
-      }
+        for (let i = 0; i < data.data.length; i++) {
+          this.tnames.push(data.data[i].replace(/\s/g, ''));
+        }
       },
-      ( error: any ) => {
-        this.xtremandLogger.error( error );
-        this.xtremandLogger.errorPage( error );
-    },
+      (error: any) => {
+        this.xtremandLogger.error(error);
+        this.xtremandLogger.errorPage(error);
+      },
     )
   }
 
-  getAllThemeNames(contactName:string){
+  getAllThemeNames(contactName: string) {
     this.noOptionsClickError = false;
     var list = this.tnames;
-    this.xtremandLogger.log( list );
-    if ($.inArray( contactName, list ) > -1 ) {
+    this.xtremandLogger.log(list);
+    if ($.inArray(contactName, list) > -1) {
       this.isValidContactName = true;
-      $( "button#sample_editable_1_new" ).prop( 'disabled', true );
-      $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+      $("button#sample_editable_1_new").prop('disabled', true);
+      $(".ng-valid[required], .ng-valid.required").css("color", "red");
       this.invalidContactNameError = "name already exists";
-    }else {
-      $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
-      $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+    } else {
+      $(".ng-valid[required], .ng-valid.required").css("color", "Black");
+      $("button#sample_editable_1_new").prop('disabled', false);
       this.isValidContactName = false;
+    }
   }
-    }
-    all:string;
-    sname = "name";
-getDefaultNames(themeId:number){
-  this.dashboardService.getThemeDTOById(this.themeId).subscribe(
-    (data:any) =>{
-      this.themeDto = data.data;
-      this.sname = this.themeDto.name + ' copy';
-      console.log(this.sname);
-    }
-  )
-}
+  all: string;
+  sname = "name";
+  getDefaultNames(themeId: number) {
+    this.dashboardService.getThemeDTOById(this.themeId).subscribe(
+      (data: any) => {
+        this.themeDto = data.data;
+        this.sname = this.themeDto.name + '_copy';
+        console.log(this.sname);
+      }
+    )
+  }
 }
