@@ -8,4 +8,5 @@ export class VanityURL{
     loginScreenDirection:string;
     enableVanityURL:boolean;
     companyId:number = 0;
+    showMicrosoftSSO:boolean = false;    
 }
