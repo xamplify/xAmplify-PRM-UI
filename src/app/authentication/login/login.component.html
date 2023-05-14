@@ -75,7 +75,7 @@
 				</ng-container>
 			</ul>
 		</div>
-		<div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length > 0">
+		<div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
