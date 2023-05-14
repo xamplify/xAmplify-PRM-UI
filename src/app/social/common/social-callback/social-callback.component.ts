@@ -60,7 +60,7 @@ export class SocialCallbackComponent implements OnInit {
                                     }
                                     trargetWindow.postMessage(obj, "*");
                                     let url = "";
-                                    if (vanityUrlDomain.indexOf('172') > -1) {
+                                    if (vanityUrlDomain.indexOf('172') > -1 || vanityUrlDomain.indexOf('192') > -1) {
                                         url = "http://" + vanityUrlDomain + ":4200/login";
                                     } else {
                                         url = "https://" + vanityUrlDomain + "/login";
@@ -141,7 +141,6 @@ export class SocialCallbackComponent implements OnInit {
 
                         },
                         error => {
-                            alert("I am here");
                             this.error = error;
                         },
                         () => console.log('login() Complete'));

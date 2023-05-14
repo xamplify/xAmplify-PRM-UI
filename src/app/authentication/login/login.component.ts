@@ -35,9 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "twitter", "iconName": "twitter", "value": "twitter" },
   { "name": "google", "iconName": "googleplus", "value": "googleplus" },
   { "name": "Linkedin", "iconName": "linkedin", "value": "linkedin" }];
-
-  vanitySocialProviders = [ { "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" }];
-
+  
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
@@ -47,6 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //xnfr-256
   SERVER_URL: any;
   APP_URL: any;
+  vanitySocialProviders = [];
+
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService,) {
       this.SERVER_URL = this.envService.SERVER_URL;
@@ -264,6 +264,9 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
             this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
+            if (result.showMicrosoftSSO) {
+              this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });
+            }
           }, error => {
             console.log(error);
           });
@@ -352,10 +355,26 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
+      this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).subscribe(result => {
+        if (result.message === "success") {
+          this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
+        } else {
+          this.loading = false;
+          this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+        }
+      });
+    }
+    else {
+      this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
+    }    
+  }
+
+  loginSSOUser(userName: string, client_id: string, client_secret: string) {
     const authorization = 'Basic' + btoa(client_id + ':');
     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
-    this.authenticationService.login(authorization, body, this.referenceService.userName)
+    this.authenticationService.login(authorization, body, userName)
       .subscribe(result => {
         console.log("result: " + this.authenticationService.user);
         if (this.authenticationService.user) {
@@ -374,6 +393,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         () => console.log('login() Complete'));
-    return false;
+        return false;
   }
+
 }
