@@ -4076,7 +4076,7 @@ configSalesforce() {
 			response =>{
 				this.statusCode = 200;
 				// this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
-				// this.router.navigate(['/home/dashboard/myprofile']);
+				this.router.navigate(['/home/dashboard/myprofile']);
 				let message = "Theme Deleted Sucessfully"
 				 this.customResponse = new CustomResponse('SUCCESS',message,true);
 			},
