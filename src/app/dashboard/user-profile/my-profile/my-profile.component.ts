@@ -4075,11 +4075,10 @@ configSalesforce() {
 		this.dashBoardService.deleteThemeProperties(id).subscribe(
 			response =>{
 				this.statusCode = 200;
-				this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
-				this.router.navigate(['/home/dashboard/myprofile']);
-				if(id != null){
-					this.showCropper = false;
-				}
+				// this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
+				// this.router.navigate(['/home/dashboard/myprofile']);
+				let message = "Theme Deleted Sucessfully"
+				 this.customResponse = new CustomResponse('SUCCESS',message,true);
 			},
 			error =>{
 				this.statusCode = 500;
@@ -4087,7 +4086,23 @@ configSalesforce() {
 			  }
 		)
 	}
-	
+	deleteByThemeIdWithAlert(id:number){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+
+		}).then(function () {
+			self.deleteByThemeId(id);
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
 	closeTheme(){
 		this.router.navigate(['/home/dashboard/myprofile']);
 	}
@@ -4102,5 +4117,6 @@ configSalesforce() {
 		  }
 		)
 	}
+	
  /************* XNFR-238 *********************/	
 }
