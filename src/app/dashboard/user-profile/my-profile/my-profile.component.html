@@ -274,10 +274,10 @@
                                      <div class="btn-toolbar" style="float: right;" *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                      || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                      <div class="btn-group" style="padding-top: 7px;">
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'lightTheme'" (click)="activateThemeForCompany(1)">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'DarkTheme'" (click)="activateThemeForCompany(2)">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismLight'" (click)="activateThemeForCompany(3)">Activate Theme</button>
-                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismDark'" (click)="activateCustomskin(4)">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'lightTheme'" (click)="activateThemeForCompany(themeDto.id)">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'DarkTheme'" (click)="activateThemeForCompany(themeDto.id)">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismLight'" (click)="activateThemeForCompany(themeDto.id)">Activate Theme</button>
+                                    <button class="btn btn-primary padding align" style="border-radius: 6px;" *ngIf="activeTabName == 'neumorphismDark'" (click)="activateCustomskin(themeDto.id)">Activate Theme</button>
                                    </div>
                                  
                                     <a class="close-circle xamp-margin-left-icon" (click)="activateTab('customskin')" aria-hidden="true">
@@ -1328,39 +1328,40 @@
                                     </ng-container>
                                     
                                     </div>
+                                   
                                     <!-- END Categories TAB -->
-                                    <div class="row desktop-mobile-width">
-                                        <div class="col-xs-12 col-sm-12 col-lg-12">
-                                        <div class="col-md-9 col-sm-9 col-xs-12 desktopview"> 
-                                            <div class="desktopview-align">
-                                                <img src="assets/images/theme/1/Webp/desktop.png" class="desktopimg-custome">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 col-sm-3 col-xs-12 mobileview"> 
-                                            <div class="mobileview-align">
-                                                <img src="assets/images/theme/1/Webp/mobile.png" class="mobileimg-custome">
-                                            </div>
-                                        </div>
-                                    </div>
                                     
-                                    </div>
-
-                                    <div class="row  bar-background">
-                                        <div class="col-xs-12 col-sm-12 col-lg-12">
-                                            <div class="theambg-custome">
-                                                <div class="col-md-8 col-sm-8 col-xs-12"> 
-                                                    <span class="theme-heading">Theam name</span> &nbsp;&nbsp;
-                                                    <span class="button-style"> Current theme </span>  
-                                                    <p class="pt-4" >published: 10-05-2023</p>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-xs-12"> 
-                                                    <span class="button-style float-right"> Customize </span>
+                                    <div id="app-dark" class="tab-pane img-shadpw" [ngClass]="{'active': activeTabName == 'lightTheme'}"  style="border-radius: 10px;">
+                                        <div class="row desktop-mobile-width">
+                                            <div class="col-xs-12 col-sm-12 col-lg-12">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 desktopview"> 
+                                                <div class="desktopview-align">
+                                                    <img src="assets/images/theme/1/Webp/desktop.png" class="desktopimg-custome">
                                                 </div>
                                             </div>
-                                        </div>  
+                                            <div class="col-md-3 col-sm-3 col-xs-12 mobileview"> 
+                                                <div class="mobileview-align">
+                                                    <img src="assets/images/theme/1/Webp/mobile.png" class="mobileimg-custome">
+                                                </div>
+                                            </div>
                                         </div>
-                                    <div id="app-dark" class="tab-pane img-shadpw" [ngClass]="{'active': activeTabName == 'DarkTheme'}"  style="border-radius: 10px;">
-                                        <img src="assets/images/xd.webp" class="loader-image-tag border-cu"  style="border-radius: 10px;width: -webkit-fill-available;object-fit:cover;">
+                                        
+                                        </div>
+    
+                                        <div class="row  bar-background">
+                                            <div class="col-xs-12 col-sm-12 col-lg-12">
+                                                <div class="theambg-custome">
+                                                    <div class="col-md-8 col-sm-8 col-xs-12"> 
+                                                        <span class="theme-heading">{{obj}}</span> &nbsp;&nbsp;
+                                                        <span class="button-style"> Current theme </span>  
+                                                        <p class="pt-4" >published: 10-05-2023</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-sm-4 col-xs-12"> 
+                                                        <span class="button-style float-right"> Customize </span>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                            </div>
                                     </div>
                                     <div  class="tab-pane img-shadpw" [ngClass]="{'active': activeTabName == 'neumorphismLight'}"  style="border-radius: 10px;">
                                         <img src="assets/images/xnl.webp" class="loader-image-tag border-cu"  style="border-radius: 10px;width: -webkit-fill-available;object-fit:cover;">
