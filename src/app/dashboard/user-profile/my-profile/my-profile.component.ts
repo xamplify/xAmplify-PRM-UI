@@ -282,7 +282,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**** XNFR-238*** */
 	customSkinDto :CustomSkin = new CustomSkin();
 	selectedThemeIndex:number= 0;
-   
+   themeResponse:CustomResponse = new CustomResponse();
 	themeDto: ThemeDto= new ThemeDto();
 	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
 	themeNames : string = '';
@@ -4027,8 +4027,10 @@ configSalesforce() {
 	//   );};
 	themeDtoList:ThemeDto[];
 	showThemes() {
+		this.ngxloading = true;
 		this.dashBoardService.multipleThemesShow().subscribe(
 			(response) => {
+				this.ngxloading = false
 				 this.themeDtoList = response.data;
 				// $.each(response.list, function(_index: number, list: any) {
 				// 	list.createdDate = new Date(list.createdDate);
@@ -4062,8 +4064,11 @@ configSalesforce() {
 	 this.activateThemeApi(this.activateTheme);
 	}
 	activateThemeApi(theme:CompanyThemeActivate) {
+		this.ngxloading = true;
 		this.dashBoardService.activateThemeForCompany (theme).subscribe(
 			(data: any) => {
+				this.ngxloading = false;
+				location.reload();
 				this.router.navigate(['/home/dashboard/myprofile']);
 			},
 			error => {
@@ -4072,15 +4077,21 @@ configSalesforce() {
 			});
 	}
 	deleteByThemeId(id:number){
+		this.refService.goToTop();
+		this.ngxloading = true;
 		this.dashBoardService.deleteThemeProperties(id).subscribe(
-			response =>{
+			(response:any) =>{
+				this.ngxloading = false;
 				this.statusCode = 200;
+				$('#themeListDiv_' + id).remove();
 				// this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
-				this.router.navigate(['/home/dashboard/myprofile']);
+				//this.router.navigate(['/home/dashboard/myprofile']);
+				this.themeResponse.isVisible = false;
 				let message = "Theme Deleted Sucessfully"
-				 this.customResponse = new CustomResponse('SUCCESS',message,true);
+				 this.themeResponse = new CustomResponse('SUCCESS',message,true);
 			},
 			error =>{
+				this.ngxloading = false;
 				this.statusCode = 500;
 				this.message = "Oops!Something went wrong";
 			  }
@@ -4108,11 +4119,14 @@ configSalesforce() {
 	}
 	activeThemeDetails:CompanyThemeActivate = new CompanyThemeActivate();
 	getActiveThemeData(){
+		this.ngxloading = true;
 		this.dashBoardService.getActiveTheme().subscribe(
 			(data:any) =>{
+				this.ngxloading = false;
 				this.activeThemeDetails = data.data;
 		},
 		error =>{
+			this.ngxloading = false;
 			this.statusCode = 500;
 		  }
 		)

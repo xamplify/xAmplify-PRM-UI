@@ -15,6 +15,6 @@ export class ThemePropertiesDto {
     moduleTypeString : string;
     showFooter : boolean;
     divBgColor : string;
-  headerBackgroundColor: string;
+   headerBackgroundColor: string;
     
 }

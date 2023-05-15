@@ -562,24 +562,24 @@ export class CustomSkinComponent implements OnInit {
   //  saves name
   saveThemeDto: ThemeDto = new ThemeDto()
   saveTheme() {
+    this.ngxloading = true;
     this.defaultAlert = false;
     this.saveThemeDto.name = this.sname;
     this.saveThemeDto.description = 'Hi';
     this.saveThemeDto.defaultTheme = false;
     this.saveThemeDto.createdBy = this.loggedInUserId;
-    this.defaultAlert = true;
-    this.saveAlert = false;
+    //this.ngxloading = false;
   }
 
 
   // gives default values with id
   getDefaultSkin(id: number) {
-    // this.ngxloading = true;
+   this.ngxloading = true;
     this.dashboardService.getPropertiesById(id)
       .subscribe(
         (data: any) => {
-          // console.log(data);
-          // alert(data);
+          this.ngxloading = false;
+
           let skinMAp = data.data;
 
           this.headerForm = skinMAp.TOP_NAVIGATION_BAR;
@@ -655,6 +655,7 @@ export class CustomSkinComponent implements OnInit {
   // save theme
   menuColors: ThemePropertiesDto[] = []
   getThemePropertiesWrapperObj() {
+    this.ngxloading = true;
     this.saveTheme();
     //this.getDefaultNames(this.themeId);
     if (CKEDITOR != undefined) {
@@ -681,11 +682,13 @@ export class CustomSkinComponent implements OnInit {
 
     this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
       (data: any) => {
+        this.ngxloading = false;
         // this.statusCode = 200;
         this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
         this.router.navigate(['/home/dashboard/myprofile']);
       },
       error => {
+        this.ngxloading = false;
         this.statusCode = 500;
         this.themePropertiesListWrapper.propertiesList = this.menuColors;
         this.message = "Oops!Something went wrong";

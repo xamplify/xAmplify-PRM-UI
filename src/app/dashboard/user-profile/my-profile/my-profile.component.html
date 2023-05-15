@@ -293,6 +293,8 @@
                             </div>
                             <!-- XNFR-238-->
                             <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
+                                <app-response-message class="pg8" [customResponse]="themeResponse" *ngIf="themeResponse.isVisible">
+                                </app-response-message>
                                 Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
                                 Based on selecting color in below tab.
                                 <br><br>
@@ -330,8 +332,7 @@
 
                             
                               <div class="div thembg-color" *ngIf="activeTabName == 'customskin' ">
-                                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                                </app-response-message>
+                               
                                 <table class="table tgrid table-hover tborders" id="manage-assets-table">
                                     <thead class="table-bgcolor">
                                       <tr>
@@ -341,8 +342,8 @@
                                         <th  class="text-center">Actions</th>
                                       </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr *ngFor="let dto of themeDtoList | slice:4:50">
+                                    <tbody *ngFor="let dto of themeDtoList | slice:4:50">
+                                        <tr id="themeListDiv_{{dto.id}}">
                                             <td>  <img src="assets/images/theme/1/Webp/01.webp" alt="" class="img-customization"> </td>
                                             <td class="text-center">{{dto.name}}
                                                 <h6 _ngcontent-c26="" class="view-banner" *ngIf="dto?.id == activeThemeDetails?.themeId" style="background-color: #5cb85c;">Published</h6>

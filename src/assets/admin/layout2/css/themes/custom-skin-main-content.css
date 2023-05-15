@@ -15,7 +15,8 @@ body {
 .page-bar,
 .portlet.light,
 .dashboard-stat2,
-.tabbable-custom > .tab-content {
+.tabbable-custom > .tab-content,
+.div.thembg-color{
   background-color: var(--div-bg-color) !important;
   border:1px solid var(--border-color)!important;
 }
@@ -126,7 +127,8 @@ h1, h2, h3, h6 {
 ul.alt-row-style1 li a{
   color: var(---text-color) !important;
 }
-.close-circle {
+.close-circle,
+.bar-background {
   background-color: var(--div-bg-color) !important ;
   color: var(---text-color) !important;
 }
@@ -237,7 +239,8 @@ fieldset,
   border: 1px solid var(--border-color) !important ;
 }
 .table thead > tr > th,
-.ng2-tag-input {
+.ng2-tag-input,
+.tborders >tbody>tr>td {
   border-bottom: 2px solid var(--border-color)!important;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,

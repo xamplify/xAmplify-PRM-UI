@@ -1170,6 +1170,11 @@ span.button-style {
   padding-left: 10px;
   border-radius: 7px;
 }
+span.default-style {
+  padding-top:2px;
+  padding-bottom: 2px;
+  border-radius: 5px;
+}
 span.theme-heading {
   font-size: 19px;
 }
