@@ -70,6 +70,7 @@
                 <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true"
                     (notifyLeadSuccess)="showSubmitLeadSuccess()" [applyFilter]="applyFilter"></app-module-analytics>
             </div>
+
             <!------------Dashbaord Button Carusel---------------------->
             <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
              <!--Opportunity Stats-->
@@ -183,7 +184,9 @@
                             </section>
                         </ng-container>
                     </div>
+
                 </div>
+
                     <!---Campaign Statistics-->
                     <!---Campaign Statistics And Email Statistics-->
                     <div class="clearfix">
@@ -327,8 +330,6 @@
                 </div>
             </div>
         
-
-           
             <!---Social Accounts-->
             <app-social-accounts-analytics></app-social-accounts-analytics>
         </ng-container>

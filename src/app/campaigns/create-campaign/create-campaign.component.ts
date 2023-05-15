@@ -331,6 +331,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     invalidShareLeadsSelectionErrorMessage = "";
     activeCRMDetails: any;
 
+    /***XNFR-255****/
+    shareWhiteLabeledContent = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -351,6 +353,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     this.enableLeads = data.enableLeads;
                     this.salesEnablement = data.salesEnablement;
                     this.oneClickLaunch = data.oneClickLaunch;
+                    /***XNFR-255****/
+                    this.shareWhiteLabeledContent = data.shareWhiteLabeledContent;
                     this.getActiveCRMDetails();
                 });
             })
@@ -1071,6 +1075,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
+        /***XNFR-255*****/
+        this.campaign.whiteLabeled = false;
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
@@ -1100,9 +1106,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     }
 
+    
+
     setViewInBrowser(event: any) {
         this.campaign.viewInBrowserTag = event;
     }
+
 
     setUnsubscribeLink(event: any) {
         this.campaign.unsubscribeLink = event;
@@ -2259,7 +2268,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             /****XNFR-125****/
             "oneClickLaunch":this.campaign.oneClickLaunch,
             'partnershipId':this.selectedPartnershipId,
-            'configurePipelines': this.campaign.configurePipelines
+            'configurePipelines': this.campaign.configurePipelines,
+            /***XNFR-255****/
+            'whiteLabeled':this.campaign.whiteLabeled
         };
         return data;
     }
@@ -3748,5 +3759,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.loading = false;
     }
 
+    /****XNFR-255****/
+    setWhiteLabeled(event:any){
+        this.campaign.whiteLabeled = event;
+    }
+    
 }
 

@@ -180,13 +180,10 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.formBuilder = true;
       this.campaignAccess.landingPage = false;
       this.campaignAccess.landingPageCampaign = false;
-      this.campaignAccess.shareLeads = false;
       this.campaignAccess.allBoundSource = false;
       this.campaignAccess.campaignPartnerTemplateOpenedAnalytics = false;
       this.campaignAccess.salesEnablement = false;
       this.campaignAccess.dataShare = false;
-    }else if(this.roleId==19){
-      this.campaignAccess.shareLeads = false;
     }else if(this.roleId==18){
       this.campaignAccess.loginAsPartner = false;
     }

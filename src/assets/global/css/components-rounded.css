@@ -5466,6 +5466,10 @@ Social Icons
 .social-icons li .quora {
   background: url(../img/social/quora.png) no-repeat;
 }
+
+.social-icons li .microsoft {
+  background: url(../img/social/microsoft.svg) no-repeat;
+}
 .social-icons.social-icons-color > li > a {
   opacity: 0.7;
   background-position: 0 -38px !important;

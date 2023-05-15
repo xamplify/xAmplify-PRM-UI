@@ -36,11 +36,12 @@
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body">
-                                <h5 class="mb15 form-name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
+                                <div class="mb15 form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
                                 <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
                                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                                     <div class="form-group label-box" [ngClass]="{'disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
-                                        <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
+                                        <label class="control-label">
+                                            <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
 												<span class="required" *ngIf="columnInfo.required">*</span>
 											</label>
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
@@ -90,13 +91,13 @@
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <label class="form-check-label"
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}" class="form-check-input"
 																(click)="columnInfo.value = radioButton.id"
 																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || radioButton.isSelected">
-															{{radioButton.name}}
+                                                                <span [style.color]="form.labelColor">{{radioButton.name}}</span>
 														</label>
                                                 </div>
                                                 <br>
@@ -106,13 +107,13 @@
                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <label class="form-check-label"
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}"
 																[checked]="checkBox.isChecked || checkBox.isSelected" class="form-check-input"
 																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)" >
-															{{checkBox.name}}
+                                                                <span [style.color]="form.labelColor">{{checkBox.name}}</span>
 														</label>
                                                 </div>
                                                 <br>
@@ -130,12 +131,12 @@
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label" [style.color]="form.labelColor"
+                                                    <label class="form-check-label"
                                                         [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted), 'label-value-correct': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct, 'label-value-incorrect': learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && !choice.correct && choice.isSelected}">
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                             [checked]="choice.isChecked || choice.isSelected" class="form-check-input"
                                                             (click)="updateQuizModel(columnInfo,choice,$event)">
-                                                        {{choice.name}} <span *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"  style="margin-left: 5px;"  ><i
+                                                            <span [style.color]="form.labelColor">{{choice.name}}</span> <span *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"  style="margin-left: 5px;"  ><i
                                                                 *ngIf="!choice.correct && choice.isSelected" class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
                                                             <i *ngIf="choice.correct" class="fas fa-check fa-lg label-value-correct" aria-hidden="true"></i></span>
                                                     </label>
