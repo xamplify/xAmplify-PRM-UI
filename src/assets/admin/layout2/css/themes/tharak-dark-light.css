@@ -56,11 +56,17 @@ body {
 /* .label-box:hover, */
 .video,
 .table tr.xamp-tr-selected td,
-.div.thembgc {
+.div.thembgc,
+.div.thembg-color {
   background-color:  #22313a !important;
 }
-.div.thembgc{
+.div.thembgc,
+.div.thembg-color{
   border:1px solid #2f4857!important;
+}
+.tborders>tbody>tr>td, .tborders>tbody>tr>th, .tborders>tfoot>tr>td, .tborders>tfoot>tr>th, .tabtbordersle>thead>tr>td, .tborders>thead>tr>th {
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 2px solid #2f4857!important;
 }
 .portlet.light {
   background-color:   #22313a !important;
