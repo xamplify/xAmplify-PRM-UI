@@ -4076,6 +4076,23 @@ configSalesforce() {
 				this.ngxloading = false;
 			});
 	}
+	activateThemeForCompanyWithAlert(companyThemeId:number){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to unactivate this!",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Activate'
+
+		}).then(function () {
+			self.activateThemeForCompany(companyThemeId);
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
 	deleteByThemeId(id:number){
 		this.refService.goToTop();
 		this.ngxloading = true;
@@ -4124,6 +4141,11 @@ configSalesforce() {
 			(data:any) =>{
 				this.ngxloading = false;
 				this.activeThemeDetails = data.data;
+				if(this.activeThemeDetails != null){
+					this. activeThemeDetails.themeId = this.activeThemeDetails.themeId
+				}else {
+					this. activeThemeDetails.themeId = 1;
+				}
 		},
 		error =>{
 			this.ngxloading = false;

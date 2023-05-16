@@ -1059,6 +1059,7 @@ thead.table-bgcolor {
   border-bottom: 2px solid #ddd;
 }
 .view-banner{
+  margin-left: 53px;
   padding: 6px 10px;
   width: 77px;
   border-radius: 4px;
@@ -1180,4 +1181,11 @@ span.theme-heading {
 }
 p.pt-4 {
   padding-top: 11px;
+}
+.vertical-center {
+  margin-left: 53px;
+  position: absolute;
+  top: 48%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }

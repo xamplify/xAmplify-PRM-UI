@@ -311,7 +311,7 @@
                                               <div class="card-body">
                                                 <!-- <span class="label label-info selectcolor">Select</span> -->
                                                 <!-- <span class="label label-info selectcolor"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isCustomTheme">In Use</span> -->
-                                                <span class="label label-info notselectcolor">Select</span>
+                                                <span class="label label-info notselectcolor" *ngIf="dto?.id == activeThemeDetails?.themeId">Active</span>
                                                 <!-- <span class="label label-info selectcolor"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;View</span> -->
                                                 <span class="label label-info selectcolor"  (click)="activateTab('lightTheme');showDto(dto)"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-white"></a></span>
                                                 <!-- <span class="label label-info notselectcolor" *ngIf="!authenticationService?.isLightTheme && !authenticationService?.isCustomTheme" (click)="activateTab('lightTheme')"><i class="fa fa-eye" aria-hidden="true"></i>&nbsp;<a class="cus-black" >View</a></span> -->
@@ -320,7 +320,7 @@
                                                 <!-- <h5 class="card-title themefont"  *ngIf="authenticationService?.isLightTheme || authenticationService?.isDarkTheme" (click)="activateTab('lightTheme')">Light</h5> -->
                                                 <i class="fa fa-chevron-circle-down" aria-hidden="true"> <span class="family-style">01 Style </span></i> &nbsp; 
                                                 <button type="button" *ngIf="dto.defaultTheme"  class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"  (click)="activateTab('customTheme');showDto(dto);"> <i class="fa fa-cog" aria-hidden="true"></i>
-                                                  Custome</button>
+                                                  Custom</button>
                                                   <button type="button" *ngIf="!dto.defaultTheme"  class="btn  btn-size" [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"  (click)="activateTab('customTheme');showDto(dto);"> <i class="fa fa-cog" aria-hidden="true"></i>
                                                   Edit</button>
                                               </div>
@@ -336,7 +336,7 @@
                                 <table class="table tgrid table-hover tborders" id="manage-assets-table">
                                     <thead class="table-bgcolor">
                                       <tr>
-                                        <th class="text-center">Custome Themes</th>
+                                        <th class="text-center">Custom Themes</th>
                                         <th class="text-center">Theme Name</th>
                                         <th class="text-center">Created On</th>
                                         <th  class="text-center">Actions</th>
@@ -346,7 +346,7 @@
                                         <tr id="themeListDiv_{{dto.id}}">
                                             <td>  <img src="assets/images/theme/1/Webp/01.webp" alt="" class="img-customization"> </td>
                                             <td class="text-center">{{dto.name}}
-                                                <h6 _ngcontent-c26="" class="view-banner" *ngIf="dto?.id == activeThemeDetails?.themeId" style="background-color: #5cb85c;">Published</h6>
+                                                <h6 _ngcontent-c26="" class="view-banner" *ngIf="dto?.id == activeThemeDetails?.themeId" style="background-color: #5cb85c;font-size: 13px;">Active</h6>
                                             </td>
                                             <td class="text-center"> 
                                                 <app-timestamp  [dateAndTime]="dto.createdDate">
@@ -359,7 +359,7 @@
                                         <div class="mActionAlign ActionButtonPad">	
                                             <a class="mMobileDisable" title="Edit" (click)="activateTab('customTheme');showDto(dto);"><i aria-hidden="true" class="fa fa-edit mDisableColor"></i></a>
                                             <!-- <a title="Preview"><i _ngcontent-c69="" aria-hidden="true" class="fa fa-eye"></i></a>  -->
-                                            <a title="Activate" (click)="activateThemeForCompany(dto.id)" *ngIf="dto?.id != activeThemeDetails?.themeId"><i _ngcontent-c69="" aria-hidden="true" class="fa fa-power-off"></i></a>  
+                                            <a title="Activate" (click)="activateThemeForCompanyWithAlert(dto.id)" *ngIf="dto?.id != activeThemeDetails?.themeId"><i _ngcontent-c69="" aria-hidden="true" class="fa fa-power-off"></i></a>  
                                             <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)" *ngIf="dto?.id != activeThemeDetails?.themeId"> <i _ngcontent-c69="" aria-hidden="true" class="fa fa-trash-o"></i></a>
                                         </div>
                                         </div>

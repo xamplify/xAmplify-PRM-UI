@@ -59,6 +59,9 @@ body {
 .div.thembgc {
   background-color:  #22313a !important;
 }
+.div.thembgc{
+  border:1px solid #2f4857!important;
+}
 .portlet.light {
   background-color:   #22313a !important;
   border:1px solid #2f4857 !important;  
@@ -460,6 +463,9 @@ input{
 }
 .color-inline{
   background-color: #2b3c46 !important;
+  border-left: 1px solid #2f4857!important;
+  border-right: 1px solid #2f4857!important;
+  border-top: 1px solid #2f4857!important;
 }
 .text-dropdown{
   background-color: #2b3c46 !important;
