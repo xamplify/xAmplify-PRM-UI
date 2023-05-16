@@ -2,7 +2,7 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <div class="row">
+    <div *ngIf="!isHideFormInfo" class="row">
         <div class="col-md-12">
             <div class="portlet light" id="portlet-height">
                 <div class="row">
@@ -440,6 +440,7 @@
 <div class="modal right rmv-overflow" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-sm popup-align">
         <div class="modal-content mPad col-lg-12 col-md-12">
+            <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
                 <button type="button" class="btn grey  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
                 <button type="submit" [disabled]="!form.isValid"  class="btn green-haze col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
