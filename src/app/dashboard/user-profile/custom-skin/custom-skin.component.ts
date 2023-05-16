@@ -16,8 +16,6 @@ import { Properties } from 'app/common/models/properties';
 import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
-import { NumericBlurEventArgs } from '@syncfusion/ej2-angular-inputs';
-import { HeaderThemePropertiesDto } from 'app/dashboard/models/header-properties-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 declare var $: any, CKEDITOR: any, swal: any;
@@ -32,6 +30,7 @@ export class CustomSkinComponent implements OnInit {
   @ViewChild("myckeditor") ckeditor: any;
   @Input() themeDTO: ThemeDto;
   @Input() themeId: number;
+  @Input() isSaveTheme :boolean;
   isValidDivBgColor = true;
   isValidHeaderTextColor = true;
   isValidBackgroundColor = true;
@@ -737,8 +736,64 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.getThemeDTOById(this.themeId).subscribe(
       (data: any) => {
         this.themeDto = data.data;
+        if(this.themeDto.name === "Light" || this.themeDto.name === "Dark" ||
+        this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark" 
+        || this.isSaveTheme){
         this.sname = this.themeDto.name + '_copy';
+        }
+        else {
+          this.sname = this.themeDto.name;
+        }
         console.log(this.sname);
+      }
+    )
+  }
+  updateThemedto:ThemeDto = new ThemeDto();
+  emptyDto:ThemeDto = new ThemeDto();
+  UpdateThemeDto() {
+    this.ngxloading = true;
+    this.updateThemedto.id = this.themeId;
+    this.updateThemedto.name = this.sname;
+    this.updateThemedto.defaultTheme = false;
+    this.updateThemedto.createdBy = this.loggedInUserId;
+    
+    if (CKEDITOR != undefined) {
+      for (var instanceName in CKEDITOR.instances) {
+        CKEDITOR.instances[instanceName].updateElement();
+        this.footerForm.textContent = CKEDITOR.instances[instanceName].getData();
+      }
+    }
+    this.headerForm.moduleTypeString = this.headerModuleName;
+    this.leftSideForm.moduleTypeString = this.leftMenuModuleName;
+    this.footerForm.moduleTypeString = this.footerModuleName;
+    this.mainContentForm.moduleTypeString = this.mainModuleName;
+    this.headerForm.themeId =this.themeId;
+    this.leftSideForm.themeId = this.themeId;
+    this.footerForm.themeId = this.themeId;
+    this.mainContentForm.themeId = this.themeId;
+    this.updateThemedto.themesProperties.push(this.headerForm);
+    this.updateThemedto.themesProperties.push(this.leftSideForm);
+    this.updateThemedto.themesProperties.push(this.footerForm);
+    this.updateThemedto.themesProperties.push(this.mainContentForm)
+    //this.themePropertiesListWrapper.themeDto = this.saveThemeDto;
+    console.log(this.updateThemedto, 'wrapper');
+    // this.saveThemePropertiesToList(this.headerForm);
+    // this.saveThemePropertiesToList(this.leftSideForm);
+    // this.saveThemePropertiesToList(this.footerForm);
+    // this.saveThemePropertiesToList(this.mainContentForm);
+
+    this.dashboardService.updateThemeDto(this.updateThemedto).subscribe(
+      (data: any) => {
+        this.ngxloading = false;
+        // this.statusCode = 200;
+        this.referenceService.showSweetAlertSuccessMessage("Theme Updated Successfully");
+        this.router.navigate(['/home/dashboard/myprofile']);
+      },
+      error => {
+        this.ngxloading = false;
+        this.statusCode = 500;
+        this.updateThemedto= this.emptyDto;
+        this.message = "Oops!Something went wrong";
       }
     )
   }

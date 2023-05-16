@@ -135,6 +135,8 @@ export class AuthenticationService {
  isMain:boolean = false;
  customMap = new Map<string, CustomSkin>();
  themeMap = new Map<string, ThemeDto>();
+ themeDto:ThemeDto = new ThemeDto();
+ activateThemeId:number;
   /***** XNFR-238*********** */
   formBackground="";
   

@@ -23,8 +23,8 @@
 </div>
 
 <div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''"   [disabled]="isValid" id="sample_editable_1_new" style="border-radius: 6px;" *ngIf="themeDTO.defaultTheme" (click)="getThemePropertiesWrapperObj(form)">Save Theme</button>
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''" [disabled]="isValid"  style="border-radius: 6px;" *ngIf="!themeDTO.defaultTheme" (click)="getThemePropertiesWrapperObj(form)">Update theme</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''"   [disabled]="isValid" id="sample_editable_1_new" style="border-radius: 6px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''" [disabled]="isValid"  style="border-radius: 6px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="UpdateThemeDto()">Update</button>
 </div>
 </div>
 
@@ -83,7 +83,7 @@
 	<div class="tab-content">
 		<div class="tab-pane"
 			[ngClass]="{'active': activeTabName == 'header'}">
-			<div class="col-xs-12">
+			<div class="portlet light col-xs-12">
 				<div class="row" style="padding: 10px 10px 0px 10px;">
 					<div class="col-md-6 col-lg-6" style="padding: 0px;">
 						<div class="col-md-12 col-lg-12">

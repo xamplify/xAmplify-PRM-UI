@@ -923,7 +923,7 @@ img.img-custome {
   margin: 30px 0px 0px 0px;
 }
 .selectcolor {
-  background: #0094d7;
+  background: #5cb85c;
   color: #fff;
 }
 .btn-selectcolor {  
@@ -943,6 +943,7 @@ img.img-custome {
 .btn-notselectcolor{
   background-color: #dddddd;
   color: #000;
+  /* margin-top: 10px; */
 }
 .notselected {border: 1px solid #ddd;}
 .selected {border: 1px solid #0094d7;}
@@ -956,11 +957,12 @@ img.img-custome {
 }
 .themefont {
   font-size: 15px;
+  /* margin-top: 0px; */
 }
 .div.thembgc {
   background: #f0f5f9;
   padding: 30px 20px 10px 20px;
-  border-radius: 10px;
+  /* border-radius: 5px; */
   margin: 0px 15px 0px 15px;
   border: 1px solid #dddddd;
 }
@@ -1059,7 +1061,7 @@ thead.table-bgcolor {
   border-bottom: 2px solid #ddd;
 }
 .view-banner{
-  margin-left: 53px;
+  margin-left: 64px;
   padding: 6px 10px;
   width: 77px;
   border-radius: 4px;
@@ -1070,6 +1072,14 @@ thead.table-bgcolor {
   border-radius: 10px;
   margin: 0px 15px 0px 15px;
   border: 1px solid #dddddd;
+}
+
+.div.table-color {
+  background:#ffffff;
+   /* padding: 30px 20px 10px 20px;  */
+  border-radius: 5px;
+  margin: 0px 15px 0px 15px;
+  /* border: 1px solid #dddddd; */
 }
 
 /* 10-05-2023 */
@@ -1095,12 +1105,12 @@ thead.table-bgcolor {
   border-radius: 4px;
 }
 .desktop-mobile-width {
-  padding-top: 35px;
+  padding-top: 0px;
   padding-right: 35px;
   padding-bottom: 0px;
   padding-left: 35px;
   position: relative;
-    margin-bottom: -56px;
+  margin-bottom: -11px;
 }
 
 
@@ -1153,14 +1163,18 @@ thead.table-bgcolor {
 }
 .bar-background {
   background: #fff;
-  height: 110px;
-  padding: 10px;
+  height: 75px;
+  padding: 10px 30px;
   color: #000;
   position: relative;
+  border-top: 1px solid #ddd;
+  margin-right: -10px;
+  margin-left: -10px;
+  bottom: 63px;
 }
 .theambg-custome {
   position: relative;
-  bottom: 29px;
+  bottom: -4px;
 }
 span.button-style {
   background: #5cb85c;
@@ -1177,7 +1191,7 @@ span.default-style {
   border-radius: 5px;
 }
 span.theme-heading {
-  font-size: 19px;
+  font-size: 16px;
 }
 p.pt-4 {
   padding-top: 11px;
@@ -1188,4 +1202,7 @@ p.pt-4 {
   top: 48%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+.portlet.light.padding-bottomonly {
+  height: 438px;
 }

@@ -4142,7 +4142,7 @@ configSalesforce() {
 				this.ngxloading = false;
 				this.activeThemeDetails = data.data;
 				if(this.activeThemeDetails != null){
-					this. activeThemeDetails.themeId = this.activeThemeDetails.themeId
+					this. activeThemeDetails.themeId = this.activeThemeDetails.themeId;
 				}else {
 					this. activeThemeDetails.themeId = 1;
 				}
@@ -4152,6 +4152,10 @@ configSalesforce() {
 			this.statusCode = 500;
 		  }
 		)
+	}
+	isSaveTheme:boolean = false;
+	saveTheme(){
+		this.isSaveTheme = true;
 	}
 	
  /************* XNFR-238 *********************/	

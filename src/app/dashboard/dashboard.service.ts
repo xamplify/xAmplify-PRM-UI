@@ -16,6 +16,7 @@ import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
 import { ThemePropertiesListWrapper } from './models/theme-properties-list-wrapper';
 import { CompanyThemeActivate } from './models/company-theme-activate';
+import { ThemeDto } from './models/theme-dto';
 
 @Injectable()
 export class DashboardService {
@@ -859,6 +860,12 @@ getThemeDTOById(id:number){
 getAllThemeNames(){
     const url = this.authenticationService.REST_URL + 'custom/skin/getNames/'+'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+updateThemeDto(themeDto:ThemeDto){
+    const url = this.authenticationService.REST_URL + 'custom/skin/updatThemDto/'+themeDto.id+'?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,themeDto)
     .map(this.extractData)
     .catch(this.handleError);
 }

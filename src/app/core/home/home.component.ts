@@ -354,6 +354,7 @@ export class HomeComponent implements OnInit {
       (response) => {
         this.loader = false;
         this.activeThemeDto = response.data;
+        this.authenticationService.themeDto = this.activeThemeDto;
         this.getDefaultSkin(this.activeThemeDto);
       }, error => {
         this.loader = false;
