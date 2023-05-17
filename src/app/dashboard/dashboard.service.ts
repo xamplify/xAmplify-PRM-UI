@@ -869,6 +869,12 @@ updateThemeDto(themeDto:ThemeDto){
     .map(this.extractData)
     .catch(this.handleError);
 }
+getDefaultThemes(){
+    const url = this.authenticationService.REST_URL + 'custom/skin/defaultThemes/'+'?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;

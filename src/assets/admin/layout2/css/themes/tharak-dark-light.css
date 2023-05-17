@@ -39,7 +39,8 @@ h1, h2, h3, h4, h5, h6 {
  {
   color : white !important;
 }
-body {
+body,
+.bar-background {
   background-color: #2a3d4d;
   color: white !important;
  }
@@ -300,7 +301,8 @@ fieldset,
 .modal-footer,
 .list__item .item__actions,
 .folder-modal-footer,
-.table>tbody+tbody {
+.table>tbody+tbody,
+.bar-background {
   border-top: 1px solid #2f4857!important;
 }
 .table tbody tr.active td, .table tbody tr.active th {
@@ -330,7 +332,9 @@ input{
 }
 
 /**** Model PopUp ****/
-.modal-content {
+.modal-content,
+.bar-background,
+.div.table-color {
   background-color: #2b3c46 !important;
   color: white !important;
 

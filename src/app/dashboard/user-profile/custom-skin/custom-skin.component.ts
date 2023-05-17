@@ -1,5 +1,4 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -7,7 +6,6 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
-import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
@@ -31,6 +29,9 @@ export class CustomSkinComponent implements OnInit {
   @Input() themeDTO: ThemeDto;
   @Input() themeId: number;
   @Input() isSaveTheme :boolean;
+  @Input() activeThemeId:number;
+  @Output() closeEvent = new EventEmitter<any>();
+  @Output() updateEvent = new EventEmitter<any>();
   isValidDivBgColor = true;
   isValidHeaderTextColor = true;
   isValidBackgroundColor = true;
@@ -83,7 +84,6 @@ export class CustomSkinComponent implements OnInit {
   name = 'ng2-ckeditor';
   ckeConfig: any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-  lableForBgColor: string = "Background Color";
   moduleStatusList: string[] = ["--Select Type--", "LEFT_SIDE_MENU", "TOP_NAVIGATION_BAR", "FOOTER", "MAIN_CONTENT"];
   isLoggedInFromAdminSection = false;
   loading = false;
@@ -97,8 +97,6 @@ export class CustomSkinComponent implements OnInit {
   isValid = false;
   customResponse: CustomResponse = new CustomResponse();
   ngxloading = false;
-  fontStyles: string[] = ["--select font style--", "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui", "ui-serif",
-    "ui-sans-serif", "ui-monospace", "Open Sans, sans-serif"];
   saveAlert: boolean = false;
   defaultAlert: boolean = false;
   themeName = "";
@@ -119,7 +117,10 @@ export class CustomSkinComponent implements OnInit {
   invalidContactNameError = "";
   checkingContactTypeName: string;
   isValidLegalOptions = true;
-  // sudha : Array<ThemePropertiesDto>;
+  nameAlreadyExist = "";
+  tnames: string[] = [];
+  sudha: string[] = [];
+  public themeNameDto: Array<ThemeDto>;
   constructor(public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService,
@@ -140,7 +141,6 @@ export class CustomSkinComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this. saveAll();
     this.activeTabNav(this.activeTabName);
     this.loadNames();
     this.getDefaultNames(this.themeId);
@@ -162,27 +162,7 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemePropertiesToList(form);
   }
   colorsdto: ThemePropertiesDto;
-  // saveThemePropertiesToList(form:ThemePropertiesDto){
-  //   this.saveAlert = false;
-  //   this.colorsdto = new ThemePropertiesDto();
-  //   let self = this;
-
-  //   self.colorsdto.backgroundColor = 'pink';
-  //   self.colorsdto.textColor = 'red';
-  //   self.colorsdto.buttonColor = 'yellow';
-  //   self.colorsdto.divBgColor = 'green';
-  //   self.colorsdto.iconColor = 'purple';
-  //   self.colorsdto.buttonBorderColor = 'grey';
-  //   self.colorsdto.buttonValueColor = 'blue';
-  //   self.colorsdto.showFooter = form.showFooter;
-  //   self.colorsdto.moduleTypeString = form.moduleTypeString;
-  //   self.textContent = 'added colors';
-  //   self.colorsdto.createdBy = this.loggedInUserId;
-  //   this.themePropertiesListWrapper.propertieslist.push(self.colorsdto);
-  //   this.saveAlert = true;
-  //   this.message = "Data saved Sucessfully"
-
-  // }
+  
   headerModuleName = "TOP_NAVIGATION_BAR";
   leftMenuModuleName = "LEFT_SIDE_MENU";
   footerModuleName = "FOOTER";
@@ -192,6 +172,7 @@ export class CustomSkinComponent implements OnInit {
     // this.ngxloading = true;
     this.saveAlert = false;
     this.defaultAlert = false;
+    this.isValid = false;
     this.activeTabName = activateTab;
     if (this.activeTabName == "header") {
       this.form.moduleTypeString = this.moduleStatusList[2];
@@ -217,19 +198,19 @@ export class CustomSkinComponent implements OnInit {
 
 
   /********** Sucess Alert (XNFR-238)************/
-  showSweetAlertSuccessMessage(message: string) {
-    swal({
-      title: message,
-      type: "success",
-      allowOutsideClick: false,
-    }).then(
-      function (allowOutsideClick) {
-        if (allowOutsideClick) {
-          console.log('CONFIRMED');
-          window.location.reload();
-        }
-      });
-  }
+  // showSweetAlertSuccessMessage(message: string) {
+  //   swal({
+  //     title: message,
+  //     type: "success",
+  //     allowOutsideClick: false,
+  //   }).then(
+  //     function (allowOutsideClick) {
+  //       if (allowOutsideClick) {
+  //         console.log('CONFIRMED');
+  //         window.location.reload();
+  //       }
+  //     });
+  // }
   /******* Reload Alert ******/
 
   /********** Close Sucess Alert  (XNFR-238)*************/
@@ -364,40 +345,42 @@ export class CustomSkinComponent implements OnInit {
     // this.isValid = false;
     if (this.leftBgColor === this.leftTextColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color."
     } 
     else if (this.leftBgColor == this.leftIconColor){
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color."
     }
     else if (this.headerBgColor === this.headerBColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "Please Change the color ,it was already exsits"
     }
     else if  (this.headerBColor  ===this.headerBIconColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "Please Change the color ,it was already exsits"
     }
     else if  (this.headerBColor ===this.headerBVColor){
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "Please Change the color ,it was already exsits"
     }
     else if  (this.footerBgColor === this.footerTextColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "Please Change the color ,it was already exsits"
     } 
      else if (this.mainDivColor === this.mainBgColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+      //this.validMessage = "Please Change the color ,it was already exsits"
      }
      else if (this.mainDivColor ===this.mainTextColor) {
       this.isValid = true;
-      this.validMessage = "Please Change the color ,it was already exsits"
+     // this.validMessage = "Please Change the color ,it was already exsits"
     } else {
       this.isValid = false;
       this.validMessage = "";
     }
-
+   if (this.isValid){
+    this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color.";
+   }
     if (this.isValidBackgroundColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
     }
@@ -560,7 +543,7 @@ export class CustomSkinComponent implements OnInit {
   names: string[] = [];
   //  saves name
   saveThemeDto: ThemeDto = new ThemeDto()
-  saveTheme() {
+  setThemeDetails() {
     this.ngxloading = true;
     this.defaultAlert = false;
     this.saveThemeDto.name = this.sname;
@@ -609,17 +592,6 @@ export class CustomSkinComponent implements OnInit {
           this.mainDivColor = this.mainContentForm.divBgColor;
           this.mainBorderColor = this.mainContentForm.buttonBorderColor;
           this.mainTextColor = this.mainContentForm.textColor;
-
-          // this.iconColor = this.form.iconColor;
-          // this.backgroundColor = this.form.backgroundColor;
-          // this.textColor = this.form.textColor;
-          // this.buttonBorderColor = this.form.buttonBorderColor;
-          // this.buttonColor = this.form.buttonColor;
-          // this.buttonValueColor = this.form.buttonValueColor;
-          // this.divBgColor = this.form.divBgColor;
-          // this.footerContent = this.form.textContent;
-          // this.textContent = this.form.textContent;
-          // this.saveAll()
           this.ngxloading = false;
         }, error => {
           this.ngxloading = false;
@@ -655,8 +627,7 @@ export class CustomSkinComponent implements OnInit {
   menuColors: ThemePropertiesDto[] = []
   getThemePropertiesWrapperObj() {
     this.ngxloading = true;
-    this.saveTheme();
-    //this.getDefaultNames(this.themeId);
+    this.setThemeDetails();
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
         CKEDITOR.instances[instanceName].updateElement();
@@ -674,17 +645,16 @@ export class CustomSkinComponent implements OnInit {
     this.themePropertiesListWrapper.themeDto = this.saveThemeDto;
     console.log(this.themePropertiesListWrapper, 'wrapper');
     console.log(this.themeDto, 'dto');
-    // this.saveThemePropertiesToList(this.headerForm);
-    // this.saveThemePropertiesToList(this.leftSideForm);
-    // this.saveThemePropertiesToList(this.footerForm);
-    // this.saveThemePropertiesToList(this.mainContentForm);
+    
 
     this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
       (data: any) => {
         this.ngxloading = false;
-        // this.statusCode = 200;
-        this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
-        this.router.navigate(['/home/dashboard/myprofile']);
+         this.statusCode = 200;
+        //this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
+        //event emit
+        this.saveThemeEventEmit("Theme Created Successfully")
+        //this.router.navigate(['/home/dashboard/myprofile']);
       },
       error => {
         this.ngxloading = false;
@@ -694,10 +664,10 @@ export class CustomSkinComponent implements OnInit {
       }
     )
   }
-  nameAlreadyExist = "";
-  tnames: string[] = [];
-  sudha: string[] = [];
-  public themeNameDto: Array<ThemeDto>;
+  saveThemeEventEmit(value:String){
+    this.closeEvent.emit(value);
+  }
+ 
 
   loadNames() {
     this.dashboardService.getAllThemeNames().subscribe(
@@ -775,19 +745,15 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.themesProperties.push(this.leftSideForm);
     this.updateThemedto.themesProperties.push(this.footerForm);
     this.updateThemedto.themesProperties.push(this.mainContentForm)
-    //this.themePropertiesListWrapper.themeDto = this.saveThemeDto;
     console.log(this.updateThemedto, 'wrapper');
-    // this.saveThemePropertiesToList(this.headerForm);
-    // this.saveThemePropertiesToList(this.leftSideForm);
-    // this.saveThemePropertiesToList(this.footerForm);
-    // this.saveThemePropertiesToList(this.mainContentForm);
+  
 
     this.dashboardService.updateThemeDto(this.updateThemedto).subscribe(
       (data: any) => {
         this.ngxloading = false;
-        // this.statusCode = 200;
-        this.referenceService.showSweetAlertSuccessMessage("Theme Updated Successfully");
-        this.router.navigate(['/home/dashboard/myprofile']);
+         this.statusCode = 200;
+        this.saveThemeEventEmit("Theme Updated Successfully")
+      
       },
       error => {
         this.ngxloading = false;
@@ -796,5 +762,30 @@ export class CustomSkinComponent implements OnInit {
         this.message = "Oops!Something went wrong";
       }
     )
+  }
+  updateThemeWithAlert(){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "Do you want to save the changes?,Refresh The Window.",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes'
+
+		}).then(function () {
+			self.UpdateThemeDto();
+      location.reload();
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
+  update(){
+    if(this.activeThemeId === this.themeId){
+      this.updateThemeWithAlert();
+    }else {
+      this.UpdateThemeDto();
+    }
   }
 }

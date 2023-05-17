@@ -8,4 +8,6 @@ export class CompanyThemeActivate {
     createdBy: number;
 
     createdDate : string;
+
+    updatedDate: string;
 }

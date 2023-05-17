@@ -23,8 +23,8 @@
 </div>
 
 <div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''"   [disabled]="isValid" id="sample_editable_1_new" style="border-radius: 6px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''" [disabled]="isValid"  style="border-radius: 6px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="UpdateThemeDto()">Update</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''"   [disabled]="isValid" id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''" [disabled]="isValid"  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
 </div>
 </div>
 
@@ -261,9 +261,9 @@
 									style="padding-left: 0px;">
 									<div class="portlet light main-content"
 										style="display: flex; justify-content: center;"
-										[ngStyle]="{'background-color':mainContentForm.backgroundColor,'color':mainContentForm.textColor}">
+										[ngStyle]="{'background-color':mainContentForm.backgroundColor,'color':mainTextColor}">
 										<h6 style="margin: auto;"
-											[ngStyle]="{'color':mainContentForm.headerTextColor}">Page Content</h6>
+											[ngStyle]="{'color':mainTextColor}">Page Content</h6>
 									</div>
 								</div>
 							</div>
@@ -502,7 +502,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-lg-12">
+				<div class="col-md-6 col-lg-12" *ngIf="footerForm.showFooter">
 					<label>Footer Content</label>
 					<p class="text-area-css">Max characters 225</p>
 					<!-- <p class="text-area-css" *ngIf="minLength<2">Please Enter At Least two characters</p> -->
