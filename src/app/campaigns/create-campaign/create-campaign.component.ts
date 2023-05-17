@@ -1076,7 +1076,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
-        this.campaign.whiteLabeled = false;
+        if(this.campaignType!='landingPage'){
+            this.campaign.whiteLabeled = false;
+        }
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
