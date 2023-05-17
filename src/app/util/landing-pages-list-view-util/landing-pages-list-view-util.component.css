@@ -4,3 +4,16 @@
 #notification-list{
     margin-top: -1px !important;
 }
+
+.grid-box-height{
+    height: 565px !important;
+}
+
+.view-banner-white-labeled {
+  background-color: green;
+  color: white !important;
+  padding: 3px 6px 3px 6px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
+}
