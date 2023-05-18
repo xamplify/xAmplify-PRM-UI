@@ -3969,12 +3969,18 @@ configSalesforce() {
 			}
 		);
 	}
+	lightdark:ThemeDto[]=[];
 	getDefaultThemes(){
 		this.ngxloading = true;
 		this.dashBoardService.getDefaultThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
 				 this.defaultThemes = response.data;
+				 for (let i = 0; i < 2; i++) {
+					if(this.defaultThemes[i].id == 1 || this.defaultThemes[i].id ==2){
+					this.lightdark.push(this.defaultThemes[i])
+					}
+				  }
 			},
 			error => {
 				this.ngxloading = false;
