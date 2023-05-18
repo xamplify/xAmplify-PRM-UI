@@ -680,7 +680,7 @@ tr>td>h6 {
 	width: 125px;
 }
 
-#notification {
+#notification-color {
 	background-color: #ed1c24;
 	color: white;
 	margin-bottom: 25px;
@@ -766,90 +766,90 @@ fieldset {
 .lt-blue-c:hover{
   background-color: #008fd5 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .lt-green-c:hover{
   background-color: #58cc00 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .tk-blue-c:hover{
   background-color: #3564b9 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .vlt-blue-c:hover{
   background-color: #2bc2b5 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .pure-blue-c:hover{
   background-color: #2f2470 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .black-blue-c:hover{
   background-color: #7f2ca3 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .pure-g-c:hover{
   background-color: #08f145 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .g-b-c:hover{
   background-color: #009970 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .g-y-c:hover{
   background-color: #3a5e00 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .y-b-c:hover{
   background-color: #827500 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 
 .y-b-c:hover{
   background-color: #827500 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .b-b-c:hover{
   background-color: #2b005c !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .r-b-c:hover{
   background-color: #c72828 !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .h-r-c:hover{
   background-color: #660000 !important;
   color :#fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 .r-r-c:hover{
   background-color: red !important;
   color: #fff !important;
-  border-color: #fff !important;
+  border-color: #fff;
 }
 
 .vlt-b-c:hover{	
 	background-color: #8877a9 !important;
 	color: #fff !important;
-	border-color: #fff !important;
+	border-color: #fff;
 }
 
 .lt-g-b-c:hover{	
 	background-color: #57c195 !important;
 	color: #fff !important;
-	border-color: #fff !important;
+	border-color: #fff;
 }
 
 #email-icons {
@@ -863,5 +863,10 @@ h1, h2, h3, h4, h5, h6 {
 a>span.glyphicon.glyphicon-remove {
 	margin-top: 4px;
   }
-
+.gear-icon{
+	color: #7d8c98;
+}
+.header{
+	padding: 10px 0px 10px 0px;background-color: white;border-bottom: 1px solid #eee;
+}
 

@@ -6026,9 +6026,10 @@ button.close {
   padding: 15px;
 }
 .modal-footer {
-  padding: 15px;
+  padding: 10px 10px 0px 10px;
   text-align: right;
   border-top: 1px solid #e5e5e5;
+  margin-top: 22px;
 }
 .modal-footer .btn + .btn {
   margin-bottom: 0;

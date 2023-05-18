@@ -68,6 +68,9 @@ export class PartnerContactsStatisticsComponent implements OnInit {
 					minColor: '#FFFFFF',
 					maxColor: Highcharts.getOptions().colors[0]
 				},
+				chart: {
+					backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+				  },
 				credits: {
 					enabled: false
 				},

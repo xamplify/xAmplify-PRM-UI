@@ -72,13 +72,19 @@ export class HorizontalBatChartComponent implements OnInit {
  loadHorizontalBarChart(horizontalBarData :any){
   Highcharts.chart('horizontal-bar-chart-container', {
     chart: {
-        type: 'bar'
+        type: 'bar',
+        backgroundColor   : this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
     },
     title: {
         text: ''
     },
     xAxis: {
-        categories: [this.campaign]
+        categories: [this.campaign],
+        labels:{
+          style:{
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#666666",
+          }
+        }
     },
     yAxis: {
         labels: {
@@ -89,7 +95,13 @@ export class HorizontalBatChartComponent implements OnInit {
         }
     },
     legend: {
-        reversed: true
+        reversed: true,
+        itemStyle:{
+          color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+        },
+        itemHoverStyle: {
+          color: this.authenticationService.isDarkForCharts ? "#eee" : "#333333",
+        }
     },
     plotOptions: {
         series: {

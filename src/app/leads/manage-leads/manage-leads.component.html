@@ -168,10 +168,11 @@
                       </a>
 
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'PIPEDRIVE'"
                         (click)="syncLeadsWithActiveCRM()">                      
                         <button class="btn btn-white padding mt button" style="margin-left: 3px;" data-toggle="tooltip"
                           data-placement="bottom" title="Synchronize" translate>
+
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>

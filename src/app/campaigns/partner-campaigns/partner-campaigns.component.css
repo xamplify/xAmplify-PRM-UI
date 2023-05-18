@@ -49,10 +49,10 @@ label {
 	left: 0px;
 	top: 100%;
 	z-index: -1;
-	border-left: 3px solid red !important;
+	border-left: 3px solid #5cb85c !important;
 	border-right: 3px solid transparent;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid red !important;
+	border-top: 3px solid #5cb85c !important;
 }
 
 .ribbon div::after {
@@ -62,9 +62,9 @@ label {
 	top: 100%;
 	z-index: -1;
 	border-left: 3px solid transparent;
-	border-right: 3px solid red !important;
+	border-right: 3px solid #5cb85c !important;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid red !important;
+	border-top: 3px solid #5cb85c !important;
 }
 
 .fa.fa-users {

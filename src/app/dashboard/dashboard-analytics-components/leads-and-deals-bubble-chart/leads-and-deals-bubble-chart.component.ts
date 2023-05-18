@@ -42,6 +42,7 @@ export class LeadsAndDealsBubbleChartComponent implements OnInit {
     Highcharts.chart(hoverValue, {
             chart: {
                     type: 'bubble',
+                    backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
                     plotBorderWidth: 0,
                     zoomType: 'xy'
             },

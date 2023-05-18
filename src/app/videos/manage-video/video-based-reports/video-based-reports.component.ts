@@ -110,12 +110,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 plotOptions: {
                     bar: {
                         dataLabels: {
-                            enabled: true
+                            enabled: true,
+                            style:{
+                                color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+                            }
                         },
                         minPointLength: 3,
                     },
                     series: {
                         cursor: 'pointer',
+                        dataLabels:{
+                            style:{
+                                backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+                            }
+                        },
                         colorByPoint: true,
                         point: {
                             events: {
@@ -186,7 +194,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         const self = this;
         Highcharts.chart('video-skipped', {
             chart: {
-                type: 'area'
+                type: 'area',
+                backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
             },
             title: {
                 text: ' '
@@ -195,13 +204,26 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             xAxis:[{
               title: {
                   text: xAxis,
+                  style: {
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",},
+              },
+              labels:{
+                style:{
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666"
+                }
               }
           }],
             yAxis: [{
               allowDecimals: false,
               title: {
                   text: yAxis,
-              }
+                  style: {
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}
+              },
+              labels: {
+                  style: {
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}    
+            }
           }],
             credits: {
                 enabled: false

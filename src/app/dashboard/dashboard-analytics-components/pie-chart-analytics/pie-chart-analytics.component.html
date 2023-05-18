@@ -9,8 +9,8 @@
                     </div>
                   </ng-container>
                   <div class="mix-filter" >
-                    <button class="filter"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{dealCount}}</button>
-                    <button class="filter"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{leadCount}}</button>
+                    <button class="filter btn-hvr-text"  (click)="click();one.click(0)"   [class.emailtemplate-selected]="0 === selectedTemplateTypeIndex" translate>Deals #{{dealCount}}</button>
+                    <button class="filter btn-hvr-text"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{leadCount}}</button>
                   
                   </div>
                   <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>

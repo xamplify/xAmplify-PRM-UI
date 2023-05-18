@@ -10,3 +10,12 @@ li .disabled{
 .mdf-bgcolor{
     height: 617px;background: #f1f1f1;
 }
+.border-right{
+    border-right: 1px solid #dddd;
+}
+.border-bottom{
+    border-bottom: 1px solid #ddd;
+}
+.right-border{
+    border-right: 1px solid #d8d4d4;
+}

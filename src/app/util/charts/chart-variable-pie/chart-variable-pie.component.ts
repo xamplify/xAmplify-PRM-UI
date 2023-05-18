@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 declare var Highcharts: any;
+import {AuthenticationService} from 'app/core/services/authentication.service';
 
 @Component({
     selector: 'app-chart-variable-pie',
@@ -16,7 +17,7 @@ export class ChartVariablePieComponent implements OnInit {
     public pointFormat: any; 
     public data: any;
     
-    constructor() { }
+    constructor(public authenticationService:AuthenticationService) { }
 
     ngOnInit() {  
         this.pointFormat = this.pieChartInputMap.get("pointFormat");
@@ -77,7 +78,8 @@ export class ChartVariablePieComponent implements OnInit {
         let self = this;
         Highcharts.chart(id, {
             chart: {
-                type: 'variablepie'
+                type: 'variablepie',
+                backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
             },
             title: {
                 text: self.title

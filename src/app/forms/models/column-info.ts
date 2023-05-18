@@ -40,5 +40,6 @@ export class ColumnInfo {
     
     description: string = "";
     descriptionCharacterleft: number = 500;
-
+    skipped:boolean = false;
+    submittedAnswerCorrect: boolean = false;
 }

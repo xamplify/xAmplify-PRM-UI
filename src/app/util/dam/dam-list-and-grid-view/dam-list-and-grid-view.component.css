@@ -81,11 +81,12 @@
 
 .thumbnail-wrapper {
 	float: left;
-	width: 144px;
-	height: 81px;
-	background-color: #f1f1f1;
+	width: 175px;
+	height: 60px;
+  background-color: #fff;
 	text-align: center;
 	position: relative;
+  border-radius:5px;
 }
 
 .thumbnail-wrapper>img {
@@ -133,8 +134,8 @@
   padding: 4px;
   text-align: center;
   margin: 2px 2px 2px 0px;
-  border-radius: 20px;
-  /* padding: 5px 10px; */
+  border-radius: 5px;
+  padding: 5px 10px;
   display: inline;
 }
 

@@ -85,6 +85,7 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       },
       chart: {
         type: "funnel3d",
+        backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
         options3d: {
           enabled: true,
           alpha: 10,
@@ -130,6 +131,8 @@ export class FunnelChartAnalyticsComponent implements OnInit {
             format: '<b style="text-color:blue;">{point.name}</b> ({point.y})',
             allowOverlap: false,
             y: 10,
+            style: {
+              color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}
           },
           center: ["50%", "50%"],
           neckWidth: "30%",

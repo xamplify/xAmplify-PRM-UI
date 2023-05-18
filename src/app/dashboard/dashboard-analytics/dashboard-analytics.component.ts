@@ -344,6 +344,7 @@ getCampaignsEamailBarChartReports(campaignIdArray) {
 }
 
 generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
+    let isDark = this.authenticationService.isDarkForCharts ;
     const charts = [],
         $containers = $('#trellis td'),
         datasets = [{ name: 'Opened', data: opened }, { name: 'Clicked', data: clicked },
@@ -354,7 +355,8 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
             chart: {
                 renderTo: $containers[i],
                 type: 'bar',
-                marginLeft: i === 0 ? 100 : 10
+                marginLeft: i === 0 ? 100 : 10,
+                backgroundColor   :isDark ? "#2b3c46" : "#fff",
             },
 
             title: {
@@ -362,7 +364,8 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                 align: 'left',
                 x: i === 0 ? 90 : 0,
                 style: {
-                    color: '#696666',
+                    // color: '#696666',
+                     color   :isDark ?  "#fff" : "#696666",
                     fontWeight: 'normal',
                     fontSize: '13px'
                 }
@@ -392,6 +395,9 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                       const text = this.value,
                         formatted = text.length > 10 ? text.substring(0, 10) + '...' : text;
                           return formatted ;
+                    },
+                    style:{
+                        color   :isDark ?  "#fff" : "#696666",
                     }
                 }
             },

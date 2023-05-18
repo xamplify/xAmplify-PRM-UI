@@ -1,8 +1,8 @@
 .img-class-list{
 	height: 50px;
     width: auto;
-    background: #f2f4f9;
-    border: solid 1px #008fd5;
+    /* background: #f2f4f9; */
+    /* border: solid 1px #008fd5; */
     border-radius: 1px;
 }
 .img-class{
@@ -102,11 +102,12 @@ cursor: default;
 
 .thumbnail-wrapper {
 	float: left;
-	width: 144px;
-	height: 81px;
-	background-color: #f1f1f1;
+	width: 175px;
+	height: 60px;
+	background-color: #ffffff;
 	text-align: center;
 	position: relative;
+  border: 1px solid #ccc;
 }
 
 .thumbnail-wrapper>img {

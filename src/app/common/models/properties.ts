@@ -127,14 +127,14 @@ export class Properties {
 	VIDEO_DRAG_MESSAGE = 'Drag and drop a video file here or click to select a Video file.';
 
 	/* campaign */
-	ADD_AUTO_RESPONSE_WEBSITE = 'Auto-responses to a website visit'
-	ADD_AUTO_RESPONSE_EMAIL = 'Auto-responses to your email'
-	EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a campaign intended just for selected recipients';
-	TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
-	THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
-	ENALEORDISABLE_VENDOR_MESSAGE = 'Enable/disable the Vendor access to your campaign analytics';
-	ACTIVE_PARTICIPANTS = 'Active participants - Share only the recipients that have interacted with your campaign';
-	ALL_PARTICIPANTS = 'All participants - Share all campaign recipient data';
+	ADD_AUTO_RESPONSE_WEBSITE = 'Auto-Responses to a Website Visit'
+	ADD_AUTO_RESPONSE_EMAIL = 'Auto-Responses to Your Email'
+	EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a Campaign Intended ust for Selected Recipients';
+	TO_PARTNER_MESSAGE = 'To Recipient(s): Send a Campaign intended just for your Partner(s)/ Contact(s)';
+	THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a Campaign that your Partners can Redistribute';
+	ENALEORDISABLE_VENDOR_MESSAGE = 'Enable/disable the Vendor access to your Campaign Analytics';
+	ACTIVE_PARTICIPANTS = 'Active Participants - Share only the recipients that have interacted with your Campaign';
+	ALL_PARTICIPANTS = 'All Participants - Share all Campaign Recipient data';
 
 	/****BEE ClientId/Client Secret********/
 	clientId = '18ff022e-fa4e-47e7-b497-39a12ca4600a';
@@ -166,7 +166,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	tags = "Tags";
-	customskin = "Custom Skin Settings";
+	customskin = "Themes";
 
 	exclude = "Exclusion"
 	exclude_add = "User(s) added successfully";

@@ -645,7 +645,7 @@ label {
 	white-space: nowrap;
 	vertical-align: middle;
 	height: 39% !important;
-	border: 1px solid #eaeaea !important;
+	border: 1px solid #eaeaea;
 	border-radius: 3px !important;
 }
 
@@ -1679,4 +1679,19 @@ input:checked+.slider:before {
 
 .notValid {
 	background-color: none !important;
+}
+.star {
+	color: red !important;
+	font-weight: 600;
+  }
+.border-alignment{
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 35.5%;
+}
+
+/** 18-05-2023 ****/
+.min-height {
+	min-height: 70px;
 }

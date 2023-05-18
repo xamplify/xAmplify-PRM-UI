@@ -180,8 +180,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   showQuizField= true;
   descriptionColor: string;
   isValidDescriptionColor = true;
+
+  isHideFormInfo: boolean = false;
+
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
+
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -221,6 +225,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.setExistingFormData();
         } else if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0){
             this.isAdd = true;
+            this.isHideFormInfo = true;
+            $('#add-form-name-modal').modal('show');
             this.getById(this.selectedDefaultFormId);
         } else {
             this.listDefaultColumns();
@@ -447,6 +453,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   closeModal() {
       if (this.form.isValid) {
           this.removeBlurClass();
+            this.navigateBack();
       } else {
           this.addBlurClass();
           this.navigateBack();
@@ -456,6 +463,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   unBlurDiv() {
+      this.isHideFormInfo = false;
       $('#add-form-parent-div').removeClass(this.portletBodyBlur);
       $('#add-form-parent-div').addClass(this.portletBody);
       $('#add-form-name-modal').modal('hide');

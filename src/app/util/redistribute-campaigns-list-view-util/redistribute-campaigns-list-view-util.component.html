@@ -77,18 +77,19 @@
               <tbody>
                 <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                   <td style="width: 10%;" class="hidden-xs">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched" src="assets/images/survey.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <!-- removed style="height:50px;" -->
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched" src="assets/images/survey.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
                   </td>
                   <td>
                     <h4 class="moreipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
@@ -285,7 +286,7 @@
           </div>
         </div>
         <ng-container *ngIf="this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView">
-          <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
+          <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
             <div *ngIf="pagination.pagedItems.length !== 0">
               <app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAllFilteredResults($event)">
               </app-pagination>
