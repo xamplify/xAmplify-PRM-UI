@@ -180,7 +180,12 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   showQuizField= true;
   descriptionColor: string;
   isValidDescriptionColor = true;
+
   isHideFormInfo: boolean = false;
+
+  customResponseForFormUpdate: CustomResponse = new CustomResponse();
+  existingOpenLinkInNewTabValue: boolean = false;
+
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -197,7 +202,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.onDropModel(value);
       });
       this.siteKey = this.envService.captchaSiteKey;
-      
+      this.customResponseForFormUpdate = new CustomResponse('INFO', 'The form cannot be updated because it has been associated to a track. Please remove the association, come back here and try again to update. However, the "Save As" button allows you to make a copy of the form.', true);
   }
 
 
@@ -332,6 +337,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         }
         if (this.form.descriptionColor) {
             this.descriptionColor = this.form.descriptionColor;
+        }
+        this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
+        if(this.form.quizForm) {
+            this.form.openLinkInNewTab = true;
         }
         this.form.isValid = true;
         this.form.isFormButtonValueValid = true;
@@ -522,6 +531,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   addColumn(column: any, isDefaultColumn: boolean) {
+      if (column.labelType === 'quiz_radio' || column.labelType === 'quiz_checkbox') {
+          if(!this.form.quizForm){
+            this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
+          }
+          this.form.quizForm = true;
+          this.form.openLinkInNewTab = true;
+      }
       this.columnInfo = new ColumnInfo();
       this.columnInfo = this.setColumns(column, isDefaultColumn);
       this.highLightSelectedColumn(this.columnInfo);
@@ -634,6 +650,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       $('#' + columnInfo.divId).remove();
       this.isColumnClicked = false;
       // this.highlightByLength(this.columnInfos.length);
+      this.checkForQuizFields();
   }
 
   /*********Add Radio Buttons*********/
@@ -1774,5 +1791,20 @@ UpdateFormTeamMemberGroupData(form: Form){
 descriptionCharacterSize(column: ColumnInfo){
     column.descriptionCharacterleft = 500 - column.description.length;
 }
+
+    checkForQuizFields() {
+        const quizFieldsCount = this.columnInfos.filter((item) => item.labelType === 'quiz_radio' || item.labelType === 'quiz_checkbox' === true).length;
+        if (quizFieldsCount > 0) {
+            if (!this.form.quizForm) {
+                this.existingOpenLinkInNewTabValue = this.form.openLinkInNewTab;
+            }
+            this.form.quizForm = true;
+            this.form.openLinkInNewTab = true;
+            return;
+        } else {
+            this.form.quizForm = false;
+            this.form.openLinkInNewTab = this.existingOpenLinkInNewTabValue;
+        }
+    }
 
 }

@@ -13,6 +13,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { UtilService } from 'app/core/services/util.service';
 
 declare var swal:any, $:any, Promise: any;
 @Injectable()
@@ -27,7 +28,8 @@ export class CampaignService {
     reDistributeEvent = false;
     loading = false;
     archived:boolean = false;
-    constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+    constructor(private http: Http, private authenticationService: AuthenticationService, 
+        private logger: XtremandLogger,private utilService:UtilService) { }
 
     saveCampaignDetails(data: any) {
         return this.http.post(this.URL + "admin/saveCampaignDetails?access_token=" + this.authenticationService.access_token, data)
@@ -64,6 +66,13 @@ export class CampaignService {
 
     listCampaign(pagination: Pagination, userId: number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -356,13 +365,16 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    /*  listPartnerCampaigns(userId: number, campaignType: string){
-          return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)
-              .map(this.extractData)
-              .catch(this.handleError);
-      }*/
+
 
     listPartnerCampaigns(pagination: Pagination, userId: number) {
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         let url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -1007,6 +1019,11 @@ export class CampaignService {
     // Added by Vivek for Vanity URL
 
     getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dashboardAnalyticsDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         var url = this.URL + "dashboard/views/get-user-campaign-report?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)
@@ -1028,7 +1045,12 @@ export class CampaignService {
     }
 
 
-    listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {        
+    listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {  
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dashboardAnalyticsDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         var url = this.URL + "dashboard/views/list-campaign-interactions?access_token=" + this.authenticationService.access_token + '&limit=4'  + '&reportType=' + reportType;
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)

@@ -240,6 +240,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     /*** XNFR-224***/
 	isLoggedInAsPartner = false;
 
+//XNFR-230.
+   //pipedrive
+
+   pipedriveImageBlur: boolean = false;
+   pipedriveImageNormal: boolean = false;
+   pipedriveSelectContactListOption:any;
+   pipedriveContactListName: string;
+   pipedriveServie: any;
+   showPipedriveAuthenticationForm: boolean = false;
+   pipedriveApiKey: string;
+   pipedriveApiKeyClass: string;
+   pipedriveApiKeyError: boolean;
+   pipedriveCurrentUser: string;
+   pipedriveLoading: boolean = false;
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -563,7 +577,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					}
 				}
 				if (this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7
-					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9) {
+					&& this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9 && this.selectedAddPartnerOption !=10 && this.selectedAddPartnerOption !=11) {
 					if (this.newPartnerUser[i].contactCompany.trim() != '') {
 						this.isCompanyDetails = true;
 					} else {
@@ -861,6 +875,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.marketoImageClass').attr('style', 'opacity: 1;');
 		$('.hubspotImageClass').attr('style', 'opacity: 1;');
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 1;');
+		$('.pipedriveImageClass').attr('style', 'opacity: 1;');
 		$('.mdImageClass').attr('style', 'opacity: 1;cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
 		$('#GgearIcon').attr('style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;');
@@ -969,6 +984,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1064,6 +1080,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+		$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 		$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 		$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -1420,6 +1437,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						} else {
 							this.microsoftDynamicsImageBlur = true;
 						}
+						if (this.storeLogin.PIPEDRIVE == true) {
+							this.pipedriveImageNormal = true;
+						} else {
+							this.pipedriveImageBlur = true;
+						}
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1556,6 +1578,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2003,6 +2026,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 							}
@@ -2077,6 +2101,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 								$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+								$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 								$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 								$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
@@ -2128,7 +2153,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10) {
+			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
 				this.openCloudPartnerPopUp();
 			}
 
@@ -2186,6 +2211,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				this.saveMicrosoftContacts();
 			} else {
 				this.saveMicrosoftContactSelectedUsers();
+			}
+		}
+
+		if (this.selectedAddPartnerOption == 11) {
+			if (this.allselectedUsers.length == 0) {
+				this.savePipedriveContacts();
+			} else {
+				this.savePipedriveContactSelectedUsers();
 			}
 		}
 
@@ -2898,6 +2931,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 						$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+						$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 						$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 						$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 						$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3353,6 +3387,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 					$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 					$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+					$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 					$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 					$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');					
 					$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
@@ -3408,6 +3443,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 		else {
 			this.xtremandLogger.error("AddContactComponent saveMicrosoftContactSelectedUsers() ContactList Name Error");
+		}
+	}
+
+	savePipedriveContacts() {
+		this.socialPartners.socialNetwork = "PIPEDRIVE";
+		this.socialPartners.contactType = this.contactType;
+		this.socialPartners.contacts = this.socialPartnerUsers;
+		if (this.socialPartnerUsers.length > 0) {
+			this.newPartnerUser = this.socialPartners.contacts;
+			this.saveValidEmails();
+		} else
+			this.xtremandLogger.error("AddContactComponent savePipedriveContacts() Contacts Null Error");
+
+	}
+
+	savePipedriveContactSelectedUsers() {
+		this.newPartnerUser = this.allselectedUsers;
+		if (this.allselectedUsers.length != 0) {
+			this.newPartnerUser = this.allselectedUsers;
+			this.saveValidEmails();
+		}
+		else {
+			this.xtremandLogger.error("AddContactComponent savePipedriveContactSelectedUsers() ContactList Name Error");
 		}
 	}
 
@@ -4027,10 +4085,15 @@ getTeamMembersByGroupId(partner: any, index: number) {
 					this.showMiscrosoftPreSettingsForm();
 				}
 			}, (error: any) => {
-				this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
-			}, () => this.xtremandLogger.log("Microsoft Configuration Checking done"));
-		}
-	}
+                this.loading = false;
+                let errorMessage = this.referenceService.getApiErrorMessage(error);
+                this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+            this.xtremandLogger.error(error, "Error in Microsoft checkIntegrations()");
+        }, () =>                 
+        this.xtremandLogger.log("Microsoft Configuration Checking done")
+        );
+    }
+}
 
 	getMicrosoftContacts() {
 		this.loading = true;
@@ -4046,8 +4109,14 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				this.microsoftDynamicsImageNormal = true;
 				this.frameMicrosoftPreview(response);
 			}
-		});
-	}
+		},(error: any) => {
+            this.loading = false;
+            let errorMessage = this.referenceService.getApiErrorMessage(error);
+            this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+    }, () =>                 
+    this.xtremandLogger.log("Microsoft Configuration Checking done")
+    );
+}
 
 	frameMicrosoftPreview(response: any) {
 		if (!response.contacts) {
@@ -4092,14 +4161,15 @@ getTeamMembersByGroupId(partner: any, index: number) {
 				$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
 				$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+				$('.pipedriveImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
 				$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 				$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
 			}
 			this.setSocialPage(1);
 			this.customResponse.isVisible = false;
-			this.selectedAddPartnerOption = 9;
-			console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);
+			this.selectedAddPartnerOption = 10;
+			console.log("Social Contact Users for Microsoft::" + this.socialPartnerUsers);
 		}
 	}
 
@@ -4138,5 +4208,114 @@ getTeamMembersByGroupId(partner: any, index: number) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
+
+  //XNFR-230
+  checkingPipedriveContactsAuthentication() {
+	if (this.selectedAddPartnerOption == 5) {
+		this.integrationService.checkConfigurationByType('pipedrive').subscribe(data => {
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.xtremandLogger.info("isAuthorize true");
+				this.getPipedriveContacts();
+			}
+			else {
+				this.showPipedrivePreSettingsForm();
+			}
+		}, (error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+		this.xtremandLogger.error(error, "Error in Pipedrive checkIntegrations()");
+	}, () =>                 
+	this.xtremandLogger.log("Pipedrive Configuration Checking done")
+	);
+}
+}
+showPipedrivePreSettingsForm() {               
+	this.showPipedriveAuthenticationForm = true;
+ }
+ closePipedriveForm (event: any) {
+	if (event === "0") {
+		this.showPipedriveAuthenticationForm = false;
+	}		
+}
+getPipedriveContacts() {
+	this.loading = true;
+	this.integrationService.getContacts('pipedrive').subscribe(data => {
+		this.loading = false;
+		if (data.statusCode == 401) {
+			this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+		} else {
+			let response = data.data;
+			this.selectedAddPartnerOption = 11;
+			this.disableOtherFuctionality = true;
+			this.pipedriveImageBlur = false;
+			this.pipedriveImageNormal = true;
+			this.framePipedrivePreview(response);
+		}
+	},(error: any) => {
+			this.loading = false;
+			let errorMessage = this.referenceService.getApiErrorMessage(error);
+			this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+	}, () =>                 
+	this.xtremandLogger.log("Pipedrive Configuration Checking done")
+	);
+}
+framePipedrivePreview(response: any) {
+	if (!response.contacts) {
+		this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+	} else {			
+		this.getGoogleConatacts = response.contacts.length;
+		if (response.contacts.length == 0) {
+			this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+		} else {
+			for (var i = 0; i < response.contacts.length; i++) {
+				let socialPartner = new SocialContact();
+				let user = new User();
+				socialPartner.id = i;
+				if (this.validateEmailAddress(response.contacts[i].email)) {
+					socialPartner.emailId = response.contacts[i].email;
+					socialPartner.firstName = response.contacts[i].firstName;
+					socialPartner.lastName = response.contacts[i].lastName;
+
+					socialPartner.country = response.contacts[i].country;
+					socialPartner.city = response.contacts[i].city;
+					socialPartner.state = response.contacts[i].state;
+					socialPartner.postalCode = response.contacts[i].postalCode;
+					socialPartner.address = response.contacts[i].address;
+					socialPartner.company = response.contacts[i].company;
+					socialPartner.title = response.contacts[i].title;
+					socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+					this.socialPartnerUsers.push(socialPartner);
+				}
+			}
+
+			$("button#sample_editable_1_new").prop('disabled', false);
+			// $( "#Gfile_preview" ).show();
+			this.showFilePreview();
+			$("button#cancel_button").prop('disabled', false);
+			$('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+			$('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.zohoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.marketoImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+			$('.hubspotImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('.microsoftDynamicsImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+			$('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#ZgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+			$('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+		}
+		this.setSocialPage(1);
+		this.customResponse.isVisible = false;
+		this.selectedAddPartnerOption = 11;
+		console.log("Social Contact Users for Pipedrive::" + this.socialPartnerUsers);
+	}
+}
+
+//XNFR-230
 
 }

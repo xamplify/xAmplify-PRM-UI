@@ -331,6 +331,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     invalidShareLeadsSelectionErrorMessage = "";
     activeCRMDetails: any;
 
+    /***XNFR-255****/
+    shareWhiteLabeledContent = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -351,6 +353,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                     this.enableLeads = data.enableLeads;
                     this.salesEnablement = data.salesEnablement;
                     this.oneClickLaunch = data.oneClickLaunch;
+                    /***XNFR-255****/
+                    this.shareWhiteLabeledContent = data.shareWhiteLabeledContent;
                     this.getActiveCRMDetails();
                 });
             })
@@ -758,15 +762,17 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                                 this.leadPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultLeadPipelineId = pipeline.id;
-                                        this.campaign.leadPipelineId = pipeline.id;
-                                    }
+                                        if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                                            this.campaign.leadPipelineId = pipeline.id;
+                                        }                                     }
                                 });
 
                                 this.dealPipelines.forEach(pipeline => {
                                     if (pipeline.default) {
                                         this.defaultDealPipelineId = pipeline.id;
-                                        this.campaign.dealPipelineId = pipeline.id;
-                                    }
+                                        if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                            this.campaign.dealPipelineId = pipeline.id;
+                                        }                                     }
                                 });
                             } else {
                                 this.defaultLeadPipelineId = this.leadPipelines[0].id;
@@ -1069,6 +1075,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
+        /***XNFR-255*****/
+        if(this.campaignType!='landingPage'){
+            this.campaign.whiteLabeled = false;
+        }
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
@@ -1098,9 +1108,12 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     }
 
+    
+
     setViewInBrowser(event: any) {
         this.campaign.viewInBrowserTag = event;
     }
+
 
     setUnsubscribeLink(event: any) {
         this.campaign.unsubscribeLink = event;
@@ -1607,8 +1620,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     }
     highlightRow(contactList: any, event: any) {
         let contactId = contactList.id;
-        let count = contactList.count;
-       
         let isChecked = $('#' + contactId).is(':checked');
         if (isChecked) {
             $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
@@ -2259,7 +2270,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             /****XNFR-125****/
             "oneClickLaunch":this.campaign.oneClickLaunch,
             'partnershipId':this.selectedPartnershipId,
-            'configurePipelines': this.campaign.configurePipelines
+            'configurePipelines': this.campaign.configurePipelines,
+            /***XNFR-255****/
+            'whiteLabeled':this.campaign.whiteLabeled
         };
         return data;
     }
@@ -3748,5 +3761,10 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.loading = false;
     }
 
+    /****XNFR-255****/
+    setWhiteLabeled(event:any){
+        this.campaign.whiteLabeled = event;
+    }
+    
 }
 

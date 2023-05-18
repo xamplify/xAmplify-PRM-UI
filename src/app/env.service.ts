@@ -62,6 +62,14 @@ export class EnvService {
   /****XNFR-224****/
   domainName = window.location.hostname;
 
+  // XNFR-256
+  microsoftQAClientId = "";
+  microsoftQAClientSecret = "";
+  microsoftProdClientId = "";
+  microsoftProdClientSecret = "";
+  microsoftDevClientId = "";
+  microsoftDevClientSecret = "";
+
   constructor() {
   }
 

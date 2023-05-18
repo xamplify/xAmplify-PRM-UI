@@ -9,18 +9,29 @@ import { DamPublishPostDto } from '../models/dam-publish-post-dto';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { HttpClient, HttpRequest } from "@angular/common/http";
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { UtilService } from 'app/core/services/util.service';
+
 
 @Injectable()
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
   playbooksUrl = this.authenticationService.REST_URL+"playbooks/"
   ispreviousAssetIsProcessing = false;
-  constructor(private http: HttpClient, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: HttpClient, private authenticationService: AuthenticationService, 
+    private logger: XtremandLogger,private utilService:UtilService) { }
 
   list(pagination: Pagination) {
     return this.utilPostListMethod("list", pagination);
   }
   listPublishedAssets(pagination: Pagination) {
+    /****XNFR-252*****/
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+    if(xamplifyLogin){
+        pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    }
+    /****XNFR-252*****/
     return this.utilPostListMethod("listPublishedAssets", pagination);
   }
 
@@ -209,6 +220,23 @@ export class DamService {
     let url = this.findApiPrefixUrlByModule(moduleName);
     return this.callGetMethod(url+"isPublishedToPartnerGroups/"+damId);
   }
+
+  findFileTypes(companyId: number,categoryId:number) {
+    if(undefined==categoryId){
+      categoryId = 0;
+    }
+    return this.utilGetMethod("findFileTypes/" + companyId+"/"+categoryId);
+   }
+
+   findFileTypesForPartnerView(vanityLoginDto:VanityLoginDto,categoryId:number){
+     vanityLoginDto.userId = this.authenticationService.getUserId();
+     if(undefined==categoryId){
+      categoryId = 0;
+    }
+    return this.http.post(this.URL + "findFileTypesForPartnerView/"+categoryId+ "?access_token=" + this.authenticationService.access_token, vanityLoginDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
 
   private findApiPrefixUrlByModule(moduleName:string){
     let url = "";

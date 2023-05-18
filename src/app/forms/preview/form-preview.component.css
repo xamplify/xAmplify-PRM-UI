@@ -212,3 +212,15 @@ input[type=checkbox], input[type=radio] {    margin: 3px 0 0;
 .optionTB {
     margin: 10px 0;
 }
+
+
+
+.form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+

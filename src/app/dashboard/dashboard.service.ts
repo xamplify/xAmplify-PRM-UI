@@ -14,9 +14,13 @@ import { Pipeline } from './models/pipeline';
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
+
 import { ThemePropertiesListWrapper } from './models/theme-properties-list-wrapper';
 import { CompanyThemeActivate } from './models/company-theme-activate';
 import { ThemeDto } from './models/theme-dto';
+
+import { UtilService } from 'app/core/services/util.service';
+
 
 @Injectable()
 export class DashboardService {
@@ -33,7 +37,7 @@ export class DashboardService {
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
-    constructor(private http: Http, private authenticationService: AuthenticationService) { }
+    constructor(private http: Http, private authenticationService: AuthenticationService,private utilService:UtilService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
         return this.http.get(this.authenticationService.REST_URL + "twitter/gender-demographics" + this.QUERY_PARAMETERS
@@ -98,6 +102,13 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        /****XNFR-252*****/
         const url = this.authenticationService.REST_URL + 'vendor/details?partnerId=' + userId + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -329,6 +340,14 @@ export class DashboardService {
 
     /******27/03/2020. To get all modules count in dashboard */
     getModuleAnalytics(dto: DashboardAnalyticsDto) {
+        /****XNFR-252*****/
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+
+        }
+        /****XNFR-252*****/
         const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -336,6 +355,15 @@ export class DashboardService {
     }
 
     getVendorActivityAnalytics(dto: DashboardAnalyticsDto) {
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+            dto.vanityUrlFilter = dto.loginAsUserId!=null && dto.loginAsUserId>0;
+ 
+         }
+        /***XNFR-252****/
         const url = this.dashboardAnalytics + 'vendorActivityAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -350,6 +378,11 @@ export class DashboardService {
     }
 
     getEmailStats(dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.dashboardAnalytics + 'emailStats/?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -357,6 +390,11 @@ export class DashboardService {
     }
 
     getRegionalStatistics(dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.dashboardAnalytics + 'regionalStatistics/?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -364,6 +402,11 @@ export class DashboardService {
     }
 
     listEmailOpenLogsForVanityURL(actionId: number, pagination: Pagination, dto: DashboardAnalyticsDto) {
+      let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + "dashboard/views/email-logs-by-user-and-action" + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -371,6 +414,11 @@ export class DashboardService {
     }
 
     listOfWatchedLogsForVanityURL(pagination: Pagination, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + "dashboard/views/watched-users" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -378,6 +426,11 @@ export class DashboardService {
     }
 
     listEmailClickedLogsForVanityURL(pagination: Pagination, dto: DashboardAnalyticsDto) {
+      let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + "dashboard/views/email-click-logs-by-user" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -385,6 +438,11 @@ export class DashboardService {
     }
 
     worldMapCampaignDetailsForVanityURL(countryCode: string, pagination: Pagination, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + "dashboard/views/world-map-detail-report?access_token=" + this.authenticationService.access_token +
             "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex + "&countryCode=" + countryCode;
         return this.http.post(url, dto)
@@ -395,6 +453,11 @@ export class DashboardService {
 
     //Video Stats analytics for VanityURL
     getVideoStatsInformationForVanityURL(daysCount, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats-data?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysCount;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -402,6 +465,11 @@ export class DashboardService {
     }
 
     getVideoViewsLevelOneReportsForVanityURL(daysInterval: number, dateValue: any, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level1?access_token=' + this.authenticationService.access_token +
             '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
@@ -418,6 +486,11 @@ export class DashboardService {
     }
 
     getVideoMinutesWatchedLevelOneReportsForVanityURL(daysInterval: any, dateValue: number, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level1?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
@@ -433,6 +506,11 @@ export class DashboardService {
 
 
     getCampaignsHeatMapDetailsForVanityURL(limit: any, dto: DashboardAnalyticsDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + 'dashboard/views/heatmap-data?access_token=' + this.authenticationService.access_token + '&limit=' + limit;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -632,6 +710,11 @@ export class DashboardService {
     }
     /*********funnel chart****** */
     getFunnelChartsAnalyticsData(vanityLoginDto:VanityLoginDto) {
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
         const url = this.authenticationService.REST_URL + 'dashboard/views/getFunnelChartsAnalyticsData?access_token=' + this.authenticationService.access_token;
         return this.http.post(url,vanityLoginDto)
         .map(this.extractData)
@@ -655,6 +738,11 @@ export class DashboardService {
 
    /************Pie chart ********* */
    getPieChartLeadsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsLeadsAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -662,6 +750,11 @@ export class DashboardService {
    }
 
    getPieChartDealsAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartsDealsAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -669,6 +762,11 @@ export class DashboardService {
    }
 
    getPieChartStatisticsLeadAnalyticsData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartStatisticsLeadAnalyticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -676,6 +774,11 @@ export class DashboardService {
    }
 
    getPieChartStatisticsDealData(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsData?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -683,6 +786,11 @@ export class DashboardService {
    }
 
    getPieChartDealStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartDealStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -690,6 +798,11 @@ export class DashboardService {
    }
 
    getPieChartLeadsStatisticsWithStageNames(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
     const url = this.authenticationService.REST_URL + 'dashboard/views/getPieChartLeadsStatisticsWithStageNames?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
@@ -877,6 +990,13 @@ getDefaultThemes(){
 }
 /*************XNFR-238****************/
     getVendors(pagination: Pagination) {
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+             pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         }
+         /****XNFR-252*****/
         const url = this.authenticationService.REST_URL + 'vendor/info?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -885,6 +1005,13 @@ getDefaultThemes(){
     }
 
     getVendorCount(vanityLoginDto: VanityLoginDto) {
+         /****XNFR-252*****/
+         let companyProfileName = this.authenticationService.companyProfileName;
+         let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+         if(xamplifyLogin){
+            vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+         }
+       /***XNFR-252****/
         return this.http.post(this.authenticationService.REST_URL + "vendor/count?access_token=" + this.authenticationService.access_token, vanityLoginDto)
             .map(this.extractData)
             .catch(this.handleError);

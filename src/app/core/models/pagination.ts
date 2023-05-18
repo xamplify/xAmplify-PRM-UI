@@ -97,4 +97,5 @@ export class Pagination {
 	oneClickLaunch = false;
 	previewSelectedSharedLeads = false;
 	headerCheckBoxChecked = false;
+	loginAsUserId = 0;
 }

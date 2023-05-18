@@ -165,6 +165,19 @@ export class UtilService {
         return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserId'));
     }
 
+    getLoggedInVendorAdminCompanyEmailId(){
+        return  JSON.parse(localStorage.getItem('vendorAdminCompanyUserEmailId'));
+    }
+
+    getLoggedInAdminCompanyUserId(){
+        return  JSON.parse(localStorage.getItem('adminId'));
+    }
+
+    getLoggedInAdminCompanyEmailId(){
+        return  JSON.parse(localStorage.getItem('adminEmailId'));
+    }
+
+
     addLoginAsLoader(){
         $("body").addClass("login-as-loader");
     }

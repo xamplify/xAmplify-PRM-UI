@@ -691,14 +691,14 @@ export class AuthenticationService {
   getModulesByUserId() {
     let userId = this.getUserId();
     /*****XNFR-83***********/
-    let domainName = this.getSubDomain();
-    let url = "";
-    if(domainName.length>0){
-      url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
-    }else{
-      url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
-    }
-    return this.http.get(url)
+    // let domainName = this.getSubDomain();
+    // let url = "";
+    // if(domainName.length>0){
+    //   url = this.REST_URL + 'module/getAvailableModules/' + userId +'/'+domainName+ '?access_token=' + this.access_token;
+    // }else{
+    //   url = this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token;
+    // }
+    return this.http.get(this.REST_URL + 'module/getAvailableModules/' + userId + '?access_token=' + this.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -970,7 +970,7 @@ getAssigedAgencyModules(id:number){
 
 /*********XNFR-83************/
 getSubDomain(){
-  return "";
+  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
 }
 
 /*********XNFR-83************/

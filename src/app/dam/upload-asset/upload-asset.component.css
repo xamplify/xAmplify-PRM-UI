@@ -135,12 +135,7 @@ width:150%;
   border: none;
 }
 
-.text-wrap {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 100%;
-}
+
 
 @media screen and (max-width:600px){
   .mScroll{
@@ -193,6 +188,7 @@ width:150%;
   color: #fff;
   border: 1px solid #3575b5;
 }
+
 .video{
   background-color:white; cursor:default
 }
@@ -202,3 +198,11 @@ width:150%;
 .btn-primary-light:hover{
   background-color: #c0c0c0;
 }
+
+
+.text-wrap-tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+

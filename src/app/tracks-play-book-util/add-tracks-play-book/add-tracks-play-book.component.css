@@ -970,7 +970,7 @@ input.cmn-toggle-round-flat:checked+label:after {
     font-size: medium !important;
 }
 
-.thumbnail-wrapper {
+.thumbnail-wrapper, .thumbnail-wrapper-form {
     float: left;
     width: 175px;
 	height: 60px;
@@ -1116,6 +1116,7 @@ input.cmn-toggle-round-flat:checked+label:after {
   .pt5{
     padding-top: 5px !important;
   }
+
   .tracks-bg-color{
     border: 1px solid #ddd;
     background-color: #fff;
@@ -1155,4 +1156,30 @@ span.quiz_optionname {
 ul.t-b-spacings {
     margin: 5px 0px;
 }
+
+  .tags-table-td{
+    padding: 5px;vertical-align: middle;display: inline-flex;
+  }
+  .tags-min-width{
+    padding-left: 5px !important;min-width: 150px
+  }
+
+  .fit-form-image {
+    width: 100%;
+}
+
+.text-wrap-tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.form-description {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: 'Gantari',"Open Sans", sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+  }
 

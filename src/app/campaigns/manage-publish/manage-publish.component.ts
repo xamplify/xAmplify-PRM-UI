@@ -363,13 +363,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.selectedCampaignId = campaign.campaignId;
             this.isloading = false;
         }else{
-            if(campaign.campaignType.indexOf('SOCIAL') > -1){
-                this.isloading = false;
-                this.customResponse = new CustomResponse();
-                this.refService.showSweetAlertErrorMessage('Please try after sometime to edit this campaign');
-            }else{
-                this.editCampaignsWhichAreNotLaunched(campaign);
-            }
+            this.editCampaignsWhichAreNotLaunched(campaign);
         }
     }
 
@@ -408,7 +402,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 .subscribe(
                 data => {
                     if (data.campaignType === 'SOCIAL') {
-                        this.router.navigate(["/home/campaigns/social"]);
+                        let isLaunched = data.launched;
+                        if (isLaunched || data.campaignProcessing) {
+                            this.isScheduledCampaignLaunched = true;
+                            this.isloading = false;
+                        }else{
+                            this.editButtonClicked = true;
+                            this.selectedCampaignId = campaign.campaignId;
+                            this.isloading = false;
+                        }
                     } else {
                         this.campaignService.campaign = data;
                         let endDate = this.campaignService.campaign.endDate;
@@ -668,11 +670,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.refService.loadingPreview = true;
         if (campaign.campaignType.indexOf('EVENT') > -1) {
             this.campaignType = 'EVENT';
-            // this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         } else {
             this.campaignType = campaign.campaignType.toLocaleString();
-            // this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
             this.previewCampaign = campaign.campaignId;
         }
     }

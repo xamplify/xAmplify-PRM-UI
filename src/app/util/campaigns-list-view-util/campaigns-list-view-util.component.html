@@ -265,7 +265,10 @@
                                         <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.oneClickLaunch" translate>{{properties?.oneClickLaunch}}</h6>
                                         <h6 class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
                                             <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
-                                          </h6>   
+                                        </h6>  
+                                        <!---XNFR-255-->
+                                            <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
+                                        <!---XNFR-255--> 
                                     </td>
                                     <td>
                                         <h4 class="moreipsis" title="{{campaign.campaignName}}">
@@ -1046,6 +1049,9 @@
                                     <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
                                 </ng-container>
                                 <!--XNFR-125--->
+                                <!---XNFR-255-->
+                                    <span class="green-banner prt3px" *ngIf="campaign?.whiteLabeled">White-Labeled</span>
+                                <!---XNFR-255-->
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                                     style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>

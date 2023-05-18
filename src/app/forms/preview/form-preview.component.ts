@@ -282,7 +282,7 @@ export class FormPreviewComponent implements OnInit {
     this.referenceService.showSweetAlertServerErrorMessage();
   }
 
-  /*******Submit Forms********* */
+   /*******Submit Forms********* */
   submitForm() {
     this.show = false;
     this.ngxLoading = true;

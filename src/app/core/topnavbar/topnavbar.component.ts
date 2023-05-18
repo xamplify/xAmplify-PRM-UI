@@ -68,6 +68,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInAsPartner = false;
   loggedInAsUserEmailId = "";
   isLoggedInAsTeamMember = false;
+  vendorAdminCompanyUserEmailId: any;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,
@@ -79,6 +80,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     this.loggedInAsUserEmailId = userName;
+    if(this.isLoggedInAsTeamMember){
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInAdminCompanyEmailId();
+    }else{
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInVendorAdminCompanyEmailId();
+    }
     this.userId = this.authenticationService.getUserId();
     /*** XNFR-134** */
     this.vanityLoginDto.userId = this.userId;
@@ -504,27 +510,21 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
 
  
 
-  // getTopNavigationColor(userId:number){
-  //   this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-  //     (response) =>{
-  //    let cskinMap  = response.data;
-  //    this.cskin = cskinMap.TOP_NAVIGATION_BAR;
-  //    document.documentElement.style.setProperty('--top-bg-color', this.cskin.backgroundColor);
-  //    document.documentElement.style.setProperty('--top-buton-color', this.cskin.buttonColor);
-  //    document.documentElement.style.setProperty('--top-button-border-color', this.cskin.buttonBorderColor);
-  //    document.documentElement.style.setProperty('--top-button-value-color', this.cskin.buttonValueColor); 
-  //    document.documentElement.style.setProperty('--top-button-icon-color', this.cskin.iconColor);
-  //    this.authenticationService.isDefaultTheme = this.cskin.defaultSkin;
-  //    this.authenticationService.isDarkForCharts = this.cskin.darkTheme;
-  //    if(!this.cskin.defaultSkin && !this.cskin.darkTheme){
-  //     require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-header.css");
-  //    } else if(this.cskin.darkTheme && this.cskin.defaultSkin) {
-  //     require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
-  //    } else{
-  //     require("../../../assets/admin/layout2/css/layout.css");
-  //    }
-  //     }
-  //   )
+
+
   
-  // }
+
+  /****Add Leads****/
+  navigateAndOpenAddLeadsModalPopUp(){
+    this.authenticationService.module.navigatedFromMyProfileSection = true;
+    this.refService.goToRouter("/home/leads/manage");
+  }
+
+  /****Add Deals****/
+  navigateAndOpenAddDealsModalPopUp(){
+    this.authenticationService.module.navigatedFromMyProfileSection = true;
+    this.refService.goToRouter("/home/deal/manage");
+
+  }
+
 }

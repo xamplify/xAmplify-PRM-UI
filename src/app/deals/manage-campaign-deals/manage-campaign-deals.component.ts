@@ -25,6 +25,7 @@ export class ManageCampaignDealsComponent implements OnInit {
   @Input() public filterKey : any;
   @Input() public fromAnalytics : boolean = false;
   @Input() public showTeamMemberFilter : boolean = false;
+  @Input() public isDataShare : boolean = false;
 
   @Output() viewCampaignDealForm = new EventEmitter<any>();
   @Output() editCampaignDealForm = new EventEmitter<any>();

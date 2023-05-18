@@ -11,6 +11,7 @@ import { VanityEmailTempalte } from "app/email-template/models/vanity-email-temp
 import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
+import { SweetAlertParameterDto } from "app/common/models/sweet-alert-parameter-dto";
 @Injectable()
 export class VanityURLService {
 
@@ -98,11 +99,11 @@ export class VanityURLService {
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && this.envService.CLIENT_URL.indexOf('localhost')>-1;
     if(isLocalHost){
       let domainName = this.envService.domainName;
-      if(domainName!=""){
+      if(domainName!="" && domainName!=window.location.hostname){
         url = this.envService.domainName+".xamplify.com";
       }
     }
-    if (!url.includes("192.168")) {
+    if (!url.includes("192.168") || !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
@@ -151,7 +152,6 @@ export class VanityURLService {
       dto.userId = this.authenticationService.getUserId();
     }
     let companyProfileName = this.authenticationService.companyProfileName;
-    // let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
     if (companyProfileName != undefined && companyProfileName != "") {
       dto.vanityUrlFilter = true;
       dto.vendorCompanyProfileName = companyProfileName;

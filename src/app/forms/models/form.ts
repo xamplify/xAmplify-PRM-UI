@@ -58,5 +58,6 @@ export class Form {
     selectedGroupIds:any[] = [];
 
     selected: boolean = false;
+    associatedWithTrack = false;
 
 }

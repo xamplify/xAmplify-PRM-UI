@@ -97,12 +97,21 @@
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
                                                 <span><strong>{{form.name}}</strong></span>
                                             </h4>
+                                             
                                             <h6 class="moreipsis" title="{{form.categoryName}}">
                                                 <span> Folder <strong>{{form.categoryName}}</strong></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{form.createdName}}">
                                                 <span> Created By <strong>{{form.createdName}}</strong></span>
                                             </h6>
+                                             <!---XNFR-255-->
+                                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
+                                                <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                    <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                                </h6>
+                                                <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>
+                                            </ng-container>
+                                             <!---XNFR-255-->
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
                                             <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
@@ -166,13 +175,21 @@
 
                 <div class="row" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
-                        <div class="grid-box">
+                        <div class="grid-box" style="height: 250px !important;">
                             <div class="img-class">
                                 <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
                                 {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
                             </h4>
+                            <!---XNFR-255-->
+                            <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
+                                <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                    <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                </h6>
+                                <span class="view-banner-white-labeled mb5">White-Labeled</span>
+                            </ng-container>
+                            <!---XNFR-255-->
                             <div>
                                 <h6 title="{{form.categoryName}}">
                                     Folder <strong>{{form.categoryName | slice:0:17}}</strong>

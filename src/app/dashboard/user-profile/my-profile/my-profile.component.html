@@ -376,44 +376,79 @@
                                     </span> -->
                                     </div>
                                 </div>
-                                <!-- XNFR-238-->
-                                <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
-                                    <app-response-message class="pg8" [customResponse]="themeResponse"
-                                        *ngIf="themeResponse.isVisible">
-                                    </app-response-message>
-                                    Custom Skin Settings helps to change your application colors like background color
-                                    ,icon color, text color, button color etc.
-                                    Based on selecting color in below tab.
-                                    <br><br>
-                                    <div class="div thembgc">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6"
-                                                *ngFor="let dto of defaultThemes  | slice:0:2">
-                                                <div class="img_padding">
 
-                                                    <img alt="" class="img-custome"
-                                                        src="assets/images/theme/1/Webp/01.webp">
+                            </div>
+                            <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
+                                Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
+                                Based on selecting color in below tab.
+                              </div>
+                            <div class="portlet-body clearfix">
+                                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                                </app-response-message>
+                                <div class="tab-content">
+                                    <!---Personal Info-->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
+                                        <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
+                                            <div class="form-group">
+                                                <label class="control-label" translate>First Name</label>
+                                                <span class="star"> *</span>
+                                                <input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName" required />
+                                                <div *ngIf="formErrors.firstName" class="alert alert-danger">
+                                                    {{ formErrors.firstName }}</div>
+                                            </div>
 
-                                                </div>
-                                                <div class="card selected">
-                                                    <div class="card-body">
-                                                        <span class="label label-info  selectcolor"
-                                                            *ngIf="dto?.id === activeThemeDetails?.themeId">Active</span>
-                                                        <br>
-                                                        <h5 class="card-title themefont">{{dto.name}} Theme</h5>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Middle Name</label>
+                                                <input type="text" placeholder="Middle Name" class="form-control" formControlName="middleName" maxlength="50">
+                                                <div *ngIf="formErrors.middleName" class="alert alert-danger">
+                                                    {{ formErrors.middleName }}</div>
+                                            </div>
 
-                                                        <button type="button" class="btn  btn-size btn-selectcolor"
-                                                            (click)="activateTab('lightTheme');showDto(dto)"> <i
-                                                                class="fa fa-eye" aria-hidden="true"></i>
-                                                            View</button>
-                                                        <button type="button" *ngIf="dto.defaultTheme"
-                                                            class="btn  btn-size"
-                                                            [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
-                                                            (click)="activateTab('customTheme');showDto(dto);"> <i
-                                                                class="fa fa-files-o" aria-hidden="true"></i>
-                                                            Copy</button>
-                                                    </div>
-                                                </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Last Name</label>
+                                                <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
+                                                <div *ngIf="formErrors.lastName" class="alert alert-danger">
+                                                    {{ formErrors.lastName }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Mobile Number</label>
+                                                <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
+                                                <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
+                                                    {{ formErrors.mobileNumber }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Interests</label>
+                                                <input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
+                                                <div *ngIf="formErrors.interests" class="alert alert-danger">
+                                                    {{ formErrors.interests }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Job Title</label>
+                                                <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Job Title" class="form-control" formControlName="occupation" />
+                                                <div *ngIf="formErrors.occupation" class="alert alert-danger">
+                                                    {{ formErrors.occupation }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>About</label>
+                                                <textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
+                                                <div *ngIf="formErrors.description" class="alert alert-danger">
+                                                    {{ formErrors.description }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Select Preferred Language</label>                                                
+                                                <select formControlName="preferredLanguage" class="form-control">
+                                                <option [ngValue]="undefined" disabled selected> Select Preferred Language </option>                                                
+                                                <option [ngValue]="language.id" *ngFor="let language of authenticationService.allLanguagesList">{{language.name}}</option>
+                                                </select>
+                                                <div *ngIf="formErrors.preferredLanguage" class="alert alert-danger">
+                                                    {{ formErrors.preferredLanguage }}</div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" translate>Website Url</label>
+                                                <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
+                                                <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
+                                                    {{ formErrors.websiteUrl }}</div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -2934,7 +2969,7 @@
                                                     name="defaultStage" style="margin: 5px;"
                                                     (change)="defaultStageChange(pipelineStage)">
                                                 <span style="margin-right: 5px;">Default</span>
-                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview">
+                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
                                                     <option value="lost">Lost</option>

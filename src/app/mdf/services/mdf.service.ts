@@ -12,6 +12,7 @@ import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { SaveMdfRequest } from '../models/save-mdf-request';
 import { MdfRequestDto } from "../models/mdf-request-dto";
 import { MdfRequestCommentDto } from '../models/mdf-request-comment-dto';
+import { UtilService } from "app/core/services/util.service";
 
 
 @Injectable()
@@ -32,7 +33,7 @@ export class MdfService {
 
   defaultActivityOptions = ["Advertisement", "Event", "Promotion", "Seminar", "Trade Show", "Webinar"];
 
-  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,private utilService:UtilService) { }
 
   saveMdfRequestForm(userName: string, companyProfileName: string): Observable<Form> {
     this.frameMdfRequestForm(userName, companyProfileName);
@@ -109,6 +110,14 @@ updateMdfAmount(mdfDetails:MdfDetails){
 }
 
 getMdfRequestTilesInfoForPartners(vanityLoginDto:VanityLoginDto){
+   /********XNFR-252*******/
+   let subDomaiName = this.authenticationService.getSubDomain();
+   if(subDomaiName.length==0){
+     let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+     if(loginAsUserId>0){
+       vanityLoginDto.loginAsUserId = loginAsUserId;
+     }
+   }
   return this.http.post(this.URL + "getMdfRequestTilesInfoForPartners?access_token=" + this.authenticationService.access_token,vanityLoginDto)
   .map(this.extractData)
   .catch(this.handleError);
@@ -127,6 +136,14 @@ getPartnerMdfAmountTilesInfo(vendorCompanyId: number,partnerCompanyId:number) {
       .catch(this.handleError);
 }
 listMdfAccessVendors(pagination: Pagination) {
+  /********XNFR-252*******/
+  let subDomaiName = this.authenticationService.getSubDomain();
+  if(subDomaiName.length==0){
+    let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    if(loginAsUserId>0){
+      pagination.loginAsUserId = loginAsUserId;
+    }
+  }
   return this.http.post(this.URL + "listMdfAccessVendors?access_token=" + this.authenticationService.access_token,pagination)
       .map(this.extractData)
       .catch(this.handleError);

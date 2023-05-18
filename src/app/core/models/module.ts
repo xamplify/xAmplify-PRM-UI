@@ -110,4 +110,9 @@ export class Module {
     loginAsPartner = false;
     showSupportSettingOption = false;
 
+    navigatedFromMyProfileSection = false;
+    showAddLeadOrDealButtonInMyProfileSection = false;
+    navigateToPartnerSection = false;
+
+
 }

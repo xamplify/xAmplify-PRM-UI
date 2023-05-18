@@ -106,4 +106,5 @@ export class Campaign {
     utcTimeInString = "";
     campaignProcessing = false;
     campaignEmailNotificationStatusInString = "";
+    whiteLabeled = false;
 }

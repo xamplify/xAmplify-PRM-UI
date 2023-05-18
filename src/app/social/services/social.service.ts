@@ -13,6 +13,8 @@ import {SocialCampaign} from '../models/social-campaign';
 
 import {AuthenticationService} from '../../core/services/authentication.service';
 import { Pagination } from '../../core/models/pagination';
+import { UtilService } from 'app/core/services/util.service';
+
 
 @Injectable()
 export class SocialService {
@@ -24,7 +26,8 @@ export class SocialService {
   partnerFeed:any;
 
   constructor(private http: Http, private router: Router,
-    private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
+    private authenticationService: AuthenticationService,
+     private activatedRoute: ActivatedRoute,private utilService:UtilService) {
     this.socialConnections = new Array<SocialConnection>();
   }
 
@@ -66,7 +69,7 @@ export class SocialService {
     }
 
       if(loggedInThroughVanityUrl=="true"){
-        if(parentWindowUserId!=undefined && parentWindowUserId!=0){
+        if (parentWindowUserId != undefined && parentWindowUserId != null && parentWindowUserId > 0) {
           queryParam += '&userId=' + parentWindowUserId;
         }
       }else{
@@ -118,6 +121,7 @@ export class SocialService {
   }
 
   createSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/campaign?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
@@ -125,7 +129,13 @@ export class SocialService {
 
 
 
+  private setVanityLoginOptions(socialCampaign: SocialCampaign) {
+    socialCampaign.vanityUrlCampaign = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+    socialCampaign.vanityUrlDomainName = this.authenticationService.companyProfileName;
+  }
+
   redistributeSocialCampaign(socialCampaign: SocialCampaign) {
+    this.setVanityLoginOptions(socialCampaign);
     return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
@@ -197,9 +207,7 @@ export class SocialService {
   }
 
   private extractData(res: Response) {
-	console.log(res);
     const body = res.json();
-    console.log(body);
     return body || {};
   }
 
@@ -310,7 +318,19 @@ export class SocialService {
   }
 
   listAllVendors(userId:number){
-    return this.http.get( this.URL + 'social/partner/'+userId+'/vendors?access_token=' + this.authenticationService.access_token,"" )
+    let subDomain = this.authenticationService.getSubDomain();
+    let isVanityLogin = subDomain.length>0;
+    let isLoginAsPartner =  !isVanityLogin;
+    let url = this.URL + 'social/partner/'+userId+'/vendors';
+    if(isVanityLogin){
+      url+="/subDomain/"+subDomain;
+    }else if(isLoginAsPartner){
+      let loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+      if(loginAsUserId>0){
+        url+="/loginAsUserId/"+loginAsUserId;
+      }
+    }
+    return this.http.get(url+'?access_token=' + this.authenticationService.access_token,"" )
     .map( this.extractData )
     .catch( this.handleError );
   }
@@ -373,6 +393,17 @@ export class SocialService {
         return this.http.get(url, "")
         .map(this.extractData)
         .catch(this.handleError);
+}
+
+getSocialStatusById(socialStatusId:number){
+  return this.http.get( this.URL + 'social/findSocialStatusById/'+socialStatusId+'?access_token=' + this.authenticationService.access_token,"" )
+    		.map( this.extractData ).catch( this.handleError );
+}
+
+checkAliasAccess(alias: string) {
+  return this.http.get(this.URL + 'social/checkAliasAccess/' + alias + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
 }
   
 }

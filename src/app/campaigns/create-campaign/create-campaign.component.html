@@ -274,6 +274,21 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!--White Labeled XNFR-255-->
+                                                <div class="form-group" *ngIf="(campaignType=='landingPage' && shareWhiteLabeledContent) || (campaign.channelCampaign && shareWhiteLabeledContent && (campaignType=='regular' || campaignType=='video'))">
+                                                <label class="control-label col-sm-4" translate>White Labeled</label>
+                                                <div class="col-sm-8">
+                                                    <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                        (statusChange)="setWhiteLabeled($event)">
+                                                    </switch>
+                                                    <span class="info-color-xampc">
+                                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                            data-placement="top" aria-hidden="true"
+                                                            title="Share White Labeled Content"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
                                             
                                             <!--View In Browser-->
                                             <ng-container *ngIf="campaignType=='regular' && !campaign.channelCampaign && salesEnablement">
@@ -1209,12 +1224,12 @@
                                                             </th>
                                                             <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
                                                             </th>
-                                                            <th scope="row" style="text-align: center;" translate>Uploaded Date</th>
+                                                            <th scope="row" style="text-align: center;" translate>Created On</th>
                                                             <th scope="row" style="text-align: center;" translate>Count</th>
                                                             <th scope="row" style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>   
+                                                    <tbody class="pointer">   
                                                         <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
                                                             <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
                                                                 (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
@@ -1241,6 +1256,8 @@
                                                                     <img *ngIf="contacts?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
                                                                     <img *ngIf="contacts?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
+                                                                    <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE'" src="{{properties?.pipedriveImage}}" alt="Pipedrive" class="img-class-list">
+
                                                                   </td>
                                                                   <td style="text-align: left;">
                                                                     <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
@@ -1999,7 +2016,7 @@
                                                                         </option>
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
-                                                                                *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
+                                                                                *ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))" translate>
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                                 </option>
                                                                             <ng-container *ngIf="campaignType=='video'">

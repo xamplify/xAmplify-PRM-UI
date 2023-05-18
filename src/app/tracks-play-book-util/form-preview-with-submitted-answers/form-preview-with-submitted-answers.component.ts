@@ -66,6 +66,7 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
               console.log(captchaResponse)
     }
 
+
     setFormSubmitValues(data: any) {
         this.quizScore = data.score;
         this.maxScore = data.maxScore;
@@ -100,6 +101,8 @@ export class FormPreviewWithSubmittedAnswersComponent implements OnInit, OnDestr
             value.skipped = answers[value.id].skipped;
             value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
           } else {
+
+   
             value.value = "";
             value.skipped = true;
           }

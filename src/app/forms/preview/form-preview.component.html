@@ -13,6 +13,7 @@
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor" style=" border-radius: 5px!important;">
+
                         <div *ngIf="formSubmitted && (learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted)">
                             <div class="panel-body">
                                 <h4 class="alert alert-success" id="header-center">
@@ -28,7 +29,9 @@
                             </div>
                         </div>
 
-                        <div *ngIf="(!formSubmitted) || ( learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)">
+
+                        <div *ngIf="(!formSubmitted) || (formSubmitted && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)">
+
                             <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                 <div class="score"
                                 *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && selectedPartnerFormAnswers?.score && selectedPartnerFormAnswers?.maxScore">
@@ -69,15 +72,15 @@
                                     <span class="required" *ngIf="columnInfo.required">*</span>
                                 </label>
                             </ng-container> 
-                                        <!-- <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
-												<span class="required" *ngIf="columnInfo.required">*</span>
-											</label> -->
+
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-                                            <input type="{{columnInfo.labelType}}" class="form-control" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [class.disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
+
+                                            <input type="{{columnInfo.labelType}}" class="form-control" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
                                                 (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                             
-                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [class.disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
+                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
                                                 (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+
 
                                             <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please
 													enter a
@@ -113,18 +116,20 @@
                                                     class="form-control" style="background-color: #f7f6f6;">
                                                     <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank" style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
                                                 </div>
+
                                         </ng-container>
                                         <!-- ---------------------------Radio Button----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label color" style="border:0px !important;" [style.color]="form.labelColor"
-                                                    [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
-															<input type="{{columnInfo.labelType}}"
-																name="{{columnInfo.labelId}}" class="form-check-input"
-																(click)="columnInfo.value = radioButton.id"
-																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || radioButton.isSelected">
-															{{radioButton.name}}
+                                                    <label class="form-check-label color" style="border:0px !important;">
+
+                                                            [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                        <input type="{{columnInfo.labelType}}"
+                                                          name="{{columnInfo.labelId}}" class="form-check-input"
+                                                          (click)="columnInfo.value = radioButton.id"
+                                                          [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue || radioButton.isSelected">
+                                                             <span [style.color]="form.labelColor">{{radioButton.name}}</span>
 														</label>
                                                 </div>
                                                 <br>
@@ -134,13 +139,14 @@
                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label color" style="border:0px !important;" [style.color]="form.labelColor"
+                                                    <label class="form-check-label color" style="border:0px !important;" 
+
                                                     [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
 															<input type="{{columnInfo.labelType}}"
 																name="{{columnInfo.labelId}}"
 																[checked]="checkBox.isChecked || checkBox.isSelected" class="form-check-input"
 																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)" >
-															{{checkBox.name}}
+                                                                <span [style.color]="form.labelColor">{{checkBox.name}}</span>
 														</label>
                                                 </div>
                                                 <br>
@@ -157,6 +163,7 @@
                                         <!-- ---------------------------Quiz----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
+
                                                 <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"  *ngIf="!(columnInfo.value =='')"
                                                     [style.background-color]="(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted) &&  choice.correct && choice.isSelected == true  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#fce8e6'  : choice.correct && choice.isSelected == false ? '#fcfcfc': ''"
                                                     [style.border-bottom] = "(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && choice.correct&& choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
@@ -170,7 +177,7 @@
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                         [checked]="choice.isChecked  || choice.isSelected" class="form-check-input"
                                                         (click)="updateQuizModel(columnInfo,choice,$event)">
-                                                        <span class="quiz_optionname">{{choice.name}} </span>
+                                                        <span [style.color]="form.labelColor" class="quiz_optionname">{{choice.name}} </span>
                                                     </label>
                                                     <span *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted"  style="float:right"  ><i
                                                         *ngIf="!choice.correct && choice.isSelected" class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>

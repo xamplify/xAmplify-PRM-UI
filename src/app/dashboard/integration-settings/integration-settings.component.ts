@@ -99,6 +99,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				error => {
 					this.ngxloading = false;
+					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 				},
 				() => { }
 			);
@@ -111,7 +112,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					// this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -132,6 +133,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				error => {
 					this.ngxloading = false;
+					let errorMessage = this.referenceService.getApiErrorMessage(error);
+                    this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
 				},
 				() => { }
 			);
@@ -297,11 +300,11 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.integrationService.getCRMPipelines(this.loggedInUserId, this.integrationType)
 		.subscribe(
 		  data => {
-			this.ngxloading = false;
 		    this.referenceService.loading(this.httpRequestLoader, false);
 		    if (data.statusCode == 200) {
 				this.integrationPipelines = data.data;
 		    }
+			this.ngxloading = false;
 		  },
 		  error => {
 			this.ngxloading = false;
@@ -321,33 +324,38 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 	activateCRMBySelectingDealPipeline() {
-		let self = this;
-		let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
-		let dropDown = '<div class="form-group">';
-		dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select default deal pipeline </label>';
-		dropDown += '<select class="form-control" id="deal-pipeline-dropdown" style="max-height: 50px;">';
-		$.each(this.integrationPipelines, function (_index: number, pipeline: any) {
-			dropDown += '<option value=' + pipeline.id + '>' + pipeline.name + '</option>';
-			$.each(pipeline.stages, function (_index: number, stage: any) {
-				dropDown += '<option disabled style="font-style:italic">&nbsp;&nbsp;&nbsp;' + stage.stageName + '</option>';
-			});
+		if (this.integrationPipelines != undefined && this.integrationPipelines != null
+			&& this.integrationPipelines.length > 0) {
+			let self = this;
+			let modalPopUp = $('<div><div id="bee-save-buton-loader"></div>');
+			let dropDown = '<div class="form-group">';
+			dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select default deal pipeline </label>';
+			dropDown += '<select class="form-control" id="deal-pipeline-dropdown" style="max-height: 50px;">';
+			$.each(this.integrationPipelines, function (_index: number, pipeline: any) {
+				dropDown += '<option value=' + pipeline.id + '>' + pipeline.name + '</option>';
+				$.each(pipeline.stages, function (_index: number, stage: any) {
+					dropDown += '<option disabled style="font-style:italic">&nbsp;&nbsp;&nbsp;' + stage.stageName + '</option>';
+				});
 
-		});
-		dropDown += '</select>';
-		dropDown += '</div><br>';
-		modalPopUp.append(dropDown);
-		modalPopUp.append(self.createButton('Activate', function () {
-			swal.close();
-			let request: any = {};
-			request.userId = self.loggedInUserId;
-			request.type = self.integrationType;
-			request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
-			self.setActiveCRM(request);
-		})).append(self.createButton('Cancel', function () {
-			//self.buttonName = "CANCEL";
-			swal.close();
-		}));
-		swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
+			});
+			dropDown += '</select>';
+			dropDown += '</div><br>';
+			modalPopUp.append(dropDown);
+			modalPopUp.append(self.createButton('Activate', function () {
+				swal.close();
+				let request: any = {};
+				request.userId = self.loggedInUserId;
+				request.type = self.integrationType;
+				request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
+				self.setActiveCRM(request);
+			})).append(self.createButton('Cancel', function () {
+				//self.buttonName = "CANCEL";
+				swal.close();
+			}));
+			swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
+		} else {
+			this.customFieldsResponse = new CustomResponse('ERROR', "Activation failed as there are no deal pipelines.", true);
+		}
 	}
 
 	createButton(text, cb) {
@@ -411,7 +419,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					// this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.integrationDetails = data.data;
 					}
@@ -426,6 +434,8 @@ export class IntegrationSettingsComponent implements OnInit {
 						this.listExternalCustomFields();
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
+						}else{
+							this.ngxloading = false;
 						}
 					}
 				}

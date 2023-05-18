@@ -8,6 +8,7 @@ declare var $:any;
 })
 export class ResponseMessageComponent implements OnInit {
     @Input() customResponse: any;
+    @Input() showCloseIcon:boolean = true;
   constructor() { }
   ngOnInit() {
     if(this.customResponse.responseType=="INFO" && $.trim(this.customResponse.responseMessage.length)==0){

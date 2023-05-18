@@ -1869,6 +1869,7 @@ border: 1px solid #ddd !important;
 	filter: blur(15px);
 }
 
+
 /* 27-04-2023 */
 
 .tag {
@@ -1889,3 +1890,11 @@ border: 1px solid #ddd !important;
 	margin-top: 22px !important;
   }
   
+
+.text-wrap {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 100%;
+  }
+

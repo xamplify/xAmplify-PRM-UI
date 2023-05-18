@@ -21,7 +21,8 @@
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
             						margin-top: 5px;" translate>
                 {{authenticationService?.partnerModule?.customName}} View </li>
-              <li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
+              <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()"
+                 [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" translate>Vendor View</li>
               <p class="filter" style="float: right;
             						margin: 10px;" translate>Opportunities as:   </p>
@@ -167,10 +168,11 @@
                       </a>
 
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.activeCRM != 'MARKETO' && activeCRMDetails?.type != 'PIPEDRIVE'" (click)="syncLeadsWithActiveCRM()">
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'PIPEDRIVE'"
+                        (click)="syncLeadsWithActiveCRM()">                      
+                        <button class="btn btn-white padding mt button" style="margin-left: 3px;" data-toggle="tooltip"
+                          data-placement="bottom" title="Synchronize" translate>
 
-                        <button class="btn btn-white padding mt button salesforce-btn" style="margin-left: 3px;"  data-toggle="tooltip" data-placement="bottom"
-                          title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>

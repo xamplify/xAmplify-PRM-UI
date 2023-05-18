@@ -48,7 +48,11 @@
                     <!---XNFR-222-->
                     <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
                         <div class="alert alert-info">
-                            <strong>You are logged in as {{loggedInAsUserEmailId}}
+                            <strong>
+                                <span title="{{vendorAdminCompanyUserEmailId}}" class="success">You</span> are logged in as
+                                <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
+                                    <span *ngIf="loggedInAsUserEmailId?.length>25">...</span>
+                                </strong> 
                                 <app-login-as-partner  [showLogOutButton]="isLoggedInAsPartner || isLoggedInAsTeamMember" [showLoginAsButton]="false"></app-login-as-partner>
                             </strong>
                         </div>
@@ -107,7 +111,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <app-lefside-navigation-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [topNavbarLoader]="true"></app-lefside-navigation-loader>
+                            <app-modal-popup-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [height]="180"></app-modal-popup-loader>
                             <ng-container *ngIf="!authenticationService?.module?.contentLoader && !myVendorsLoader">
                             <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
@@ -139,14 +143,32 @@
                                             <ng-container *ngIf="dashboardType!='Welcome'">
                                                 {{dashboardType}}
                                             </ng-container>
-                                           
                                         </a>
                                     </li>
                                 </ng-container>
                             </ng-container>
                             <li *ngIf="authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
-                                <a (click)="goToRouter('/home/dashboard/vendors')" translate> <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                                <a (click)="goToRouter('/home/dashboard/vendors')" translate> 
+                                    <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                             </li>
+
+                            
+                            <ng-container *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection">
+                                <!--Add Leads-->
+                                <li>
+                                    <a (click)="navigateAndOpenAddLeadsModalPopUp()"> 
+                                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                        Add Leads
+                                    </a>
+                                </li>
+                                <!--Add Deals-->
+                                <li>
+                                    <a (click)=" navigateAndOpenAddDealsModalPopUp()"> 
+                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                        Add Deals
+                                    </a>
+                                </li>
+                            </ng-container>
                             </ng-container>
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">

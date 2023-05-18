@@ -33,5 +33,6 @@ export class LearningTrack {
     category:any;
     canUpdate:boolean = false;
     canDelete:boolean = false;
+    hasDamContent:boolean = true;
 
 }
