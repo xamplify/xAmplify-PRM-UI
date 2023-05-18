@@ -948,6 +948,7 @@ h5 {
   text-align: center;
   padding: 1em;
   height: 100px;
+  border-right: 1px solid #eee;
 }
 
 .cenetered-block > h5 {
@@ -2245,9 +2246,229 @@ span.text-algn {
   position: relative;
   bottom: 2px;
 }
-
-
+.imgage-paddings img {
+  margin: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.imgage-paddings {
+  padding-bottom: 0px;
+}
+.iconcustome {
+  background: #34495a;
+  padding: 5px 0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+i.fa.fa-arrow-circle-o-up {
+  color: #fff;
+  font-size: 32px !important;
+  padding-top: 10px !important;
+}
+.hover-bar{
+    height: 96px;
+}
+.hover-bar a{
+  width: 100%;
+    border: none;
+    margin: 5px;
+    color: #000000;
+    padding: 5px 0px;
+    line-height: 0.8;
+    text-align: left;
+}
+.emailtemp-icons {
+  padding: 0px !important;
+}
+.emailtemp-icons i {
+  color: #fff !important;
+  display: inline-block !important;
+  text-align: right;
+  font-size: 20px !important;
+  padding: 0px !important;
+  position: relative;
+  bottom: 6px;
+}
   
+
+.emailtemp-icons a {
+  display: contents;
+}
+
+.img-grid-track {
+  height: 300px;
+  max-width: 100%;
+  overflow: hidden;
+  /* background-size: cover;
+  background-position: top; */
+  margin: 0px;
+  border-radius: 6px 6px 0px 0px;
+  width: auto;
+  /* height: 100%; */
+  width: 100%!important;
+  border-top: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: none;
+  border-left: 1px solid #ddd;
+}
+.grid-box{
+  border: none;
+  margin: 14px 0;
+}
+
+.cardDetails-mar{
+  float:left ;
+  margin: 3px;
+}
+
+.grid-box:hover>.bar {
+  visibility: inherit;
+  opacity: 1;
+  position: relative;
+}
+
+span.select-check-box {
+  position: absolute;
+  left: 0px;
+  padding: 5px 5px;
+}
+
+i.fa.fa-arrow-circle-o-up{
+  font-size: 25px !important;
+  padding-top: 6px !important;
+}
+
+
+.template-selected-top-border{
+  border-top: 2px solid #54a7e9;
+  border-right: 2px solid #54a7e9;
+  border-left: 2px solid #54a7e9;
+}
+
+.template-selected-bottom-border{
+  border-bottom: 2px solid #54a7e9;
+  border-right: 2px solid #54a7e9;
+  border-left: 2px solid #54a7e9;
+}
+i.fa.fa-angle-double-up {
+  font-size: 19px !important;
+  color: white;
+  padding: 7px !important;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #fff;
+  border-radius: 100%;
+}
+
+.fontsize-cls span {
+  font-size: 12px;
+  padding: 1px;
+}
+
+.tooltip-cls{
+  font-size: 24px;
+  color: #54a7e9;
+  padding-top: 0px !important;
+  font-size: 20px !important;
+}
+
+.tooltip-mng span{
+  position: relative;
+  display: inline-flex;
+  right: -15px;
+  flex-direction: row-reverse;
+  justify-content: space-between
+ }
+ .bar {
+  background: #f1f3fa;
+  position: relative;
+  bottom: 0px;
+  visibility: initial;
+  opacity: 1;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+input.radio-custimization {
+  margin: 4px 5px;
+  line-height: normal;
+  padding: 7px;
+  -webkit-appearance: none;
+  outline: 0.1em solid #54a7e9;
+  outline-offset: 0.1em;
+  border-radius: 1px;
+}
+input.radio-custimization:checked {
+  display: inline-block;
+  background-color: #54a7e9;
+}
+.tooltip-mng {
+  position: relative;
+  top: -7px;
+  left: 13px;
+}
+.card-labels-cmp{
+  background-color: #54a7e9;
+  color : #fff
+}
+
+
+@media screen and (max-width: 768px) {
+  .iconcustome{
+    display: none;
+  }
+  span.select-check-box {
+    position: absolute;
+    left: 20px;
+    padding: 5px 5px;
+  }
+  .items-pad{
+    position: relative;
+    left: 100px;
+  }
+  .hover-bar {
+    height: 96px;
+    width: 100%;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px !important;
+}
+.tooltip-mng {
+  position: relative;
+  top: -7px;
+  left: 96px;
+}
+
+
+ }
+
+
+
+
+/* mobile */
+@media screen and (max-width: 480px) { 
+  .emailtemp-icons {
+    position: relative;
+    top: 12px;
+}
+.hover-bar {
+  width: 100%;
+}
+
+
+ }
+/* tablet */
+
+
+
+ /* @media screen and (max-width: 1200px){
+ .bar {
+     width: 92%;
+ }
+} */
+
 /* .colorbox-1 {
   background: linear-gradient(90deg, rgba(44,74,90,1) 0%, rgba(44,74,90,0.95) 47%, rgba(44,74,90,0.9) 100%);
 }
