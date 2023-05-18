@@ -45,6 +45,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     @Input() filter: any;
     showEmbedLink = true;
     @Input() buttonText: string = "Show Forms";
+    @Input() learningTrackId: number = 0;
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,

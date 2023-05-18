@@ -71,7 +71,7 @@
                                  </div>
                               </div>
                               <div class="row row-space">
-                                 <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
+                                 <div class="col-md-6 col-lg-6 pr0 right-border">
                                     <div class="row">
                                        <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
                                           <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
@@ -98,14 +98,14 @@
                                  <div class="col-md-12 col-lg-12">
                                     <div class="row">
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;">
+                                          <div class="row text-left border-right" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Request Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
                                              <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
+                                          <div class="row text-left border-right" style="padding-left: 30px;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
@@ -191,7 +191,7 @@
                         <!-----Request Owner------->
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
                                  <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
@@ -223,7 +223,7 @@
                         <!-----Vendor Company Details------->
                         <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
                                  <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
                               </div>
@@ -255,7 +255,7 @@
                         <!-----Partner Company Details------->
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Manager</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
                                  <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
                               </div>

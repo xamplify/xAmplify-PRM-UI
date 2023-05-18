@@ -28,7 +28,7 @@
         </a>
         <!-- END PAGE ACTIONS -->
         <!-- BEGIN PAGE TOP -->
-        <div class="page-top" [ngStyle] = "{'background-color': cskin.backgroundColor}">
+        <div class="page-top" [ngClass]="cskin.defaultSkin?'':'customskin-top'">
             <!-- BEGIN HEADER SEARCH BOX -->
             <!-- SEARCH IS HIDDEN -->
             <form class="search-form search-form-expanded hidden" action="extra_search.html" method="GET">
@@ -67,22 +67,22 @@
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
                         <div class="btn-group refer-vendor-button btnVendor">
-                            <button [ngStyle] = "{'background-color': cskin?.buttonColor,  'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
-                            <button [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
-                            <i class="fa fa-line-chart"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
+                            <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                         </div>
                     </li>
                    
                     <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole && !isLoggedInAsPartner">
-                        <button class="btn btn custom"  [ngStyle] = "{'background-color': cskin?.buttonColor,  'color': cskin?.buttonValueColor, 'border-color': cskin?.buttonBorderColor}" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
+                        <button class="btn btn custom"  [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs"  translate>Update Status</span>
-							<i class="fa fa-share" [ngStyle] = "{'background-color': cskin?.buttonColor, 'color': cskin?.iconColor}"  button data-toggle="tooltip" aria-hidden="true"></i>
+							<i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  button data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
                     </li>
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <i class="icon-bell" style="color: #0095da;" aria-hidden="true"></i>
+                            <i class="icon-bell" [ngClass]="authenticationService?.isTop?'customskin-icon':'bell-icon'" aria-hidden="true"></i>
                             <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
                         </a>
                         <ul class="dropdown-menu">

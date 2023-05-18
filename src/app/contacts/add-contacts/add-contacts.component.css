@@ -62,3 +62,6 @@
 .border{
   padding-left: 50px; margin-left: 55px;
 }
+.border-botom{
+  border-bottom: 1px solid #dcdcdc;
+}

@@ -88,7 +88,8 @@ body {
     z-index: -100;
     transform: translateX(-50%) translateY(-50%);
     background-size: cover;
-    transition: opacity 1s
+    transition: opacity 1s;
+    border-radius: 5px;
 }
 
 .form-background-image-from-track {
@@ -100,6 +101,7 @@ body {
     padding: 7px 14px;
     font-size: 14px;
     border-width: 0;
+    border-radius: 5px;
 }
 
 .panel-heading {
@@ -117,12 +119,19 @@ body {
 
 .label-box {
     border: #ddd solid 1px;
-    border-radius: 3px !important;
-    padding: 20px;
+    border-radius: 5px !important;
+    padding: 20px 20px 7px 20px ;
+    background: #fff;
+}
+.emailorName{
+    border: #ddd solid 1px;
+    border-radius: 5px !important;
+    padding: 10px 20px 20px 20px !important;
+    background: #fff;
 }
 
 .label-box:hover {
-    background-color: #e6e5e5;
+    background-color: #d9edf7;
 }
 
 .mb15 {
@@ -141,18 +150,70 @@ body {
 }
 
 .disabled-background-color {
-    background-color: #f7f6f6;
+    background-color: #ffffff;
 }
 
 .label-value-correct {
-    color: green;
+    color:  #89e7b5;
+    margin: 5px 5px 0 0;
     font-weight: 600;
 }
 
 .label-value-incorrect {
     color: red;
     font-weight: 600;
+    margin: 5px 5px 0 0;
 }
+.answer_correct {
+    color: #1e8e3e !important;
+  }
+.answer_incorrect{
+    color: #d93025 !important;
+}  
+.question_skipped{
+    color: #290505 !important;
+}  
+
+span.quiz_optionname {
+    float: right;
+    clear: none;
+    display: block;
+    padding: 0px 0px 0px 8px;
+}
+
+.form-check {
+	margin: 0px;
+}
+
+label.form-check-label.disable-click {
+    margin-bottom: 0px !important;
+    margin-left: 5px;
+    margin-top : 2px;
+}
+.border-fivepx{
+    background-color: #f1f5f9 ;
+    border-radius: 5px !important;
+}
+label.questionclass {
+    display: inline;
+    font-size:16px;
+}
+
+.score {
+    float: right;
+    margin: 0px 40px 0px -110px;
+    border: 1px solid black;
+    padding: 2px 5px 2px 5px;
+    background: #e6e5e5;
+}
+
+input[type=checkbox], input[type=radio] {    margin: 3px 0 0;
+}
+.optionTB {
+    margin: 10px 0;
+}
+
+
 
 .form-description {
     font-size: 14px;
@@ -162,3 +223,4 @@ body {
     font-weight: 500;
     line-height: 1.1;
   }
+

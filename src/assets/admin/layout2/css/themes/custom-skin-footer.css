@@ -1,0 +1,8 @@
+.customskin-copyright-css {
+    background-color: var(--footer-bg-color) !important;
+    color: var(--footer-text-color) !important;
+    border: 2px solid var(--footer-border-color) !important;
+}
+.customskin-text {
+    color: var(--footer-text-color) !important;
+}

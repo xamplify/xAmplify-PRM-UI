@@ -260,7 +260,8 @@
             <div class="profile-content">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="portlet light">
+                        <div class="portlet light"
+                        [ngClass]="activeTabName == 'lightTheme'?'padding-bottomonly':''">
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
@@ -269,12 +270,137 @@
                                     <!-- <span class="caption-subject font-blue-madison bold"  *ngIf="activeTabName== 'customskin' ">
                                         
                                     </span> -->
+                                    <div class="btn-toolbar" style="float: right;"
+                                    *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
+                             || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
+                                    <div class="btn-group" style="padding-top: 7px;">
+                                        <button class="btn btn-primary padding align"
+                                            style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme'"
+                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
+                                            Theme</button>
+                                        <button class="btn btn-primary padding align"
+                                            style="border-radius: 3px;" *ngIf="activeTabName == 'DarkTheme'"
+                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
+                                            Theme</button>
+                                        <button class="btn btn-primary padding align"
+                                            style="border-radius: 3px;"
+                                            *ngIf="activeTabName == 'neumorphismLight'"
+                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
+                                            Theme</button>
+                                        <button class="btn btn-primary padding align"
+                                            style="border-radius: 3px;"
+                                            *ngIf="activeTabName == 'neumorphismDark'"
+                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
+                                            Theme</button>
+                                    </div>
+
+                                    <a class="close-circle xamp-margin-left-icon"
+                                        (click)="activateTab('customskin')" aria-hidden="true">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+
+                                </div>
                                 </div>
                             </div>
                             <div class="portlet body" *ngIf="activeTabName == 'customskin' ">
+                                <app-response-message class="pg8" [customResponse]="themeResponse"
+                                        *ngIf="themeResponse.isVisible">
+                                    </app-response-message>
                                 Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
                                 Based on selecting color in below tab.
+                                <br><br>
+                                <div class="div thembgc">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6"
+                                            *ngFor="let dto of defaultThemes  | slice:0:2">
+                                            <div class="img_padding">
+
+                                                <img alt="" class="img-custome"
+                                                    src="assets/images/theme/1/Webp/01.webp">
+
+                                            </div>
+                                            <div class="card selected">
+                                                <div class="card-body">
+                                                    <span class="label label-info  selectcolor"
+                                                        *ngIf="dto?.id === activeThemeDetails?.themeId">Active</span>
+                                                    <br>
+                                                    <h5 class="card-title themefont">{{dto.name}} Theme</h5>
+
+                                                    <button type="button" class="btn  btn-size btn-selectcolor"
+                                                        (click)="activateTab('lightTheme');showDto(dto)"> <i
+                                                            class="fa fa-eye" aria-hidden="true"></i>
+                                                        View</button>
+                                                    <button type="button" *ngIf="dto.defaultTheme"
+                                                        class="btn  btn-size"
+                                                        [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
+                                                        (click)="activateTab('customTheme');showDto(dto);"> <i
+                                                            class="fa fa-files-o" aria-hidden="true"></i>
+                                                        Copy</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                               </div>
+                              <div class="row div table-color" *ngIf="activeTabName == 'customskin' ">
+
+                                <table class="table tgrid table-hover" id="manage-assets-table">
+                                    <thead class="table-bgcolor">
+                                        <tr>
+                                            <th class="text-center">Custom Themes</th>
+                                            <th class="text-center">Theme Name</th>
+                                            <th class="text-center">Created On</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let dto of themeDtoList">
+                                        <tr id="themeListDiv_{{dto.id}}">
+                                            <td> <img src="assets/images/theme/1/Webp/theam_custom.webp" alt=""
+                                                    class="img-customization"> </td>
+                                            <td class="text-center">{{dto.name}}
+                                                <h6 _ngcontent-c26="" class="view-banner"
+                                                    *ngIf="dto?.id == activeThemeDetails?.themeId"
+                                                    style="background-color: #5cb85c;font-size: 13px;">Active</h6>
+                                            </td>
+                                            <td class="text-center">
+                                                <app-timestamp [dateAndTime]="dto.createdDate">
+                                                </app-timestamp>
+                                            </td>
+                                            <td class="mAlignView">
+                                                <div class="actions-block override-actions ActionAlign">
+                                                    <div class="mActionAlign ActionButtonPad">
+                                                        <a class="mMobileDisable" title="Edit"
+                                                            (click)="activateTab('customTheme');showDto(dto);"><i
+                                                                aria-hidden="true"
+                                                                class="fa fa-edit mDisableColor"></i></a>
+                                                        <a title="Activate"
+                                                            (click)="activateThemeForCompanyWithAlert(dto.id)"
+                                                            *ngIf="dto?.id != activeThemeDetails?.themeId"><i
+                                                                _ngcontent-c69="" aria-hidden="true"
+                                                                class="fa fa-power-off"></i></a>
+                                                        <a class="mMobileDisable" title="copy"
+                                                            (click)="activateTab('customTheme');showDto(dto);saveTheme();"><i
+                                                                aria-hidden="true"
+                                                                class="fa fa-files-o mDisableColor"></i></a>
+                                                        <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
+                                                            *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
+                                                                _ngcontent-c69="" aria-hidden="true"
+                                                                class="fa fa-trash-o"></i></a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div *ngIf="themeDtoList?.length<1" style="max-width: 100%;text-align: center;">
+                                    <div class="alert alert-info">
+                                        <strong>No Data Found</strong>
+                                    </div>
+                                </div>
+
+
+                            </div>
                             <div class="portlet-body clearfix">
                                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                                 </app-response-message>
@@ -1223,7 +1349,56 @@
                                     
                                     </div>
                                     <!-- END Categories TAB -->
-                                    <app-custom-skin class="tab-pane" [ngClass]="{'active': activeTabName == 'customskin'}"></app-custom-skin>
+                                    <div id="app-dark" class="tab-pane img-shadpw"
+                                    [ngClass]="{'active': activeTabName == 'lightTheme'}"
+                                    style="border-radius: 10px;">
+                                    <div class="row desktop-mobile-width">
+                                        <div class="col-xs-12 col-sm-12 col-lg-12">
+                                            <div class="col-md-9 col-sm-9 col-xs-12 desktopview">
+                                                <div class="desktopview-align">
+                                                    <img  *ngIf="themeDto.id==1"  src="assets/images/theme/1/Webp/desktop.png"
+                                                        class="desktopimg-custome">
+                                                        <img  *ngIf="themeDto.id==2"  src="assets/images/theme/1/Webp/Rectangle42.webp"
+                                                        class="desktopimg-custome">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
+                                                <div class="mobileview-align">
+                                                    <img *ngIf="themeDto.id==1"src="assets/images/theme/1/Webp/mobile.png"
+                                                        class="mobileimg-custome">
+                                                        <img *ngIf="themeDto.id==2"src="assets/images/theme/1/Webp/unnamed.webp"
+                                                        class="mobileimg-custome">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row  bar-background">
+                                        <div class="col-xs-12 col-sm-12 col-lg-12">
+                                            <div class="theambg-custome">
+                                                <span class="theme-heading">{{themeName}} Theme</span>
+                                                &nbsp;&nbsp;
+                                                <span class="button-style"
+                                                    *ngIf="themeDto?.id == activeThemeDetails?.themeId"> Active
+                                                </span>
+                                                <p class="pt-4" themeName
+                                                    *ngIf="themeDto?.id == activeThemeDetails?.themeId">
+                                                    Activated On:<app-display-date-and-time
+                                                        [dateAndTimeUTCString]="activeThemeDetails?.updatedDate"></app-display-date-and-time>
+                                                </p>
+                                                <!-- <div class="col-md-4 col-sm-4 col-xs-12"> 
+                                                <span class="button-style float-right"> Customize </span>
+                                            </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
+                                [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
+                                [ngClass]="{'active': activeTabName == 'customTheme'}"
+                                *ngIf="activeTabName == 'customTheme'"
+                                (closeEvent)="closeThemeAlert($event)"></app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>

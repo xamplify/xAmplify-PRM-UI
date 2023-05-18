@@ -52,6 +52,10 @@ import { FileUtil } from '../../../core/models//file-util';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { ImageCroppedEvent } from 'app/common/image-cropper/interfaces/image-cropped-event.interface';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -275,6 +279,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSupportSettingOption = false;
 	isLoggedInAsPartner = false;
 	/****XNFR-224****/
+	/**** XNFR-238*** */
+	customSkinDto :CustomSkin = new CustomSkin();
+	selectedThemeIndex:number= 0;
+   themeResponse:CustomResponse = new CustomResponse();
+	themeDto: ThemeDto= new ThemeDto();
+	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+	themeNames : string = '';
+	dummyData = this.properties.serverErrorMessage;
+	statusCode: any;
+	saveAlert:boolean = false;
+	activeThemeDetails:CompanyThemeActivate = new CompanyThemeActivate();
+	themeDtoList:ThemeDto[];
+	defaultThemes:ThemeDto[];
+	isNoThemes:boolean = false;
+	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -291,7 +310,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.onDropModel(value);
 		});
 	}
-
 	private onDropModel(args) {
 	}
 
@@ -530,7 +548,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
+			
 			this.geoLocation();
+			this.showThemes();
+			this.getDefaultThemes()
+			this.getActiveThemeData();
 			this.videoUtilService.normalVideoJsFiles();
 			if (!this.referenceService.isMobileScreenSize()) {
 				this.isGridView(this.authenticationService.getUserId());
@@ -1771,11 +1793,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.integrationTabIndex = 0;
 		}			
 	}
-
+	themeName = "Light Theme";
+   showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
+		} else if(this.activeTabName == "customTheme"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeResponse.isVisible = false;
+			//this.themeName = "Custom Theme";
+		} else if(this.activeTabName == "lightTheme"){
+			this.activeTabHeader = "Custom Skin Settings";
+			this.themeResponse.isVisible = false;
+			// this.themeName = "Light Theme";
 		} else if (this.activeTabName == "password") {
 			this.activeTabHeader = this.properties.changePassword;
 		} else if (this.activeTabName == "settings") {
@@ -1813,6 +1844,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.tags;
 		} else if(this.activeTabName == "customskin"){
 			this.activeTabHeader = this.properties.customskin;
+			this.themeName = "";
 		}else if (this.activeTabName == "exclude") {
             this.activeTabHeader = this.properties.exclude;
             this.excludeUserPagination= new Pagination();
@@ -3850,9 +3882,222 @@ configSalesforce() {
 		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
 		pipelineStage.defaultStage = true;
 	}
+	/************* XNFR-238 *********************/
+	customAppShow = false;
+	
+	tabNames = ""
+	customskinSettingsEnable(tabNames:string){
+		this.ngxloading = true;
+		this.customSkinDto.createdBy = this.loggedInUserId;
+		if(tabNames == "lightTheme"){
+			this.ngxloading = false;
+			this.selectedThemeIndex = 1;
+			this.customAppShow = false;
+			this.customSkinDto.darkTheme = false;
+		    this.customSkinDto.defaultSkin = true;
+			this.authenticationService.isDarkForCharts = true;
+			//this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex)
+
+		}else if (tabNames == "customTheme"){
+			this.ngxloading = false;
+			this.customAppShow = true;
+			this.selectedThemeIndex = 0;
+			this.customSkinDto.darkTheme = false;
+			this.changeCustomSettings(this.customSkinDto,this.selectedThemeIndex);
+
+		}else if(tabNames == "DarkTheme") {
+			this.customAppShow = false;
+			this.selectedThemeIndex = 2;
+			this.ngxloading = false;
+			this.customSkinDto.darkTheme = true;
+			this.customSkinDto.defaultSkin = true;
+			//this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex);
+	
+		}	
+	}
+	changeCustomSettings(form:CustomSkin,selectedThemeIndex:number){
+		this.ngxloading = true;
+		form.defaultSkin = this.customSkinDto.defaultSkin;
+		this.dashBoardService.changeCustomSettingTheme(form).subscribe(
+			(data:any) =>{
+				this.ngxloading = false;
+				 if( form.darkTheme && selectedThemeIndex == 1)
+				 {
+				   window.location.reload();
+				//   require("style-loader!../../../../assets/admin/layout2/css/themes/tharak-dark-light.css");	
+				 }else {
+					this.customAppShow = true;
+				// 	require("style-loader!../../../../assets/admin/layout2/css/layout.css");				
+				 }
+			},error=>{
+				this.ngxloading = false;
+			}
+			)	
+	}
+
+	message:string="";
+	
+	goBack(){
+		this.router.navigate(['/home/dashboard/myprofile']);
+	}
+
+	  showRefreshSweetAlertSuccessMessage(message: string) {
+		swal({
+		  title: message,
+		  type: "success",
+		  allowOutsideClick: false,
+		}).then(
+		  function (allowOutsideClick) {
+			if (allowOutsideClick) {
+			  console.log('CONFIRMED');
+		    window.location.reload();
+			}
+		  });
+	  }
+	showThemes() {
+		this.ngxloading = true;
+		this.dashBoardService.multipleThemesShow().subscribe(
+			(response) => {
+				this.ngxloading = false
+				 this.themeDtoList = response.data;
+				 if(this.themeDtoList.length === 0 || this.themeDtoList.length<1){
+                    this.isNoThemes = true;
+				 }
+			},
+			error => {
+				this.ngxloading = false;
+			}
+		);
+	}
+	getDefaultThemes(){
+		this.ngxloading = true;
+		this.dashBoardService.getDefaultThemes().subscribe(
+			(response) => {
+				this.ngxloading = false
+				 this.defaultThemes = response.data;
+			},
+			error => {
+				this.ngxloading = false;
+			}
+		);
+	}
+	showActivateButton:boolean;
+	showDto(dto:ThemeDto){
+        this.themeDto = dto;
+		this.themeName = dto.name;
+		for (var char of this.themeDtoList) {
+			if(char.name === this.themeDto.name){
+              this.showActivateButton = true;
+			}
+		  }
+	}
+	activateTheme:CompanyThemeActivate = new CompanyThemeActivate();
+	activateThemeForCompany(companyThemeId:number){
+	 this.activateTheme.createdBy = this.authenticationService.getUserId();
+     this.activateTheme.themeId =companyThemeId; 
+
+	 console.log(companyThemeId ,'sudha');
+	 console.log( this.activateTheme.createdBy,'companyId');
+	 this.activateThemeApi(this.activateTheme);
+	}
+	activateThemeApi(theme:CompanyThemeActivate) {
+		this.ngxloading = true;
+		this.dashBoardService.activateThemeForCompany (theme).subscribe(
+			(data: any) => {
+				this.ngxloading = false;
+				location.reload();
+				this.router.navigateByUrl(this.referenceService.homeRouter);
+				//this.router.navigate(['/home/dashboard/myprofile']);
+			},
+			error => {
+				this.referenceService.scrollSmoothToTop();
+				this.ngxloading = false;
+			});
+	}
+	activateThemeForCompanyWithAlert(companyThemeId:number){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: 'Clicking"Activate" will change the theme and reload the entire application.',
+			type: 'success',
+			icon: "success",
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Activate'
+
+		}).then(function () {
+			self.activateThemeForCompany(companyThemeId);
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
+	deleteByThemeId(id:number){
+		this.refService.goToTop();
+		this.ngxloading = true;
+		this.dashBoardService.deleteThemeProperties(id).subscribe(
+			(response:any) =>{
+				this.ngxloading = false;
+				this.statusCode = 200;
+				$('#themeListDiv_' + id).remove();
+				// this.referenceService.showSweetAlertSuccessMessage("Deleted Sucessfully");
+				//this.router.navigate(['/home/dashboard/myprofile']);
+				this.themeResponse.isVisible = false;
+				let message = "Theme Deleted Sucessfully"
+				 this.themeResponse = new CustomResponse('SUCCESS',message,true);
+			},
+			error =>{
+				this.ngxloading = false;
+				this.statusCode = 500;
+				this.message = "Oops!Something went wrong";
+			  }
+		)
+	}
+	deleteByThemeIdWithAlert(id:number){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+
+		}).then(function () {
+			self.deleteByThemeId(id);
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
+	closeTheme(){
+		this.router.navigate(['/home/dashboard/myprofile']);
+	}
+	
+	getActiveThemeData(){
+		this.ngxloading = true;
+		this.dashBoardService.getActiveTheme().subscribe(
+			(data:any) =>{
+				this.ngxloading = false;
+				this.activeThemeDetails = data.data;
+		},
+		(error:any) =>{
+			this.ngxloading = false;
+			this.statusCode = 500;
+		  }
+		)
+	}
+	isSaveTheme:boolean = false;
+	saveTheme(){
+		this.isSaveTheme = true;
+	}
+	closeThemeAlert(event:any){
+		this.activateTab('customskin')
+        this.showThemes();
+		this.themeResponse.isVisible = false;
+		this.themeResponse = new CustomResponse('SUCCESS',event,true);
+	}
 
 	
-
-	
-
+ /************* XNFR-238 *********************/	
 }

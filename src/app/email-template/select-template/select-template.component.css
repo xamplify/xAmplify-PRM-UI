@@ -89,8 +89,21 @@
      margin: 0 auto;
      height: 390px!important;
      width: 100%!important;
-     border-radius: 5px;
+     border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
+.grid-box {
+    background: #f1f5f9;
+    padding-bottom: 0px;
+}
+.bar {
+    height: 40px;
+}
+.bar a {
+    margin: 5px 5px;
+}
+
+
 @media screen and (max-width:600px){.modal-template { width:100% !important; right:0} }
 @media screen and (min-width:601px){.modal-template { width:75% !important; right: 0} }
 

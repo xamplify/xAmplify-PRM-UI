@@ -123,6 +123,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
           if (tracksPlayBook != undefined) {
             this.tracksPlayBook = tracksPlayBook;
             this.tracksPlayBook.featuredImage = this.tracksPlayBook.featuredImage + "?" + Date.now();
+            this.setTrackContentFinishedValue();
           }
           //this.referenceService.stopLoader(this.httpRequestLoader);
           this.trackViewLoader = false;
@@ -347,6 +348,21 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if ("Grid" == viewType) {
       this.modulesDisplayType.isListView = false;
       this.modulesDisplayType.isGridView = true;
+    }
+  }
+
+  setTrackContentFinishedValue() {
+    let self = this;
+    if (this.tracksPlayBook.followAssetSequence) {
+      $.each(this.tracksPlayBook.contents, function (index: number, content: any) {
+        console.log(index);
+        let contentSubList = self.tracksPlayBook.contents.slice(0, index);
+        if (contentSubList !== undefined && contentSubList.length > 0) {
+          content.previousContentFinished = !(contentSubList.filter(x => !x.finished).findIndex(x => x) > -1);
+        } else {
+          content.previousContentFinished = true;
+        }
+      });
     }
   }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {AuthenticationService} from 'app/core/services/authentication.service';
 declare var Highcharts:any;
 
 @Component({
@@ -9,7 +10,7 @@ declare var Highcharts:any;
 export class BarChartComponent implements OnInit {
   @Input() viewsBarData: any;
   @Output() notifyParent: EventEmitter<any>;
-  constructor() { 
+  constructor(public authenticationService:AuthenticationService) { 
     this.notifyParent = new EventEmitter<any>();
   }
 
@@ -17,7 +18,8 @@ export class BarChartComponent implements OnInit {
     const self = this;
     Highcharts.chart('monthly-views-bar-chart', {
       chart: {
-        type: 'column'
+        type: 'column',
+        backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
       },
       title: {
         text: ' '
@@ -25,7 +27,12 @@ export class BarChartComponent implements OnInit {
       credits: false,
       exporting: { enabled: false },
       xAxis: {
-        categories: dates
+        categories: dates,
+        labels:{
+          style:{
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+          }
+        }
       },
 
       yAxis: {

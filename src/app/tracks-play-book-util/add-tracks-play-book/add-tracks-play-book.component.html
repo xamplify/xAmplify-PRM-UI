@@ -11,43 +11,41 @@
   <div class="portlet light steps-view">
     <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-list" aria-hidden="true"></i>
-        </span>
+          <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Details1.svg">
         <h5 class="hidden-xs" translate>Details</h5>
       </div>
     </div>
     <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-large" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Description2.svg">
         <h5 class="hidden-xs" translate>Description</h5>
       </div>
     </div>
     <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-th-large" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Assets3.svg">
         <h5 class="hidden-xs" translate>Assets</h5>
       </div>
     </div>
     <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
       <div class="cenetered-block">
-        <span>
-          <i class="fa fa-users" aria-hidden="true"></i>
-        </span>
+        <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/share4.svg">
         <h5 class="hidden-xs" translate>Share</h5>
       </div>
     </div>
   </div>
-  <div class="portlet light container"  style="width: 100%;padding-bottom: 10px;">
+
+  <div class="tracks-bg-color container"
+    style="width: 100%;padding-bottom: 10px;padding-left: 2px;border-radius: 5px;
+    padding-right: 2px;">
+
+
+
     <!-- step 1 -->
     <div *ngIf="activeTabName == 'step-1'" class="setup-content step activeStepInfo">
       <div style="margin-top: 10px;">
-        <div class="portlet box mPortlet">
-          <div class="portlet-body form mPortlet-body">
+        <div class="portlet box mPortlet" style="border-radius:5px;">
+          <div class=" form mPortlet-body">
             <div class="row">
               <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 form-body">
                 <div class="row form-group">
@@ -84,7 +82,7 @@
                       <div class="inline link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" (click)="editSlug()"
+                        <button type="button" class="right-border" (click)="editSlug()"
                           style="border-top-left-radius: 3px;border-bottom-left-radius: 3px"><i
                             class="fa fa-edit"></i></button>
                         <button type="button" (click)="copyInputMessage(link)"
@@ -106,7 +104,7 @@
                         (click)="showDropDown();filterFolders(folderSearchValue)" readonly
                         style="cursor: auto; display: inline-block;">
                       <i class="fa fa-angle-down dropdown-icon" aria-hidden="true"></i>
-                      <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller">
+                      <div *ngIf="showFolderDropDown" id="folderDropDown" class="dropdown-content dropdown-scroller video">
                         <input type="text" placeholder="Search.." id="myInput"
                           (input)="filterFolders(folderSearchValue)" #folderSearchValue>
                         <div class="dropdown-option" [ngClass]="{'dropdown-content-odd': 0 === i % 2}"
@@ -154,9 +152,9 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div title="{{tag?.tagName}}" class="btn btn-primary text-wrap-tag"
-                                    style="padding: 4px 10px;border-radius: 2px !important;">
-                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                                  <div class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
+                                      {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+
                                 </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -169,10 +167,11 @@
                                   </label>
                                 </div>
                                 <div class="col-sm-5" style="padding-left: 5px !important;">
-                                  <div title="{{tagsListSecondColumn[i]?.tagName}}" *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary text-wrap-tag" style="padding: 4px 10px;border-radius: 2px !important;">
-                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
-                                  </div>
+
+                                  <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                    class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
+                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
+
                                 </div>
                               </td>
                             </tr>
@@ -187,7 +186,7 @@
                 </div>
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row" style="padding-top: 10px;">
-                <div class="portlet light mImageWid">
+                <div class="portlet light mImageWid feature-img">
                   <div class="portlet-title tabbable-line ">
                     <div class="caption caption-md ">
                       <i class="icon-globe theme-font hide " aria-hidden="true "></i>
@@ -197,17 +196,17 @@
                       <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
                     </div>
                   </div>
-                  <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+                  <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
-                    <div *ngIf="!croppedImage" style="margin: 10px 0px 10px 0px;">
+                    <div *ngIf="!croppedImage">
                       <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">
-                      <img class="img-grid" [src]="croppedImage" alt="">
+                      <img class="img-grids" [src]="croppedImage" alt="">
                     </div>
                     <ng-template #showImage>
-                      <img class="img-grid" [src]="featuredImagePath" alt="">
+                      <img class="img-grids" [src]="featuredImagePath" alt="">
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
@@ -217,7 +216,7 @@
               </div>
               <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 row">
                 <div class="message-content mTextWid">
-                  <ul>
+                  <ul class="t-b-spacings">
                     <li translate>Maximum file size is 10 MB.</li>
                     <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
                   </ul>
@@ -236,14 +235,18 @@
     <!-- step 2 -->
     <div *ngIf="activeTabName == 'step-2'" class="setup-content step activeStepInfo">
       <ngx-loading [show]="!isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="portlet light" style="border: none;">
-        <div class="portlet-title">
+      <div class="portlet bg-card-header" style="padding-bottom: 25px;border-radius: 5px;background-color:#fff;">
+        <div class="portlet-title" style="padding-bottom: 5px;
+        margin-right: 12px;
+        margin-left: 12px;">
           <div class="col-xs-4 p0">
-            <h4 claass="text-primary pull-left">Description 
-              <font style="color: red">*</font><br>
-            </h4>
+
+            <h4 claass="text-primary pull-left" style="padding-left: 0px;
+            padding-top: 2px;">Description  <font style="color: red">*</font><br></h4>
+
           </div>
-        <div class="input-icon right pull-right cebp">
+        <div class="input-icon right pull-right cebp" style="margin-right: -2px;
+        padding-top: 5px;">
           <ul class="button-align inline">
             <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add Media</button></li>
             <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add Forms</button></li>
@@ -254,7 +257,8 @@
           style="margin-bottom: 5px;">
           <span class="required">{{descriptionErrorMessage}}</span>
         </div>
-        <div class="portlet-body pt15">
+        <div class="portlet-body" style="padding-left: 12px;
+        padding-right: 12px;">
           <div *ngIf="isAdd || tracksPlayBook.description != undefined">
             <ckeditor [(ngModel)]="tracksPlayBook.description" #ckeditor [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
               (ready)="onReady($event)" debounce="500" maxlength="5000"
@@ -274,18 +278,22 @@
     <!-- step 3 -->
     <div [ngClass]="{'blur-content' : showFilePreview}">
       <div *ngIf="activeTabName == 'step-3'" class="setup-content step activeStepInfo">
-        <div class="portlet light" style="border:none">
+        <div class="portlet bg-card-header" style="background-color:#fff;
+        padding-bottom: 25px;
+        border-radius: 5px;">
           <div class="col-lg-12">
             <div class="page-toolbar">
-              <div class="inline mToolBarPad" style="margin-left: -15px;">
+
+              <div class="inline mToolBarPad" style="margin-left: -15px;padding-top: 12px;">
                 <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary" (click)="openQuizPopup()">Select
                   Quiz</button>
                 <button class="btn btn-primary" (click)="openOrderAssetsPopup()"><span
                     *ngIf="type == undefined || type == 'TRACK'">Order Assets And Quiz</span><span *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
+
               </div>
               <div class="btn-group pull-right">
-                <div class="inputs float-right" style="display: inline-flex;margin-right: -15px;">
+                <div class="inputs float-right" style="display: inline-flex;padding-top: 12px;">
                   <div id="left" style="padding-left: 5px;">
                     <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)">
@@ -317,7 +325,8 @@
               </div>
             </div>
           </div>
-          <div class="portlet-body pt5">
+          <div class="portlet-body pt5" style="padding-left: 12px;
+          padding-right: 12px;">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
             <div class="row" *ngIf="!assetError">
               <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
@@ -327,12 +336,14 @@
                       <span class="select-box-asset"> <label>
                           <input type="checkbox" (click)="$event.stopPropagation();">
                         </label>
-                      </span> <span class="ng-scope"> <a style="cursor: default;"
+                      </span> <span class="ng-scope"> <a style="cursor: default;border-radius:5px;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
+                          <div class="image">
                           <img
                             ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
-                            id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)" class="thumb ng-scope"
+                            id="content_image_grid_{{i}}" (error)="changeImage(i, file.filePath)" class="thumb ng-scope img-format"
                             src="{{file.thumbnailPath}}" alt="">
+                          </div>
                         </a> <a href="javascript:;"> </a>
                       </span>
                     </div>
@@ -378,7 +389,7 @@
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
                               (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
                               <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
-                                style="font-size: 20px;"></i>
+                                style="font-size: 18px;"></i>
                             </a>
                           </span>
                         </div>
@@ -410,7 +421,7 @@
     </div>
 
     <!-- step 4 -->
-    <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin-top: 10px;">
+    <div *ngIf="activeTabName == 'step-4'" class="setup-content step hiddenStepInfo" style="margin: 10px;">
       <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
@@ -912,7 +923,7 @@
                               <span [style.color]="form.labelColor">{{radioButton.name}}</span>
                           </label>
                         </div>
-                        <br>
+        
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------Check Box----------------------------- -->
@@ -925,7 +936,7 @@
                               <span [style.color]="form.labelColor">{{checkBox.name}}</span>
                           </label>
                         </div>
-                        <br>
+                        <!-- <br> -->
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
@@ -939,13 +950,14 @@
                     <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                       <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                         <div class="form-check">
-                          <label class="form-check-label">
+
+                          <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor">{{choice.name}}</span>
+                              <span [style.color]="form.labelColor" class="quiz_optionname">{{choice.name}} </span>
+
                           </label>
                         </div>
-                        <br>
                       </ng-container>
                     </ng-container>
                   </div>
@@ -955,13 +967,15 @@
                 </div>
                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                 <ng-template #show>
-                  <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                  <button type="submit" disabled="disabled" class="button-padding btn-border-radius" id="bottom-right"
                     [style.backgroundColor]="form.buttonColor"
-                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                    [style.color]="form.buttonValueColor"
+                    >{{form.buttonValue}}</button>
                 </ng-template>
                 <ng-template #dontShow>
-                  <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right"
-                    [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                  <button type="submit" disabled="disabled" class="btn green-haze btn-border-radius" id="bottom-right"
+                    [style.color]="form.buttonValueColor"
+                    >{{form.buttonValue}}</button>
                 </ng-template>
               </div>
             </div>
@@ -1133,7 +1147,8 @@
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
   <div class="overlay page-content mFileLeft">
-    <button type="button" class="close-circle" data-dismiss="modal" (click)="closeAssetPreview()">
+    <button type="button" class="close-circle" style="position: relative;top: 30px;  right: 26px;
+" data-dismiss="modal" (click)="closeAssetPreview()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </button>
     <div class="overlay-content">
@@ -1160,7 +1175,7 @@
 </ng-container>
 
 <!-- --------------Media link title popup--------------- -->
-<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">
+<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;  background-color: red;">
   <div class="modal-dialog modal-lg" style="width: 40% !important;">
     <div class="modal-content">
       <div class="modal-header">

@@ -129,7 +129,7 @@
                </table>
             </div>
             <div  *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
-               style="background: white">
+               >
                <app-pagination [pagination]="partnersPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
                </app-pagination>
             </div>

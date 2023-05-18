@@ -39,6 +39,9 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
 
     loadChart(data:any) {
         Highcharts.chart('partner-redistributed-wordcolud-map', {
+            chart: {
+                backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+              },
             credits: {
                 enabled: false
             },
