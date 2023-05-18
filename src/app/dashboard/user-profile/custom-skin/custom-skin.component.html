@@ -1,4 +1,4 @@
-<div class="portlet-title tabbable-line">
+<div class="portlet-title tabbable-line" [ngClass]="name.hasError('required')?'min-height':''">
 	<div class="caption caption-md col-xs-12"></div>
 
 <div class="form-group">Theme Name
@@ -23,8 +23,8 @@
 </div>
 
 <div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''"   [disabled]="isValid" id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
-	<button class="btn btn-primary padding align" [ngClass]="isValid?'disabled':''" [disabled]="isValid"  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''"   [disabled]="isValid " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || (!themeDTO.defaultTheme&&isSaveTheme)" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid "  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme || name.hasError('required')" (click)="update()">Update</button>
 </div>
 </div>
 

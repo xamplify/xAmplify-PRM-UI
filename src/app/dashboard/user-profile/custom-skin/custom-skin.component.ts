@@ -242,9 +242,14 @@ export class CustomSkinComponent implements OnInit {
   //   //.saveThemePropertiesToList(this.mainContentForm);
 
   // }
+  nameValid:boolean = false;
   changEvent(ev: any) {
     this.sname = ev;
+    if(this.sname === "" || this.sname === null){
+      this.nameValid= true;
+    }else{
     this.getAllThemeNames(this.sname);
+    }
   }
 
   checkValidColorCode(colorCode: string, type: string) {
@@ -379,7 +384,7 @@ export class CustomSkinComponent implements OnInit {
       this.validMessage = "";
     }
    if (this.isValid){
-    this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color.";
+    this.validMessage = "The user interface is going to be affected if the reliant objects have the same color.";
    }
     if (this.isValidBackgroundColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
@@ -653,7 +658,7 @@ export class CustomSkinComponent implements OnInit {
          this.statusCode = 200;
         //this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
         //event emit
-        this.saveThemeEventEmit("Theme Created Successfully")
+        this.saveThemeEventEmit("Theme Saved Successfully")
         //this.router.navigate(['/home/dashboard/myprofile']);
       },
       error => {
@@ -751,8 +756,13 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.updateThemeDto(this.updateThemedto).subscribe(
       (data: any) => {
         this.ngxloading = false;
-         this.statusCode = 200;
+         //this.statusCode = 200;
+         if(data.statusCode == 200){
         this.saveThemeEventEmit("Theme Updated Successfully")
+         }else {
+          this.isValid = true;
+          this.saveThemeEventEmit(data.message)
+         }
       
       },
       error => {
@@ -767,7 +777,7 @@ export class CustomSkinComponent implements OnInit {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: "Do you want to save the changes?,Refresh The Window.",
+			text: "Do you want to save the changes?",
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',

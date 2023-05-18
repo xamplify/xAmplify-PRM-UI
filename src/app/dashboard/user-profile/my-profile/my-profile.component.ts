@@ -4018,7 +4018,7 @@ configSalesforce() {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: "You clicked the Activate!",
+			text: "Clicking Activate will change the theme and reload the entire application.",
 			type: 'success',
 			icon: "success",
 			showCancelButton: true,

@@ -1862,13 +1862,17 @@
                                                 <div class="col-xs-12 col-sm-12 col-lg-12">
                                                     <div class="col-md-9 col-sm-9 col-xs-12 desktopview">
                                                         <div class="desktopview-align">
-                                                            <img src="assets/images/theme/1/Webp/desktop.png"
+                                                            <img  *ngIf="themeDto.id==1"  src="assets/images/theme/1/Webp/desktop.png"
+                                                                class="desktopimg-custome">
+                                                                <img  *ngIf="themeDto.id==2"  src="assets/images/theme/1/Webp/desktop.png"
                                                                 class="desktopimg-custome">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
                                                         <div class="mobileview-align">
-                                                            <img src="assets/images/theme/1/Webp/mobile.png"
+                                                            <img *ngIf="themeDto.id==1"src="assets/images/theme/1/Webp/mobile.png"
+                                                                class="mobileimg-custome">
+                                                                <img *ngIf="themeDto.id==2"src="assets/images/theme/1/Webp/mobile.png"
                                                                 class="mobileimg-custome">
                                                         </div>
                                                     </div>
