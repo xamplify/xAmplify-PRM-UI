@@ -99,6 +99,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				error => {
 					this.ngxloading = false;
+					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 				},
 				() => { }
 			);
