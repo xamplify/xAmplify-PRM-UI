@@ -177,7 +177,7 @@ h1, h2, h3, h4, h5, h6 {
 ul.alt-row-style1 li a{
   color: white !important;
 }
-.close-circle {
+.close-circle{
   background-color: #2b3c46 !important ;
   color: white !important;
 }
@@ -480,7 +480,8 @@ input{
 .text-dropdown{
   background-color: #2b3c46 !important;
 }
-.write-new textarea{
+.write-new textarea,
+.card-bg{
   background-color: #2b3c46 !important;
   color:white !important;
   border-color: #2f4857 !important;
@@ -551,9 +552,9 @@ label{
   background-color:  #2b3c46 !important;
   border: 1px solid #2f4857!important;
 }
-.selected{
+/* .selected{
   background-color:  #2b3c46;
-}
+} */
 .edit-field-prefix{
   background-color:  #2b3c46 !important;
   color:white !important;

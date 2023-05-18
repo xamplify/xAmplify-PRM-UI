@@ -909,6 +909,7 @@ a:link, nav a:visited {
   border-radius: 7px;
   /* box-shadow: 2px 2px 10px 2px #d1d1d1; */
   height: auto;
+  border: 1px solid #ddd;
 }
 img.img-custome {
   float: right;
@@ -1063,7 +1064,7 @@ thead.table-bgcolor {
   border-bottom: 2px solid #ddd;
 }
 .view-banner{
-  /* margin-left: 64px; */
+  margin-left: 70px;
   padding: 6px 10px;
   width: 77px;
   border-radius: 4px;

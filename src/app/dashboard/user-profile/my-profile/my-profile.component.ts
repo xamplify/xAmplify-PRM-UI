@@ -3976,11 +3976,12 @@ configSalesforce() {
 			(response) => {
 				this.ngxloading = false
 				 this.defaultThemes = response.data;
-				 for (let i = 0; i < 2; i++) {
-					if(this.defaultThemes[i].id == 1 || this.defaultThemes[i].id ==2){
-					this.lightdark.push(this.defaultThemes[i])
-					}
-				  }
+				 console.log(this.defaultThemes)
+				//  for (let i = 0; i < 2; i++) {
+				// 	if(this.defaultThemes[i].id == 1 || this.defaultThemes[i].id ==2){
+				// 	this.lightdark.push(this.defaultThemes[i])
+				// 	}
+				//   }
 			},
 			error => {
 				this.ngxloading = false;
@@ -4001,7 +4002,6 @@ configSalesforce() {
 	activateThemeForCompany(companyThemeId:number){
 	 this.activateTheme.createdBy = this.authenticationService.getUserId();
      this.activateTheme.themeId =companyThemeId; 
-
 	 console.log(companyThemeId ,'sudha');
 	 console.log( this.activateTheme.createdBy,'companyId');
 	 this.activateThemeApi(this.activateTheme);
