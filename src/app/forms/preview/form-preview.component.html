@@ -122,9 +122,7 @@
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
-                                                    <label class="form-check-label color" style="border:0px !important;">
-
-                                                            [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                    <label class="form-check-label color" style="border:0px !important;" [ngClass]="{'disable-click':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                                         <input type="{{columnInfo.labelType}}"
                                                           name="{{columnInfo.labelId}}" class="form-check-input"
                                                           (click)="columnInfo.value = radioButton.id"
