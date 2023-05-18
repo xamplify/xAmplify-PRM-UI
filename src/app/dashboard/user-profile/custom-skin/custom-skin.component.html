@@ -23,8 +23,8 @@
 </div>
 
 <div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''"   [disabled]="isValid " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || (!themeDTO.defaultTheme&&isSaveTheme)" (click)="getThemePropertiesWrapperObj(form)">Save</button>
-	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid "  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme || name.hasError('required')" (click)="update()">Update</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''"   [disabled]="isValid  " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid "  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
 </div>
 </div>
 
@@ -161,7 +161,7 @@
 				<div class="row" style="padding: 10px 10px;">
 					<div class="col-md-6 col-lg-6">
 						<div class="form-group">
-							<label>Button Value Color</label> <input class="form-control"
+							<label>Button Text Color</label> <input class="form-control"
 								[value]="headerBVColor" [(ngModel)]="headerBVColor"
 								style="padding-left: 40px;"
 								(input)="checkValidColorCode(headerBVColor,'headerBVColor')"
