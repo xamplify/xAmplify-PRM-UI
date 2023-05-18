@@ -166,7 +166,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	tags = "Tags";
-	customskin = "Custom Skin Settings";
+	customskin = "Themes";
 
 	exclude = "Exclusion"
 	exclude_add = "User(s) added successfully";

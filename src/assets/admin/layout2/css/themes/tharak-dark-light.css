@@ -39,7 +39,8 @@ h1, h2, h3, h4, h5, h6 {
  {
   color : white !important;
 }
-body {
+body,
+.bar-background {
   background-color: #2a3d4d;
   color: white !important;
  }
@@ -56,8 +57,17 @@ body {
 /* .label-box:hover, */
 .video,
 .table tr.xamp-tr-selected td,
-.div.thembgc {
+.div.thembgc,
+.div.thembg-color {
   background-color:  #22313a !important;
+}
+.div.thembgc,
+.div.thembg-color{
+  border:1px solid #2f4857!important;
+}
+.tborders>tbody>tr>td, .tborders>tbody>tr>th, .tborders>tfoot>tr>td, .tborders>tfoot>tr>th, .tabtbordersle>thead>tr>td, .tborders>thead>tr>th {
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 2px solid #2f4857!important;
 }
 .portlet.light {
   background-color:   #22313a !important;
@@ -291,7 +301,8 @@ fieldset,
 .modal-footer,
 .list__item .item__actions,
 .folder-modal-footer,
-.table>tbody+tbody {
+.table>tbody+tbody,
+.bar-background {
   border-top: 1px solid #2f4857!important;
 }
 .table tbody tr.active td, .table tbody tr.active th {
@@ -321,7 +332,9 @@ input{
 }
 
 /**** Model PopUp ****/
-.modal-content {
+.modal-content,
+.bar-background,
+.div.table-color {
   background-color: #2b3c46 !important;
   color: white !important;
 
@@ -460,6 +473,9 @@ input{
 }
 .color-inline{
   background-color: #2b3c46 !important;
+  border-left: 1px solid #2f4857!important;
+  border-right: 1px solid #2f4857!important;
+  border-top: 1px solid #2f4857!important;
 }
 .text-dropdown{
   background-color: #2b3c46 !important;

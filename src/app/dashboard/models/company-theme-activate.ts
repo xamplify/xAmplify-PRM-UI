@@ -6,4 +6,8 @@ export class CompanyThemeActivate {
     themeId: number;
 
     createdBy: number;
+
+    createdDate : string;
+
+    updatedDate: string;
 }

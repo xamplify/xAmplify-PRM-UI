@@ -1690,3 +1690,8 @@ input:checked+.slider:before {
     border-top: none;
     width: 35.5%;
 }
+
+/** 18-05-2023 ****/
+.min-height {
+	min-height: 70px;
+}

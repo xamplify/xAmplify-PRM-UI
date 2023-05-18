@@ -6,8 +6,8 @@ export class ThemePropertiesDto {
     buttonValueColor : string;
     createdBy : number;
     updatedBy : number;
-    createdDate : number;
-    updatedDate : number;
+    // createdDate : number;
+    // updatedDate : number;
     textColor : string;
     buttonBorderColor : string;
     iconColor : string;
@@ -15,5 +15,6 @@ export class ThemePropertiesDto {
     moduleTypeString : string;
     showFooter : boolean;
     divBgColor : string;
+   headerBackgroundColor: string;
     
 }
