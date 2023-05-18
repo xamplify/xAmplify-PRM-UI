@@ -16,5 +16,6 @@ export class ThemePropertiesDto {
     showFooter : boolean;
     divBgColor : string;
    headerBackgroundColor: string;
+   defaultSkin = false;
     
 }
