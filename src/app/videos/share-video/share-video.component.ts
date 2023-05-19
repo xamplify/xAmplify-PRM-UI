@@ -233,7 +233,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const player360 = this;
         this.videoJSplayer = videojs('videoId', {
              "controls": true,
-            // "autoplay": false,
+             "autoplay": false,
              "preload": "auto",
              "customControlsOnMobile": true,
              "nativeControlsForTouch": true
@@ -489,7 +489,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
                 "controls": true,
-                //"autoplay": false,
+                "autoplay": false,
                 "preload": "auto",
                 html5: {
                     hls: {
