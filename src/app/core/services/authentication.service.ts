@@ -649,7 +649,7 @@ export class AuthenticationService {
           this.closeSwal();
           let self = this;
           if(this.envService.CLIENT_URL=="http://localhost:4200/"){
-            window.location.href = 'http://localhost:4200/login';
+           // window.location.href = 'http://localhost:4200/login';
             setTimeout(() => {
               self.router.navigate(['/']);
               $("body").removeClass("logout-loader");
