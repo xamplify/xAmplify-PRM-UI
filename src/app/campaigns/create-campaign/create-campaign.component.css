@@ -899,7 +899,7 @@ h3 {
   background: #f1f3fa;
   margin: 0 0px;
   cursor: pointer;
-  /* border: 1px solid #eaecf3; */
+  border: 1px solid #ddd;
 }
 
 h5 {
@@ -948,7 +948,7 @@ h5 {
   text-align: center;
   padding: 1em;
   height: 100px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid #f1f3fa70 !important;
 }
 
 .cenetered-block > h5 {
@@ -1017,8 +1017,7 @@ h5 {
   text-align: center;
   font-weight: 500;
   margin-bottom: 10px;
-  color: #00a8e7;
-  font-weight: 600;
+  color: #00a8e7 !important;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100);
@@ -2323,6 +2322,7 @@ i.fa.fa-arrow-circle-o-up {
 .cardDetails-mar{
   float:left ;
   margin: 3px;
+  width: 100%;
 }
 
 .grid-box:hover>.bar {
@@ -2392,19 +2392,47 @@ i.fa.fa-angle-double-up {
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
+
 input.radio-custimization {
-  margin: 4px 5px;
+  margin: 5px 5px;
   line-height: normal;
-  padding: 7px;
+  padding: 1px 1px;
   -webkit-appearance: none;
-  outline: 0.1em solid #54a7e9;
+  outline: 0.1em solid #54a7e900;
   outline-offset: 0.1em;
-  border-radius: 1px;
+  border-radius: 3px;
 }
+
 input.radio-custimization:checked {
   display: inline-block;
   background-color: #54a7e9;
+  font-family: "FontAwesome";
+  font-size: 10px;
+  content: "\F00C";
+  padding: 4px 0px;
 }
+
+
+input.radio-custimization::before {
+  font-family: "FontAwesome";
+  font-size: 10px;
+  background: #ddd; 
+  content: ' '; 
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+input.radio-custimization:checked:before {
+  padding: 4px 4px;
+  color: #fff;
+  border-radius: 3px;
+  font-family: "FontAwesome";
+  font-size: 10px;
+  content: "\F00C";
+  background-color: #54a7e9;
+}
+
+
 .tooltip-mng {
   position: relative;
   top: -7px;
