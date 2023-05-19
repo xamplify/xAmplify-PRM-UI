@@ -97,7 +97,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             (result: any) => {
                 let message: any = '';
                 this.embedVideoFile = result;
-                console.log(result);
                 if (result.message !== undefined && result.message == "NO MOBINARS FOUND FOR SPECIFIED ID") {
                     message = "NO MOBINARS FOUND FOR SPECIFIED ID";
                     //  this.router.navigate(['/undefined']);
@@ -299,7 +298,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         $('#videoId').append($('#overlay-modal').show());
                         player360.videoJSplayer.pause();
                     } else if (isValid !== 'StartOftheVideo') {
-                        player360.videoJSplayer.play();
+                       /// player360.videoJSplayer.play();
                         $('#overlay-modal').hide();
                     } else {
                        player360.videoJSplayer.play();
@@ -308,7 +307,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
-                        player360.videoJSplayer.play();
+                        //player360.videoJSplayer.play();
                     });
                     // $('#playorsubmit').click(function () {
                     //     isCallActionthere = false;
@@ -423,7 +422,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     } else { $('#overlay-modal').hide();  player360.videoJSplayer.pause(); }
                     $('#repeatPlay').click(function () {
                         $('#overlay-modal').hide();
-                        player360.videoJSplayer.play();
+                       // player360.videoJSplayer.play();
                     });
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
@@ -518,20 +517,15 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#videoId').append($('#overlay-modal').show());
                             player.pause();
                         } else if (isValid !== 'StartOftheVideo') {
-                          //  $('.vjs-big-play-button').css('display', 'none');
                             $('#overlay-modal').hide();
-                            player.play();
+                           // player.play();
                         } else { $('#overlay-modal').hide();  player.play(); }
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
                             $('#overlay-modal').hide();
-                            player.play();
+                          //  player.play();
                         });
-                       // $('#playorsubmit').click(function () {
-                         //   isCallActionthere = false;
-                          //  $('#overlay-modal').hide();
-                           // player.play();
-                        //});
+                       
                     });
                     this.on('play', function () {
                         self.videoFileService.pauseAction = false;
@@ -649,7 +643,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         $('#repeatPlay').click(function () {
                             $('#overlay-modal').hide();
                             self.replyVideo = true;
-                            player.play();
+                            //player.play();
                         });
                         $('#skipOverlay').click(function () {
                             isCallActionthere = false;
