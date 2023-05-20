@@ -40,9 +40,9 @@
 										<app-video-thumbnail class="pull-left" [damId]="asset.id" [videoFile]="asset.videoFileDTO" [published]="asset?.published" [categoryName]="asset.categoryName"></app-video-thumbnail>
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
-										<div class="thumbnail-wrapper">
+										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
 											<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
-												alt="Image Not Found">
+												alt="Image Not Found" style="width: 180px; height: 100px;border-radius:5px;">
 										</div>
 										<div class="title-div" style="width: 50%;">
 												<h4 class="mt5 mb5 f-w-600"

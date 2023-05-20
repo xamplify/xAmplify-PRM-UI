@@ -151,3 +151,15 @@
     }
    
 }
+.custom-image-css{
+    position: relative;
+}
+.thumbnail-wrapper {
+	float: left;
+	width: 175px;
+	height: 60px;
+  background-color: #fff;
+	text-align: center;
+	position: relative;
+  border-radius:5px;
+}
