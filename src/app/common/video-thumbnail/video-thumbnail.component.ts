@@ -16,6 +16,7 @@ export class VideoThumbnailComponent implements OnInit {
   @Input() damId : number;
   @Output() notifyParent: EventEmitter<any>;
   @Input() categoryName:string;
+  @Input() asset:any;
   isCreate: boolean;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
     this.notifyParent = new EventEmitter<any>();

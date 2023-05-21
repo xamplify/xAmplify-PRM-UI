@@ -37,7 +37,7 @@
 										*ngFor="let asset of pagination.pagedItems ;let i =index">
 									<tr>
 									<td *ngIf="(!isPartnerView && asset.videoId)">
-										<app-video-thumbnail class="pull-left" [damId]="asset.id" [videoFile]="asset.videoFileDTO" [published]="asset?.published" [categoryName]="asset.categoryName"></app-video-thumbnail>
+										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" [published]="asset?.published" [categoryName]="asset.categoryName"></app-video-thumbnail>
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
 										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
@@ -89,9 +89,15 @@
 													</ng-container>
 												</h6>
 												<h6 *ngIf="asset?.published" class="view-banner published" translate>Published</h6>
-												
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
-
+												 <!---XNFR-255-->
+												 <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+													<span class="view-banner-white-labeled mb5">White-Labeled</span>
+													<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+														<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+													</h6>
+												</ng-container>
+												 <!---XNFR-255-->
 										</div>
 									</td>
 										<td class="text-center">{{asset?.assetType}}</td>
@@ -186,6 +192,14 @@
 																	<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 																	<span *ngIf="asset?.assetName?.length>25">...</span>
 																</h4>
+																<!---XNFR-255-->
+																<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+																	<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+																		<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+																	</h6>
+																	<span class="view-banner-white-labeled mb5">White-Labeled</span>
+																</ng-container>
+																 <!---XNFR-255-->
 																<h6 class="moreipsis" title="{{asset?.categoryName}}">
 																	<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
 																</h6>
@@ -263,6 +277,14 @@
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>
 									</h4>
+									<!---XNFR-255-->
+									<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+										<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+											<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+										</h6>
+										<span class="view-banner-white-labeled mb5">White-Labeled</span>
+									</ng-container>
+									 <!---XNFR-255-->
 									<div>
 										<span class="view-banner-dam">{{asset?.assetType}}</span>
 										<h6 translate>
