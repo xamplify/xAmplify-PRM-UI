@@ -107,7 +107,7 @@ Page Header
 }
 .page-header.navbar .page-top {
   height: 68px;
-  background: #BAC0B6;
+  background: #fff;
 }
 .page-header.navbar .search-form {
   margin-left: 10px;
@@ -1922,7 +1922,7 @@ Page content
 .page-bar {
   padding: 0px;
   background-color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   border-radius: 5px;
   border:1px solid #ddd;
 }

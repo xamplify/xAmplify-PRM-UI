@@ -1633,8 +1633,9 @@ div.switch5>input.switch:focus~label:before {
     width: 112px;
     margin-left: 18px
 }
+/* May 19 font-size:12px sudha */
 .btn {
-    font-size: 12px !important;
+    font-size: 13px !important;
 }
 .title-pd{
     padding-top: 5px;

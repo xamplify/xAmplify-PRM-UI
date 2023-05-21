@@ -356,6 +356,10 @@ export class HomeComponent implements OnInit {
         this.activeThemeDto = response.data;
         this.authenticationService.themeDto = this.activeThemeDto;
         this.getDefaultSkin(this.activeThemeDto);
+        /******** For Charts *******/
+        if(id == 2){
+          this.authenticationService.isDarkForCharts = true;
+        }
       }, error => {
         this.loader = false;
         this.xtremandLogger.log(error);

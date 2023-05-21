@@ -48,7 +48,11 @@ display: block;
 	background: lightgray;
 }
 
-.form-horizontal .form-group {
+/* May 19 sudha*/
+/* .form-horizontal .form-group {
     margin-right: 0px;
     margin-left: 0px; 
+} */
+.modal-header{
+	padding: 10px !important;
 }
