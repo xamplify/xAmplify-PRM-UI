@@ -1695,3 +1695,10 @@ input:checked+.slider:before {
 .min-height {
 	min-height: 70px;
 }
+/**** tharak ****/
+.m-top-70 {
+margin-top: -70px;
+}
+.m-top-50 {
+	margin-top: -50px;
+}

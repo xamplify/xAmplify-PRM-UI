@@ -1,7 +1,7 @@
 <div class="portlet-title tabbable-line" [ngClass]="name.hasError('required')?'min-height':''">
 	<div class="caption caption-md col-xs-12"></div>
 
-<div class="form-group">Theme Name
+<div class="" style="min-height: 73px;">Theme Name
 	<label class="control-label">
 		<span class="star">*</span>                       
 	</label>
@@ -20,12 +20,13 @@
 		</div>
 		<div class="textCss"></div>
 	 </div>
+	 <div class="btn-group" [ngClass]="isValidContactName || name.hasError('required') ? 'm-top-70':'m-top-50'" style="float: right;">
+		<button class="btn btn-primary padding align" [ngClass]="(isValid || isValidContactName || name.hasError('required')) ?'disabled':''"   [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+		<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required')"  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
+	</div>
 </div>
 
-<div class="btn-group" style="float: right;margin-top: -60px;">
-	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''"   [disabled]="isValid  " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
-	<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid "  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
-</div>
+
 </div>
 
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
