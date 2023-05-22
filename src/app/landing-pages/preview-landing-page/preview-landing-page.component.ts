@@ -20,6 +20,7 @@ declare var swal, $: any;
 
 })
 export class PreviewLandingPageComponent implements OnInit,OnDestroy {
+    isModalPopupshow : boolean = false ;
     currentUrl: string = "";
     @ViewChild('saveGeoLocationAnalyticsComponent') saveGeoLocationAnalyticsComponent: SaveGeoLocationAnalyticsComponent;
     constructor( public landingPageService: LandingPageService, public authenticationService: AuthenticationService,
@@ -47,6 +48,7 @@ export class PreviewLandingPageComponent implements OnInit,OnDestroy {
         let title = "#landing-page-preview-title";
         $( title ).empty();
         $( "#landing-page-preview-modal" ).modal( 'show' );
+        this.isModalPopupshow = true ;
         this.landingPageService.getHtmlContent( landingPageDto ).subscribe(
             ( response: any ) => {
                 if ( response.statusCode == 200 ) {

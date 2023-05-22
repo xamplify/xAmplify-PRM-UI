@@ -56,6 +56,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	isParnterGroupHeaderCheckBoxChecked = false;
 	isPublishedToPartnerGroup = false;
 	modalPopupLoader: boolean;
+	isModalPopupshow : boolean = false ;
 	showUsersPreview = false;
 	selectedPartnerGroupName = "";
 	selectedPartnerGroupId:number=0;
@@ -96,6 +97,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
 		this.findPublishedType();
+	 this.isModalPopupshow = true ;
 	}
 
 	findPublishedType() {
