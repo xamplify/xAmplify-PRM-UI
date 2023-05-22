@@ -419,8 +419,7 @@ input{
 .text-dropdown{
   background-color: var(--div-bg-color) !important;
 }
-.write-new textarea,
-.card-bg{
+.write-new textarea{
   background-color: var(--div-bg-color) !important;
   color:var(---text-color) !important;
   border-color: var(--border-color) !important;

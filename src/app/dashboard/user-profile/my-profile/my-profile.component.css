@@ -1063,7 +1063,17 @@ thead.table-bgcolor {
   border-top: 1px solid #ddd;
   border-bottom: 2px solid #ddd;
 }
-.view-banner{
+.acive-view-banner{
+  background-color: #5cb85c;
+   color: white;
+   padding: 4px;
+   text-align: center;
+   width: 125px;
+   margin: 0px 0px 0px 40px;
+   font-size: 11px;
+   font-weight: 600;
+}
+.active-view-banner{
   margin-left: 70px;
   padding: 6px 10px;
   width: 77px;
@@ -1209,4 +1219,9 @@ p.pt-4 {
 }
 .portlet.light.padding-bottomonly {
   height: 438px;
+}
+.active-color{
+ color: #fff !important;
+ font-weight: 600 !important;
+ font-size: 11px !important;
 }

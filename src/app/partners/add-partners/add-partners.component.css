@@ -115,3 +115,8 @@ h5{
 .border{
 	padding-left: 50px; margin-left: 55px;
 }
+
+/* May 19 sudha*/
+.modal-header{
+padding: 10px !important;
+}

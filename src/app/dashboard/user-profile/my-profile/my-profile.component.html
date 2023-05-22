@@ -278,7 +278,7 @@
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme'"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
-                                        <button class="btn btn-primary padding align"
+                                        <!-- <button class="btn btn-primary padding align"
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'DarkTheme'"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
@@ -291,11 +291,11 @@
                                             style="border-radius: 3px;"
                                             *ngIf="activeTabName == 'neumorphismDark'"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
+                                            Theme</button> -->
                                     </div>
 
                                     <a class="close-circle xamp-margin-left-icon"
-                                        (click)="activateTab('customskin')" aria-hidden="true">
+                                        (click)="closeTheme()" aria-hidden="true">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
 
@@ -328,13 +328,13 @@
                                                     <h5 class="card-title themefont">{{dto.name}} Theme</h5>
 
                                                     <button type="button" class="btn  btn-size btn-selectcolor"
-                                                        (click)="activateTab('lightTheme');showDto(dto)"> <i
+                                                        (click)="viewTheme();showDto(dto)"> <i
                                                             class="fa fa-eye" aria-hidden="true"></i>
                                                         View</button>
                                                     <button type="button" *ngIf="dto.defaultTheme"
                                                         class="btn  btn-size"
                                                         [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
-                                                        (click)="activateTab('customTheme');showDto(dto);"> <i
+                                                        (click)="goToCustomThemes();showDto(dto);"> <i
                                                             class="fa fa-files-o" aria-hidden="true"></i>
                                                         Copy</button>
                                                 </div>
@@ -360,9 +360,9 @@
                                             <td> <img src="assets/images/theme/1/Webp/theam_custom.webp" alt=""
                                                     class="img-customization"> </td>
                                             <td class="text-center">{{dto.name}}
-                                                <h6 _ngcontent-c26="" class="view-banner"
-                                                    *ngIf="dto?.id == activeThemeDetails?.themeId"
-                                                    style="background-color: #5cb85c;font-size: 13px;">Active</h6>
+                                                <br>
+                                                <h6 _ngcontent-c26="" class="label label-info  selectcolor active-color"
+                                                    *ngIf="dto?.id == activeThemeDetails?.themeId">Active</h6>
                                             </td>
                                             <td class="text-center">
                                                 <app-timestamp [dateAndTime]="dto.createdDate">
@@ -372,7 +372,7 @@
                                                 <div class="actions-block override-actions ActionAlign">
                                                     <div class="mActionAlign ActionButtonPad">
                                                         <a class="mMobileDisable" title="Edit"
-                                                            (click)="activateTab('customTheme');showDto(dto);"><i
+                                                            (click)="goToCustomThemes();showDto(dto);"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-edit mDisableColor"></i></a>
                                                         <a title="Activate"
@@ -381,7 +381,7 @@
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-power-off"></i></a>
                                                         <a class="mMobileDisable" title="copy"
-                                                            (click)="activateTab('customTheme');showDto(dto);saveTheme();"><i
+                                                            (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-files-o mDisableColor"></i></a>
                                                         <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
@@ -1400,7 +1400,7 @@
                                 [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
                                 [ngClass]="{'active': activeTabName == 'customTheme'}"
                                 *ngIf="activeTabName == 'customTheme'"
-                                (closeEvent)="closeThemeAlert($event)"></app-custom-skin>
+                                (closeEvent)="showThemeAlert($event)"></app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>

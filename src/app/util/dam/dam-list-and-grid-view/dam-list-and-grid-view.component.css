@@ -81,8 +81,10 @@
 
 .thumbnail-wrapper {
 	float: left;
-	width: 175px;
-	height: 60px;
+	/* width: 175px;
+	height: 60px; */
+  width: 144px;
+	height: 81px;
   background-color: #fff;
 	text-align: center;
 	position: relative;
@@ -116,7 +118,7 @@
 }
 
 .min-h{
-  min-height: 245px;
+  min-height: 270px;
 }
 
 .ref-mar{
@@ -232,4 +234,13 @@
 }
 .mb10{
   margin-bottom: 6px !important;
+}
+/* May 19 sudha */
+.img-track-list {
+  height: 100px;
+  width: 180px;
+  margin: 0;
+  background: #f2f4f9;
+  border: solid 1px #cccccc;
+  border-radius: 6px;
 }

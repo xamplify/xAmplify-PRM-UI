@@ -4024,7 +4024,7 @@ configSalesforce() {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: 'Clicking"Activate" will change the theme and reload the entire application.',
+			text: 'Clicking "Activate" will change the theme and reload the entire application.',
 			type: 'success',
 			icon: "success",
 			showCancelButton: true,
@@ -4076,9 +4076,9 @@ configSalesforce() {
 			console.log("you clicked showAlert cancel" + dismiss);
 		});
 	}
-	closeTheme(){
-		this.router.navigate(['/home/dashboard/myprofile']);
-	}
+	// closeTheme(){
+	// 	this.router.navigate(['/home/dashboard/myprofile']);
+	// }
 	
 	getActiveThemeData(){
 		this.ngxloading = true;
@@ -4097,13 +4097,33 @@ configSalesforce() {
 	saveTheme(){
 		this.isSaveTheme = true;
 	}
-	closeThemeAlert(event:any){
-		this.activateTab('customskin')
+    updateTheme(){
+		this.isSaveTheme = false;
+	}
+	showThemeAlert(event:any){
+		this.activeTabName = 'customskin';
+		this.activeTabHeader = this.properties.customskin;
         this.showThemes();
 		this.themeResponse.isVisible = false;
 		this.themeResponse = new CustomResponse('SUCCESS',event,true);
 	}
-
-	
+	//activateTab('customskin');
+	closeTheme() {
+		this.activeTabName = 'customskin';
+		this.activeTabHeader = this.properties.customskin;
+		this.themeResponse.isVisible = false;
+		this.showThemes();	
+	}
+	goToCustomThemes() {
+		this.activeTabName = 'customTheme';
+		this.activeTabHeader = "Custom Theme Settings";
+		//this.themeResponse.isVisible = false;
+	}
+	viewTheme(){
+		this.activeTabName = 'lightTheme';
+		this.activeTabHeader = "Theme View";
+		this.themeResponse.isVisible = false;
+		this.referenceService.goToTop();
+	}
  /************* XNFR-238 *********************/	
 }

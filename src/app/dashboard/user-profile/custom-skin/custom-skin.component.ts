@@ -7,7 +7,6 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { EmailTemplate } from 'app/email-template/models/email-template';
-import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
 import { Properties } from 'app/common/models/properties';
@@ -143,8 +142,7 @@ export class CustomSkinComponent implements OnInit {
   ngOnInit() {
     this.activeTabNav(this.activeTabName);
     this.loadNames();
-    this.getDefaultNames(this.themeId);
-
+    this.showWithCopy(this.themeId);
     this.getDefaultSkin(this.themeId);
     try {
       this.ckeConfig = {
@@ -245,11 +243,7 @@ export class CustomSkinComponent implements OnInit {
   nameValid:boolean = false;
   changEvent(ev: any) {
     this.sname = ev;
-    if(this.sname === "" || this.sname === null){
-      this.nameValid= true;
-    }else{
     this.getAllThemeNames(this.sname);
-    }
   }
 
   checkValidColorCode(colorCode: string, type: string) {
@@ -655,10 +649,18 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
       (data: any) => {
         this.ngxloading = false;
-         this.statusCode = 200;
+         //this.statusCode = 200;
         //this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
         //event emit
+        if(data.statusCode == 200){
         this.saveThemeEventEmit("Theme Saved Successfully")
+        } else if (data.statusCode == 409) {
+          this.isValidContactName = true;
+          this.invalidContactNameError = "Name Already Exists.";
+        } else {
+          this.isValidContactName = true;
+          this.invalidContactNameError = "Name is Required.";
+        }
         //this.router.navigate(['/home/dashboard/myprofile']);
       },
       error => {
@@ -707,7 +709,7 @@ export class CustomSkinComponent implements OnInit {
   }
   all: string;
   sname = "name";
-  getDefaultNames(themeId: number) {
+  showWithCopy(themeId: number) {
     this.dashboardService.getThemeDTOById(this.themeId).subscribe(
       (data: any) => {
         this.themeDto = data.data;
@@ -758,10 +760,13 @@ export class CustomSkinComponent implements OnInit {
         this.ngxloading = false;
          //this.statusCode = 200;
          if(data.statusCode == 200){
-        this.saveThemeEventEmit("Theme Updated Successfully")
-         }else {
+            this.saveThemeEventEmit("Theme Updated Successfully")
+         } else if (data.statusCode == 402){
+          this.isValidContactName = true;
+          this.invalidContactNameError = "Name is Required.";
+         } else {
           this.isValid = true;
-          this.saveThemeEventEmit(data.message)
+          this.validMessage = data.message;
          }
       
       },
