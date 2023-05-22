@@ -886,10 +886,10 @@ legend {
 	left: 0px;
 	top: 100%;
 	z-index: -1;
-	border-left: 3px solid #5cb85c;
+	border-left: 3px solid #5ab1eb;
 	border-right: 3px solid transparent;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5cb85c;
+	border-top: 3px solid #5ab1eb;
 }
 
 .ribbon span::after {
@@ -899,9 +899,9 @@ legend {
 	top: 100%;
 	z-index: -1;
 	border-left: 3px solid transparent;
-	border-right: 3px solid #5cb85c;
+	border-right: 3px solid #5ab1eb;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5cb85c;
+	border-top: 3px solid #5ab1eb;
 }
 
 .bookmark-ribbon {
@@ -1074,10 +1074,10 @@ b, strong {
 	transform: translate3d(0%, 0, 0) !important;
 }
 
-/* .modal.right .modal-content {
+.modal.right .modal-content {
 	height: 100%;
 	overflow-y: auto;
-} */
+}
 
 .modal.right.fade .modal-dialog {
 	right: -320px;
@@ -1355,9 +1355,9 @@ b, strong {
 	margin-right: 10px;
 }
 
-/* .full-width-modal-popup {
+.full-width-modal-popup {
 	width: 100% !important;
-} */
+}
 
 .pre-wrap-next-line {
 	white-space: pre-wrap;

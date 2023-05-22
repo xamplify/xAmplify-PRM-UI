@@ -6,10 +6,10 @@
     position: relative;
     top: -10px;
 }
-/* 
+
 .full-width {
     width: 100% !important;
-} */
+}
 
 .custom-user-width {
     width: 459px;
@@ -62,6 +62,9 @@
 .x-hidden {
     overflow-x: hidden !important;
 }
+.modal .modal-header {
+    border-bottom: 1px solid #efefef00;
+    }
 
 /*--thank you pop starts here--*/
 
