@@ -240,7 +240,7 @@
                             <div class="ribbon">
                                 <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
-                            <div [ngClass]="{actionAlignment_sp_even : !isPartnerView}" class="bar" style="padding: 0px 10px;">
+                            <div [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar" style="padding: 0px 10px;">
                                 <div class="btnAlignPad mbtnAlignPad">
                                 <a class="mMobileDisable mDisableColor" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
