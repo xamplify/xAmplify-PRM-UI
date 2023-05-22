@@ -29,6 +29,15 @@
                   <div class="col-md-12 col-lg-12">
                      <div class="panel with-nav-tabs panel-default">
                         <div class="panel-heading" id="company-and-group-tabs">
+                           <!--XNFR-255-->
+                           <div class="float-right">
+                             <span><strong>White-Labeled</strong></span> 
+                             <a>
+                                 <input type="checkbox" [(ngModel)]="sharedWithPartnersAsAWhiteLabeledAsset" [disabled]="disableWhiteLabeledCheckBox" [title]="disableWhiteLabeledCheckBox ? 'This option cannot be changed.Because this content is already White-Labeled' : '' " >
+                                 <i class="fa fa-question-circle-o" title="Share this content with your org admin/vendor/marketing/prm partner admins."></i>
+                             </a>
+                          </div>
+                          <!--XNFR-255-->
                            <ul class="nav nav-tabs">
                               <li id="partners-li" >
                                  <a class="partnersC" title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab" (click)="findPartnerCompaniesByFilterIndex(pagination);showFilter=true;selectedTab=1">{{authenticationService?.partnerModule?.customName}}</a>
