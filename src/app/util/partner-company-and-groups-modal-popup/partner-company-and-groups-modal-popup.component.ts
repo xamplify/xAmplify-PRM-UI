@@ -505,6 +505,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	}
 
 	publishToPartnersOrGroups() {
+		this.damPublishPostDto.sharedWithPartnersAsAWhiteLabeledAsset = this.sharedWithPartnersAsAWhiteLabeledAsset;
 		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
 			this.referenceService.scrollToModalBodyTopByClass();
 			this.stopLoaders();
