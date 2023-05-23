@@ -69,7 +69,7 @@
 														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
 													</span>
 												</h6>
-												<h6 style="padding-top: 5px;">
+												<h6 *ngIf="asset.tagNames?.length > 0" style="padding-top: 5px;">
 													<ng-container *ngIf="asset.tagNames?.length > 0">
 														<div class="tag" title="{{asset.tagNames[0]}}">
 															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
