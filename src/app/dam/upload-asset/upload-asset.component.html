@@ -302,9 +302,9 @@
                                   <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
                                 </span>
                                 <span *ngIf="croppedImage">
-                                  <a class="close-circle" (click)="$event.stopPropagation();clearThumbnailImage();" title="Remove">
+                                  <!-- <a class="close-circle" (click)="$event.stopPropagation();clearThumbnailImage();" title="Remove">
                                     <i class="fa fa-times" aria-hidden="true"></i>
-                                  </a>
+                                  </a> -->
                                   <img class="asset-img-grid-sm" [src]="croppedImage" alt="">
                                 </span>
                                 <span *ngIf="!isAdd && !croppedImage">
