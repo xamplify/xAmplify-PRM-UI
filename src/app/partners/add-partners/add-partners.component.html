@@ -152,7 +152,7 @@
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
                                                 <img
                                                 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-                                                src="assets/images/crm/sf.png" class="salesForceImageClass"
+                                                src="assets/images/crm/sf.png" class="salesForceImageClass" style="border-radius: 8px;"
                                                 data-toggle="tooltip" data-placement="bottom"
                                                 title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Salesforce account"
                                                 height="86" width="90" alt="">
@@ -197,7 +197,7 @@
                                                 [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
                                                 <img
                                                 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-                                                src="assets/images/crm/google.png" class="googleImageClass"
+                                                src="assets/images/crm/google.png" class="googleImageClass" style="border-radius: 8px;"
                                                 data-toggle="tooltip" data-placement="bottom"
                                                 title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Google account"
                                                 height="86" width="90" alt="">

@@ -454,9 +454,9 @@ tr.highlight {
 	vertical-align: middle;
 }
 
-/* .tgrid {
+.tgrid {
 	border: 1px solid #e9eef2;
-} */
+}
 
 .tgrid>thead {
 	color: #8c9dad;
@@ -1900,4 +1900,10 @@ border: 1px solid #ddd !important;
     font-size: 10px;
     border-radius: 3px;
 }
+
+/* May 23 sudha */
+.list-icons-sm{
+	height: 50px;
+	width: 50px;
   
+  }
