@@ -1894,6 +1894,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.supportText;
 		}
 		this.referenceService.goToTop();
+		this.showThemes();
+		this.themeResponse = new CustomResponse();
 	}
 	
 
