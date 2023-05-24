@@ -1370,147 +1370,55 @@
                                                 <div class="row pb10" id="user_list_table_view">
                                                     <div class="portlet-body">
                                                         <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
-                                                            <div class="mix-grid">
+                                                            <div class="mix-grid th-1">
                                                                 <ng-container *ngIf="showSelectedEmailTemplate">
-                                                                    <!-- !hideCoBrandedEmailTemplate -->
+                                                                    <!-- !hideCoBrandedEmailTemplate   edit email template-->
                                                                     <div *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
-                                                                        <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
-                                                                            <li *ngIf="emailTemplateId!=emailTemplate.id">
-                                                                                <div class="flex-row mHeight" >
-                                                                                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
-                                                                                                <div  class="row">
-                                                                                                      <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
-                                                                                                            <div class="grid-box imgage-paddings"   (click)="setEmailTemplate(emailTemplate)">
-                                                                                                            
-                                                                                                                <span class="select-check-box" [class.hide]="emailTemplate.draft">
-                                                                                                                    <label>
-                                                                                                                         <input 
-                                                                                                                         type="radio" class="radio-custimization"  [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
-                                                                                                                       </label>
-                                                                                                               </span>
-                                                                                                                   <img  [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-top-border' :'' " 
-                                                                                                                    class="img-grid-track "
-                                                                                                                    src="{{emailTemplate.subject}}" alt="" >
-                                                                                                        
-                                                                                                               <!-- hover Content --> 
-                                                                                                                <div  class="bar hover-bar" [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-bottom-border' :'' " >
-                                                                                                                 <a  data-placement="top" >
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-md-6 col-sm-6 col-xs-6 col-lg-8 emailtemp-content">
-                                                                                                                            <div class="content-hover-align fontsize-cls">
-                                                                                                                                <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
-                                                                                                                                    <strong>{{emailTemplate.name |slice:0:13}}</strong>
-                                                                                                                                    <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
-                                                                                                                                </span>
-                                                                                                                                
-                                                                                                                                <div class="item__name" title="created on" style="float:left; margin: 3px;">
-                                                                                                                                    <div>
-                                                                                                                                        <app-timestamp
-                                                                                                                                            [isOnlyDate]="true"
-                                                                                                                                            [dateAndTime]="emailTemplate.createdDate">
-                                                                                                                                        </app-timestamp>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                                <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                    <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <strong translate>By:</strong>
-                                                                                                                                        <span>{{emailTemplate.createdBy|slice:0:11}}
-                                                                                                                                            <span
-                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>11">..</span>
-                                                                                                                                        </span>
-                                                                                                                                    </p>
-                                                                                                                                </ng-container>
-                                                                                                                                <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                    <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <strong translate>By:</strong>
-                                                                                                                                        <span>{{emailTemplate.vendorName|slice:0:11}}<span
-                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>11">..</span>
-                                                                                                                                        </span>
-                                                                                                                                    </span>
-                                                                                                                                </ng-container> 
-                                                                                                                                <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
-                                                                                                                                    <strong translate>Folder:</strong>
-                                                                                                                                    <span >{{emailTemplate?.category|slice:0:5}}</span>
-                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>5">..</span>
-                                                                                                                                </span> 
-                                                                                                                            </div> 
-                                                                                                                        </div>       
-                                                                                                                            <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
-                                                                                                                            <div class="col-md-4 col-sm-6 col-xs-6 col-lg-4">
-                                                                                                                                <div class="item__actions tooltip-mng">
-                                                                                                                                    <span class="icon-alignments"> 
-                                                                                                                                        <a data-toggle="tooltip" data-placement="top" title="Preview"
-                                                                                                                                        (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
-                                                                                                                                        <i class="fa fa-external-link-square preview-edit-color tooltip-cls"  ></i>
-                                                                                                                                        </a>
-                                                                                                                                        <a class="fm external-link"
-                                                                                                                                            data-placement="top"
-                                                                                                                                            data-toggle="tooltip"
-                                                                                                                                            target="_BLANK" 
-                                                                                                                                            title="Edit"
-                                                                                                                                        (click)="$event.stopPropagation();editTemplate(emailTemplate)">
-                                                                                                                                        <i aria-hidden="true" class="fa fa-edit preview-edit-color tooltip-cls"
-                                                                                                                                        ></i>
-                                                                                                                                        </a>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                            </div>               
-                                                                                                                    </div>
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                      </div>
-                                                                                                </div>
-                                                                                           
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </ng-container>
-
-                                                              <!-- new card design -->
-
-
+                                                                      
                                                                 <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
-                                                                    <li *ngIf="emailTemplateId!=emailTemplate.id">
+                                                                    <li>
                                                                         <div class="flex-row mHeight" >
                                                                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
                                                                                         <div  class="row">
-                                                                                              <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
-                                                                                                    <div class="grid-box imgage-paddings"   (click)="setEmailTemplate(emailTemplate)">
-                                                                                                    
+                                                                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                    <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-border' :'' "    (click)="setEmailTemplate(emailTemplate)">
                                                                                                         <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                             <label>
-                                                                                                                 <input 
-                                                                                                                 type="radio" class="radio-custimization" [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
-                                                                                                               </label>
-                                                                                                       </span>
-                                                                                                           <img  [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-top-border' :'' " 
-                                                                                                            class="img-grid-track "
+                                                                                                                <input 
+                                                                                                                type="radio" class="radio-custimization" [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
+                                                                                                            </label>
+                                                                                                    </span>                                                    
+                                                                                                        <img 
+                                                                                                            class="img-grid-track"
                                                                                                             src="{{emailTemplate.subject}}" alt="" >
+                                                                                                            
+                                                                                                            <span class="icon-alignments"> 
+                                                                                                                <a data-toggle="tooltip" data-placement="top" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                            </span>
                                                                                                 
-                                                                                                       <!-- hover Content --> 
-                                                                                                        <div  class="bar hover-bar" [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-bottom-border' :'' " >
-                                                                                                         <a  data-placement="top" >
+                                                                                                    <!-- hover Content --> 
+                                                                                                        <div  class="bar hover-bar" >
+                                                                                                        <a  data-placement="top" >
                                                                                                             <div class="row">
-                                                                                                                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-8 emailtemp-content">
+                                                                                                                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                     <div class="content-hover-align fontsize-cls">
-                                                                                                                        <p class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
                                                                                                                             <strong>{{emailTemplate.name |slice:0:13}}</strong>
                                                                                                                             <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
-                                                                                                                        </p>
-                                                                                                                        <div class="item__name" title="created on" style="float:left; margin: 3px;">
-                                                                                                                            <div>
+                                                                                                                        </span>
+                                                                                                                        <br>
+                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                            <span>
                                                                                                                                 <app-timestamp
                                                                                                                                     [isOnlyDate]="true"
                                                                                                                                     [dateAndTime]="emailTemplate.createdDate">
                                                                                                                                 </app-timestamp>
-                                                                                                                            </div>
-                                                                                                                        </div>
+                                                                                                                            </span>
+                                                                                                                        </span>
                                                                                                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                             <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
-                                                                                                                                <strong translate>By:</strong>
+                                                                                                                                <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                     <span
                                                                                                                                         *ngIf="emailTemplate.createdBy?.length>11">..</span>
@@ -1519,7 +1427,7 @@
                                                                                                                         </ng-container>
                                                                                                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                             <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
-                                                                                                                                <strong translate>By:</strong>
+                                                                                                                                <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                         *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                 </span>
@@ -1531,34 +1439,100 @@
                                                                                                                             <span *ngIf="emailTemplate?.category?.length>5">..</span>
                                                                                                                         </span> 
                                                                                                                     </div> 
+                                                                                                                    <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                                                                 </div>       
-                                                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
-                                                                                                                    <div class="col-md-4 col-sm-6 col-xs-6 col-lg-4">
-                                                                                                                        <div class="item__actions tooltip-mng">
-                                                                                                                            <span class="icon-alignments"> 
-                                                                                                                                <a data-toggle="tooltip" data-placement="top" title="Preview"
-                                                                                                                                (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
-                                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls"  ></i>
-                                                                                                                                </a>
-                                                                                                                                <a class="fm external-link"
-                                                                                                                                    data-placement="top"
-                                                                                                                                    data-toggle="tooltip"
-                                                                                                                                    target="_BLANK" 
-                                                                                                                                    title="Edit"
-                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">
-                                                                                                                                <i aria-hidden="true" class="fa fa-edit preview-edit-color tooltip-cls"
-                                                                                                                                ></i>
-                                                                                                                                </a>
-                                                                                                                            </span>
-                                                                                                                        </div>
-                                                                                                                    </div>               
+                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                             </div>
                                                                                                             </a>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                              </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                   
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                                    </div>
+                                                                </ng-container>
+
+                                                              <!-- new email template  design -->
+                                                                <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
+                                                                    <li *ngIf="emailTemplateId!=emailTemplate.id">
+                                                                        <div class="flex-row mHeight" >
+                                                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+                                                                                        <div  class="row">
+                                                                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                    <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate.id === selectedEmailTemplateRow ? 'template-selected-border' :'' "    (click)="setEmailTemplate(emailTemplate)">
+                                                                                            
+                                                                                                        <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                            <label>
+                                                                                                                <input 
+                                                                                                                type="radio" class="radio-custimization" [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
+                                                                                                            </label>
+                                                                                                    </span>
+                                                                                                
+                                                                                                        <img 
+                                                                                                            class="img-grid-track "
+                                                                                                            src="{{emailTemplate.subject}}" alt="" >
+                                                                                                            
+                                                                                                            <span class="icon-alignments"> 
+                                                                                                                <a data-toggle="tooltip" data-placement="top" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                            </span>
+                                                                                                
+                                                                                                    <!-- hover Content --> 
+                                                                                                        <div  class="bar hover-bar" >
+                                                                                                        <a  data-placement="top" >
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                    <div class="content-hover-align fontsize-cls">
+                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                            <strong>{{emailTemplate.name |slice:0:13}}</strong>
+                                                                                                                            <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
+                                                                                                                        </span>
+                                                                                                                        <br>
+                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                            <span>
+                                                                                                                                <app-timestamp
+                                                                                                                                    [isOnlyDate]="true"
+                                                                                                                                    [dateAndTime]="emailTemplate.createdDate">
+                                                                                                                                </app-timestamp>
+                                                                                                                            </span>
+                                                                                                                        </span>
+                                                                                                                        <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                <strong translate>Created by:</strong>
+                                                                                                                                <span>{{emailTemplate.createdBy|slice:0:11}}
+                                                                                                                                    <span
+                                                                                                                                        *ngIf="emailTemplate.createdBy?.length>11">..</span>
+                                                                                                                                </span>
+                                                                                                                            </p>
+                                                                                                                        </ng-container>
+                                                                                                                        <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                <strong translate>Created by:</strong>
+                                                                                                                                <span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                                                        *ngIf="emailTemplate.vendorName?.length>11">..</span>
+                                                                                                                                </span>
+                                                                                                                            </span>
+                                                                                                                        </ng-container> 
+                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                            <strong translate>Folder:</strong>
+                                                                                                                            <span >{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                            <span *ngIf="emailTemplate?.category?.length>5">..</span>
+                                                                                                                        </span> 
+                                                                                                                    </div> 
+                                                                                                                    <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                                                                                </div>       
+                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                            </div>
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -1617,158 +1591,159 @@
                                                             <div class="mix-grid">
                                                                 <ng-container *ngIf="showLandingPage">
                                                                     <div *ngIf="!isAdd && landingPageId>0 && landingPagePagination.totalRecords>0 && landingPagePagination.pageIndex==1 ">
-                                                                        
+                                                                        <!-- edit page code -->
                                                                         <ul class="content__list">
-                                                                            <li class="list__item" [class.list__item--selected]="landingPageId === selectedLandingPageRow">
-                                                                                <div class="flex-row" (click)="setLandingPage(campaign.landingPage)">
-                                                                                    <div class="item__select-box-wrapper">
-                                                                                        <span class="select-box">
-                                                                                            <label>
-                                                                                                <input type="checkbox"
-                                                                                                    *ngIf="landingPageId!=selectedLandingPageRow"
-                                                                                                    (click)="setLandingPage(campaign.landingPage)">
-                                                                                                <input type="checkbox"
-                                                                                                    checked="checked"
-                                                                                                    *ngIf="landingPageId==selectedLandingPageRow">
-                                                                                            </label>
-                                                                                        </span>
-                                                                                        <span class="ng-scope">
-                                                                                             <a  class="item__preview item__preview--image img-container custom"  target="_BLANK">
-                                                                                                 <img class="thumb ng-scope"  style="width:103px !important" src="{{campaign.landingPage.thumbnailPath}}" alt="">
-                                                                                            </a>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <div class="item__content">
-                                                                                        <div class="flex-row">
-                                                                                            <span class="campaign-email-template-category" [title]="campaign.landingPage.name">
-                                                                                                <strong>{{campaign.landingPage.name |slice:0:15}}</strong>
-                                                                                                <strong *ngIf="campaign.landingPage?.name?.length>15">..</strong>
-                                                                                            </span>
-                                                                                            <br>
-                                                                                            <span lass="item__name" title="created on" style="float:left">
-                                                                                                <span>
-                                                                                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp>
-                                                                                                </span>
-                                                                                            </span>
-                                                                                            <br>
-                                                                                            <span class="campaign-email-template-category" title="{{campaign?.landingPage?.createdUser}}">
-                                                                                                <strong translate>By:</strong>
-                                                                                                <span>{{campaign.landingPage?.createdUser|slice:0:13}}
-                                                                                                    <span *ngIf="campaign.landingPage?.createdUser?.length>13">..</span>
-                                                                                                </span>
-                                                                                            </span>
-                                                                                            <span *ngIf="campaign.landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{campaign.landingPage?.categoryName}}">
-                                                                                                <strong translate>Folder:</strong><span>{{campaign?.landingPage?.categoryName|slice:0:7}}</span>
-                                                                                                <span *ngIf="campaign?.landingPage?.categoryName?.length>7">..</span>
-                                                                                            </span>
-                                                                                            <div class="item__actions">
-                                                                                                <span>
-                                                                                                     <a  style="float:left; right: -6px;" class="fm external-link" target="_BLANK"  data-toggle="tooltip"  data-placement="top"  title="Preview"
-                                                                                                        (click)="$event.stopPropagation();showLandingPagePreview(campaign.landingPage)">
-                                                                                                        <i class="fa fa-external-link-square preview-edit-color" aria-hidden="true" style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                    </a>
-                                                                                                    <a  style="float:left; right: -15px;" class="fm external-link" target="_BLANK"  data-toggle="tooltip"  data-placement="top"  title="Edit"
-                                                                                                        (click)="$event.stopPropagation();editLandingPage(campaign.landingPage)">
-                                                                                                        <i class="fa fa-edit preview-edit-color" aria-hidden="true" style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                    </a>
-                                                                                                </span>
+                                                                            <li>
+                                                                                <div class="flex-row mHeight">
+                                                                                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+                                                                                        <div  class="row">
+                                                                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                <div class="grid-box imgage-paddings"  
+                                                                                                    [ngClass]="landingPageId === selectedLandingPageRow ? 'template-selected-border' :''"  
+                                                                                                    (click)="setLandingPage(campaign.landingPage)"   >                
+                                                                                                        <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                            <label>
+                                                                                                                <input 
+                                                                                                                type="radio" class="radio-custimization" 
+                                                                                                                [checked]="landingPageId === selectedLandingPageRow"  >
+                                                                                                            </label>
+                                                                                                    </span>
+                                                                                                
+                                                                                                        <img 
+                                                                                                            class="img-grid-track "
+                                                                                                            src="{{campaign.landingPage.thumbnailPath}}" alt="" >
+                                                                                                            
+                                                                                                            <span class="icon-alignments"> 
+                                                                                                                <a data-toggle="tooltip" data-placement="top" title=""
+                                                                                                                 (click)="$event.stopPropagation();showLandingPagePreview(landingPage)" data-original-title="Preview">
+                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                            </span>
+                                                                                                
+                                                                                                    <!-- hover Content --> 
+                                                                                                        <div  class="bar hover-bar" >
+                                                                                                            <a  data-placement="top" >
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                        <div class="content-hover-align fontsize-cls">
+                                                                                                                            <span class="item__name cardDetails-mar"  [title]="campaign.landingPage.name">
+                                                                                                                                <strong>{{campaign.landingPage.name |slice:0:15}}</strong>
+                                                                                                                                <strong *ngIf="campaign.landingPage?.name?.length>13">..</strong>
+                                                                                                                            </span>
+                                                                                                                            <br>
+                                                                                                                            <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                <span>
+                                                                                                                                    <app-timestamp
+                                                                                                                                        [isOnlyDate]="true"
+                                                                                                                                        [dateAndTime]="campaign?.landingPage?.createdDateInString">
+                                                                                                                                    </app-timestamp>
+                                                                                                                                </span>
+                                                                                                                            </span>
+                                                                                                                             <span class="campaign-email-template-category cardDetails-mar"             title="{{campaign?.landingPage?.createdUser}}">
+                                                                                                                               <strong translate>By:</strong>
+                                                                                                                                <span>{{campaign.landingPage?.createdUser|slice:0:13}}
+                                                                                                                                </span>
+                                                                                                                             </span>
+                                                                                                                       
+                                                                                                                            
+                                                                                                                            <span *ngIf="campaign.landingPage?.categoryName?.length>0"  class="campaign-email-template-category cardDetails-mar" title="{{campaign.landingPage?.categoryName}}">
+                                                                                                                                <strong translate>Folder:</strong>
+                                                                                                                                <span >{{campaign.landingPage?.categoryName|slice:0:5}}</span>
+                                                                                                                                <span *ngIf="campaign.landingPage?.categoryName?.length>5">..</span>
+                                                                                                                            </span> 
+                                                                                                                        </div> 
+                                                                                                                        <span class="label-color-custmization" (click)="$event.stopPropagation();editLandingPage(campaign.landingPage)" >Edit</span>
+                                                                                                                    </div>       
+                                                                                                                        <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                </div>
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="clearfix"></div>
                                                                                 </div>
                                                                             </li>
                                                                         </ul>
                                                                     </div>
                                                                 </ng-container>
                                                                 <!-- page new code -->
-                                                                <ul class="content__list"  *ngFor="let landingPage of landingPagePagination.pagedItems ;let i =index">
+                                                                <ul class="content__list" *ngFor="let landingPage of landingPagePagination.pagedItems  ;let i =index">
                                                                     <li *ngIf="landingPageId!=landingPage.id">
                                                                         <div class="flex-row mHeight" >
                                                                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
-                                                                                        <div  class="row">
-                                                                                              <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
-                                                                                                    <div class="grid-box imgage-paddings"  (click)="setLandingPage(landingPage)">
+                                                                                <div  class="row">
+                                                                                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                        <div class="grid-box imgage-paddings"  
+                                                                                            [ngClass]="landingPage.id === selectedLandingPageRow ? 'template-selected-border' :''" 
+                                                                                            (click)="setLandingPage(landingPage)" >
+                                                                                    
+                                                                                                <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                    <label>
+                                                                                                        <input 
+                                                                                                        type="radio" class="radio-custimization" 
+                                                                                                        [checked]="landingPage.id === selectedLandingPageRow"  >
+                                                                                                    </label>
+                                                                                            </span>
+                                                                                        
+                                                                                                <img 
+                                                                                                    class="img-grid-track "
+                                                                                                    src="{{landingPage.thumbnailPath}}" alt="" >
                                                                                                     
-                                                                                                        <span class="select-check-box" [class.hide]="emailTemplate.draft">
-                                                                                                            <label>
-                                                                                                                 <input 
-                                                                                                                 type="radio" class="radio-custimization" [checked]="landingPage.id === selectedLandingPageRow" >
-                                                                                                               </label>
-                                                                                                       </span>
-                                                                                                           <img  [ngClass]="landingPage.id === selectedLandingPageRow ? 'template-selected-top-border' :'' " 
-                                                                                                            class="img-grid-track "
-                                                                                                            src="{{landingPage.thumbnailPath}}" alt="">
-                                                                                                
-                                                                                                       <!-- hover Content --> 
-                                                                                                        <div  class="bar hover-bar" [ngClass]="landingPage.id === selectedLandingPageRow ? 'template-selected-bottom-border' :'' " >
-                                                                                                         <a  data-placement="top" >
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-md-6 col-sm-6 col-xs-6 col-lg-8 emailtemp-content">
-                                                                                                                    <div class="content-hover-align fontsize-cls">
-                                                                                                                        <span class="item__name cardDetails-mar"   [title]="landingPage.name">
-                                                                                                                            <strong>{{landingPage.name |slice:0:13}}</strong>
-                                                                                                                            <strong *ngIf="landingPage?.name?.length>13">..</strong>
+                                                                                                    <span class="icon-alignments"> 
+                                                                                                        <a data-toggle="tooltip" data-placement="top" title=""
+                                                                                                         (click)="$event.stopPropagation();showLandingPagePreview(landingPage)" data-original-title="Preview">
+                                                                                                        <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                    </span>
+                                                                                        
+                                                                                            <!-- hover Content --> 
+                                                                                                <div  class="bar hover-bar" >
+                                                                                                    <a  data-placement="top" >
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                <div class="content-hover-align fontsize-cls">
+                                                                                                                    <span class="item__name cardDetails-mar"  [title]="landingPage.name">
+                                                                                                                        <strong>{{landingPage.name |slice:0:13}}</strong>
+                                                                                                                        <strong *ngIf="landingPage?.name?.length>13">..</strong>
+                                                                                                                    </span>
+                                                                                                                    <br>
+                                                                                                                    <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                        <span>
+                                                                                                                            <app-timestamp
+                                                                                                                                [isOnlyDate]="true"
+                                                                                                                                [dateAndTime]="landingPage.createdDateInString">
+                                                                                                                            </app-timestamp>
                                                                                                                         </span>
-                                                                                                                        
-                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
-                                                                                                                            <span>
-                                                                                                                                <app-timestamp
-                                                                                                                                    [isOnlyDate]="true"
-                                                                                                                                    [dateAndTime]="landingPage.createdDateInString">
-                                                                                                                                </app-timestamp>
+                                                                                                                    </span>
+                                                                                                                    <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                                                                                                                        <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                            <strong translate>Created by:</strong>
+                                                                                                                            <span>{{emailTemplate.createdBy|slice:0:11}}
+                                                                                                                                <span
+                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span>
                                                                                                                             </span>
+                                                                                                                        </p>
+                                                                                                                    </ng-container>
+                                                                                                                    <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                                                                                                                        <span class="cardDetails-mar" title="{{landingPage.createdUser}}">
+                                                                                                                            <strong translate>By:</strong><span>{{landingPage.createdUser|slice:0:13}}<span
+                                                                                                                                    *ngIf="landingPage.createdUser?.length>13">..</span></span>
                                                                                                                         </span>
-                                                                                                                        <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
-                                                                                                                                <strong translate>By:</strong>
-                                                                                                                                <span>{{emailTemplate.createdBy|slice:0:11}}
-                                                                                                                                    <span
-                                                                                                                                        *ngIf="emailTemplate.createdBy?.length>11">..</span>
-                                                                                                                                </span>
-                                                                                                                            </p>
-                                                                                                                        </ng-container>
-                                                                                                                        <ng-container>
-                                                                                                                            <span class="cardDetails-mar" title="{{landingPage.createdUser}}">
-                                                                                                                                <strong translate>By:</strong><span>{{landingPage.createdUser|slice:0:13}}<span
-                                                                                                                                        *ngIf="landingPage.createdUser?.length>13">..</span></span>
-                                                                                                                            </span>
-                                                                                                                            <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{landingPage?.categoryName}}">
-                                                                                                                                <strong translate>Folder:</strong>
-                                                                                                                                <span>{{landingPage?.categoryName|slice:0:7}}</span>
-                                                                                                                                <span *ngIf="landingPage?.categoryName?.length>7">..</span>
-                                                                                                                            </span>
-                                                                                                                        
-                                                                                                                        </ng-container>
-                                                                                                                    </div> 
-                                                                                                                </div>       
-                                                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
-                                                                                                                    <div class="col-md-4 col-sm-6 col-xs-6 col-lg-4">
-                                                                                                                        <div class="item__actions tooltip-mng">
-                                                                                                                            <span class="icon-alignments"> 
-                                                                                                                                <a data-toggle="tooltip" data-placement="top" title="Preview"
-                                                                                                                                (click)="$event.stopPropagation();showLandingPagePreview(landingPage)">
-                                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls"  ></i>
-                                                                                                                                </a>
-                                                                                                                                <a class="fm external-link"
-                                                                                                                                    data-placement="top"
-                                                                                                                                    data-toggle="tooltip"
-                                                                                                                                    target="_BLANK" 
-                                                                                                                                    title="Edit"
-                                                                                                                                    (click)="$event.stopPropagation();editLandingPage(landingPage)">
-                                                                                                                                <i aria-hidden="true" class="fa fa-edit preview-edit-color tooltip-cls"
-                                                                                                                                ></i>
-                                                                                                                                </a>
-                                                                                                                            </span>
-                                                                                                                        </div>
-                                                                                                                    </div>               
-                                                                                                            </div>
-                                                                                                            </a>
+                                                                                                                    </ng-container> 
+                                                                                                                    <span *ngIf="landingPage?.category?.categoryName>0" class="campaign-email-template-category cardDetails-mar" title="{{landingPage.categoryName}}">
+                                                                                                                        <strong translate>Folder:</strong>
+                                                                                                                        <span >{{landingPage.categoryName|slice:0:5}}</span>
+                                                                                                                        <span *ngIf="landingPage.categoryName?.length>5">..</span>
+                                                                                                                    </span> 
+                                                                                                                </div> 
+                                                                                                                <span class="label-color-custmization" (click)="$event.stopPropagation();editLandingPage(landingPage)" >Edit</span>
+                                                                                                            </div>       
+                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                              </div>
+                                                                                                    </a>
+                                                                                                </div>
                                                                                         </div>
-                                                                                   
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -2108,7 +2083,7 @@
                                                                             </div>
                                                                             <div class="row">
                                                                                 <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-labelledby="">
-                                                                                    <div class="col-xs-12">
+                                                                                    <div>
                                                                                         <app-loader *ngIf="reply.loader">
                                                                                         </app-loader>
                                                                                         <ng-container *ngIf=" reply.emailTemplatesPagination.totalRecords>0 && !reply.loader">
@@ -2117,176 +2092,172 @@
                                                                                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
                                                                                                         <div class="mix-grid">
                                                                                                             <div *ngIf="(!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.showSelectedEmailTemplate && reply.selectedEmailTemplateIdForEdit>0 ) ">
+                                                                                                                <!-- edit launch -->
                                                                                                                 <ul class="content__list">
-                                                                                                                    <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
-                                                                                                                        <div class="flex-row" (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)">
-                                                                                                                            <div class="item__select-box-wrapper">
-                                                                                                                                <span class="select-box">
-                                                                                                                                    <label>
-                                                                                                                                        <input
-                                                                                                                                            (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)"
-                                                                                                                                            type="checkbox"
-                                                                                                                                            [value]="reply.emailTemplate.id"
-                                                                                                                                            id="reply-{{i}}-{{reply.emailTemplate.id}}"
-                                                                                                                                            *ngIf="reply.emailTemplate.id!== reply.selectedEmailTemplateId">
-                                                                                                                                            <input
-                                                                                                                                             type="checkbox"
-                                                                                                                                            checked="checked"
-                                                                                                                                            [value]="reply.emailTemplate.id"
-                                                                                                                                            id="reply-{{i}}-{{reply.emailTemplate.id}}"
-                                                                                                                                            *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"
-                                                                                                                                            >
-                                                                                                                                    </label>
-                                                                                                                                </span>
-                                                                                                                                <span class="ng-scope">
-                                                                                                                                     <a class="item__preview item__preview--image img-container custom"  target="_BLANK">
-                                                                                                                                        <img alt="" class="thumb ng-scope"  style="width:103px !important" src="{{reply.emailTemplate.subject}}">
-                                                                                                                                    </a> 
-                                                                                                                                     <a href="javascript:;">
-                                                                                                                                </a>
-                                                                                                                            </span>
-                                                                                                                            </div>
-                                                                                                                            <div class="item__content">
-                                                                                                                                <div class="flex-row">
-                                                                                                                                    <span class="item__name" style="float:left" [title]="reply.emailTemplate.name">
-                                                                                                                                        <strong>{{reply.emailTemplate.name |slice:0:15}}</strong>
-                                                                                                                                        <strong *ngIf="reply.emailTemplate?.name?.length>15">..</strong>
-                                                                                                                                    </span>
-                                                                                                                                    <br>
-                                                                                                                                    <span lass="item__name" title="created on" style="float:left">
-                                                                                                                                        <span>
-                                                                                                                                            <app-timestamp
-                                                                                                                                                [isOnlyDate]="true"
-                                                                                                                                                [dateAndTime]="reply?.emailTemplate?.createdTime">
-                                                                                                                                            </app-timestamp>
-                                                                                                                                        </span>
-                                                                                                                                    </span>
-                                                                                                                                    <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
-                                                                                                                                        <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
-                                                                                                                                            <strong translate>By:</strong>
-                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:11}}<span
-                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
-                                                                                                                                        </span>
-                                                                                                                                    </ng-container>
-                                                                                                                                    <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
-                                                                                                                                        <strong antranslate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:5}}</span>
-                                                                                                                                        <span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
-                                                                                                                                    </span>
-                                                                                                                                    <div class="item__actions">
-                                                                                                                                        <span> 
-                                                                                                                                            <a style="float:left; right: -6px;"
-                                                                                                                                                class="fm external-link"
-                                                                                                                                                target="_BLANK"
-                                                                                                                                                data-toggle="tooltip"
-                                                                                                                                                data-placement="top"
-                                                                                                                                                title="Preview"
-                                                                                                                                                (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)">
-                                                                                                                                                <i class="fa fa-external-link-square preview-edit-color"
-                                                                                                                                                    aria-hidden="true"
-                                                                                                                                                    style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                                                            </a>
-                                                                                                                                            <a style="float:left; right: -15px;"
-                                                                                                                                                class="fm external-link"
-                                                                                                                                                target="_BLANK"
-                                                                                                                                                data-toggle="tooltip"
-                                                                                                                                                data-placement="top"
-                                                                                                                                                title="Edit"
-                                                                                                                                                (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)">
-                                                                                                                                                <i class="fa fa-edit preview-edit-color"
-                                                                                                                                                    aria-hidden="true"
-                                                                                                                                                    style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                                                                </a>
-                                                                                                                                        </span>
+                                                                                                                    <li>
+                                                                                                                        <div class="flex-row mHeight" >
+                                                                                                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+                                                                                                                                <div  class="row">
+                                                                                                                                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                                                        <div class="grid-box imgage-paddings"  
+                                                                                                                                            [ngClass]="reply.emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :''"   
+                                                                                                                                           (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)"  >                 
+                                                                                                                                                <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                                                                    <label>
+                                                                                                                                                        <input   *ngIf="reply.emailTemplate.id!== reply.selectedEmailTemplateId"
+                                                                                                                                                        name="reply-email-template"
+                                                                                                                                                        [value]="reply.emailTemplate.id"
+                                                                                                                                                        id="reply-{{i}}-{{reply.emailTemplate.id}}"
+                                                                                                                                                        type="radio" class="radio-custimization" 
+                                                                                                                                                        [checked]="emailTemplate.id == reply.selectedEmailTemplateId"  >
+                                                                                                                
+                                                                                                                                                         <input *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"  
+                                                                                                                                                         [value]="reply.emailTemplate.id" 
+                                                                                                                                                         id="reply-{{i}}-{{reply.emailTemplate.id}}" type="radio" class="radio-custimization" 
+                                                                                                                                                         name="reply-email-template">
+                                                                                                                                                    </label>
+                                                                                                                                            </span>
+                                                                                                                                        
+                                                                                                                                                <img 
+                                                                                                                                                    class="img-grid-track "
+                                                                                                                                                    src="{{emailTemplate.subject}}"
+                                                                                                                                                    alt="" >
+                                                                                                                                                    
+                                                                                                                                                    <span class="icon-alignments"> 
+                                                                                                                                                        <a data-toggle="tooltip" data-placement="top" title=""
+                                                                                                                                                         (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)"
+                                                                                                                                                          data-original-title="Preview">
+                                                                                                                                                        <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                                                                    </span>
+                                                                                                                                        
+                                                                                                                                            <!-- hover Content --> 
+                                                                                                                                                <div  class="bar hover-bar" >
+                                                                                                                                                    <a  data-placement="top" >
+                                                                                                                                                        <div class="row">
+                                                                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                                                                <div class="content-hover-align fontsize-cls">
+                                                                                                                                                                    <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                        <strong>{{emailTemplate.name |slice:0:15}}</strong>
+                                                                                                                                                                        <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
+                                                                                                                                                                    </span>
+                                                                                                                                                                    <br>
+                                                                                                                                                                   
+                                                                                                                                                                    <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                        <span>
+                                                                                                                                                                            <app-timestamp
+                                                                                                                                                                                [isOnlyDate]="true"
+                                                                                                                                                                                [dateAndTime]="emailTemplate.createdDate">
+                                                                                                                                                                            </app-timestamp>
+                                                                                                                                                                        </span>
+                                                                                                                                                                    </span>   
+                                                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
+                                                                                                                                                                        <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
+                                                                                                                                                                            <strong translate>By:</strong>
+                                                                                                                                                                            <span>{{reply?.emailTemplate?.createdBy|slice:0:11}}<span
+                                                                                                                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
+                                                                                                                                                                        </span>
+                                                                                                                                                                    </ng-container>  
+                                                                                                                                                                     <span *ngIf="reply?.emailTemplate?.category?.length>0"  class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
+                                                                                                                                                                        <strong antranslate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                                                        <span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
+                                                                                                                                                                    </span>                                               
+                                                                                                                                                                </div> 
+                                                                                                                                                                <span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)" >Edit</span>
+                                                                                                                                                            </div>       
+                                                                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                                                        </div>
+                                                                                                                                                    </a>
+                                                                                                                                                </div>
+                                                                                                                                        </div>
                                                                                                                                     </div>
                                                                                                                                 </div>
                                                                                                                             </div>
-                                                                                                                            <div class="clearfix"></div>
                                                                                                                         </div>
                                                                                                                     </li>
                                                                                                                 </ul>
                                                                                                             </div>
+                                                                                                            <!-- new email template in launch  -->
                                                                                                             <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let i =index">
-                                                                                                                <li [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId" *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
-                                                                                                                    <div class="flex-row" (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
-                                                                                                                        <div class="item__select-box-wrapper">
-                                                                                                                            <span class="select-box" [class.hide]="emailTemplate.draft">
-                                                                                                                                <label>
-                                                                                                                                    <input
-                                                                                                                                        (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
-                                                                                                                                        type="checkbox">
-                                                                                                                                </label>
-                                                                                                                            </span>
-                                                                                                                            <span class="ng-scope"> <a
-                                                                                                                                    class="item__preview item__preview--image img-container custom"
-                                                                                                                                    target="_BLANK"> <img
-                                                                                                                                        class="thumb ng-scope"
-                                                                                                                                      
-                                                                                                                                        src="{{emailTemplate.subject}}" alt="">
-                                                                                                                                </a> <a href="javascript:;"> </a>
-                                                                                                                            </span>
+                                                                                                                <li *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
+                                                                                                                    <div class="flex-row mHeight" >
+                                                                                                                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+                                                                                                                                    <div  class="row">
+                                                                                                                                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                                                                <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :'' " 
+                                                                                                                                                  (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
+                                                                                                                                        
+                                                                                                                                                    <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                                                                        <label>
+                                                                                                                                                            <input 
+                                                                                                                                                            type="radio" class="radio-custimization" 
+                                                                                                                                                            [checked]="emailTemplate.id==reply.selectedEmailTemplateId"  >
+                                                                                                                                                        </label>
+                                                                                                                                                </span>
+                                                                                                                                            
+                                                                                                                                                    <img 
+                                                                                                                                                        class="img-grid-track "
+                                                                                                                                                        src="{{emailTemplate.subject}}" alt="" >
+                                                                                                                                                        
+                                                                                                                                                        <span class="icon-alignments"> 
+                                                                                                                                                            <a data-toggle="tooltip" data-placement="top" title=""
+                                                                                                                                                            
+                                                                                                                                                             (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                                                            <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                                                                        </span>
+                                                                                                                                            
+                                                                                                                                                <!-- hover Content --> 
+                                                                                                                                                    <div  class="bar hover-bar" >
+                                                                                                                                                    <a  data-placement="top" >
+                                                                                                                                                        <div class="row">
+                                                                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                                                                <div class="content-hover-align fontsize-cls">
+                                                                                                                                                                    <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                        <strong>{{emailTemplate.name |slice:0:13}}</strong>
+                                                                                                                                                                        <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
+                                                                                                                                                                    </span>
+                                                                                                                                                                    <br>
+                                                                                                                                                                    <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                        <span>
+                                                                                                                                                                            <app-timestamp
+                                                                                                                                                                                [isOnlyDate]="true"
+                                                                                                                                                                                [dateAndTime]="emailTemplate.createdDate">
+                                                                                                                                                                            </app-timestamp>
+                                                                                                                                                                        </span>
+                                                                                                                                                                    </span>
+                                                                                                                                                                    <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                                                                                                                                                                        <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                                                            <strong translate>Created by:</strong>
+                                                                                                                                                                            <span>{{emailTemplate.createdBy|slice:0:11}}
+                                                                                                                                                                                <span
+                                                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span>
+                                                                                                                                                                            </span>
+                                                                                                                                                                        </p>
+                                                                                                                                                                    </ng-container>
+                                                                                                                                                                    <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                                                                                                                                                                        <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                                                            <strong translate>Created by:</strong>
+                                                                                                                                                                            <span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                                                                                                    *ngIf="emailTemplate.vendorName?.length>11">..</span>
+                                                                                                                                                                            </span>
+                                                                                                                                                                        </span>
+                                                                                                                                                                    </ng-container> 
+                                                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                                                                        <strong translate>Folder:</strong>
+                                                                                                                                                                        <span >{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>5">..</span>
+                                                                                                                                                                    </span> 
+                                                                                                                                                                </div> 
+                                                                                                                                                                <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                                                                                                                            </div>       
+                                                                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                                                        </div>
+                                                                                                                                                        </a>
+                                                                                                                                                    </div>
+                                                                                                                                                </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                            
                                                                                                                         </div>
-                                                                                                                        <div class="item__content">
-                                                                                                                            <div class="flex-row">
-                                                                                                                                <span class="item__name" style="float:left" [title]="emailTemplate.name">
-                                                                                                                                    <strong>{{emailTemplate.name |slice:0:15}}</strong>
-                                                                                                                                    <strong *ngIf="emailTemplate?.name?.length>15">..</strong>
-                                                                                                                                </span>
-                                                                                                                                <br>
-                                                                                                                                <span class="item__name" title="created on" style="float:left">
-                                                                                                                                    <span>
-                                                                                                                                        <app-timestamp
-                                                                                                                                            [isOnlyDate]="true"
-                                                                                                                                            [dateAndTime]="emailTemplate.createdDate">
-                                                                                                                                        </app-timestamp>
-                                                                                                                                    </span>
-                                                                                                                                </span>
-                                                                                                                                <br>
-                                                                                                                                <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                    <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:11}}<span
-                                                                                                                                                *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
-                                                                                                                                    </span>
-                                                                                                                                </ng-container>
-                                                                                                                                <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                    <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <strong translate>By:</strong><span>{{emailTemplate.vendorName|slice:0:11}}<span
-                                                                                                                                                *ngIf="emailTemplate.vendorName?.length>11">..</span></span>
-                                                                                                                                    </span>
-                                                                                                                                </ng-container>
-                                                                                                                                <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                    <strong translate>Folder:</strong><span>{{emailTemplate?.category|slice:0:5}}</span>
-                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>5">..</span>
-                                                                                                                                </span>
-                                                                                                                                <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
-                                                                                                                                <div class="item__actions">
-                                                                                                                                    <span> <a
-                                                                                                                                            style="float:left;right: -6px;"
-                                                                                                                                            class="fm external-link"
-                                                                                                                                            target="_BLANK"
-                                                                                                                                            data-toggle="tooltip"
-                                                                                                                                            data-placement="top"
-                                                                                                                                            title="Preview"
-                                                                                                                                            (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
-                                                                                                                                            <i class="fa fa-external-link-square preview-edit-color"
-                                                                                                                                                aria-hidden="true"
-                                                                                                                                                style="font-size: 18px; padding-top: 1px !important;"></i>
-                                                                                                                                        </a>
-                                                                                                                                        <a style="float:left; right: -15px;"
-                                                                                                                                                class="fm external-link"
-                                                                                                                                                target="_BLANK"
-                                                                                                                                                data-toggle="tooltip"
-                                                                                                                                                data-placement="top"
-                                                                                                                                                title="Edit"
-                                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">
-                                                                                                                                                <i class="fa fa-edit preview-edit-color"
-                                                                                                                                                    aria-hidden="true"
-                                                                                                                                                    style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                                                                </a>
-                                                                                                                                    </span>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="clearfix"></div>
                                                                                                                     </div>
                                                                                                                 </li>
                                                                                                             </ul>
@@ -2547,83 +2518,88 @@
     
                                                                                                                     </ul>
                                                                                                                 </div>
+                                                                                                                
                                                                                                                 <ul class="content__list" *ngFor="let emailTemplate of url.emailTemplatesPagination.pagedItems ;let i =index">
-                                                                                                                    <li [class.list__item--selected]="emailTemplate.id==url.selectedEmailTemplateId" *ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
-                                                                                                                        <div class="flex-row" (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
-                                                                                                                            <div class="item__select-box-wrapper">
-                                                                                                                                <span class="select-box" [class.hide]="emailTemplate.draft">
-                                                                                                                                    <label>
-                                                                                                                                        <input
-                                                                                                                                            (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
-                                                                                                                                            type="checkbox">
-                                                                                                                                    </label>
-                                                                                                                                </span>
-                                                                                                                                <span class="ng-scope">
-                                                                                                                                     <a class="item__preview item__preview--image img-container custom"
-                                                                                                                                        target="_BLANK"> <img
-                                                                                                                                            class="thumb ng-scope"
-                                                                                                                                          
-                                                                                                                                            src="{{emailTemplate.subject}}" alt="">
-                                                                                                                                    </a> <a href="javascript:;"></a>
-                                                                                                                                </span>
+                                                                                                                    <li *ngIf="url.selectedEmailTemplateIdForEdit!=emailTemplate.id">
+                                                                                                                        <div class="flex-row mHeight" >
+                                                                                                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+                                                                                                                                        <div  class="row">
+                                                                                                                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+                                                                                                                                                    <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate.id==url.selectedEmailTemplateId ? 'template-selected-border' :'' " 
+                                                                                                                                                    (click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
+                                                                                                                                            
+                                                                                                                                                        <span class="select-check-box" [class.hide]="emailTemplate.draft">
+                                                                                                                                                            <label>
+                                                                                                                                                                <input 
+                                                                                                                                                                type="radio" class="radio-custimization" 
+                                                                                                                                                                [checked]="emailTemplate.id==url.selectedEmailTemplateId"  >
+                                                                                                                                                            </label>
+                                                                                                                                                    </span>
+                                                                                                                                                
+                                                                                                                                                        <img 
+                                                                                                                                                            class="img-grid-track "
+                                                                                                                                                            src="{{emailTemplate.subject}}" alt="" >
+                                                                                                                                                            
+                                                                                                                                                            <span class="icon-alignments"> 
+                                                                                                                                                                <a data-toggle="tooltip" data-placement="top" title=""
+                                                                                                                                                                
+                                                                                                                                                                 (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                                                                <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                                                                                                            </span>
+                                                                                                                                                
+                                                                                                                                                    <!-- hover Content --> 
+                                                                                                                                                        <div  class="bar hover-bar" >
+                                                                                                                                                        <a  data-placement="top" >
+                                                                                                                                                            <div class="row">
+                                                                                                                                                                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                                                                                                                    <div class="content-hover-align fontsize-cls">
+                                                                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                            <strong>{{emailTemplate.name |slice:0:13}}</strong>
+                                                                                                                                                                            <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
+                                                                                                                                                                        </span>
+                                                                                                                                                                        <br>
+                                                                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                            <span>
+                                                                                                                                                                                <app-timestamp
+                                                                                                                                                                                    [isOnlyDate]="true"
+                                                                                                                                                                                    [dateAndTime]="emailTemplate.createdDate">
+                                                                                                                                                                                </app-timestamp>
+                                                                                                                                                                            </span>
+                                                                                                                                                                        </span>
+                                                                                                                                                                        <ng-container *ngIf="emailTemplate.type!='PARTNER'">
+                                                                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                                                                <strong translate>Created by:</strong>
+                                                                                                                                                                                <span>{{emailTemplate.createdBy|slice:0:11}}
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        *ngIf="emailTemplate.createdBy?.length>11">..</span>
+                                                                                                                                                                                </span>
+                                                                                                                                                                            </p>
+                                                                                                                                                                        </ng-container>
+                                                                                                                                                                        <ng-container *ngIf="emailTemplate.type=='PARTNER'">
+                                                                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                                                                <strong translate>Created by:</strong>
+                                                                                                                                                                                <span>{{emailTemplate.vendorName|slice:0:11}}<span
+                                                                                                                                                                                        *ngIf="emailTemplate.vendorName?.length>11">..</span>
+                                                                                                                                                                                </span>
+                                                                                                                                                                            </span>
+                                                                                                                                                                        </ng-container> 
+                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                                                                            <strong translate>Folder:</strong>
+                                                                                                                                                                            <span >{{emailTemplate?.category|slice:0:5}}</span>
+                                                                                                                                                                            <span *ngIf="emailTemplate?.category?.length>5">..</span>
+                                                                                                                                                                        </span> 
+                                                                                                                                                                    </div> 
+                                                                                                                                                                    <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                                                                                                                                </div>       
+                                                                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                                                            </div>
+                                                                                                                                                            </a>
+                                                                                                                                                        </div>
+                                                                                                                                                    </div>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                
                                                                                                                             </div>
-                                                                                                                            <div class="item__content">
-                                                                                                                                <div class="flex-row">
-                                                                                                                                    <span class="item__name" style="float:left" [title]="emailTemplate.name">
-                                                                                                                                        <strong>{{emailTemplate.name |slice:0:15}}</strong>
-                                                                                                                                        <strong *ngIf="emailTemplate?.name?.length>15">..</strong>
-                                                                                                                                    </span>
-                                                                                                                                    <br>
-                                                                                                                                    <span class="item__name" title="created on" style="float:left">
-                                                                                                                                        <span>
-                                                                                                                                            <app-timestamp
-                                                                                                                                                [isOnlyDate]="true"
-                                                                                                                                                [dateAndTime]="emailTemplate?.createdDate">
-                                                                                                                                            </app-timestamp>
-                                                                                                                                        </span>
-                                                                                                                                    </span>
-                                                                                                                                    <br>
-                                                                                                                                    <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                        <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                            <strong translate>By:</strong><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                                                                    *ngIf="emailTemplate.createdBy?.length>11">..</span></span>
-                                                                                                                                        </span>
-                                                                                                                                    </ng-container>
-                                                                                                                            
-                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                        <strong translate>Folder:</strong><span>{{emailTemplate?.category|slice:0:5}}</span>
-                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>5">..</span>
-                                                                                                                                    </span>
-                                                                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
-                                                                                                                                    <div class="item__actions">
-                                                                                                                                        <span> <a
-                                                                                                                                                style="float:left;right: -6px;"
-                                                                                                                                                class="fm external-link"
-                                                                                                                                                target="_BLANK"
-                                                                                                                                                data-toggle="tooltip"
-                                                                                                                                                data-placement="top"
-                                                                                                                                                title="Preview"
-                                                                                                                                                (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
-                                                                                                                                                <i class="fa fa-external-link-square preview-edit-color"
-                                                                                                                                                    aria-hidden="true"
-                                                                                                                                                    style="font-size: 18px; padding-top: 1px !important;"></i>
-                                                                                                                                            </a>
-                                                                                                                                            <a style="float:left; right: -15px;"
-                                                                                                                                                class="fm external-link"
-                                                                                                                                                target="_BLANK"
-                                                                                                                                                data-toggle="tooltip"
-                                                                                                                                                data-placement="top"
-                                                                                                                                                title="Edit"
-                                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">
-                                                                                                                                                <i class="fa fa-edit preview-edit-color"
-                                                                                                                                                    aria-hidden="true"
-                                                                                                                                                    style="padding-top: 1px !important;; font-size: 18px;"></i>
-                                                                                                                                                </a>
-                                                                                                                                        </span>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                            <div class="clearfix"></div>
                                                                                                                         </div>
                                                                                                                     </li>
                                                                                                                 </ul>

@@ -5,6 +5,12 @@
   margin-bottom: 10px;
   color: #00a8e7;
 }
+
+.list-icons-sm{
+  height: 50px;
+  width: 50px;
+}
+
 @media screen and (max-width: 600px) {
   .mTopSort {
     top: 14px;

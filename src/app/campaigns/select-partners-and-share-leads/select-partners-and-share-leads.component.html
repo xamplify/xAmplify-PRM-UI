@@ -120,25 +120,25 @@
                                                         </td>
                                                         <td style="width: 10%;" class="hidden-xs">
                                                             <img *ngIf="shareLead.socialNetwork=='ZOHO' && shareLead.synchronisedList" src="{{properties?.zohoImage}}"
-                                                            alt="zoho" style="height: 70px;">
+                                                            alt="zoho" class="list-icons-sm">
                                                             <img *ngIf="shareLead.socialNetwork=='GOOGLE' && shareLead.synchronisedList" src="{{properties?.googleImage}}"
-                                                            alt="google" style="height: 70px;">
+                                                            alt="google" class="list-icons-sm">
                                                             <img *ngIf="shareLead.socialNetwork=='SALESFORCE' && shareLead.synchronisedList"
                                                             src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
                                                             *ngIf="shareLead.socialNetwork=='MANUAL' || !shareLead.synchronisedList" src="{{properties?.manualImage}}"
-                                                            alt="manual" style="height: 70px;">
+                                                            alt="manual" class="list-icons-sm">
                                                             <img *ngIf="shareLead.socialNetwork=='HUBSPOT' && shareLead.synchronisedList" src="{{properties?.hubspotImage}}"
-                                                            alt="manual" style="height: 70px;">
+                                                            alt="manual" class="list-icons-sm">
                                                             <img *ngIf="shareLead.socialNetwork=='PIPEDRIVE' && shareLead.synchronisedList" src="{{properties?.pipedriveImage}}"
-                                                            alt="manual" style="height: 70px;">
+                                                            alt="manual" class="list-icons-sm">
                                                             <img *ngIf="shareLead.socialNetwork=='MARKETO' && shareLead.synchronisedList" src="{{properties?.marketoImage}}"
-                                                            alt="manual" style="height: 70px;">
+                                                            alt="manual"class="list-icons-sm">
                                                             <img
                                                             *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))"
                                                             src="assets/images/Spinner.gif"
                                                             style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
                                                             <img *ngIf="shareLead.socialNetwork=='MICROSOFT' && shareLead.synchronisedList" src="{{properties?.microsoftImage}}"
-                                                            alt="manual" style="height: 70px;">
+                                                            alt="manual" class="list-icons-sm">
                                                         </td>
                                                         <td>
                                                             <h4 class="moreipsis" title="{{shareLead.name}}">

@@ -51,6 +51,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	// @Input() isExclusion : boolean=false;
 	// highlightLetter: string = "*";
 
+    isPartnerPopupShow : boolean  = false ;
 	loggedInUserId: number;
 	validEmailPatternSuccess: boolean = true;
 	user: User;
@@ -660,6 +661,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	openAssignContactAndMdfAmountPopup() {
 		this.processingPartnersLoader = true;
 		$('#assignContactAndMdfPopup').modal('show');
+		this.isPartnerPopupShow = true ;
 		this.authenticationService.findNotifyPartnersOption(this.companyId).subscribe(
 			response => {
 				this.iteratePartnersAndAssignContactsCount(response.data);

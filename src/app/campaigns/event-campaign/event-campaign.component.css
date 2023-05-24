@@ -301,11 +301,7 @@ a.icons-link:hover {
   margin: 20px 20px 0 33px !important;
 }
 
-.col-block-active {
-  color: #fff;
-  vertical-align: central;
-  background-color: #0c84ae !important;
-}
+
 
 .highletClass {
   font-weight: 700 !important;
@@ -476,3 +472,8 @@ fieldset{
     height :65%;
   }
   
+  .img-class-list{
+    height: 50px !important;
+    width: 50px !important;
+
+  }
