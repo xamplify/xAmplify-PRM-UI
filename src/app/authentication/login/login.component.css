@@ -52,4 +52,7 @@ a.forget-password:hover {color: #4db1e2;}
   .social-icon-color {
   background-position: unset;
   }
-  
+  /** tharak **/
+  .field-icon {
+    color:#333 !important;
+  }

@@ -1397,6 +1397,7 @@ Page sidebar
   border: none;
   text-shadow: none;
   font-size: 14px;
+  border-bottom: 1px solid #3d4f65;
 }
 .page-sidebar .page-sidebar-menu > li.active > a > .selected,
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .selected {
