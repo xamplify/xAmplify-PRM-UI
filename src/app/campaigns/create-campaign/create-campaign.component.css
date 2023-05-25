@@ -2379,7 +2379,7 @@ i.fa.fa-angle-double-up {
 
 .tooltip-cls{
   font-size: 24px;
-  color: #54a7e9;
+  color: #54a7e9 !important;
   padding-top: 0px !important;
   font-size: 20px !important;
 }
@@ -2394,7 +2394,7 @@ i.fa.fa-angle-double-up {
  .bar {
   background: #f1f3fa;
   position: relative;
-  bottom: 95px;
+  bottom: 96px;
   visibility: initial;
   opacity: 0;
   border-bottom-right-radius: 5px;
