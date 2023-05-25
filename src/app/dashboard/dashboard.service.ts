@@ -971,7 +971,7 @@ getThemeDTOById(id:number){
     .catch(this.handleError);
 }
 getAllThemeNames(){
-    const url = this.authenticationService.REST_URL + 'custom/skin/getNames/'+'?access_token=' + this.authenticationService.access_token;
+    const url = this.authenticationService.REST_URL + 'custom/skin/getNames/'+ this.authenticationService.getUserId() +'?access_token=' + this.authenticationService.access_token;
     return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);

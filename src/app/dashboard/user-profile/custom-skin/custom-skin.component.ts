@@ -242,7 +242,7 @@ export class CustomSkinComponent implements OnInit {
   // }
   nameValid:boolean = false;
   changEvent(ev: any) {
-    this.sname = ev;
+    this.sname = ev.replace(/\s/g, '');
     this.getAllThemeNames(this.sname);
   }
 
@@ -545,7 +545,7 @@ export class CustomSkinComponent implements OnInit {
   setThemeDetails() {
     this.ngxloading = true;
     this.defaultAlert = false;
-    this.saveThemeDto.name = this.sname;
+    this.saveThemeDto.name = this.sname.replace(/\s/g, '');
     this.saveThemeDto.description = 'Hi';
     this.saveThemeDto.defaultTheme = false;
     this.saveThemeDto.createdBy = this.loggedInUserId;
@@ -697,10 +697,16 @@ export class CustomSkinComponent implements OnInit {
     var list = this.tnames;
     this.xtremandLogger.log(list);
     if ($.inArray(contactName, list) > -1) {
+      if(contactName === this.themeDTO.name){
+        this.isValidContactName = false;
+        $(".ng-valid[required], .ng-valid.required").css("color", "Black");
+      $("button#sample_editable_1_new").prop('disabled', false);
+      }else {
       this.isValidContactName = true;
       $("button#sample_editable_1_new").prop('disabled', true);
       $(".ng-valid[required], .ng-valid.required").css("color", "red");
-      this.invalidContactNameError = "name already exists";
+      this.invalidContactNameError = "Name is already exists";
+      }
     } else {
       $(".ng-valid[required], .ng-valid.required").css("color", "Black");
       $("button#sample_editable_1_new").prop('disabled', false);
