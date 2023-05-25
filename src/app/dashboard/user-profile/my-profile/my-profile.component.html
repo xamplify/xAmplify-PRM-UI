@@ -275,7 +275,7 @@
                              || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                     <div class="btn-group" style="padding-top: 7px;">
                                         <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme'"
+                                            style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
                                         <!-- <button class="btn btn-primary padding align"
@@ -316,8 +316,10 @@
                                             <div *ngIf="dto?.id == 1 || dto?.id == 2">
                                             <div class="img_padding">
 
-                                                <img alt="" class="img-custome"
+                                                <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
                                                     src="assets/images/theme/1/Webp/01.webp">
+                                                 <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
+                                                    src="assets/images/theme/1/Webp/02.webp">
 
                                             </div>
                                             <div class="card-bg topcard-padding">
@@ -327,16 +329,35 @@
                                                     <br>
                                                     <h5 class="card-title themefont">{{dto.name}} Theme</h5>
 
-                                                    <button type="button" class="btn  btn-size btn-selectcolor"
+                                                    <!-- <button type="button" class="btn  btn-size btn-selectcolor"
                                                         (click)="viewTheme();showDto(dto)"> <i
                                                             class="fa fa-eye" aria-hidden="true"></i>
-                                                        View</button>
+                                                        View </button>
                                                     <button type="button" *ngIf="dto.defaultTheme"
                                                         class="btn  btn-size"
                                                         [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
                                                         (click)="goToCustomThemes();showDto(dto);"> <i
                                                             class="fa fa-files-o" aria-hidden="true"></i>
-                                                        Copy</button>
+                                                        Copy</button> -->
+                                                        <td class="mAlignView">
+                                                            <div class="actions-block override-actions ActionAlign">
+                                                                <div class="mActionAlign ActionButtonPad iconmobile-align">
+                                                                    <a class="mMobileDisable" title="View"
+                                                                        (click)="viewTheme();showDto(dto);"><i
+                                                                            aria-hidden="true"
+                                                                            class="fa fa-eye mDisableColor"></i></a>
+                                                                    <a title="Activate"
+                                                                        (click)="activateThemeForCompanyWithAlert(dto.id)"
+                                                                        *ngIf="dto?.id != activeThemeDetails?.themeId"><i
+                                                                            _ngcontent-c69="" aria-hidden="true"
+                                                                            class="fa fa-power-off"></i></a>
+                                                                    <a class="mMobileDisable" title="Copy"
+                                                                        (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
+                                                                            aria-hidden="true"
+                                                                            class="fa fa-files-o mDisableColor"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                 </div>
                                             </div>
                                             </div>
@@ -380,7 +401,7 @@
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-power-off"></i></a>
-                                                        <a class="mMobileDisable" title="copy"
+                                                        <a class="mMobileDisable" title="Copy"
                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-files-o mDisableColor"></i></a>
@@ -1358,17 +1379,17 @@
                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                             <div class="col-md-9 col-sm-9 col-xs-12 desktopview">
                                                 <div class="desktopview-align">
-                                                    <img  *ngIf="themeDto.id==1"  src="assets/images/theme/1/Webp/desktop.png"
+                                                    <img  *ngIf="themeDto.id==1"  src="assets/images/theme/1/Webp/Desktop.webp"
                                                         class="desktopimg-custome">
-                                                        <img  *ngIf="themeDto.id==2"  src="assets/images/theme/1/Webp/Rectangle42.webp"
+                                                        <img  *ngIf="themeDto.id==2"  src="assets/images/theme/1/Webp/dd.webp"
                                                         class="desktopimg-custome">
                                                 </div>
                                             </div>
                                             <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
                                                 <div class="mobileview-align">
-                                                    <img *ngIf="themeDto.id==1"src="assets/images/theme/1/Webp/mobile.png"
+                                                    <img *ngIf="themeDto.id==1"src="assets/images/theme/1/Webp/mobile.webp"
                                                         class="mobileimg-custome">
-                                                        <img *ngIf="themeDto.id==2"src="assets/images/theme/1/Webp/unnamed.webp"
+                                                        <img *ngIf="themeDto.id==2"src="assets/images/theme/1/Webp/dm.webp"
                                                         class="mobileimg-custome">
                                                 </div>
                                             </div>

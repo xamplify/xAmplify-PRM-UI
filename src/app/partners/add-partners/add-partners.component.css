@@ -120,3 +120,6 @@ h5{
 .modal-header{
 padding: 10px !important;
 }
+.custom-width-modal-popup{
+ width: 66%  !important;
+}

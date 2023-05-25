@@ -781,6 +781,13 @@ export class ManageDealsComponent implements OnInit {
       vendorCompanyProfileName = this.dealsPagination.vendorCompanyProfileName;
     }
 
+    let vendorCompanyId = null;
+    if (this.dealsPagination.vendorCompanyId != undefined && this.dealsPagination.vendorCompanyId != null) {
+      vendorCompanyId = this.dealsPagination.vendorCompanyId;
+    } else {
+      vendorCompanyId = 0;
+    }
+
     let partnerTeamMemberGroupFilter = false; 
     let userType = "";
     if (this.isVendorVersion) {
@@ -869,7 +876,7 @@ export class ManageDealsComponent implements OnInit {
     var mapInput = document.createElement("input");
     mapInput.type = "hidden";
     mapInput.name = "createdForCompanyId";
-    mapInput.setAttribute("value", this.vendorCompanyIdFilter);
+    mapInput.setAttribute("value", vendorCompanyId);
     mapForm.appendChild(mapInput);
     
     // partnerTeamMemberGroupFilter
