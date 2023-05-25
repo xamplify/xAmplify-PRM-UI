@@ -307,6 +307,9 @@
                                   </a> -->
                                   <img class="asset-img-grid-sm" [src]="croppedImage" alt="">
                                 </span>
+                                <!-- <span *ngIf="imagepath">
+                                  <img class="asset-img-grid-sm" [src]="imagepath" alt="">
+                                </span> -->
                                 <span *ngIf="!isAdd && !croppedImage">
                                   <img class="asset-img-grid-sm" [src]="damUploadPostDto.thumbnailPath" (error)="errorHandler($event)"
                                     alt="">

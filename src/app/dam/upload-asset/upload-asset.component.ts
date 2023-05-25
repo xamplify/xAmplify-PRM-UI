@@ -19,6 +19,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpEventType,HttpResponse} from "@angular/common/http";
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
+
 declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
 @Component({
@@ -32,6 +33,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	formLoader = false;
 	customResponse: CustomResponse = new CustomResponse();
 	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    pagination: Pagination = new Pagination();
 	formData: any = new FormData();
 	loading = false;
 	dupliateNameErrorMessage: string;
@@ -110,6 +112,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     viewType: string;
     categoryId: number;
     folderViewType: string;
+    imagepath:string;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -144,9 +147,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
-        
+    
 	}
 	
+    
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
@@ -213,7 +217,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-
+    sudaImg:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
@@ -231,6 +235,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else{
+                this.sudaImg = file;
+                console.log(this.sudaImg);
 				this.formData.delete("uploadedFile");
 	            this.uploadedAssetName  = "";
 	            this.uploadedCloudAssetName = "";

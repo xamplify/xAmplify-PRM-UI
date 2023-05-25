@@ -278,4 +278,9 @@ export class DamService {
     return Observable.throw(error);
   }
   
+  assetPath(pagination: Pagination) {
+    return this.http.post(this.URL + "list/" + "?access_token=" + this.authenticationService.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 }
