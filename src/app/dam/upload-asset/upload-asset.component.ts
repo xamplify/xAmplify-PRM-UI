@@ -234,7 +234,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
-			}else{
+			}else if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
+                this.showValidExtensionMessage();
+            }			
+			else{
                 this.sudaImg = file;
                 console.log(this.sudaImg);
 				this.formData.delete("uploadedFile");
@@ -787,6 +790,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     };
     
     setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
+      if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
+        this.showValidExtensionMessage();
+      }else{
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
         this.formData.delete("uploadedFile");
@@ -798,6 +804,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
         this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
         this.validateAllFields();
+        }
       }
     
     
@@ -1116,4 +1123,13 @@ showFolderCreatedSuccessMessage(message:any){
    this.customResponse = new CustomResponse('SUCCESS',message, true);
    this.listCategories();
 }
+
+showValidExtensionMessage(){
+  this.uploadedCloudAssetName = "";
+  this.tempr = null;
+  this.clearPreviousSelectedAsset();
+  this.customResponse = new CustomResponse('ERROR',"Selected asset doesnot have proper extension. Please choose valid asset.",true);
+}
+
+
 }
