@@ -234,7 +234,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
-			}else if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
+			}else if(file['name'].lastIndexOf(".")==-1) {
                 this.showValidExtensionMessage();
             }			
 			else{
