@@ -55,7 +55,6 @@ body,
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external,
 .disabled-background-color,
 /* .label-box:hover, */
-.video,
 .table tr.xamp-tr-selected td,
 .div.thembgc,
 .div.thembg-color {
@@ -88,7 +87,8 @@ body,
   border-bottom: 1px solid #2f4857 !important;
 }
 .portlet.box > .portlet-body,
-.copyright-css {
+.copyright-css,
+.video {
   background-color: #2b3c46 !important;
 }
 .page-bar .page-breadcrumb > li > a, .page-bar .page-breadcrumb > li > span {
@@ -778,12 +778,14 @@ hr{
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger,
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning{
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning
+{
   color: #fff !important;
     background: #22313a !important;
 }
 .form-check-label,
-.gu-block{
+.gu-block,
+.modal-content{
   border:1px solid #2f4857 !important;
 }
 .circled-number{
@@ -1033,7 +1035,12 @@ input:active, input:focus{
 .border-cu {
   box-shadow: 0px 0px 0px 0px #d1d1d1 !important;
 }
-
+.border-cls,
+.td-netbg{
+  border-left: 1px solid #2f4857 !important;
+    border-right: 1px solid #2f4857 !important;
+    border-bottom: 1px solid #2f4857 !important;
+}
 /* 25/05/23 sai pavan*/
 
 .hover-bar a  {

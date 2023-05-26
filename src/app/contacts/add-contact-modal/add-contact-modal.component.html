@@ -99,11 +99,11 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             </p>
           </div>
           <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
-            <span class="input-group-btn">
-              <button title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
+            <span class="inputs-group-btn" style="margin:-1px;">
+              <button title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info blue-buttons-radius" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
-              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
+              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx blue-buttons-radius" type="button" tabindex="-1" (click)="previewTeamMembers()" style="    margin-left: 7px;">
                 <i class="fa fa-users white" aria-hidden="true"></i>
               </button>
             </span>
