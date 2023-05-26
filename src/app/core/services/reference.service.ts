@@ -2810,6 +2810,19 @@ export class ReferenceService {
       value: this.senderMergeTag.senderCompanyUrl,
     });
 
+      /*******XNFR-281******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyInstragramUrlKey,
+        value: this.senderMergeTag.senderCompanyInstagramUrl,
+      });
+  
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyTwitterUrlKey,
+        value: this.senderMergeTag.senderCompanyTwitterUrl,
+      });
+  
+      /*******XNFR-281******/
+
     mergeTags.push({
       name: "Sender Company Address",
       value: this.senderMergeTag.senderCompanyAddress,

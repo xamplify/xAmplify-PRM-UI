@@ -748,6 +748,27 @@
 													(blur)="validatePattern('linkedInLink')" /> <span
 													*ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
 											</div>
+											<!-----****XNFR-281****------>
+											<div class="form-group" [attr.class]="instagramDivClass">
+												<label class="control-label" translate>Instagram</label> <input
+													type="text" id="instagramLink" name="instagramLink"
+													placeholder="Instagram" class="form-control"
+													[(ngModel)]="companyProfile.instagramLink"
+													(input)="validatePattern('instagramLink')"
+													(blur)="validatePattern('instagramLink')" /> <span
+													*ngIf="instagramLinkError" style="color: #f55d7a">{{instagramLinkErrorMessage}}</span>
+											</div>
+
+											<div class="form-group" [attr.class]="twitterDivClass">
+												<label class="control-label" translate>Twitter</label> <input
+													type="text" id="twitterLink" name="twitterLink"
+													placeholder="Twitter" class="form-control"
+													[(ngModel)]="companyProfile.twitterLink"
+													(input)="validatePattern('twitterLink')"
+													(blur)="validatePattern('twitterLink')" /> <span
+													*ngIf="twitterLinkError" style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
+											</div>
+											<!-----****XNFR-281****------>
 											<div class="form-group" [attr.class]="eventUrlDivClass">
 												<label class="control-label" translate>Event Url</label> <input
 													type="text" id="eventUrl" name="eventUrl"

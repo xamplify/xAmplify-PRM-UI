@@ -38,4 +38,5 @@ export class TracksPlayBook {
     canDelete:boolean = false;
 
     typeQuizId: boolean = false;
+    companyProfileName = "";
 }
