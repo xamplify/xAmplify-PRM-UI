@@ -24,6 +24,8 @@ export class TracksPlayBookUtilService {
 
   saveOrUpdate(formData: FormData, tracksPlayBook: TracksPlayBook) {
     let url = this.trackURL;
+    /*****XNFR-255****/
+    tracksPlayBook.companyProfileName = this.authenticationService.getSubDomain();
     if (tracksPlayBook.id > 0) {
       url = url + "/edit"
     } else {

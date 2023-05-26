@@ -555,8 +555,8 @@ body {
   float:right ;
 }
 .table tr.contact-list-selected td {
-  background-color: #ddd !important;
-  color:#000 !important;
+  background-color: #ddd ;
+  color:#000 ;
 }
 
 .status-media img {

@@ -55,7 +55,6 @@ body,
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-extended .dropdown-menu > li.external,
 .disabled-background-color,
 /* .label-box:hover, */
-.video,
 .table tr.xamp-tr-selected td,
 .div.thembgc,
 .div.thembg-color {
@@ -88,7 +87,8 @@ body,
   border-bottom: 1px solid #2f4857 !important;
 }
 .portlet.box > .portlet-body,
-.copyright-css {
+.copyright-css,
+.video {
   background-color: #2b3c46 !important;
 }
 .page-bar .page-breadcrumb > li > a, .page-bar .page-breadcrumb > li > span {
@@ -203,7 +203,8 @@ ul.alt-row-style1 li a{
   border: 1px solid #2f4857 !important;
 }
 .td-new, th{
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #1c313a !important;
+  /* border: 1px solid #2f4857 !important; old one */
 }
 td > button {
   background-color: #00a99d !important;
@@ -778,12 +779,14 @@ hr{
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger,
-.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning{
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning
+{
   color: #fff !important;
     background: #22313a !important;
 }
 .form-check-label,
-.gu-block{
+.gu-block,
+.modal-content{
   border:1px solid #2f4857 !important;
 }
 .circled-number{
@@ -826,7 +829,8 @@ input.cmn-toggle-round-flat + label:before{
 .dropdown-option:hover{
   background-color:  #2b3c46 !important;
 }
-#myInput{
+#myInput,
+.pricing{
 border:1px solid #2f4857 !important;
 }
 /* textarea::placeholder {
@@ -1005,7 +1009,8 @@ input:active, input:focus{
   border-radius:5px;
 }
 .img-track-list,
-.img-asset-class{
+.img-asset-class,
+.img-grid-track{
   border: 1px solid #2f4857 !important;
 }
 .input-group-prefix{
@@ -1031,7 +1036,12 @@ input:active, input:focus{
 .border-cu {
   box-shadow: 0px 0px 0px 0px #d1d1d1 !important;
 }
-
+.border-cls,
+.td-netbg{
+  border-left: 1px solid #2f4857 !important;
+    border-right: 1px solid #2f4857 !important;
+    border-bottom: 1px solid #2f4857 !important;
+}
 /* 25/05/23 sai pavan*/
 
 .hover-bar a  {
@@ -1040,4 +1050,27 @@ input:active, input:focus{
 
 .bar a.border-none-dark {
   border: 0px solid #fff0 !important;
+}
+
+
+
+/* 26/05/23 Saiver */
+
+.table-filter tbody tr:hover {
+  background-color: #2c4a5c !important;
+}
+.table-filter{
+  background-color: #1c313a !important;
+}
+.grid-box.box-dark-defalut-clr{
+  background: #253d46 !important;
+}
+
+.border-cls{
+  border: none !important;
+} 
+
+.table tr.contact-list-selected td{
+  background-color: #22313a !important;
+  color: #fff !important;
 }

@@ -61,6 +61,8 @@ CKEDITOR.editorConfig = function( config ) {
 	                           { 'name': 'Sender Contact Number', 'value': '{{senderContactNumber}}' },
 	                           { 'name': 'Sender Company', 'value': '{{senderCompany}}' },
 	                           { 'name': 'Sender Company Url', 'value': '{{senderCompanyUrl}}' },
+							   { 'name': 'Sender Company Instagram Url', 'value': '{{senderCompanyInstagramUrl}}' },
+							   { 'name': 'Sender Company Twitter Url', 'value': '{{senderCompanyTwitterUrl}}' },
 							   { 'name': 'Sender Company Address', 'value': '{{senderCompanyAddress}}' },
 							   { 'name': 'Sender Company Contact Number', 'value': '{{senderCompanyContactNumber}}' },
 							   { 'name': 'Sender About Us ', 'value': '{{senderAboutUs}}' },
