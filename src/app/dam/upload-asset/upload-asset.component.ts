@@ -234,8 +234,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
-			}else if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
-                this.showValidExtensionMessage();
+			}else if(file['name'].lastIndexOf(".")==-1) {
+                this.showValidExtensionErrorMessage();
             }			
 			else{
                 this.sudaImg = file;
@@ -791,7 +791,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     
     setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
       if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
-        this.showValidExtensionMessage();
+        this.showValidExtensionErrorMessage();
       }else{
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
@@ -1124,11 +1124,11 @@ showFolderCreatedSuccessMessage(message:any){
    this.listCategories();
 }
 
-showValidExtensionMessage(){
+showValidExtensionErrorMessage(){
   this.uploadedCloudAssetName = "";
   this.tempr = null;
   this.clearPreviousSelectedAsset();
-  this.customResponse = new CustomResponse('ERROR',"Selected asset doesnot have proper extension. Please choose valid asset.",true);
+  this.customResponse = new CustomResponse('ERROR',"Selected asset does not have the proper extension. Please upload a valid asset.",true);
 }
 
 
