@@ -1375,7 +1375,7 @@
                                                                     <!-- !hideCoBrandedEmailTemplate   edit email template-->
                                                                     <div *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
                                                                       
-                                                                <ul class="content__list" *ngFor="let emailTemplate of emailTemplatesPagination.pagedItems ;let i =index">
+                                                                <ul class="content__list" >
                                                                     <li>
                                                                         <div class="flex-row mHeight" >
                                                                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
@@ -1390,7 +1390,7 @@
                                                                                                     </span>                                                    
                                                                                                         <img 
                                                                                                             class="img-grid-track"
-                                                                                                            src="{{emailTemplate.subject}}" alt="" >
+                                                                                                            src="{{campaign.emailTemplate.subject}}" alt="" >
                                                                                                             
                                                                                                             <span class="icon-alignments"> 
                                                                                                                 <a data-toggle="tooltip" data-placement="top" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
