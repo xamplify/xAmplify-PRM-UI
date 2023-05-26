@@ -203,7 +203,8 @@ ul.alt-row-style1 li a{
   border: 1px solid #2f4857 !important;
 }
 .td-new, th{
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #1c313a !important;
+  /* border: 1px solid #2f4857 !important; old one */
 }
 td > button {
   background-color: #00a99d !important;
@@ -1049,4 +1050,27 @@ input:active, input:focus{
 
 .bar a.border-none-dark {
   border: 0px solid #fff0 !important;
+}
+
+
+
+/* 26/05/23 Saiver */
+
+.table-filter tbody tr:hover {
+  background-color: #2c4a5c !important;
+}
+.table-filter{
+  background-color: #1c313a !important;
+}
+.grid-box.box-dark-defalut-clr{
+  background: #253d46 !important;
+}
+
+.border-cls{
+  border: none !important;
+} 
+
+.table tr.contact-list-selected td{
+  background-color: #22313a !important;
+  color: #fff !important;
 }
