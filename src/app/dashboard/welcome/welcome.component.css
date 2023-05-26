@@ -216,7 +216,7 @@ h3 {
   float: right;
   margin-top: -12px;
 }
-.divider {
+.divider-border {
   background: url(../../../assets/images/partition.png) center center no-repeat;
   margin: 20px 0;
   height: 10px;

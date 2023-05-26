@@ -48,7 +48,7 @@
 }
 
 .ffolder.gray {
-    background-color: #54a7e9
+    background-color: #54a7e9 !important;
 }
 
 .ffolder.gray span,

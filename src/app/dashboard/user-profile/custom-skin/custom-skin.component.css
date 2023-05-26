@@ -1685,10 +1685,10 @@ input:checked+.slider:before {
 	font-weight: 600;
   }
 .border-alignment{
-    border-left: none;
+    /* border-left: none;
     border-right: none;
-    border-top: none;
-    width: 35.5%;
+    border-top: none; */
+    width: 45%;
 }
 
 /** 18-05-2023 ****/
