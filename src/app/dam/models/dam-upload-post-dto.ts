@@ -21,5 +21,5 @@ export class DamUploadPostDto {
     historyTemplate = false;
 
     /****XNFR-255****/
-    whiteLabeled = false;
+    shareAsWhiteLabeledAsset = false;
 }

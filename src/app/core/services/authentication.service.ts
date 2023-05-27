@@ -1022,8 +1022,8 @@ findShareWhiteLabelContentAccess() {
   }else{
     url+= "loggedInUserId/"+this.getUserId();
   }
-  url+= +"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
   
 }
 

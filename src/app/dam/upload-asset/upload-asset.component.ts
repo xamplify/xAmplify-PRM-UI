@@ -117,7 +117,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     imagepath:string;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     /****XNFR-255*****/
-    shareWhiteLabeledContent = false;
+    hasShareWhiteLabeledContentAccess = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -178,7 +178,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.authenticationService.findShareWhiteLabelContentAccess()
         .subscribe(
             response=>{
-                this.shareWhiteLabeledContent = response.data;
+                this.hasShareWhiteLabeledContentAccess = response.data;
                 this.loading = false;
             },error=>{
                 this.loading = false;
@@ -1149,7 +1149,7 @@ showValidExtensionErrorMessage(){
 
 /****XNFR-255****/
 setWhiteLabeled(event:any){
-    this.damUploadPostDto.whiteLabeled = event;
+    this.damUploadPostDto.shareAsWhiteLabeledAsset = event;
 }
 
 
