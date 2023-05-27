@@ -214,6 +214,20 @@
                               </div>
                             </div>
                           </div>
+
+                          <!---White Labeled-- XNFR-255-->
+                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="shareWhiteLabeledContent">
+                            <div class="form-group">
+                              <label class="control-label col-sm-2" translate>White Labeled</label>
+                              <div class="col-sm-10">
+                                <switch class="pull-left" [status]="damUploadPostDto?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                (statusChange)="setWhiteLabeled($event)">
+                                </switch>
+                              </div>
+                            </div>
+                          </div>
+                          <!---White Labeled-- XNFR-255-->
+
                           <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                             <div class="form-group" style="margin-bottom: 0;">
                               <label class="control-label col-sm-2" translate>Tags

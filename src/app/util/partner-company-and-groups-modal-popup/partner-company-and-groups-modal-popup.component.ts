@@ -107,15 +107,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 			response => {
 				this.isPublishedToPartnerGroup = response.data;
 				let statusCode = response.statusCode;
-				if(statusCode==200){
-					let map = response['map'];
-					let damDto = map['damDto'];
-					if(damDto!=undefined){
-						this.shareWhiteLabelContentAccess = damDto['shareWhiteLabelContentAccess'];
-						this.sharedWithPartnersAsAWhiteLabeledAsset = damDto['sharedWithPartnersAsAWhiteLabeledAsset'];
-						this.disableWhiteLabeledCheckBox = damDto['shareWhiteLabelContentAccess'] && damDto['sharedWithPartnersAsAWhiteLabeledAsset'];
-					}
-				}
 				if (this.isPublishedToPartnerGroup) {
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');

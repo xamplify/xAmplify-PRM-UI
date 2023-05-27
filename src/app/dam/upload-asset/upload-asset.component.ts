@@ -18,6 +18,8 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpEventType,HttpResponse} from "@angular/common/http";
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+/****XNFR-255****/
 
 
 declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
@@ -26,7 +28,7 @@ declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, B
 	selector: 'app-upload-asset',
 	templateUrl: './upload-asset.component.html',
 	styleUrls: ['./upload-asset.component.css'],
-	providers: [Properties, Pagination, HttpRequestLoader]
+	providers: [Properties, Pagination, HttpRequestLoader,CallActionSwitch]
 })
 export class UploadAssetComponent implements OnInit,OnDestroy {
 	
@@ -114,9 +116,12 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     folderViewType: string;
     imagepath:string;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    /****XNFR-255*****/
+    shareWhiteLabeledContent = true;
+
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
-	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
+	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
         this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -1129,6 +1134,11 @@ showValidExtensionErrorMessage(){
   this.tempr = null;
   this.clearPreviousSelectedAsset();
   this.customResponse = new CustomResponse('ERROR',"Selected asset does not have the proper extension. Please upload a valid asset.",true);
+}
+
+/****XNFR-255****/
+setWhiteLabeled(event:any){
+    this.damUploadPostDto.whiteLabeled = event;
 }
 
 
