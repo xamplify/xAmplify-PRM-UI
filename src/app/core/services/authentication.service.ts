@@ -30,6 +30,7 @@ import { ThemeDto } from 'app/dashboard/models/theme-dto';
 
 @Injectable()
 export class AuthenticationService {
+   
   access_token: string;
   refresh_token: string;
   expires_in: number;
@@ -1010,6 +1011,20 @@ findCampaignAccessDataByDomainName(domainName:string){
 sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto:LoginAsEmailNotificationDto){
   let url = this.REST_URL +"admin/sendLoginAsPartnerEmailNotification"+"?access_token=" + this.access_token;
   return this.callPostMethod(url,loginAsEmailNotificationDto);
+}
+
+/******XNFR-255******/
+findShareWhiteLabelContentAccess() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/shareWhiteLabelContentAccess/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  url+= +"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+  
 }
 
 

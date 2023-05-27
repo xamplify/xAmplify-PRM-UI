@@ -117,7 +117,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     imagepath:string;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     /****XNFR-255*****/
-    shareWhiteLabeledContent = true;
+    shareWhiteLabeledContent = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -169,13 +169,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.listTags(new Pagination());
         /****XNFR-169*****/
         this.listCategories();
+        /*******XNFR-255***/
+        this.findShareWhiteLabelContentAccess();
 	}
+    /*******XNFR-255***/
+    findShareWhiteLabelContentAccess() {
+        this.loading = true;
+        this.authenticationService.findShareWhiteLabelContentAccess()
+        .subscribe(
+            response=>{
+                this.shareWhiteLabeledContent = response.data;
+                this.loading = false;
+            },error=>{
+                this.loading = false;
+            });
+    }
 
 	ngOnDestroy(): void {
 		$('#thumbnailImageModal').modal('hide');
 		this.openAddTagPopup = false;
-		
-		//
         $('.r-video').remove();
         if (this.camera) {
             this.modalPopupClosed();
@@ -244,7 +256,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             }			
 			else{
                 this.sudaImg = file;
-                console.log(this.sudaImg);
 				this.formData.delete("uploadedFile");
 	            this.uploadedAssetName  = "";
 	            this.uploadedCloudAssetName = "";
