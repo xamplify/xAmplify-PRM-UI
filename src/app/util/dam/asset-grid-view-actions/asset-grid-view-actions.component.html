@@ -24,10 +24,10 @@
 		aria-hidden="true"></i>
 	</a>
 	<!---XNFR-255-->
-	<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" 
+	<!-- <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" 
 	title="Share As White-Labeled" (click)="openWhiteLabeledPopup(asset)">
 	<i class="fa fa-clone" aria-hidden="true"></i>
-	</a> 
+	</a>  -->
 	<!---XNFR-255-->
 	 <a *ngIf="!isPartnerView" title="Download"
 		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
