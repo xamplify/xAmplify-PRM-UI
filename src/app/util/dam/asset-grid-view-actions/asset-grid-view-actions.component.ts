@@ -83,6 +83,8 @@ export class AssetGridViewActionsComponent implements OnInit {
         input['edit'] = true;
     }else if("analytics"==type){
         input['analytics'] = true;
+    }else if("shareAsWhiteLabeledContent"==type){
+      input['shareAsWhiteLabeledContent'] = true;
     }
     input['asset'] = asset;
     this.assetGridViewActionsEmitter.emit(input);
@@ -109,6 +111,10 @@ export class AssetGridViewActionsComponent implements OnInit {
     this.assetGridViewActionsDeleteActionEmitter.emit(asset);
   }
 
+  /***XNFR-255****/
+  openWhiteLabeledPopup(asset:any){
+    this.setEventEmittersByType(asset,"shareAsWhiteLabeledContent");
+  }
 
  
 

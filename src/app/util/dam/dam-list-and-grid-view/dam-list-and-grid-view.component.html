@@ -138,6 +138,11 @@
 													<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
 														<i	class="fa fa-share" aria-hidden="true"></i>
 													</a>
+													<!---XNFR-255-->
+													<a *ngIf="!isPartnerView && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" title="Share As White-Labeled"
+													(click)="openWhiteLabeledPopup(asset.id)">
+													   <i class="fa fa-clone" aria-hidden="true"></i>
+												   </a> 
 													<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
 														<i class="fa fa-download"	aria-hidden="true"></i>
 													</a> 
@@ -229,8 +234,13 @@
 																	</a> <a title="Preview" (click)="preview(asset)"> <i
 																		class="fa fa-eye" aria-hidden="true"></i>
 																	</a> 
-																	<a title="Publish" (click)="openPublishPopup(asset.id)">
+																	<a *ngIf="!authenticationService?.module?.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
 																		<i class="fa fa-share" aria-hidden="true"></i>
+																	</a> 
+																	<!---XNFR-255-->
+																	<a *ngIf="!authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" title="Share As White-Labeled"
+																	 (click)="openWhiteLabeledPopup(asset.id)">
+																		<i class="fa fa-clone" aria-hidden="true"></i>
 																	</a> 
 																	<a title="Download" (click)="openPopup(asset)"> <i
 																		class="fa fa-download" aria-hidden="true"></i>
@@ -456,6 +466,13 @@
 	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>
+
+<!--XNFR-255 White-LabeledPopup-->
+<ng-container *ngIf="showWhiteLabeledPopup"> 
+	<app-partner-company-and-groups-modal-popup
+		[companyId]="loggedInUserCompanyId" [inputId]="selectedAssetId" [moduleName]="'dam-white-labeled'"
+		(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
+	</ng-container>
 
 <!--Page Bar Option-->
 <ng-template #damHeaderOptions>

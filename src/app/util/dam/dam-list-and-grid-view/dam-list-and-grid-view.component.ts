@@ -83,6 +83,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
 	public fileTypes:Array<any> = new Array<any>();
 	selectedFileType = "";
+	/****XNFR-255*****/
+	showWhiteLabeledPopup: boolean;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -714,4 +716,10 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.pagination.filterBy = event;
 		this.listItems(this.pagination);
 	 }
+
+	 /*****XNFR-255******* */
+	 openWhiteLabeledPopup(assetId: number) {
+		this.showWhiteLabeledPopup = true;
+		this.selectedAssetId = assetId;
+	}
 }

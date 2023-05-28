@@ -83,8 +83,8 @@
                     <!---White Labeled-- XNFR-255-->
                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
                       <div class="form-group">
-                        <label class="control-label col-sm-2" translate>White Labeled</label>
-                        <div class="col-sm-10">
+                        <label class="control-label col-sm-3" translate>White Labeled</label>
+                        <div class="col-sm-8">
                           <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                           (statusChange)="setWhiteLabeled($event)">
                           </switch>
