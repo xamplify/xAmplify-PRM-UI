@@ -19,4 +19,7 @@ export class DamUploadPostDto {
     source: string = "";
     categoryId:number = 0;
     historyTemplate = false;
+
+    /****XNFR-255****/
+    shareAsWhiteLabeledAsset = false;
 }
