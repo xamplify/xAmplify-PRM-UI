@@ -1183,3 +1183,6 @@ ul.t-b-spacings {
     line-height: 1.1;
   }
 
+.custom-height{
+    height: 150px;
+}
