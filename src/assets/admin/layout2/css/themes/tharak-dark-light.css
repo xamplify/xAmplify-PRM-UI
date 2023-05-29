@@ -829,8 +829,7 @@ input.cmn-toggle-round-flat + label:before{
 .dropdown-option:hover{
   background-color:  #2b3c46 !important;
 }
-#myInput,
-.pricing{
+#myInput{
 border:1px solid #2f4857 !important;
 }
 /* textarea::placeholder {
@@ -908,10 +907,10 @@ input:active, input:focus{
   border:1px solid #2f4857 !important;
   background-color:  #22313a !important;
 }
-.has-error{
+/* .has-error{
   border:1px solid #2f4857 !important;
   box-shadow: inset 0 1px 1px #2f4857, 0 0 5px #2f4857 !important;
-}
+} */
 .border-right,
 .right-border{
   border-right: 1px solid #2f4857 !important;

@@ -315,9 +315,9 @@ a.disabled {
   border-color: #0ad40e;
 }
 
-.has-error .form-control {
+/* .has-error .form-control {
   border-color: #a94442;
-}
+} */
 
 .flex {
   display: flex;
@@ -2231,7 +2231,7 @@ img.thumb.ng-scope {
 
 .pricing {
   border-radius: 3px;
-  border: 1px solid #ddd !important;
+  border: 1px solid #ddd;
 }
 
 
