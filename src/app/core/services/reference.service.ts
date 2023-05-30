@@ -2169,14 +2169,32 @@ export class ReferenceService {
       );
       
       /*****XNFR-281*******/  
+      /*******Instagram****/
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderCompanyInstagramUrlGlobal,
         myMergeTags.companyInstagramUrl
       );
+      /*******Twitter****/
       updatedBody = updatedBody.replace(
         this.senderMergeTag.senderCompanyTwitterUrlGlobal,
         myMergeTags.companyTwitterUrl
       );
+      /*******Facebook****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyFacebookUrlGlobal,
+        myMergeTags.companyFacebookUrl
+      );
+      /*******Google****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyGoogleUrlGlobal,
+        myMergeTags.companyGoogleUrl
+      );
+      /*******Linkedin****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyLinkedinUrlGlobal,
+        myMergeTags.companyLinkedinUrl
+      );
+
        /*****XNFR-281*******/  
     }
     return updatedBody;
@@ -2818,15 +2836,36 @@ export class ReferenceService {
     });
 
       /*******XNFR-281******/
+      /****Instagram******/
       mergeTags.push({
         name: this.senderMergeTag.senderCompanyInstragramUrlKey,
         value: this.senderMergeTag.senderCompanyInstagramUrl,
       });
   
+      /****Twitter******/
       mergeTags.push({
         name: this.senderMergeTag.senderCompanyTwitterUrlKey,
         value: this.senderMergeTag.senderCompanyTwitterUrl,
       });
+
+      /****Google******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyGoogleUrlKey,
+        value: this.senderMergeTag.senderCompanyGoogleUrl,
+      });
+
+      /****Facebook******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyFacebookUrlKey,
+        value: this.senderMergeTag.senderCompanyFacebookUrl,
+      });
+
+      /****Linkedin******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyLinkedinUrlKey,
+        value: this.senderMergeTag.senderCompanyLinkedinUrl,
+      });
+
   
       /*******XNFR-281******/
 

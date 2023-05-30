@@ -1443,7 +1443,7 @@
                                                                         {{'Player Color' | translate}}:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-                                                                            [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        class="field-border-customization" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
                                                                         <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
                                                                         />
                                                                     </div>
@@ -1462,7 +1462,7 @@
                                                                         {{'Controller Color' | translate}}:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
-                                                                            [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        class="field-border-customization"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
                                                                         <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
                                                                         />
                                                                     </div>
@@ -2123,7 +2123,7 @@
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
                                             placeholder="Enter Stage Name" style="width: 240px;
                                                                     margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color">
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization">
                                         </span>
                                         <span class="col-lg-6">
                                             <div>

@@ -315,9 +315,9 @@ a.disabled {
   border-color: #0ad40e;
 }
 
-/* .has-error .form-control {
+.has-error .form-control {
   border-color: #a94442;
-} */
+}
 
 .flex {
   display: flex;
@@ -2296,7 +2296,7 @@ i.fa.fa-arrow-circle-o-up {
 }
 
 .img-grid-track {
-  height: 350px;
+  height: 349px;
   max-width: 100%;
   overflow: hidden;
   margin: 0px;
@@ -2425,7 +2425,7 @@ span.label-color-custmization {
     line-height: normal;
     padding: 0px 0px;
     -webkit-appearance: none;
-    outline: 0px solid #d8dade;
+    outline: none !important;
     outline-offset: 0px;
     border-radius: 3px;
   }

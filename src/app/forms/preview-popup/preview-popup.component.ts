@@ -177,6 +177,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                         }else{
                             this.pageBackgroundColor = this.form.pageBackgroundColor;
                             this.formBackgroundImage = "";
+                            document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
                         }
                         $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
                             if (value.labelType == 'quiz_radio') {
