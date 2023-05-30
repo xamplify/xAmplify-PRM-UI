@@ -315,9 +315,9 @@ a.disabled {
   border-color: #0ad40e;
 }
 
-/* .has-error .form-control {
+.has-error .form-control {
   border-color: #a94442;
-} */
+}
 
 .flex {
   display: flex;

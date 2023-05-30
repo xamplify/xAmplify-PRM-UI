@@ -663,7 +663,7 @@ hr{
   background-color: #2b3c46 !important;
 }
 .img-class-list{
-  background-color: #22313a !important;
+  /* background-color: #22313a !important; */
   /* border: 1px solid #2f4857!important; */
 }
 .item__select-box-wrapper .select-box::before,
@@ -1074,7 +1074,8 @@ input#copy-link {
   background: #253d46 !important;
 }
 
-.border-cls{
+.border-cls,
+.inline{
   border: none !important;
 } 
 

@@ -100,7 +100,7 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-12 col-md-6 upload-button" nowrap style="float: right;">
-									<button class="text-center video">
+									<button class="text-center video" *ngIf="processing">
 											<span *ngIf="processing"><i class="glyphicon glyphicon-ok"></i></span>
 										</button> 
 									<button [disabled]="processing==true || isDisableForm" type="button" class="btn btn-danger btn-sm" (click)="removefileUploadVideo()" translate>
