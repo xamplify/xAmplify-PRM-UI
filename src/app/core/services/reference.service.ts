@@ -2227,7 +2227,12 @@ export class ReferenceService {
       body.indexOf(this.senderMergeTag.privacyPolicy) > -1 ||
       body.indexOf(this.senderMergeTag.senderAboutUs) > -1 ||
       body.indexOf(this.senderMergeTag.senderEventUrl) > -1 ||
-      body.indexOf(this.senderMergeTag.senderCompanyAddress) > -1
+      body.indexOf(this.senderMergeTag.senderCompanyAddress) > -1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyGoogleUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyFacebookUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyLinkedinUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyTwitterUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyInstagramUrl)>-1
     );
   }
 

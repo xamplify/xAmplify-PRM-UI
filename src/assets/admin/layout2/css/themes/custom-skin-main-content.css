@@ -954,5 +954,16 @@ textarea:active, textarea:focus {
 }
 input.field-border-customization {
   border: 2px solid var(--border-color)!important;
-  padding: 0px 7px;
+  /* padding: 0px 7px; */
+}
+input#copy-link {
+  border: 2px solid var(--border-color) !important;
+  /* border-radius: 5px;
+  padding: 0px 10px; */
+}
+.modal-content{
+  border: 1px solid var(--border-color) !important;
+}
+.d-p-bg-color-cust {
+  background: var(--form-bg-color) !important;
 }

@@ -1907,3 +1907,11 @@ border: 1px solid #ddd !important;
 	width: 50px;
   
   }
+  /* tharak */
+  input.field-border-customization {
+	padding: 3px 7px;
+  }
+  input#copy-link {
+	border-radius: 5px;
+	padding: 0px 10px;
+  }
