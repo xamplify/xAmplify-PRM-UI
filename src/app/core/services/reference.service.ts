@@ -2167,10 +2167,17 @@ export class ReferenceService {
         this.senderMergeTag.senderEventUrlGlobal,
         myMergeTags.eventUrl
       );
+      
+      /*****XNFR-281*******/  
       updatedBody = updatedBody.replace(
-        this.senderMergeTag.senderEventUrlGlobal,
-        myMergeTags.eventUrl
+        this.senderMergeTag.senderCompanyInstagramUrlGlobal,
+        myMergeTags.companyInstagramUrl
       );
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyTwitterUrlGlobal,
+        myMergeTags.companyTwitterUrl
+      );
+       /*****XNFR-281*******/  
     }
     return updatedBody;
   }
