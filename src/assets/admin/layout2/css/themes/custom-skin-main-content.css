@@ -122,6 +122,9 @@ h1, h2, h3, h6 {
 .btn.default {
   color: var(---text-color) !important
 }
+/* .btn.default {
+  background-color: var(--page-content) !important;
+} */
 .partners-text,
 .user-company,
 ul.alt-row-style1 li a{
@@ -233,7 +236,7 @@ ul.alt-row-style1 li:hover,
   color: var(---text-color) !important
 }
 /*** table ***/
-table,
+.tgrid,
 fieldset,
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, 
 .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
@@ -546,7 +549,8 @@ label{
   border: 1px solid var(--border-color)!important;
 }
 .merge-tag-input-border{
-  border: 1px solid var(--border-color)!important;
+  /*** tharak ***/
+  /* border: 1px solid var(--border-color)!important; */
 }
 .btn-default > i,
 .btn-default{
@@ -714,7 +718,7 @@ hr{
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger,
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning{
   color: #fff !important;
-    background: var(--page-content) !important;
+    /* background: var(--page-content) !important; */
 }
 .form-check-label,
 .gu-block{
@@ -778,10 +782,10 @@ textarea:active, textarea:focus {
   border-color: var(--border-color)  !important ;
   outline: 1px solid var(--border-color) !important;
 }
-input:active, input:focus{
+/* input:active, input:focus{
   border-color: var(--border-color)  !important ;
-  outline: 1px solid var(--border-color) !important;
-}
+  /* outline: 1px solid var(--border-color) !important; *
+} */
 .user-comment p:after,
 .comment.user-comment p,
 .comment.author-comment p,
@@ -824,7 +828,9 @@ input:active, input:focus{
   background-color: var(--div-bg-color) !important;
 }
 .flatpickr-calendar.showTimeInput.hasTime .flatpickr-time,
-.input-group-addon, .input-group-btn{
+.input-group-addon 
+/**,.input-group-btn**/
+{
   border:1px solid var(--border-color) !important;
 }
 .panel-info > .panel-heading{
@@ -920,3 +926,17 @@ input:active, input:focus{
   .border-cu {
     box-shadow: 0px 0px 0px 0px #d1d1d1 !important;
 }
+
+.form-control.padding-mobile.border-none {
+  background: none !important;
+
+}
+.form-control.border-none {
+  background: none !important;
+}
+.border-none,.border-none-dark {
+	border: none !important;
+}
+/* ::placeholder {
+  color: var(---text-color) !important;
+} */

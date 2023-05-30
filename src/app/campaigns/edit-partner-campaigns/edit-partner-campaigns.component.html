@@ -699,12 +699,24 @@
                 <legend class="scheduler-border">Launch Option</legend>
                 <div>
                   <div class="btn-group btn-group-justified">
-                    <ng-container *ngFor="let launchOption of campaignLaunchOptions">
-                      <label class="btn btn-primary button-border">
-                      <input type="radio" class="text-center" name="scheduleCampaign" [value]="launchOption" formControlName="scheduleCampaign"
-                        ngDefaultControl style=" margin-right:1.5em; " /> {{launchOption}}
+                    <ng-container>
+                      <label  class="btn btn-primary button-border">
+                          <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                              [value]="campaignLaunchOptions[0]" formControlName="scheduleCampaign"
+                              ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
                       </label>
-                    </ng-container>
+                      <label  class="btn btn-warning button-border Sch-class" >
+                          <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                              [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
+                              ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
+                      </label>
+                      <label class="btn green mBtnAlign button-border">
+                          <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                              [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
+                              ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
+                      </label>
+                  </ng-container>
+                  
                   </div>
                   <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
                     <div class="col-md-4">

@@ -49,7 +49,7 @@
                     <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
                         <div class="alert alert-info">
                             <strong>
-                                <span title="{{vendorAdminCompanyUserEmailId}}" class="success">You</span> are logged in as
+                                <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
                                 <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
                                     <span *ngIf="loggedInAsUserEmailId?.length>25">...</span>
                                 </strong> 

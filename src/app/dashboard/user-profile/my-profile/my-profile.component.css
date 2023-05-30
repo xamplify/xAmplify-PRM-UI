@@ -478,7 +478,9 @@ input:checked + .slider:before {
 }
 
 .profile-usermenu {
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
+  /*tharak*/
+  padding-bottom: 0px !important;
 }
 
 /* .page-bar {

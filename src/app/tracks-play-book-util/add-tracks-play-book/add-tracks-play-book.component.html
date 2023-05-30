@@ -331,7 +331,7 @@
             <div class="row" *ngIf="!assetError">
               <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
-                  <div class="flex-row pointer mContentHeight">
+                  <div class="flex-row pointer mContentHeight custom-height">
                     <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
                           <input type="checkbox" (click)="$event.stopPropagation();">
@@ -1175,7 +1175,7 @@
 </ng-container>
 
 <!-- --------------Media link title popup--------------- -->
-<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;  background-color: red;">
+<div class="modal" id="media-link-title" data-backdrop="static" style="top: 25%;">
   <div class="modal-dialog modal-lg" style="width: 40% !important;">
     <div class="modal-content">
       <div class="modal-header">
