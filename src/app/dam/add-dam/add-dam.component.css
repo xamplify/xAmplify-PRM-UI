@@ -7,9 +7,9 @@
     transition: all 0.3s ease-in-out;
     padding: 15px;
 }
-.page-bar .page-breadcrumb {
+/* .page-bar .page-breadcrumb {
   padding: 0 0 10px;
-}
+} */
 .top-bar-left .title {
   display: none;
 }
