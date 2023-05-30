@@ -192,3 +192,12 @@ legend.scheduler-border {
 .button-border{
   border: 1px solid #fff;
 }
+
+/* 29/05/2023 */
+
+.Sch-class{
+  background-color: #f76c1a !important;
+}
+.Sch-class:hover{
+  background-color: #dd804b !important;
+}

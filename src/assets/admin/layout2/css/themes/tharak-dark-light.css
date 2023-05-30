@@ -1073,3 +1073,13 @@ input:active, input:focus{
   background-color: #22313a !important;
   color: #fff !important;
 }
+
+/* 29/05/2023 */
+
+.has-error {
+  box-shadow: none !important;
+}
+
+.has-error, .message-auto {
+  border: 1px solid #2f485700!important;
+}

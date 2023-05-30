@@ -4114,6 +4114,7 @@ configSalesforce() {
 		this.activeTabName = 'customskin';
 		this.activeTabHeader = this.properties.customskin;
 		this.themeResponse.isVisible = false;
+		this.isSaveTheme = false;
 		this.showThemes();	
 	}
 	goToCustomThemes() {
