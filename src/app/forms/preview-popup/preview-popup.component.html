@@ -160,10 +160,10 @@
                             <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
-                            <div class="panel-body" *ngIf="!formError">
+                            <div class="panel-body d-p-bg-color-cust" *ngIf="!formError">
                                 <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                                    <div class="form-group label-box">
+                                    <div class="form-group label-box d-p-bg-color-cust">
                                         <label class="control-label"><span
                                                 *ngIf="learningTrackId !== undefined && learningTrackId > 0 && form.quizForm">{{i+1}}.
                                             </span><span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>

@@ -289,7 +289,7 @@ ul.alt-row-style1 li:hover,
   color:#999 !important;
 }
 /*** table ***/
-table,
+.tgrid,
 fieldset,
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, 
 .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
@@ -784,6 +784,10 @@ hr{
   color: #fff !important;
     background: #22313a !important;
 }
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+  color: #fff;
+  background: #22313a !important;
+}
 .form-check-label,
 .gu-block,
 .modal-content{
@@ -850,6 +854,11 @@ textarea:active, textarea:focus {
 input:active, input:focus{
   border-color: #2f4857  !important ;
   outline: 1px solid #2f4857 !important;
+}
+input#copy-link {
+  border: 2px solid #2f4857 !important;
+  border-radius: 5px;
+  padding: 0px 10px;
 }
 .user-comment p:after,
 .comment.user-comment p,
@@ -1083,3 +1092,14 @@ input:active, input:focus{
 .has-error, .message-auto {
   border: 1px solid #2f485700!important;
 }
+/* 30-5-2023 sudha */
+input.field-border-customization {
+  border: 2px solid #2f4857 !important;
+  padding: 0px 7px;
+}
+.d-p-bg-color-cust {
+  background: var(--form-bg-color) !important;
+}
+/* .d-f-bgcolor-cust {
+  background: #2b3c46 !important;
+} */
