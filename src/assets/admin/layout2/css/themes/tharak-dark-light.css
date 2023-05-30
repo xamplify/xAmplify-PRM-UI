@@ -1074,7 +1074,8 @@ input#copy-link {
   background: #253d46 !important;
 }
 
-.border-cls{
+.border-cls,
+.inline{
   border: none !important;
 } 
 
