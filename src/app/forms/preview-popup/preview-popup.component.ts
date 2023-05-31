@@ -41,6 +41,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     pageBackgroundColor = "";
     siteKey = "";
     showDefaultForms = false;
+    showCustomPopup = false ;
     
     @Input() filter: any;
     showEmbedLink = true;
@@ -94,6 +95,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
 
     listForms(pagination: Pagination) {
         $('#forms-list').modal('show');
+        this.showCustomPopup = true ;
         this.referenceService.loading(this.formsLoader, true);
         this.formService.findDefaultFormsOrUserDefinedForms(pagination,this.showDefaultForms).subscribe(
             (response: any) => {
