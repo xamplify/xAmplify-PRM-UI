@@ -2185,6 +2185,7 @@ div.tab{
   width: calc(30% - 17px) !important;
   padding-top: 0px !important;
   border-top: 1px solid #1c313a00 !important;
+  margin-right: -4px;
 }
 .img-format {
   height: 100% !important;
@@ -2210,9 +2211,9 @@ div.tab{
 
 /* 03/05/2023 */
 
-.alert{
+/* .alert{
   margin-bottom: 0px !important;
-}
+} */
 
 img.thumb.ng-scope {
   width: 100%;
