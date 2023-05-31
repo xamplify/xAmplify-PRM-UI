@@ -1918,3 +1918,6 @@ border: 1px solid #ddd !important;
   .mp-pt-carrdtop {
 	padding-top: 1em;
   }
+  button.customize-btn-space {
+	margin-top: 4px !important;
+  }

@@ -1111,6 +1111,12 @@ ul.alt-row-style1 li:hover {
 .fc-unthemed .fc-popover, .fc-unthemed .fc-row, .fc-unthemed hr, .fc-unthemed tbody, .fc-unthemed td, .fc-unthemed th, .fc-unthemed thead{
   border-color:#2f4857 !important;
 }
+.portlet-title.custom-change-css {
+  border-bottom: none !important;
+}
+button.customize-btn-space {
+  margin-top: 4px !important;
+}
 /* .d-f-bgcolor-cust {
   background: #2b3c46 !important;
 } */

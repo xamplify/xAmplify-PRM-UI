@@ -976,3 +976,9 @@ input.field-border-customization {
   rect.highcharts-background {
     fill: none;
   }
+  .portlet-title.custom-change-css {
+    border-bottom: none !important;
+}
+button.customize-btn-space {
+  margin-top: 4px !important;
+}
