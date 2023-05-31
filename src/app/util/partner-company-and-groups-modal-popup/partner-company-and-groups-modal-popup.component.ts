@@ -67,11 +67,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	showFilter = true;
 	selectedTab = 1;
 
-	/***XNFR-255*/
-	sharedWithPartnersAsAWhiteLabeledAsset = false;
-	shareWhiteLabelContentAccess = false;
-	disableWhiteLabeledCheckBox = false;
-
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
@@ -106,16 +101,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		this.damService.isPublishedToPartnerGroups(this.inputId, this.moduleName).subscribe(
 			response => {
 				this.isPublishedToPartnerGroup = response.data;
-				let statusCode = response.statusCode;
-				if(statusCode==200){
-					let map = response['map'];
-					let damDto = map['damDto'];
-					if(damDto!=undefined){
-						this.shareWhiteLabelContentAccess = damDto['shareWhiteLabelContentAccess'];
-						this.sharedWithPartnersAsAWhiteLabeledAsset = damDto['sharedWithPartnersAsAWhiteLabeledAsset'];
-						this.disableWhiteLabeledCheckBox = damDto['shareWhiteLabelContentAccess'] && damDto['sharedWithPartnersAsAWhiteLabeledAsset'];
-					}
-				}
 				if (this.isPublishedToPartnerGroup) {
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
@@ -507,7 +492,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	}
 
 	publishToPartnersOrGroups() {
-		this.damPublishPostDto.sharedWithPartnersAsAWhiteLabeledAsset = this.sharedWithPartnersAsAWhiteLabeledAsset;
 		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
 			this.referenceService.scrollToModalBodyTopByClass();
 			this.stopLoaders();
