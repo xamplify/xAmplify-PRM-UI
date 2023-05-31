@@ -175,3 +175,7 @@ span.quiz_optionname {
 .panel-body{
     background: #f0f5f9;
 }
+
+.popup-custom-width{
+    width: 60% !important;
+}

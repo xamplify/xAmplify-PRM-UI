@@ -5,7 +5,7 @@
 </div>
 <!-- ----------------------List Available Forms------------------- -->
 <div class="modal fade right" id="forms-list" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width">
+    <div class="modal-dialog" [ngClass]="showCustomPopup  ? 'popup-custom-width' : ''">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">
