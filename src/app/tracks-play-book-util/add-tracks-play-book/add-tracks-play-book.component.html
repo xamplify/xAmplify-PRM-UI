@@ -917,7 +917,7 @@
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
                       <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                         <div class="form-check">
-                          <label class="form-check-label">
+                          <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
                               <span [style.color]="form.labelColor">{{radioButton.name}}</span>
@@ -930,7 +930,7 @@
                     <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                       <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                         <div class="form-check">
-                          <label class="form-check-label">
+                          <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
                               <span [style.color]="form.labelColor">{{checkBox.name}}</span>

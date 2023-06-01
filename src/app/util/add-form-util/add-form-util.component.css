@@ -514,6 +514,7 @@ label {
     width: calc(50% - 15px);
     padding-top: 1rem;
     border-top: 1px solid #eaebed;
+    margin-right: -4px;
 }
 
 .actions__external-link {

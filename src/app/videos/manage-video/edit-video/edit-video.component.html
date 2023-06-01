@@ -335,7 +335,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Player Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
+													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'" class="field-border-customization"
                            [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -355,7 +355,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
-													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
+													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" class="field-border-customization"
                            [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -411,7 +411,7 @@
 												<label class="col-xs-5 control-label" style="position: relative;top:-7px;" translate>Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
-                           (input)="logoDescription(val.value)">
+                           (input)="logoDescription(val.value)" class="field-border-customization">
                            <span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
 												</div>
 											</div>

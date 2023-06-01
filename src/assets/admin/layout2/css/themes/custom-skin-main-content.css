@@ -246,7 +246,7 @@ fieldset,
 .table thead > tr > th,
 .ng2-tag-input,
 .tborders >tbody>tr>td {
-  border-bottom: 2px solid var(--border-color)!important;
+  border-bottom: 1px solid var(--border-color)!important;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,
 .modal-footer,
@@ -954,16 +954,31 @@ textarea:active, textarea:focus {
 }
 input.field-border-customization {
   border: 2px solid var(--border-color)!important;
-  /* padding: 0px 7px; */
+   /* padding: 0px 7px; */
+  }
+  input#copy-link {
+    border: 2px solid var(--border-color) !important;
+    /* border-radius: 5px;
+    padding: 0px 10px; */
+  }
+  .modal-content{
+    border: 1px solid var(--border-color) !important;
+  }
+  .d-p-bg-color-cust {
+    background: var(--form-bg-color) !important;
+  }
+  table, th {
+    border: none !important;
+  }
+  input.field-border-customization {
+    border: 2px solid var(--border-color)!important;
+  }
+  rect.highcharts-background {
+    fill: none;
+  }
+  .portlet-title.custom-change-css {
+    border-bottom: none !important;
 }
-input#copy-link {
-  border: 2px solid var(--border-color) !important;
-  /* border-radius: 5px;
-  padding: 0px 10px; */
-}
-.modal-content{
-  border: 1px solid var(--border-color) !important;
-}
-.d-p-bg-color-cust {
-  background: var(--form-bg-color) !important;
+button.customize-btn-space {
+  margin-top: 4px !important;
 }
