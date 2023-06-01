@@ -1153,5 +1153,10 @@ setWhiteLabeled(event:any){
     this.damUploadPostDto.shareAsWhiteLabeledAsset = event;
 }
 
+/****XNFR-255***/
+receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+    console.log(event);
+}
+
 
 }
