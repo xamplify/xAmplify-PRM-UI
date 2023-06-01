@@ -1074,7 +1074,8 @@ input#copy-link {
 .table-filter{
   background-color: #1c313a !important;
 }
-.grid-box.box-dark-defalut-clr{
+
+div#box-dark-defalut-clr {
   background: #253d46 !important;
 }
 

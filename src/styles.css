@@ -886,10 +886,10 @@ legend {
 	left: 0px;
 	top: 100%;
 	z-index: -1;
-	border-left: 3px solid #5ab1eb;
+	border-left: 3px solid #5cb85c;;
 	border-right: 3px solid transparent;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5ab1eb;
+	border-top: 3px solid #5cb85c;;
 }
 
 .ribbon span::after {
@@ -899,9 +899,9 @@ legend {
 	top: 100%;
 	z-index: -1;
 	border-left: 3px solid transparent;
-	border-right: 3px solid #5ab1eb;
+	border-right: 3px solid #5cb85c;;
 	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5ab1eb;
+	border-top: 3px solid #5cb85c;;
 }
 
 .bookmark-ribbon {

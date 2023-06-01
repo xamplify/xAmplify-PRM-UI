@@ -531,7 +531,7 @@ img.custom-image-css {
   margin-bottom: 0px;
 }
 .overflow-control{
-    overflow: hidden !important;
+    overflow: auto !important;
 }
 .tgrid {
     border: none;
