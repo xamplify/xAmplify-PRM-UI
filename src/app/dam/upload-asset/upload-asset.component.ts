@@ -170,7 +170,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         /****XNFR-169*****/
         this.listCategories();
         /*******XNFR-255***/
-      //  this.findShareWhiteLabelContentAccess();
+        this.findShareWhiteLabelContentAccess();
+        
 	}
     /*******XNFR-255***/
     findShareWhiteLabelContentAccess() {
