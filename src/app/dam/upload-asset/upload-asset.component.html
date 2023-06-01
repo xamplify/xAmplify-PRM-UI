@@ -227,7 +227,6 @@
                           </div>
                         </div>
                         <!---White Labeled-- XNFR-255-->
-
                         <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                           <div class="form-group" style="margin-bottom: 0;">
                             <label class="control-label col-sm-2" translate>Tags
@@ -361,8 +360,22 @@
                       </table>
                     </div>
                     <!---XNFR-255-->
-                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mb-padding">
-                      <app-partner-company-and-groups [companyId]="1234" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <td class="desc" style="width: 11%;">
+                              <label class="control-label" translate>
+                              </label>
+                            </td>
+                            <td class="desc">
+                              <div class="mDesc">
+                                <app-partner-company-and-groups [companyId]="1234" [moduleName]="'dam'" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
               </div>

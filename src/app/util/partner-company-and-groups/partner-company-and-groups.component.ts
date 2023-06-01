@@ -30,7 +30,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
 	@Input() companyId: any;
-	inputId: any;
+	@Input() inputId:any;
 	@Input() moduleName: any;
 	@Output() partnerCompanyAndGroupsEventEmitter = new EventEmitter();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -78,7 +78,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.vendorCompanyId = this.companyId;
 			this.pagination.partnerTeamMemberGroupFilter = true;
-			this.findPublishedType();
+			$('#partners-li').addClass('active');
+			$('#partners').addClass('tab-pane fade in active');
+			this.showFilter = true;
+			this.selectedTab = 1;
+			this.inputId = 0;
+			this.findPartnerCompanies(this.pagination);
+			//this.findPublishedType();
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.resetFields();
@@ -167,7 +173,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	findPartnerCompanies(pagination: Pagination) {
 		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
-		pagination.campaignId = this.inputId;
+		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
