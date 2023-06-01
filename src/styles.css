@@ -1921,3 +1921,25 @@ border: 1px solid #ddd !important;
   button.customize-btn-space {
 	margin-top: 4px !important;
   }
+  /* 1-6-2023 sudha sri */
+  .portlet.light.rss-border {
+    border: none !important;
+}
+fieldset.fild-custome-borders-none {
+    border: none !important;
+}
+legend.leg-custome-borders-bot {
+    border: none !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+.cus-nodatafound-alert {
+    margin: 51px 10px 10px 10px;
+}
+@media (min-width: 300px) and (max-width: 991px) {
+.cus-nodatafound-alert {
+    margin: 10px 10px 10px 10px;
+}
+}
+button.glyphicon.glyphicon-remove.search-box-item-clear:before {
+	margin-left: -3px;
+  }

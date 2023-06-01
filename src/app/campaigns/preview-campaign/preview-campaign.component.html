@@ -306,7 +306,7 @@
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
                      <div class="table-responsive">
                         <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
-                           <div class="input-icon" style="position:relative;right: -11px;">
+                           <div class="input-icon" style="position:relative;right: -11px;margin-bottom: 7px;">
                               <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">
                               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchCampaignUsers();"></button>
                               <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i class="fa fa-search" aria-hidden="true"></i></button>

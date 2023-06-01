@@ -34,7 +34,7 @@
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
                 <div class="portlet light profile-sidebar-portlet">
-                    <div class="profile-image-wrapper">
+                    <div class="profile-image-wrapper-color">
                         <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
                             <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                             <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
@@ -1155,8 +1155,8 @@
                                         <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                             <table class="table table-light" style="border:0px!important;background-color:transparent!important">
                                                 <tbody>
-                                                    <fieldset>
-                                                        <legend>GDPR</legend>
+                                                    <fieldset class="fild-custome-borders-none">
+                                                        <legend class="leg-custome-borders-bot">GDPR</legend>
                                                         <tr class="col-md-12 col-lg-12">
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
@@ -1436,8 +1436,8 @@
                                             <div>
                                                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
                                                     <div class="col-xs-12" style="padding:0">
-                                                        <fieldset>
-                                                            <legend translate>Video Player Apperance</legend>
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
                                                             <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
                                                                     <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
@@ -1445,7 +1445,7 @@
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
                                                                         class="field-border-customization" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization"
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1464,7 +1464,7 @@
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
                                                                         class="field-border-customization"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization" 
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1492,8 +1492,8 @@
                                                     </div>
                                                     <!-- removed bg-color white and shadow white (ss) -->
                                                     <div class="col-xs-12" style="padding:0;">
-                                                        <fieldset>
-                                                            <legend translate>Controls of the player</legend>
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot" translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
                                                                     <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Sharing' | translate}}:</label>
@@ -1574,7 +1574,7 @@
                                             <table class="table table-light" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                                                 style="border: 0px !important; background-color: transparent !important">
                                                 <tbody>
-                                                    <fieldset>
+                                                    <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
                                                         <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
@@ -1733,7 +1733,7 @@
                                             <table class="table table-light"
                                                 style="border: 0px !important; background-color: transparent !important" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <tbody>
-                                                    <fieldset>
+                                                    <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
@@ -1996,7 +1996,7 @@
                 </div>
                 <div *ngIf="!imageChangedEvent">
                     <fieldset
-                        style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+                    class="fild-custome-borders-none"  style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
                     </fieldset>
                 </div>
                 </div>
