@@ -630,11 +630,6 @@ label{
 .social-feeds{
   border-bottom: 1px solid #2f4857 !important;
 }
-.head-h{
-  border: 1px solid #2f4857!important;
-}
-.rss-border{  border-color: #2f4857!important;
-}
 /* hr{
   border-top: 0.5px solid #2f4857!important;
 } */
@@ -1074,7 +1069,8 @@ input#copy-link {
 .table-filter{
   background-color: #1c313a !important;
 }
-.grid-box.box-dark-defalut-clr{
+
+div#box-dark-defalut-clr {
   background: #253d46 !important;
 }
 
@@ -1120,3 +1116,31 @@ button.customize-btn-space {
 /* .d-f-bgcolor-cust {
   background: #2b3c46 !important;
 } */
+/* 1-6-2023 sudha sri */
+textarea.form-control {
+  background: transparent;
+}
+th#border-bottom {
+  border: none !important;
+}
+fieldset.fild-custome-borders-none {
+  border: none !important;
+}
+legend.leg-custome-borders-bot {
+  border: none !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+.form-check>.form-check-label {
+  border: none !important;
+}
+button.glyphicon.glyphicon-remove.search-box-item-clear:before {
+  margin-left: -3px;
+}
+table#team-members {
+  border-collapse: inherit;
+}
+.head-h{
+  border-bottom: 1px solid #2f4857!important;
+}
+.portlet.light.rss-border{  border-color: #2f4857!important;
+}

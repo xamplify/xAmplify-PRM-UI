@@ -417,6 +417,9 @@ input{
   background-color: var(--div-bg-color) !important;
   border:2px dotted var(--border-color)!important;
 }
+.profile-image-wrapper-color{
+  border:1px solid var(--border-color)!important;
+}
 .color-inline{
   background-color: var(--div-bg-color) !important;
 }
@@ -452,7 +455,8 @@ label{
 .with-nav-tabs.panel-default .nav-tabs > li.active > a, .with-nav-tabs.panel-default .nav-tabs >
  li.active > a:hover, .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
   color: #f8f6f9 !important;
-    background-color: #1c313a !important;
+    /* background-color: #1c313a !important; */
+    background-color: var(--div-bg-color) !important;
  }
  .with-nav-tabs.panel-default .nav-tabs > li > a{
   color: #f8f6f9 !important;
@@ -566,9 +570,9 @@ label{
   border-bottom: 1px solid var(--border-color) !important;
 }
 .head-h{
-  border: 1px solid var(--border-color)!important;
+  border-bottom: 1px solid var(--border-color)!important;
 }
-.rss-border{  border-color: var(--border-color)!important;
+.portlet.light.rss-border{  border-color: var(--border-color)!important;
 }
 /* hr{
   border-top: 0.5px solid var(--border-color)!important;
@@ -981,4 +985,30 @@ input.field-border-customization {
 }
 button.customize-btn-space {
   margin-top: 4px !important;
+}
+/* 1-6-2023 sudha sri */
+.thumbnail-wrapper{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.tracks-bg-color{
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.feature-img-bg{
+  background-color: var(--div-bg-color) !important;
+  border: 2px dotted var(--border-color)!important;
+}
+fieldset.fild-custome-borders-none {
+  border: none !important;
+}
+legend.leg-custome-borders-bot {
+  border: none !important;
+  border-bottom: 1px solid var(--border-color)!important;
+}
+.form-check>.form-check-label {
+  border: none !important;
+}
+button.glyphicon.glyphicon-remove.search-box-item-clear:before {
+  margin-left: -3px;
 }

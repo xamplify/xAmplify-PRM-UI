@@ -2307,7 +2307,11 @@ i.fa.fa-arrow-circle-o-up {
   object-fit: fill;
 }
 .img-grid-track:hover{
-  border: 1px solid #54a7e9;
+  border: 1px solid #54a7e9 !important;
+}
+
+.grid-box.imgage-paddings.template-selected-border {
+  border: none !important;
 }
 
 .grid-box{
