@@ -125,7 +125,6 @@ export class ModuleAccessComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
-    this.campaignAccess.roleId = $('#roleId option:selected').val();
     this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       this.statusCode = result.statusCode;
