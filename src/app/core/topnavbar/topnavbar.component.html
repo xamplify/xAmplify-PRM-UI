@@ -65,6 +65,8 @@
 						</button>
 					</li>
 
+                   
+
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                     &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                         <div class="btn-group refer-vendor-button btnVendor">

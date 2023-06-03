@@ -1071,4 +1071,13 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
 	}
+
+    findCompanyInfo(emailId:string) {
+        let input = {};
+        input['emailId'] = emailId;
+        const url = this.superAdminUrl + 'findCompanyInfo?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, input)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
