@@ -64,8 +64,9 @@
 							<i class="fa fa-power-off" aria-hidden="true"></i>
 						</button>
 					</li>
+
                     <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
-                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner">
+                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                         <div class="btn-group refer-vendor-button btnVendor">
                             <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
                             <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
@@ -80,7 +81,7 @@
 						</button>
                     </li>
 
-                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && userId!=1">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-bell" [ngClass]="authenticationService?.isTop?'customskin-icon':'bell-icon'" aria-hidden="true"></i>
                             <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
@@ -113,7 +114,7 @@
                         <ul class="dropdown-menu dropdown-menu-default">
                             <app-modal-popup-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [height]="180"></app-modal-popup-loader>
                             <ng-container *ngIf="!authenticationService?.module?.contentLoader && !myVendorsLoader">
-                            <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
+                            <li *ngIf="userId!=1 && ((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner)">
                                 <a (click)="goToRouter('/home/dashboard/myprofile')" translate>
                                      <i class="icon-user"></i> 
                                     My Profile
@@ -185,7 +186,7 @@
 	                    <i class="icon-logout"></i>
 	                </li>-->
                     <!-- END USER LOGIN DROPDOWN -->
-                    <li class="dropdown dropdown-user top-menu-bar">
+                    <li class="dropdown dropdown-user top-menu-bar" *ngIf="userId!=1">
                         <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">                            
                             <span style="text-transform: uppercase;">{{authenticationService.userPreferredLanguage}}</span>
                             <i class="fa fa-angle-down"></i>
