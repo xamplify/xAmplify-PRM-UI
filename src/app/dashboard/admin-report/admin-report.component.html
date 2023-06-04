@@ -317,12 +317,30 @@
           </table>
         </div>
         <app-modal-popup-loader *ngIf="upgradeAccountLoader"></app-modal-popup-loader>
-        <div *ngIf="!upgradeAccountLoader">
-        <div class="table-responsive">
-            <table class='table tgrid' aria-describedby="">
-            </table>
+        <div *ngIf="!upgradeAccountLoader && (upgradeAccountStatusCode==200 || upgradeAccountStatusCode==400)">
+          <div class="table-responsive">
+              <table class='table tgrid' aria-describedby="">
+                <thead>
+                  <tr>
+                  <th>Company Name</th>
+                  <th>Company Profile Name</th>
+                  <th>Company Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{companyInfo?.companyName}}</td>
+                    <td>{{companyInfo?.companyProfileName}}</td>
+                    <td>{{companyInfo?.companyType}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
         </div>
-        </div>
+
+        <app-response-message [showCloseIcon]="false" [customResponse]="upgradeAccountResponse" *ngIf="upgradeAccountResponse?.isVisible"></app-response-message>
+
+
       </div>
       <div class="modal-footer">
         <button data-dismiss="modal" [disabled]="upgradeAccountLoader" class="btn btn-default float-right">Close</button>
