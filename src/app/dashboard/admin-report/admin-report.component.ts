@@ -66,6 +66,7 @@ export class AdminReportComponent implements OnInit {
     upgradeAccountResponse:CustomResponse = new CustomResponse();
     companyInfo:any;
     upgradeAccountStatusCode = 0;
+    adminsAndTeamMembers:Array<any>= new Array<any>();
     /***Upgrade Account */
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public router:Router) {
@@ -417,20 +418,28 @@ export class AdminReportComponent implements OnInit {
   }
 
   upgradeAccount(){
-    this.resetUpgradeAccountValues();
+    this.resetEmailIdAndOtherUpgradeAccountValues();
     $('#upgrade-account-modal').modal('show');
   }
 
   closeUpgradeAccountModal(){
-    this.resetUpgradeAccountValues();
+    this.resetEmailIdAndOtherUpgradeAccountValues();
     $('#upgrade-account-modal').modal('hide');
   }
 
+    private resetEmailIdAndOtherUpgradeAccountValues() {
+        this.emailId = "";
+        this.resetUpgradeAccountValues();
+    }
+
+
     private resetUpgradeAccountValues() {
         this.validEmailId = true;
-        this.emailId = "";
         this.upgradeAccountLoader = false;
+        this.companyInfo = {};
         this.upgradeAccountResponse = new CustomResponse();
+        this.upgradeAccountStatusCode = 0;
+        this.adminsAndTeamMembers = [];
     }
 
   upgradeAccountOnKeyPress(keyCode:any){
@@ -438,7 +447,7 @@ export class AdminReportComponent implements OnInit {
   }
 
   findCompanyInfo(){
-      this.upgradeAccountResponse = new CustomResponse();
+      this.resetUpgradeAccountValues();
       let trimmedEmailId = $.trim(this.emailId);
       this.validEmailId = trimmedEmailId.length>0;
       if(this.validEmailId){
@@ -447,18 +456,23 @@ export class AdminReportComponent implements OnInit {
             response=>{
               let statusCode = response.statusCode;
               this.upgradeAccountStatusCode = statusCode;
-              if(statusCode==200 || statusCode==400){
+              let statusCode200 = statusCode==200;
+              let statusCode400 = statusCode==400;
+              let statusCode404 = statusCode==404;
+              if(statusCode200 || statusCode400){
                   this.companyInfo = response.data.companyDetails;
-                  if(statusCode==400){
+                  if(statusCode400){
                     let message = response.message;
                     let companyType = this.companyInfo.companyType;
                     if(companyType=="User" || companyType=="Partner"){
                         let upgradeLink = this.authenticationService.APP_URL+"/home/dashboard/admin-company-profile/"+trimmedEmailId;
-                        message+= " <a href="+upgradeLink+">Click Here</a> To Create Company Profille & Upgrade This "+companyType+".";
+                        message+= " <a href="+upgradeLink+">Click Here</a> To Create Company Profille & Upgrade This "+companyType+" Account.";
                      }
-                    this.upgradeAccountResponse = new CustomResponse('INFO',message,true);
+                    this.upgradeAccountResponse = new CustomResponse('ERROR',message,true);
+                  }else if(statusCode200){
+                      this.adminsAndTeamMembers = response.data.adminsAndTeamMembers;
                   }
-              }else if(statusCode==404){
+              }else if(statusCode404){
                   this.upgradeAccountResponse = new CustomResponse('ERROR',response.message,true);
               }
               this.upgradeAccountLoader = false;
@@ -466,7 +480,6 @@ export class AdminReportComponent implements OnInit {
                 this.upgradeAccountLoader = false;
                 this.upgradeAccountResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
             });
-        
       }
       
       
