@@ -505,11 +505,21 @@ export class AdminReportComponent implements OnInit {
   }
     upgradeAccount(roleId:number) {
         this.referenceService.showSweetAlertProcessingLoader("Upgrading The Account.");
+        this.dashboardService.upgradeAccount(this.companyInfo.companyId,roleId)
+        .subscribe( 
+            response=>{
+                let statusCode = response.statusCode;
+                let message = response.message;
+                if(statusCode==200){
+                    this.referenceService.showSweetAlertSuccessMessage(message);
+                }else{
+                    this.referenceService.showSweetAlertErrorMessage(message);
+                }
+                this.closeUpgradeAccountModal();
+            },error=>{
+                this.closeUpgradeAccountModal();
+                this.referenceService.showSweetAlertServerErrorMessage();
+        });
         
-        setTimeout(() => {
-            this.referenceService.showSweetAlertSuccessMessage("Account Upgraded Successfully");
-            this.closeUpgradeAccountModal();
-        }, 5000);
-       
     }
 }

@@ -1080,4 +1080,10 @@ getDefaultThemes(){
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    upgradeAccount(companyId:number,roleId:number){
+        return this.http.get(this.superAdminUrl + "/upgradeAccount/" + companyId + "/"+roleId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }
