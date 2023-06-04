@@ -13,7 +13,7 @@ import { Roles } from '../../core/models/roles';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
 import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
 
-declare var swal,$:any;
+declare var swal:any,$:any;
 
 @Component({
   selector: 'app-admin-report',
@@ -58,11 +58,17 @@ export class AdminReportComponent implements OnInit {
     campaignAccess = new CampaignAccess();
     userAlias:string = "";
     @ViewChild('dynamicEmailContentComponent') dynamicEmailContentComponent: DynamicEmailContentComponent;
-
     accessAccountVanityURL:string;
-
+    /***Upgrade Account */
+    validEmailId = true;
+    upgradeAccountLoader = false;
+    emailId = "";
+    upgradeAccountResponse:CustomResponse = new CustomResponse();
+    companyInfo:any;
+    upgradeAccountStatusCode = 0;
+    /***Upgrade Account */
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
-public authenticationService: AuthenticationService, public router:Router) {
+    public authenticationService: AuthenticationService, public router:Router) {
   }
   
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
@@ -408,5 +414,61 @@ public authenticationService: AuthenticationService, public router:Router) {
     if(report && report.companyId && report.companyProfileName){
         this.router.navigate(['/home/dashboard/edit-module-names/' + report.companyId]);
     }  
+  }
+
+  upgradeAccount(){
+    this.resetUpgradeAccountValues();
+    $('#upgrade-account-modal').modal('show');
+  }
+
+  closeUpgradeAccountModal(){
+    this.resetUpgradeAccountValues();
+    $('#upgrade-account-modal').modal('hide');
+  }
+
+    private resetUpgradeAccountValues() {
+        this.validEmailId = true;
+        this.emailId = "";
+        this.upgradeAccountLoader = false;
+        this.upgradeAccountResponse = new CustomResponse();
+    }
+
+  upgradeAccountOnKeyPress(keyCode:any){
+    if (keyCode === 13) { this.findCompanyInfo(); } 
+  }
+
+  findCompanyInfo(){
+      this.upgradeAccountResponse = new CustomResponse();
+      let trimmedEmailId = $.trim(this.emailId);
+      this.validEmailId = trimmedEmailId.length>0;
+      if(this.validEmailId){
+        this.upgradeAccountLoader = true;
+        this.dashboardService.findCompanyInfo(trimmedEmailId).subscribe(
+            response=>{
+              let statusCode = response.statusCode;
+              this.upgradeAccountStatusCode = statusCode;
+              if(statusCode==200 || statusCode==400){
+                  this.companyInfo = response.data.companyDetails;
+                  if(statusCode==400){
+                    let message = response.message;
+                    let companyType = this.companyInfo.companyType;
+                    if(companyType=="User" || companyType=="Partner"){
+                        let upgradeLink = this.authenticationService.APP_URL+"/home/dashboard/admin-company-profile/"+trimmedEmailId;
+                        message+= " <a href="+upgradeLink+">Click Here</a> To Create Company Profille & Upgrade This "+companyType+".";
+                     }
+                    this.upgradeAccountResponse = new CustomResponse('INFO',message,true);
+                  }
+              }else if(statusCode==404){
+                  this.upgradeAccountResponse = new CustomResponse('ERROR',response.message,true);
+              }
+              this.upgradeAccountLoader = false;
+            },error=>{
+                this.upgradeAccountLoader = false;
+                this.upgradeAccountResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+            });
+        
+      }
+      
+      
   }
 }

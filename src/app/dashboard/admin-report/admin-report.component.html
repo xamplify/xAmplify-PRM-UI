@@ -14,8 +14,19 @@
       </li>
     </ul>
   </div>
+  <!--Upgrade Account-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb float-right">
+      <li class="topnav-button-css">
+        <button class="btn btn-primary" (click)="upgradeAccount()">
+          <span>Upgrade Account</span>
+          <i class="fa fa-level-up" aria-hidden="true"></i>
+          </button>
+    </li>
+    </ul>
+  </div>
+
   <div>
-    
    <app-list-all-users *ngIf="!detailsTielsView"></app-list-all-users> 
     <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
@@ -276,5 +287,66 @@
     </div>
   </div>
 </ng-container>
+
+<!-- ---------------------Upgrade Account------------------ -->
+<div class="modal fade right" id="upgrade-account-modal" data-backdrop="static">
+  <div class="modal-dialog full-width">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button [disabled]="upgradeAccountLoader" type="button" class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <h4 class="modal-title text-center">Upgrade Account</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class='table tgrid' aria-describedby="">
+            <thead>
+              <tr>
+                <th style="width: 20%;" scope="row">Enter Email</th>
+                <th scope="row">
+                  <input type="email" class="form-control" placeholder="Enter Email" autocomplete="off" [(ngModel)]="emailId"
+                   [ngModelOptions]="{standalone: true}" (keypress)="upgradeAccountOnKeyPress($event.keyCode)">
+                  <span *ngIf="!validEmailId" class="required"><strong>Please Enter Email</strong></span>
+                </th>
+                  <th scope="row">
+                    <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
+                  </th>
+                </tr>
+            </thead>
+          </table>
+        </div>
+        <app-modal-popup-loader *ngIf="upgradeAccountLoader"></app-modal-popup-loader>
+        <div *ngIf="!upgradeAccountLoader && (upgradeAccountStatusCode==200 || upgradeAccountStatusCode==400)">
+          <div class="table-responsive">
+              <table class='table tgrid' aria-describedby="">
+                <thead>
+                  <tr>
+                  <th>Company Name</th>
+                  <th>Company Profile Name</th>
+                  <th>Company Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{companyInfo?.companyName}}</td>
+                    <td>{{companyInfo?.companyProfileName}}</td>
+                    <td>{{companyInfo?.companyType}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+
+        <app-response-message [showCloseIcon]="false" [customResponse]="upgradeAccountResponse" *ngIf="upgradeAccountResponse?.isVisible"></app-response-message>
+
+
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" [disabled]="upgradeAccountLoader" class="btn btn-default float-right">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 

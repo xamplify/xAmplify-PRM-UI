@@ -92,18 +92,13 @@
 						</thead>
 						<tbody>
 							<tr>
-								<th scope="row">Select Role<br>
-									<div class="alert alert-danger">
-										<strong>Changing role will not work as expected.So please do not change for customers</strong>
-									</div>
+								<th scope="row">Role<br>
 								</th>
 								<td>
-									<select class="form-control" id="roleId" [(ngModel)]="roleId" (change)="setModulesByRole()">
-										<option value="13" [selected]="roleId ==13">Vendor</option>
-										<option value="18" [selected]="roleId ==18">Marketing</option>
-										<option value="2" [selected]="roleId ==2">Org Admin</option>
-										<option value="20" [selected]="roleId ==20">Prm</option>
-									</select>
+									<strong *ngIf="roleId ==13">Vendor</strong>
+									<strong *ngIf="roleId ==18">Marketing</strong>
+									<strong *ngIf="roleId ==2">Org Admin</strong>
+									<strong *ngIf="roleId ==20">Prm</strong>
 							</tr>
 							<!-- XNFR-139 -->
 							<tr>

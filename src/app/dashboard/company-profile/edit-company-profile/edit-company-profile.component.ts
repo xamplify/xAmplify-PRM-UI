@@ -1535,7 +1535,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             this.addBlur();
                         }
                   }else{
-                      this.customResponse = new CustomResponse( 'INFO', "New Account Can Be Created For This Account", true );
+                      let message = "This User Canbe Upgraded.";
+                      if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
+                          message+=" This User Is Already A Partner In xAmplify. Upgrading This User Becomes Admin & Partner.";
+                      }
+                      this.customResponse = new CustomResponse( 'INFO', message, true );
                       this.setNewAccount(emailId);
                   }
               }

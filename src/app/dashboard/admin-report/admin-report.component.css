@@ -14,3 +14,9 @@
 	display: inline-block;
 	width: 200px;
 }
+.full-width{
+    width: 100% !important;
+}
+.w-fhpx{
+	width: 500px !important;
+}
