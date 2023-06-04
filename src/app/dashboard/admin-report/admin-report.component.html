@@ -17,7 +17,7 @@
   <div class="page-bar">
     <ul class="page-breadcrumb float-right">
       <li class="topnav-button-css">
-        <button class="btn btn-primary" (click)="upgradeAccount()">
+        <button class="btn btn-primary" (click)="openUpgradeAccountModal()">
           <span>Upgrade Account</span>
           <i class="fa fa-level-up" aria-hidden="true"></i>
           </button>
@@ -294,7 +294,7 @@
       <div class="modal-header">
         <h4 class="modal-title text-center">Upgrade Account</h4>
         <div class="table-responsive">
-          <table class='table tgrid' aria-describedby="">
+          <table class='table tgrid table-bordered' aria-describedby="">
             <thead>
               <tr>
                 <th style="width: 10%;" scope="row">Enter Email</th>
@@ -305,7 +305,7 @@
                 </th>
                   <th scope="row">
                     <button [disabled]="upgradeAccountLoader" class="btn btn-primary" (click)="findCompanyInfo()">Search</button>
-                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-default float-right">Close</button>
+                    <button (click)="closeUpgradeAccountModal()" [disabled]="upgradeAccountLoader" class="btn btn-danger float-right">Close</button>
                   </th>
                 </tr>
             </thead>
@@ -334,12 +334,12 @@
                     <td [className]="companyInfo?.companyType=='Partner' && upgradeAccountStatusCode==200 ? 'text-center success':'text-center danger'">
                       <strong>{{companyInfo?.companyType}}</strong></td>
                     <td class="text-center" *ngIf="upgradeAccountStatusCode==200"> 
-                      <select class="form-control" *ngIf="companyInfo?.companyType=='Partner'">
-                        <option>--Please Select Option--</option>
-                        <option>PRM</option>
-                        <option>Marketing</option>
-                        <option>Vendor</option>
-                        <option>Org Admin</option>
+                      <select id="upgrade-account-type" class="form-control" *ngIf="companyInfo?.companyType=='Partner'" (change)="upgradeAccountType()">
+                        <option value="0">--Please Select Option--</option>
+                        <option value="20">PRM</option>
+                        <option value="18">Marketing</option>
+                        <option value="13">Vendor</option>
+                        <option value="2">Org Admin</option>
                       </select>
                       <strong class="required" *ngIf="companyInfo?.companyType!='Partner'">Upgrade Option Available Only For Partner Accounts.</strong>
                     </td>

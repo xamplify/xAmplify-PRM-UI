@@ -417,7 +417,7 @@ export class AdminReportComponent implements OnInit {
     }  
   }
 
-  upgradeAccount(){
+  openUpgradeAccountModal(){
     this.resetEmailIdAndOtherUpgradeAccountValues();
     $('#upgrade-account-modal').modal('show');
   }
@@ -481,7 +481,35 @@ export class AdminReportComponent implements OnInit {
                 this.upgradeAccountResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
             });
       }
-      
-      
   }
+
+      
+  upgradeAccountType(){
+      let upgradingAccountRoleId = $('#upgrade-account-type option:selected').val();
+      let upgradingAccountRoleName = $('#upgrade-account-type option:selected').text();
+      let self = this;
+			swal({
+				title: "Account Will Be Upgraded To "+upgradingAccountRoleName,
+				type: 'success',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: "Yes, Please Upgrade.",
+                allowOutsideClick: false,
+                allowEscapeKey: false
+			}).then(function () {
+                self.upgradeAccount(upgradingAccountRoleId);
+			}, function (_dismiss: any) {
+                $('#upgrade-account-type').val(0);
+			});
+  }
+    upgradeAccount(roleId:number) {
+        this.referenceService.showSweetAlertProcessingLoader("Upgrading The Account.");
+        
+        setTimeout(() => {
+            this.referenceService.showSweetAlertSuccessMessage("Account Upgraded Successfully");
+            this.closeUpgradeAccountModal();
+        }, 5000);
+       
+    }
 }
