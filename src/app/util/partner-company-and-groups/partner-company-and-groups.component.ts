@@ -236,8 +236,18 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		this.selectedTeamMemberIds = [];
 		this.selectedPartnershipIds = [];
 		this.ngxLoading = false;
-        this.partnerCompanyAndGroupsEventEmitter.emit();
+        this.sendEmitterValues();
 
+	}
+
+	sendEmitterValues(){
+		let emitterObject = {};
+		emitterObject['selectedTeamMemberIds'] = this.selectedTeamMemberIds;
+		emitterObject['selectedPartnershipIds'] = this.selectedPartnershipIds;
+		emitterObject['selectedPartnerGroupIds'] = this.selectedPartnerGroupIds;
+		let selectedType = this.selectedTabName();
+		emitterObject['partnerGroupSelected'] = ('partnerGroups' == selectedType);
+		this.partnerCompanyAndGroupsEventEmitter.emit(emitterObject);
 	}
 
 	viewTeamMembers(item: any) {
@@ -360,6 +370,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
 			$('#partnerGroups-li').attr('title', 'Click to see lists');
 		}
+		this.sendEmitterValues();
+
 	}
 
 	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
@@ -583,6 +595,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			$('.partnersC').css({ 'pointer-events': 'auto' });
 			$('#partners-li').attr('title', 'Click to see companies');
 		}
+		this.sendEmitterValues();
 	}
 
 	previewUserListUsers(partnerGroup: any) {
