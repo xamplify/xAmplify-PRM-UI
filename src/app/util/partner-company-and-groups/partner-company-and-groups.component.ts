@@ -29,7 +29,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
-	@Input() companyId: any;
 	@Input() inputId:any;
 	@Input() moduleName: any;
 	@Output() partnerCompanyAndGroupsEventEmitter = new EventEmitter();
@@ -74,17 +73,18 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		if (this.companyId != undefined && this.companyId > 0 &&
-			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
-			this.pagination.vendorCompanyId = this.companyId;
+		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.partnerTeamMemberGroupFilter = true;
+			this.pagination.userId = this.authenticationService.getUserId();
 			$('#partners-li').addClass('active');
 			$('#partners').addClass('tab-pane fade in active');
 			this.showFilter = true;
 			this.selectedTab = 1;
-			this.inputId = 0;
-			this.findPartnerCompanies(this.pagination);
-			//this.findPublishedType();
+			if(this.inputId!=undefined && this.inputId>0){
+				this.findPublishedType();
+			}else{
+				this.findPartnerCompanies(this.pagination);
+			}
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.resetFields();
@@ -521,7 +521,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.customResponse = new CustomResponse();
 			this.referenceService.scrollToModalBodyTopByClass();
 			this.referenceService.startLoader(this.httpRequestLoader);
-			pagination.companyId = this.companyId;
 			pagination.campaignId = this.inputId;
 			this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
 				let data = result.data;
