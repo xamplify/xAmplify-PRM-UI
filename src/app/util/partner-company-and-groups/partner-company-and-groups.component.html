@@ -31,7 +31,7 @@
                   <div class="input-icon right" id="icon">
                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                       [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                      (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
+                      (keypress)="partnersSearchOnKeyEvent($event.keyCode)" autocomplete="off">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                       (click)="sortOption.searchKey='';searchPartners();"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchPartners()">
@@ -49,14 +49,9 @@
             <div class="row">
               <div>
                 <div class="col-xs-12" style="padding-top: 5px;">
-                  <div class="alert alert-success left-float" style="padding: 5px;" *ngIf="selectedPartnershipIds?.length>0">
+                  <div class="alert alert-success" *ngIf="selectedPartnershipIds?.length>0">
                     <strong>
-                      <ng-container *ngIf="selectedPartnershipIds?.length==1">
-                        {{selectedPartnershipIds?.length}} company is selected
-                      </ng-container>
-                      <ng-container *ngIf="selectedPartnershipIds?.length>1">
-                        {{selectedPartnershipIds?.length}} companies are selected
-                      </ng-container>
+                      Selected Companies : {{selectedPartnershipIds?.length}}
                     </strong>
                   </div>
                 </div>
@@ -111,7 +106,7 @@
                             <div class="input-icon right" id="icon">
                               <input type="text" id="sort-text" class="form-control"
                                 [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}"
-                                placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
+                                placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)" autocomplete="off">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                 *ngIf="teamMembersPagination?.searchKey"
                                 (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
@@ -193,16 +188,6 @@
           <div class="row">
             <div>
               <div class="col-xs-12">
-                <div class="alert alert-success left-float" *ngIf="selectedPartnerGroupIds?.length>0">
-                  <strong>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} list is selected
-                    </ng-container>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} lists are selected
-                    </ng-container>
-                  </strong>
-                </div>
                 <div class="page-toolbar">
                   <div class="left-float" style="float: right !important;padding-left: 10px;">
                     <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0) "
@@ -215,7 +200,7 @@
                         <div class="input-icon right" id="icon">
                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="partnerGroupsSortOption.searchKey"
                             [ngModelOptions]="{standalone: true}" placeholder="search..."
-                            (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)">
+                            (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)" autocomplete="off">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerGroupsSortOption.searchKey"
                             (click)="partnerGroupsSortOption.searchKey='';searchPartnerGroups();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchPartnerGroups()">
@@ -231,6 +216,11 @@
           </div>
         </div>
         <br>
+        <div class="alert alert-success" *ngIf="selectedPartnerGroupIds?.length>0">
+          <strong>
+            Selected Lists : {{selectedPartnerGroupIds?.length}}
+          </strong>
+        </div>
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
           <div class="table-responsive">
