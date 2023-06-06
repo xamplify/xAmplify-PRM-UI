@@ -218,3 +218,7 @@ h1 {
 .pg8{
 	top:0px !important;
 }
+/* 6-6-2023 sudha sri */
+.grid-box img{
+    object-fit: cover;
+}

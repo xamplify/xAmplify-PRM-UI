@@ -1012,3 +1012,20 @@ legend.leg-custome-borders-bot {
 button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   margin-left: -3px;
 }
+/* 5-6-2023 sudha sri */
+.table-filter,
+.table-filter tbody tr:hover,
+.table>tbody>tr>th{
+  background-color: var(--div-bg-color) !important;
+}
+/* 6-6-2023 sudha sri */
+input[type="number"] {
+  border: 1px solid var(--border-color)!important;
+}
+input[type="number"]:focus {
+  border-color: var(--border-color)!important;
+}
+ul.alt-row-style1 li:nth-child(even){
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 1px solid #2f4857!important;
+}

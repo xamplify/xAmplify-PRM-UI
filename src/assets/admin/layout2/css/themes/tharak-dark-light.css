@@ -307,6 +307,9 @@ fieldset,
 .bar-background {
   border-top: 1px solid #2f4857!important;
 }
+.table>tbody>tr>th{
+  background-color: #2b3c46!important;
+}
 .list__item .item__actions{
 margin-right: -4px;
 border-top: 1px solid #2f4857!important;
@@ -1143,4 +1146,9 @@ table#team-members {
   border-bottom: 1px solid #2f4857!important;
 }
 .portlet.light.rss-border{  border-color: #2f4857!important;
+}
+/* 6-6-2023 sudha sri */
+ul.alt-row-style1 li:nth-child(even){
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 1px solid #2f4857!important;
 }

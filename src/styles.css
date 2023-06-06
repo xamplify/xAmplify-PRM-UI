@@ -990,6 +990,7 @@ b, strong {
 	position: absolute;
 	background: #f1f3fa !important;
 	width: 39px !important;
+	height: 32px;
 }
 
 .search-box-item-clear {
@@ -1943,3 +1944,6 @@ legend.leg-custome-borders-bot {
 button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 	margin-left: -3px;
   }
+  .card-bgcolor, .content-bg {
+    border-radius: 0px 0px 8px 8px;
+}

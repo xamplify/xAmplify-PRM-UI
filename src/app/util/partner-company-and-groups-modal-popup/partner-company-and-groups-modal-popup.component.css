@@ -281,3 +281,7 @@ border-bottom: 1px solid #efefef00;
     overflow-y: hidden ;
     border: 1px solid #dddddd ;
 }
+/* 6-6-2023 sudha sri */
+ul.nav.nav-tabs {
+    border-bottom: none !important;
+}
