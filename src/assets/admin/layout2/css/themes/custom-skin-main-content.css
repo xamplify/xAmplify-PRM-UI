@@ -553,9 +553,9 @@ label{
 .update-status-content{
   border: 1px solid var(--border-color)!important;
 }
-.merge-tag-input-border{
   /*** tharak ***/
-  /* border: 1px solid var(--border-color)!important; */
+.merge-tag-input-border{
+  border:none !important ;
 }
 .btn-default > i,
 .btn-default{

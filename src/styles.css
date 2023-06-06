@@ -1304,7 +1304,7 @@ b, strong {
 
 .merge-tag-input-border {
 	box-sizing: border-box !important;
-	border: 1px solid #c8e0e0 !important;
+	border: none !important;
 }
 
 .margin-left-negative-fifteen-px {
@@ -1922,6 +1922,7 @@ border: 1px solid #ddd !important;
   button.customize-btn-space {
 	margin-top: 4px !important;
   }
+  
   /* 1-6-2023 sudha sri */
   .portlet.light.rss-border {
     border: none !important;
@@ -1947,3 +1948,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   .card-bgcolor, .content-bg {
     border-radius: 0px 0px 8px 8px;
 }
+
+.d-p-bg-color-cust {
+	background: var(--form-bg-color) !important;
+  }

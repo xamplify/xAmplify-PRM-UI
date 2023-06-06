@@ -1104,6 +1104,7 @@ input.field-border-customization {
 .d-p-bg-color-cust {
   background: var(--form-bg-color) !important;
 }
+
 ul.alt-row-style1 li:hover {
   background: #1c313a!important;
 }
