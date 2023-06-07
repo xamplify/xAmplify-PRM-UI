@@ -76,7 +76,8 @@ h1, h2, h3, h6 {
   background-color:  var(--div-bg-color) !important;
   border:1px solid var(--border-color) !important;  
 }
-.bar,.tile,
+
+.tile,
 .heading-top,
 .progress {
   background-color: var(--page-content) !important;
@@ -1040,4 +1041,15 @@ span.ui-column-resize{
 .pricing {
   border: none !important;
   background: transparent !important;
+}
+
+/* 7-6-2023 */
+
+#download-template-grid {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-color)!important;
+  line-height: 1;
+  position: relative;
+  bottom: 2px;
 }
