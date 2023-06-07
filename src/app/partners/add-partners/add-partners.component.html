@@ -1182,15 +1182,17 @@
                 <ngx-loading [show]="zohoPopupLoader"
                     [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <div>
+                    <div>
+                        <div class="modal-header">
                             <a class="close-circle" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
-                            <div>
+                            <div class="col-sm-3" style="margin-top:10px;">
                                 <img src="assets/images/zoho.png" alt="Picture of a happy monkey"
                                     style="height: 65px" width="90px" />
+                            </div>
+                            <div class="col-sm-12 salesforce">
                                 <h4 class="modal-title" id="myModalLabel" align="center"
-                                    style="margin-top: -20px;" translate>Import From Zoho</h4>
+                                     translate>Import From Zoho</h4>
                             </div>
                         </div>
                         <div class="modal-body">
@@ -1212,7 +1214,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="border-top:0px !important">
                             <button type="button" class="btn btn-default" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()" translate>Close</button>
                             <button type="button" class="btn btn-primary"
@@ -1384,7 +1386,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="border-top:none !important;">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         translate>Close</button>
                     <button type="button" id="salesforce_save_button"
@@ -1582,7 +1584,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="border-top:none !important">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         (click)="hideHuspotModal()" translate>Close</button>
                     <button type="button" id="hubspot_save_button"

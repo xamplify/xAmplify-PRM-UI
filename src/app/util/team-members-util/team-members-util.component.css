@@ -4,6 +4,7 @@ table th, table td {
 
 table>tbody>tr>td {
     border-top: none;
+    vertical-align: middle !important;
 }
 
 table td:first-child, table th:first-child {

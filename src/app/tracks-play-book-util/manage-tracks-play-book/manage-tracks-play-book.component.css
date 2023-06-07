@@ -127,7 +127,7 @@
 }
 .actionAlignment_sp_even{
    display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 /* .btnAlignPad{
     padding-left: 35px;

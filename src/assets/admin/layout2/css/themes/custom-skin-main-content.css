@@ -76,7 +76,8 @@ h1, h2, h3, h6 {
   background-color:  var(--div-bg-color) !important;
   border:1px solid var(--border-color) !important;  
 }
-.bar,.tile,
+
+.tile,
 .heading-top,
 .progress {
   background-color: var(--page-content) !important;
@@ -553,9 +554,10 @@ label{
 .update-status-content{
   border: 1px solid var(--border-color)!important;
 }
-.merge-tag-input-border{
   /*** tharak ***/
-  /* border: 1px solid var(--border-color)!important; */
+.merge-tag-input-border{
+  border: 1px solid var(--border-color) !important;
+  border-radius:3px !important
 }
 .btn-default > i,
 .btn-default{
@@ -1011,4 +1013,43 @@ legend.leg-custome-borders-bot {
 }
 button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   margin-left: -3px;
+}
+/* 5-6-2023 sudha sri */
+.table-filter,
+.table-filter tbody tr:hover,
+.table>tbody>tr>th{
+  background-color: var(--div-bg-color) !important;
+}
+/* 6-6-2023 sudha sri */
+input[type="number"] {
+  border: 1px solid var(--border-color)!important;
+}
+input[type="number"]:focus {
+  border-color: var(--border-color)!important;
+}
+ul.alt-row-style1 li:nth-child(even){
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 1px solid #2f4857!important;
+}
+/* 7-6-2023 sudha sri */
+span.ui-column-resizer{
+  background-color: var(--div-bg-color) !important;
+}
+span.ui-column-resize{
+  background-color: var(--div-bg-color) !important;
+}
+.pricing {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* 7-6-2023 */
+
+#download-template-grid {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-color)!important;
+  line-height: 1;
+  position: relative;
+  bottom: 2px;
 }

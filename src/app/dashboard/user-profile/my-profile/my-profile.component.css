@@ -1239,3 +1239,7 @@ p.pt-4 {
  font-weight: 600 !important;
  font-size: 11px !important;
 }
+/* 6-6-2023 sudha sri */
+th#border-bottom {
+  border-top: none !important;
+}

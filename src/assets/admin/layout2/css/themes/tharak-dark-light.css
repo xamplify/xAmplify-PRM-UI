@@ -307,6 +307,9 @@ fieldset,
 .bar-background {
   border-top: 1px solid #2f4857!important;
 }
+.table>tbody>tr>th{
+  background-color: #2b3c46!important;
+}
 .list__item .item__actions{
 margin-right: -4px;
 border-top: 1px solid #2f4857!important;
@@ -666,7 +669,11 @@ label{
   /* border: 1px solid #2f4857!important; */
 }
 .item__select-box-wrapper .select-box::before,
-.xamplify-dropdown-content-odd{
+.xamplify-dropdown-content-odd,
+span.ui-column-resizer{
+  background-color: #2b3c46 !important;
+}
+span.ui-column-resize{
   background-color: #2b3c46 !important;
 }
 .color-css,
@@ -682,8 +689,11 @@ label{
 /* .text{
     border-bottom: 1px solid #2f4857!important;
 } */
-.pricing,.heading-top-border{
+.heading-top-border,.table-bordered{
   border: 1px solid #2f4857!important;
+}
+.pricing-border{
+  border: 3px solid #2f4857!important;
 }
 .activeCRM{
   background-color: #22313a !important;
@@ -1101,6 +1111,7 @@ input.field-border-customization {
 .d-p-bg-color-cust {
   background: var(--form-bg-color) !important;
 }
+
 ul.alt-row-style1 li:hover {
   background: #1c313a!important;
 }
@@ -1143,4 +1154,13 @@ table#team-members {
   border-bottom: 1px solid #2f4857!important;
 }
 .portlet.light.rss-border{  border-color: #2f4857!important;
+}
+/* 6-6-2023 sudha sri */
+ul.alt-row-style1 li:nth-child(even){
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 1px solid #2f4857!important;
+}
+.pricing {
+  border: none !important;
+  background: transparent !important;
 }

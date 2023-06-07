@@ -193,7 +193,7 @@
                             </li>
                             <!--Team Member Groups-->
                             <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
+                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             
