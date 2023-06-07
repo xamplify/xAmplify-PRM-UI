@@ -669,7 +669,8 @@ label{
   /* border: 1px solid #2f4857!important; */
 }
 .item__select-box-wrapper .select-box::before,
-.xamplify-dropdown-content-odd{
+.xamplify-dropdown-content-odd,
+span.ui-column-resizer{
   background-color: #2b3c46 !important;
 }
 .color-css,
@@ -685,8 +686,11 @@ label{
 /* .text{
     border-bottom: 1px solid #2f4857!important;
 } */
-.pricing,.heading-top-border{
+.heading-top-border,.table-bordered{
   border: 1px solid #2f4857!important;
+}
+.pricing-border{
+  border: 3px solid #2f4857!important;
 }
 .activeCRM{
   background-color: #22313a !important;
@@ -1152,4 +1156,8 @@ table#team-members {
 ul.alt-row-style1 li:nth-child(even){
   border-top: 1px solid #2f4857!important;
   border-bottom: 1px solid #2f4857!important;
+}
+.pricing {
+  border: none !important;
+  background: transparent !important;
 }

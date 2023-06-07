@@ -1029,3 +1029,11 @@ ul.alt-row-style1 li:nth-child(even){
   border-top: 1px solid #2f4857!important;
   border-bottom: 1px solid #2f4857!important;
 }
+/* 7-6-2023 sudha sri */
+span.ui-column-resizer{
+  background-color: var(--div-bg-color) !important;
+}
+.pricing {
+  border: none !important;
+  background: transparent !important;
+}

@@ -798,8 +798,8 @@
                 </div>
                 <div class="portlet light"
                   [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification ">
-                  <div class="portlet-title col-xs-12" style="border-bottom:none">
-                    <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important;">
+                  <div class="portlet-title col-xs-12" style="border-bottom:none !important">
+                    <div class="caption col-xs-12 col-sm-9" style="padding-top: 4px !important;">
                       <span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
                         <span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
                         <span *ngIf="campaignType==='SOCIAL' && isChannelCampaign ">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
@@ -826,7 +826,7 @@
                       </div>
                     </div>
                     <div class="col-xs-5"
-                      [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR' && campaignType !== 'SURVEY', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY' }"
+                      [ngClass]="{'col-sm-3': campaignType !== 'VIDEO' && campaignType !== 'REGULAR' && campaignType !== 'SURVEY', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY' }"
                       style="margin-top: -4px;padding-right: 0px;padding-left:0px;">
                       <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                         class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
