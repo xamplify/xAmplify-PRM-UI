@@ -213,3 +213,9 @@ span.ui-column-resize {
 	cursor: e-resize;
 	border: 1px solid transparent;
 }
+table.table-bordered.dataTable {
+  border-collapse: collapse !important;
+}
+.inc-width{
+  padding: 0px 25px;
+}

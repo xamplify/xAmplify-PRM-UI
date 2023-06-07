@@ -1952,3 +1952,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 .d-p-bg-color-cust {
 	background: var(--form-bg-color) !important;
   }
+
+  .tab-border-none {
+    border: none !important;
+}
