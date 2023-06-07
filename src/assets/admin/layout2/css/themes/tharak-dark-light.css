@@ -673,6 +673,9 @@ label{
 span.ui-column-resizer{
   background-color: #2b3c46 !important;
 }
+span.ui-column-resize{
+  background-color: #2b3c46 !important;
+}
 .color-css,
 .design-name,
 .xamplify-dropdown-option{

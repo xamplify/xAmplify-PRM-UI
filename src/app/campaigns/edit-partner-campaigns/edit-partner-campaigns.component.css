@@ -201,3 +201,15 @@ legend.scheduler-border {
 .Sch-class:hover{
   background-color: #dd804b !important;
 }
+span.ui-column-resize {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	width: 8px;
+	height: 100%;
+	padding: 0;
+	cursor: e-resize;
+	border: 1px solid transparent;
+}

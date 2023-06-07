@@ -281,7 +281,7 @@
                                     </td>
                                     <th *ngIf="showExpandButton"></th>
                                     <th class="text-center">
-                                      <span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
+                                      <span class="ui-column-resize"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
                                       <span class="gridHeader">List Name</span>
                                     </th>
                                     <ng-container *ngIf="!campaign?.oneClickLaunch">

@@ -1189,7 +1189,7 @@
                                                 <div class="input-icon right">
                                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
                                                     <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchContactList()"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;right: 0px !important;" (click)="searchContactList()">
+                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;border-radius: 5px;" (click)="searchContactList()">
                                                         <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>

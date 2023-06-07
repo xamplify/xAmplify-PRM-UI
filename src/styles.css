@@ -1304,7 +1304,7 @@ b, strong {
 
 .merge-tag-input-border {
 	box-sizing: border-box !important;
-	border: none !important;
+	border: 1px solid #eee !important;
 }
 
 .margin-left-negative-fifteen-px {
