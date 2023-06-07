@@ -65,6 +65,7 @@ export class FormPreviewComponent implements OnInit {
   selectedPartnerFormAnswers : any;
   quizScore:number;
   maxScore: number;
+  loggedInUserEmail: string;
 
   resolved(captchaResponse: string) {
     if(captchaResponse){
@@ -107,6 +108,11 @@ export class FormPreviewComponent implements OnInit {
     } else {
       this.alias = this.route.snapshot.params['alias'];
     }
+    let loggedInUser = localStorage.getItem('currentUser');
+    if (loggedInUser !== undefined) {
+      let userJSON = JSON.parse(localStorage.getItem('currentUser'));
+      this.loggedInUserEmail = userJSON.userName;
+    }
     this.getFormFieldsByAlias(this.alias);
   }
 
@@ -127,6 +133,7 @@ export class FormPreviewComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
+            let self = this;
             this.hasFormExists = true;
             this.form = response.data;
             //$("body").css("background-color","this.form.backgroundColor");
@@ -146,6 +153,8 @@ export class FormPreviewComponent implements OnInit {
                   value.choices = value.radioButtonChoices;
               } else if (value.labelType == 'quiz_checkbox') {
                   value.choices = value.checkBoxChoices;
+              } else if (value.labelType == 'email' && value.required && self.learningTrackId !== undefined && self.learningTrackId > 0 && !self.isTrackQuizSubmitted) {
+                value.value = self.loggedInUserEmail;
               }
           });
           } else if (response.statusCode === 409) {

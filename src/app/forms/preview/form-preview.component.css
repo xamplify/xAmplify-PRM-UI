@@ -151,6 +151,7 @@ body {
 
 .disabled-background-color {
     background-color: #ffffff;
+    /* background-color: #e7e7e7; */
 }
 
 .label-value-correct {
