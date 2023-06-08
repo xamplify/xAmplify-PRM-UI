@@ -82,7 +82,7 @@ label {
     padding-left: 1rem !important;
 }
 
-.card {
+.cards {
     position: relative;
     display: -ms-flexbox;
     display: flex;

@@ -112,7 +112,7 @@ border-radius: 0;
     margin: 0;
 }
 .colorImg {
-    box-shadow: 0px 6px 6px #ccc !important;
+    /* box-shadow: 0px 6px 6px #ccc; */
     opacity: 1.0;
     filter: alpha(opacity=100);
 }
@@ -209,13 +209,14 @@ border-radius:50%
 
 .thumbnail-wrapper {
   float: left;
-  width: 144px;
-  height: 81px;
-  background-color: #f1f1f1;
+  width: 175px;
+	height: 60px;
+    background-color: #fff;
   text-align: center;
   position: relative;
   cursor: pointer;
   padding:0px !important;
+  border-radius:5px;
 }
 .thumbnail-wrapper > img {
   max-width: 100%;

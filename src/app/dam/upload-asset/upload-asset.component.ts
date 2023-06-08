@@ -18,6 +18,9 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HttpEventType,HttpResponse} from "@angular/common/http";
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+/****XNFR-255****/
+
 
 declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
@@ -25,13 +28,14 @@ declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, B
 	selector: 'app-upload-asset',
 	templateUrl: './upload-asset.component.html',
 	styleUrls: ['./upload-asset.component.css'],
-	providers: [Properties, Pagination, HttpRequestLoader]
+	providers: [Properties, Pagination, HttpRequestLoader,CallActionSwitch]
 })
 export class UploadAssetComponent implements OnInit,OnDestroy {
 	
 	formLoader = false;
 	customResponse: CustomResponse = new CustomResponse();
 	damUploadPostDto: DamUploadPostDto = new DamUploadPostDto();
+    pagination: Pagination = new Pagination();
 	formData: any = new FormData();
 	loading = false;
 	dupliateNameErrorMessage: string;
@@ -110,10 +114,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     viewType: string;
     categoryId: number;
     folderViewType: string;
+    imagepath:string;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    /****XNFR-255*****/
+    hasShareWhiteLabeledContentAccess = false;
+
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
-	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer){
+	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
         this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -144,9 +152,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
-        
+    
 	}
 	
+    
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
@@ -160,13 +169,25 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.listTags(new Pagination());
         /****XNFR-169*****/
         this.listCategories();
+        /*******XNFR-255***/
+      //  this.findShareWhiteLabelContentAccess();
 	}
+    /*******XNFR-255***/
+    findShareWhiteLabelContentAccess() {
+        this.loading = true;
+        this.authenticationService.findShareWhiteLabelContentAccess()
+        .subscribe(
+            response=>{
+                this.hasShareWhiteLabeledContentAccess = response.data;
+                this.loading = false;
+            },error=>{
+                this.loading = false;
+            });
+    }
 
 	ngOnDestroy(): void {
 		$('#thumbnailImageModal').modal('hide');
 		this.openAddTagPopup = false;
-		
-		//
         $('.r-video').remove();
         if (this.camera) {
             this.modalPopupClosed();
@@ -213,7 +234,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-
+    sudaImg:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
@@ -230,7 +251,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Invalid File');
 			}else if(sizeInKb>maxFileSizeInKb){
 				this.showAssetErrorMessage('Max file size is 800 MB');
-			}else{
+			}else if(file['name'].lastIndexOf(".")==-1) {
+                this.showValidExtensionErrorMessage();
+            }			
+			else{
+                this.sudaImg = file;
 				this.formData.delete("uploadedFile");
 	            this.uploadedAssetName  = "";
 	            this.uploadedCloudAssetName = "";
@@ -781,6 +806,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     };
     
     setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
+      if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
+        this.showValidExtensionErrorMessage();
+      }else{
         this.uploadedAssetName = "";
         this.uploadedCloudAssetName = "";
         this.formData.delete("uploadedFile");
@@ -792,6 +820,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
         this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
         this.validateAllFields();
+        }
       }
     
     
@@ -1110,4 +1139,18 @@ showFolderCreatedSuccessMessage(message:any){
    this.customResponse = new CustomResponse('SUCCESS',message, true);
    this.listCategories();
 }
+
+showValidExtensionErrorMessage(){
+  this.uploadedCloudAssetName = "";
+  this.tempr = null;
+  this.clearPreviousSelectedAsset();
+  this.customResponse = new CustomResponse('ERROR',"Selected asset does not have the proper extension. Please upload a valid asset.",true);
+}
+
+/****XNFR-255****/
+setWhiteLabeled(event:any){
+    this.damUploadPostDto.shareAsWhiteLabeledAsset = event;
+}
+
+
 }

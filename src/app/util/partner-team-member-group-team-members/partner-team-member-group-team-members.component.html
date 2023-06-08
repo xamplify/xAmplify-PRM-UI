@@ -5,7 +5,7 @@
 
 <!--Modal PopUp-->
 <div  class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width-modal-popup" role="document">
+    <div class="modal-dialog" [ngClass] = "isPartnerPopup ? '' : 'full-width-modal-popup'"  role="document">
         <div class="modal-content">
             <div class="modal-header" >
                 <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>

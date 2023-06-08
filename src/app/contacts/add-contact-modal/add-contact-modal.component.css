@@ -47,3 +47,18 @@ display: block;
 	cursor: default;
 	background: lightgray;
 }
+
+/* May 19 sudha*/
+/* .form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px; 
+} */
+.modal-header{
+	padding: 10px !important;
+}
+.blue-buttons-radius{
+	border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

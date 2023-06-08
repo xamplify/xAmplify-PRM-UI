@@ -2167,10 +2167,35 @@ export class ReferenceService {
         this.senderMergeTag.senderEventUrlGlobal,
         myMergeTags.eventUrl
       );
+      
+      /*****XNFR-281*******/  
+      /*******Instagram****/
       updatedBody = updatedBody.replace(
-        this.senderMergeTag.senderEventUrlGlobal,
-        myMergeTags.eventUrl
+        this.senderMergeTag.senderCompanyInstagramUrlGlobal,
+        myMergeTags.companyInstagramUrl
       );
+      /*******Twitter****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyTwitterUrlGlobal,
+        myMergeTags.companyTwitterUrl
+      );
+      /*******Facebook****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyFacebookUrlGlobal,
+        myMergeTags.companyFacebookUrl
+      );
+      /*******Google****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyGoogleUrlGlobal,
+        myMergeTags.companyGoogleUrl
+      );
+      /*******Linkedin****/
+      updatedBody = updatedBody.replace(
+        this.senderMergeTag.senderCompanyLinkedinUrlGlobal,
+        myMergeTags.companyLinkedinUrl
+      );
+
+       /*****XNFR-281*******/  
     }
     return updatedBody;
   }
@@ -2202,7 +2227,12 @@ export class ReferenceService {
       body.indexOf(this.senderMergeTag.privacyPolicy) > -1 ||
       body.indexOf(this.senderMergeTag.senderAboutUs) > -1 ||
       body.indexOf(this.senderMergeTag.senderEventUrl) > -1 ||
-      body.indexOf(this.senderMergeTag.senderCompanyAddress) > -1
+      body.indexOf(this.senderMergeTag.senderCompanyAddress) > -1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyGoogleUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyFacebookUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyLinkedinUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyTwitterUrl)>-1 ||
+      body.indexOf(this.senderMergeTag.senderCompanyInstagramUrl)>-1
     );
   }
 
@@ -2809,6 +2839,40 @@ export class ReferenceService {
       name: "Sender Company Url",
       value: this.senderMergeTag.senderCompanyUrl,
     });
+
+      /*******XNFR-281******/
+      /****Instagram******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyInstragramUrlKey,
+        value: this.senderMergeTag.senderCompanyInstagramUrl,
+      });
+  
+      /****Twitter******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyTwitterUrlKey,
+        value: this.senderMergeTag.senderCompanyTwitterUrl,
+      });
+
+      /****Google******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyGoogleUrlKey,
+        value: this.senderMergeTag.senderCompanyGoogleUrl,
+      });
+
+      /****Facebook******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyFacebookUrlKey,
+        value: this.senderMergeTag.senderCompanyFacebookUrl,
+      });
+
+      /****Linkedin******/
+      mergeTags.push({
+        name: this.senderMergeTag.senderCompanyLinkedinUrlKey,
+        value: this.senderMergeTag.senderCompanyLinkedinUrl,
+      });
+
+  
+      /*******XNFR-281******/
 
     mergeTags.push({
       name: "Sender Company Address",

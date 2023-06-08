@@ -206,3 +206,4 @@ svg {
  .company-details-border{
     padding-left: 17px!important;padding-right: 17px!important;border-radius: 4px!important;border: 1px solid #eaeaea;padding-bottom: 48px!important;
  }
+ .alert-success{background-color:#dff0d8 !important;border-radius: 3px !important;color:#3c763d !important}

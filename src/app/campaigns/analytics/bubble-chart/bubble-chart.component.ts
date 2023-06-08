@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CampaignService } from '../../../campaigns/services/campaign.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import { VideoUtilService } from '../../../videos/services/video-util.service';
+import { AuthenticationService } from "app/core/services/authentication.service";
 declare var Highcharts: any;
 
 @Component({
@@ -14,7 +15,7 @@ export class BubbleChartComponent implements OnInit {
         @Input() campaignId: number;
         campaignType: any;
         names: Array<any>;
-        constructor(public campaignService: CampaignService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService) { }
+        constructor(public campaignService: CampaignService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, public authenticationService: AuthenticationService,) { }
 
       getCampaignUserWatchedMinutesCountes(campaignId: number, campaignType) {
         console.log(this.campaignType);
@@ -44,6 +45,7 @@ export class BubbleChartComponent implements OnInit {
 
                         chart: {
                                 type: 'bubble',
+                                backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
                                 plotBorderWidth: 0,
                                 zoomType: 'xy'
                         },

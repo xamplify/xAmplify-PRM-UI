@@ -493,6 +493,7 @@ label {
 	width: calc(50% - 15px);
 	padding-top: 1rem;
 	border-top: 1px solid #eaebed;
+	margin-right: -4px;
 }
 
 .actions__external-link {
@@ -645,7 +646,7 @@ label {
 	white-space: nowrap;
 	vertical-align: middle;
 	height: 39% !important;
-	border: 1px solid #eaeaea !important;
+	border: 1px solid #eaeaea;
 	border-radius: 3px !important;
 }
 
@@ -1679,4 +1680,33 @@ input:checked+.slider:before {
 
 .notValid {
 	background-color: none !important;
+}
+.star {
+	color: red !important;
+	font-weight: 600;
+  }
+.border-alignment{
+    /* border-left: none;
+    border-right: none;
+    border-top: none; */
+    width: 45%;
+}
+
+/** 18-05-2023 ****/
+.min-height {
+	min-height: 70px;
+}
+/**** tharak ****/
+.m-top-70 {
+margin-top: -70px;
+}
+.m-top-50 {
+	margin-top: -50px;
+}
+
+/* 06/06/23 */
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li:last-child > a,
+.page-sidebar .page-sidebar-menu > li:last-child > a {
+  border-bottom: 1px solid transparent !important;
 }

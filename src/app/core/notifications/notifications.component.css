@@ -9,7 +9,7 @@ ul.alt-row-style1 li a{
     color: #333;
 }
  ul.alt-row-style1 li:hover{
-    background:#dce6f5 !important;
+    background:#dce6f5;
 }
  ul.alt-row-style1 li:nth-child(even) {
     border-top:1px solid #dddfe2;

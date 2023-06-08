@@ -52,6 +52,7 @@ a.disabled {
     border-radius: 3px;
 }
 
+
 #landing-page-image-preview-custom-css {
     height: 80px;
     width: auto;
@@ -316,4 +317,8 @@ td h6 {
         margin-top: -5px;
     }
   }
-  
+
+  .grid-box-height{
+      height: 565px !important;
+  }
+

@@ -7,9 +7,9 @@
     transition: all 0.3s ease-in-out;
     padding: 15px;
 }
-.page-bar .page-breadcrumb {
+/* .page-bar .page-breadcrumb {
   padding: 0 0 10px;
-}
+} */
 .top-bar-left .title {
   display: none;
 }
@@ -38,8 +38,16 @@
   width: 100%;
 }
 
+.btn-primary-light{
+  background-color: #cdcdcd;
+}
+.btn-primary-light:hover{
+  background-color: #c0c0c0;
+}
+
 .text-wrap-tag {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+
 }

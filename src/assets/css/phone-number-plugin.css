@@ -7,10 +7,10 @@
     border-color: white !important;
 }
 >>> .input-group > .input-group-addon {
-    background: white !important;
+    background: white;
     position: relative !important;
     left: 10px !important;
 }
->>> .input-group-addon {
+/* >>> .input-group-addon {
   border: none !important;
-	}
+	} */

@@ -13,12 +13,14 @@ import { DamPublishPostDto } from 'app/dam/models/dam-publish-post-dto';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
+
 declare var $: any, swal: any;
 @Component({
 	selector: 'app-partner-company-and-groups-modal-popup',
 	templateUrl: './partner-company-and-groups-modal-popup.component.html',
 	styleUrls: ['./partner-company-and-groups-modal-popup.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties, DamService]
+	providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
 })
 export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDestroy {
 
@@ -54,6 +56,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	isParnterGroupHeaderCheckBoxChecked = false;
 	isPublishedToPartnerGroup = false;
 	modalPopupLoader: boolean;
+	isModalPopupshow : boolean = false ;
 	showUsersPreview = false;
 	selectedPartnerGroupName = "";
 	selectedPartnerGroupId:number=0;
@@ -65,7 +68,8 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	selectedTab = 1;
 
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
-		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
+		public referenceService: ReferenceService, public properties: Properties,
+		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
@@ -88,6 +92,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	openPopup() {
 		$('#partnerCompaniesPopup').modal('show');
 		this.findPublishedType();
+	 this.isModalPopupshow = true ;
 	}
 
 	findPublishedType() {

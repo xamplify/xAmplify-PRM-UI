@@ -37,5 +37,7 @@ export class CompanyProfile {
     loginScreenDirection:string;
     enableVanityURL:boolean =false;
     roleId:number = 0;
+    /****XNFR-281****/
+    instagramLink: "";
     
 }

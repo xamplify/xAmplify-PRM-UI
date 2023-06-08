@@ -20,7 +20,8 @@ export class PieChartComponent implements OnInit {
            plotBackgroundColor: null,
            plotBorderWidth: null,
            plotShadow: false,
-           type: 'pie'
+           type: 'pie',
+           backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
        },
        title: {
            text: ''

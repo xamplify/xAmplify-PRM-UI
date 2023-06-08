@@ -10,4 +10,7 @@ export class DamPostDto {
 	tagIds:Array<number> = new Array<number>();
 	saveAs =false;
 
+	 /****XNFR-255****/
+	 shareAsWhiteLabeledAsset = false;
+
 }

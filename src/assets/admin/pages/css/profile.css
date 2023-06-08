@@ -101,7 +101,7 @@ New Profile Page
 
 .profile-usermenu ul li.active a {
   color: #5b9bd1;
-  background-color: #f6f9fb;
+  /* background-color: #f6f9fb; */
   border-left: 2px solid #5b9bd1;
   margin-left: -2px;
 }

@@ -693,11 +693,11 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             $('#videoTab').hide();
             this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
             if (this.campaignType == "landingPage") {
-                this.isEmailTemplate = true;
+               // this.isEmailTemplate = true;
                 this.isLandingPageSwitch = true;
                 this.campaign.campaignTypeInString = "LANDINGPAGE";
             } else if (this.campaignType == "emailTemplate") {
-                this.isLandingPage = true;
+               // this.isLandingPage = true;
                 this.isLandingPageSwitch = false;
             }
 
@@ -1076,7 +1076,9 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
-        this.campaign.whiteLabeled = false;
+        if(this.campaignType!='landingPage'){
+            this.campaign.whiteLabeled = false;
+        }
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();

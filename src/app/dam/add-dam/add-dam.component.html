@@ -78,6 +78,22 @@
                            </div>
                       </div>
                     </div>
+
+
+                    <!---White Labeled-- XNFR-255-->
+                    <!-- <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
+                      <div class="form-group">
+                        <label class="control-label col-sm-3" translate>White Labeled</label>
+                        <div class="col-sm-8">
+                          <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                          (statusChange)="setWhiteLabeled($event)">
+                          </switch>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!---White Labeled-- XNFR-255-->
+
+
                      <div class="col-md-12 col-lg-12 ">
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
                           style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
@@ -129,8 +145,9 @@
                                         </label>
                                       </div>
                                       <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;" title="{{tag?.tagName}}">
-                                        <div class="btn btn-primary text-wrap-tag" style="padding: 4px 10px;border-radius: 2px !important;">
+                                        <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                           {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+
                                       </div>
                                     </td>
                                     <td style="padding: 5px;vertical-align: middle; width: 50%;"
@@ -143,7 +160,9 @@
                                         </label>
                                       </div>
                                       <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;" title="{{tagsListSecondColumn[i]?.tagName}}">
-                                        <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" class="btn btn-primary text-wrap-tag"
+
+                                        <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" class="btn text-wrap btn-primary-dark btn-primary-light" 
+
                                           style="padding: 4px 10px;border-radius: 2px !important;">
                                           {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
                                       </div>

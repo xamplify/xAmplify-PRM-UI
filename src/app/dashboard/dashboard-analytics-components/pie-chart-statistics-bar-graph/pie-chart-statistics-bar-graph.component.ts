@@ -119,28 +119,42 @@ export class PieChartStatisticsBarGraphComponent implements OnInit {
     let self =this;
     Highcharts.chart('leads-deals-bar-graph', {
       chart: {
-          type: 'bar'
+          type: 'bar',
+          backgroundColor   : this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
       },
       title: {
-          text: ''
+          text: '',
       },
       subtitle: {
-        text: self.statusName
+        text: self.statusName,
+        style: {
+          color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}
     },
       
       xAxis: {
           categories: this.pieChartGraphData.map(t3=>t3.name),
-          
+          labels:{
+          style: {
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}
+          }
       },
       yAxis: {
-         
-          
+        labels:{
+        style: {
+          color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}    
+        },
+        title:{
+          style: {
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}  
+        }
       },
      
       plotOptions: {
           bar: {
               dataLabels: {
-                  enabled: true
+                  enabled: true,
+                    style: {
+                      color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",}    
               }
           }
       },

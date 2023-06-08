@@ -22,6 +22,7 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
   partnerModuleTeamMembersTableId = "partner-module-team-members-table";
   partnerModuleTeamMemberCheckBoxName = "partnerModuleTeamMembersCheckBox";
   processingPartnersLoader = false;
+  isPartnerPopup:boolean = false ;
   teamMembers: Array<any> = new Array<any>();
   @Input() currentPartner: any;
   @Output() partnerTeamMemberGroupTeamMemberEventEmitter = new EventEmitter();
@@ -33,6 +34,7 @@ export class PartnerTeamMemberGroupTeamMembersComponent implements OnInit {
     this.referenceService.startLoader(this.teamMembersLoader);
     if(this.openInModalPopup){
       $('#teamMembersPreviewPopup').modal('show');
+      this.isPartnerPopup = true
     }
     this.teamMembersPagination.categoryId = this.currentPartner.teamMemberGroupId;
     this.findPartnerModuleTeamMembers(this.teamMembersPagination, this.currentPartner);

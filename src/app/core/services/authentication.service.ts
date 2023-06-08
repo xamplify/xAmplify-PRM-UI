@@ -25,9 +25,12 @@ import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-deta
 import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { CommentDto } from 'app/common/models/comment-dto';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
+import { CustomSkin } from 'app/dashboard/models/custom-skin';
+import { ThemeDto } from 'app/dashboard/models/theme-dto';
 
 @Injectable()
 export class AuthenticationService {
+   
   access_token: string;
   refresh_token: string;
   expires_in: number;
@@ -119,6 +122,25 @@ export class AuthenticationService {
   beePageClientId = "";
   beePageClientSecret = "";
   vendorCompanyId = 0;
+  /***** XNFR-238 *********** */
+  isDarkForCharts : boolean = false;
+  isDefaultTheme :boolean = true;
+  isCustomFooter:boolean = false;
+  isCustomTheme:boolean = false;
+  isLightTheme:boolean = false;
+  isDarkTheme:boolean = false;
+
+ isTop:boolean= false;
+ isLeft:boolean = false;
+ isFoter:boolean = false;
+ isMain:boolean = false;
+ customMap = new Map<string, CustomSkin>();
+ themeMap = new Map<string, ThemeDto>();
+ themeDto:ThemeDto = new ThemeDto();
+ activateThemeId:number;
+  /***** XNFR-238*********** */
+  formBackground="";
+  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -628,6 +650,7 @@ export class AuthenticationService {
           this.closeSwal();
           let self = this;
           if(this.envService.CLIENT_URL=="http://localhost:4200/"){
+           // window.location.href = 'http://localhost:4200/login';
             setTimeout(() => {
               self.router.navigate(['/']);
               $("body").removeClass("logout-loader");
@@ -988,6 +1011,20 @@ findCampaignAccessDataByDomainName(domainName:string){
 sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto:LoginAsEmailNotificationDto){
   let url = this.REST_URL +"admin/sendLoginAsPartnerEmailNotification"+"?access_token=" + this.access_token;
   return this.callPostMethod(url,loginAsEmailNotificationDto);
+}
+
+/******XNFR-255******/
+findShareWhiteLabelContentAccess() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/shareWhiteLabelContentAccess/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+  
 }
 
 

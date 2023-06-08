@@ -81,11 +81,14 @@
 
 .thumbnail-wrapper {
 	float: left;
-	width: 144px;
+	/* width: 175px;
+	height: 60px; */
+  width: 144px;
 	height: 81px;
-	background-color: #f1f1f1;
+  background-color: #fff;
 	text-align: center;
 	position: relative;
+  border-radius:5px;
 }
 
 .thumbnail-wrapper>img {
@@ -115,7 +118,7 @@
 }
 
 .min-h{
-  min-height: 245px;
+  min-height: 270px;
 }
 
 .ref-mar{
@@ -133,8 +136,8 @@
   padding: 4px;
   text-align: center;
   margin: 2px 2px 2px 0px;
-  border-radius: 20px;
-  /* padding: 5px 10px; */
+  border-radius: 5px;
+  padding: 5px 10px;
   display: inline;
 }
 
@@ -231,4 +234,13 @@
 }
 .mb10{
   margin-bottom: 6px !important;
+}
+/* May 19 sudha */
+.img-track-list {
+  height: 100px;
+  width: 180px;
+  margin: 0;
+  background: #f2f4f9;
+  border: solid 1px #cccccc;
+  border-radius: 6px;
 }

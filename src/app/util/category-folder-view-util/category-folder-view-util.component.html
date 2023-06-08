@@ -58,49 +58,68 @@
     </div>
     <br>
      <!-----------------------Folder Grid View----------------------------------------->
-    <div class="row mix-grid" *ngIf="folderViewType=='Folder-Grid'">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
-        <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
-        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading"> 
-            <div class="col-xs-12 col-sm-4 col-lg-3" *ngFor="let category of pagination.pagedItems; let i= index">                
-                <div class="ffolder big gray">
-                    <div class="grid-box" style="max-height: 194px;">
-                        <div id="category-icon-div">
-                            <i class="{{category.icon}}" id="category-icon-size" aria-hidden="true"></i>
-                        </div>
-                        <h4 class="ellipsis" title="{{category.name}}">
-                            {{category.name | slice:0:22}}
-                            <span *ngIf="category.name?.length>22">...</span>
-                        </h4><br><br>
-                        <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
-                        <!-- <span class="view-banner" *ngIf="archived" id="custom-view-banner">{{category.archivedCount}}</span> -->
-                        <h6 [title]="category.createdBy" translate>By
-                            <strong>{{category.createdBy | slice:0:15}}<span
-                                    *ngIf="category.createdBy?.length>15">...</span></strong>
-                        </h6>
-                        <h6 [title]="category.companyName" translate>From
-                            <strong>{{category.companyName | slice:0:20}}<span
-                                    *ngIf="category.companyName?.length>20">...</span></strong>
-                        </h6>
-                        <h6>
-                            <span translate>Created On</span>
-                            <span>
-                                <strong>
-                                    <span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},{{category.displayTime |date:'shortTime'}}</span>
-                                    <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
-                                </strong>
-                            </span>
-                        </h6>
-                        <div class="bar">
-                            <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItemsByCategoryId(category.id)">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-container>
-    </div>
+ 	<div class="row mix-grid p10" *ngIf="folderViewType=='Folder-Grid'">
+		<app-response-message [customResponse]="customResponse"
+			*ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
+		<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+		<ng-container
+			*ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading">
+			<div class="col-xs-12 col-sm-4 col-lg-3"
+			*ngFor="let category of pagination.pagedItems; let i= index">
+			<div class="ffolder big gray folder-cheight">
+				<div class="grid-box folder-height" style="max-height: 194px;">
+					<div id="category-icon-div" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 icon-align">
+						<i class="{{category.icon}} icon-align" id="category-icon-size"
+							aria-hidden="true">
+						</i>
+					</div>
+					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
+					<div class="bg-folder">
+					<h4 class="ellipsis align-titletext" title="{{category.name}}">
+						{{category.name | slice:0:22}} <span
+							*ngIf="category.name?.length>22">...</span>
+					</h4>
+
+					<span class="Track-countbg" 	
+					>
+					  {{category.count}}
+						</span>
+						
+
+
+					<h6 [title]="category.createdBy" translate>
+						By <strong>{{category.createdBy | slice:0:15}}<span
+							*ngIf="category.createdBy?.length>15">...</span></strong>
+					</h6>
+					<h6 [title]="category.companyName" translate>
+						From <strong>{{category.companyName | slice:0:20}}<span
+							*ngIf="category.companyName?.length>20">...</span></strong>
+					</h6>
+					<h6>
+						<span translate>Created On</span> <span> <strong>
+								<span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime
+									|date:'mediumDate'}},<br>{{category.displayTime
+									|date:'shortTime'}}
+							</span> <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+						</strong>
+						</span>
+					</h6>
+				</div>
+				</div>
+					<div class="bar barview">	
+						<a data-toggle="tooltip" data-placement="top" title="View Items"
+							(click)="viewItemsByCategoryId(category.id)"> <i
+							class="fa fa-eye color-chnage" aria-hidden="true"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+			<br><br><br><br>
+		</div>
+	
+		</ng-container>
+	</div>
+
     <!-----------------------Folder List View----------------------------------------->
     <div class="table-responsive" *ngIf="folderViewType=='Folder-List'" style="overflow-x: hidden;">
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

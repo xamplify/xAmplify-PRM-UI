@@ -41,10 +41,12 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     pageBackgroundColor = "";
     siteKey = "";
     showDefaultForms = false;
+    showCustomPopup = false ;
     
     @Input() filter: any;
     showEmbedLink = true;
     @Input() buttonText: string = "Show Forms";
+    @Input() learningTrackId: number = 0;
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
@@ -93,6 +95,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
 
     listForms(pagination: Pagination) {
         $('#forms-list').modal('show');
+        this.showCustomPopup = true ;
         this.referenceService.loading(this.formsLoader, true);
         this.formService.findDefaultFormsOrUserDefinedForms(pagination,this.showDefaultForms).subscribe(
             (response: any) => {
@@ -176,6 +179,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                         }else{
                             this.pageBackgroundColor = this.form.pageBackgroundColor;
                             this.formBackgroundImage = "";
+                            document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
                         }
                         $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
                             if (value.labelType == 'quiz_radio') {

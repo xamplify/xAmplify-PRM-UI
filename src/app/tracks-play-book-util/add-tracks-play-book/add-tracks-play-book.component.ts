@@ -1204,7 +1204,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   checkForChanges(){
     let removedUserIds = [];
     let removedGroupIds = [];
-    console.log(this.tracksPlayBook.userIds);
     removedUserIds = this.selectedUserIds.filter( ( el ) => !this.tracksPlayBook.userIds.includes( el ) );
     removedGroupIds = this.selectedGroupIds.filter( ( el ) => !this.tracksPlayBook.groupIds.includes( el ) );
     if(removedUserIds.length > 0 || removedGroupIds.length > 0){

@@ -21,7 +21,7 @@
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     </div>
     <div class="page-bar">
-        <div id="calendar" style="padding: 25px;border: 1px solid #CCC;">
+        <div id="calendar" class="calendar-border">
             <ngx-loading [show]="loading || referenceService.loadingPreview"></ngx-loading>
         </div>
     </div>

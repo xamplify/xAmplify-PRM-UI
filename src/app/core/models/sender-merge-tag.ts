@@ -37,5 +37,33 @@ export class SenderMergeTag {
     senderJobTitle = "{{senderJobTitle}}";
     senderJobTitleGlobal = /{{senderJobTitle}}/g;
     senderJobTitleKey = "Sender Job Title";
+
+     /*******XNFR-281******/
+
+    /***Sender Facebook Url*****/
+    senderCompanyFacebookUrl = "{{senderCompanyFacebookUrl}}";
+    senderCompanyFacebookUrlGlobal = /{{senderCompanyFacebookUrl}}/g;
+    senderCompanyFacebookUrlKey = "Sender Company Facebook Url";
+
+    /***Sender Google Url*****/
+    senderCompanyGoogleUrl = "{{senderCompanyGoogleUrl}}";
+    senderCompanyGoogleUrlGlobal = /{{senderCompanyGoogleUrl}}/g;
+    senderCompanyGoogleUrlKey = "Sender Company Google Url";
+
+    /***Sender Linkedin Url*****/
+    senderCompanyLinkedinUrl = "{{senderCompanyLinkedinUrl}}";
+    senderCompanyLinkedinUrlGlobal = /{{senderCompanyLinkedinUrl}}/g;
+    senderCompanyLinkedinUrlKey = "Sender Company Linkedin Url";
+
+    /***Sender Instagram Url*****/
+    senderCompanyInstagramUrl = "{{senderCompanyInstagramUrl}}";
+    senderCompanyInstagramUrlGlobal = /{{senderCompanyInstagramUrl}}/g;
+    senderCompanyInstragramUrlKey = "Sender Company Instagram Url";
+
+    /***Sender Twitter Url*****/
+    senderCompanyTwitterUrl = "{{senderCompanyTwitterUrl}}";
+    senderCompanyTwitterUrlGlobal = /{{senderCompanyTwitterUrl}}/g;
+    senderCompanyTwitterUrlKey = "Sender Company Twitter Url";
+     /*******XNFR-281******/
     
 }

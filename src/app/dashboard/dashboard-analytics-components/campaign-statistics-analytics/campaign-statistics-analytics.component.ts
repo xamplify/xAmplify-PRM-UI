@@ -84,6 +84,9 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
         credits: {
           enabled: false
         },
+        chart: {
+          backgroundColor   : this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+        },
         exporting: { enabled: false },
         tooltip: {
           formatter: function () {

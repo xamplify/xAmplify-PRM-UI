@@ -227,6 +227,7 @@ export class PieChartAnalyticsComponent implements OnInit {
       },
       chart: {
         type: "pie",
+          backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
         options3d: {
           enabled: true,
           alpha: 45,
@@ -250,6 +251,8 @@ export class PieChartAnalyticsComponent implements OnInit {
           dataLabels: {
             enabled: true,
             format: "{point.name}",
+            style: {
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#000000",}
           },
         },
       },

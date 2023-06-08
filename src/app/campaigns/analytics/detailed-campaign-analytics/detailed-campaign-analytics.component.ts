@@ -377,7 +377,9 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
     const self = this;
     let newChart = Highcharts.chart('campaign-views-barchart', {
       chart: {
-        type: 'bar'
+        type: 'bar',
+         backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
+      
       },
       title: {
         text: ' '
@@ -392,14 +394,19 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         minorGridLineWidth: 0,
         lineColor: 'transparent',
         minorTickLength: 0,
-        tickLength: 0
+        tickLength: 0,
+        labels:{
+          style:{
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+          }
+        }
       },
       exporting: { enabled: false },
       credits: { enabled: false },
       yAxis: {
         min: 0,
         // max: maxValue,
-        visible: false
+        visible: false,
       },
       tooltip: {
         valueSuffix: ''
@@ -414,11 +421,17 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         },
         series: {
           cursor: 'pointer',
+          dataLabels:{
+            style:{
+            color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
+            }
+          },
           events: {
             click: function (e) {
               self.userWatchedviewsInfo(e.point.category);
             }
           }
+          
         }
       },
       legend: {

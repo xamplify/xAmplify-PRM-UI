@@ -99,6 +99,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				},
 				error => {
 					this.ngxloading = false;
+					this.customFieldsResponse = new CustomResponse('ERROR', "Your Salesforce integration is not valid. Re-configure with valid credentials", true);
 				},
 				() => { }
 			);
@@ -111,7 +112,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					// this.ngxloading = false;
+					this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -253,7 +254,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
-		this.ngxloading = true;
+		//this.ngxloading = true;
 		if (this.integrationType.toLowerCase() === 'salesforce') {
 			this.listSalesforceCustomFields();
 		} else {
@@ -418,7 +419,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		self.integrationService.getIntegrationDetails(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					// this.ngxloading = false;
+					this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.integrationDetails = data.data;
 					}
@@ -429,13 +430,11 @@ export class IntegrationSettingsComponent implements OnInit {
 				() => {
 					if (this.integrationType.toLowerCase() === 'salesforce') {
 						this.listSalesforceCustomFields();
-					} else {
-						this.listExternalCustomFields();
+					} else {						
 						if (this.integrationType.toLowerCase() === 'hubspot' || this.integrationType.toLowerCase() === 'pipedrive') {
 							this.getIntegrationDealPipelines();
-						}else{
-							this.ngxloading = false;
 						}
+						this.listExternalCustomFields();
 					}
 				}
 			);

@@ -1,4 +1,4 @@
-<ngx-loading [show]="campaignLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="campaignLoader" [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
   <div class="page-bar" *ngIf="!showEdit">
     <ul class="page-breadcrumb">
@@ -352,7 +352,7 @@
                                   <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
                                   alt="manual" style="height: 70px;">
                                   <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
-                                  alt="manual" style="height: 70px;">
+                                  alt="manual" style="height: 54px;">
                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
                                   alt="manual" style="height: 70px;">
                                   <!-- XNFR-211 -->
@@ -552,7 +552,7 @@
                   <div class="row mix-grid" [hidden]="isListView" [ngStyle]="{'margin-top' : isListView ? '-5px' : '-8px'}"
                     *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
                     <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
-                      <div class="grid-box" id="contactListDiv_{{contactList.id}}">
+                      <div class="grid-box mp-pt-carrdtop" id="contactListDiv_{{contactList.id}}">
                         <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"> 
                           <img alt="" class="imageClassCss"  *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"> 
                           <img alt=""  class="imageClassCss" *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"   src="{{properties?.googleImage}}">
@@ -1085,7 +1085,7 @@
                               <ng-template #NA>N/A</ng-template>
                             </tr>
                             <tr [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-                              <td colspan="9">
+                              <td colspan="12">
                                 <table cellpadding="5" cellspacing="0" class="border" style="border:none !important;" aria-describedby="">
                                   <tbody>
                                     <tr>

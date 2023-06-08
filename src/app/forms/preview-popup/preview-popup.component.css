@@ -74,13 +74,14 @@
     align-items: center;
     justify-content: center;
     display: block;
-    margin: 10px 100px 0px 100px;
+    margin: 10px 50px 0px 50px;
 }
 
 .button-padding {
     padding: 7px 14px;
     font-size: 14px;
     border-width: 0;
+    border-radius: 5px;
 }
 
 .testing {
@@ -108,6 +109,7 @@
     border: #ddd solid 1px;
     border-radius: 3px !important;
     padding: 20px;
+    background: #fff;
 }
 
 .view-banner{
@@ -120,6 +122,8 @@
      font-size: 11px;
      font-weight: 600;
  }
+
+ 
 
  
 .form-name-wrap {
@@ -163,4 +167,38 @@
     font-weight: 500;
     line-height: 1.1;
   }
+
+span.quiz_optionname {
+    float: right;
+    clear: none;
+    display: block;
+    padding: 0px 0px 0px 8px;
+}
+.panel-body{
+    background: #f0f5f9;
+}
+
+.popup-custom-width{
+    width: 60% !important;
+}
+
+.pages-custom-width85{
+    width:85% !important;
+    position: relative!important;
+    top: 67px;
+    height: 89%!important;
+    float: right;
+}
+
+
+.view-banner-white-labeled{
+    background-color: green;
+     color: white !important;
+     padding: 4px;
+     text-align: center;
+     width: 125px;
+     margin: 0 0;
+     font-size: 11px;
+     font-weight: 600;
+ }
 

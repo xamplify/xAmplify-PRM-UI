@@ -18,5 +18,6 @@ export class CustomSkin {
 	showFooter = false;
 	divBgColor="";
 	headerTextColor="";
+    darkTheme = false;
 
 }

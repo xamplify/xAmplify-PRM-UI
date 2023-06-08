@@ -45,10 +45,9 @@
 </div>
 
 <div class="clearfix" id="manageContacts">
-	<div class="col-xs-12 p10">
+	<div class="col-xs-12">
 		<div class="row">
 			<div>
-
 				<div class="tab-content">
 					<div class="my-container">
 						<ngx-loading [show]="loading"
@@ -199,7 +198,7 @@
 							<!-- END FILTER -->
 						</div>
 					</div>
-					<div style="padding: 0px 0 10px;">
+					<div>
 						<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 						<app-response-message [customResponse]="emailNotificationCustomResponse" *ngIf="emailNotificationCustomResponse.isVisible"></app-response-message>
 					</div>
@@ -959,7 +958,7 @@
 									</div>
 							</div>
 							<div class="portlet-body">
-									<div class="page-bar" *ngIf="!showEditContactData">
+									<div class="page-bar" *ngIf="!showEditContactData" style="border:none !important;">
 									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									<!-- <div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
 									</div> -->
@@ -1007,7 +1006,7 @@
 									</div> -->
 									</div>
 								</div>
-								<div class="table-responsive" style="margin-top: -20px">
+								<div class="table-responsive">
 									<app-loader [model]="httpRequestLoader.isHorizontalCss"
 										*ngIf="httpRequestLoader.isLoading"></app-loader>
 									<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
@@ -1260,10 +1259,10 @@
 							</div>
 							<div class="row col-sm-1" style="margin-left: 30px;">
 							<div data-toggle="tooltip" data-placement="left" title="Add a condition">
-								<button [disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
+								<span [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
 									<i class="fa fa-plus-square" aria-hidden="true"
 										style="color: #0196da"></i>
-								</button>
+								</span>
 								</div>
 							</div>
 						</div>

@@ -145,7 +145,7 @@
 								<div style="float: right">
 									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
-									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
+									<button type="button" class="btn default" style="margin-left:2px;color:black !important;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
 							</div>
 						</div>
@@ -335,7 +335,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Player Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
+													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'" class="field-border-customization"
                            [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -355,7 +355,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
-													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
+													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" class="field-border-customization"
                            [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -411,7 +411,7 @@
 												<label class="col-xs-5 control-label" style="position: relative;top:-7px;" translate>Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
-                           (input)="logoDescription(val.value)">
+                           (input)="logoDescription(val.value)" class="field-border-customization">
                            <span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
 												</div>
 											</div>
@@ -681,7 +681,7 @@
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
-										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
+										<textarea id="upperValue" class="heading-top" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}} characters left</label>
                     <span *ngIf="!upperTextValid" style="color: red;" translate>Please fill the upper text.</span>
@@ -695,7 +695,7 @@
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
-										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
+										<textarea id="lowerValue" class="heading-top" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}} characters left</label>
                     <span *ngIf="!lowerTextValid" style="color: red;" translate>Please fill the lower text.</span>

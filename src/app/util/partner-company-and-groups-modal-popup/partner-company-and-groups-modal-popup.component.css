@@ -62,6 +62,9 @@
 .x-hidden {
     overflow-x: hidden !important;
 }
+.modal .modal-header {
+    border-bottom: 1px solid #efefef00;
+    }
 
 /*--thank you pop starts here--*/
 
@@ -126,7 +129,9 @@
 #ignismyModal .modal-header {
     border: 0px;
 }
-
+.modal .modal-header {
+border-bottom: 1px solid #efefef00;
+}
 /*--thank you pop ends here--*/
 
 .event-success {
@@ -240,11 +245,14 @@
 
 .thumbnail-wrapper {
     float: left;
-    width: 144px;
-    height: 81px;
-    background-color: #f1f1f1;
+    width: 175px;
+	height: 60px;
+    background-color: #fff;
     text-align: center;
     position: relative;
+    border-radius:5px;
+    border: 1px solid #ccc;
+	border-radius:5px;
 }
 
 .thumbnail-wrapper>img {
@@ -265,3 +273,15 @@
 
 }
 
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.modal.right .modal-content{
+    overflow-y: hidden ;
+    border: 1px solid #dddddd ;
+}
+/* 6-6-2023 sudha sri */
+ul.nav.nav-tabs {
+    border-bottom: none !important;
+}

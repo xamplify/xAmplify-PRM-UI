@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { AuthenticationService } from '../services/authentication.service';
 import { DomSanitizer } from "@angular/platform-browser";
+import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
+import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 
 @Component({
   selector: 'app-custom-copyright',
@@ -14,6 +16,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 })
 export class CustomCopyrightComponent implements OnInit {
 
+  @Input() activeThemeDetails:CompanyThemeActivate;
   loggedUserId:number;
   footerContent:any;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
@@ -31,16 +34,25 @@ export class CustomCopyrightComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.getFooterSkin(this.loggedUserId)
+    this.getFooterSkin()
   }
   
-  skin:CustomSkin = new CustomSkin();
-  getFooterSkin(userId:number){
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
+  skin:ThemePropertiesDto = new ThemePropertiesDto();
+
+  getFooterSkin(){
+    this.dashboardService.getPropertiesById(this.activeThemeDetails.themeId).subscribe(
       (data:any) => {
         let skinMap = data.data;
         this.skin = skinMap.FOOTER;
         this.footerContent = this.sanitizer.bypassSecurityTrustHtml(this.skin.textContent);
+        // document.documentElement.style.setProperty('--footer-bg-color', this.skin.backgroundColor);
+        // document.documentElement.style.setProperty('--footer-text-color', this.skin.textColor);
+        // document.documentElement.style.setProperty('--footer-border-color', this.skin.buttonBorderColor);
+        // if(!this.skin.defaultSkin && !this.skin.darkTheme){
+        //  require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-footer.css");
+        // }else {
+        //  require("style-loader!../../../assets/admin/layout2/css/layout.css")
+        // }
       }
     )
   }

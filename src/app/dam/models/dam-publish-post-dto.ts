@@ -6,5 +6,6 @@ export class DamPublishPostDto {
 	partnerIds:Array<number> = new Array<number>();
     publishedBy:number=0;
     partnerGroupSelected:boolean = false;
+    sharedWithPartnersAsAWhiteLabeledAsset = false;
 
 }

@@ -2,7 +2,7 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <div class="row">
+    <div *ngIf="!isHideFormInfo" class="row">
         <div class="col-md-12">
             <div class="portlet light" id="portlet-height">
                 <div class="row">
@@ -54,7 +54,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none" style="padding-top: 5px;padding-right: 5px;">
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 padding-none">
                                             <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen"
                                                 (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                                             <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i
@@ -77,7 +77,7 @@
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
-                                                                <div class="form-group label-box" [class.selected]="columnInfo.divId==selectedColumn.divId">
+                                                                <div class="form-group label-box" [style.background]="form.backgroundColor" [class.selected]="columnInfo.divId==selectedColumn.divId">
                                                                     <a id="drag-div">
                                                                         <h4 class="dflex">
                                                                             <span class="label-text">
@@ -126,7 +126,7 @@
                                                                         <!-- ---------------------------Number----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='number'">
                                                                             <div class="input-group">
-                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
+                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled form-padding-left" id="{{columnInfo.labelId}}" />
                                                                             </div>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Upload----------------------------- -->
@@ -137,7 +137,8 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label">
+                                                                                    <label class="form-check-label" style="border:0px !important;">
+
                                                                                         <input
                                                                                             type="{{columnInfo.labelType}}"
                                                                                             name="{{columnInfo.labelId}}"
@@ -152,7 +153,9 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label">
+
+                                                                                    <label class="form-check-label" style="border:0px !important;">
+
                                                                                         <input
                                                                                             type="{{columnInfo.labelType}}"
                                                                                             name="{{columnInfo.labelId}}"
@@ -176,7 +179,10 @@
                                                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label">
+
+                                                                                    <label class="" style="border:0px !important;">  
+                                                                                        <!-- removed class="form-check-label" -->
+
                                                                                         <input
                                                                                             type="{{columnInfo.labelType.split('_')[1]}}"
                                                                                             name="{{columnInfo.labelId}}"
@@ -439,51 +445,55 @@
 <!-- -End Of page-content -->
 
 <!--Modal Popup For Form Details------------>
-<div class="modal right" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width-modal-popup">
-        <div class="modal-content mPad">
+<div class="modal right rmv-overflow" id="add-form-name-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-sm popup-align">
+        <div class="modal-content mPad col-lg-12 col-md-12">
+            <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title text-center">{{formTitle}}</h4>
+                <button type="button" class="btn grey  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
+                <button type="submit" [disabled]="!form.isValid"  class="btn green-haze col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <h4 class="modal-title text-center col-lg-8 col-md-8 title-pd">{{formTitle}}</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" id="formNameDiv">
-                    <label>Name <span class="invalid-form-name">*</span></label>
-                    <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
-                    <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
+                    <div class="form-group col-md-6 col-lg-6" id="formNameDiv">
+                        <label>Name <span class="invalid-form-name">*</span></label>
+                        <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
+                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                    </div>
+                    <div class="form-group  col-md-6 col-lg-6">
+                        <label>Select a folder <span class="invalid-form-name">*</span></label>
+                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
+                            <option  *ngFor="let category of categoryNames" [value]="category.id">
+                                {{category.name}}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Select a folder <span class="invalid-form-name">*</span></label>
-                    <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
-                        <option *ngFor="let category of categoryNames" [value]="category.id">
-                            {{category.name}}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
-                </div>
-                <div class="form-group" *ngIf="loggedInAsSuperAdmin">
-                    <input type="checkbox" [(ngModel)]="form.isSurvey">
-                    <label>Survey</label>
-                </div>
-                <!-- XNFR-108 -->
-                <div class="form-group">
-                    <label>Team Member Group</label>
-                    <p class="pencil-color" style="font-size: 12px;" translate>
-                        Selected team members will receive form submit notifications.
-                    </p>
-                    <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
-                        [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
-                    </app-form-team-member-group>
+                <div class="col-lg-12 col-md-12">    
+                    <div class="form-group col-lg-12 col-md-12">
+                        <label>Description</label>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
+                    </div>
+                    <div class="form-group col-lg-12 col-md-12" *ngIf="loggedInAsSuperAdmin">
+                        <input type="checkbox" [(ngModel)]="form.isSurvey">
+                        <label>Survey</label>
+                    </div>
+                    <!-- XNFR-108 -->
+                    <div class="form-group col-lg-12 col-md-12">
+                        <label>Team Member Group</label>
+                        <p class="pencil-color" style="font-size: 12px;" translate>
+                            Selected team members will receive form submit notifications.
+                        </p>
+                        <app-form-team-member-group [formId]="form.id" [selectedTeamMemberIds]="form.selectedTeamMemberIds"
+                            [selectedGroupIds]="form.selectedGroupIds" (notifyParentComponent)="UpdateFormTeamMemberGroupData($event)">
+                        </app-form-team-member-group>
+                    </div>
                 </div>
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                
             </div>
         </div>
     </div>
@@ -891,7 +901,7 @@
                         </div>
                     </div>
                 </div>
-                <hr><br>
+                <br>
             </div>
         </div>
     </div>
@@ -1011,13 +1021,13 @@
                                                         data-placement="top" [title]="actionsDescription.preview_item"
                                                         (click)="$event.stopPropagation();" href="{{file.filePath}}"
                                                         target="_blank">
-                                                        <i class="fa fa-external-link" aria-hidden="true"
-                                                            style="font-size: 20px; color: #5a5a5a"></i>
+                                                        <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
+                                                            style="font-size: 20px;"></i>
                                                     </a> <a class="fm delete" data-toggle="tooltip" data-placement="top"
                                                         [title]="actionsDescription.delete_item"
                                                         (click)="$event.stopPropagation();delete(file,file.id)">
-                                                        <i class="fa fa-trash-o" aria-hidden="true"
-                                                            style="font-size: 20px; color: #5a5a5a"></i>
+                                                        <i class="fa fa-trash-o preview-edit-color" aria-hidden="true"
+                                                            style="font-size: 20px;"></i>
                                                     </a>
                                                 </span>
                                             </div>

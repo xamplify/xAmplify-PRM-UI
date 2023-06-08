@@ -128,6 +128,14 @@
                                                     </strong>
                                                 </span>
                                             </h6>
+                                            <!---XNFR-255-->
+                                            <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
+                                                <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                                    <span translate>Received From <strong>{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</strong></span>
+                                                </h6>
+                                                <span class="view-banner-white-labeled">White-Labeled</span>
+                                            </ng-container>
+                                             <!---XNFR-255-->
                                             <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
@@ -194,7 +202,7 @@
                 <div class="row">
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-                            <div class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
+                            <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
@@ -204,6 +212,14 @@
                                     <h4 id="landing-page-title" title="{{landingPage.name}}">
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
                                     <span class="view-banner">{{landingPage.type}}</span>
+                                     <!---XNFR-255-->
+                                     <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
+                                        <span class="view-banner-white-labeled mb5">White-Labeled</span>
+                                        <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                            <span translate>Received From <strong>{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</strong></span>
+                                        </h6>
+                                    </ng-container>
+                                     <!---XNFR-255-->
                                     <h6 title="{{landingPage.categoryName}}">
                                         Folder <strong>{{landingPage.categoryName | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.categoryName?.length>25">..</span>
@@ -305,7 +321,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Copy Embed Link</label>
-                        <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <textarea id="text-area" class="text-color" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')">Copy Embed
                             Link</a>
                     </div>

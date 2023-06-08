@@ -181,20 +181,20 @@ setViewType(viewType: string) {
   /********************Pagaination&Search Code*****************/
 
   /*************************Sort********************** */
-  sortBy(text: any) {
-    //this.sortOption.formsSortOption = text;
-    this.getAllFilteredResults(this.pagination);
+  sortTracks(text: any) {
+    this.sortOption.damSortOption = text;
+    this.getAllFilteredResults();
   }
 
 
   /*************************Search********************** */
   searchLearningTracks() {
-    this.getAllFilteredResults(this.pagination);
+    this.getAllFilteredResults();
   }
 
   paginationDropdown(items: any) {
     this.sortOption.itemsSize = items;
-    this.getAllFilteredResults(this.pagination);
+    this.getAllFilteredResults();
   }
 
   /************Page************** */
@@ -203,10 +203,11 @@ setViewType(viewType: string) {
     this.listLearningTracks(this.pagination);
   }
 
-  getAllFilteredResults(pagination: Pagination) {
+  getAllFilteredResults() {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
-    this.listLearningTracks(this.pagination);
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, this.pagination);
+		this.listLearningTracks(this.pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLearningTracks(); } }
 

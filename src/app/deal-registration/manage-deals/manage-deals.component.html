@@ -247,12 +247,13 @@
 										<ng-container *ngFor='let campaign of campaignsPagination.pagedItems; let i=index'>
 											<tr>
 												<td style="width: 10%;" class="hidden-xs">
-													<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.png" style="height: 50px;"
+													<!-- removed style="height: 50px;" -->
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.svg" style=""
 													 alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
 												</td>
 												<td>
 													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName|
@@ -322,12 +323,13 @@
 										<ng-container *ngFor='let campaign of campaignsPaginationByDeals.pagedItems; let i=index'>
 											<tr>
 												<td style="width: 10%;" class="hidden-xs">
-													<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.png" style="height: 50px;"
+													<!-- removed style="height: 50px;" -->
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.svg" style=""
 													 alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
-													<img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.png" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
 												</td>
 												<td>
 													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName|

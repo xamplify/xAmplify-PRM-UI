@@ -288,7 +288,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
      this.getUnreadNotificationsCount();
      this.getRoles();
      this.isAddedByVendor();
-      this.getTopNavigationColor(this.userId);
+      //this.getTopNavigationColor(this.userId);
     }catch(error) {this.logger.error('error'+error); }
   }
   getDashboardType(){
@@ -510,14 +510,7 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
 
  
 
-  getTopNavigationColor(userId:number){
-    this.dashboardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-      (response) =>{
-     let cskinMap  = response.data;
-     this.cskin = cskinMap.TOP_NAVIGATION_BAR;
-      }
-    )
-  }
+
 
   
 
@@ -533,4 +526,5 @@ navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
     this.refService.goToRouter("/home/deal/manage");
 
   }
+
 }

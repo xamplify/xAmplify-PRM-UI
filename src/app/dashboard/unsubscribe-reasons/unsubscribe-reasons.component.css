@@ -118,8 +118,13 @@ legend {
 	font-weight: 600 !important;
 }
 
-
-
+/* 6-6-2023 sudha sri */
+#border-bottom-none{
+	border-bottom:none !important;
+  }
+  .table>thead:first-child>tr:first-child>th{
+	border-top: 0 !important;
+  }
 
 
 

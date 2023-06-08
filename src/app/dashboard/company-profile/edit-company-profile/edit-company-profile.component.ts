@@ -113,6 +113,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     twitterLinkError = false;
     twitterLinkErrorMessage = "";
 
+    /****XNFR-281*****/
+    instagramDivClass: string = this.formGroupDefaultClass;
+    instagramLinkError = false;
+    instagramLinkErrorMessage = "";
+    /****XNFR-281*****/
+
     cityDivClass: string = this.formGroupDefaultClass;
     cityError = false;
     cityErrorMessage = "";
@@ -742,6 +748,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.validatePattern('googlePlusLink');
       this.validatePattern('linkedInLink');
       this.validatePattern('twitterLink');
+      this.validatePattern('instagramLink');
       this.validatePattern('city');
       this.validatePattern('state');
       this.validatePattern('eventUrl');
@@ -754,7 +761,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       let errorLength = $('div.form-group.has-error.has-feedback').length;
       if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
           && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
-          !this.zipError && !this.logoError) {
+          !this.zipError && !this.logoError && !this.twitterLinkError && !this.instagramLinkError) {
         if(this.companyProfile.phone) { this.companyProfile.phone = this.companyProfile.phone.length <6 ? "": this.companyProfile.phone;}
        this.companyProfileService.update(this.companyProfile, this.loggedInUserId)
         .subscribe(
@@ -987,7 +994,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             } else if (columnName == "twitter") {
                 this.twitterLinkError = true;
                 this.twitterDivClass = this.refService.errorClass;
-            } else if (columnName == "city") {
+            }else if (columnName == "instagram") {
+                this.instagramLinkError = true;
+                this.instagramDivClass = this.refService.errorClass;
+            }
+             else if (columnName == "city") {
                 this.cityError = true;
                 this.cityDivClass = this.refService.errorClass;
             } else if (columnName == "country") {
@@ -1031,7 +1042,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             } else if (columnName == "twitter") {
                 this.twitterLinkError = false;
                 this.twitterDivClass = this.refService.successClass;
-            } else if (columnName == "city") {
+            }else if (columnName == "instagram") {
+                this.instagramLinkError = false;
+                this.instagramDivClass = this.refService.successClass;
+            }  else if (columnName == "city") {
                 this.cityError = false;
                 this.cityDivClass = this.refService.successClass;
             } else if (columnName == "country") {
@@ -1112,6 +1126,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.twitterDivClass = this.refService.errorClass;
         this.disableButton();
     }
+
+    addInstagramError() {
+        this.instagramLinkError = true;
+        this.linkedInDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
+
+
     addCountryError() {
         this.countryError = true;
         this.countryDivClass = this.refService.errorClass;
@@ -1196,6 +1218,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.linkedinLinkError = false;
         this.linkedInDivClass = this.refService.successClass;
         this.linkedinLinkErrorMessage = "";
+        this.enableOrDisableButton();
+    }
+
+    removeInstagramError() {
+        this.instagramLinkError = false;
+        this.instagramDivClass = this.refService.successClass;
+        this.instagramLinkErrorMessage = "";
         this.enableOrDisableButton();
     }
 
@@ -1348,6 +1377,20 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
     }
 
+    /******XNFR-281*****/
+    validateInstagram() {
+        if ($.trim(this.companyProfile.instagramLink).length > 0) {
+            if (!this.companyProfile.instagramLink.includes('instagram.com')) {
+                this.addInstagramError();
+                this.instagramLinkErrorMessage = "Invalid Instagram Url";
+            } else {
+                this.removeInstagramError();
+            }
+        } else {
+            this.removeInstagramError();
+        }
+    }
+
     validateLinkedIn() {
         if ($.trim(this.companyProfile.linkedInLink).length > 0) {
           // !this.regularExpressions.URL_PATTERN.test(this.companyProfile.linkedInLink) && !
@@ -1409,7 +1452,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.validateGooglePlus();
         } else if (column == "twitterLink") {
             this.validateTwitter();
-        } else if (column == "linkedInLink") {
+        }else if (column == "instagramLink") {
+            this.validateInstagram();
+        }  else if (column == "linkedInLink") {
             this.validateLinkedIn();
         }
         else if (column == "city") {
@@ -1490,7 +1535,11 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             this.addBlur();
                         }
                   }else{
-                      this.customResponse = new CustomResponse( 'INFO', "New Account Can Be Created For This Account", true );
+                      let message = "This User Canbe Upgraded.";
+                      if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
+                          message+=" This User Is Already A Partner In xAmplify. Upgrading This User Becomes Admin & Partner.";
+                      }
+                      this.customResponse = new CustomResponse( 'INFO', message, true );
                       this.setNewAccount(emailId);
                   }
               }

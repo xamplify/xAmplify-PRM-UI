@@ -165,5 +165,7 @@ legend.scheduler-border {
     font-size: 15px;
     border-bottom: none;
 }
-
+.preview-edit-color{
+  color: #5a5a5a;
+}
 

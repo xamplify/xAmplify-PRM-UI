@@ -813,29 +813,29 @@
                     <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                       <td class="hidden-xs" style="width: 10%;">
                         <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-                          <img class="imageClass"
+                          <img class="imageClass image-padding-size"
                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
-                            src="assets/images/video-email.png" alt="Video Campaign">
+                            src="assets/images/video-email.svg" alt="Video Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-                          <img class="imageClass"
+                          <img class="imageClass image-padding-size"
                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
-                            src="assets/images/regular-email.png" alt="Regular Campaign">
+                            src="assets/images/regular-email.svg" alt="Regular Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-                          <img class="imageClass"
+                          <img class="imageClass image-padding-size"
                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
-                            src="assets/images/social-campaign.png" alt="Social Campaign">
+                            src="assets/images/social-campaign.svg" alt="Social Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-                          <img class="imageClass"
+                          <img class="imageClass image-padding-size"
                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
-                            src="assets/images/landing-page.png" alt="Page Campaign">
+                            src="assets/images/landing-page.svg" alt="Page Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                          <img class="imageClass"
+                          <img class="imageClass image-padding-size"
                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
-                            src="assets/images/event-campaign.png" alt="Event Campaign">
+                            src="assets/images/event-campaign.svg" alt="Event Campaign">
                         </ng-container>
                         <ng-container *ngIf="campaign?.campaignProcessing">
                           <img src="assets/images/processing.gif" alt="Processing">
@@ -1374,7 +1374,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
+        <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate>Close</button>
         <button type="button" [disabled]="clicked" class="btn btn-primary" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
       </div>
     </div>
@@ -1534,7 +1534,7 @@
               </span>
             </label>
             <div class="col-sm-9" style="padding-top: 10px;">
-              <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}"
+              <textarea class="alert-info" [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}"
                 (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
             </div>
           </div>
@@ -1617,7 +1617,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
+        <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
         <button type="button" class="btn btn-primary" (click)="updateEndDate()" translate>Save changes</button>
       </div>
     </div>

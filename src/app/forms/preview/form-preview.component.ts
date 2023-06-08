@@ -62,8 +62,10 @@ export class FormPreviewComponent implements OnInit {
   @Output() captchaValue: EventEmitter<any>;
 
   geoLocationAnalytics : GeoLocationAnalytics;
-  selectedPartnerFormAnswers : Map<number, any> = new Map<number, any>();
-
+  selectedPartnerFormAnswers : any;
+  quizScore:number;
+  maxScore: number;
+  loggedInUserEmail: string;
 
   resolved(captchaResponse: string) {
     if(captchaResponse){
@@ -106,6 +108,11 @@ export class FormPreviewComponent implements OnInit {
     } else {
       this.alias = this.route.snapshot.params['alias'];
     }
+    let loggedInUser = localStorage.getItem('currentUser');
+    if (loggedInUser !== undefined) {
+      let userJSON = JSON.parse(localStorage.getItem('currentUser'));
+      this.loggedInUserEmail = userJSON.userName;
+    }
     this.getFormFieldsByAlias(this.alias);
   }
 
@@ -126,6 +133,7 @@ export class FormPreviewComponent implements OnInit {
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
+            let self = this;
             this.hasFormExists = true;
             this.form = response.data;
             //$("body").css("background-color","this.form.backgroundColor");
@@ -134,6 +142,7 @@ export class FormPreviewComponent implements OnInit {
               this.pageBackgroundColor = "";
             } else {
               this.pageBackgroundColor = this.form.pageBackgroundColor;
+              this.authenticationService.formBackground = this.pageBackgroundColor ;
               this.formBackgroundImage = "";
             }
             if (!this.isSubmittedAgain) {
@@ -144,6 +153,8 @@ export class FormPreviewComponent implements OnInit {
                   value.choices = value.radioButtonChoices;
               } else if (value.labelType == 'quiz_checkbox') {
                   value.choices = value.checkBoxChoices;
+              } else if (value.labelType == 'email' && value.required && self.learningTrackId !== undefined && self.learningTrackId > 0 && !self.isTrackQuizSubmitted) {
+                value.value = self.loggedInUserEmail;
               }
           });
           } else if (response.statusCode === 409) {
@@ -280,7 +291,7 @@ export class FormPreviewComponent implements OnInit {
     this.referenceService.showSweetAlertServerErrorMessage();
   }
 
-  /*******Submit Forms********* */
+   /*******Submit Forms********* */
   submitForm() {
     this.show = false;
     this.ngxLoading = true;
@@ -330,38 +341,45 @@ export class FormPreviewComponent implements OnInit {
             if (response.statusCode == 200) {
               this.addHeaderMessage(response.message, this.successAlertClass);
               this.formSubmitted = true;
-              //this.notifyParent.emit(new CustomResponse('SUCCESS', response.message, true));
               this.isTrackQuizSubmitted = true;
+              let formSubmissionUrl = this.form.formSubmissionUrl;
+              if (formSubmissionUrl != undefined && $.trim(formSubmissionUrl).length > 0 && !formSubmissionUrl.startsWith("https://")) {
+                formSubmissionUrl = "https://" + formSubmissionUrl;
+              }
+              let openLinkInNewTab = this.form.openLinkInNewTab;
+              if((this.learningTrackId !== undefined && this.learningTrackId > 0 && this.isTrackQuizSubmitted)){
+                openLinkInNewTab = true;
+              }
+              if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0){
+                let redirectMessage = '<strong> You are being redirect to '+formSubmissionUrl+'</strong>' ;
+                let text = !openLinkInNewTab ? redirectMessage:redirectMessage+' <br>(opens in new window)';
+                swal( {
+                  title:'Please Wait',
+                  text: text,
+                  allowOutsideClick: false, 
+                  showConfirmButton: false, 
+                  imageUrl: 'assets/images/loader.gif',
+              });
+                setTimeout(function() {
+                if(openLinkInNewTab){
+                  window.open(formSubmissionUrl, '_blank');
+                }else{
+                  window.parent.location.href = formSubmissionUrl;
+                }
+                swal.close();
+                }, 3000);
+              }
               if (this.learningTrackId !== undefined && this.learningTrackId > 0 && this.isTrackQuizSubmitted) {
                 this.getPartnerFormAnalytics();
                 this.ngxLoading = true;
               } else {
-                let formSubmissionUrl = this.form.formSubmissionUrl;
-                if (formSubmissionUrl != undefined && $.trim(formSubmissionUrl).length > 0 && !formSubmissionUrl.startsWith("https://")) {
-                  formSubmissionUrl = "https://" + formSubmissionUrl;
-                }
-                let openLinkInNewTab = this.form.openLinkInNewTab;
-                if (formSubmissionUrl != undefined && $.trim(formSubmissionUrl).length > 0) {
-                  let redirectMessage = '<strong> You are being redirect to ' + formSubmissionUrl + '</strong>';
-                  let text = !openLinkInNewTab ? redirectMessage : redirectMessage + ' <br>(opens in new window)';
-                  swal({
-                    title: 'Please Wait',
-                    text: text,
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    imageUrl: 'assets/images/loader.gif',
-                  });
-                  setTimeout(function () {
-                    if (openLinkInNewTab) {
-                      window.open(formSubmissionUrl, '_blank');
-                    } else {
-                      window.parent.location.href = formSubmissionUrl;
-                    }
-                    swal.close();
-                  }, 3000);
-                }
+                // if (this.form.quizForm && response.data != undefined && response.data.submittedData != undefined) {
+                //   this.selectedPartnerFormAnswers = response.data; 
+                //   this.setQuizAnswersInfo(response.data.submittedData);
+                // }
                 this.ngxLoading = false;
               }
+
             } else if (response.statusCode == 404) {
               this.addHeaderMessage(response.message, this.errorAlertClass);
               this.notifyParent.emit(new CustomResponse('ERROR', response.message, true));
@@ -452,37 +470,7 @@ export class FormPreviewComponent implements OnInit {
           let self = this;
           const data = response.data;
           this.selectedPartnerFormAnswers = data;
-          $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
-            if (self.selectedPartnerFormAnswers !== undefined && self.selectedPartnerFormAnswers[value.id] !== undefined) {
-              if (value.labelType === "select") {
-                value.value = self.selectedPartnerFormAnswers[value.id][0];
-              } else {
-                value.value = self.selectedPartnerFormAnswers[value.id];
-                if (value.labelType === "upload") {
-                  let lastIndex = value.value.lastIndexOf("/");
-                  let fileName = value.value.substring(lastIndex + 1);
-                  value['fileName'] = fileName;
-                }
-              }
-              let choices: any;
-              if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
-                choices = value.choices;
-              } else if (value.labelType === "radio") {
-                choices = value.radioButtonChoices;
-              } else if (value.labelType === "checkbox") {
-                choices = value.checkBoxChoices;
-              }
-              $.each(choices, function (index: number, choice: any) {
-                if (value.value.indexOf(choice.id) > -1) {
-                  choice.isSelected = true;
-                } else {
-                  choice.isSelected = false;
-                }
-              });
-            } else {
-              value.value = "";
-            }
-          });
+          this.setQuizAnswersInfo(this.selectedPartnerFormAnswers);
         } else {
           this.referenceService.showSweetAlertErrorMessage(response.message);
         }
@@ -493,5 +481,45 @@ export class FormPreviewComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR', 'Unable to get data.Please Contact Admin.', true);
     }
   } 
+
+  setQuizAnswersInfo(data: any) {
+    this.quizScore = data.score;
+    this.maxScore = data.maxScore;
+    let answers = data.submittedData;
+    $.each(this.form.formLabelDTOs, function (index: number, value: ColumnInfo) {
+      if (answers !== undefined && answers[value.id] !== undefined) {
+        if (value.labelType === "select") {
+          value.value = answers[value.id].submittedAnswer[0];
+        } else {
+          value.value = answers[value.id].submittedAnswer;
+          if (value.labelType === "upload") {
+            let lastIndex = value.value.lastIndexOf("/");
+            let fileName = value.value.substring(lastIndex + 1);
+            value['fileName'] = fileName;
+          }
+        }
+        let choices: any;
+        if (value.labelType === "quiz_radio" || value.labelType === "quiz_checkbox") {
+          choices = value.choices;
+        } else if (value.labelType === "radio") {
+          choices = value.radioButtonChoices;
+        } else if (value.labelType === "checkbox") {
+          choices = value.checkBoxChoices;
+        }
+        $.each(choices, function (index: number, choice: any) {
+          if (value.value.indexOf(choice.id) > -1) {
+            choice.isSelected = true;
+          } else {
+            choice.isSelected = false;
+          }
+        });
+        value.skipped = answers[value.id].skipped;
+        value.submittedAnswerCorrect = answers[value.id].submittedAnswerCorrect;
+      } else {
+        value.value = "";
+        value.skipped = true;
+      }
+    });
+  }
 
 }

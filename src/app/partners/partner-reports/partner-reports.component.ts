@@ -92,12 +92,17 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     }
     campaignTypeChart(data: any) {
         Highcharts.chart('campaign-type-chart', {
-            chart: { type: 'bar' },
+            chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
             xAxis: {
                 categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
                 lineWidth: 0,
                 minorTickLength: 0,
                 tickLength: 0,
+                labels:{
+                    style:{
+                        color: this.authenticationService.isDarkForCharts ? "#fff" : "#666666"
+                    }
+                }
             },
             title: { text: '' },
             yAxis: {
@@ -114,7 +119,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
             exporting: { enabled: false },
             credits: { enabled: false },
-            series: [{ showInLegend: false, data: data }]
+            series: [{ showInLegend: false, data: data,
+                dataLabels:{
+                    style:{
+                        color: this.authenticationService.isDarkForCharts ? "#fff" : "#000000",
+                    }
+            } }]
         });
         this.barChartLoader = false;
     }

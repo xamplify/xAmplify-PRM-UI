@@ -14,13 +14,15 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Tag } from 'app/dashboard/models/tag'
 import { UserService } from '../../core/services/user.service';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 
-declare var $, CKEDITOR: any;
+
+declare var $:any, CKEDITOR: any;
 @Component({
   selector: "app-add-dam",
   templateUrl: "./add-dam.component.html",
   styleUrls: ["./add-dam.component.css"],
-  providers: [Properties, Pagination, HttpRequestLoader],
+  providers: [Properties, Pagination, HttpRequestLoader,CallActionSwitch],
 })
 export class AddDamComponent implements OnInit, OnDestroy {
   ngxloading = false;
@@ -64,6 +66,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
   folderViewType: string;
   isAddAssetDetailsPopupLoaded : boolean = false;
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+  /****XNFR-255*****/
+  hasShareWhiteLabeledContentAccess = false;
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -73,7 +77,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     public referenceService: ReferenceService,
     private httpClient: HttpClient,
-    public userService: UserService
+    public userService: UserService,
+    public callActionSwitch:CallActionSwitch
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     /****XNFR-169****/
@@ -82,35 +87,56 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.folderViewType = this.route.snapshot.params["folderViewType"];
   }
 
-  ngOnInit() {
-    this.ngxloading = true;
-    this.beeContainerInput["module"] = "dam";
-    if (this.router.url.indexOf("/edit") > -1) {
-      this.assetId = parseInt(this.route.snapshot.params["id"]);
-      if (this.assetId > 0) {
-        this.isPartnerView = this.router.url.indexOf("/editp") > -1;
-        this.isAdd = false;
-        this.modalTitle = "Update Details";
-        this.saveOrUpdateButtonText = "Update";
-        this.getById();
-        
+    ngOnInit() {
+      this.ngxloading = true;
+      this.beeContainerInput["module"] = "dam";
+      /*******XNFR-255***/
+      this.findShareWhiteLabelContentAccess();
+      if (this.router.url.indexOf("/edit") > -1) {
+        this.assetId = parseInt(this.route.snapshot.params["id"]);
+        if (this.assetId > 0) {
+          this.isPartnerView = this.router.url.indexOf("/editp") > -1;
+          this.isAdd = false;
+          this.modalTitle = "Update Details";
+          this.saveOrUpdateButtonText = "Update";
+          this.getById();
+        } else {
+          this.goToManageSectionWithError();
+        }
       } else {
-        this.goToManageSectionWithError();
+        this.isAdd = true;
+        this.modalTitle = "Add Details";
+        this.saveOrUpdateButtonText = "Save";
+        this.listCategories();
+        this.httpClient
+          .get("assets/config-files/bee-default-asset.json")
+          .subscribe((data) => {
+            this.jsonBody = JSON.stringify(data);
+            this.beeContainerInput["jsonBody"] = this.jsonBody;
+            this.ngxloading = false;
+          });
       }
-    } else {
-      this.isAdd = true;
-      this.modalTitle = "Add Details";
-      this.saveOrUpdateButtonText = "Save";
-      this.listCategories();
-      this.httpClient
-        .get("assets/config-files/bee-default-asset.json")
-        .subscribe((data) => {
-          this.jsonBody = JSON.stringify(data);
-          this.beeContainerInput["jsonBody"] = this.jsonBody;
-          this.ngxloading = false;
-        });
     }
-  }
+
+    /*******XNFR-255***/
+    findShareWhiteLabelContentAccess() {
+      this.ngxloading = true;
+      this.authenticationService.findShareWhiteLabelContentAccess()
+      .subscribe(
+          response=>{
+              this.hasShareWhiteLabeledContentAccess = response.data;
+              this.ngxloading = false;
+          },error=>{
+              this.ngxloading = false;
+          });
+    }
+
+    /****XNFR-255****/
+    setWhiteLabeled(event:any){
+      this.damPostDto.shareAsWhiteLabeledAsset = event;
+    }
+
+
 
   ngOnDestroy() {
     $("#addAssetDetailsPopup").modal("hide");
@@ -133,6 +159,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.beeContainerInput["jsonBody"] = this.jsonBody;
             this.damPostDto.name = dam.assetName;
             this.damPostDto.description = dam.description;
+            this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
             this.name = dam.assetName;
             this.validForm = true;
             this.isValidName = true;

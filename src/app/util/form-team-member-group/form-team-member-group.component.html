@@ -3,7 +3,7 @@
     <div class="tab-content">
       <div class="tab-pane fade in active" id="groups">
         <ng-container>
-          <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+          <div class="portlet-title bottom-marg" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
                 <div class="col-xs-12">
@@ -33,7 +33,7 @@
               </div>
             </div>
           </div>
-          <br>
+          <!-- <br> -->
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <ng-container *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
@@ -41,15 +41,20 @@
                 id="team-member-group">
                 <thead>
                   <tr>
-                    <th scope="col"></th>                    
-                    <th scope="col" class="text-center">Group Name</th>
+                    <th scope="col" >Group Name</th>
+                    <th scope="col" class="text-center"></th>                    
                     <th scope="col">Created Time</th>
                   </tr>
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
-                    <tr [class.group-selected]="selectedGroupIds != undefined && selectedGroupIds.indexOf(group.id)>-1">
-                      <td class="cw">
+                    <tr [class.group-selected]="selectedGroupIds != undefined && selectedGroupIds.indexOf(group.id)>-1"
+                      [ngClass]="{'group-bg-color': group.expand}">
+                      <td title="{{group?.name}}" class="text-wrap width-tb"
+                      >
+                        {{group?.name}}
+                      </td>
+                      <td class="cw text-center width-tb">
                         <div class="actions-block left-float">
                           <a (click)="viewTeamMembers(group)" title="View/Hide Team Members">
                             <i class="fa"
@@ -58,10 +63,7 @@
                           </a>
                         </div>
                       </td>
-                      <td title="{{group?.name}}" class="text-center text-wrap">
-                        {{group?.name}}
-                      </td>
-                      <td>
+                      <td class="width-tb">
                         <app-timestamp [dateAndTime]="group?.displayTime">
                         </app-timestamp>
                       </td>
