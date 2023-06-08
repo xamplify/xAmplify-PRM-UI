@@ -33,7 +33,7 @@
 				<div class="form-group">
 					<label class="control-label visible-ie8 visible-ie9">Email</label>
 					<input class="form-control placeholder-no-fix emailTF" type="email" placeholder="Email" required
-						formControlName="emailId" (keyup)="validEmail($event)" />
+						formControlName="emailId" (keyup)="validEmail($event)" disabled />
 					<div *ngIf="formErrors.emailId && !invalidVendor" class="alert alert-danger">
 						{{ formErrors.emailId }}</div>
 					<div *ngIf="formErrors.emailId && invalidVendor" class="alert alert-danger">{{formErrors.emailId }}
