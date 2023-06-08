@@ -1176,3 +1176,24 @@ ul.alt-row-style1 li:nth-child(even){
 .p-5x>.lt-g-b-c {
   border: 3px solid #2f4857!important;
 }
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
+
+.animated-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  /* background: #f6f7f8; */
+  background: linear-gradient(to right, #22313a 8%, #2a3d4d 18%, #22313a 33%) !important;
+  background-size: 800px 104px;
+  height: 370px;
+  position: relative;
+}
