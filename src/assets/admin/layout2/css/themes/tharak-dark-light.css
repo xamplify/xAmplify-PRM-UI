@@ -144,7 +144,8 @@ h1, h2, h3, h4, h5, h6 {
 .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
   background: #22313a !important;
 }
-.form-control {
+.form-control,
+.col-item {
   color: white !important;
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
