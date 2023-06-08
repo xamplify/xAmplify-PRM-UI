@@ -242,9 +242,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 
 	sendEmitterValues(){
 		let emitterObject = {};
-		emitterObject['selectedTeamMemberIds'] = this.selectedTeamMemberIds;
-		emitterObject['selectedPartnershipIds'] = this.selectedPartnershipIds;
-		emitterObject['selectedPartnerGroupIds'] = this.selectedPartnerGroupIds;
+		emitterObject['partnerIds'] = this.selectedTeamMemberIds;
+		emitterObject['partnerGroupIds'] = this.selectedPartnerGroupIds;
 		let selectedType = this.selectedTabName();
 		emitterObject['partnerGroupSelected'] = ('partnerGroups' == selectedType);
 		this.partnerCompanyAndGroupsEventEmitter.emit(emitterObject);
