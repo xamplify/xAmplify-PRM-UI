@@ -230,7 +230,7 @@ ul.alt-row-style1 li:hover,
 
 .re-distributed-high-level{
   background-color: #2b3c46 !important;
-  border: 1px solid #2f4857 !important;
+  border: 3px solid #2f4857 !important;
 }
 .list__item > .flex-row{
   background-color: #22313a !important;
@@ -1164,4 +1164,15 @@ ul.alt-row-style1 li:nth-child(even){
 .pricing {
   border: none !important;
   background: transparent !important;
+}
+/* 8-6-2023 sudha sri */
+.cont-info{border-bottom:1px solid #2f4857!important;}
+.p-5x>.lt-blue-c,
+.p-5x>.lt-green-c,
+.p-5x>.vlt-blue-c,
+.p-5x>.vlt-b-c,
+.p-5x>.lt-g-b-c,.p-5x>.tk-blue-c,.p-5x>.pure-blue-c,.p-5x>.black-blue-c,.p-5x>.pure-g-c,.p-5x>.g-b-c,.p-5x>.g-y-c
+,.p-5x>.y-b-c,.p-5x>.b-b-c,.p-5x>.r-b-c,.p-5x>.h-r-c,.p-5x>.r-r-c,.p-5x>.vlt-b-c,
+.p-5x>.lt-g-b-c {
+  border: 3px solid #2f4857!important;
 }

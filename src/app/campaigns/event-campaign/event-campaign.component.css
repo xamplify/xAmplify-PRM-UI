@@ -492,3 +492,7 @@ fieldset{
 .col-block-active{
   color : black !important;
 }
+/* 8-6-2023 sudha sri */
+.boxes.portlet.light {
+  border-radius: 2px !important;
+}

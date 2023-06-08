@@ -1054,3 +1054,6 @@ span.ui-column-resize{
   position: relative;
   bottom: 2px;
 }
+/* 8-6-2023 sudha sri */
+.cont-info{border-bottom: 1px solid var(--border-color)!important;}
+.profile-usermenu ul li.active a, .active-tab-anchor-text{border-left: 2px solid var(--border-color)!important;}
