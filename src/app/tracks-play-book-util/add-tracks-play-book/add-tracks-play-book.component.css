@@ -158,11 +158,11 @@ h5 {
 
 .col-block-complete {
     color: #fff !important;
-    background-color: #34495C;
+    background-color: #34495C !important;
   }
   
   .col-block-complete:hover {
-    background-color: #465460;
+    background-color: #465460 !important;
     color: #fff;
   }
 

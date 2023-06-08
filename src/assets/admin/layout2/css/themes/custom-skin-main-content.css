@@ -99,7 +99,8 @@ h1, h2, h3, h6 {
 .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
   background: var(--page-content) !important;
 }
-.form-control {
+.form-control,
+.col-item {
   color: var(---text-color) !important;
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
@@ -1053,3 +1054,6 @@ span.ui-column-resize{
   position: relative;
   bottom: 2px;
 }
+/* 8-6-2023 sudha sri */
+.cont-info{border-bottom: 1px solid var(--border-color)!important;}
+.profile-usermenu ul li.active a, .active-tab-anchor-text{border-left: 2px solid var(--border-color)!important;}
