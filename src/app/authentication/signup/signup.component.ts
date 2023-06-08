@@ -170,7 +170,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
     }
     buildForm() {
         this.signUpForm = this.formBuilder.group({
-            'emailId': [{ value: this.signUpUser.emailId, disabled: true }, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
+            'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
             'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6),Validators.maxLength(20), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
             'agree': [false, Validators.required],
