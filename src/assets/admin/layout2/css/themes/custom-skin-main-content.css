@@ -424,6 +424,9 @@ input{
 }
 .color-inline{
   background-color: var(--div-bg-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-top: 1px solid var(--border-color) !important;
 }
 .text-dropdown{
   background-color: var(--div-bg-color) !important;
@@ -1078,4 +1081,9 @@ span.ui-column-resize{
   height: 370px;
   position: relative;
 }
-
+/* 9-6-2023 sudha sri */
+.with-nav-tabs.panel-default .nav-tabs > li > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li > a.partnerGroupsC,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnerGroupsC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover
+{color: var(---text-color) !important;}
+.nav-tabs>li>a.partnersC:hover, .nav-tabs>li>a.partnerGroupsC:hover{background: none !important;}
