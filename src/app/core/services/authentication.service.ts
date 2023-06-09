@@ -1027,6 +1027,13 @@ findShareWhiteLabelContentAccess() {
   
 }
 
+/*****XNFR-278****/
+findGroupsForMerging(pagination: Pagination) {
+  let url = this.REST_URL +"userlists/findGroupsForMerging?access_token=" + this.access_token;
+  pagination.userId = this.getUserId();
+  return this.callPostMethod(url,pagination);
+}
+
 
 private callGetMethod(url: string) {
   return this.http.get(url)
