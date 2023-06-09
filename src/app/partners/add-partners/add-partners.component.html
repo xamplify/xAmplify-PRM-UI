@@ -433,6 +433,13 @@
                             <li><a id="exportToExcel"
                                 *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
                                 (click)="showAlert()" translate> Delete</a></li>
+                             
+                            <!---XNFR-278-->
+                            <li *ngIf="isPartner">
+                                <a  *ngIf="selectedAddPartnerOption == 5 && pagination?.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
+                                (click)="openMergePopup()" translate> Merge</a>
+                            </li>
+                            <!---XNFR-278-->
                         </ul>
                         </ng-template>
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>

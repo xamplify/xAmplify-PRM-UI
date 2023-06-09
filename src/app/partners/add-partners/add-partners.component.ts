@@ -4318,6 +4318,11 @@ framePipedrivePreview(response: any) {
 	}
 }
 
-//XNFR-230
+/****XNFR-278****/
+openMergePopup(){
+	alert("Clicked");
+}
+
+
 
 }
