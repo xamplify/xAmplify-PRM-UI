@@ -4084,7 +4084,7 @@ configSalesforce() {
 	
 	getActiveThemeData(){
 		this.ngxloading = true;
-		this.dashBoardService.getActiveTheme().subscribe(
+		this.dashBoardService.getActiveTheme(this.authenticationService.vanityLoginDtoForTheme).subscribe(
 			(data:any) =>{
 				this.ngxloading = false;
 				this.activeThemeDetails = data.data;

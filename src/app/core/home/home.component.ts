@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.vanityLoginDto.vanityUrlFilter = false;
     }
+    this.authenticationService.vanityLoginDtoForTheme = this.vanityLoginDto;
   }
 
   isAuthorized(): boolean {
@@ -313,7 +314,7 @@ export class HomeComponent implements OnInit {
       this.vanityURLService.isVanityURLEnabled();
       this.getCompanyId();
       //this.getDefaultSkin();
-      this.getActiveThemeData();
+      this.getActiveThemeData(this.vanityLoginDto);
       //this.getMainContent(this.userId);  
     } catch (error) {
       this.xtremandLogger.error("error" + error);
@@ -323,9 +324,9 @@ export class HomeComponent implements OnInit {
  
   /*********** XNFR-238********** */
   activeThemeDetails: CompanyThemeActivate = new CompanyThemeActivate();
-  getActiveThemeData() {
+  getActiveThemeData(vanityLoginDto) {
     this.loader = true;
-    this.dashBoardService.getActiveTheme().subscribe(
+    this.dashBoardService.getActiveTheme(this.vanityLoginDto).subscribe(
       (response) => {
         this.loader = false;
         this.activeThemeDetails = response.data;

@@ -958,9 +958,14 @@ deleteThemeProperties(id:number){
     .map(this.extractData)
     .catch(this.handleError);
 }
-getActiveTheme(){
-    const url = this.authenticationService.REST_URL + 'custom/skin/getactiveTheme/'+ this.authenticationService.getUserId() +'/'+'?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+getActiveTheme(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+    if(xamplifyLogin){
+        vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    }
+    const url = this.authenticationService.REST_URL + 'custom/skin/getactiveTheme/?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
 }

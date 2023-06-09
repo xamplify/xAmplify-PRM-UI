@@ -138,6 +138,7 @@ export class AuthenticationService {
  themeMap = new Map<string, ThemeDto>();
  themeDto:ThemeDto = new ThemeDto();
  activateThemeId:number;
+ vanityLoginDtoForTheme:VanityLoginDto = new VanityLoginDto();
   /***** XNFR-238*********** */
   formBackground="";
   
