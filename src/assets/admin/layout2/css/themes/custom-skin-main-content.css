@@ -424,6 +424,9 @@ input{
 }
 .color-inline{
   background-color: var(--div-bg-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-top: 1px solid var(--border-color) !important;
 }
 .text-dropdown{
   background-color: var(--div-bg-color) !important;
@@ -1057,3 +1060,30 @@ span.ui-column-resize{
 /* 8-6-2023 sudha sri */
 .cont-info{border-bottom: 1px solid var(--border-color)!important;}
 .profile-usermenu ul li.active a, .active-tab-anchor-text{border-left: 2px solid var(--border-color)!important;}
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
+
+.animated-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  /* background: #f6f7f8; */
+  background: linear-gradient(to right, var(--page-content)  8%,  var(--div-bg-color) 18%, var(--page-content) 33%) !important;
+  background-size: 800px 104px;
+  height: 370px;
+  position: relative;
+}
+/* 9-6-2023 sudha sri */
+.with-nav-tabs.panel-default .nav-tabs > li > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li > a.partnerGroupsC,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnerGroupsC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover
+{color: var(---text-color) !important;}
+.nav-tabs>li>a.partnersC:hover, .nav-tabs>li>a.partnerGroupsC:hover{background: none !important;}
