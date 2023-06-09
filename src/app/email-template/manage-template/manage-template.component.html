@@ -10,16 +10,16 @@
                 <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li style="color: #808080">
+            <li class="breadcrumb-font-color" style="color: #808080">
                 <a [routerLink]="['/home/design/add']" translate>Create Design</a>
                  <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li style="color: #808080">
+            <li class="breadcrumb-font-color" style="color: #808080">
                 <a [routerLink]="['/home/emailtemplates/select']" translate>Design Templates</a>
                  <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
-            <li style="color: #808080" *ngIf="!authenticationService.isOnlyPartner()" translate>Manage Templates</li>
-            <li style="color: #808080" *ngIf="authenticationService.isOnlyPartner()" translate>View Templates</li>
+            <li class="breadcrumb-font-color" style="color: #808080" *ngIf="!authenticationService.isOnlyPartner()" translate>Manage Templates</li>
+            <li class="breadcrumb-font-color" style="color: #808080" *ngIf="authenticationService.isOnlyPartner()" translate>View Templates</li>
         </ul>
     </div>
     <div class="mTopAlert" style="position: relative; top: -10px">
