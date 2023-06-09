@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-merge-groups-modal-popup',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MergeGroupsModalPopupComponent implements OnInit {
 
+  @Input() userListId = 0;
+  @Input() selectedUserIds = [];
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

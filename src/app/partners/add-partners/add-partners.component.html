@@ -1779,3 +1779,9 @@
     <app-confirm-sweet-alert-util *ngIf="showSweetAlert"
         [parameterDto]="sweetAlertParameterDto"
         (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
+
+ <!---XNFR-278-->
+ <ng-container *ngIf="mergeOptionClicked">
+    <app-merge-groups-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging"></app-merge-groups-modal-popup>      
+ </ng-container>
+ 

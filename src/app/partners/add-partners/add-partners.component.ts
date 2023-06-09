@@ -31,7 +31,6 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
-import { DashboardService } from 'app/dashboard/dashboard.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
 declare var $:any, Papa:any, swal:any;
@@ -46,11 +45,6 @@ declare var $:any, Papa:any, swal:any;
 		Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription, FileUtil, CallActionSwitch]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
-	// @Input() userInfo: any;
-	// @Input() isPartnerInfo: boolean;
-	// @Input() isExclusion : boolean=false;
-	// highlightLetter: string = "*";
-
     isPartnerPopupShow : boolean  = false ;
 	loggedInUserId: number;
 	validEmailPatternSuccess: boolean = true;
@@ -255,6 +249,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    pipedriveApiKeyError: boolean;
    pipedriveCurrentUser: string;
    pipedriveLoading: boolean = false;
+   /****XNFR-278****/
+   mergeOptionClicked = false;
+   selectedUserIdsForMerging: any[];
+	/****XNFR-278****/
 
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -4320,7 +4318,8 @@ framePipedrivePreview(response: any) {
 
 /****XNFR-278****/
 openMergePopup(){
-	alert("Clicked");
+	this.mergeOptionClicked = true;
+	this.selectedUserIdsForMerging = this.editContactComponent.selectedContactListIds;
 }
 
 
