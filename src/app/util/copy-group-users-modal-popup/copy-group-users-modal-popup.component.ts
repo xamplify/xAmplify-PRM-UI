@@ -9,6 +9,8 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
+
 declare var $: any, swal: any;
 @Component({
   selector: 'app-copy-group-users-modal-popup',
@@ -33,20 +35,29 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   sortOption: SortOption = new SortOption();
   isHeaderCheckBoxChecked: boolean;
   selectedPartnerGroupIds = [];
-
+  copyGroupUsersDto:CopyGroupUsersDto = new CopyGroupUsersDto();
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
     public utilService:UtilService,public logger:XtremandLogger,public pagerService:PagerService) { }
   
 
   ngOnInit() {
-    this.referenceService.startLoader(this.httpRequestLoader);
+    this.addLoader();
     $('#copyGroupUsersModalPopup').modal('show');
     this.pagination.userListId = this.userListId;
     this.findGroupsForMerging(this.pagination);
   }
+  private addLoader() {
+    this.referenceService.startLoader(this.httpRequestLoader);
+  }
+
+  private removeLoader(){
+    this.referenceService.stopLoader(this.httpRequestLoader);
+  }
+
+ 
 
   findGroupsForMerging(pagination:Pagination){
-    this.referenceService.startLoader(this.httpRequestLoader);
+    this.addLoader();
     this.authenticationService.findGroupsForMerging(pagination).subscribe(
       response=>{
         const data = response.data;
@@ -59,7 +70,7 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
 					return $.inArray(element, partnerGroupIds) !== -1;
 				});
 				this.isHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
-        this.referenceService.stopLoader(this.httpRequestLoader);
+        this.removeLoader();
       },error=>{
         this.referenceService.showSweetAlertServerErrorMessage();
         this.callEmitter();
@@ -112,7 +123,10 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
 
 
   copyToGroups(){
-    console.log(this.selectedPartnerGroupIds);
+    this.addLoader();
+    this.copyGroupUsersDto = new CopyGroupUsersDto();
+    this.copyGroupUsersDto.userIds = this.selectedUserIds;
+    this.copyGroupUsersDto.userGroupIds = this.selectedGroupIds;
   }
 
   callEmitter(){

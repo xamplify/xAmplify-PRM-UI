@@ -40,7 +40,7 @@
                                               </div>
                                               <div class="portlet-input input-inline" id="search-div">
                                                   <div class="input-icon right" id="icon">
-                                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="groupsSearchOnKeyEvent($event.keyCode)">
+                                                      <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="groupsSearchOnKeyEvent($event.keyCode)">
                                                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption?.searchKey" (click)="sortOption.searchKey='';searchGroups();"></button>
                                                       <button type="submit" class="search-box-item-click" (click)="searchGroups()">
                                                       <i class="fa fa-search" aria-hidden="true"></i>
@@ -85,7 +85,7 @@
                                             {{group?.groupName | slice:0:25}} <span *ngIf="group?.groupName?.length>25">...</span>
                                         </td>
                                         <td class="text-center">
-                                            <span>{{group?.numberOfPartners}} - {{group?.id}}</span>
+                                            <span>{{group?.numberOfPartners}}</span>
                                         </td>
                                         <td class="text-center">
                                            <app-display-date-and-time [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>

@@ -4322,7 +4322,7 @@ openMergePopup(){
 	this.selectedUserIdsForMerging = this.editContactComponent.selectedContactListIds;
 }
 
-mergeGroupsModalPopupEventReceiver(){
+copyGroupUsersModalPopupEventReceiver(){
 	this.mergeOptionClicked = false;
 	this.selectedUserIdsForMerging = [];
 }
