@@ -40,8 +40,8 @@
                                               </div>
                                               <div class="portlet-input input-inline" id="search-div">
                                                   <div class="input-icon right" id="icon">
-                                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption?.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="groupsSearchOnKeyEvent($event.keyCode)">
+                                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption?.searchKey" (click)="sortOption.searchKey='';searchGroups();"></button>
                                                       <button type="submit" class="search-box-item-click" (click)="searchGroups()">
                                                       <i class="fa fa-search" aria-hidden="true"></i>
                                                   </button>
@@ -95,7 +95,7 @@
                   </ng-container>
               </ng-container>
               <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
-                  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findGroups($event)">
+                  <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findGroupsForMerging($event)">
                   </app-pagination>
               </div>
           </div>

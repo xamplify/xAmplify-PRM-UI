@@ -17,7 +17,7 @@ declare var $: any, swal: any;
   styleUrls: ['./merge-groups-modal-popup.component.css'],
   providers: [HttpRequestLoader, SortOption, Properties]
 })
-export class MergeGroupsModalPopupComponent implements OnInit,OnDestroy {
+export class MergeGroupsModalPopupComponent implements OnInit {
 
   @Input() userListId = 0;
   @Input() selectedUserIds = [];
@@ -38,13 +38,14 @@ export class MergeGroupsModalPopupComponent implements OnInit,OnDestroy {
   
 
   ngOnInit() {
-    $('#mergeGroupsModalPopup').modal('show');
     this.referenceService.startLoader(this.httpRequestLoader);
+    $('#mergeGroupsModalPopup').modal('show');
     this.pagination.userListId = this.userListId;
     this.findGroupsForMerging(this.pagination);
   }
 
   findGroupsForMerging(pagination:Pagination){
+    this.referenceService.startLoader(this.httpRequestLoader);
     this.authenticationService.findGroupsForMerging(pagination).subscribe(
       response=>{
         const data = response.data;
@@ -58,24 +59,44 @@ export class MergeGroupsModalPopupComponent implements OnInit,OnDestroy {
       });
   }
 
+  /*******Pagination/Search/Sort*****/
+  navigateToNextPage(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.findGroupsForMerging(this.pagination);
+	}
+
+  groupsSearchOnKeyEvent(keyCode: any) { if (keyCode === 13) { this.searchGroups(); } }
+
+  /*************************Sort********************** */
+	sortBy(text: any) {
+		this.sortOption.selectedGroupsDropDownOption = text;
+		this.getAllFilteredResults(this.pagination, this.sortOption);
+	}
+	/*************************Search********************** */
+	searchGroups() {
+		this.getAllFilteredResults(this.pagination, this.sortOption);
+	}
+	getAllFilteredResults(pagination: Pagination, sortOption: SortOption) {
+		this.customResponse = new CustomResponse();
+		pagination.pageIndex = 1;
+		pagination.searchKey = sortOption.searchKey;
+    pagination = this.utilService.sortOptionValues(sortOption.selectedGroupsDropDownOption, pagination);
+    this.findGroupsForMerging(pagination);
+		
+	}
+
   copyToGroups(){
 
   }
 
   callEmitter(){
+    $('#mergeGroupsModalPopup').modal('hide');
     this.mergeGroupsModalPopupEventEmitter.emit();
   }
-
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+  
 
   closePopup(){
-    $('#mergeGroupsModalPopup').modal('hide');
-  }
-
-  searchGroups(){
-
+    this.callEmitter();
   }
 
 }
