@@ -8,6 +8,8 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
+import { CustomResponse } from 'app/common/models/custom-response';
+
 declare var $: any, swal: any;
 @Component({
   selector: 'app-merge-groups-modal-popup',
@@ -21,24 +23,43 @@ export class MergeGroupsModalPopupComponent implements OnInit,OnDestroy {
   @Input() selectedUserIds = [];
   @Output() mergeGroupsModalPopupEventEmitter = new EventEmitter();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  customResponse: CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
+  selectedGroupIds = [];
+  copySuccess = false;
+  responseMessage = "";
+  responseImage = "";
+  responseClass = "event-success";
+  statusCode = 0;
+  sortOption: SortOption = new SortOption();
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
-    public utilService:UtilService,public logger:XtremandLogger) { }
+    public utilService:UtilService,public logger:XtremandLogger,public pagerService:PagerService) { }
   
 
   ngOnInit() {
+    $('#mergeGroupsModalPopup').modal('show');
+    this.referenceService.startLoader(this.httpRequestLoader);
     this.pagination.userListId = this.userListId;
+    this.findGroupsForMerging(this.pagination);
   }
 
   findGroupsForMerging(pagination:Pagination){
     this.authenticationService.findGroupsForMerging(pagination).subscribe(
       response=>{
-        alert(response.statusCode);
+        const data = response.data;
+        pagination.totalRecords = data.totalRecords;
+        this.sortOption.totalRecords = data.totalRecords;
+        pagination = this.pagerService.getPagedItems(pagination, data.list);
+        this.referenceService.stopLoader(this.httpRequestLoader);
       },error=>{
         this.referenceService.showSweetAlertServerErrorMessage();
         this.callEmitter();
       });
+  }
+
+  copyToGroups(){
+
   }
 
   callEmitter(){
@@ -47,6 +68,14 @@ export class MergeGroupsModalPopupComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(): void {
     throw new Error('Method not implemented.');
+  }
+
+  closePopup(){
+    $('#mergeGroupsModalPopup').modal('hide');
+  }
+
+  searchGroups(){
+
   }
 
 }
