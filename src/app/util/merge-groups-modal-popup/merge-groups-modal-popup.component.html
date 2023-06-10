@@ -57,12 +57,16 @@
                   <br>
                   <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                   <ng-container *ngIf="!httpRequestLoader.isLoading">
+                    <div *ngIf="selectedPartnerGroupIds?.length>0  && pagination?.totalRecords>0" class="alert alert-success text-center">
+                        <strong>Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
+                     </div>
                       <div class="table-responsive">
-                          <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="group-list-table">
+                          <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="merge-groups-list-table">
                               <thead>
                                   <tr>
                                       <th class="text-center">
-                                          <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllGroups">
+                                        <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="merge-groups-header-checkbox-id"
+                                        (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                       </th>
                                       <th class="text-center">Name</th>
                                       <th class="text-center">Count</th>
@@ -70,20 +74,24 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr *ngFor="let group of pagination.pagedItems ;let i =index" id="campaignTr_{{group.id}}" [class.row-selected]="selectedGroupIds.indexOf(group.id)>-1" (click)="highlightSelectedCampaignRow(group,$event)">
-                                      <td class="text-center">
-                                          <input type="checkbox" class="chk" lang="{{group.group}}" id="{{group.id}}" [checked]="selectedGroupIds.indexOf(group.id)>-1" name="groupCheckBoxName[]" value="{{group.id}}" (click)="highlightRowByCheckBox(group,$event)">
-                                      </td>
-                                      <td class="text-center" title="{{group?.groupName}}">
-                                          {{group?.groupName | slice:0:25}} <span *ngIf="group?.groupName?.length>25">...</span>
-                                      </td>
-                                      <td class="text-center">
-                                          <span>{{group?.numberOfPartners}}</span>
-                                      </td>
-                                      <td class="text-center">
-                                         <app-display-date-and-time [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>
-                                      </td>
-                                  </tr>
+                                <ng-container *ngFor="let group of pagination.pagedItems ;let i =index" >
+                                    <tr id="merge-groups-tr-{{group.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
+                                        (click)="highlightSelectedPartnerGroupOnRowClick(group.id,$event)">
+                                        <td class="text-center">
+                                            <input type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="mergeGroupsCheckBoxName[]" 
+                                             (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
+                                        </td>
+                                        <td class="text-center" title="{{group?.groupName}}">
+                                            {{group?.groupName | slice:0:25}} <span *ngIf="group?.groupName?.length>25">...</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span>{{group?.numberOfPartners}} - {{group?.id}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                           <app-display-date-and-time [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                               </tbody>
                           </table>
                       </div>

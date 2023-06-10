@@ -32,6 +32,8 @@ export class MergeGroupsModalPopupComponent implements OnInit {
   responseClass = "event-success";
   statusCode = 0;
   sortOption: SortOption = new SortOption();
+  isHeaderCheckBoxChecked: boolean;
+  selectedPartnerGroupIds = [];
 
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
     public utilService:UtilService,public logger:XtremandLogger,public pagerService:PagerService) { }
@@ -82,11 +84,30 @@ export class MergeGroupsModalPopupComponent implements OnInit {
 		pagination.searchKey = sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(sortOption.selectedGroupsDropDownOption, pagination);
     this.findGroupsForMerging(pagination);
-		
 	}
+  /************Check Box related code starts here****************/
+  highlightSelectedPartnerGroupOnRowClick(selectedPartnerGroupId: any, event: any) {
+    this.referenceService.highlightRowOnRowCick('merge-groups-tr', 'merge-groups-list-table', 'mergeGroupsCheckBoxName', this.selectedPartnerGroupIds, 'merge-groups-header-checkbox-id', selectedPartnerGroupId, event);
+  }
+
+  highlightSelectedPartnerGroupOnCheckBoxClick(selectedPartnerGroupId: any, event: any) {
+    this.referenceService.highlightRowByCheckBox('merge-groups-tr', 'merge-groups-list-table', 'mergeGroupsCheckBoxName', this.selectedPartnerGroupIds, 'merge-groups-header-checkbox-id', selectedPartnerGroupId, event);
+  }
+
+  selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
+    this.selectedPartnerGroupIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('merge-groups-tr', 'merge-groups-list-table', 'mergeGroupsCheckBoxName', this.selectedPartnerGroupIds, this.pagination, event);
+  }
+
+  removeAllSelectedPartners() {
+    this.selectedPartnerGroupIds = [];
+    this.isHeaderCheckBoxChecked = false;
+    $('#merge-groups-header-checkbox-id').prop('checked',false);
+  }
+
+
 
   copyToGroups(){
-
+    console.log(this.selectedPartnerGroupIds);
   }
 
   callEmitter(){
