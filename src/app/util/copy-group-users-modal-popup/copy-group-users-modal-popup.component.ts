@@ -26,7 +26,6 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
   pagination:Pagination = new Pagination();
-  selectedGroupIds = [];
   copySuccess = false;
   responseMessage = "";
   responseImage = "";
@@ -126,7 +125,15 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
     this.addLoader();
     this.copyGroupUsersDto = new CopyGroupUsersDto();
     this.copyGroupUsersDto.userIds = this.selectedUserIds;
-    this.copyGroupUsersDto.userGroupIds = this.selectedGroupIds;
+    this.copyGroupUsersDto.userGroupIds = this.selectedPartnerGroupIds;
+    this.copyGroupUsersDto.userGroupId = this.userListId;
+    this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
+      response=>{
+        alert("success");
+        this.removeLoader();
+      },error=>{
+        this.referenceService.showSweetAlertServerErrorMessage();
+      });
   }
 
   callEmitter(){

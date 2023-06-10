@@ -27,9 +27,11 @@ import { CommentDto } from 'app/common/models/comment-dto';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
+import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 
 @Injectable()
 export class AuthenticationService {
+  
    
   access_token: string;
   refresh_token: string;
@@ -1033,6 +1035,15 @@ findGroupsForMerging(pagination: Pagination) {
   pagination.userId = this.getUserId();
   return this.callPostMethod(url,pagination);
 }
+
+copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
+  let url = this.REST_URL +"userlists/copyGroupUsers?access_token=" + this.access_token;
+  copyGroupUsersDto.loggedInUserId = this.getUserId();
+  return this.callPostMethod(url,copyGroupUsersDto);
+}
+
+
+/*****XNFR-278****/
 
 
 private callGetMethod(url: string) {
