@@ -64,7 +64,7 @@
                           <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="merge-groups-list-table">
                               <thead>
                                   <tr>
-                                      <th class="text-center">
+                                      <th class="text-center pointer">
                                         <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="merge-groups-header-checkbox-id"
                                         (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                       </th>
@@ -75,10 +75,10 @@
                               </thead>
                               <tbody>
                                 <ng-container *ngFor="let group of pagination.pagedItems ;let i =index" >
-                                    <tr id="merge-groups-tr-{{group.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
+                                    <tr class="pointer" id="merge-groups-tr-{{group.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
                                         (click)="highlightSelectedPartnerGroupOnRowClick(group.id,$event)">
                                         <td class="text-center">
-                                            <input type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="mergeGroupsCheckBoxName[]" 
+                                            <input class="pointer" type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="mergeGroupsCheckBoxName[]" 
                                              (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
                                         </td>
                                         <td class="text-center" title="{{group?.groupName}}">
@@ -108,7 +108,7 @@
               </div>
           </div>
           <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-              <button type="submit" class="btn green-haze" [disabled]="selectedGroupIds?.length==0" *ngIf="!copySuccess" (click)="copyToGroups()">Copy</button>
+              <button type="submit" class="btn green-haze" [disabled]="selectedPartnerGroupIds?.length==0" *ngIf="!copySuccess" (click)="copyToGroups()">Copy</button>
               <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
           </div>
       </div>

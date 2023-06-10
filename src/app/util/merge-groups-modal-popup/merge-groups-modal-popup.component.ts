@@ -54,6 +54,12 @@ export class MergeGroupsModalPopupComponent implements OnInit {
         pagination.totalRecords = data.totalRecords;
         this.sortOption.totalRecords = data.totalRecords;
         pagination = this.pagerService.getPagedItems(pagination, data.list);
+        /*******Header checkbox will be chcked when navigating through page numbers*****/
+				let partnerGroupIds = pagination.pagedItems.map(function (a) { return a.id; });
+				let items = $.grep(this.selectedPartnerGroupIds, function (element: any) {
+					return $.inArray(element, partnerGroupIds) !== -1;
+				});
+				this.isHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
         this.referenceService.stopLoader(this.httpRequestLoader);
       },error=>{
         this.referenceService.showSweetAlertServerErrorMessage();
