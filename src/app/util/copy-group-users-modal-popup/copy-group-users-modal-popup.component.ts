@@ -122,18 +122,41 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
 
 
   copyToGroups(){
-    this.addLoader();
-    this.copyGroupUsersDto = new CopyGroupUsersDto();
-    this.copyGroupUsersDto.userIds = this.selectedUserIds;
-    this.copyGroupUsersDto.userGroupIds = this.selectedPartnerGroupIds;
-    this.copyGroupUsersDto.userGroupId = this.userListId;
-    this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
-      response=>{
-        alert("success");
-        this.removeLoader();
-      },error=>{
-        this.referenceService.showSweetAlertServerErrorMessage();
-      });
+    if(this.selectedPartnerGroupIds.length>0){
+      this.addLoader();
+      this.copyGroupUsersDto = new CopyGroupUsersDto();
+      this.copyGroupUsersDto.userIds = this.selectedUserIds;
+      this.copyGroupUsersDto.userGroupIds = this.selectedPartnerGroupIds;
+      this.copyGroupUsersDto.userGroupId = this.userListId;
+      this.authenticationService.copyUsersToUserGroups(this.copyGroupUsersDto).subscribe(
+        response=>{
+          this.copySuccess = true;
+          this.statusCode = response.statusCode;
+          if (this.statusCode == 200) {
+            this.responseMessage = response.message;
+          } else {
+              this.responseMessage = response.message;
+          }
+          this.resetFields();
+          this.removeLoader();
+        },error=>{
+          this.copySuccess = false;
+          this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+          this.removeLoader();
+        });
+    }else{
+      this.referenceService.goToTop();
+      this.customResponse = new CustomResponse('ERROR','Please select atleast one group',true);
+    }
+    
+  }
+  resetFields() {
+    this.pagination = new Pagination();
+    this.sortOption = new SortOption();
+    this.isHeaderCheckBoxChecked = false;
+    this.selectedPartnerGroupIds = [];
+    this.selectedUserIds = [];
+    this.userListId = 0;
   }
 
   callEmitter(){
