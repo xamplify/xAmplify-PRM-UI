@@ -6,7 +6,7 @@
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
             </li>
-            <li *ngIf="location.includes('/social/update-status')" style="color: #808680;">
+            <li *ngIf="location.includes('/social/update-status')" class="breadcrumb-font-color" style="color: #808680;">
             <i class="fa fa-angle-right" aria-hidden="true"></i>
             Update Status
             </li>
@@ -15,7 +15,7 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <a [routerLink]="['../../campaigns/select']">Select Campaign</a>
                 </li>
-                <li  style="color: #808680;">
+                <li class="breadcrumb-font-color" style="color: #808680;">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     Create Social Campaign
                 </li>
@@ -25,7 +25,7 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <a [routerLink]="['/home/campaigns/partner/social']">Campaigns shared by Vendors</a>
                 </li>
-                <li  style="color: #808680;">
+                <li class="breadcrumb-font-color" style="color: #808680;">
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                    Redistribute Social Campaign
                 </li>

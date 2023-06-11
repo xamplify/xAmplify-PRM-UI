@@ -1088,3 +1088,9 @@ span.ui-column-resize{
 {color: var(---text-color) !important;}
 .nav-tabs>li>a.partnersC:hover, .nav-tabs>li>a.partnerGroupsC:hover{background: none !important;}
 .breadcrumb-font-color{color : var(---text-color) !important;font-size:13px;}
+/* 11-6-2023 sudha sri */
+.td-netbg{
+  border-left: 1px solid var(--border-color)!important;
+    border-right: 1px solid var(--border-color)!important;
+    border-bottom: 1px solid var(--border-color)!important;
+}

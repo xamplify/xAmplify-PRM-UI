@@ -496,3 +496,9 @@ fieldset{
 .boxes.portlet.light {
   border-radius: 2px !important;
 }
+/* 11-6-2023 sudha sri */
+.email-search {
+  padding-top: 3px !important;
+  position: absolute;
+  top: 6px !important;
+}
