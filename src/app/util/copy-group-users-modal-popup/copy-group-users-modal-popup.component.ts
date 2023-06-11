@@ -35,6 +35,9 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
   isHeaderCheckBoxChecked: boolean;
   selectedPartnerGroupIds = [];
   copyGroupUsersDto:CopyGroupUsersDto = new CopyGroupUsersDto();
+  showUsersPreview = false;
+  selectedGroupName = "";
+  selectedUserListId = 0;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,
     public utilService:UtilService,public logger:XtremandLogger,public pagerService:PagerService) { }
   
@@ -167,6 +170,18 @@ export class CopyGroupUsersModalPopupComponent implements OnInit {
 
   closePopup(){
     this.callEmitter();
+  }
+
+  previewUserListUsers(partnerGroup: any) {
+		this.showUsersPreview = true;
+		this.selectedGroupName = partnerGroup.groupName;
+		this.selectedUserListId = partnerGroup.id;
+	}
+
+  resetPreviewValues(){
+    this.showUsersPreview = false;
+    this.selectedGroupName = "";
+    this.selectedUserListId = 0;
   }
 
 }

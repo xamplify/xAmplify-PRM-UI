@@ -61,7 +61,7 @@
                         <strong>Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
                      </div>
                       <div class="table-responsive">
-                          <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
+                          <table class='table tgrid table-condensed table-bordered' *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
                               <thead>
                                   <tr>
                                       <th class="text-center pointer">
@@ -71,6 +71,7 @@
                                       <th class="text-center">Name</th>
                                       <th class="text-center">Count</th>
                                       <th class="text-center">Created On</th>
+                                      <th class="text-center">Preview</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -90,6 +91,11 @@
                                         <td class="text-center">
                                            <app-display-date-and-time [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>
                                         </td>
+                                        <td class="text-center">
+                                            <div class="actions-block float-none" (click)="$event.stopPropagation();previewUserListUsers(group)">
+                                               <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            </div>
+                                         </td>
                                     </tr>
                                 </ng-container>
                               </tbody>
@@ -114,3 +120,8 @@
       </div>
   </div>
 </div>
+
+<ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedGroupName" [userListId]="selectedUserListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+</ng-container>
+    
