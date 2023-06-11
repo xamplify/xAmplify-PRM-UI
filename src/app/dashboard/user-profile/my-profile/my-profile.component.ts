@@ -56,6 +56,7 @@ import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-properties-list-wrapper';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
+import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -293,6 +294,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeDtoList:ThemeDto[];
 	defaultThemes:ThemeDto[];
 	isNoThemes:boolean = false;
+	vanityLoginDto:VanityLoginDto = new VanityLoginDto();
 	/*** XNFR-238******/
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -507,6 +509,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
 			console.log(this.videoUtilService.videoTempDefaultSettings);
 			this.loggedInUserId = this.authenticationService.getUserId();
+			/**** show themes to partner ***/
+			this.vanityLoginDto.userId = this.loggedInUserId;
+            let companyProfileName = this.authenticationService.companyProfileName;
+            if (companyProfileName !== undefined && companyProfileName !== "") {
+            this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+            this.vanityLoginDto.vanityUrlFilter = true;
+           } else {
+           this.vanityLoginDto.vanityUrlFilter = false;
+          }
+	       /**** show themes to partner in vanity***/
 			this.hasAllAccess = this.referenceService.hasAllAccess();
 			this.hasVideoRole = this.authenticationService.hasVideoRole();
 			if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
@@ -4084,7 +4096,7 @@ configSalesforce() {
 	
 	getActiveThemeData(){
 		this.ngxloading = true;
-		this.dashBoardService.getActiveTheme(this.authenticationService.vanityLoginDtoForTheme).subscribe(
+		this.dashBoardService.getActiveTheme(this.vanityLoginDto).subscribe(
 			(data:any) =>{
 				this.ngxloading = false;
 				this.activeThemeDetails = data.data;

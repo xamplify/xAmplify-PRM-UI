@@ -1087,3 +1087,4 @@ span.ui-column-resize{
 .with-nav-tabs.panel-default .nav-tabs > li.active > a.partnerGroupsC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover
 {color: var(---text-color) !important;}
 .nav-tabs>li>a.partnersC:hover, .nav-tabs>li>a.partnerGroupsC:hover{background: none !important;}
+.breadcrumb-font-color{color : var(---text-color) !important;font-size:13px;}

@@ -3122,7 +3122,7 @@
           Analytics</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
+      <li class= "breadcrumb-font-color" style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
         {{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
         <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</strong>
         <strong *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify
