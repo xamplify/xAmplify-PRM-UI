@@ -1335,7 +1335,7 @@
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
 <!-- END PAGE CONTENT -->
 <div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog full-width-modal-popup" role="document">
+    <div class="modal-dialog"  [ngClass] = "isEditContactPopupShow ? '' : 'custom-width-modal-popup'"  role="document">
         <div class="modal-content">
             <div class="modal-header" >
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">

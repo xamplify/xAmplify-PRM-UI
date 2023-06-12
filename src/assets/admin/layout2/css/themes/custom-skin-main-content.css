@@ -167,12 +167,17 @@ td > button {
   border-radius: 3px !important;
 }
 .list-group-item,
-.read,
 /* input, */
 .card {
   color: var(---text-color) !important;
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
+}
+
+
+.read {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
 }
 .campaign-type-selected,
 ul.alt-row-style1 li:hover,
