@@ -1094,3 +1094,7 @@ span.ui-column-resize{
     border-right: 1px solid var(--border-color)!important;
     border-bottom: 1px solid var(--border-color)!important;
 }
+/* 12-6-2023 sudha sri */
+.list__item.list__item--selected > .flex-row{
+  box-shadow: none !important
+}
