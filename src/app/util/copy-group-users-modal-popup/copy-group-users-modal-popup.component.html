@@ -5,7 +5,7 @@
               <button type="button" class="close-circle" (click)="closePopup()">
                   <i class="fa fa-times" aria-hidden="true"></i>
               </button>
-              <h4 class="modal-title text-center">Select Groups</h4>
+              <h4 class="modal-title text-center">Select Lists</h4>
           </div>
           <div class="modal-body">
               <div class="thank-you-pop" *ngIf="copySuccess">
@@ -122,6 +122,6 @@
 </div>
 
 <ng-container *ngIf="showUsersPreview">
-    <app-preview-user-list [userListName]="selectedGroupName" [userListId]="selectedUserListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    <app-preview-user-list [userListName]="selectedGroupName" [userListId]="selectedUserListId" (notifyParentComponent)="resetPreviewValues()"></app-preview-user-list>
 </ng-container>
     
