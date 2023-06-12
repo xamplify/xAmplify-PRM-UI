@@ -12,7 +12,6 @@ import { TimepickerModule } from 'ngx-bootstrap';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { LoadingModule } from 'ngx-loading';
-import { CountLoaderComponent } from '../count-loader/count-loader.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
 import { LefsideNavigationLoaderComponent } from '../lefside-navigation-loader/lefside-navigation-loader.component';
 import { DynamicGridLoaderComponent } from '../dynamic-grid-loader/dynamic-grid-loader.component';
@@ -35,14 +34,14 @@ import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-vide
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, 
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
-        declarations: [CountLoaderComponent,AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
+        declarations: [AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
                 LefsideNavigationLoaderComponent,  ChatComponent, DealChatPopupComponent, EditVideoComponent, PlayVideoComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
+                  NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
                    ChatComponent, DealChatPopupComponent, EditVideoComponent, PlayVideoComponent],
         providers: [],
