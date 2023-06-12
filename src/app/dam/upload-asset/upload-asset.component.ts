@@ -1155,7 +1155,9 @@ setWhiteLabeled(event:any){
 
 /****XNFR-255***/
 receivePartnerCompanyAndGroupsEventEmitterData(event:any){
-    console.log(event);
+    this.damUploadPostDto.partnerGroupIds = event['partnerGroupIds'];
+    this.damUploadPostDto.partnerIds = event['partnerIds'];
+    this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
 }
 
 
