@@ -55,9 +55,9 @@
                                 <tr id="team-member-partners-tr-{{partner.id}}" [class.row-selected]="selectedPartnerTeamMemberGroupMappingIds?.indexOf(partner.id)>-1"
                                     (click)="highlightSelectedPartnerOnRowClick(partner.id,$event)">
                                     <td class="text-center">
-                                        <input type="checkbox" id="{{partner.id}}" 
+                                        <input type="checkbox" id="{{partner.id}}"  value="{{partner.id}}"
                                         [checked]="selectedPartnerTeamMemberGroupMappingIds?.indexOf(partner.id)>-1"
-                                            name="teamMemberPartnersCheckBox[]" value="{{partner.id}}"
+                                            name="teamMemberPartnersCheckBox[]" 
                                             (click)="$event.stopPropagation();highlightPartnerRowOnCheckBoxClick(partner.id,$event);">
                                      </td>
                                     <td>

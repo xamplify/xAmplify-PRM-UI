@@ -433,6 +433,12 @@
                             <li><a id="exportToExcel"
                                 *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0"
                                 (click)="showAlert()" translate> Delete</a></li>
+                             
+                            <!---XNFR-278-->
+                            <li *ngIf="isPartner && selectedAddPartnerOption == 5 && pagination?.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0">
+                                <a (click)="openMergePopup()" translate> Copy</a>
+                            </li>
+                            <!---XNFR-278-->
                         </ul>
                         </ng-template>
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
@@ -1772,3 +1778,9 @@
     <app-confirm-sweet-alert-util *ngIf="showSweetAlert"
         [parameterDto]="sweetAlertParameterDto"
         (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
+
+ <!---XNFR-278-->
+ <ng-container *ngIf="mergeOptionClicked">
+    <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging" (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>      
+ </ng-container>
+ 
