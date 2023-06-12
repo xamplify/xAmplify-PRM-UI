@@ -7,3 +7,8 @@
     cursor: not-allowed;
     opacity: 0.6;
 }
+/* 12-6-2023 sudha sri */
+.border-top-bottom{
+    border-bottom: 0px !important;
+    border-top: 0px !important;
+}

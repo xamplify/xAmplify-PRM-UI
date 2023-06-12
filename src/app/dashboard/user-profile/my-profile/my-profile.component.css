@@ -1243,3 +1243,4 @@ p.pt-4 {
 th#border-bottom {
   border-top: none !important;
 }
+th.border-top{border-bottom: none !important}
