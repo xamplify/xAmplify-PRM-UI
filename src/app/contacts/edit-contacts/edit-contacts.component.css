@@ -203,3 +203,7 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 	padding-left: 50px; margin-left: 55px;
 }
 .disabled { pointer-events: none; opacity: 0.7; cursor: not-allowed; }
+
+.custom-width-modal-popup{
+	width: 60%  !important;
+   }

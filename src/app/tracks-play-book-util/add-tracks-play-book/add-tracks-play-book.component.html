@@ -66,12 +66,12 @@
                   </label>
                   <div class="col-sm-8" style="padding-bottom: 10px;">
                     <div *ngIf="isEditSlug">
-                      <div class="prefix inline">
+                      <div class="prefix inline-box">
                         <span class="input-group-addon" style="min-width: auto;">
                           {{linkPrefix}}
                         </span>
-                        <div class="inline link" action="action_page.php">
-                          <input class="select-box inline form-control" [(ngModel)]="tracksPlayBook.slug"
+                        <div class="inline-box link" action="action_page.php">
+                          <input class="select-box inline-box form-control" [(ngModel)]="tracksPlayBook.slug"
                             maxlength="100" (input)="updateSlug('slug'); validateAllSteps()">
                           <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
                               class="fa fa-angle-right" style="font-size: 19px;"></i></button>
@@ -79,7 +79,7 @@
                       </div>
                     </div>
                     <div *ngIf="!isEditSlug">
-                      <div class="inline link" action="action_page.php" style="width: 100%;">
+                      <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
                         <button type="button" class="right-border" (click)="editSlug()"
