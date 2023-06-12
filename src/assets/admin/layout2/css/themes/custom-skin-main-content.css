@@ -1098,3 +1098,6 @@ span.ui-column-resize{
 .list__item.list__item--selected > .flex-row{
   box-shadow: none !important
 }
+.tracks-bg-color {
+  background-color: var(--div-bg-color) !important;
+}

@@ -47,11 +47,12 @@
     padding: 20px 0px 20px!important
 }
 
+/* 12-06-2023  */
 .col-item .info {
     padding: 16px 10px 0px!important;
     border-radius: 3px;
     margin-top: 1px;
-    height: 73px;
+    height: 88px;
 }
 
 .col-item .price {
@@ -91,15 +92,15 @@
     padding-top: 0px!important;
 }
 
+/* 12-06-2023 */
 .col-item .separator p {
     line-height: 20px;
     font-size: 12.5px!important;
     margin-bottom: 0;
-    margin-top: 0px;
-    word-spacing: -1px;
-    padding-top: 5px;
-    padding-left: 4px;
-    height: 62px;
+    margin-top: 0;
+    padding: 10px 10px;
+    height: 90px;
+    overflow-wrap: break-word;
 }
 
 .col-item .separator p i {
@@ -178,4 +179,6 @@
     margin: 0px 0px 10px;
     padding-top: 0px!important;
     text-align: right;
+    inline-size: 200px;
+    overflow-wrap: break-word;
 }
