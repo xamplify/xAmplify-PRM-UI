@@ -58,7 +58,7 @@
                   <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                   <ng-container *ngIf="!httpRequestLoader.isLoading">
                     <div *ngIf="selectedPartnerGroupIds?.length>0  && pagination?.totalRecords>0" class="alert alert-success text-center">
-                        <strong>Selected Groups: {{selectedPartnerGroupIds?.length}}</strong>
+                        <strong>Selected Lists: {{selectedPartnerGroupIds?.length}}</strong>
                      </div>
                       <div class="table-responsive">
                           <table class='table tgrid table-condensed table-bordered' *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
