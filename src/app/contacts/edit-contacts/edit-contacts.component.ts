@@ -131,7 +131,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	loggedInUserId = 0;
 	hasAllAccess = false;
 	isDuplicateEmailId = false;
-
+	isEditContactPopupShow = false ;
+     
 	public currentContactType: string = "all_contacts";
 	public userListIds: Array<UserListIds>;
 	contactUsersId: number;
@@ -1712,6 +1713,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
+		this.isEditContactPopupShow = true ;
 		this.showNotifyPartnerOption = false;
 		this.applyForAllClicked = false;
 		this.contactAndMdfPopupResponse = new CustomResponse();
