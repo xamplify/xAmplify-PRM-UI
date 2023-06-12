@@ -4,6 +4,7 @@
         cursor: not-allowed;
     }
 </style>
+
 <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
     <app-preview-video *ngIf="createVideoFile" [videoFile]="createVideoFile" (notifyParent)="closeCreateModal($event)">
     </app-preview-video>
