@@ -239,6 +239,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	showSweetAlert = false;
 	selectedPartner: any;
+
+	 /****XNFR-278****/
+	 mergeOptionClicked = false;
+	 selectedUserIdsForMerging: any[];
+	  /****XNFR-278****/
+
+
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3589,5 +3596,17 @@ applyForAll(selectedPartner: any) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
+
+  /****XNFR-278****/
+openMergePopup(){
+	this.mergeOptionClicked = true;
+	this.selectedUserIdsForMerging = this.selectedContactListIds;
+}
+
+copyGroupUsersModalPopupEventReceiver(){
+	this.mergeOptionClicked = false;
+	this.selectedUserIdsForMerging = [];
+}
+
     
 }
