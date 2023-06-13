@@ -146,7 +146,7 @@ export class AuthenticationService {
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
     if(this.SERVER_URL.indexOf('localhost')>-1){
-      this.MEDIA_URL = 'http://127.0.0.1:8887/';
+      this.MEDIA_URL = 'http://localhost:8000/';
     }else{
       this.MEDIA_URL = this.SERVER_URL + 'vod/';
     }
