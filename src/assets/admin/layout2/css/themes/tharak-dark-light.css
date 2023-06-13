@@ -213,11 +213,15 @@ td > button {
   border-radius: 3px !important;
 }
 .list-group-item,
-.read,
 /* input, */
 .card {
   color: white !important;
   background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.read {
+  color: white !important;
+  background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
 }
 .campaign-type-selected,
@@ -758,7 +762,7 @@ span.ui-column-resize{
   /* color:#5bb2f5 !important; */
 }
 .gray{
-  background-color: #2b3c46 !important;
+  background-color: #683535 !important;
 }
 .button:disabled{
   color: #000000 !important;
@@ -1197,3 +1201,5 @@ ul.alt-row-style1 li:nth-child(even){
   height: 370px;
   position: relative;
 }
+/* 13-6-2023 sudha sri */
+.breadcrumb-font-color{color : white !important;font-size:13px;}

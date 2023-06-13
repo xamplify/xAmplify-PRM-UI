@@ -491,7 +491,7 @@ export class CustomSkinComponent implements OnInit {
         this.leftSideForm.iconColor = event; this.isValidIconColor = true;
       } else if (type === "leftBorderColor") {
         this.leftBorderColor = event;
-        this.mainContentForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
+        this.leftSideForm.buttonBorderColor = event; this.isValidButtonBorderColor = true;
       } else if (type === "leftTextColor") {
         this.leftTextColor = event;
         this.leftSideForm.textColor = event; this.isValidTextColor = true;
