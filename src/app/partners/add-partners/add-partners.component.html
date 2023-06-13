@@ -863,7 +863,7 @@
 
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light">
-                        <div class="portlet-title" style="border-bottom: none ;">
+                        <div class="portlet-title" style="border-bottom: none !important;">
                             <div class="caption" style="padding-top: 11px !important;" translate>
                                 <i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>
                                 List of {{authenticationService?.partnerModule?.customName}}
@@ -875,7 +875,7 @@
                                 <app-team-member-filter-option *ngIf="showFilter"
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 
-                                <div style="float: left; margin: 0 10px;">
+                                <div style="float: left; margin: 3px 10px;">
                                     <select class="form-control" [(ngModel)]="sortOption"
                                         (ngModelChange)="sortByOption($event)">
                                         <ng-container *ngFor="let sort of sortOptions; let i = index">
@@ -883,7 +883,7 @@
                                         </ng-container>
                                     </select>
                                 </div>
-                                <div class="portlet-input input-inline">
+                                <div class="portlet-input input-inline" style="margin:3px;">
                                     <div class="input-icon right">
                                         <input type="text" style="height: 34px;" [(ngModel)]="searchKey"
                                             [ngModelOptions]="{standalone: true}" class="form-control"
@@ -899,7 +899,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="btn-group pull-right">
+                                <div class="btn-group pull-right" style="margin:3px;">
                                     <ng-template [ngTemplateOutlet]="actionsButton"></ng-template>
                                 </div>
                             </div>
