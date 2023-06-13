@@ -1203,3 +1203,7 @@ ul.alt-row-style1 li:nth-child(even){
 }
 /* 13-6-2023 sudha sri */
 .breadcrumb-font-color{color : white !important;font-size:13px;}
+.img-class{border:1px solid #2f4857!important;}
+.border-card {
+  border: 1px solid #2f4857!important;
+}

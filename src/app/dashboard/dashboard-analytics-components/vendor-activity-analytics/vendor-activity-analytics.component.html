@@ -9,7 +9,7 @@
       <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
        <ng-container *ngFor="let dto of vendorActivityViewDtos">
         <div [attr.class]="divClass" (click)="goToRedistributeDiv(dto.name)">
-          <div class="pricing hover-effect pointer">
+          <div class="pricing hover-effect pointer border-card">
               <div class="pricing-head ">
                   <h4 id="image-style">
                       <img alt="{{dto.name}}" class="pricing-head-img img-responsive" style="padding: 10px;height: 64px;" src="{{dto.imagePath}}"></h4>

@@ -1106,3 +1106,5 @@ span.ui-column-resize{
 .tracks-bg-color {
   background-color: var(--div-bg-color) !important;
 }
+.img-class{border:1px solid var(--div-bg-color)!important;}
+.border-card{ border: 1px solid var(--border-color)!important}
