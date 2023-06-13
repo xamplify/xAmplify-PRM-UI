@@ -213,11 +213,15 @@ td > button {
   border-radius: 3px !important;
 }
 .list-group-item,
-.read,
 /* input, */
 .card {
   color: white !important;
   background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.read {
+  color: white !important;
+  background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
 }
 .campaign-type-selected,

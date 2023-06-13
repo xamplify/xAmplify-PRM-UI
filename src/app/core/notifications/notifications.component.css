@@ -26,7 +26,7 @@ ul.alt-row-style1 li a{
      color: #FFF;
      text-align: center !important;
      position: relative;
-     display: block;
+     display: block;    
      width: 30px;
      margin-top: 8px;
 }
@@ -34,10 +34,10 @@ ul.alt-row-style1 li a{
      overflow: auto;
 }
  .read {
-    background-color: #fff;
+    background-color: #f1f5f9; 
 }
  .unread:hover {
-    background-color: #ddd;
+    background-color: #f1f5f9; 
 }
 .portlet-title {
     min-height: 30px;
