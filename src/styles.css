@@ -1572,6 +1572,7 @@ b, strong {
 	margin: 0 auto;
 	font-size: 11px;
 	font-weight: 600;
+	border-radius: 3px
 }
 
 .ccss {
@@ -1956,3 +1957,5 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   .tab-border-none {
     border: none !important;
 }
+
+	

@@ -1201,3 +1201,5 @@ ul.alt-row-style1 li:nth-child(even){
   height: 370px;
   position: relative;
 }
+/* 13-6-2023 sudha sri */
+.breadcrumb-font-color{color : white !important;font-size:13px;}
