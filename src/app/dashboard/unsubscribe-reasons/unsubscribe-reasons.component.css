@@ -127,6 +127,16 @@ legend {
   }
 
 
+/* 
+12/06/23 */
 
+.custom-popup-width{
+	width : 85% !important;
+}
 
-
+.popup-align{
+    position: relative !important;
+    top: 67px;
+    height: 89% !important;
+    float: right;
+}
