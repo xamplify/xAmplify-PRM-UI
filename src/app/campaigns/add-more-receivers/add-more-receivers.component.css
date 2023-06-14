@@ -1,7 +1,3 @@
-/* .table tr.contact-list-selected td {
-	background-color: #00a6e8 !important;
-	color: white;
-} */
 /*--thank you pop starts here--*/
 .thank-you-pop{
 	width:100%;
@@ -53,23 +49,6 @@
 .thank-you-pop a i{
 	margin-right:5px;
 	color:#fff;
-}
-#ignismyModal .modal-header{
-    border:0px;
-}
-/*--thank you pop ends here--*/
-.event-success{
-	color: green;
-}
-.event-error{
-	color: red;
-}
-.valid-email{
-	color: #51ab35;
-}
-
-.invalid-email{
-	color: red;
 }
 
 .cw {
