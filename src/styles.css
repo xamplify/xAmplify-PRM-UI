@@ -1915,3 +1915,11 @@ border: 1px solid #ddd !important;
 	border-radius: 5px;
 	padding: 0px 10px;
   }
+  .span-published{
+	border-left: 3px solid green !important;
+	border-top: 3px solid green !important;
+  }
+  .published{
+	background-color: green !important;
+  }
+  
