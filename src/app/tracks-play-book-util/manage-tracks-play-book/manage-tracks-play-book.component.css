@@ -24,7 +24,7 @@
 }
 
 .grid-box {
-    background: #f1f5f9 !important;
+    background: #f1f5f9;
 }
 #min-width {
     min-width: 145px;

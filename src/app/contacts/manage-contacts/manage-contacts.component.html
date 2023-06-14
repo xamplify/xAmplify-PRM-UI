@@ -804,11 +804,12 @@
               <div class="col-xs-12">
                 <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;"> 
                   <div class="loader"></div>
-                  <h4 translate>please wait while we process your request</h4>
+                  <h4 translate>Please wait while we process your request</h4>
                 </div>
                 <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
                 </div>
+                <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                 <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
                   <div class="portlet-title" style="border:none; margin-top: 10px;">
                     <div class="caption">

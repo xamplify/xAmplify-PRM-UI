@@ -839,17 +839,34 @@ legend {
 	color: #fff;
 }
 
+/* 13-6-2023 campaign icon-alignment*/
 .bar a {
 	text-shadow: none;
 	color: #5b9bd1;
-	width: 30px;
-	height: 30px;
+    width: 28px;
+    height: 27px;
 	border: 1px solid #fff;
-	padding: 5px;
+	padding: 3px 0px;
 	border-radius: 100%;
 	margin: 10px 2px;
 	display: inline-block;
+	line-height: 19px;
 }
+.bar i.fa.fa-pencil-square-o {
+    padding-left: 2px;
+    top: 1px;
+    position: relative;
+}
+.bar i.fa.fa-archive {
+    top: 1px;
+    position: relative;
+	font-size: 13px;
+}
+.bar i.fa.fa-calendar-times-o {
+    font-size: 13px;
+    padding-left: 1px;
+}
+
 
 .ribbon {
 	position: absolute;
@@ -1572,6 +1589,7 @@ b, strong {
 	margin: 0 auto;
 	font-size: 11px;
 	font-weight: 600;
+	border-radius: 3px
 }
 
 .ccss {
@@ -1956,3 +1974,34 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   .tab-border-none {
     border: none !important;
 }
+/* 13-6-2023 Action icon-alignment*/
+
+.actions-block i.fa.fa-eye  {
+	line-height: 25px !important;
+  }
+.actions-block i.fa.fa-files-o {
+	line-height: 24px !important;
+	font-size: 13px !important;
+  }
+.actions-block i.fa.fa-trash-o {
+	line-height: 26px !important;
+}
+.actions-block i.fa.fa-edit {
+	line-height: 27px !important;
+	padding-left: 1px;
+}
+.actions-block i.fa.fa-pencil-square-o {
+	line-height: 28px !important;
+    padding-left: 2px;
+}
+.actions-block i.fa.fa-envelope {
+    font-size: 13px !important;
+}
+.actions-block i.fa.fa-line-chart {
+    font-size: 13px !important;
+}
+	
+
+/* .e-multiselect.e-input-group.e-control-wrapper {
+    border-bottom: none !important;
+} */

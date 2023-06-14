@@ -700,9 +700,9 @@ label{
   background-color:  var(--page-content) !important;
   /* color:#5bb2f5 !important; */
 }
-.gray{
+/* .gray{
   background-color: var(--div-bg-color) !important;
-}
+} */
 .button:disabled{
   color: #000000 !important;
 }
@@ -1106,3 +1106,5 @@ span.ui-column-resize{
 .tracks-bg-color {
   background-color: var(--div-bg-color) !important;
 }
+.img-class{border:1px solid var(--div-bg-color)!important;}
+.border-card{ border: 1px solid var(--border-color)!important}
