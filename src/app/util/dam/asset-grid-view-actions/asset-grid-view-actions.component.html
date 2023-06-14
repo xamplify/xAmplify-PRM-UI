@@ -1,5 +1,5 @@
-<div class="bar auto-height">
-	<ng-container *ngIf="asset?.status=='COMPLETED'"> <a
+<div class="bar auto-height" *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
+	<a
 		*ngIf="asset?.history && !isPartnerView && asset?.edit "
 		title="History" (click)="viewGirdHistory(asset)"> <i class="fa"
 		[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
@@ -23,12 +23,6 @@
 		(click)="openPublishPopup(asset)"> <i class="fa fa-share"
 		aria-hidden="true"></i>
 	</a>
-	<!---XNFR-255-->
-	<!-- <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" 
-	title="Share As White-Labeled" (click)="openWhiteLabeledPopup(asset)">
-	<i class="fa fa-clone" aria-hidden="true"></i>
-	</a>  -->
-	<!---XNFR-255-->
 	 <a *ngIf="!isPartnerView" title="Download"
 		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
 		aria-hidden="true"></i>
@@ -40,7 +34,7 @@
 	</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete"
 		class="delete" (click)="confirmDelete(asset)"> <i
 		class="fa fa-trash-o" aria-hidden="true"></i>
-	</a> </ng-container>
+	</a>
 	<ng-container
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 	<a
