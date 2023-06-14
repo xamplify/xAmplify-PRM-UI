@@ -187,3 +187,16 @@ cursor: default;
 .pg8{
   top: -1px;
 }
+
+
+/* 14/06/23 */
+
+.ribbon span::before {
+	border-left: 3px solid #5ab1eb;
+	border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5ab1eb ;
+	border-top: 3px solid #5ab1eb;
+}

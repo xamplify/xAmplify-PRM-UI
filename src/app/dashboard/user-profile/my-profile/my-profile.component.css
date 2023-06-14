@@ -1244,3 +1244,16 @@ th#border-bottom {
   border-top: none !important;
 }
 th.border-top{border-bottom: none !important}
+
+
+/* 14-06-23 */
+
+.ribbon.draft.config>span::before {
+	border-left: 3px solid green;
+	border-top: 3px solid green;
+}
+
+.ribbon.draft.config>span::after {
+	border-right: 3px solid green;
+	border-top: 3px solid green;
+}
