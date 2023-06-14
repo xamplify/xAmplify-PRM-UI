@@ -1,7 +1,6 @@
 <!--hero section-->
 <div class="loader-container" [hidden]="!mainLoader">
   <div class="loader"></div>
-  <!-- <img alt="logo" class="logo-default" src="assets/images/xamplify-logo.png"> -->
 </div>
 <div [hidden]="mainLoader">
 <header class="hero-section">
@@ -26,8 +25,6 @@
     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
       <ul class="nav navbar-nav nav-left">
         <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>
-        <!-- <li><a (click)="goToTourTab()" lang="en">Tour</a></li>
-        <li><a (click)="goToPricingTab()" lang="en">Pricing</a></li> -->
         <li><a (click)="goToContactTab()" lang="en">Contact</a></li>
         <li><a [routerLink]="['./terms-conditions']" lang="en">Terms & conditions</a></li>
         <li><a [routerLink]="['./privacy-policy']" lang="en">Privacy policy</a></li>
@@ -55,9 +52,6 @@
           <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
          </div>
          <br>
-        <!-- <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a> -->
-          <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
-        <!-- </div> -->
         <div class="cta-btn"> <a class="btn" style="text-transform: none !important;" lang="en" href="https://form.jotform.me/83025855234456" target="_blank" >Request a Demo</a>
          </div>
       </div>
@@ -94,27 +88,6 @@
     </div>
   </div>
 </section>
-
-<!-- <div class="features section-spacing" style="padding-bottom: 0 !important;">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
-      <div class="col-md-5 col-md-pull-7">
-        <article style="margin-top: 0 !important;">
-          <h2 lang="en">Strengthen your Channel Strategy</h2>
-          <p lang="en">{{properties.APP_WEBSITE}} nurtures and grows your channel with easy to develop and manage outreach campaigns and reports that track level of engagement and activity.
-            Provide your Partners with a digital platform that helps both of you succeed</p>
-          <ul>
-            <li lang="en">Equip your Partners with content and marketing tools to help them grow their business and drive mutual lead-gen and revenue</li>
-            <li lang="en">Increase Partner engagement with easy to use campaigns and social media tools </li>
-            <li lang="en">Unify your message across a broader audience</li>
-            <li lang="en">Create a more effective and successful Partner Channel</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-    </div>
-  </div> -->
 
     <div class="features section-spacing">
     <div class="container">
@@ -311,12 +284,8 @@
     </header>
     <div class="row">
       <div class="col-md-12">
-        <!-- <a [routerLink]="['/v-signup']" routerLinkActive="router-link-active"  class="btn" lang="en">GET STARTED</a> -->
-        <!-- <a href="https://form.jotform.me/83025855234456" target="_blank"  class="btn" lang="en">Request for Demo</a> -->
          <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
-          <!--<p lang="en"><span class="total-number-1">0</span>K Worldwide Signups</p>-->
         </div>
-        <!-- <p lang="en">Have a question? Give us a call <a href="tel:+5107701222">5107701222</a>.</p> -->
         <p lang="en">Have a question? Email us at <a style="color: white;">support@xamplify.com</a></p>
       </div>
     </div>
@@ -336,7 +305,6 @@
   </div>
   <!--map-->
   <div class="map">
-  <!-- <div id="map-canvas_"><img  src="/assets/images/map.jpg"></div> -->
   <agm-map
   [latitude]="lat"
   [longitude]="lng"
