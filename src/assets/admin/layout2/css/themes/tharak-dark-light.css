@@ -1207,3 +1207,7 @@ ul.alt-row-style1 li:nth-child(even){
 .border-card {
   border: 1px solid #2f4857!important;
 }
+/* 14-6-2023 sudha sri */
+.dropdown-menu li>a>[class*=" fa-"]{color:white !important}
+.partner-company-selected, .table tr.row-selected td{background-color: #22313a !important ;}
+.comment .info a, .comment-color{color:white !important;}

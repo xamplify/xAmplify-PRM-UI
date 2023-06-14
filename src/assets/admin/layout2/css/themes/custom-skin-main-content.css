@@ -1108,3 +1108,7 @@ span.ui-column-resize{
 }
 .img-class{border:1px solid var(--div-bg-color)!important;}
 .border-card{ border: 1px solid var(--border-color)!important}
+/* 14-6-2023 sudha sri */
+.comment .info a, .comment-color{color : var(---text-color) !important;}
+.dropdown-menu li>a>[class*=" fa-"], .bar .fa, i.fa.fa-eye.color-chnage{color : var(---text-color) !important;}
+.partner-company-selected, .table tr.row-selected td{background-color: var(--page-content) !important;}
