@@ -179,6 +179,26 @@
                         </div>
                       </div>
                     </div>
+
+                    <!---XNFR-255-->
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <td class="desc" style="width: 11%;">
+                              <label class="control-label" translate>
+                              </label>
+                            </td>
+                            <td class="desc">
+                              <div class="mDesc">
+                                <app-partner-company-and-groups [moduleName]="'dam'" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!---XNFR-255-->
               </div>
                 </div>
             </form>

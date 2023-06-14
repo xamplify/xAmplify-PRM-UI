@@ -170,7 +170,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	}
 
 	findPartnerCompanies(pagination: Pagination) {
-		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
 		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
@@ -415,106 +414,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		return $('.tab-pane.active').attr("id");
 	}
 
-	publish() {
-		this.customResponse = new CustomResponse();
-		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length > 0 || this.isEdit) {
-			let selectedType = this.selectedTabName();
-			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
-			if (this.isEdit) {
-				this.publishOrUnPublishToGroupsOrCompanies();
-			} else {
-				this.setValuesAndPublish();
-			}
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one row', true);
-		}
-	}
-
-	publishOrUnPublishToGroupsOrCompanies() {
-		if (this.damPublishPostDto.partnerGroupSelected && !this.isPublishedToPartnerGroup) {
-			this.unPublishToCompaniesAndPublishToGroups();
-		} else if (!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup) {
-			this.unPublishToGroupsAndPublishToCompanies();
-		} else {
-			this.setValuesAndPublish();
-		}
-	}
-
-
-	unPublishToCompaniesAndPublishToGroups() {
-		if (this.selectedPartnerGroupIds.length > 0) {
-			this.showSweetAlertAndProceed();
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
-		}
-	}
-
-	unPublishToGroupsAndPublishToCompanies() {
-		if (this.selectedTeamMemberIds.length > 0) {
-			this.showSweetAlertAndProceed();
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
-		}
-	}
-
-	showSweetAlertAndProceed() {
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "Existing data will be deleted",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes, delete it!'
-		}).then(function () {
-			self.setValuesAndPublish();
-		}, function (dismiss: any) {
-		});
-	}
-
-	setValuesAndPublish() {
-		this.startLoaders();
-		this.damPublishPostDto.damId = this.inputId;
-		if (this.selectedTabName() == "partners") {
-			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
-			this.damPublishPostDto.partnerGroupIds = [];
-		} else {
-			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
-			this.damPublishPostDto.partnerIds = [];
-		}
-		this.damPublishPostDto.publishedBy = this.loggedInUserId;
-		this.publishToPartnersOrGroups();
-	}
-
-	publishToPartnersOrGroups() {
-		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-			this.referenceService.scrollToModalBodyTopByClass();
-			this.stopLoaders();
-			if (data.access) {
-				this.sendSuccess = true;
-				this.statusCode = data.statusCode;
-				if (data.statusCode == 200) {
-					this.responseMessage = "Published Successfully";
-				} else {
-					this.responseMessage = data.message;
-				}
-				this.resetFields();
-			} else {
-				this.ngxLoading = false;
-				this.authenticationService.forceToLogout();
-			}
-		}, _error => {
-			this.stopLoaders();
-			this.sendSuccess = false;
-			this.referenceService.goToTop();
-			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		});
-	}
-
 	startLoaders() {
 		this.ngxLoading = true;
 		this.referenceService.startLoader(this.httpRequestLoader);
@@ -529,7 +428,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	findPartnerGroups(pagination: Pagination) {
 		if (this.selectedTeamMemberIds.length == 0) {
 			this.customResponse = new CustomResponse();
-			this.referenceService.scrollToModalBodyTopByClass();
 			this.referenceService.startLoader(this.httpRequestLoader);
 			pagination.campaignId = this.inputId;
 			pagination.userId = this.loggedInUserId;
