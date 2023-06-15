@@ -53,7 +53,7 @@
 				"./assets/css/material_green.css",
 				"./assets/css/circle.css",
 				"./assets/js/indexjscss/slider-theme.css",
-				"./assets/css/xamplify.responsive.css"
+				"./assets/css/xamplify-responsive.css"
 			],
 			"scripts": [
 				"./assets/js/indexjscss/jquery.js",
