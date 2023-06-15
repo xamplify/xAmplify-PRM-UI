@@ -45,9 +45,6 @@
                 <div class="portlet light row steps-view">
                     <div id="s.2" class="width" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-1">
-                            <!-- <span>
-                                <i class="fa fa-th-list" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/campaignDetails.svg">
                             <h5 class="hidden-xs text-clr" translate>Campaign Details</h5>
                         </div>
@@ -55,27 +52,18 @@
 
                     <div *ngIf="!isCampaignDetailsFormValid && campaignType=='video'" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-1">
-                            <!-- <span>
-                                <i class="fa fa-video-camera" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/video.svg">
                             <h5 class="hidden-xs text-clr" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-1">
-                            <!-- <span>
-                                <i class="fa fa-video-camera" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/video.svg">
                             <h5 class="hidden-xs text-clr" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-2">
-                            <!-- <span>
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
                             <h5 class="hidden-xs text-clr">
                                 <!--XNFR-125-->
@@ -103,9 +91,6 @@
 
                     <div id="step4" *ngIf="isCampaignDetailsFormValid  && isVideo" [attr.class]="contactListTabClass" [ngStyle]="{ 'width': width }"  (click)="resetActive($event, 60, 'step-4');">
                         <div class="cenetered-block colorbox-2">
-                            <!-- <span>
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
                             <h5 class="hidden-xs text-clr">
                                 <!--XNFR-125-->
@@ -133,17 +118,11 @@
                     <div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-3">
                             <ng-container *ngIf="campaignType=='landingPage'">
-                                <!-- <span>
-                                    <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                </span> -->
                                 <img  class="newicons" alt="" src="assets/images/campaignnew-icon/page.svg">
                                 <h5 class="hidden-xs text-clr" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
-                                <!-- <span>
-                                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </span> -->
                                 <img  class="newicons" alt="" src="assets/images/campaignnew-icon/emailtemplate.svg">
                                 <h5 class="hidden-xs text-clr" translate>Email Template</h5>
                             </ng-container>
@@ -153,17 +132,11 @@
                     <div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 80, 'step-5');">
                         <div class="cenetered-block colorbox-3">
                             <ng-container *ngIf="campaignType=='landingPage'">
-                                <!-- <span>
-                                    <i class="fa fa-wpforms" aria-hidden="true"></i>
-                                </span> -->
                                 <img  class="newicons" alt="" src="assets/images/campaignnew-icon/page.svg">
                                 <h5 class="hidden-xs text-clr" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
-                                <!-- <span>
-                                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                                </span> -->
                                 <img  class="newicons" alt="" src="assets/images/campaignnew-icon/emailtemplate.svg">
                                 <h5 class="hidden-xs text-clr" translate>Email Template</h5>
                             </ng-container>
@@ -172,9 +145,6 @@
 
                     <div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate || !isLandingPage" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
                         <div class="cenetered-block colorbox-4">
-                            <!-- <span>
-                                <i class="fa fa-flag" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/launch.svg">
                             <h5 class="hidden-xs text-clr" translate>Launch</h5>
                         </div>
@@ -182,9 +152,6 @@
 
                     <div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate && isLandingPage" [attr.class]="launchCampaignTabClass" [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
                         <div class="cenetered-block colorbox-4">
-                            <!-- <span>
-                                <i class="fa fa-flag" aria-hidden="true"></i>
-                            </span> -->
                             <img  class="newicons" alt="" src="assets/images/campaignnew-icon/launch.svg">
                             <h5 class="hidden-xs text-clr" translate>Launch</h5>
                         </div>
@@ -487,80 +454,6 @@
                                                 </div>
                                             </div>
 
-                                            <!--Push To Marketing Automation-->
-                                            <!-- <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
-                                                <label class="control-label col-sm-4" translate>Push To Marketing Automation
-                                                    </label>
-                                                <div class="col-sm-3">
-                                                    <div class="email-options-checkbox-group email-options-notify">
-                                                        <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
-                                                                <switch [status]="campaign.pushToMarketingAutomation" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                                    (statusChange)="pushToCrm()">
-                                                                </switch>
-                                                            </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into marketing automation">
-                                                                    <i class="fa fa-question-circle"
-                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-5 " *ngIf="isPushToCrm" style="display: table-caption;">
-                                                    <div class="row ">
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
-                                                            <div class="  cenetered-block1">
-                                                                <div class="">
-                                                                    <label class="customcheck">
-                                                                        <input type="checkbox" [checked]="campaign.pushToMarketo"
-                                                                            (click)="pushToCrmRequest('marketo', $event)">
-                                                                        <span class="checkmark"></span>
-                                                                    </label>
-                                                                    <img class="image-size" src="assets/images/crm/marketo-crm.png" alt="">
-                                                                    <div>
-                                                                        <h5 class="hidden-xs mr-2" translate>Marketo</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
-                                                            <div class="cenetered-block1">
-                                                                <div class="">
-                                                                    <label class="customcheck">
-                                                                        <input type="checkbox" [checked]="campaign.pushToHubspot"
-                                                                            (click)="pushToCrmRequest('hubspot', $event)">
-                                                                        <span class="checkmark"></span>
-                                                                    </label>
-                                                                    <img class="image-size" src="assets/images/crm/hubspot-crm.png" alt="">
-                                                                    <div>
-                                                                        <h5 class="hidden-xs mr-2" translate>Hubspot</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
-                                                            <div class="cenetered-block1">
-                                                                <div class="">
-                                                                    <label class="customcheck">
-                                                                        <input type="checkbox" [checked]="campaign.pushToMicrosoft"
-                                                                            (click)="pushToCrmRequest('microsoft', $event)">
-                                                                        <span class="checkmark"></span>
-                                                                    </label>
-                                                                    <img class="image-size" src="assets/images/crm/microsoft-crm.png" alt="">
-                                                                    <div>
-                                                                        <h5 class="hidden-xs mr-2" translate>Microsoft Dynamics</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                                             <!--Configure Pipelines-->
                                             <div class="form-group" *ngIf="showConfigurePipelines && ((!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
                                                 <label class="control-label col-sm-4" translate>Configure Pipelines
@@ -651,10 +544,6 @@
                                             <!-- End Date -->
                                             <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign.channelCampaign || campaignType == 'landingPage' || campaignType=='sms'">
                                                 <label class="control-label col-sm-4" translate>End Date</label>
-                                                <!-- <div class="col-sm-8">
-                                                    <input type="text" id="endDate" placeholder="YYYY-MM-DD" class="form-control flatpickr"
-                                                        [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
-                                                </div> -->
                                                 <div class="col-sm-8" style="display:flex">
                                                     <div class="input-group">
                                                         <input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
@@ -695,11 +584,6 @@
                         <div class="text-center">
                             <div class="row" id="user_list_table_view">
                                 <div class="">
-                                    <!-- <div class="note-vid pull-left m10">
-                                        <div class="">Select the video for your
-                                            campaign
-                                        </div>
-                                    </div> -->
                                     <div id="home" class="tab-pane fade in active">
                                         <div class="tab" *ngIf="!campaign.createdFromVideos">
                                             <div class="note-vid pull-left" style="padding-top: 8px;">
@@ -707,44 +591,7 @@
                                                     campaign
                                                 </div>
                                             </div>
-                                            <!-- <button [class]="myVideosClass"
-                                                (click)="showTab($event,'my-videos')" id="my-videos-tab"
-                                                *ngIf="!isOnlyPartner" translate>My Videos</button> -->
                                             <ng-container *ngIf="!campaign.createdFromVideos">
-                                            <!-- <div class="input-icon right pull-right m10 col-xs-7"
-                                                *ngIf="isMyVideosActive">
-                                                <input type="text" [(ngModel)]="videoSearchInput"
-                                                    [ngModelOptions]="{standalone: true}" class="form-control"
-                                                    placeholder="Search for a Video"
-                                                    (keypress)="eventHandler($event.keyCode, 'myvideos')">
-                                                <button
-                                                    class="glyphicon glyphicon-remove search-box-item-clear"
-                                                    style="padding: 5px;" *ngIf="videoSearchInput"
-                                                    (click)="videoSearchInput=''"></button>
-                                                <button type="submit" class="search-box-item-click"
-                                                    style="padding: 4px !important; margin-left: 55px;"
-                                                    (click)="searchVideo()">
-                                                    <i class="fa fa-search"
-                                                        style="font-size: 16px !important; padding: 5px !important;"></i>
-                                                </button>
-                                            </div>
-                                            <div class="input-icon right pull-right m10 "
-                                                *ngIf="!isMyVideosActive">
-                                                <input type="text" [(ngModel)]="channelVideoSearchInput"
-                                                    [ngModelOptions]="{standalone: true}" class="form-control"
-                                                    placeholder="Search for a Video"
-                                                    (keypress)="eventHandler($event.keyCode, 'channel')">
-                                                <button
-                                                    class="glyphicon glyphicon-remove search-box-item-clear"
-                                                    style="padding: 5px;" *ngIf="channelVideoSearchInput"
-                                                    (click)="channelVideoSearchInput=''"></button>
-                                                <button type="submit" class="search-box-item-click"
-                                                    style="padding: 4px !important;"
-                                                    (click)="searchChannelVideo()">
-                                                    <i class="fa fa-search"
-                                                        style="font-size: 16px !important; padding: 5px !important;"></i>
-                                                </button>
-                                            </div> -->
                                             <div class="">
                                                 <div class="btn-group pull-right" style="margin: -7px;padding:10px">
                                                     <div class="inputs sort-class" style="display: flex;">
@@ -814,21 +661,6 @@
                                                                 <th class="sorting_disabled" rowspan="1" colspan="1"
                                                                     aria-label="Thumbnail" style="width: 45%;" translate>Videos
                                                                 </th>
-                                                                <!-- <th style="text-align: center; width: 24%;"
-                                                                    class="sorting_disabled" rowspan="1" colspan="1"
-                                                                    *ngIf="!campaign.createdFromVideos"><span
-                                                                    class="filter_column filter_select"> <select
-                                                                        class="select_filter form-control"
-                                                                        data-live-search="true"
-                                                                        (change)="filterCategoryVideos($event)">
-                                                                            <option value="" class="search_init" translate>
-                                                                                Category</option>
-                                                                            <option *ngFor="let category of categories"
-                                                                                class="colorSelect" value="{{category.id}}"
-                                                                                [selected]="category.id==videosPagination.videoCategoryId">
-                                                                                {{category.name}}</option>
-                                                                    </select>
-                                                                </span></th> -->
                                                                 <th style="text-align: center; width: 24%;"
                                                                 class="sorting_disabled" rowspan="1" colspan="1"
                                                                 *ngIf="!campaign.createdFromVideos">Category</th>
@@ -847,7 +679,6 @@
                                                                     </select>
                                                                 </span>
                                                                 </th>
-                                                                <!-- <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th> -->
                                                                 <th style="text-align: center; width: 18%;"
                                                                     *ngIf="campaign.createdFromVideos" translate>Upload
                                                                     Date</th>
@@ -984,7 +815,6 @@
                                                         <thead>
                                                             <tr role="row">
                                                                 <th style="text-align: left; width: 45%" translate>Videos</th>
-                                                                <!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
                                                                 <th style="width: 24%;" class="text-center"
                                                                     *ngIf="!campaign.createdFromVideos"><span
                                                                     class="filter_column filter_select"> <select
@@ -1058,7 +888,6 @@
                                                                 <td class="text-center">
                                                                     {{savedVideoFile.categoryName}}</td>
                                                                 <td class="text-center">
-                                                                    <!-- <span class="view-by-banner">{{savedVideoFile.viewBy}}</span> -->
                                                                     <app-timestamp [isOnlyDate]="true"
                                                                         [dateAndTime]="savedVideoFile.uploadedDate">
                                                                     </app-timestamp>
@@ -1441,8 +1270,7 @@
                                                                                                                         </span> 
                                                                                                                     </div> 
                                                                                                                     <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
-                                                                                                                </div>       
-                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                </div>      
                                                                                                             </div>
                                                                                                             </a>
                                                                                                         </div>
@@ -1526,7 +1354,6 @@
                                                                                                                     </div> 
                                                                                                                     <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                                                                 </div>       
-                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                             </div>
                                                                                                             </a>
                                                                                                         </div>
@@ -1655,7 +1482,6 @@
                                                                                                                         </div> 
                                                                                                                         <span class="label-color-custmization" (click)="$event.stopPropagation();editLandingPage(campaign.landingPage)" >Edit</span>
                                                                                                                     </div>       
-                                                                                                                        <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                                 </div>
                                                                                                             </a>
                                                                                                         </div>
@@ -1729,8 +1555,7 @@
                                                                                                                
                                                                                                                 </div> 
                                                                                                                 <span class="label-color-custmization" (click)="$event.stopPropagation();editLandingPage(landingPage)" >Edit</span>
-                                                                                                            </div>       
-                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                            </div>                                                                                                        
                                                                                                         </div>
                                                                                                     </a>
                                                                                                 </div>
@@ -1809,8 +1634,7 @@
                                                         <tr>
                                                             <td style="width: 25%;">
                                                                 <div class="icon-border">
-                                                                    <img  class="fullicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">
-                                                                    <!-- <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i> -->
+                                                                    <img  class="fullicons" alt="" src="assets/images/campaignnew-icon/Partner.svg">                  
                                                                 </div>
                                                                 <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                                                     <ng-container *ngIf="contactListTabName=='Partners'">
@@ -2159,8 +1983,7 @@
                                                                                                                                                                                                            
                                                                                                                                                                 </div> 
                                                                                                                                                                 <span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)" >Edit</span>
-                                                                                                                                                            </div>       
-                                                                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+                                                                                                                                                            </div>                                                                                                                                                               
                                                                                                                                                         </div>
                                                                                                                                                     </a>
                                                                                                                                                 </div>
@@ -2246,7 +2069,6 @@
                                                                                                                                                                 </div> 
                                                                                                                                                                 <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                                                                                                             </div>       
-                                                                                                                                                                <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                                                                         </div>
                                                                                                                                                         </a>
                                                                                                                                                     </div>
@@ -2512,7 +2334,6 @@
                                                                                                                                                                     </div> 
                                                                                                                                                                     <span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(url.emailTemplate)" >Edit</span>
                                                                                                                                                                 </div>       
-                                                                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                                                                             </div>
                                                                                                                                                         </a>
                                                                                                                                                     </div>
@@ -2599,7 +2420,6 @@
                                                                                                                                                                     </div> 
                                                                                                                                                                     <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                                                                                                                 </div>       
-                                                                                                                                                                    <!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
                                                                                                                                                             </div>
                                                                                                                                                             </a>
                                                                                                                                                         </div>

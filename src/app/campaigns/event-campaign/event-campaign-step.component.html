@@ -218,79 +218,7 @@
 										<i class="fa fa-question-circle" style="padding: 8px;" aria-hidden="true"></i>
 									</span>
 								</div>
-							</div>
-	
-												<!-- <div class="form-group" *ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-													<label class="control-label col-sm-3" translate>Push To Marketing Automation</label>
-													<div class="col-sm-3">
-														<div class="email-options-checkbox-group email-options-notify">
-															<div class="email-options-checkbox clearfix">
-																<div class="col-sm-1 ui-switch-custom-div">
-																	<switch [status]="eventCampaign.pushToMarketingAutomation" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-																		(statusChange)="pushToCrm()">
-																	</switch>
-																</div>
-																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -10px">
-																	<span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into marketing automation">
-																			<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
-																		</span>
-																</div>
-															</div>
-														</div>
-													</div>
-	
-													<div class="col-sm-6" *ngIf="isPushToCrm">
-														<div class="row ">
-															<div div class="col-md-4" *ngIf="enableLeads">
-																<div class="  cenetered-block1">
-																	<div class="">
-																		<label class="customcheck">
-																				<input type="checkbox" (click)="pushToCrmRequest('marketo', $event)" [checked]="eventCampaign.pushToMarketo">
-																				<span class="checkmark"></span>
-																			  </label>
-																		<img class="image-size" src="assets/images/crm/marketo-crm.png">
-																		<div>
-																			<h5 class="hidden-xs mr-2" >Marketo</h5>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div div class="col-md-4" *ngIf="enableLeads">
-																<div class="cenetered-block1">
-																	<div class="">
-																		<label class="customcheck">
-																				<input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)"  [checked]="eventCampaign.pushToHubspot">
-																				<span class="checkmark"></span>
-																			  </label>
-																		<img class="image-size" src="assets/images/crm/hubspot-crm.png">
-																		<div>
-																			<h5 class="hidden-xs mr-2">Hubspot</h5>
-																		</div>
-																	</div>
-																</div>
-	
-	
-															</div>
-															<div div class="col-md-4" *ngIf="enableLeads">
-																<div class="cenetered-block1">
-																	<div class="">
-																		<label class="customcheck">
-																				<input type="checkbox" (click)="pushToCrmRequest('microsoft', $event)"  [checked]="eventCampaign.pushToMicrosoft">
-																				<span class="checkmark"></span>
-																			  </label>
-																		<img class="image-size" src="assets/images/crm/microsoft-crm.png">
-																		<div>
-																			<h5 class="hidden-xs mr-2">Microsoft Dynamics</h5>
-																		</div>
-																	</div>
-																</div>
-	
-	
-															</div>
-														</div>
-													</div>
-												</div> -->
-	
+							</div>													
 												<div class="form-group" 
 												*ngIf="showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
 													<label class="control-label col-sm-3" translate>Configure Pipelines</label>
@@ -321,8 +249,7 @@
 													<div class="col-sm-9">
 														<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
 															placeholder="leadPipelineId" id="leadPipelineId" (change)="validatePipeline();"
-															[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
-															<!-- <option [value]="0">Select Pipeline</option> -->
+															[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">														
 															<option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
 														</select>
 													</div>
@@ -334,8 +261,7 @@
 													<div class="col-sm-9">
 														<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
 															placeholder="dealPipelineId" id="dealPipelineId" (change)="validatePipeline();"
-															[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">
-															<!-- <option [value]="0">Select Pipeline</option> -->
+															[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate">										
 															<option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
 														</select>
 													</div>
@@ -564,20 +490,7 @@
 						<textarea class="alert-info" [(ngModel)]="eventCampaign.updateMessage" (input)="validateUpdateButton()" [ngModelOptions]="{standalone: true}" placeholder="Add a comment..."></textarea>
 					</div>
 				</div>
-					<!-- End Date -->
-					<!-- <div class="form-group" [hidden]="!eventCampaign.channelCampaign || reDistributeEvent">
-						<label class="col-sm-3 labal-css color-css" translate>End Date</label>
-						<div class="col-sm-9">							
-							<div class="input-group">
-								<input type="text" id="endDate1" placeholder="YYYY-MM-DD" class="form-control flatpickr"
-									[(ngModel)]="eventCampaign.endDateString" name="endDate" [value]="eventCampaign.endDateString" />
-								<span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
-									<button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
-											(click)="clearEndDate()"></i></button>
-								</span>
-							</div>
-						</div>
-					</div> -->
+					<!-- End Date -->					
 					</form>
 					</div>
 					<div class="col-xs-12 col-sm-5">
@@ -656,20 +569,13 @@
 								</switch>
 								</div>
 							</div>
-							<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign" [class.disabled]="(isPreviewEvent)">
-								<!-- <label>Event URL</label>
-								<input type="text" class="form-control" id="eventUrl" placeholder="Event Url" [(ngModel)]="eventCampaign.eventUrl" [ngModelOptions]="{standalone: true}">
-								 -->
-	
-	
-						<!-- <div class="col-xs-12"> -->
+							<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign" [class.disabled]="(isPreviewEvent)">					
 							<div *ngIf="socialStatusProviders?.length > 0"  [class.disabled]="(isPreviewEvent)">
 								<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable">
 									<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
 								</button>
 								<div class="clearfix"></div>
-								<div [hidden]="!isSocialEnable">
-								<!-- <div class="col-xs-12"> -->
+								<div [hidden]="!isSocialEnable">	
 								<ul class="list-group social-account">
 									<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
 										<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
@@ -707,8 +613,7 @@
 										</div>
 										<div class="clearfix"></div>
 									</li>
-								</ul>
-								<!-- </div> -->
+								</ul>							
 								<div class="col-xs-12 p0" style="margin-top: 10px;">
 									<div style="border: 1px solid #ccc; padding: 10px;">
 											<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
@@ -718,8 +623,7 @@
 									</div>
 								</div>
 								</div>
-							</div>
-					<!-- </div> -->
+							</div>					
 	
 							</div>
 						</div>
@@ -765,25 +669,7 @@
 								</section>
 							</div>
 						</div>
-	
-	
-					<!--
-						<div class="form-group">
-								<label for="hostedBy" class="labal-css color-css">Public vs Private</label>
-								<div class="col-sm-9">
-									<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
-										[status]="eventCampaign.publicEventCampaign"
-										[onText]="'Public'"
-										[offText]="'Private'"
-										[onColor]="callActionSwitch.onGreenColorSwitch"
-										[offColor]="callActionSwitch.offDefaultColor"
-										[size]="callActionSwitch.size"
-										(statusChange)="publicVsPrivateSwitchStatusChange()">
-									</switch>
-								</div>
-							</div> -->
-	
-	
+
 						<div class="boxes portlet light" *ngIf="false">
 							<div class="portlet-title" style="display:block">
 								<h4 class="pull-left f-w-600">Listing Privacy</h4>
@@ -1181,7 +1067,6 @@
 																				</div> 
 																				<span class="label-color-custmization"  (click)="$event.stopPropagation();editTemplate(eventCampaign.selectedEditEmailTemplate)" >Edit</span>
 																			</div>       
-																				<!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
 																		</div>
 																	</a>
 																</div>
@@ -1260,7 +1145,6 @@
 																	</div> 
 																	<span class="label-color-custmization"  (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
 																</div>       
-																	<!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
 															</div>
 														</a>
 													</div>
@@ -1379,12 +1263,7 @@
 							<span *ngIf="eventCampaign?.emailTemplate?.name">
 							  {{eventCampaign?.emailTemplate?.name | slice:0:30}}<span  *ngIf="eventCampaign?.emailTemplate?.name.length>30">...</span>
 							</span>
-						  </a>
-						  <!-- <a  *ngIf="reDistributeEvent" (click)="referenceService.downloadTemplate(eventCampaign.id,'html')" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
-							<i class="fa fa-download" id="download-template-i-font"></i></a>
-	
-							 <a  *ngIf="reDistributeEvent" (click)="referenceService.downloadTemplate(eventCampaign.id,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
-							<i class="fa fa-file-pdf-o" id="download-template-i-font"></i></a> -->
+						  </a>						  
 						</td>
 	
 	
@@ -1602,8 +1481,7 @@
 																														   
 																				</div> 
 																				<span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)" >Edit</span>
-																			</div>       
-																				<!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+																			</div>       																			
 																		</div>
 																	</a>
 																</div>
@@ -1677,8 +1555,7 @@
 																					</span>                                               
 																				</div> 
 																				<span class="label-color-custmization"  (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
-																			</div>       
-																				<!-- <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span> -->
+																			</div>       																		
 																		</div>
 																	</a>
 																</div>
@@ -1794,8 +1671,7 @@
 					<button type="submit" *ngIf="checkLaunchOption=='SAVE'"  class="btn green mBtnAlign button-border" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
 					<button type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
 				  </div>
-				</div>
-				<!-- <button  *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('templates')">Previous</button> -->
+				</div>				
 			  </div>
 		   <!--   end step four launch   -->
 			</div>

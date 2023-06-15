@@ -87,8 +87,7 @@
                       <button
                       [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
                             modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
-                      style="padding: 10px !important"></button>
-                        <!-- <button class="hidden-xs l-g-view {{viewClass}}" style="padding: 10px !important"></button> -->
+                      style="padding: 10px !important"></button>                      
                       <div class="group-dd-content">
                        <ng-container class='m10' >
                         <div style="display: flex; justify-content: space-between; padding-left: 0;">
@@ -114,17 +113,12 @@
                           </span>
                           <span class="btn btn-xs hidden-xs l-g-view margin-space"
                             data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                            [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> -->
+                            [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">                
                             <i class="fa fa-th p10" aria-hidden="true"></i>
 
                           </span>
                           
                         </ng-container>
-                        <!-- <span *ngIf="pagination.categoryId>0" class="btn-xs hidden-xs l-g-view"
-                          data-toggle="tooltip" data-placement="bottom" title="Go back"
-                          (click)="setViewType('Folder-Grid')">
-                          <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span> -->
                         </div>
                       </ng-container>
 
@@ -171,11 +165,6 @@
                          title="Refresh">
                         <i _ngcontent-c17="" class="fa fa-refresh p10" aria-hidden="true"></i>
                       </a>
-                        <!-- <a  *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
-                          class="btn btn-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
-                          title="Download">
-                          <i _ngcontent-c17="" class="fa fa-download p10" aria-hidden="true"></i>
-                        </a> -->
                       </div>
                     </div>
 
@@ -203,19 +192,13 @@
                         <div class="form-inline col-sm-12">
                           <div class="form-group col-sm-4">
                             <label class="control-label">From Date  &nbsp;
-                              <!-- <span class="required">*</span> -->
                             </label>
-                            <!-- <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                            </app-date-picker> -->
                             <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="fromDateFilter" name="fromDateFilter"
                                placeholder="YYYY-MM-DD" id="fromDateFilter">
                           </div>
                           <div class="form-group col-sm-4">
                             <label class="control-label">To Date  &nbsp;
-                              <!-- <span class="required">*</span> -->
                             </label>
-                            <!-- <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                            </app-date-picker> -->
                             <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="toDateFilter" name="toDateFilter"
                               placeholder="YYYY-MM-DD" id="toDateFilter">
                           </div>
@@ -400,7 +383,6 @@
                             <strong *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                               <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false"
                                 [showInLine]="true" [dateAndTime]="campaign.displayTime">
-                                <!-- setDisplayTimeInUtcString() in CampaignServiceImpl.java -->
                               </app-timestamp>
                               <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                             </strong>
@@ -714,12 +696,6 @@
                                     <a *ngIf="campaign.canEditEndDate" data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
                                       <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                     </a>
-                                    <!---Add Workflows List View-->
-                                    <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                                                    data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                                    <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                                                    Add Workflows
-                                                                    </a> -->
                                     <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                       data-rel="fancybox-button" (click)="openEventUrlModal(campaign)"
                                       title="Copy Public Event Url" translate>
@@ -927,11 +903,6 @@
                                     data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
                                     <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                   </a>
-                                  <!---Add Workflows List View-->
-                                  <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                      data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                      <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                      Add Workflows
                                       </a> -->
                                   <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                     data-rel="fancybox-button" (click)="openEventUrlModal(campaign)"
@@ -1191,10 +1162,6 @@
                               title="Copy Public Event Url">
                               <i class="fa fa-link" aria-hidden="true"></i>
                             </a>
-                            <!-- <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier)"
-                                data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                <i class="fa fa-reply-all"></i>
-                                </a> -->
                             <a [class.disablednew]="!campaign.hasAccess"
                               *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)"
                               data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
@@ -1308,23 +1275,6 @@
                 <strong translate>No campaigns found</strong>
               </div>
             </div>
-            <!-- <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-              <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-                <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                  <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
-                    (notifyParent)="setPage($event)"></app-pagination>
-                  <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize"
-                    (ngModelChange)="getNumberOfItemsPerPage($event)">
-                    <option [ngValue]="numberOfItemsPerPage[0]"> {{numberOfItemsPerPage[0].name}}
-                    </option>
-                    <option *ngIf="pagination.totalRecords>12" [ngValue]="numberOfItemsPerPage[1]">
-                      {{numberOfItemsPerPage[1].name}}</option>
-                    <option *ngIf="pagination.totalRecords>24" [ngValue]="numberOfItemsPerPage[2]">
-                      {{numberOfItemsPerPage[2].name}}</option>
-                  </select>
-                </div>
-              </div>
-            </ng-container> -->
           </div>
           <!-- End Of tab Content -->
         </div>

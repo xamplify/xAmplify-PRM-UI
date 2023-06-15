@@ -2,11 +2,6 @@ label {
   font-weight: 600;
 }
 
-.thumb-vid,
-.thumb-bg {
-  height: 100px;
-}
-
 .fa.fa-users.disabled {
   background: gray;
 }
@@ -32,18 +27,9 @@ fieldset {
   font-size: 14px;
 }
 
-.center {
-  text-align: center;
-}
-
 .portlet.light.dashboard-stat2.border-error {
   border-color: red;
 }
-
-/* .table tr.contact-list-selected td {
-  background-color: #00a6e8 !important;
-  color: white;
-} */
 
 .blur {
   -webkit-filter: blur(1px);
@@ -64,28 +50,11 @@ fieldset {
   right: 10px;
 }
 
-.time-picker-css {
-  position: relative;
-  right: -5px;
-  top: 29px;
-}
-
-.time-picker {
-  position: relative;
-  right: -42px;
-  top: -16px;
-}
-
 .button-blue {
   position: relative;
   background: #8395a7 !important;
   top: 6px;
   font-size: 4px;
-}
-
-.switch-choose {
-  position: relative;
-  top: 6px;
 }
 
 .error-div {
@@ -125,36 +94,9 @@ fieldset {
   }
 }
 
-#download-template-i-font {
-  font-size: 17px;
-}
-
-.gearDropdownMenu {
-  top: 7px;
-  color: #00a6e8;
-  cursor: pointer;
-}
-
-.caretDropdownMenu {
-  top: 4px;
-  position: relative;
-  color: #00a6e8;
-}
-
-#download-template {
-  border: 1px solid #5ab2f5;
-  width: 32px;
-  height: 32px;
-  border-radius: 30px;
-}
-
 #download-drop {
   box-shadow: none;
   margin-left: 7px;
-}
-
-#partner-template-bee-container {
-  height: 935px;
 }
 
 #rcaretw {
@@ -178,17 +120,10 @@ legend.scheduler-border {
   border-bottom: none;
 }
 
-.cw {
-  width: 1%;
-}
-
 .height160 {
   height: 160px;
 }
 
-.mttpx {
-  margin-top: 10px !important;
-}
 .button-border{
   border: 1px solid #fff;
 }
