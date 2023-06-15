@@ -40,10 +40,17 @@
 										</div>
 										<div class="col-6 col-lg-auto text-center text-lg-end pt10">
 											<h3 class="mt-0 justify-content-end d-flex">
-												<b>{{vendorReport.campaignsCount}}</b></h3>
-											<h5 class="mt-0 justify-content-end d-flex">Campaigns</h5>
+												<b>{{vendorReport.counts[0].count}}</b></h3>
+											<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[0].name}}</h5>
 										</div>
 									</div>
+									<div class="flex-row d-flex col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
+									<div class="col-6 col-lg-auto text-center text-lg-end pt10" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'">
+										<h3 class="mt-0 justify-content-end d-flex">
+											<b>{{vendorReport.counts[i].count}}</b></h3>
+										<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[i].name}}</h5>	
+									</div>									
+								</div>
 								</div>
 								<div class="card-body p-0 card-bgcolor">
 									<div class="flex-row pl10 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
