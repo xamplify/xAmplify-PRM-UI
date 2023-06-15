@@ -2,7 +2,6 @@
 <section>
 <div id="timeline-view" class="page-content">
   <app-modal-popup-loader *ngIf="dataLoader"></app-modal-popup-loader>
-  <!--REMOVED style="border: 1px solid #CCC;"-->
   <div class="page-bar white-co"  *ngIf="!dataLoader">
     <a (click)="goBack()" class="pull-right close-circle custom-css">
     <i class="fa fa-times" aria-hidden="true"> </i>
@@ -203,20 +202,6 @@
 </div>
 </section>
 
-<!-- --_Deal Registration -->
-<!-- <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  data-keyboard="false" data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
-  <div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
-    <div class="modal-content">
-      <div class="modal-body" style="overflow:unset">
-        <a (click)="showTimeLineView()" class="pull-right close-circle"
-          style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-        <app-add-leads [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaignId"
