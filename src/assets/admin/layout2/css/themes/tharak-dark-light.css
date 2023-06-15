@@ -691,9 +691,7 @@ span.ui-column-resize{
 .portlet > .portlet-title > .caption > i{
   color: white !important;
 }
-/* .text{
-    border-bottom: 1px solid #2f4857!important;
-} */
+
 .heading-top-border,.table-bordered{
   border: 1px solid #2f4857!important;
 }
@@ -701,7 +699,7 @@ span.ui-column-resize{
   border: 3px solid #2f4857!important;
 }
 .activeCRM{
-  background-color: #22313a !important;
+  background-color: #2f4857 !important;
 }
 .alert-warning,
 .register_deal{
@@ -1225,4 +1223,23 @@ ul.alt-row-style1 li:nth-child(even){
   position: relative;
   right: 1px;
   top: 4px;
+}
+
+/* 15-6-2023 */
+input::placeholder {
+  color: #aeafaf !important;
+}
+
+.custom-line{
+     background-color: #2b3c46  !important;
+     border: 0 !important;
+}
+
+
+input.custom-line:active, input.custom-line:focus {
+  outline: none !important;
+}
+
+.prm-dark-border > .text{
+  border-bottom: 1px solid #2f4857 !important;
 }

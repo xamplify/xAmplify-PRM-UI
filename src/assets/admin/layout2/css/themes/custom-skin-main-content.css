@@ -1112,3 +1112,14 @@ span.ui-column-resize{
 .comment .info a, .comment-color{color : var(---text-color) !important;}
 .dropdown-menu li>a>[class*=" fa-"], .bar .fa, i.fa.fa-eye.color-chnage{color : var(---text-color) !important;}
 .partner-company-selected, .table tr.row-selected td{background-color: var(--page-content) !important;}
+
+.custom-line{
+  background-color:  var(--div-bg-color) !important;
+  border: 0 !important;
+}
+
+
+
+input.custom-line:active, input.custom-line:focus {
+outline: none !important;
+}
