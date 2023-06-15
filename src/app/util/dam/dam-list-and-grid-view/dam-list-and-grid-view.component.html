@@ -234,7 +234,7 @@
 															<td class="text-center"><app-timestamp
 																	[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 															<td id="actions-row">
-																<div class="actions-block override-actions ActionAlign">
+																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
 																	<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
 																		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 																	</a> 
@@ -249,11 +249,6 @@
 																	<a *ngIf="!authenticationService?.module?.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
 																		<i class="fa fa-share" aria-hidden="true"></i>
 																	</a> 
-																	<!---XNFR-255-->
-																	<!-- <a *ngIf="!authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" title="Share As White-Labeled"
-																	 (click)="openWhiteLabeledPopup(asset.id)">
-																		<i class="fa fa-clone" aria-hidden="true"></i>
-																	</a>  -->
 																	<a title="Download" (click)="openPopup(asset)"> <i
 																		class="fa fa-download" aria-hidden="true"></i>
 																	</a> 
