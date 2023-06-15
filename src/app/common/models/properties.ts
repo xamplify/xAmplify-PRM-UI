@@ -167,6 +167,7 @@ export class Properties {
 	dealPipelines = "Deal Pipelines";
 	tags = "Tags";
 	customskin = "Themes";
+	customizeleftmenu = "Customize Left Menu";
 
 	exclude = "Exclusion"
 	exclude_add = "User(s) added successfully";

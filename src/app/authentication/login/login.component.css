@@ -1,27 +1,12 @@
 a.forget-password:hover {color: #4db1e2;}
 .login .content .login-form, .login .content .forget-form {padding: 3px 0;}
 .login-options h4 {font-weight: normal;}
-.create-account {background-color: rgb(73, 143, 215,0.5) !important;}
 .alert-dismissible .close{top: 0 !important;right: 0px !important;}
 .alert-danger{background-color:#ec6262}
 .alert{padding:10px}
-.alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
+.alert-danger>h5{font-size:14px}
 .text{padding-top: 12px;} 
 .underlinetext:hover{text-decoration: underline !important}
-
-.xamplify-background-image{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -100;
-    transform: translateX(-50%) translateY(-50%);
-    background-size: cover;
-    transition: opacity 1s;
-}
 
 .login-content-left{
     margin-left: 50px;
@@ -48,9 +33,6 @@ a.forget-password:hover {color: #4db1e2;}
     height: 28px !important;
     width: 28px !important;
     display: flex;
-  }
-  .social-icon-color {
-  background-position: unset;
   }
   /** tharak **/
   .field-icon {

@@ -55,13 +55,6 @@
 			<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		</div>
 		<div class="row solid-wb" style="margin-top: 28px;"></div>
-		<!--Added On 08/06/20222---->
-		<!-- <div class="text-center mt10">
-			<label class="check">
-				<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
-				<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-			</label>
-		</div> -->
 
 		<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
 			<h4>Or login with</h4>
@@ -88,40 +81,6 @@
 			</ul>
 		</div>
 
-		<!-- <div class="col-xs-4 pull-right">
-			<ul class="">
-				<div class="row">
-				<ng-container >
-					<div class="col-xs-1" *ngFor="let socialProvider of socialProviders">
-					<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-						<a  title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-							<img class="social-icon-color" src="{{socialProvider.iconName}}">
-						</a>
-					</li>
-				</div>
-				</ng-container>
-			</div>
-			</ul>
-		</div> -->
-		<!-- <div class="col-xs-4 pull-right">
-			<div class="row">
-			<div class="col-xs-1">
-		    <a data-toggle="tooltip" data-placement="bottom" title="salesforce" (click)="loginUsingSocialAccounts('salesforce')">
-            <img class="social-icon-color" src="\assets\global\img\social\salesforce.svg">
-		    </a>
-		    </div>
-			<div class="col-xs-1">
-			<a data-toggle="tooltip"  data-placement="bottom" title="facebook" (click)="loginUsingSocialAccounts('facebook')">
-            <img  class="social-icon-color" src="\assets\global\img\social\facebook.svg">
-		    </a>
-		    </div>
-			<div class="col-xs-1">
-			<a data-toggle="tooltip"  data-placement="bottom" title="linkedin" (click)="loginUsingSocialAccounts('linkedin')">
-            <img class="social-icon-color" src="\assets\global\img\social\linkedin.svg">
-		   </a>
-		    </div>
-		</div>
-		</div>-->
 	 <!-- </div>  -->
 		<div class="text-center mt10">
 			<label class="check">

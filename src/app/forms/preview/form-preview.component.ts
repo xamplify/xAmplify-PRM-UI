@@ -109,9 +109,11 @@ export class FormPreviewComponent implements OnInit {
       this.alias = this.route.snapshot.params['alias'];
     }
     let loggedInUser = localStorage.getItem('currentUser');
-    if (loggedInUser !== undefined) {
-      let userJSON = JSON.parse(localStorage.getItem('currentUser'));
-      this.loggedInUserEmail = userJSON.userName;
+    if (loggedInUser !== undefined && loggedInUser !== null) {
+      let userJSON = JSON.parse(loggedInUser);
+      if(userJSON !== undefined && userJSON !== null){
+        this.loggedInUserEmail = userJSON.userName;
+      }
     }
     this.getFormFieldsByAlias(this.alias);
   }

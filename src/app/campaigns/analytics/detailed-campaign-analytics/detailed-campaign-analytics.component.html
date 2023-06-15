@@ -1041,8 +1041,6 @@
                                       <div class="progress-bar progress-bar-success"
                                         [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar"
                                         [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-                                        <!-- <span
-                                          *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO' && campaignType !== 'SURVEY'">{{item.viewsCount}}</span> -->
                                         <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
                                         <span
                                           *ngIf="campaignType === 'REGULAR'|| campaignType === 'SURVEY'||campaignType === 'SOCIAL'|| campaignType === 'LANDINGPAGE'|| campaignType === 'EVENT'">{{item.viewsCount}}</span>
@@ -1168,7 +1166,6 @@
                                 </tr>
                                 <tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
                                   <td [attr.colspan]="colspanValue">
-                                    <!--   <td *ngIf="campaignType == 'EVENT'" colspan="10"> -->
                                     <div class="table-responsive">
                                       <table class="table tgrid table-condensed" id="autoresponse-analytics">
                                         <thead>
@@ -1294,51 +1291,11 @@
             </span>
             <ul class="dropdown-menu pull-right" style="right:20px !important">
               <li><a (click)="downloadLeadList()"> Export To Excel </a>
-                <!-- <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a> -->
               </li>
             </ul>
           </div>
         </div>
         <hr>
-        <!-- 		<div class="col-xs-8"></div>
-        <div class="col-xs-4 p0">
-                          <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-                  <button class="portlet light color1-invert crcb" (click)="clearLeadValues();leadsDetailPagination.pageIndex = 1;getEventLeadsDetails('YES')" [class.selectedBox]="leadDetailType === 'YES'" [disabled]="leadDetailType === 'YES' || !isPartnerEnabledAnalyticsAccess">
-                    <div class="portlet-body text-center">
-                      <i class="fa fa-envelope fs30"></i>
-                      <h1 class="fs14">
-                        <b>{{campaignReport.yesLeadCount}}</b>
-                        <span>Yes ( {{campaignReport.leadAdditionalCount}} )</span>
-                      </h1>
-
-                    </div>
-                  </button>
-                </div>
-                <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-                  <button class="portlet light color1-invert crcb" (click)="clearLeadValues();leadsDetailPagination.pageIndex = 1;getEventLeadsDetails('NO')"  [class.selectedBox]="leadDetailType === 'NO'" [disabled]="leadDetailType === 'NO' || !isPartnerEnabledAnalyticsAccess">
-                    <div class="portlet-body text-center">
-                      <i class="fa fa-times-circle fs30"></i>
-                      <h1 class="fs14">
-                        <b>{{campaignReport.noLeadCount}}</b>
-                        <span>No</span>
-                      </h1>
-
-                    </div>
-                  </button>
-                </div>
-                <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-                  <button class="portlet light color1-invert crcb" (click)="clearLeadValues();leadsDetailPagination.pageIndex = 1;getEventLeadsDetails('MAYBE')"  [class.selectedBox]="leadDetailType === 'MAYBE'" [disabled]="leadDetailType === 'MAYBE' || !isPartnerEnabledAnalyticsAccess">
-                    <div class="portlet-body text-center">
-                      <i class="fa fa-question-circle fs30"></i>
-                      <h1 class="fs14">
-                        <b>{{campaignReport.maybeLeadCount}}</b>
-                        <span>Maybe</span>
-                      </h1>
-
-                    </div>
-                  </button>
-                </div>
-    </div> -->
       </div>
 
 
@@ -1352,7 +1309,6 @@
               <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
               <h4 class="m5">Please wait while we process your request.</h4>
             </div>
-            <!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
             <div class="table-responsive">
               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
               <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && leadsFormDetails?.length != 0">
@@ -1363,7 +1319,6 @@
                         <ng-container *ngFor="let column of leadsFormHeaders;let i  = index">
                           <ng-container *ngIf="i<=3">
                             <th id="th-width" style="text-align:left">{{column}}
-                              <!-- <span class="required" *ngIf="column.required">*</span> -->
                             </th>
                           </ng-container>
                         </ng-container>
@@ -1374,8 +1329,6 @@
                       <ng-container *ngFor="let formDataRow of leadsFormDetails;let rowIndex = index">
                         <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                           <ng-container *ngFor="let columnValue of leadsFormHeaders;let columnIndex = index">
-
-                            <!-- <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td> -->
                             <td *ngIf="columnIndex<=3">
                               <ng-container *ngIf="columnValue=='RSVP Time'">
                                 <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
@@ -1458,7 +1411,6 @@
         <app-scroll-top></app-scroll-top>
       </div>
 
-      <!-- <app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util> -->
     </div>
 
     <div class="portlet light clearfix" *ngIf="showLeads">
@@ -1513,7 +1465,6 @@
       <div class="col-xs-12 p-5x">
         <div class="p-5x">
           <div class="portlet light">
-            <!--  here removed style="position: relative;top: 42px;" -->
             <div class="portlet-body clearfix">
               <div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
                 <span class="btn btn-sm btn-primary pull-right" style="cursor:default;"
@@ -1660,7 +1611,6 @@
       <ng-container *ngIf="rsvpResposeType!='TOTAL_PARTNER_LEADS'">
         <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
           <h4 class="pull-left" *ngIf="rsvpResposeType === 'invities'">Invitees</h4>
-          <!-- <h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4> -->
           <div class="pull-left mt10" *ngIf="rsvpResposeType === 'email open' || rsvpResposeType === 'email not open'">
             <ul class="mix-filter m0">
               <li class="filter" [class.selectedBox]="rsvpResposeType === 'email open'"
@@ -1693,7 +1643,6 @@
 
         <div class="col-xs-12">
           <div class="table-responsive">
-            <!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
             <div class="alert alert-info alert-dismissible" *ngIf="rsvpDetailsList?.length == 0">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               No results found.
@@ -1718,7 +1667,6 @@
                       <th style="font-size: 13px; font-weight: 500;"
                         *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
                           [hidden]="rsvpResposeType === 'email not open'">GUESTS
-                          <!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> -->
                         </span></th>
                       <th class="text-center-css" *ngIf="!isCancelledEvent && rsvpResposeType === 'email not open'">
                         Reminder</th>
@@ -1796,8 +1744,6 @@
           <div>
             <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination"
               [type]="'viewsBarChart'" (notifyParent)="setPage($event)" [isDropdown]="true"></app-pagination>
-            <!-- 		 This code is for pagination dropdown
-					 (notifyParentDropDown)="paginationDropdown($event)" -->
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -2044,7 +1990,6 @@
                       <th style="font-size: 13px; font-weight: 500;">NAME</th>
                       <th style="font-size: 13px; font-weight: 500;">START DURATION</th>
                       <th style="font-size: 13px; font-weight: 500;">STOP DURATION</th>
-                      <!-- 	<th style="font-size: 13px; font-weight: 500;">IP ADDRESS</th> -->
                       <th style="font-size: 13px; font-weight: 500;">LOCATION</th>
                       <th style="font-size: 13px; font-weight: 500;">PLATFORM</th>
                     </tr>
@@ -2056,7 +2001,6 @@
                       </td>
                       <td>
                         <h6>
-                          <!-- {{item.startTime | date: 'short'}} -->
                           <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [dateAndTime]="item.startTime">
                           </app-timestamp>
                           <span *ngIf="referenceService.isSafariBrowser()">{{item.startTime}}</span>
@@ -2064,17 +2008,12 @@
                       </td>
                       <td>
                         <h6>
-                          <!-- {{item.endTime | date: 'short'}} -->
                           <app-timestamp [dateAndTime]="item.endTime"> </app-timestamp>
                         </h6>
                       </td>
-                      <!-- <td>
-										<h6>{{item.ipAddress}}</h6>
-									</td> -->
                       <td class="center">
                         <app-location [userLocation]="item"> </app-location>
                       </td>
-                      <!-- <td><h6>{{item.deviceType}}, {{item.os}}</h6></td> -->
                       <td class="center">
                         <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
                       </td>
@@ -2118,14 +2057,12 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
           <div class="col-xs-4 col-sm-4 col-lg-4 hidden-xs">
-            <!-- <div class="col-xs-10 col-sm-10 col-lg-10"> -->
             <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'open'">
               Emails opened
               by recipients</h4>
             <h4 class="modal-title" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">
               Recipients
               who clicked a URL</h4>
-            <!-- </div> -->
           </div>
           <div class='col-xs-6 col-sm-4 col-lg-4' style="padding: 0px 15px 0px 0px;">
             <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
@@ -2207,7 +2144,6 @@
                         <td>
                           <span>
                             <h6 style="text-align: center;">
-                              <!-- {{item.time | date: 'short'}} -->
                               <app-timestamp [dateAndTime]="item.time">
                               </app-timestamp>
 
@@ -2435,7 +2371,6 @@
           <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
           <h4 class="m5">Please wait while we process your request.</h4>
         </div>
-        <!-- <div class="row"> -->
         <div class="table-responsive">
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
@@ -2448,7 +2383,6 @@
                 <thead>
                   <tr>
                     <th style="font-size: 13px; font-weight: 500;">NAME</th>
-                    <!-- <th style="font-size: 13px; font-weight: 500;">CAMPAIGN NAME</th> -->
                     <th style="font-size: 13px; font-weight: 500;">LOCATION</th>
                     <th style="font-size: 13px; font-weight: 500;">DATE</th>
                     <th style="font-size: 13px; font-weight: 500;">PLATFORM</th>
@@ -2745,40 +2679,6 @@
                   </tr>
                 </ng-container>
               </ng-container>
-
-
-
-
-              <!--<ng-container *ngFor="let socialStatus of socialStatus.socialStatusList">
-					<tr>
-					<ng-container *ngFor="let item of campaignViews">
-					<ng-container *ngIf="socialStatus.userId === item.userId">
-						<td>
-							<app-user-info  [userInfo]="item"> </app-user-info>
-						</td>
-						<td>
-						<ng-container *ngFor="let socialStatusProvider of socialStatus.socialStatusProviders">
-							<div class="social-profile" [ngStyle]="{'background-image': 'url(' + socialStatusProvider.socialConnection.profileImage + ')'}"
-								data-toggle="tooltip" data-placement="top" title="{{socialStatusProvider.socialConnection.profileName}}">
-								<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'TWITTER'">
-									<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
-								</ng-container>
-								<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
-									<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
-								</ng-container>
-								<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'LINKEDIN'">
-									<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
-								</ng-container>
-								<ng-container *ngIf="socialStatusProvider.socialConnection.source === 'GOOGLE'">
-									<img class="img-circle" alt="{{socialStatusProvider.socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
-								</ng-container>
-							</div>
-						</ng-container>
-						</td>
-					</ng-container>
-					</ng-container>
-					</tr>
-				</ng-container>-->
             </tbody>
           </table>
         </div>
@@ -2993,7 +2893,6 @@
               <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                 aria-hidden="true"></span></a>
           </div>
-          <!-- <hr> -->
           <div class="col-xs-8"></div>
 
         </div>
