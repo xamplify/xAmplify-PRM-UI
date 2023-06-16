@@ -1,212 +1,209 @@
 <div class="page-content">
-  <div class="page-bar" style="border-radius: 3px !important; border: 1px solid #e0e0e0 !important;">
-    <ul class="page-breadcrumb">
-        <li *ngIf="!authenticationService.isSuperAdmin()">
+   <div class="page-bar" style="border-radius: 3px !important; border: 1px solid #e0e0e0 !important;">
+      <ul class="page-breadcrumb">
+         <li *ngIf="!authenticationService.isSuperAdmin()">
             <i class="fa fa-home" aria-hidden="true"></i>
-             <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+            <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li *ngIf="authenticationService.isSuperAdmin()">
+         </li>
+         <li *ngIf="authenticationService.isSuperAdmin()">
             <i class="fa fa-home" aria-hidden="true"></i>
             <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li class="breadcrumb-font-color" style="color: #808080">
+         </li>
+         <li class="breadcrumb-font-color" style="color: #808080">
             <a  translate>Devices Info</a>
-        </li>
-    </ul>
-    <a class="close-circle mr5 mt5" (click)="findDevicesInfo()">
+         </li>
+      </ul>
+      <a class="close-circle mr5 mt5" (click)="findDevicesInfo()">
       <i class="fa fa-refresh" aria-hidden="true"></i>
-    </a>
-</div>
- <div class="row">
-    <div class="col-md-12 col-lg-12">
-       <div class="portlet light" style=" height:163px;">
-          <div class="row" style="margin-top: 20px;">
-             <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
-             <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
-                <div class="row">
-                   <div title="Total Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                      <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
-                         <div class="visual">
-                            <i aria-hidden="true" class=""></i>
-                         </div>
-                         <div class="details">
-                            <div class="number">999</div>
-                            <div class="desc">Total Devices</div>
-                         </div>
-                         <span class="morePadding">
-                      <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
-                      <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                      </span>
-                      </a>
-                   </div>
-                   <div title="Active Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                      <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
-                         <div class="visual">
-                            <i aria-hidden="true" class=""></i>
-                         </div>
-                         <div class="details">
-                            <div class="number">999</div>
-                            <div class="desc">Active Devices</div>
-                         </div>
-                         <span class="morePadding">
-                      <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
-                      <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                      </span>
-                      </a>
-                   </div>
-                   <div title="InActive Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                      <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
-                         <div class="visual">
-                            <i aria-hidden="true" class=""></i>
-                         </div>
-                         <div class="details">
-                            <div class="number">999</div>
-                            <div class="desc">InActive Devices</div>
-                         </div>
-                         <span class="morePadding">
-                      <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                      <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                      </span>
-                      </a>
-                   </div>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
- <!---List Info---->
- <div class="row">
-   <div class="portlet box">
-      <div class="clearfix">
-         <div class="col-xs-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet box blue">
-               <div class="portlet-title">
-                  <div class="caption" translate>
-                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
-                     Devices Info
+      </a>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style=" height:163px;">
+            <div class="row" style="margin-top: 20px;">
+               <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
+               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                  <div class="row">
+                     <div title="Total Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">999</div>
+                              <div class="desc">Total Devices</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Active Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">999</div>
+                              <div class="desc">Active Devices</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="InActive Devices" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">999</div>
+                              <div class="desc">InActive Devices</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
                   </div>
                </div>
-               <div class="portlet-body table-responsive" style="overflow: hidden;">
-                  <app-list-loader [hidden]="!listLoader.isLoading"></app-list-loader>
-                  <div class="clearfix" [hidden]="listLoader.isLoading">
-                     <div class="col-xs-12" style="padding: 10px 0;">
-                        <div class="table-responsive">
-                           <table class="table tgrid" aria-describedby="manage-mdf-fund-table">
-                              <thead>
-                                 <tr>
-                                    <th translate scope="col">Device Type</th>
-                                    <th translate scope="col">Modem Type</th>
-                                    <th translate scope="col">Serial Number</th>
-                                    <th translate scope="col">Product Code</th>
-                                    <th translate scope="col">IMEI</th>
-                                    <th translate scope="col">Activation Status</th>
-                                    <th translate scope="col">Firmware</th>
-                                    <th translate scope="col">Config</th>
-                                    <th translate scope="col">Communicating Status</th>
-                                    <th translate scope="col">Date Added</th>
-                                    <th translate scope="col">Last Contact Date</th>
-                                    <th translate scope="col">Actions</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                               <ng-container *ngFor="let deviceInfo of devicesInfo;let i=index">
-                                 <tr>
-                                    <td>{{deviceInfo.deviceType}}</td>
-                                    <td>{{deviceInfo.modemType}}</td>
-                                    <td>{{deviceInfo.serialNumber}}</td>
-                                    <td>{{deviceInfo.productCode}}</td>
-                                    <td>{{deviceInfo.imei}}</td>
-                                    <td>{{deviceInfo.activationStatus}}</td>
-                                    <td>{{deviceInfo.firmware}}</td>
-                                    <td>{{deviceInfo.config}}</td>
-                                    <td>{{deviceInfo.communictingStatus}}</td>
-                                    <td *ngIf="deviceInfo?.dateAdded!=null">
-                                       {{deviceInfo?.dateAdded | date:'dd/MM/yyyy'}}
-                                    </td>
-                                    <td *ngIf="deviceInfo?.lastContactDate!=null">
-                                       {{deviceInfo?.lastContactDate | date:'dd/MM/yyyy'}}
-                                    </td>
-                                    <td *ngIf="deviceInfo?.dateAdded==null">
-                                       -
-                                    </td>
-                                    <td *ngIf="deviceInfo?.lastContactDate==null">
-                                       -
-                                    </td>
-                                    
-                                   <td style="text-align: center;">
-                                      <div class="actions-block override-actions" style="width: 85px;">
-                                         <a  title="Edit">
-                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                         </a>
-                                         <a  title="Re-Assign">
-                                          <i class="fa fa-user-plus" aria-hidden="true" (click)="openReAssignModalPopUp(deviceInfo)"></i>
-                                          </a>
-                                      </div>
-                                   </td>
-                                </tr>
-                                 </ng-container>
-                              </tbody>
-                           </table>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!---List Info---->
+   <div class="row">
+      <div class="portlet box">
+         <div class="clearfix">
+            <div class="col-xs-12">
+               <!-- BEGIN EXAMPLE TABLE PORTLET-->
+               <div class="portlet box blue">
+                  <div class="portlet-title">
+                     <div class="caption" translate>
+                        <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
+                        Devices Info
+                     </div>
+                  </div>
+                  <div class="portlet-body table-responsive" style="overflow: hidden;">
+                     <app-list-loader [hidden]="!listLoader.isLoading"></app-list-loader>
+                     <div class="clearfix" [hidden]="listLoader.isLoading">
+                        <div class="col-xs-12" style="padding: 10px 0;">
+                           <div class="table-responsive">
+                              <table class="table tgrid" aria-describedby="manage-mdf-fund-table">
+                                 <thead>
+                                    <tr>
+                                       <th translate scope="col">Device Type</th>
+                                       <th translate scope="col">Modem Type</th>
+                                       <th translate scope="col">Serial Number</th>
+                                       <th translate scope="col">Product Code</th>
+                                       <th translate scope="col">IMEI</th>
+                                       <th translate scope="col">Activation Status</th>
+                                       <th translate scope="col">Firmware</th>
+                                       <th translate scope="col">Config</th>
+                                       <th translate scope="col">Communicating Status</th>
+                                       <th translate scope="col">Date Added</th>
+                                       <th translate scope="col">Last Contact Date</th>
+                                       <th translate scope="col">Actions</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <ng-container *ngFor="let deviceInfo of devicesInfo;let i=index">
+                                       <tr>
+                                          <td>{{deviceInfo.deviceType}}</td>
+                                          <td>{{deviceInfo.modemType}}</td>
+                                          <td>{{deviceInfo.serialNumber}}</td>
+                                          <td>{{deviceInfo.productCode}}</td>
+                                          <td>{{deviceInfo.imei}}</td>
+                                          <td>{{deviceInfo.activationStatus}}</td>
+                                          <td>{{deviceInfo.firmware}}</td>
+                                          <td>{{deviceInfo.config}}</td>
+                                          <td>{{deviceInfo.communictingStatus}}</td>
+                                          <td *ngIf="deviceInfo?.dateAdded!=null">
+                                             {{deviceInfo?.dateAdded | date:'dd/MM/yyyy'}}
+                                          </td>
+                                          <td *ngIf="deviceInfo?.lastContactDate!=null">
+                                             {{deviceInfo?.lastContactDate | date:'dd/MM/yyyy'}}
+                                          </td>
+                                          <td *ngIf="deviceInfo?.dateAdded==null">
+                                             -
+                                          </td>
+                                          <td *ngIf="deviceInfo?.lastContactDate==null">
+                                             -
+                                          </td>
+                                          <td style="text-align: center;">
+                                             <div class="actions-block override-actions" style="width: 85px;">
+                                                <a  title="Edit">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </a>
+                                                <a  title="Re-Assign">
+                                                <i class="fa fa-user-plus" aria-hidden="true" (click)="openReAssignModalPopUp(deviceInfo)"></i>
+                                                </a>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </ng-container>
+                                 </tbody>
+                              </table>
+                           </div>
                         </div>
                      </div>
                   </div>
                </div>
+               <!-- END EXAMPLE TABLE PORTLET-->
             </div>
-            <!-- END EXAMPLE TABLE PORTLET-->
          </div>
       </div>
    </div>
 </div>
-</div>
-
 <!--Modal PopUp------>
-
 <div class="modal fade right" id="reassign-data-modal-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog" role="document">
-       <div class="modal-content">
-           <div class="modal-header">
-               <a class="close-circle" (click)="hideReAssignDataModalPopUp()">
-                  <i class="fa fa-times" aria-hidden="true"></i></a>
-                  <h4 class="modal-title" id="myModalLabel" translate>Move devices between customers</h4>
-           </div>
-           <div class="modal-body">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" (click)="hideReAssignDataModalPopUp()">
+            <i class="fa fa-times" aria-hidden="true"></i></a>
+            <h4 class="modal-title" id="myModalLabel" translate>Move devices between customers</h4>
+         </div>
+         <div class="modal-body">
             <div class="alert alert-info">
                <strong>Move a device to a different customer or to another site. A device such as a tracker, may need to move from one customer to another because the device might have wrongly assigned or moving from reseller account to customer account. You may also want to move a device to a testing account to test the seamless flow.</strong>
             </div>
-               <div id="modal-content">
-                   <app-modal-popup-loader *ngIf="reAssignDataLoader"></app-modal-popup-loader>
-                   <div  class="table-responsive" *ngIf="!reAssignDataLoader">
-                     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-                    <div class="form-group text-center">
-                        <img src="../../../assets/images/data-transfer-animation.gif" style="width: 50%;">
-                     </div>
-                    <div class="form-group">
-                        <label>Device Name</label>
-                        <input type="text" class="form-control" disabled value="{{selectedDeviceInfo?.productCode}}">
-                     </div>
-                     <div class="form-group">
-                        <label>Serial Number</label>
-                        <input type="text" class="form-control" disabled value="{{selectedDeviceInfo?.serialNumber}}">
-                     </div>
-                     <div class="form-group">
-                        <label>From Customer Id<span class="required">*</span></label>
-                        <input type="number" class="form-control" id="fromCustomerId" min="1" (input)="validateForm('fromCustomerId')">
-                     </div>
-                     <div class="form-group">
-                        <label>To Customer Id<span class="required">*</span></label>
-                        <input type="number" class="form-control" min="1" id="toCustomerId" (input)="validateForm('toCustomerId')">
-                     </div>
-                   </div>
+            <div id="modal-content">
+               <app-modal-popup-loader *ngIf="reAssignDataLoader"></app-modal-popup-loader>
+               <div  class="table-responsive" *ngIf="!reAssignDataLoader">
+                  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+                  <div class="form-group text-center">
+                     <img src="../../../assets/images/data-transfer-animation.gif" style="width: 50%;">
+                  </div>
+                  <div class="form-group">
+                     <label>Device Name</label>
+                     <input type="text" class="form-control" disabled value="{{selectedDeviceInfo?.productCode}}">
+                  </div>
+                  <div class="form-group">
+                     <label>Serial Number</label>
+                     <input type="text" class="form-control" disabled value="{{selectedDeviceInfo?.serialNumber}}">
+                  </div>
+                  <div class="form-group">
+                     <label>From Customer Id<span class="required">*</span></label>
+                     <input type="number" class="form-control" id="fromCustomerId" min="1" (input)="validateForm('fromCustomerId')">
+                  </div>
+                  <div class="form-group">
+                     <label>To Customer Id<span class="required">*</span></label>
+                     <input type="number" class="form-control" min="1" id="toCustomerId" (input)="validateForm('toCustomerId')">
+                  </div>
                </div>
-           </div>
-           <div class="modal-footer" *ngIf="!reAssignDataLoader">
-               <button [disabled]="!validForm" type="submit" class="btn btn-primary" (click)="transferData()" translate>Transfer</button>
-               <button type="submit" class="btn btn-default" (click)="hideReAssignDataModalPopUp()" translate>Close</button>
-             </div>
-       </div>
+            </div>
+         </div>
+         <div class="modal-footer" *ngIf="!reAssignDataLoader">
+            <button [disabled]="!validForm" type="submit" class="btn btn-primary" (click)="transferData()" translate>Transfer</button>
+            <button type="submit" class="btn btn-default" (click)="hideReAssignDataModalPopUp()" translate>Close</button>
+         </div>
+      </div>
    </div>
- </div>
+</div>

@@ -1,49 +1,49 @@
 <div class="modal fade right" id="campaignTemplateDownloadHistoryPopup" tabindex="-1" role="dialog" aria-labelledby="campaignTemplateDownloadHistoryPopup" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-lg modal-template" role="document">
-     <div class="modal-content">
-        <div class="modal-header">
-           <button type="button" class="close-circle" (click)="closePopup()">
-           <i class="fa fa-times" aria-hidden="true"></i>
-           </button>
-           <h4 class="modal-title text-center">{{campaignName}}</h4>
-        </div>
-        <div class="modal-body">
-         <app-response-message [customResponse]="historyResponse" *ngIf="historyResponse.isVisible"></app-response-message>
-           <div class="table-responsive" *ngIf="!historyResponse.isVisible">
-                  <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
-                     <thead>
-                        <tr>
-                           <th class="text-center" scope="row" translate>Downloaded Type</th>
-                           <th class="text-center" id="min-width" translate>Downloaded Time</th>
+   <div class="modal-dialog modal-lg modal-template" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close-circle" (click)="closePopup()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h4 class="modal-title text-center">{{campaignName}}</h4>
+         </div>
+         <div class="modal-body">
+            <app-response-message [customResponse]="historyResponse" *ngIf="historyResponse.isVisible"></app-response-message>
+            <div class="table-responsive" *ngIf="!historyResponse.isVisible">
+               <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
+                  <thead>
+                     <tr>
+                        <th class="text-center" scope="row" translate>Downloaded Type</th>
+                        <th class="text-center" id="min-width" translate>Downloaded Time</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
+                     <ng-container *ngIf="!historyLoader.isLoading">
+                        <tr *ngFor="let history of historyPagination.pagedItems ;let i =index">
+                           <td class="text-center">
+                              {{history?.downloadedType}}
+                           </td>
+                           <td class="text-center">
+                              <app-timestamp  [dateAndTime]="history?.displayTime">
+                              </app-timestamp>
+                           </td>
                         </tr>
-                     </thead>
-                     <tbody>
-                        <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
-                        <ng-container *ngIf="!historyLoader.isLoading">
-                           <tr *ngFor="let history of historyPagination.pagedItems ;let i =index">
-                              <td class="text-center">
-                                 {{history?.downloadedType}}
-                              </td>
-                              <td class="text-center">
-                                 <app-timestamp  [dateAndTime]="history?.displayTime">
-                                 </app-timestamp>
-                              </td>
-                           </tr>
-                        </ng-container>
-                     </tbody>
-                  </table>
-              </div>
-              <div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info">
+                     </ng-container>
+                  </tbody>
+               </table>
+            </div>
+            <div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info">
                <strong>No History Found.</strong>
             </div>
             <div  *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
-               <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listHistory($event)">
-               </app-pagination>
-             </div>
-     </div>
-     <div class="modal-footer" *ngIf="!historyLoader.isLoading">
-        <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
-     </div>
-  </div>
+            <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listHistory($event)">
+            </app-pagination>
+         </div>
+      </div>
+      <div class="modal-footer" *ngIf="!historyLoader.isLoading">
+         <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
+      </div>
+   </div>
 </div>
 </div>

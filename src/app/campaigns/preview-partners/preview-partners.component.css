@@ -1,17 +1,9 @@
-#delete-partner {
-	margin: 4px;
-	color: red;
-	margin-left: 2px;
-}
-
 #right-align {
-	text-align: right !important;
+  text-align: right !important;
 }
-
 #asset-history {
-	background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
-
 #history-tr {
-	background-color: #d3d3d317;
+  background-color: #d3d3d317;
 }

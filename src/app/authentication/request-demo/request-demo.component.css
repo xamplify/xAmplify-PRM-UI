@@ -1,81 +1,87 @@
-  p {
+p {
   font-weight: 400;
   color: #4c4c4c;
   font-size: 17px;
-  }
-  
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   color: #4c4c4c;
-  }
-  
-  h4 {
+}
+
+h4 {
   font-size: 20px;
   margin: 12px 0;
-  }
-  
-  a {
+}
+
+a {
   color: #f56363;
   transition: all 0.3s ease-in-out;
-  }
-  
-  a:hover,
-  a:focus {
+}
+
+a:hover,
+a:focus {
   color: #f56363c7;
   text-decoration: none;
-  }
-  
-  a:focus { outline: none; }
-  
-  img {
+}
+
+a:focus {
+  outline: none;
+}
+
+img {
   max-width: 100%;
   height: auto;
-  }
-  
-  ul,
-  li {
+}
+
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
-  }
-  
-  b,
-  strong { font-weight: 600; }
-  
-  /* ==========================================================================
+}
+
+b,
+strong {
+  font-weight: 600;
+}
+
+/* ==========================================================================
    2.Hero section
    ========================================================================== */
-  
-  .hero-section {
+
+.hero-section {
   background: #ffffff;
   background-size: cover;
   padding: 0 0 0em;
   position: relative;
   color: #fff;
   overflow: hidden;
-  }
-  
-  .hero-section::before,
-  .video-tour::before,
-  .pricing::before,
-  .twitter-feed::before {
-  content: '';
+}
+
+.hero-section::before,
+.video-tour::before,
+.pricing::before,
+.twitter-feed::before {
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
-  }
-  
-  .hero-section::before { background: rgba(0, 0, 0, 0.3); }
-  
-  .btn {
+}
+
+.hero-section::before {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.btn {
   padding: 1em 1em;
   color: #fff;
   font-size: 15px;
@@ -87,84 +93,106 @@
   border-radius: 5px !important;
   font-weight: 400;
   transition: all 0.3s ease-in-out;
-  }
-  
-  .btn:hover {
+}
+
+.btn:hover {
   color: #fff;
   background-color: #f56363c7;
-  }
-  
-  .btn:active,
-  .btn:focus,
-  .btn:active:hover,
-  .btn:active:focus {
+}
+
+.btn:active,
+.btn:focus,
+.btn:active:hover,
+.btn:active:focus {
   color: #fff;
   outline: none;
   background-color: #f56363c7;
-  }
+}
 
-  
-  /* ==========================================================================
+/* ==========================================================================
    3.Navbar
    ========================================================================== */
-  
-  .navbar-default {
+
+.navbar-default {
   background-color: rgba(255, 255, 255, 0.97);
   border: none;
   margin-bottom: 0;
   border-radius: 0;
   padding: 1em 0 1.5em;
-  }
-  
-  .nav > li { text-align: center; }
-  
-  .nav > li > a > i { padding-right: .2em; }
-  
-  .navbar-default .navbar-toggle:hover,
-  .navbar-default .navbar-toggle:focus {
+}
+
+.nav > li {
+  text-align: center;
+}
+
+.nav > li > a > i {
+  padding-right: 0.2em;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
   background-color: #f56363;
   transition: all 0.3s ease-in-out;
-  }
-  
-  .navbar-default .navbar-toggle:hover .icon-bar,
-  .navbar-default .navbar-toggle:focus .icon-bar { background-color: #fff; }
-  
-  .navbar-brand { padding: 0 0 0 1em; }
-  
-  .navbar-brand .logo-nav,
-  .nav-left { display: none; }
-  
-  .navbar-default.stuck .logo-head { display: none; }
-  
-  .navbar-default.stuck .logo-nav,
-  .navbar-default.stuck .nav-left { display: block; }
-  
-  .navbar-default .navbar-nav>li>a,
-  .navbar-default .navbar-nav > li > a:hover,
-  .navbar-default .navbar-nav > li > a:focus { color: #4c4c4c; font-size: 15px;}
-  
-  .navbar-default.stuck .navbar-nav>li>a { color: #4c4c4c; }
-  
-  .navbar-default.stuck .navbar-nav > li > a:hover,
-  .navbar-default.stuck .navbar-nav > li > a:focus { color: #f56363; }
-  
-  .navbar-default .btn { font-size: 15px; }
-  
-  .navbar-default.stuck .navbar-nav .btn {
+}
+
+.navbar-default .navbar-toggle:hover .icon-bar,
+.navbar-default .navbar-toggle:focus .icon-bar {
+  background-color: #fff;
+}
+
+.navbar-brand {
+  padding: 0 0 0 1em;
+}
+
+.navbar-brand .logo-nav,
+.nav-left {
+  display: none;
+}
+
+.navbar-default.stuck .logo-head {
+  display: none;
+}
+
+.navbar-default.stuck .logo-nav,
+.navbar-default.stuck .nav-left {
+  display: block;
+}
+
+.navbar-default .navbar-nav > li > a,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #4c4c4c;
+  font-size: 15px;
+}
+
+.navbar-default.stuck .navbar-nav > li > a {
+  color: #4c4c4c;
+}
+
+.navbar-default.stuck .navbar-nav > li > a:hover,
+.navbar-default.stuck .navbar-nav > li > a:focus {
+  color: #f56363;
+}
+
+.navbar-default .btn {
+  font-size: 15px;
+}
+
+.navbar-default.stuck .navbar-nav .btn {
   display: inline-block;
   color: #fff !important;
   border-color: #5aa1e3;
   background-color: #5aa1e3 !important;
   border-radius: 30px !important;
-  }
-  
-  .navbar-default.stuck .navbar-nav .btn:hover,
-  .navbar-default.stuck .navbar-nav .btn:focus {
-  background: #f56363c7!important;
+}
+
+.navbar-default.stuck .navbar-nav .btn:hover,
+.navbar-default.stuck .navbar-nav .btn:focus {
+  background: #f56363c7 !important;
   color: #fff;
-  }
-  
-  .navbar-default.stuck {
+}
+
+.navbar-default.stuck {
   position: sticky;
   width: 100%;
   top: 0;
@@ -174,134 +202,165 @@
   box-shadow: 0 1px 12px 0px rgba(51, 51, 51, 0.23);
   -webkit-animation: fadeInDown 1s both;
   animation: fadeInDown 1s both;
-  }
-  @-webkit-keyframes fadeInDown {
+}
+
+@-webkit-keyframes fadeInDown {
   0% {
-  opacity:0;
-  -webkit-transform:translateY(-20px);
-  transform:translateY(-20px);
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
   }
+
   100% {
-  opacity:1;
-  -webkit-transform:translateY(0);
-  transform:translateY(0);
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
   }
-  }
-  @keyframes fadeInDown {
+}
+
+@keyframes fadeInDown {
   0% {
-  opacity:0;
-  -webkit-transform:translateY(-20px);
-  -ms-transform:translateY(-20px);
-  transform:translateY(-20px);
+    opacity: 0;
+    -webkit-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    transform: translateY(-20px);
   }
+
   100% {
-  opacity:1;
-  -webkit-transform:translateY(0);
-  -ms-transform:translateY(0);
-  transform:translateY(0);
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
   }
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
    4.Play button
    ========================================================================== */
-  
-  
-  .play-btn { margin: 2.25em 0; }
-  
-  .hero-section .play-btn img { transition: opacity 0.3s linear; }
-  
-  .play-btn img:hover { opacity: .8; }
-  
-  /* ==========================================================================
+
+.play-btn {
+  margin: 2.25em 0;
+}
+
+.hero-section .play-btn img {
+  transition: opacity 0.3s linear;
+}
+
+.play-btn img:hover {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
    5.Featured on
    ========================================================================== */
-  
-  
-  
-  .section-header { margin-bottom: 3em; }
-  
-  .section-header h2 {
+
+.section-header {
+  margin-bottom: 3em;
+}
+
+.section-header h2 {
   font-size: 24px;
   font-weight: 600;
   margin-top: 0;
-  }
-  
-  .section-header h3 {
+}
+
+.section-header h3 {
   font-size: 24px;
   font-weight: 300;
   margin: 0;
-  }
+}
 
-  .features,
-  .tour,
-  .site-footer { background-color: rgba(0, 0, 0, 0.03); }
-  
-  .section-spacing,
-  .section-spacing.featured-on,
-  .section-spacing.tour,
-  .section-spacing.site-footer { padding: 3.75em 0; }
-  
-  .featured-on .section-header { margin-bottom: 1.5em; }
-  
-  /* ==========================================================================
+.features,
+.tour,
+.site-footer {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.section-spacing,
+.section-spacing.featured-on,
+.section-spacing.tour,
+.section-spacing.site-footer {
+  padding: 3.75em 0;
+}
+
+.featured-on .section-header {
+  margin-bottom: 1.5em;
+}
+
+/* ==========================================================================
    6.Benefits
    ========================================================================== */
-  
-  
-  
-  .benefits img { margin-bottom: .75em; }
-  
-  .benefits p { color: #8A8A8A; }
-  
-  .benefits div[class^="col-"]:nth-child(1),
-  .benefits div[class^="col-"]:nth-child(2),
-  .reviews div[class^="col-"]:nth-child(1),
-  .reviews div[class^="col-"]:nth-child(2),
-  .team div[class^="col-"]:nth-child(1),
-  .team div[class^="col-"]:nth-child(2) { padding-bottom: 1.5em; }
-  
-  .benefits div[class^="col-"] > p:last-child { margin-bottom: 0; }
-  
-  /* ==========================================================================
+
+.benefits img {
+  margin-bottom: 0.75em;
+}
+
+.benefits p {
+  color: #8a8a8a;
+}
+
+.benefits div[class^="col-"]:nth-child(1),
+.benefits div[class^="col-"]:nth-child(2),
+.reviews div[class^="col-"]:nth-child(1),
+.reviews div[class^="col-"]:nth-child(2),
+.team div[class^="col-"]:nth-child(1),
+.team div[class^="col-"]:nth-child(2) {
+  padding-bottom: 1.5em;
+}
+
+.benefits div[class^="col-"] > p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
    7.Features
    ========================================================================== */
-  
-  .features { overflow: hidden; }
-  
-  .features div[class="row"]:nth-child(1),
-  .features div[class="row"]:nth-child(2) { margin-bottom: 3em; }
-  
-  .features article { margin-top: 1.5em; }
-  
-  .features article h2 {
+
+.features {
+  overflow: hidden;
+}
+
+.features div[class="row"]:nth-child(1),
+.features div[class="row"]:nth-child(2) {
+  margin-bottom: 3em;
+}
+
+.features article {
+  margin-top: 1.5em;
+}
+
+.features article h2 {
   font-size: 24px;
   margin: 24px 0 12px;
-  }
-  
-  .features article li {
+}
+
+.features article li {
   font-size: 17px;
-  color: #8A8A8A;
+  color: #8a8a8a;
   padding-left: 1em;
-  text-indent: -.7em;
-  padding-bottom: .2em;
-  }
-  
-  .features article li:last-child { padding-bottom: 0; }
-  
-  .features article li:before {
+  text-indent: -0.7em;
+  padding-bottom: 0.2em;
+}
+
+.features article li:last-child {
+  padding-bottom: 0;
+}
+
+.features article li:before {
   content: "� ";
   color: #f56363;
-  padding-right: .5em;
-  }
-  
-  .features div[class="row"]:nth-child(3) .col-md-4 article { margin-bottom: 1.5em; }
-  
-  /* ==========================================================================
+  padding-right: 0.5em;
+}
+
+.features div[class="row"]:nth-child(3) .col-md-4 article {
+  margin-bottom: 1.5em;
+}
+
+/* ==========================================================================
    8.video tour
    ========================================================================== */
-  
-  .video-tour {
+
+.video-tour {
   position: relative;
   height: 400px;
   overflow: hidden;
@@ -309,22 +368,22 @@
   background-size: cover;
   -webkit-perspective: 1000;
   perspective: 1000;
-  }
-  
-  .video-tour::before {
+}
+
+.video-tour::before {
   background: rgba(0, 0, 0, 0.3);
   z-index: 1;
-  }
-  
-  .video-tour h2 {
+}
+
+.video-tour h2 {
   font-size: 24px;
   color: #fff;
   font-weight: 400;
   margin-bottom: 0;
-  }
-  
-  /* #bgvid-hero, */
-  #bgvid {
+}
+
+/* #bgvid-hero, */
+#bgvid {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -337,9 +396,9 @@
   z-index: -1;
   display: none;
   object-fit: cover;
-  }
-  
-  .video-tour .play-btn {
+}
+
+.video-tour .play-btn {
   position: absolute;
   z-index: 3;
   left: 50%;
@@ -350,143 +409,165 @@
   -ms-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
   margin: 0;
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
    9.tour
    ========================================================================== */
-  
-  .center-block { float: none; }
-  
-  .tour h2 {
+
+.center-block {
+  float: none;
+}
+
+.tour h2 {
   font-size: 24px;
   font-weight: 400;
   margin: 0;
-  }
-  
-  .tour .btn {
+}
+
+.tour .btn {
   margin-top: 1em;
   vertical-align: initial;
-  }
-  
-  .tour .btn i,
-  .sub-form .btn i { padding-left: .5em; }
-  
-  /* ==========================================================================
+}
+
+.tour .btn i,
+.sub-form .btn i {
+  padding-left: 0.5em;
+}
+
+/* ==========================================================================
    10.Pricing
    ========================================================================== */
-  
-  .pricing {
+
+.pricing {
   background: url(/assets/images/bg-pricing.jpg) center center no-repeat scroll;
   background-size: cover;
   position: relative;
-  }
-  
-  .pricing::before { background: rgba(0, 0, 0, 0.30); }
-  
-  .pricing .section-header h2,
-  .pricing .section-header h3 {
+}
+
+.pricing::before {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.pricing .section-header h2,
+.pricing .section-header h3 {
   position: relative;
   color: #fff;
-  }
-  
-  .plan {
+}
+
+.plan {
   background-color: #fff;
   width: 350px;
   display: inline-block;
   margin: 0 0 1.5em;
   max-width: 100%;
-  }
-  
-  .plan:last-child { margin-bottom: 0; }
-  
-  .plan .header,
-  .price,
-  .plan-features { padding: 1.5em 1em; }
-  
-  .plan .header h4 {
+}
+
+.plan:last-child {
+  margin-bottom: 0;
+}
+
+.plan .header,
+.price,
+.plan-features {
+  padding: 1.5em 1em;
+}
+
+.plan .header h4 {
   font-size: 21px;
   margin: 0;
-  }
-  
-  .price {
+}
+
+.price {
   background-color: #0195da;
   color: #fff;
-  }
-  
-  .price-amount {
+}
+
+.price-amount {
   font-size: 110px;
   line-height: 1;
-  }
-  
-  .period { font-size: 30px; }
-  
-  .currency {
+}
+
+.period {
+  font-size: 30px;
+}
+
+.currency {
   font-size: 30px;
   vertical-align: top;
   top: 30px;
-  }
-  
-  .plan-features li {
-  padding-bottom: .75em;
+}
+
+.plan-features li {
+  padding-bottom: 0.75em;
   font-size: 17px;
-  }
-  
-  .plan-features li:last-child { padding-bottom: 0; }
-  
-  .plan-features li span { font-weight: 700; }
-  
-  .plan-features li i {
-  padding-left: .5em;
+}
+
+.plan-features li:last-child {
+  padding-bottom: 0;
+}
+
+.plan-features li span {
+  font-weight: 700;
+}
+
+.plan-features li i {
+  padding-left: 0.5em;
   color: #f56363;
-  }
-  
-  .buy-button { padding-bottom: 1.5em; }
-  
-  .buy-button p {
+}
+
+.buy-button {
+  padding-bottom: 1.5em;
+}
+
+.buy-button p {
   margin: 12px 0 0;
   font-weight: 300;
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
   11.reviews
    ========================================================================== */
-  /* ==========================================================================
+/* ==========================================================================
   12.cta section
    ========================================================================== */
-  /* ==========================================================================
+/* ==========================================================================
    13.Team
    ========================================================================== */
-  
-  /* ==========================================================================
+
+/* ==========================================================================
    14.Twitter feed
    ========================================================================== */
-  
-  /* ==========================================================================
+
+/* ==========================================================================
    15.Contact us
    ========================================================================== */
-  
-  .contact.section-spacing { padding: 3.75em 0 0; }
-  
-  /* ==========================================================================
+
+.contact.section-spacing {
+  padding: 3.75em 0 0;
+}
+
+/* ==========================================================================
    16.Subscription form styles
    ========================================================================== */
-  
-  
-  .form-control::-webkit-input-placeholder {
-  color: #8A8A8A;
-  }
-  .form-control:-moz-placeholder {
-  color: #8A8A8A;
-  }
-  .form-control::-moz-placeholder {
-  color: #8A8A8A;
-  }
-  .form-control:-ms-input-placeholder {
-  color: #8A8A8A;
-  }
-  
-  .form-control {
+
+.form-control::-webkit-input-placeholder {
+  color: #8a8a8a;
+}
+
+.form-control:-moz-placeholder {
+  color: #8a8a8a;
+}
+
+.form-control::-moz-placeholder {
+  color: #8a8a8a;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #8a8a8a;
+}
+
+.form-control {
   background-color: #fff;
   border: 1px solid #f56363;
   color: #4c4c4c;
@@ -495,37 +576,43 @@
   font-weight: 400;
   font-size: 16px;
   padding: 0 1.5em;
-  }
-  
-  .form-control:focus {
+}
+
+.form-control:focus {
   border-color: #f56363c7;
   outline: 0;
   box-shadow: none;
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
    17.site footer
    ========================================================================== */
-  
-  
-  
-  .site-footer small { display: inline-block; }
-  
-  .footer-links,
-  .site-footer small { margin: 0 0 .75em; }
-  
-  .site-footer small,
-  .footer-links a {
-  color: #8A8A8A;
+
+.site-footer small {
+  display: inline-block;
+}
+
+.footer-links,
+.site-footer small {
+  margin: 0 0 0.75em;
+}
+
+.site-footer small,
+.footer-links a {
+  color: #8a8a8a;
   font-weight: 300;
   font-size: 18px;
-  }
-  
-  .footer-links a:hover { color: #f56363c7; }
-  
-  .footer-links a:first-child { padding-right: .4em; }
-  
-  .chat-btn.fixed {
+}
+
+.footer-links a:hover {
+  color: #f56363c7;
+}
+
+.footer-links a:first-child {
+  padding-right: 0.4em;
+}
+
+.chat-btn.fixed {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -533,48 +620,64 @@
   position: fixed;
   bottom: 120px;
   right: 30px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease-in-out;
   z-index: 2;
-  }
-  
-  .chat-btn.fixed { display: none; }
-  
-  .chat-btn:hover {
+}
+
+.chat-btn.fixed {
+  display: none;
+}
+
+.chat-btn:hover {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-  }
-  
-  .chat-btn.fixed { display: block; }
-  
-  #modal-contact-form .modal-body { padding: 3em 1em; }
-  
-  .contact-form .section-header h2 { margin: 24px 0 12px; }
-  
-  .contact-form .form-control {
+}
+
+.chat-btn.fixed {
+  display: block;
+}
+
+#modal-contact-form .modal-body {
+  padding: 3em 1em;
+}
+
+.contact-form .section-header h2 {
+  margin: 24px 0 12px;
+}
+
+.contact-form .form-control {
   border-radius: 4px;
   height: 49px;
   padding: 10px 16px;
   border-color: #dadddf;
-  }
-  
-  .contact-form .form-control:focus { border-color: #fab1b1; }
-  
-  .contact-form textarea.input-lg { height: auto; }
-  
-  .cta-form .form-group { margin-bottom: 24px; }
-  
-  .contact-form .form-control.input-error { border-color: #f44336; }
-  
-  .contact-form-success {
+}
+
+.contact-form .form-control:focus {
+  border-color: #fab1b1;
+}
+
+.contact-form textarea.input-lg {
+  height: auto;
+}
+
+.cta-form .form-group {
+  margin-bottom: 24px;
+}
+
+.contact-form .form-control.input-error {
+  border-color: #f44336;
+}
+
+.contact-form-success {
   text-align: center;
   padding: 12px;
   margin: 0;
   font-size: 20px;
   display: none;
-  }
-  
-  .contact-form-success i {
+}
+
+.contact-form-success i {
   display: block;
   width: 80px;
   height: 80px;
@@ -586,57 +689,66 @@
   text-align: center;
   color: #2dbf5b;
   background: transparent;
-  }
-  
-  .contact-form-success { color: #949494; }
-  
-  .contact-form-success span {
+}
+
+.contact-form-success {
+  color: #949494;
+}
+
+.contact-form-success span {
   display: block;
   margin-bottom: 6px;
   color: #4c4c4c;
   font-size: 30px;
-  }
-  
-  .modal { padding-right: 0 !important; }
-  
-  .modal button.close {
+}
+
+.modal {
+  padding-right: 0 !important;
+}
+
+.modal button.close {
   position: absolute;
   top: -33px;
   right: 15px;
   font-size: 30px;
   color: #fff;
-  opacity: .9;
+  opacity: 0.9;
   text-shadow: none;
   transition: all 0.3s ease-in-out;
   font-weight: 800;
-  }
-  
-  .modal .close:hover,
-  .modal .close:focus {
+}
+
+.modal .close:hover,
+.modal .close:focus {
   opacity: 1;
   outline: none;
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
-  }
-  
-  .modal .modal-dialog { margin: 70px auto; }
-  
-  .modal .modal-content { border-radius: 3px; }
-  
-  /* ==========================================================================
+}
+
+.modal .modal-dialog {
+  margin: 70px auto;
+}
+
+.modal .modal-content {
+  border-radius: 3px;
+}
+
+/* ==========================================================================
    18.Social
    ========================================================================== */
-  
-  
-  .social li {
+
+.social li {
   display: inline-block;
-  padding-right: .5em;
+  padding-right: 0.5em;
   text-align: center;
-  }
-  
-  .social li:last-child { padding-right: 0; }
-  
-  .social li a {
+}
+
+.social li:last-child {
+  padding-right: 0;
+}
+
+.social li a {
   display: block;
   width: 45px;
   height: 45px;
@@ -644,178 +756,235 @@
   color: #fff;
   border-radius: 50%;
   position: relative;
-  transition: all .8s ease;
+  transition: all 0.8s ease;
   font-size: 1.3em;
-  background: #D6D6D6;
-  }
-  
-  .social li a:hover {
+  background: #d6d6d6;
+}
+
+.social li a:hover {
   color: #fff;
   background: #f56363;
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
    Language switcher
    ========================================================================== */
 
-  
-  /* ==========================================================================
+/* ==========================================================================
    19.Small devices (tablets, 768px and up)
    ========================================================================== */
-  
-  @media (min-width: 768px) {
-  
-  .hero-section { padding: 0 0 7.5em; }
-  
-  .section-spacing { padding: 3em 0; }
-  
-  .contact.section-spacing { padding: 4.5em 0 0; }
-  
-  .section-header h3 { font-size: 26px; }
-  
-  .benefits div[class^="col-"]:nth-child(1),
-  .benefits div[class^="col-"]:nth-child(2) { padding-bottom: 0; }
-  
-  .tour .btn { margin: 0 0 0 1em; }
-  
-  .video-tour { height: 450px; }
-  
-  .plan {
-  width: 325px;
-  margin: 0 1em 0;
-  }
-  
-  #modal-contact-form .modal-body { padding: 3em; }
-/*   
-  .modal button.close { right: 0; } */
-  }
-  
-  /* ==========================================================================
-   20.Medium devices (desktops, 992px and up)
-   ========================================================================== */
-  
-  @media (min-width: 992px) {
-  
+
+@media (min-width: 768px) {
   .hero-section {
-  padding: 0em 0 0em;
-  background: none;
-  }
-  
-  .hero-section::before { display: none; }
-  
-  .overlay {
-  position: absolute;
-  width: 100%;
-  min-height: 100%;
-  background: #ffffff;
-  top: 0;
-  }
-  
-  .navbar-default { background-color: transparent; }
-  
-  .navbar-default .btn {
-  color: #fff !important;
-  border-color: #5aa1e3 !important;
-  background-color: #5aa1e3 !important;
-  border-radius: 30px !important;
-  padding: .75em 1.5em;
-  }
-  
-  .navbar-default .btn:hover { background-color: #f56363c7 !important; }
-  
-  .navbar-brand { padding: 0; }
-  
-  .play-btn { margin: 4.5em 0; }
-  
-  .section-spacing { padding: 3em 0; }
-  
-  .contact.section-spacing { padding: 6em 0 0; }
-  
-  .features div[class="row"]:nth-child(1),
-  .features div[class="row"]:nth-child(2) { margin-bottom: 7.5em; }
-  
-  .features article { margin-top: 6em; }
-  
-  .features img {
-  max-width: none;
-  width: 100%;
-  }
-  
-  .features div[class="row"]:nth-child(2) .col-md-7 img { left: -277px; }
-  
-  .video-tour {
-  height: 600px;
-  background: none;
-  }
-  
-  .video-tour::before { background: rgba(0, 0, 0, 0.1); }
-  
-  #bgvid { display: block; }
-  
-  .plan {
-  margin: 0 1.5em 0;
-  width: 310px;
-  }
-  
-  .footer-links,
-  .site-footer small { margin: 0; }
-  
-  .section-spacing.site-footer { padding: 3em 0; }
-  }
-  
-  @media (max-width: 460px) {
-  .video-tour .play-btn img { width: 45%; }
-  }
-  
-  .contact.section-spacing,
-  .sub-form.section-spacing,
-  .benefits.section-spacing,
-  .tour.section-spacing {
-    background: #fff;
-  }
-  .site-footer.section-spacing,
-  .features.section-spacing {
-    background: #f7f7f7;
-  }
-  nav a {
-  background: none !important;
-  }
-  .navbar-default.stuck .navbar-nav > li > a.btn:hover,
-  .navbar-default.stuck .navbar-nav > li > a.btn:focus {
-    color: #f8f8f8;
-  }
-  
-  @media screen and (max-width:600px){
-    .size{ font-size: 30px !important;}
-    .size-p{ font-size: 15px !important; }
-    .size-try-xamplify{ font-size: 17px !important; }
-  }
-  
-  .fbg{
-    background: #ffffff !important;
+    padding: 0 0 7.5em;
   }
 
-  .form-control[_ngcontent-c1] {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    color: #4c4c4c;
-    box-shadow: none;
-    height: 35px;
-    font-weight: 400;
-    font-size: 14px;
-    padding: 0 1.5em;
+  .section-spacing {
+    padding: 3em 0;
+  }
+
+  .contact.section-spacing {
+    padding: 4.5em 0 0;
+  }
+
+  .section-header h3 {
+    font-size: 26px;
+  }
+
+  .benefits div[class^="col-"]:nth-child(1),
+  .benefits div[class^="col-"]:nth-child(2) {
+    padding-bottom: 0;
+  }
+
+  .tour .btn {
+    margin: 0 0 0 1em;
+  }
+
+  .video-tour {
+    height: 450px;
+  }
+
+  .plan {
+    width: 325px;
+    margin: 0 1em 0;
+  }
+
+  #modal-contact-form .modal-body {
+    padding: 3em;
+  }
+
+  /*   
+  .modal button.close { right: 0; } */
 }
-.required{
-	color: red;
+
+/* ==========================================================================
+   20.Medium devices (desktops, 992px and up)
+   ========================================================================== */
+
+@media (min-width: 992px) {
+  .hero-section {
+    padding: 0em 0 0em;
+    background: none;
+  }
+
+  .hero-section::before {
+    display: none;
+  }
+
+  .overlay {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    background: #ffffff;
+    top: 0;
+  }
+
+  .navbar-default {
+    background-color: transparent;
+  }
+
+  .navbar-default .btn {
+    color: #fff !important;
+    border-color: #5aa1e3 !important;
+    background-color: #5aa1e3 !important;
+    border-radius: 30px !important;
+    padding: 0.75em 1.5em;
+  }
+
+  .navbar-default .btn:hover {
+    background-color: #f56363c7 !important;
+  }
+
+  .navbar-brand {
+    padding: 0;
+  }
+
+  .play-btn {
+    margin: 4.5em 0;
+  }
+
+  .section-spacing {
+    padding: 3em 0;
+  }
+
+  .contact.section-spacing {
+    padding: 6em 0 0;
+  }
+
+  .features div[class="row"]:nth-child(1),
+  .features div[class="row"]:nth-child(2) {
+    margin-bottom: 7.5em;
+  }
+
+  .features article {
+    margin-top: 6em;
+  }
+
+  .features img {
+    max-width: none;
+    width: 100%;
+  }
+
+  .features div[class="row"]:nth-child(2) .col-md-7 img {
+    left: -277px;
+  }
+
+  .video-tour {
+    height: 600px;
+    background: none;
+  }
+
+  .video-tour::before {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  #bgvid {
+    display: block;
+  }
+
+  .plan {
+    margin: 0 1.5em 0;
+    width: 310px;
+  }
+
+  .footer-links,
+  .site-footer small {
+    margin: 0;
+  }
+
+  .section-spacing.site-footer {
+    padding: 3em 0;
+  }
 }
-#demo-timezoneId{
-	width:115%
+
+@media (max-width: 460px) {
+  .video-tour .play-btn img {
+    width: 45%;
+  }
 }
+
+.contact.section-spacing,
+.sub-form.section-spacing,
+.benefits.section-spacing,
+.tour.section-spacing {
+  background: #fff;
+}
+
+.site-footer.section-spacing,
+.features.section-spacing {
+  background: #f7f7f7;
+}
+
+nav a {
+  background: none !important;
+}
+
+.navbar-default.stuck .navbar-nav > li > a.btn:hover,
+.navbar-default.stuck .navbar-nav > li > a.btn:focus {
+  color: #f8f8f8;
+}
+
+@media screen and (max-width: 600px) {
+  .size {
+    font-size: 30px !important;
+  }
+
+  .size-p {
+    font-size: 15px !important;
+  }
+
+  .size-try-xamplify {
+    font-size: 17px !important;
+  }
+}
+
+.fbg {
+  background: #ffffff !important;
+}
+
+.form-control[_ngcontent-c1] {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #4c4c4c;
+  box-shadow: none;
+  height: 35px;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 0 1.5em;
+}
+
+.required {
+  color: red;
+}
+
+#demo-timezoneId {
+  width: 115%;
+}
+
 #wrapper {
-    text-align: center;
+  text-align: center;
 }
 
 #demo-button {
-    top: 50%;
+  top: 50%;
 }
-

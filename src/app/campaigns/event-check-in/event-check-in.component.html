@@ -1,27 +1,27 @@
 <div class="page-content">
-<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-<ng-container *ngIf="!httpRequestLoader.isLoading">
-<ng-container *ngIf="statusCode==200">
-	<div class="page-bar">
-		<ul class="page-breadcrumb">
-			<li *ngIf="!authenticationService.isSuperAdmin()"><i
-				class="fa fa-home" aria-hidden="true"></i> <a
-				[routerLink]="referenceService.homeRouter">Home</a> <i
-				class="fa fa-angle-right" aria-hidden="true"></i></li>
-			<li>
-				<a routerLink = "/home/campaigns/{{campaignId}}/details">Campaign Analytics</a> <i class="fa fa-angle-right"></i></li>
-
-			<li>Check-in</li>
-		</ul>
-	</div>
-		<app-form-analytics-util [importedObject]="exportingObject"></app-form-analytics-util>
-</ng-container>
-  <div class="col-xs-12 p5" *ngIf="statusCode==403">
-			<div class="alert alert-danger">
-				<strong>
-					<h4>Access Denied</h4>
-				</strong>
-			</div>
-		</div>
-  </ng-container>
-</div>
+	<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+	<ng-container *ngIf="!httpRequestLoader.isLoading">
+	   <ng-container *ngIf="statusCode==200">
+		  <div class="page-bar">
+			 <ul class="page-breadcrumb">
+				<li *ngIf="!authenticationService.isSuperAdmin()"><i
+				   class="fa fa-home" aria-hidden="true"></i> <a
+				   [routerLink]="referenceService.homeRouter">Home</a> <i
+				   class="fa fa-angle-right" aria-hidden="true"></i></li>
+				<li>
+				   <a routerLink = "/home/campaigns/{{campaignId}}/details">Campaign Analytics</a> <i class="fa fa-angle-right"></i>
+				</li>
+				<li>Check-in</li>
+			 </ul>
+		  </div>
+		  <app-form-analytics-util [importedObject]="exportingObject"></app-form-analytics-util>
+	   </ng-container>
+	   <div class="col-xs-12 p5" *ngIf="statusCode==403">
+		  <div class="alert alert-danger">
+			 <strong>
+				<h4>Access Denied</h4>
+			 </strong>
+		  </div>
+	   </div>
+	</ng-container>
+ </div>
