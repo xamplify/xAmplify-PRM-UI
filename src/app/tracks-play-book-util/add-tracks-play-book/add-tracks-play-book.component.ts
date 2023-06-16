@@ -1505,7 +1505,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   filterAssetsByFileType(event:any){
     this.assetPagination.pageIndex = 1;
 		this.assetPagination.filterBy = event;
-    this.assetPagination.searchKey = this.assetSortOption.searchKey
+    this.assetPagination.searchKey = this.assetSortOption.searchKey;
     this.listAssets(this.assetPagination);
   }
 }
