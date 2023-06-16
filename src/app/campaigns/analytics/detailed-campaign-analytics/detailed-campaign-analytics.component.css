@@ -82,7 +82,8 @@ tr:hover {
 	font-size: 1em;
 }
 
-.modal-content, .border-radius-0 {
+.modal-content,
+.border-radius-0 {
 	border-radius: 0;
 }
 
@@ -114,21 +115,26 @@ h1.bold {
 	font-size: 2em;
 }
 
-.color1, .color1-invert:hover {
+.color1,
+.color1-invert:hover {
 	background-color: #00a6e8;
 	color: #fff;
 	border: 1px solid #00a6e8;
 	border-radius: 3px !important;
 }
 
-.color1:hover, .color1-invert {
+.color1:hover,
+.color1-invert {
 	color: #00a6e8;
 	background-color: #fff;
 	border: 1px solid #00a6e8;
 	border-radius: 3px !important;
 }
 
-.color1:hover, .color2:hover, .color3:hover, .color4:hover {
+.color1:hover,
+.color2:hover,
+.color3:hover,
+.color4:hover {
 	cursor: pointer;
 }
 
@@ -147,7 +153,7 @@ tr>td>h6 {
 /* Campaign Report Count Block*/
 .crcb {
 	width: 100%;
-  margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 
 
@@ -181,7 +187,9 @@ tr>td>h6 {
 	padding: 10px;
 }
 
-.camp-desc, .camp-title, .camp-number {
+.camp-desc,
+.camp-title,
+.camp-number {
 	color: #FFF;
 	font-size: 12px;
 }
@@ -259,7 +267,8 @@ tr>td>h6 {
 	position: relative;
 }
 
-.timeline>li:before, .timeline>li:after {
+.timeline>li:before,
+.timeline>li:after {
 	content: " ";
 	display: table;
 }
@@ -268,7 +277,8 @@ tr>td>h6 {
 	clear: both;
 }
 
-.timeline>li:before, .timeline>li:after {
+.timeline>li:before,
+.timeline>li:after {
 	content: " ";
 	display: table;
 }
@@ -354,7 +364,8 @@ tr>td>h6 {
 	font-weight: 600;
 }
 
-.timeline-body>p, .timeline-body>ul {
+.timeline-body>p,
+.timeline-body>ul {
 	margin-bottom: 0;
 }
 
@@ -362,29 +373,34 @@ tr>td>h6 {
 	margin-top: 5px;
 }
 
-@media ( max-width : 767px) {
+@media (max-width : 767px) {
 	ul.timeline:before {
 		left: 40px;
 	}
+
 	ul.timeline>li>.timeline-panel {
 		width: calc(100% - 90px);
 		width: -moz-calc(100% - 90px);
 		width: -webkit-calc(100% - 90px);
 	}
+
 	ul.timeline>li>.timeline-badge {
 		left: 15px;
 		margin-left: 0;
 		top: 16px;
 	}
+
 	ul.timeline>li>.timeline-panel {
 		float: right;
 	}
+
 	ul.timeline>li>.timeline-panel:before {
 		border-left-width: 0;
 		border-right-width: 15px;
 		left: -15px;
 		right: auto;
 	}
+
 	ul.timeline>li>.timeline-panel:after {
 		border-left-width: 0;
 		border-right-width: 14px;
@@ -406,7 +422,8 @@ tr>td>h6 {
 	margin-bottom: 0
 }
 
-.emails-info h1, .emails-info span {
+.emails-info h1,
+.emails-info span {
 	font-size: 18px;
 }
 
@@ -574,82 +591,91 @@ fieldset {
 	font-size: 20px !important;
 }
 
-.lt-blue-c:hover{
-  background-color: #008fd5 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.lt-green-c:hover{
-  background-color: #58cc00 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.tk-blue-c:hover{
-  background-color: #3564b9 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.vlt-blue-c:hover{
-  background-color: #2bc2b5 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.pure-blue-c:hover{
-  background-color: #2f2470 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.black-blue-c:hover{
-  background-color: #7f2ca3 !important;
-  color: #fff !important;
-  border-color: #fff;
+.lt-blue-c:hover {
+	background-color: #008fd5 !important;
+	color: #fff !important;
+	border-color: #fff;
 }
 
-.g-b-c:hover{
-  background-color: #009970 !important;
-  color: #fff !important;
-  border-color: #fff;
+.lt-green-c:hover {
+	background-color: #58cc00 !important;
+	color: #fff !important;
+	border-color: #fff;
 }
 
-.y-b-c:hover{
-  background-color: #827500 !important;
-  color: #fff !important;
-  border-color: #fff;
+.tk-blue-c:hover {
+	background-color: #3564b9 !important;
+	color: #fff !important;
+	border-color: #fff;
 }
 
-.y-b-c:hover{
-  background-color: #827500 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.b-b-c:hover{
-  background-color: #2b005c !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.r-b-c:hover{
-  background-color: #c72828 !important;
-  color: #fff !important;
-  border-color: #fff;
-}
-.h-r-c:hover{
-  background-color: #660000 !important;
-  color :#fff !important;
-  border-color: #fff;
-}
-.r-r-c:hover{
-  background-color: red !important;
-  color: #fff !important;
-  border-color: #fff;
+.vlt-blue-c:hover {
+	background-color: #2bc2b5 !important;
+	color: #fff !important;
+	border-color: #fff;
 }
 
-.vlt-b-c:hover{	
+.pure-blue-c:hover {
+	background-color: #2f2470 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.black-blue-c:hover {
+	background-color: #7f2ca3 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.g-b-c:hover {
+	background-color: #009970 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.y-b-c:hover {
+	background-color: #827500 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.y-b-c:hover {
+	background-color: #827500 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.b-b-c:hover {
+	background-color: #2b005c !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.r-b-c:hover {
+	background-color: #c72828 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.h-r-c:hover {
+	background-color: #660000 !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.r-r-c:hover {
+	background-color: red !important;
+	color: #fff !important;
+	border-color: #fff;
+}
+
+.vlt-b-c:hover {
 	background-color: #8877a9 !important;
 	color: #fff !important;
 	border-color: #fff;
 }
 
-.lt-g-b-c:hover{	
+.lt-g-b-c:hover {
 	background-color: #57c195 !important;
 	color: #fff !important;
 	border-color: #fff;
@@ -660,16 +686,26 @@ fieldset {
 	width: 125px;
 
 }
-h1, h2, h3, h4, h5, h6 {
-    color: inherit !important;
-}
-a>span.glyphicon.glyphicon-remove {
-	margin-top: 4px;
-  }
-.gear-icon{
-	color: #7d8c98;
-}
-.header{
-	padding: 10px 0px 10px 0px;background-color: white;border-bottom: 1px solid #eee;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: inherit !important;
 }
 
+a>span.glyphicon.glyphicon-remove {
+	margin-top: 4px;
+}
+
+.gear-icon {
+	color: #7d8c98;
+}
+
+.header {
+	padding: 10px 0px 10px 0px;
+	background-color: white;
+	border-bottom: 1px solid #eee;
+}

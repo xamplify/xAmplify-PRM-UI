@@ -175,12 +175,6 @@
                  (statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
                </switch>
                  Notify me when email is opened </label></li>
-              <!-- <li><label>
-                <switch [status]="eventCampaign.inviteOthers" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
-                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
-              </switch>
-                Invite others </label></li> -->
               </ul>
             </div>
            </div>
@@ -258,7 +252,6 @@
                   <div class='alert alert-info' role='alert'>
                     <h4 class='m0'>You have not added any <span *ngIf="authenticationService.isOnlyPartner();else listPartner">contact</span><ng-template #listPartner>partner</ng-template> lists yet.</h4>
                   </div>
-                  <!-- <a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a> -->
                 </section>
                 <ng-template #contactList>
                   <div class="table-responsive">
@@ -316,42 +309,18 @@
                   <div class="portlet-body clearfix">
                         <section  style="min-height: 200px;">
                             <app-loader [hidden]="emailTemplates" ></app-loader>
-                         <!--  <div class="col-xs-6 col-sm-3" *ngFor="let emailTemplate of emailTemplates ;let i =index" >
-                          <div class="grid-box p0">
-                            <div class="video-thumbnail-wrapper" [class.template-selected]="eventCampaign.emailTemplate.id === emailTemplate.id">
-                                <img class="img-responsive center-block" src="assets/images/email-template.png" alt="{{emailTemplate.name}}" id="emailtemplate-image" style="width: 100%;height:200px !important;" >
-                            </div>
-                               <span class="ellipsis event-title" title="{{emailTemplate.name}}">{{emailTemplate.name}}</span>
-                            <div class="bar-event">
-                              <div>
-                                  <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id !== emailTemplate.id && !isPreviewEvent" (click)="eventCampaign.emailTemplate = emailTemplate;">
-                                    <i class="fa fa-check-circle" id="fa-font-size"></i> Select
-                                  </a>
-                                  <a class="icons-link" title="Select" data-rel="" *ngIf="eventCampaign.emailTemplate.id === emailTemplate.id">
-                                    <i class="fa fa-ban" id="fa-font-size"></i> Selected
-                                  </a>
-                                  <a class="icons-link" title="Preview" data-rel="" (click)="previewEventCampaignEmailTemplate(emailTemplate.id)">
-                                    <i class="fa fa-eye" id="fa-font-size"></i> Preview
-                                  </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div> -->
-
 
                         <ul class="content__list" [hidden]="!emailTemplates"
 										*ngFor="let emailTemplate of emailTemplates ;let i =index">
 										<li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === emailTemplate.id"
-											>
-											<!-- above class [ngClass]="{ 'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
+											>										
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
 													<span class="select-box"> <label> <input
 															(click)="eventCampaign.emailTemplate = emailTemplate;" class=""
 															type="checkbox">
 													</label>
-													</span>
-													<!-- [checked]="selectedFileIds.indexOf(file.id)>-1" -->
+													</span>											
 													 <span class="ng-scope"> <a
 														class="item__preview item__preview--image img-container custom"
 														target="_BLANK"> <img
@@ -536,11 +505,7 @@
                     style=" margin-right:1.5em; " />{{options}}
                   </label>
                </ng-container>
-               </div>
-            <!-- <button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'NOW')">Now</button> -->
-          <!-- </div> -->
-          <!-- <div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="setScheduleEvent()">Schedule</button></div>
-          <div class="col-xs-4"><button [disabled]="isPreviewEvent"  class='btn btn-block btn-primary' (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button></div> -->
+               </div>          
         </div>
           <div class="col-md-12 p0" style="margin-top: 12px;" [hidden]="checkLaunchOption!='SCHEDULE'">
             <div class="col-md-4">
@@ -567,8 +532,7 @@
                   </option>
                 </ng-container>
               </select>
-            </div>
-            <!-- <div class="col-md-3 custom-center"><button type="button" class="btn btn-primary" (click)="scheduleCampaign()">Schedule</button></div> -->
+            </div>        
           </div>
           <div class="portlet-title border-none" [hidden]="isPreviewEvent">
               <div class="col-xs-12 center-block" >
@@ -576,11 +540,7 @@
                 <button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'" class="btn green" style="width: 10em;" (click)="scheduleCampaign()">Schedule</button>
                 <button type="submit" *ngIf="checkLaunchOption=='SAVE'"  class="btn green" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
               </div>
-            </div>
-           <!--  ****Test email template**** -->
-            <!-- <div><button type="button" class="btn green" (click)="campaignService.addEmailId(eventCampaign,eventCampaign.emailTemplate.id,false)" style="width: 10em;">Send Test Email</button>
-            </div> -->
-
+            </div>        
       </div>
     </div>
   </div>

@@ -39,8 +39,6 @@
     <div class="portlet-body event-details">
       <h4 class="event-title">{{eventcampaign.campaign}}</h4>
       <h5 [innerHTML]="eventcampaign.message"></h5>
-    <!--   <h4>HOST: {{eventcampaign.userDTO.emailId}}</h4>
-      <h4 class="uppercase"> {{ eventcampaign.launchTimeInString | date:'EEEE, MMMM d, y, h:mm a'}} </h4> -->
     </div>
   </div>
 </div>
@@ -96,9 +94,7 @@
         <h4 class="modal-title" id="myModalLabel">You are RSVPing <span class="f-w-500">{{campaignRsvp.eventCampaignRsvp}}</span></h4>
       </div>
       <div class="modal-body">
-        <div style="font-size: 15px;">
-         <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> -->
-         <!-- <span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span> -->
+        <div style="font-size: 15px;">        
         </div>
         <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
         <label class="text-area-css">{{characterleft}} characters left</label>

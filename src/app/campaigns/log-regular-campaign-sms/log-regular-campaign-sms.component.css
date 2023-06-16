@@ -1,6 +1,4 @@
 @media screen and (min-width:601px){
  .mobile-camp{  margin: -169px auto 21px; background: #FFF;  padding: 180px; }
 }
-@media screen and (max-width:600px){
-  .mobile-camp{   }
-}
+

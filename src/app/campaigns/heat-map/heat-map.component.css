@@ -13,49 +13,5 @@ rect:hover{cursor:pointer}
 .pause-box{background:red}
 .skip-box{background:#FFF;border:1px solid #ccc}
 .small-box{width:15px;height:15px;display:table-cell;margin:10px}
-tr:hover{cursor:pointer}
-.text-center{text-align:center}
-.block-1{width:25%}
-.p-5x{padding:2px 5px}
-.c100>span{top:50px;line-height:10px;color:#307bbb}
-.portlet.light>.portlet-title{padding:0;margin:0;min-height:auto}
-.image-icon{margin-right:10px}
-.number{font-size:15px;font-weight:700}
-.dashboard-stat2{border-radius:1px;background:#fff;padding:15px 15px 1px;margin-bottom:20px;box-shadow:0 0 5px rgba(0,0,0,0.4)}
 .p0{padding:0!important}
-.m0{margin:0!important}
-.row-dashed{border-bottom:1px dashed #f1f1f1}
-.campaign-number{margin:.5em;font-size:2em;font-weight:400;color:#8c8c8c;text-align:center}
-.text-color-1{color:#76c9ff!important}
-.text-color-2{color:#00B3B3!important}
-.text-color-3{color:#827596!important}
-.text-color-4{color:#fbb23e!important}
-.semi-circle{border-radius:0 15px;border:1px solid}
-.fa-line-chart{font-size:1em}
-h3{font-size:1.5em}
-.carousel-control{display:none}
-.modal-content,.border-radius-0{border-radius:0}
-.icon-div{margin-top:0}
-/* .portlet.light{box-shadow:0 0 3px rgba(0,0,0,0.4)} */
-p{margin:0 0 10px;font-size:20px;color:rgba(119,119,119,0.7);text-align:justify;padding:1em}
-.p5{padding:2em}
-.page-bar{padding:0;border-radius:0}
-h1.bold{font-weight:bolder;font-size:3.2em;text-transform:lowercase;margin:0}
-.padding-top-bottom-5{padding:2em 0;min-height:11em}
 .flex{display:flex;width:100%}
-.header-text{text-transform:lowercase;background:#26cccc;color:#fff;font-weight:500;border-radius:0;padding:.2em 1em;margin-bottom:1em}
-.center{text-align:center}
-.glyphicon,.fa-3{font-size:2em}
-.color1,.color1-invert:hover{background-color:#76c9ff;color:#fff;border:1px solid #76c9ff}
-.color1:hover,.color1-invert{color:#76c9ff;background-color:#fff;border:1px solid #76c9ff}
-.color2,.color2-invert:hover{background-color:#00B3B3;color:#fff;border:1px solid #00B3B3}
-.color2:hover,.color2-invert{background-color:#fff;color:#00B3B3;border:1px solid #00B3B3}
-.color3,.color3-invert:hover{background-color:#827596;color:#fff;border:1px solid #827596}
-.color3:hover,.color3-invert{color:#827596;background-color:#fff;border:1px solid #827596}
-.color4,.color4-invert:hover{background-color:#fbb23e;color:#fff;border:1px solid #fbb23e}
-.color4:hover,.color4-invert{color:#fbb23e;background-color:#fff;border:1px solid #fbb23e}
-.color1:hover,.color2:hover,.color3:hover,.color4:hover{cursor:pointer}
-.img-responsive{height:180px;min-width:100%}
-tr>td>h6{margin:5px 0;text-align:center}
-.table thead tr th{font-size:14px;font-weight:600;color:rgba(102,102,102,0.65);text-align:center}
-.crcb{width:100%}
