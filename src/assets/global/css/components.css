@@ -8700,7 +8700,7 @@ Green Default
 /* Button */
 .green.btn {
   color: #FFFFFF;
-  background-color: #26a69a;
+  background-color: #26a69a !important;
 }
 .green.btn:hover, .green.btn:focus, .green.btn:active, .green.btn.active {
   color: #FFFFFF;
