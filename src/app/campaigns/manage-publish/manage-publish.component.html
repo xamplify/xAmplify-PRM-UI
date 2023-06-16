@@ -903,7 +903,7 @@
                                     data-rel="fancybox-button" (click)="showEndDateModal(campaign)" translate>
                                     <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                   </a>
-                                      </a> -->
+                                     
                                   <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                     data-rel="fancybox-button" (click)="openEventUrlModal(campaign)"
                                     title="Copy Public Event Url" translate>
