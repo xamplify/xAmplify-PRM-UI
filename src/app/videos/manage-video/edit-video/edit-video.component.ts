@@ -974,7 +974,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor || !this.defaultPlayerValues.enableVideoController){ this.clientError = true;}
      }
   }
-  setGifPath(event:any){ event.target.src=this.giffirst; }
+  setGifPath(event:any){ 
+    event.target.src="assets/images/no-thumbnail.png";
+ }
 
   public onAdding(tag: any){
     console.log(this.itemOfTags);
