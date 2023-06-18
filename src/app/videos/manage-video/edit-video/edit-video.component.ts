@@ -231,7 +231,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.uploader.queue[0].upload();
       };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          console.log(response);
           this.saveVideoFile.imagePath = JSON.parse(response).path;
           this.defaultSaveImagePath = this.saveVideoFile.imagePath;
       }
@@ -268,7 +267,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
    const fileList: File = event;
       if (fileList) {
           const file: File = fileList;
-          console.log(file);
           const isSupportfile: any = file.type;
           if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
               return true;
@@ -438,7 +436,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // embed video methods
   closeEmbedModal(event) {
-      console.log('closed model success');
       this.embedModelVideo = undefined;
   }
   // normal and 360 video methods
@@ -979,7 +976,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
  }
 
   public onAdding(tag: any){
-    console.log(this.itemOfTags);
       const tags = this.itemOfTags;
       let newTags = [];
           for (let i = 0; i < tags.length; i++) {
@@ -1065,7 +1061,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                }, function () {
                   const player = this;
                   const isValid = callactionValue.callAction.overLayValue;
-                  console.log(isValid);
                   const document: any = window.document;
                   let isCallActionthere = false;
                   this.ready(function () {
