@@ -1158,6 +1158,7 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damUploadPostDto.partnerGroupIds = event['partnerGroupIds'];
     this.damUploadPostDto.partnerIds = event['partnerIds'];
     this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+    console.log(event);
 }
 
 

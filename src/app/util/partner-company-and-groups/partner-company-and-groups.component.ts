@@ -75,13 +75,13 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	ngOnInit() {
 		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.partnerTeamMemberGroupFilter = true;
-			$('#partners-li').addClass('active');
-			$('#partners').addClass('tab-pane fade in active');
 			this.showFilter = true;
-			this.selectedTab = 1;
 			if(this.inputId!=undefined && this.inputId>0){
 				this.findPublishedType();
 			}else{
+				$('#partners-li').addClass('active');
+				$('#partners').addClass('tab-pane fade in active');
+				this.selectedTab = 1;
 				this.findPartnerCompanies(this.pagination);
 			}
 		} else {
