@@ -87,6 +87,11 @@
                           <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                           (statusChange)="setWhiteLabeled($event)">
                           </switch>
+                          <span class="info-color-xampc">
+                            <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                                data-placement="top" aria-hidden="true"
+                                title="Share As White Labeled Content"></i>
+                        </span>
                         </div>
                       </div>
                     </div> 

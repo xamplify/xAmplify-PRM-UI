@@ -1923,7 +1923,11 @@ border: 1px solid #ddd !important;
 	background-color: green !important;
   }
 
- 
+  .toggle-info-white-label{
+	font-size: 20px !important;
+	margin: -14px 0 0 15px !important;
+  }
+  
   
   .info-color-xampc {
 	cursor: pointer;
