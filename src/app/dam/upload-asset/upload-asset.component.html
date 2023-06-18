@@ -219,7 +219,7 @@
                           <div class="form-group">
                             <label class="control-label col-sm-2" translate>White Labeled</label>
                             <div class="col-sm-10">
-                              <switch class="pull-left" [status]="damUploadPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                              <switch [disabled]="damUploadPostDto?.disableWhiteLabelOption" class="pull-left" [status]="damUploadPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                               (statusChange)="setWhiteLabeled($event)">
                               </switch>
                             </div>

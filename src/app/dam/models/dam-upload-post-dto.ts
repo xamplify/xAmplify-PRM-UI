@@ -25,4 +25,5 @@ export class DamUploadPostDto {
     partnerGroupIds = [];
     partnerIds = [];
     partnerGroupSelected = false;
+    disableWhiteLabelOption = false;
 }
