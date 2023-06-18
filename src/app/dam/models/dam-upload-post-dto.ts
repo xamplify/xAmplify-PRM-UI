@@ -26,4 +26,5 @@ export class DamUploadPostDto {
     partnerIds = [];
     partnerGroupSelected = false;
     disableWhiteLabelOption = false;
+    whiteLabeledToolTipMessage = "";
 }

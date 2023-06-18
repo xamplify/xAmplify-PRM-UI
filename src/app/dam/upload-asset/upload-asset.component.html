@@ -222,6 +222,11 @@
                               <switch [disabled]="damUploadPostDto?.disableWhiteLabelOption" class="pull-left" [status]="damUploadPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                               (statusChange)="setWhiteLabeled($event)">
                               </switch>
+                              <span class="info-color-xampc">
+                                <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                                    data-placement="top" aria-hidden="true"
+                                    [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage"></i>
+                            </span>
                             </div>
                           </div>
                         </div>
