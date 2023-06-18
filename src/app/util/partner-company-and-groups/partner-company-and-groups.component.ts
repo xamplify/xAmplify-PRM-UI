@@ -396,6 +396,27 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 		ev.stopPropagation();
 	}
 	clearAll() {
+	 if(this.isEdit){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "Existing data will be deleted",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+		}).then(function () {
+			self.clearTabs();
+		}, function (dismiss: any) {
+		});
+	 }else{
+		this.clearTabs();
+	 }
+		
+	}
+
+	clearTabs(){
 		let selectedTabName = this.selectedTabName();
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
@@ -409,6 +430,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.disableOrEnablePartnerCompaniesTab();
 		}
 	}
+
+
 	/************Partner Company Checkbox related code ends here****************/
 	selectedTabName() {
 		return $('.tab-pane.active').attr("id");
