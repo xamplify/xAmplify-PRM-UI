@@ -1,49 +1,44 @@
 <div class="modal right fade" id="microsoftPreSettingsForm" tabindex="-1" role="dialog" aria-labelledby="microsoftModalLabel"
-	data-keyboard="false" data-backdrop="static">
-	<ngx-loading [show]="microsoftLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	<div class="modal-dialog modal-css" role="document">
-		<div class="modal-content">
-			<div class="modal-header">				
-				<a class="close-circle" data-dismiss="modal" (click)="hideMicrosoftPresettingForm()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="templateRetrieve" translate>Microsoft Dynamics integration with xAmplify</h4>
-				<div>
-					<div>
-						<img src="assets/images/crm/microsoft-dynamics-xamplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
-					</div>
-					
-				</div>
-			</div>
-			
-			<div class="modal-body">
-				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
-				</app-response-message>
-				<form class="form-horizontal" autocomplete="off">
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="microsoftInstanceUrl">Instance URL:</label>
-						<div class="col-sm-8">
-							<input type="text" style="width: 75%" class="form-control" id="microsoftInstanceUrl"
-								placeholder="Instance URL" autocomplete="nope" [(ngModel)]="microsoftInstanceUrl"
-								[ngModelOptions]="{standalone: true}">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3" for="microsoftWebApiInstanceUrl">Web API Instance URL:</label>
-						<div class="col-sm-8">
-							<input type="text" style="width: 75%" class="form-control" id="microsoftWebApiInstanceUrl"
-								placeholder="Web API Instance URL" autocomplete="nope" [(ngModel)]="microsoftWebApiInstanceUrl"
-								[ngModelOptions]="{standalone: true}">
-						</div>
-					</div>
-		
-		
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMicrosoftPresettingForm()" translate>Close</button>
-				<button type="button" class="btn btn-primary" [class.disabled]="!microsoftInstanceUrl || !microsoftWebApiInstanceUrl || disableAuthorizeButton"
-        [disabled]="!microsoftInstanceUrl || !microsoftWebApiInstanceUrl || disableAuthorizeButton" (click)="validateMicrosoftModelForm()">AUTHORIZE</button>
-			</div>
-		</div>
-	</div>
-	
+   data-keyboard="false" data-backdrop="static">
+   <ngx-loading [show]="microsoftLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <div class="modal-dialog modal-css" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" data-dismiss="modal" (click)="hideMicrosoftPresettingForm()"><i class="fa fa-times"></i></a>
+            <h4 class="modal-title" id="templateRetrieve" translate>Microsoft Dynamics integration with xAmplify</h4>
+            <div>
+               <div>
+                  <img src="assets/images/crm/microsoft-dynamics-xamplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
+               </div>
+            </div>
+         </div>
+         <div class="modal-body">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
+            </app-response-message>
+            <form class="form-horizontal" autocomplete="off">
+               <div class="form-group">
+                  <label class="control-label col-sm-3" for="microsoftInstanceUrl">Instance URL:</label>
+                  <div class="col-sm-8">
+                     <input type="text" style="width: 75%" class="form-control" id="microsoftInstanceUrl"
+                     placeholder="Instance URL" autocomplete="nope" [(ngModel)]="microsoftInstanceUrl"
+                     [ngModelOptions]="{standalone: true}">
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label class="control-label col-sm-3" for="microsoftWebApiInstanceUrl">Web API Instance URL:</label>
+                  <div class="col-sm-8">
+                     <input type="text" style="width: 75%" class="form-control" id="microsoftWebApiInstanceUrl"
+                     placeholder="Web API Instance URL" autocomplete="nope" [(ngModel)]="microsoftWebApiInstanceUrl"
+                     [ngModelOptions]="{standalone: true}">
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMicrosoftPresettingForm()" translate>Close</button>
+            <button type="button" class="btn btn-primary" [class.disabled]="!microsoftInstanceUrl || !microsoftWebApiInstanceUrl || disableAuthorizeButton"
+            [disabled]="!microsoftInstanceUrl || !microsoftWebApiInstanceUrl || disableAuthorizeButton" (click)="validateMicrosoftModelForm()">AUTHORIZE</button>
+         </div>
+      </div>
+   </div>
 </div>

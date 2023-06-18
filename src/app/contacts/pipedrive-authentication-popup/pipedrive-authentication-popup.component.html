@@ -1,41 +1,37 @@
 <div class="modal right fade" id="pipedrivePreSettingsForm" tabindex="-1" role="dialog"
-  aria-labelledby="pipedriveModalLabel" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog modal-css" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <a class="close-circle" data-dismiss="modal" (click)="hidePipedrivePresettingForm()"><i
-            class="fa fa-times"></i></a>
-        <h4 class="modal-title" id="templateRetrieve" translate>Pipedrive integration with xAmplify</h4>
-        <div>
-          <div>
-            <img src="assets/images/crm/pipedrive-xamplify.png"
-              style="margin: 30px 25% 0;width: 50%;text-align: center;">
-          </div>
-        </div>
-      </div>
-
-
-      <div class="modal-body">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
-        </app-response-message>
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
-        <form class="form-horizontal" autocomplete="off">
-          <div class="form-group">
-            <label class="control-label col-sm-3" for="apiKey">API Token:</label>
-            <div class="col-sm-8">
-              <input type="text" style="width: 75%" class="form-control" id="apiKey" placeholder="API Token"
-                autocomplete="nope" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}">
+   aria-labelledby="pipedriveModalLabel" data-keyboard="false" data-backdrop="static">
+   <div class="modal-dialog modal-css" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" data-dismiss="modal" (click)="hidePipedrivePresettingForm()"><i
+               class="fa fa-times"></i></a>
+            <h4 class="modal-title" id="templateRetrieve" translate>Pipedrive integration with xAmplify</h4>
+            <div>
+               <div>
+                  <img src="assets/images/crm/pipedrive-xamplify.png"
+                     style="margin: 30px 25% 0;width: 50%;text-align: center;">
+               </div>
             </div>
-          </div>
-
-        </form>
+         </div>
+         <div class="modal-body">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
+            </app-response-message>
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <form class="form-horizontal" autocomplete="off">
+               <div class="form-group">
+                  <label class="control-label col-sm-3" for="apiKey">API Token:</label>
+                  <div class="col-sm-8">
+                     <input type="text" style="width: 75%" class="form-control" id="apiKey" placeholder="API Token"
+                     autocomplete="nope" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}">
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="hidePipedrivePresettingForm()" translate>CANCEL</button>
+            <button type="button" class="btn btn-primary" [disabled]="!apiKey" [class.disabled]="!apiKey"
+            (click)="validateModelForm()">AUTHORIZE</button>
+         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="hidePipedrivePresettingForm()" translate>CANCEL</button>
-        <button type="button" class="btn btn-primary" [disabled]="!apiKey" [class.disabled]="!apiKey"
-          (click)="validateModelForm()">AUTHORIZE</button>
-      </div>
-    </div>
-  </div>
+   </div>
 </div>
