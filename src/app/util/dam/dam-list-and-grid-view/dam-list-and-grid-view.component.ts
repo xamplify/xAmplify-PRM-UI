@@ -85,6 +85,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	selectedFileType = "";
 	/****XNFR-255*****/
 	showWhiteLabeledPopup: boolean;
+	showRefreshNotification = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -246,6 +247,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
 				this.assets = data.assets;
+				let publishingAssets = [];
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
 					let toolTipTagNames: string = "";
@@ -266,7 +268,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
 						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
 					}
+					if(asset.published && asset.publishingOrWhiteLabelingInProgress){
+						publishingAssets.push(asset);
+					}
 				});
+				this.showRefreshNotification = publishingAssets.length>0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.stopLoaders();

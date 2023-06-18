@@ -8,6 +8,9 @@
 		<div class="portlet light clearfix mDamResponse">
 			<!--List View / Grid View-->
 			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+				<div *ngIf="showRefreshNotification && !listLoader?.isLoading" class="alert alert-info">
+					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
+				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
 					<ng-template [ngTemplateOutlet]="damHeaderOptions"></ng-template>
 					<app-list-loader
