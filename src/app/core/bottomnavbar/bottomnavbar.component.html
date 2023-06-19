@@ -1,8 +1,9 @@
 <div class="clearfix" (window:scroll)="scrollFunction()"></div>
-<div class="page-footer"  (window:resize)="ocustomCssnResize($event)">
-   <div align="center" style="color: white; font-size: 13px;">
-      <span [innerHtml]="properties.BOTTOM_MESSAGE">&nbsp;</span>
-      <a style="color:#9eb1fb" [href]="properties.APP_Xamplify_URL" data-toggle="tooltip" data-placement="top" title="Stream to generate Demand" target="_blank">{{properties.APP_WEBSITE}}</a>
-   </div>
-   <img (click)="scrollTop()" id="myBtn" src="assets/images/scrolltop.png" data-toggle="tooltip" data-placement="top" title="Go to top">
+<div class="page-footer"  (window:resize)="onResize($event)">
+  <div align="center" style="color: white; font-size: 13px;">
+    <span [innerHtml]="properties.BOTTOM_MESSAGE">&nbsp;</span>
+    <a style="color:#9eb1fb" [href]="properties.APP_Xamplify_URL" data-toggle="tooltip" data-placement="top" title="Stream to generate Demand" target="_blank">{{properties.APP_WEBSITE}}</a>
+  </div>
+  <img (click)="scrollTop()" id="myBtn" src="assets/images/scrolltop.png" data-toggle="tooltip" data-placement="top" title="Go to top">
+
 </div>
