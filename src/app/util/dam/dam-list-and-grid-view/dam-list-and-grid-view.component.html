@@ -145,14 +145,7 @@
 													<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
 														<i	class="fa fa-eye" aria-hidden="true"></i>
 													</a> 
-													<a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
-														<i	class="fa fa-share" aria-hidden="true"></i>
-													</a>
-													<!---XNFR-255-->
-													<!-- <a *ngIf="!isPartnerView && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" title="Share As White-Labeled"
-													(click)="openWhiteLabeledPopup(asset.id)">
-													   <i class="fa fa-clone" aria-hidden="true"></i>
-												   </a>  -->
+													
 													<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
 														<i class="fa fa-download"	aria-hidden="true"></i>
 													</a> 
