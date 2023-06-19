@@ -1020,7 +1020,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.listCategories();
       } catch (error) {
           this.clientError = true;
-          console.log('error' + error);
       }
   }
 

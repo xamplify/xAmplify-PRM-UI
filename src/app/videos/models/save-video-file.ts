@@ -57,4 +57,7 @@ export class SaveVideoFile {
     tagNames : string[];
     toolTipTagNames: string = "";
     folderId:number = 0;
+    shareAsWhiteLabeledAsset = false;
+    disableWhiteLabelOption = false;
+    whiteLabeledToolTipMessage = "";
  }

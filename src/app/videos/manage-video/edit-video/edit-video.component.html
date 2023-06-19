@@ -303,19 +303,19 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+											<switch [disabled]="saveVideoFile.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
 											 (statusChange)="defaultPlayerSettingsValues($event)">
 											</switch>
 											<span class="info-color-xampc">
 												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
 													data-placement="top" aria-hidden="true"
-													title="Share As White Labeled Content"></i>
+													title="{{saveVideoFile.whiteLabeledToolTipMessage}}"></i>
 											</span>
 										</div>
 									</div>
 									<div>
-										<app-partner-company-and-groups [moduleName]="'dam'"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+										<app-partner-company-and-groups [moduleName]="'dam'" [inputId]="saveVideoFile.damId"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
 									</div>
 									<!---XNFR-255-->
 								</div>
