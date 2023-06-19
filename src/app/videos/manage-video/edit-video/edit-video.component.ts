@@ -1482,9 +1482,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     /******XNFR-255*****/
+    setWhiteLabeled(event:any){
+        this.saveVideoFile.shareAsWhiteLabeledAsset = event;
+    }
     receivePartnerCompanyAndGroupsEventEmitterData(event:any){
         this.saveVideoFile.partnerGroupIds = event['partnerGroupIds'];
         this.saveVideoFile.partnerIds = event['partnerIds'];
         this.saveVideoFile.partnerGroupSelected = event['partnerGroupSelected'];
     }
+    /******XNFR-255*****/
 }

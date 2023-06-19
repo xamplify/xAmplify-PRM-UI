@@ -305,7 +305,7 @@
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<switch [disabled]="saveVideoFile.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-											 (statusChange)="defaultPlayerSettingsValues($event)">
+											 (statusChange)="setWhiteLabeled($event)">
 											</switch>
 											<span class="info-color-xampc">
 												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
