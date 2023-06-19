@@ -1293,6 +1293,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.isValidTitle === false && this.checkTagsValidation()) {
           this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
           this.isDisable = true;
+          /****XNFR-255****/
+          let shareAsWhiteLabeledAsset = this.saveVideoFile.shareAsWhiteLabeledAsset;
+          let partnerGroupIds = this.saveVideoFile.partnerGroupIds;
+          let partnerIds = this.saveVideoFile.partnerIds;
+          let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
+          /****XNFR-255****/
           this.saveVideoFile = this.videoForm.value;
           this.saveVideoFile.damId = damId;
           this.saveVideoFile.defaultSetting = this.defaultSettingValue;
@@ -1347,6 +1353,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.saveVideoFile.callACtion = this.enableCalltoAction;
           this.saveVideoFile.folderId = this.folderId;
+          /****XNFR-255****/
+          this.saveVideoFile.partnerGroupIds = partnerGroupIds
+          this.saveVideoFile.partnerIds = partnerIds;
+          this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
+          this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
+           /****XNFR-255****/
           return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
             	  if(result.access){
@@ -1363,7 +1375,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   }
                   } else {
                       this.isDisable = false;
-                    //  this.saveButtonTitle = 'Save';
                       this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                   }
               }else{
@@ -1372,7 +1383,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               },
               (error: any) => {
                   this.isDisable = false;
-                //  this.saveButtonTitle = 'Save';
                   this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
                   this.xtremandLogger.errorPage(error);
               }),
