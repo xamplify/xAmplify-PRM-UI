@@ -27,9 +27,9 @@
            <div class="portlet-body">
               <div class="row" style="margin-top: 20px;">
                  <div class="col-xs-2"></div>
-                 <div class="col-md-4" title="Click To Upload" (click)="goToUpload()">
+                 <div class="col-md-4" (click)="goToUpload()">
                     <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
-                       <div class="portlet-body">
+                       <div class="portlet-body" >
                           <div class="img1">
                              <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam-icons.png">
                           </div>
@@ -42,14 +42,16 @@
                           <div class="text mMobileDisable">
                              <h5>
                                 <a (click)="goToUpload()">
-                                <i class="glyphicon glyphicon-upload" aria-hidden="true"></i>&nbsp;
+                                <i class="glyphicon glyphicon-upload" 
+                                data-toggle="tooltip" data-placement="bottom"  title="Click To Upload"
+                                aria-hidden="true"></i>&nbsp;
                                 <span class="design-name" translate>Upload</span></a>
                              </h5>
                           </div>
                        </div>
                     </div>
                  </div>
-                 <div class="col-md-4" title="Click To Design Template" (click)="addAsset()">
+                 <div class="col-md-4" (click)="addAsset()">
                     <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
                        <div class="portlet-body">
                           <div class="img1">
@@ -64,7 +66,9 @@
                           <div class="text mMobileDisable">
                              <h5>
                                 <a (click)="addAsset()">
-                                <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                <i class="glyphicon glyphicon-edit" 
+                                data-toggle="tooltip" data-placement="bottom" title="Click To Design Template"
+                                 aria-hidden="true"></i>&nbsp;
                                 <span class="design-name" translate>Design</span></a>
                              </h5>
                           </div>

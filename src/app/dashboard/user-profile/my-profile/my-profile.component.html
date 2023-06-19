@@ -347,16 +347,17 @@
                                                         <td class="mAlignView responsive-alignment">
                                                             <div class="actions-block override-actions ActionAlign">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                                    <a class="mMobileDisable" title="View"
+                                                                    <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
                                                                             aria-hidden="true"
-                                                                            class="fa fa-eye mDisableColor"></i></a>
-                                                                    <a title="Activate"
+                                                                            class="fa fa-eye mDisableColor"></i>
+                                                                        </a>
+                                                                    <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                                         (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                         *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                             _ngcontent-c69="" aria-hidden="true"
                                                                             class="fa fa-power-off"></i></a>
-                                                                    <a class="mMobileDisable" title="Copy"
+                                                                    <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
                                                                         (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                             aria-hidden="true"
                                                                             class="fa fa-files-o mDisableColor"></i></a>
@@ -397,20 +398,20 @@
                                             <td class="mAlignView">
                                                 <div class="actions-block override-actions ActionAlign">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                        <a class="mMobileDisable" title="Edit"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-edit mDisableColor"></i></a>
-                                                        <a title="Activate"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-power-off"></i></a>
-                                                        <a class="mMobileDisable" title="Copy"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Copy"
                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-files-o mDisableColor"></i></a>
-                                                        <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-trash-o"></i></a>

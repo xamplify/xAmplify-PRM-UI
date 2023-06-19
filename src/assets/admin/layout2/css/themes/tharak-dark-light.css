@@ -1243,7 +1243,11 @@ input.custom-line:active, input.custom-line:focus {
 .prm-dark-border > .text{
   border-bottom: 1px solid #2f4857 !important;
 }
+
 /* 19-06-2023 */
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
   background-color: #22313a !important;
+}
+.popover{
+  color: #000 !important;
 }

@@ -356,7 +356,9 @@
                                                     <div class="input-group merge-tag-input-border">
                                                         <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
                                                         <span class="input-group-btn">
-                                                            <button class="btn btn-default button-color" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                                            <button class="btn btn-default button-color" type="button" 
+                                                            data-toggle="tooltip" data-placement="right"
+                                                            title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
                                                                 <i class="fa fa-plus-circle npcfs plus-color" aria-hidden="true"></i>
                                                             </button>
                                                         </span>
@@ -466,8 +468,8 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Configure Pipelines for this Campaign">
-                                                                    <i class="fa fa-question-circle"
+                                                                <span style="cursor: pointer;color: #54a7e9;" >
+                                                                    <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
                                                                         style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
                                                                 </span>
                                                             </div>
@@ -1183,8 +1185,10 @@
                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                             </div>
                             <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
-                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
+                                <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                                 *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+                                <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                                 *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
                             </button>
                             <h4 class="pull-left f-w-600 note-vid" style="padding-left: 21px;padding-top: 3px;">Select<span *ngIf="isPreviewEvent">ed</span> an Email Template</h4>
                             <div class="portlet-body">
@@ -1402,8 +1406,10 @@
                                     <i class="fa fa-search"  style="font-size: 16px !important;padding:5px !important;" aria-hidden="true"></i></button>
                             </div>
                             <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
-                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
+                                <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                                *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+                                <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                                 *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
                             </button>
                             <div class="portlet-body">
                                 <div class="row">
@@ -1859,7 +1865,7 @@
                                                                         <div class="input-group merge-tag-input-border">
                                                                             <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
-                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
+                                                                                <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                                 </button>
                                                                             </span>
@@ -2189,7 +2195,7 @@
                                                                         <div class="input-group merge-tag-input-border">
                                                                             <input type="text" class="form-control" name="subject"  [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
-                                                                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-website',url)">
+                                                                                <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-website',url)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                                                 </button>
                                                                             </span>
