@@ -60,4 +60,7 @@ export class SaveVideoFile {
     shareAsWhiteLabeledAsset = false;
     disableWhiteLabelOption = false;
     whiteLabeledToolTipMessage = "";
+    partnerGroupIds = []
+    partnerIds = []
+    partnerGroupSelected = false;
  }
