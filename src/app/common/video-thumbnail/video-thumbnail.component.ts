@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
   @Input() published: boolean ;
+  @Input() processing:boolean;
   @Input() damId : number;
   @Output() notifyParent: EventEmitter<any>;
   @Input() categoryName:string;

@@ -40,7 +40,8 @@
 										*ngFor="let asset of pagination.pagedItems ;let i =index">
 									<tr>
 									<td *ngIf="(!isPartnerView && asset.videoId)">
-										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" [published]="asset?.published" [categoryName]="asset.categoryName"></app-video-thumbnail>
+										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" 
+											[published]="asset?.published" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress"></app-video-thumbnail>
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
 										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
@@ -94,8 +95,8 @@
 												<!---XNFR-255-->
 												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published">Published</h6>
 												<h6 *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress" class="view-banner">
-													<span><img src="assets/images/loading.gif" alt="Publishing" style="height:15px"></span>
-													Publishing
+													<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+													Processing
 												</h6>
 												<!---XNFR-255-->
 												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
@@ -228,8 +229,8 @@
 																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
 																	translate>Published</h6>
 																<h6 *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress" class="view-banner">
-																	<span><img src="assets/images/loading.gif" alt="Publishing" style="height:15px"></span>
-																	Publishing
+																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
+																	Processing
 																</h6>
 																<!---XNFR-255-->
 															</td>
@@ -333,7 +334,7 @@
 									<!--XNFR-255-->
 									<div class="ribbon">
 										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress">Publishing</span>
+										<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 									</div>
 									<!--XNFR-255-->
 									<div class="bar auto-height">
@@ -418,7 +419,7 @@
 										class="fa fa-eye" aria-hidden="true"></i>
 									</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
 										(click)="openPublishPopup(asset.id)"> <i
-										class="fa fa-share" aria-hidden="true"></i>
+										class="fa f-share" aria-hidden="true"></i>
 									</a> <a *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)"> <i
 										class="fa fa-download" aria-hidden="true"></i>
 									</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i

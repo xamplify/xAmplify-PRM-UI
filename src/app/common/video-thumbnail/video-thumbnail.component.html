@@ -45,7 +45,10 @@
       <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
     </h6>
       <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
-      <h6 *ngIf="published" class="view-banner published" translate>Published</h6>
+      <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
+      <h6 *ngIf="published && processing" class="view-banner published" translate>
+        <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
+      </h6>
       <!-- tags start -->
       <h6 style="padding-top: 5px;">
 				<ng-container *ngIf="videoFile.tagNames?.length > 0">
