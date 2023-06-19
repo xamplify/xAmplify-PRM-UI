@@ -1710,3 +1710,7 @@ margin-top: -70px;
 .page-sidebar .page-sidebar-menu > li:last-child > a {
   border-bottom: 1px solid transparent !important;
 }
+
+/* 19/06/23 */
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img
+{background-color: var(--page-content) !important;}
