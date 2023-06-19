@@ -1,9 +1,10 @@
 a.disabled {
-   pointer-events: none;
-   cursor: not-allowed;
+  pointer-events: none;
+  cursor: not-allowed;
 }
-.emailTempCss { width:259px; }
 /* sudha sri */
-.left-menu-color{
-   position: absolute;background-color: rgb(52, 73, 90);height: 100% !important;
+.left-menu-color {
+  position: absolute;
+  background-color: rgb(52, 73, 90);
+  height: 100% !important;
 }

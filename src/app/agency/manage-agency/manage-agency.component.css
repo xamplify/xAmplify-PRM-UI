@@ -1,135 +1,140 @@
 .red {
-    color: red !important;
+  color: red !important;
 }
 
-.portlet.box, .portlet>.portlet-body {
-    border-radius: 0;
+.portlet.box,
+.portlet > .portlet-body {
+  border-radius: 0;
 }
 
 .portlet {
-    margin: 1em;
+  margin: 1em;
 }
 
 .has-error .form-control {
-    border-color: #a94442;
+  border-color: #a94442;
 }
 
 .has-success .form-control {
-    border-color: #3c763d;
+  border-color: #3c763d;
 }
 
 .has-error .form-control-feedback {
-    right: 0px;
-    margin-top: 10px;
+  right: 0px;
+  margin-top: 10px;
 }
 
 .has-success .form-control-feedback {
-    right: 0px;
-    margin-top: 10px;
+  right: 0px;
+  margin-top: 10px;
 }
 
-
-
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Add animation to "page content" */
 
 .animate-bottom {
-    position: relative;
-    -webkit-animation-name: animatebottom;
-    -webkit-animation-duration: 1s;
-    animation-name: animatebottom;
-    animation-duration: 1s
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s;
 }
 
 @-webkit-keyframes animatebottom {
-    from {
-        bottom: -100px;
-        opacity: 0
-    }
-    to {
-        bottom: 0px;
-        opacity: 1
-    }
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0px;
+    opacity: 1;
+  }
 }
 
 @keyframes animatebottom {
-    from {
-        bottom: -100px;
-        opacity: 0
-    }
-    to {
-        bottom: 0;
-        opacity: 1
-    }
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 1;
+  }
 }
 
 .file-upload {
-    position: absolute;
-    top: 0;
-    width: 162px;
-    height: 38px;
-    right: 15px;
-    opacity: 0;
-    -ms-filter: 'alpha(opacity=0)';
-    font-size: 200px;
-    direction: ltr;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  width: 162px;
+  height: 38px;
+  right: 15px;
+  opacity: 0;
+  -ms-filter: "alpha(opacity=0)";
+  font-size: 200px;
+  direction: ltr;
+  cursor: pointer;
 }
 
 .user-permission-min-width {
-    min-width: 230px;
+  min-width: 230px;
 }
 
 .silvertm {
-    background: #a9a9a930;
+  background: #a9a9a930;
 }
 
 .align-bold {
-    text-align: center !important;
-    font-weight: bold !important;
+  text-align: center !important;
+  font-weight: bold !important;
 }
 
 .mrfpx {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .zero-padding-margin {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .zero-padding-display-inline {
-    padding: 0;
-    display: inline;
+  padding: 0;
+  display: inline;
 }
+
 .actions-row {
-    width: 30%;
+  width: 30%;
 }
 
 .custom-width-icon {
-    min-width: 250px;
+  min-width: 250px;
 }
 
-.chtfpx{
-    height: 24px !important;
+.chtfpx {
+  height: 24px !important;
 }
-.fstcw-tm{
-    width: 563px !important;
+
+.fstcw-tm {
+  width: 563px !important;
 }

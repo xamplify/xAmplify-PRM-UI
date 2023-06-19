@@ -1,43 +1,41 @@
 <div class="table-responsive">
   <ng-container *ngIf="!usersLoader.isLoading && usersCustomResponse.isVisible">
-    <div class="custom-response-padding">
-      <app-response-message [customResponse]="usersCustomResponse"></app-response-message>
-    </div>
+     <div class="custom-response-padding">
+        <app-response-message [customResponse]="usersCustomResponse"></app-response-message>
+     </div>
   </ng-container>
   <app-auto-response-loader [hidden]="!usersLoader.isLoading"></app-auto-response-loader>
-  <div [hidden]="usersPagination.pagedItems.length == 0 || usersLoader.isLoading || usersCustomResponse.isVisible">    
-    <table class="table tgrid child-table-xamp" aria-describedby="user-info" id="userlist-users-{{userListId}}">
-      <thead>
-        <tr>
-          <th class="hidden-xs" scope="row">Entity Info</th>
-          <th class="hidden-xs" scope="row">Job Title</th>
-          <th class="hidden-xs" scope="row">Address</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let user of usersPagination.pagedItems ;let i =index">
-          <tr>
-            <td style="width: 40%;">
-              <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
-            </td>            
-            <td style="width: 30%;">{{user.jobTitle}}</td>
-            <td style="width: 30%;">{{user.address}}</td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-    <!---Pagination-->   
-    <div *ngIf="usersPagination.totalRecords==0 && !usersLoader.isLoading" class="alert alert-info">
-      <strong>{{emptyListMessage}}</strong>
-    </div>
-    <div [hidden]="usersLoader.isLoading ||usersPagination.pagedItems.length==0 " class="pg8">
-      <app-pagination [pagination]="usersPagination" (notifyParent)="setUsersPage($event)"
+  <div [hidden]="usersPagination.pagedItems.length == 0 || usersLoader.isLoading || usersCustomResponse.isVisible">
+     <table class="table tgrid child-table-xamp" aria-describedby="user-info" id="userlist-users-{{userListId}}">
+        <thead>
+           <tr>
+              <th class="hidden-xs" scope="row">Entity Info</th>
+              <th class="hidden-xs" scope="row">Job Title</th>
+              <th class="hidden-xs" scope="row">Address</th>
+           </tr>
+        </thead>
+        <tbody>
+           <ng-container *ngFor="let user of usersPagination.pagedItems ;let i =index">
+              <tr>
+                 <td style="width: 40%;">
+                    <app-user-info [isCompanyInfo]="true" [userInfo]="user"></app-user-info>
+                 </td>
+                 <td style="width: 30%;">{{user.jobTitle}}</td>
+                 <td style="width: 30%;">{{user.address}}</td>
+              </tr>
+           </ng-container>
+        </tbody>
+     </table>
+     <!---Pagination-->   
+     <div *ngIf="usersPagination.totalRecords==0 && !usersLoader.isLoading" class="alert alert-info">
+        <strong>{{emptyListMessage}}</strong>
+     </div>
+     <div [hidden]="usersLoader.isLoading ||usersPagination.pagedItems.length==0 " class="pg8">
+        <app-pagination [pagination]="usersPagination" (notifyParent)="setUsersPage($event)"
         (notifyParentDropDown)="getMatchedContacts($event)"></app-pagination>
-    </div>
+     </div>
   </div>
-
-  
   <div *ngIf="!usersLoader.isLoading && usersSortOption.totalRecords==0" class="alert alert-info">
-    <strong translate>{{emptyListMessage}}</strong>
+     <strong translate>{{emptyListMessage}}</strong>
   </div>
 </div>

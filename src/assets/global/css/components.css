@@ -5150,8 +5150,8 @@ Dashboard Stats
 }
 .dashboard-stat .visual > i {
   margin-left: -35px;
-  font-size: 110px;
-  line-height: 110px;
+  font-size: 70px;
+  line-height: 56px;
 }
 .dashboard-stat .details {
   position: absolute;
@@ -8700,7 +8700,7 @@ Green Default
 /* Button */
 .green.btn {
   color: #FFFFFF;
-  background-color: #26a69a;
+  background-color: #26a69a !important;
 }
 .green.btn:hover, .green.btn:focus, .green.btn:active, .green.btn.active {
   color: #FFFFFF;

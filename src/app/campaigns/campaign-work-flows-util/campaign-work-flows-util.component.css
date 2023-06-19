@@ -1,7 +1,6 @@
 .portlet.light.dashboard-stat2.border-error {
-  border-color: red
+  border-color: red;
 }
-
 .dashboard-stat {
   padding: 9px 0;
   height: auto;
@@ -10,43 +9,31 @@
   font-size: 16px;
   margin-bottom: 0px;
 }
-
 .website-auto-response {
   background-color: #f76c1a;
-
 }
-
 .email-auto-response {
   background-color: #f4555c;
 }
-
 #i-margin {
   margin: 0 5px;
 }
-
 #row-margin {
   margin-bottom: 5px;
   margin-top: -9px;
 }
-
 .dashboard-stat2 {
-  padding: 15px
+  padding: 15px;
 }
-
 .white {
   color: #fff;
 }
-
-
 .default-cursor {
   cursor: default;
 }
-
 .red {
   color: red;
 }
-
-
 .blur {
   -webkit-filter: blur(1px);
   -moz-filter: blur(1px);
@@ -63,23 +50,19 @@
   margin-bottom: -16px;
   right: 10px;
 }
-
 .button-blue {
   position: relative;
   background: #888a8c !important;
   top: 6px;
   font-size: 4px;
 }
-
-
 .colorBlue {
   background: #808080;
 }
-
 .colorRed {
   background: #5bb1d4;
 }
-#bottom-right{
+#bottom-right {
   margin-right: 15px;
   float: right;
   margin-top: 10px;

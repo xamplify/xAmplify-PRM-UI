@@ -1,67 +1,67 @@
 <div class="loader-container" *ngIf="mainLoader">
-  <div class="loader"></div>
-  <img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
-</div>
-<div *ngIf="!mainLoader">
-<app-video></app-video>
-<div class="content">
-	<div class="my-container">
-		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	</div>
-	<div *ngIf="!userNotFound" style="padding-bottom: 10px;">
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-		<form class="register" [formGroup]="signUpForm" >
-      <h4 style="font-size:15px;font-weight:bold;"><span style="color:red">*</span>Please add password to your account, accept the T&C and access the platform</h4>
-			<div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
-        <span>something went wrong. Please try again.</span>
-        <span>Please fill the details.</span>
-			</div>
-			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
-				<label class="control-label visible-ie8 visible-ie9">First Name</label>
-				<input class="form-control placeholder-no- firstNameTF" type="text" placeholder="First Name" required formControlName="firstName" />
-				<div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
-			</div>
-			<div class="form-group col-xs-6 p0">
-				<label class="control-label visible-ie8 visible-ie9">Last Name</label>
-				<input class="form-control placeholder-no-fix lastNameTF" type="text" placeholder="Last Name" formControlName="lastName" />
-			</div>
-			<div class="form-group">
-				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input  class="form-control placeholder-no-fix emailTF" type="email" placeholder="Email" required formControlName="emailId" (keyup)="validEmail($event)"/>
-			</div>
-			<div class="form-group has-feedback" style="position: relative">
-				<label class="control-label visible-ie8 visible-ie9">Password</label>
-				<input formControlName="password" id="password" class="form-control placeholder-no-fix passwordTF"  (input)="checkPassword()" type="password" autocomplete="off" placeholder="Password"
-				 required />
-				  <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
-				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
-				 <i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Minimum 6, maximum 20 charactores required & spaces are not allowed and password should be mix of letters, numbers and symbols"></i>
-				<div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
-			</div>
-			<div class="form-group has-feedback">
-				<label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
-				<input formControlName="confirmPassword" id="comfirmPassword"  class="form-control placeholder-no-fix confirmPasswordTF" type="password" autocomplete="off" placeholder="Re-type Your Password"
-				 required />
-				  <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="!referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
-				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
-				<div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
-				<div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
-			</div>
-			<div class="form-group">
-				<label class="check">
-					<input formControlName="agree" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-				</label>
-				<div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
-				<div id="register_tnc_error"></div>
-			</div>
-			<div class="actions">
-				<button type="submit" style="color:white"  id="register-submit-btn" class="btn btn-success uppercase signinTF" (click)="update()">Submit</button>
-			</div>
-		</form>
+	<div class="loader"></div>
+	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
+ </div>
+ <div *ngIf="!mainLoader">
+	<app-video></app-video>
+	<div class="content">
+	   <div class="my-container">
+		  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	   </div>
+	   <div *ngIf="!userNotFound" style="padding-bottom: 10px;">
+		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		  <form class="register" [formGroup]="signUpForm" >
+			 <h4 style="font-size:15px;font-weight:bold;"><span style="color:red">*</span>Please add password to your account, accept the T&C and access the platform</h4>
+			 <div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
+			 <span>something went wrong. Please try again.</span>
+			 <span>Please fill the details.</span>
+	   </div>
+	   <div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
+	   <label class="control-label visible-ie8 visible-ie9">First Name</label>
+	   <input class="form-control placeholder-no- firstNameTF" type="text" placeholder="First Name" required formControlName="firstName" />
+	   <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
+	   </div>
+	   <div class="form-group col-xs-6 p0">
+	   <label class="control-label visible-ie8 visible-ie9">Last Name</label>
+	   <input class="form-control placeholder-no-fix lastNameTF" type="text" placeholder="Last Name" formControlName="lastName" />
+	   </div>
+	   <div class="form-group">
+	   <label class="control-label visible-ie8 visible-ie9">Email</label>
+	   <input  class="form-control placeholder-no-fix emailTF" type="email" placeholder="Email" required formControlName="emailId" (keyup)="validEmail($event)"/>
+	   </div>
+	   <div class="form-group has-feedback" style="position: relative">
+	   <label class="control-label visible-ie8 visible-ie9">Password</label>
+	   <input formControlName="password" id="password" class="form-control placeholder-no-fix passwordTF"  (input)="checkPassword()" type="password" autocomplete="off" placeholder="Password"
+		  required />
+	   <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="!referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
+	   <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && signUpForm.get('password').value" style="left:-30px !important"></span>
+	   <i class="fa fa-question-circle"  data-toggle="tooltip" data-placement="left" title="Minimum 6, maximum 20 charactores required & spaces are not allowed and password should be mix of letters, numbers and symbols"></i>
+	   <div *ngIf="formErrors.password" class="alert alert-danger">{{ formErrors.password }}</div>
+	   </div>
+	   <div class="form-group has-feedback">
+	   <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+	   <input formControlName="confirmPassword" id="comfirmPassword"  class="form-control placeholder-no-fix confirmPasswordTF" type="password" autocomplete="off" placeholder="Re-type Your Password"
+		  required />
+	   <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="!referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
+	   <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')"  *ngIf="referenceService.showInputConfirmPassword && signUpForm.get('confirmPassword').value "></span>
+	   <div *ngIf="formErrors.confirmPassword" class="alert alert-danger">{{ formErrors.confirmPassword }}</div>
+	   <div *ngIf="signUpForm.hasError('mismatchedPasswords') && !formErrors.confirmPassword && !formErrors.password" class="alert alert-danger">Passwords do not match.</div>
+	   </div>
+	   <div class="form-group">
+	   <label class="check">
+	   <input formControlName="agree" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+	   </label>
+	   <div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
+	   <div id="register_tnc_error"></div>
+	   </div>
+	   <div class="actions">
+	   <button type="submit" style="color:white"  id="register-submit-btn" class="btn btn-success uppercase signinTF" (click)="update()">Submit</button>
+	   </div>
+	   </form>
 	</div>
 	<div *ngIf="userNotFound">
-			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+	   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
-</div>
-<app-copyright></app-copyright>
-</div>
+ </div>
+ <app-copyright></app-copyright>
+ </div>

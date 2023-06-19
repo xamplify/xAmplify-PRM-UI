@@ -431,3 +431,9 @@ a.social-stats{text-align: center;}
 .social-border{
 	background-color: #e5e5e5; height: 1px; border: 0; margin: 8px 0 0 0;
 }
+
+ /* 16-06-2023 */
+ .customize-circle {
+    height: 28px;
+    width: 28px;
+}

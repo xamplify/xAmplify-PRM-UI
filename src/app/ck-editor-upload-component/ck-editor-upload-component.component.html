@@ -1,120 +1,117 @@
 <div class="page-content-wrapper">
     <div class="page-content">
-        <div class="my-container">
-            <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true  }"></ngx-loading>
-        </div>
-        <div class="page-bar">
-            <ul class="page-breadcrumb">
-                <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
-                <li><a [routerLink]="['/home/emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
-                <li><a>Upload Template</a></li>
-            </ul>
-        </div>
-        <div class="portlet light" id="ck-editor-height">
-            <div class="portlet-body">
-                <form>
-                    <div class="col-md-12">
-                        <div class="col-md-2" id="templateNameDiv">Name</div>
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" id="templateNameText" id="name" [(ngModel)]="model.name" name="templateName" minlength="1" maxlength="50" placeholder="Template name" #name="ngModel" (ngModelChange)="validateNames($event)">
-                            <span class="error" *ngIf="!isValidTemplateName">Name is required</span>
-                            <span class="error" *ngIf="duplicateTemplateName &&isValidTemplateName" style="color:red">Name already exists</span>
-                        </div>
-                        <div class="col-md-6">
-                            <table id="right" *ngIf="type=='custom' || type=='customv'">
-                                <tbody>
-                                    <tr *ngFor="let item of emailTemplateUploader.queue;let last = last;let index = index">
-                                        <td *ngIf="last">
-                                            <button type="button" class="btn btn-success" (click)="save()" id="save" [disabled]="disableButton ||duplicateTemplateName ">
-												<span class="glyphicon glyphicon-upload"></span> Save
-											</button>
-                                            <button type="button" class="btn btn-danger" (click)="item.remove();removeFile()" data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading">
-												<span class="glyphicon glyphicon-trash"></span> Remove
-											</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button *ngIf="type!='custom' && type!='customv'" type="button" id="right" class="btn btn-success" (click)="save()" id="save" [disabled]="disableButton ||duplicateTemplateName ">
-								<span class="glyphicon glyphicon-upload"></span> Save
-							</button>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-2" id="upload-custom-category">Folder</div>
-                            <div class="col-md-4" id="category-drop-down-margin-left">
-                                <select class="form-control" [(ngModel)]="model.categoryId" [ngModelOptions]="{standalone: true}" id="upload-custom-categoryId" [value]="model.categoryId">
-									<option *ngFor="let category of categoryNames" [value]="category.id">
-										{{category.name}}
-									</option>
-							</select>
-                            </div>
-                        </div>
-
-                        <br>
-                        <div class="col-md-12" *ngIf="type!='custom' && type!='customv'">
-                            <div class="col-md-2" id="templateTypeDiv">Type</div>
-                            <div class="col-md-4">
-                                <div>
-                                    <select class="form-control" id="uploadType" [(ngModel)]="model.uploadType" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectUploadType($event)">
-										<option [value]="'REGULAR'" selected>REGULAR</option>
-										<option [value]="'VIDEO'">VIDEO</option>
-										<!-- <option [value]="'EVENT'">EVENT</option> -->
-									</select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div class="col-xs-12 col-md-6" *ngIf="type=='custom' || type=='customv'">
-                    <div>
-                        <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="emailTemplateUploader" class="well my-drop-zone" style="position: relative; cursor:pointer; margin-bottom:0"
-                            (click)="dropClick()">
-                            <input type="file" ng2FileSelect [uploader]="emailTemplateUploader" accept=".zip" *ngIf="emailTemplateUploader.queue.length==0" (change)="changeLogo($event)" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
-                            <div class="text-center">
-                                <img src="../../../assets/images/uploadimage.png" alt='Upload Image'>
-                                <h2 class="upload-video" id="upload-custom-template">Upload a File </h2>
-                                <h6 id="drag-drop">Drag and drop files here or click to select files</h6>
-                                <button class="btn btn-primary" id="browse">Browse</button>
-                            </div>
-                        </div>
-                        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                        </app-response-message>
-                    </div>
+       <div class="my-container">
+          <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true  }"></ngx-loading>
+       </div>
+       <div class="page-bar">
+          <ul class="page-breadcrumb">
+             <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
+             <li><a [routerLink]="['/home/emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
+             <li><a>Upload Template</a></li>
+          </ul>
+       </div>
+       <div class="portlet light" id="ck-editor-height">
+          <div class="portlet-body">
+             <form>
+                <div class="col-md-12">
+                   <div class="col-md-2" id="templateNameDiv">Name</div>
+                   <div class="col-md-4">
+                      <input type="text" class="form-control" id="templateNameText" id="name" [(ngModel)]="model.name" name="templateName" minlength="1" maxlength="50" placeholder="Template name" #name="ngModel" (ngModelChange)="validateNames($event)">
+                      <span class="error" *ngIf="!isValidTemplateName">Name is required</span>
+                      <span class="error" *ngIf="duplicateTemplateName &&isValidTemplateName" style="color:red">Name already exists</span>
+                   </div>
+                   <div class="col-md-6">
+                      <table id="right" *ngIf="type=='custom' || type=='customv'">
+                         <tbody>
+                            <tr *ngFor="let item of emailTemplateUploader.queue;let last = last;let index = index">
+                               <td *ngIf="last">
+                                  <button type="button" class="btn btn-success" (click)="save()" id="save" [disabled]="disableButton ||duplicateTemplateName ">
+                                  <span class="glyphicon glyphicon-upload"></span> Save
+                                  </button>
+                                  <button type="button" class="btn btn-danger" (click)="item.remove();removeFile()" data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading">
+                                  <span class="glyphicon glyphicon-trash"></span> Remove
+                                  </button>
+                               </td>
+                            </tr>
+                         </tbody>
+                      </table>
+                      <button *ngIf="type!='custom' && type!='customv'" type="button" id="right" class="btn btn-success" (click)="save()" id="save" [disabled]="disableButton ||duplicateTemplateName ">
+                      <span class="glyphicon glyphicon-upload"></span> Save
+                      </button>
+                   </div>
+                   <div class="col-md-12">
+                      <div class="col-md-2" id="upload-custom-category">Folder</div>
+                      <div class="col-md-4" id="category-drop-down-margin-left">
+                         <select class="form-control" [(ngModel)]="model.categoryId" [ngModelOptions]="{standalone: true}" id="upload-custom-categoryId" [value]="model.categoryId">
+                         <option *ngFor="let category of categoryNames" [value]="category.id">
+                         {{category.name}}
+                         </option>
+                         </select>
+                      </div>
+                   </div>
+                   <br>
+                   <div class="col-md-12" *ngIf="type!='custom' && type!='customv'">
+                      <div class="col-md-2" id="templateTypeDiv">Type</div>
+                      <div class="col-md-4">
+                         <div>
+                            <select class="form-control" id="uploadType" [(ngModel)]="model.uploadType" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectUploadType($event)">
+                            <option [value]="'REGULAR'" selected>REGULAR</option>
+                            <option [value]="'VIDEO'">VIDEO</option>
+                            </select>
+                         </div>
+                      </div>
+                   </div>
                 </div>
-                <div class="col-xs-12 col-md-6">
-                    <div *ngIf="model.uploadType=='VIDEO' || this.type=='customv'" class="form-group" id="infoDiv">
-                        <br><label for="info">
-							<font class="error">Your HTML template must include the code below.</font>
-						</label>
-                        <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')">Copy Link</button>
-                        <textarea class="form-control" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
-                        <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i
-									class="fa fa-check"></i></b></font>
-                    </div>
-                    <br>
-                    <div *ngIf="!authenticationService?.module?.isMarketingCompany">
-                        <label for="info">
-							<font class="error">Copy the below image tag link to enable co-branding.</font>
-						</label>
-                        <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
-                        <textarea class="form-control" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
-                        <font class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i
-									class="fa fa-check"></i></b></font>
-                    </div>
-                    <br>
-                    <div  class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && mycontent?.length>0">
-                        <label class="control-label col-sm-5" id="margin">Enable Co-Branding Logo</label>
-                        <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
-                        </switch>
-                    </div>
+             </form>
+             <div class="col-xs-12 col-md-6" *ngIf="type=='custom' || type=='customv'">
+                <div>
+                   <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="emailTemplateUploader" class="well my-drop-zone" style="position: relative; cursor:pointer; margin-bottom:0"
+                   (click)="dropClick()">
+                   <input type="file" ng2FileSelect [uploader]="emailTemplateUploader" accept=".zip" *ngIf="emailTemplateUploader.queue.length==0" (change)="changeLogo($event)" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
+                   <div class="text-center">
+                      <img src="../../../assets/images/uploadimage.png" alt='Upload Image'>
+                      <h2 class="upload-video" id="upload-custom-template">Upload a File </h2>
+                      <h6 id="drag-drop">Drag and drop files here or click to select files</h6>
+                      <button class="btn btn-primary" id="browse">Browse</button>
+                   </div>
                 </div>
-                <div class="col-xs-12" *ngIf="isUploaded" id="editor-top">
-                    <!--  -->
-                    <ckeditor [(ngModel)]="mycontent" #myckeditor [config]="ckeConfig" debounce="500">
-                    </ckeditor>
-                </div>
-                <div class="clearfix" id="clearfix"></div>
-            </div>
-        </div>
+                <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                </app-response-message>
+             </div>
+          </div>
+          <div class="col-xs-12 col-md-6">
+             <div *ngIf="model.uploadType=='VIDEO' || this.type=='customv'" class="form-group" id="infoDiv">
+                <br><label for="info">
+                <font class="error">Your HTML template must include the code below.</font>
+                </label>
+                <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')">Copy Link</button>
+                <textarea class="form-control" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
+                <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i
+                   class="fa fa-check"></i></b></font>
+             </div>
+             <br>
+             <div *ngIf="!authenticationService?.module?.isMarketingCompany">
+                <label for="info">
+                <font class="error">Copy the below image tag link to enable co-branding.</font>
+                </label>
+                <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
+                <textarea class="form-control" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
+                <font class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i
+                   class="fa fa-check"></i></b></font>
+             </div>
+             <br>
+             <div  class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && mycontent?.length>0">
+                <label class="control-label col-sm-5" id="margin">Enable Co-Branding Logo</label>
+                <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
+                </switch>
+             </div>
+          </div>
+          <div class="col-xs-12" *ngIf="isUploaded" id="editor-top">
+             <ckeditor [(ngModel)]="mycontent" #myckeditor [config]="ckeConfig" debounce="500">
+             </ckeditor>
+          </div>
+          <div class="clearfix" id="clearfix"></div>
+       </div>
     </div>
-</div>
+ </div>
+ </div>

@@ -1,115 +1,110 @@
-.read-notification{
-	background-color: #dddddd
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  .dropdown-toggle
+  .badge.badge-default {
+  background-color: #00a8e7 !important;
 }
-.unread-notification{
-	background-color: white;
+a.disabled {
+  pointer-events: none;
 }
-.unread-notification:hover{
-  background-color: #ddd;
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
+  margin-top: -10px !important;
 }
-
-/* CSS Added Nagesh */
-.btn-header{
-padding: 7px 15px;
-    margin-right: -15px; 
-     position: relative; 
-     border-radius: 3px !important; 
-     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-    background-color: #00a6e8;
-    color: white;
-}
-
-.btn-header:hover{
-    background-color: #2b85b4;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default{
-    background-color: #00a8e7 !important;}
-
-a.disabled{
-pointer-events: none;
-}
-.logo-default{
-    width: 115px;
-    margin: 10px auto !important;
-    padding-top:10px;
-}
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
-    margin-top: -10px !important;
-}
-
 @media (max-width: 767px) {
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-notification .dropdown-menu {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-notification
+    .dropdown-menu {
     margin-right: -82px !important;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle {
+  }
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-user
+    .dropdown-toggle {
     padding: 24px 1px 24px 1px !important;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle {
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle {
     padding: 28px 5px 19px 0px !important;
-}
-
-.btn {
+  }
+  .btn {
     padding: 7px 10px !important;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user {
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user {
     margin-right: 0 !important;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user {
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user {
     padding: 0 0 0 0 !important;
-}
-
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
-  margin-right: 0 !important;
-}
-.btn-group[_ngcontent-c2] button[_ngcontent-c2] {
-  padding: 6px 7px !important;
-}
+  }
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-user
+    .dropdown-toggle
+    > img {
+    margin-right: 0 !important;
+  }
+  .btn-group[_ngcontent-c2] button[_ngcontent-c2] {
+    padding: 6px 7px !important;
+  }
 }
 .img-circle {
-    height: 40px;
-    width: 40px;
-    border: 1px solid #ccc;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #ccc;
 }
 .side-bar-css {
-right: -19px !important;
+  right: -19px !important;
 }
-
-.to-align-css{
-	margin-top: 13px;
-	text-align: right;
+input.form-control {
+  border: none;
+  width: 100%;
+  padding: 5px;
+  font-size: 1em;
+  border-bottom: 2px solid #efefef;
 }
-
-.border-css{
-	border: none !important;
-	border-bottom: 1px solid #e2e2e2 !important;
+input.form-control:focus {
+  border-bottom: 2px solid #2196f3;
 }
-
-.custome-response-css{
-	margin: -8px 0px 10px 0px;
+label {
+  font-weight: bold !important;
 }
-.error-message{
-	text-align: left;
+.text-danger {
+  color: red !important;
 }
-input.form-control{border: none;width: 100%;padding: 5px;font-size: 1em;border-bottom: 2px solid #efefef;}
-input.form-control:focus{border-bottom: 2px solid #2196F3;}
-label{font-weight: bold !important;}
-.text-danger {color: red !important;}
-
-.alert-dismissible .close{top: 0 !important;right: 0px !important;}
-.alert-success,.alert-danger,.alert-warning{color:#fff;border-radius:0}
-.alert-success{background-color:#77bf81}
-.alert-danger{background-color:#ec6262}
-.alert-danger1{background-color:#ec6262;color:white}
-.alert-warning{background-color:#f1d43b}
-.alert{padding:10px}
-.alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
-.text{padding-top: 12px;}
-
+.alert-dismissible .close {
+  top: 0 !important;
+  right: 0px !important;
+}
+.alert-success,
+.alert-danger {
+  color: #fff;
+  border-radius: 0;
+}
+.alert-success {
+  background-color: #77bf81;
+}
+.alert-danger {
+  background-color: #ec6262;
+}
+.alert {
+  padding: 10px;
+}
+.alert-success,
+.alert-danger {
+  font-size: 14px;
+}
+.text {
+  padding-top: 12px;
+}
 .btn-group button {
   background-color: #008fd5;
   border: 1px solid #3575b5;
@@ -119,11 +114,9 @@ label{font-weight: bold !important;}
   float: left;
   font-size: 14px;
 }
-
 .btn-group button:not(:last-child) {
   border-right: none;
 }
-
 .btn-group:after {
   content: "";
   clear: both;
@@ -132,15 +125,12 @@ label{font-weight: bold !important;}
 .btn-group button:hover {
   background-color: #4db1e2;
 }
-
-.refer-vendor-button{
-	padding: 17px 5px 0px 0px;
+.refer-vendor-button {
+  padding: 17px 5px 0px 0px;
 }
-
-.pttpx{
-	padding-top:2px!important;
+.pttpx {
+  padding-top: 2px !important;
 }
-
 .company-logo-thumbnail-wrapper {
   float: left;
   width: 150px;
@@ -150,48 +140,37 @@ label{font-weight: bold !important;}
   position: relative;
   background-color: transparent;
 }
-
-.company-logo-thumbnail-wrapper>img {
-height: 42px;
-width: auto;
-margin: 10px 10px 10px 10px;
-
+.company-logo-thumbnail-wrapper > img {
+  height: 42px;
+  width: auto;
+  margin: 10px 10px 10px 10px;
 }
-
-.clhidden{
+.clhidden {
   display: none !important;
 }
-
-
-@media only screen and (max-width: 600px){
-  .btnVendor{
+@media only screen and (max-width: 600px) {
+  .btnVendor {
     left: -18px;
   }
-  .btnShare{
+  .btnShare {
     left: -20px;
-   
   }
 }
-
 .btn {
   padding: 6px 14px !important;
 }
-.custom{
-  background-color: #008fd5 ;
+.custom {
+  background-color: #008fd5;
   color: #fff;
   border: 1px solid #3575b5;
 }
-.page-header.navbar .top-menu .navbar-nav>li.dropdown-user>.dropdown-menu {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-menu {
   width: auto !important;
 }
-#logoutButton{
- background-color: #e8edf2;
+#logoutButton {
+  background-color: #e8edf2;
 }
-.topnav-button-css{
+.topnav-button-css {
   margin-top: 17px;
   margin-right: 5px;
-}
-
-.bell-icon {
-  color: #0095da;
 }

@@ -202,7 +202,7 @@
 	height: 530px;
 }
 
-#notification {
+/* #notification {
 	position: absolute;
 	top: -35px;
 	right: -14px;
@@ -215,6 +215,22 @@
 	font-weight: 600;
 	min-height: 33px;
 	min-width: 33px;
+} */
+
+/* 16-06-2023 */
+#notification {
+    position: absolute;
+    top: -32px;
+    right: -18px;
+    padding: 5px 13px;
+    border-radius: 3px;
+    background: #00a9e9;
+    font-weight: 600;
+    min-height: auto;
+    min-width: 32px;
+    font-size: 14px;
+    color: #fff !important;
+    clip-path: polygon(50% 0%, 100% 0, 85% 51%, 100% 100%, 0 100%, 15% 49%, 0 0);
 }
 
 #notification-text {

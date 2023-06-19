@@ -1,45 +1,41 @@
 .custom-css {
-    margin: 9px 14px;
-    padding-left: 5px;
+  margin: 9px 14px;
+  padding-left: 5px;
 }
-
-#icon-style {
-    z-index: 1;
-    font-size: 13px;
+.cnc {
+  margin: 0px 10px;
+  width: 52px;
 }
-.cos{
-    margin: 0px 5px;width: 52px;
+.vwc {
+  margin: 0px 11px;
+  width: 52px;
 }
-.cnc{
-    margin: 0px 10px;width: 52px;
+.ttsc {
+  margin: 4px 15px;
+  width: 45px;
 }
-.vwc{
-    margin: 0px 11px;width: 52px;
+.cuc {
+  margin: 0 25px;
 }
-.ttsc{
-    margin: 4px 15px;width: 45px;
+.eoc {
+  margin: 0px 5px;
+  width: 52px;
 }
-.cuc{
-    margin: 0 25px;
+.counterupcss {
+  margin: 0 25px;
 }
-.eoc{
-    margin: 0px 5px;width: 52px;
+.vwcuc {
+  margin: 0 33px;
 }
-
-.counterupcss{
-    margin: 0 25px;
+.ttscu {
+  margin: 0 33px;
 }
-.vwcuc{
-    margin: 0 33px;
+.sic {
+  margin: 0px 15px;
+  width: auto;
+  height: 52px;
 }
-.ttscu{
-    margin: 0 33px;
+.refresh-custom-css {
+  margin-top: 9px;
+  margin-right: -10px;
 }
-.sic{
-    margin: 0px 15px;width: auto;height: 52px;
-}
-.refresh-custom-css{
-    margin-top: 9px;
-    margin-right: -10px;
-}
-

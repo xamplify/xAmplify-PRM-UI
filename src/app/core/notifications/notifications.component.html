@@ -1,84 +1,62 @@
 <div class="page-content" *ngIf="!isTopNavBar">
   <div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li>
-        <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
-      </li>
-      <li>
-        <a>Notifications</a>
-      </li>
-    </ul>
+     <ul class="page-breadcrumb">
+        <li>
+           <i class="fa fa-home"></i>
+           <a [routerLink]="referenceService.homeRouter">Home</a>
+           <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+           <a>Notifications</a>
+        </li>
+     </ul>
   </div>
   <div class="portlet light ">
-    <div class="portlet-title">
-      <span class="caption-subject font-red-sunglo uppercase">All Notifications
-      </span>
-      <button class="btn btn-primary btn-xs pull-right" (click)="markAllAsRead()" [disabled]="userService.unreadNotificationsCount === 0">Mark All As Read</button>
-    </div>
-    <div class="portlet-body clearfix">
-      <ul class="alt-row-style1 p0" *ngIf="notifications?.length > 0">
-        <li *ngFor="let item of pagination.pagedItems" [ngClass]="{'read': item.read, 'unread': !item.read}">
-          <a (click)='navigate(item)'>
-            <span class="social-icon">
-              <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
-              <i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
-              <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
-              <i class="fa fa-link" aria-hidden="true" *ngIf="item.actionId == 52"></i>
-            </span>
-            <span class="time">{{item.createdTime | date: 'short'}}</span>
-            <span class="details" [innerHtml]="item.message?.substr(0,185)"></span><span *ngIf="item.message?.length>185">...</span>
-          </a>
-        </li>
-      </ul>
-      <!-- <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-          <a (click)="setPage(1)">First</a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === 1}">
-          <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-        </li>
-        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-          <a (click)="setPage(page)">{{page}}</a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a (click)="setPage(pager.currentPage + 1)">Next>></a>
-        </li>
-        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a (click)="setPage(pager.totalPages)">Last</a>
-        </li>
-       </ul> -->
-      <!--<div style="float: right; font-size: 15px;" *ngIf="pager.pages && pager.pages.length">
-        <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
-          <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
-        </select>
-      </div> -->
-    </div>
-    <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
-      <strong translate>No results found</strong>
-    </div>
-    <div>
-      <app-pagination [pagination]="pagination" (notifyParentDropDown)="listNotifications($event)" (notifyParent)="setPage($event)"></app-pagination>
-    </div>
+     <div class="portlet-title">
+        <span class="caption-subject font-red-sunglo uppercase">All Notifications
+        </span>
+        <button class="btn btn-primary btn-xs pull-right" (click)="markAllAsRead()" [disabled]="userService.unreadNotificationsCount === 0">Mark All As Read</button>
+     </div>
+     <div class="portlet-body clearfix">
+        <ul class="alt-row-style1 p0" *ngIf="notifications?.length > 0">
+           <li *ngFor="let item of pagination.pagedItems" [ngClass]="{'read': item.read, 'unread': !item.read}">
+           <a (click)='navigate(item)'>
+           <span class="social-icon">
+           <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
+           <i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
+           <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
+           <i class="fa fa-link" aria-hidden="true" *ngIf="item.actionId == 52"></i>
+           </span>
+           <span class="time">{{item.createdTime | date: 'short'}}</span>
+           <span class="details" [innerHtml]="item.message?.substr(0,185)"></span><span *ngIf="item.message?.length>185">...</span>
+           </a>
+           </li>
+        </ul>
+     </div>
+     <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
+        <strong translate>No results found</strong>
+     </div>
+     <div>
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="listNotifications($event)" (notifyParent)="setPage($event)"></app-pagination>
+     </div>
   </div>
 </div>
 <ng-container *ngIf="isTopNavBar && notifications?.length > 0">
   <ul class="dropdown-menu-list scroller" style="height: 250px;overflow-x: hidden;">
-    <li *ngFor="let item of notifications;" [ngClass]="{'read': item.read, 'unread': !item.read}">
-      <a (click)='navigate(item)'>
-        <span class="social-icon" style="width: 18px;">
-          <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
-          <i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
-          <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
-          <i class="fa fa-link" aria-hidden="true" *ngIf="item.actionId == 52"></i>
-        </span>
-        <span class="time">{{item.createdTime | date: 'short'}}</span>
-        <span class="details" [innerHtml]="item.message?.substr(0,185)">
-          <span class="label label-sm label-icon label-success"> </span>
-          {{item.message | slice:0:185}}<span *ngIf="item.message?.length> 185">....</span> - {{item.read}}
-        </span>
-      </a>
-    </li>
+     <li *ngFor="let item of notifications;" [ngClass]="{'read': item.read, 'unread': !item.read}">
+     <a (click)='navigate(item)'>
+     <span class="social-icon" style="width: 18px;">
+     <i class="fa fa-envelope-open" aria-hidden="true" *ngIf="item.actionId == 13"></i>
+     <i class="fa fa-video-camera" aria-hidden="true" *ngIf="item.actionId == 1"></i>
+     <i class="fa fa-share" aria-hidden="true" *ngIf="item.actionId == 0"></i>
+     <i class="fa fa-link" aria-hidden="true" *ngIf="item.actionId == 52"></i>
+     </span>
+     <span class="time">{{item.createdTime | date: 'short'}}</span>
+     <span class="details" [innerHtml]="item.message?.substr(0,185)">
+     <span class="label label-sm label-icon label-success"> </span>
+     {{item.message | slice:0:185}}<span *ngIf="item.message?.length> 185">....</span> - {{item.read}}
+     </span>
+     </a>
+     </li>
   </ul>
 </ng-container>

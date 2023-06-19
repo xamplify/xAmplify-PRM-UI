@@ -1,17 +1,14 @@
 #search-margin {
   margin-right: 15px;
 }
-
 #icon-right {
   position: relative;
   right: -11px;
 }
-
 #search-text {
   height: 34px;
 }
-
-#lg-template{
-    width: 75%;
-    right:0;
+#lg-template {
+  width: 75%;
+  right: 0;
 }
