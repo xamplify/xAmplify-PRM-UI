@@ -135,7 +135,9 @@
 }
 
 .ActionAlign{
-  display: flex;
+  /* display: flex;*/
+  text-align: center;
+  float: none;
 }
 
 .ActionButtonPad{

@@ -123,3 +123,7 @@ padding: 10px !important;
 .custom-width-modal-popup{
  width: 69%  !important;
 }
+/* 20-06-2023 */
+button.hidden-xs {
+	border-radius: 4px;
+  } 
