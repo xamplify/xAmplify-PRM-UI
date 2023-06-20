@@ -159,6 +159,7 @@ a.disabled {
 	width: 51px;
 	margin-left: 18px;
 	border-radius: 2px;
+	
 }
 
 td h6 {
@@ -364,4 +365,13 @@ body {
 }
 .breadcrumb-border{
 	border-radius: 3px !important; border: 1px solid #e0e0e0;
+}
+
+
+.cardHeight{
+	height: 540px !important;
+}
+
+.grid-box img {
+    object-fit: cover !important;
 }

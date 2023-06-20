@@ -118,10 +118,25 @@ legend {
 	font-weight: 600 !important;
 }
 
+/* 6-6-2023 sudha sri */
+#border-bottom-none{
+	border-bottom:none !important;
+  }
+  .table>thead:first-child>tr:first-child>th{
+	border-top: 0 !important;
+  }
 
 
+/* 
+12/06/23 */
 
+.custom-popup-width{
+	width : 85% !important;
+}
 
-
-
-
+.popup-align{
+    position: relative !important;
+    top: 67px;
+    height: 89% !important;
+    float: right;
+}

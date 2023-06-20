@@ -1,90 +1,84 @@
 <div class="page-content">
-    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar">
-    <div class="col-md-12 col-lg-12">
+     <div class="col-md-12 col-lg-12">
         <div class="row">
-          <div class="col-md-6 col-lg-6 text-left">
-            <ul class="page-breadcrumb">
-              <li>
-                <i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-              </li>
-              <li>
-                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-					        <i class="fa fa-angle-right" aria-hidden="true"></i>
-              </li>
-              <li><a translate>Design/Upload</a></li>
-            </ul>
-          </div>
-          <!-- <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
-            <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-              <a class="close-circle" [routerLink]="referenceService?.selectModuleRouter"  title="Close">
-              <i class="fa fa-times" aria-hidden="true"></i>
-              </a> 
-            </div>
-          </div> -->
+           <div class="col-md-6 col-lg-6 text-left">
+              <ul class="page-breadcrumb">
+                 <li>
+                    <i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                 </li>
+                 <li>
+                    <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                 </li>
+                 <li><a translate>Design/Upload</a></li>
+              </ul>
+           </div>
         </div>
-      </div>
+     </div>
   </div>
   <!-- End of page-bar -->
   <div class="row">
-      <div class="col-md-12">
-          <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-          <div class="">
-              <div class="portlet-body">
-                  <div class="row" style="margin-top: 20px;">
-                    <div class="col-xs-2"></div>
-                          <div class="col-md-4" title="Click To Upload" (click)="goToUpload()">
-                              <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
-                                  <div class="portlet-body">
-                                      <div class="img1">
-                                          <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam-icons.png">
-                                      </div>
-                                      <div class="text text-border">
-                                        <h4  class="header-text-css" translate>Upload File</h4>
-                                        <p class="header-description-css" translate>
-                                        <span>Upload videos, images, and documents in various formats from your device or cloud platforms.</span><br>
-                                      </p>
-                                      </div>
-                                      <div class="text mMobileDisable">
-                                        <h5>
-                                            <a (click)="goToUpload()">
-                                              <i class="glyphicon glyphicon-upload" aria-hidden="true"></i>&nbsp;
-                                                  <span class="design-name" translate>Upload</span></a>
-                                        </h5>
-                                        </div>
-                                    </div>
-                                  </div>
-                              </div>
-                          
-                          <div class="col-md-4" title="Click To Design Template" (click)="addAsset()">
-                            <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
-                                <div class="portlet-body">
-                                    <div class="img1">
-                                        <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img image-center" src="assets/images/design-dam.png">
-                                    </div>
-                                    <div class="text text-border">
-                                        <h4 class="header-text-css" translate>Design PDF</h4>
-                                        <p class="header-description-css" translate>
-                                          <span>Create personalized PDF templates and find it in "Content" <i class="fa fa-angle-right"></i> "Manage my assets"</span><br>
-                                        </p>
-                                        </div>
-                                        <div class="text mMobileDisable">
-                                          <h5>
-                                            <a (click)="addAsset()">
-                                              <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
-                                                  <span class="design-name" translate>Design</span></a>
-                                        </h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        <div class="col-xs-2"></div>
-                  </div>
+     <div class="col-md-12">
+        <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
+        <div class="">
+           <div class="portlet-body">
+              <div class="row" style="margin-top: 20px;">
+                 <div class="col-xs-2"></div>
+                 <div class="col-md-4" (click)="goToUpload()">
+                    <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
+                       <div class="portlet-body" >
+                          <div class="img1">
+                             <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/upload-dam-icons.png">
+                          </div>
+                          <div class="text text-border">
+                             <h4  class="header-text-css" translate>Upload File</h4>
+                             <p class="header-description-css" translate>
+                                <span>Upload videos, images, and documents in various formats from your device or cloud platforms.</span><br>
+                             </p>
+                          </div>
+                          <div class="text mMobileDisable">
+                             <h5>
+                                <a (click)="goToUpload()">
+                                <i class="glyphicon glyphicon-upload" 
+                                data-toggle="tooltip" data-placement="bottom"  title="Click To Upload"
+                                aria-hidden="true"></i>&nbsp;
+                                <span class="design-name" translate>Upload</span></a>
+                             </h5>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-md-4" (click)="addAsset()">
+                    <div class="portlet light  hover-effect pointer" style="padding: 0px !important;border-radius: 10px;">
+                       <div class="portlet-body">
+                          <div class="img1">
+                             <img alt="DAM" style="margin: 0 auto;" class="pricing-head-img image-center" src="assets/images/design-dam.png">
+                          </div>
+                          <div class="text text-border">
+                             <h4 class="header-text-css" translate>Design PDF</h4>
+                             <p class="header-description-css" translate>
+                                <span>Create personalized PDF templates and find it in "Content" <i class="fa fa-angle-right"></i> "Manage my assets"</span><br>
+                             </p>
+                          </div>
+                          <div class="text mMobileDisable">
+                             <h5>
+                                <a (click)="addAsset()">
+                                <i class="glyphicon glyphicon-edit" 
+                                data-toggle="tooltip" data-placement="bottom" title="Click To Design Template"
+                                 aria-hidden="true"></i>&nbsp;
+                                <span class="design-name" translate>Design</span></a>
+                             </h5>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="col-xs-2"></div>
               </div>
-          </div>
-      </div>
+           </div>
+        </div>
+     </div>
   </div>
 </div>
-

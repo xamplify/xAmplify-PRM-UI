@@ -78,8 +78,8 @@
 
           </div>
           <div class="col-sm-6 col-xs-12">
-            <fieldset>
-              <legend>Contact Info</legend>
+            <fieldset class="border-none">
+              <div class="cont-info">Contact Info</div>
               <app-user-info *ngIf="showContactInfo" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
               <div *ngIf="!showContactInfo">Not Available</div>
             </fieldset>            

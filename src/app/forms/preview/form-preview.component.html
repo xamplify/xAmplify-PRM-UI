@@ -60,15 +60,17 @@
                                 <!--  No  Options -->
                                 <ng-container *ngIf="!columnInfo.choices" >
                                     <label> <span *ngIf="form.quizForm">{{i+1}}. </span>
-                                        {{columnInfo.labelName}}
+                                        <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
                                         <span class="required" *ngIf="columnInfo.required">*</span>
                                     </label>      
-                            </ng-container>   
+                            </ng-container>
                             <!--  Options -->
                             <ng-container *ngIf="columnInfo.choices && columnInfo.choices.length > 0" >
                                 <label class="questionclass"
                                     [ngClass]="{'answer_correct':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && !columnInfo.skipped && columnInfo.submittedAnswerCorrect, 'answer_incorrect':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && !columnInfo.skipped && !columnInfo.submittedAnswerCorrect, 'question_skipped':((learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)) && columnInfo.skipped}">
-                                    <span *ngIf="form.quizForm">{{i+1}}. </span>{{columnInfo.labelName}}
+                                    <span *ngIf="form.quizForm">{{i+1}}. </span>
+                                    <span *ngIf="learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted"  [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                                    <span *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted">{{columnInfo.labelName}}</span>
                                     <span class="required" *ngIf="columnInfo.required">*</span>
                                 </label>
                             </ng-container> 
@@ -76,10 +78,10 @@
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
 
                                             <input type="{{columnInfo.labelType}}" class="form-control" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
-                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0) && (isTrackQuizSubmitted || (columnInfo.labelType=='email' && columnInfo.required))}">
                                             
                                             <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
-                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0) && (isTrackQuizSubmitted || (columnInfo.labelType=='email' && columnInfo.required))}">
 
 
                                             <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please

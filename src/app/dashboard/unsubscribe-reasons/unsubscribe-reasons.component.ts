@@ -32,6 +32,7 @@ export class UnsubscribeReasonsComponent implements OnInit,OnDestroy {
   sortOption: SortOption = new SortOption();
   submitButtonText = "Save";
   modalTitle = "Enter Reason";
+  isFullPopupShow = false ;
   isAdd = true;
   loading: boolean;
   isDelete: boolean;
@@ -297,6 +298,7 @@ changeFooterTextStatus(event:any,unsubscribePageDetails:UnsubscribePageDetails){
 openUnsubscribePagePopup(){
   this.unsubscribePageContent = {};
   $('#unsubscribePagePopup').modal('show');
+  this.isFullPopupShow = true ;
   this.referenceService.scrollToModalBodyTopByClass();
   this.modalPopupLoader = true;
   this.authenticationService.findUnsusbcribePageContent().subscribe(

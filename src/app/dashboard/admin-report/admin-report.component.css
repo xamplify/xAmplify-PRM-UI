@@ -14,3 +14,18 @@
 	display: inline-block;
 	width: 200px;
 }
+.full-width{
+    width: 100% !important;
+}
+.w-fhpx{
+	width: 500px !important;
+}
+
+.custom-dropdown-css{
+	padding: 10px 20px;
+	border-radius:5px;
+  }
+  
+  select .custom-dropdown-css:focus{
+	outline:none;
+  }

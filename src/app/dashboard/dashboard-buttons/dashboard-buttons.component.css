@@ -1,0 +1,3 @@
+.table>tbody>tr>td{
+    overflow-wrap: anywhere;
+}

@@ -131,7 +131,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	loggedInUserId = 0;
 	hasAllAccess = false;
 	isDuplicateEmailId = false;
-
+	isEditContactPopupShow = false ;
+     
 	public currentContactType: string = "all_contacts";
 	public userListIds: Array<UserListIds>;
 	contactUsersId: number;
@@ -239,6 +240,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	showSweetAlert = false;
 	selectedPartner: any;
+
+	 /****XNFR-278****/
+	 mergeOptionClicked = false;
+	 selectedUserIdsForMerging: any[];
+	  /****XNFR-278****/
+
+
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -1705,6 +1713,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	closeAssignContactAndMdfAmountPopup() {
 		$('#assignContactAndMdfPopup').modal('hide');
+		this.isEditContactPopupShow = true ;
 		this.showNotifyPartnerOption = false;
 		this.applyForAllClicked = false;
 		this.contactAndMdfPopupResponse = new CustomResponse();
@@ -3589,5 +3598,17 @@ applyForAll(selectedPartner: any) {
     this.selectAllTeamMemberIds = [];
     this.applyForAllClicked = false;
   }
+
+  /****XNFR-278****/
+openMergePopup(){
+	this.mergeOptionClicked = true;
+	this.selectedUserIdsForMerging = this.selectedContactListIds;
+}
+
+copyGroupUsersModalPopupEventReceiver(){
+	this.mergeOptionClicked = false;
+	this.selectedUserIdsForMerging = [];
+}
+
     
 }

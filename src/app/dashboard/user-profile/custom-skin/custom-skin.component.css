@@ -493,6 +493,7 @@ label {
 	width: calc(50% - 15px);
 	padding-top: 1rem;
 	border-top: 1px solid #eaebed;
+	margin-right: -4px;
 }
 
 .actions__external-link {
@@ -1702,3 +1703,14 @@ margin-top: -70px;
 .m-top-50 {
 	margin-top: -50px;
 }
+
+/* 06/06/23 */
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li:last-child > a,
+.page-sidebar .page-sidebar-menu > li:last-child > a {
+  border-bottom: 1px solid transparent !important;
+}
+
+/* 19/06/23 */
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img
+{background-color: var(--page-content) !important;}

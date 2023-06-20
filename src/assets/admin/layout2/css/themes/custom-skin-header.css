@@ -9,9 +9,9 @@
 }
 .customskin-icon{  color: var(--top-button-icon-color) !important;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username {
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username {
     color: var(--top-button-value-color) !important
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover  {
      background-color: var(--top-buton-color) !important ;
-}
+} */

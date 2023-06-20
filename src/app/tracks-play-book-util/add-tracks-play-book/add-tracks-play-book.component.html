@@ -66,12 +66,12 @@
                   </label>
                   <div class="col-sm-8" style="padding-bottom: 10px;">
                     <div *ngIf="isEditSlug">
-                      <div class="prefix inline">
+                      <div class="prefix inline-box">
                         <span class="input-group-addon" style="min-width: auto;">
                           {{linkPrefix}}
                         </span>
-                        <div class="inline link" action="action_page.php">
-                          <input class="select-box inline form-control" [(ngModel)]="tracksPlayBook.slug"
+                        <div class="inline-box link" action="action_page.php">
+                          <input class="select-box inline-box form-control" [(ngModel)]="tracksPlayBook.slug"
                             maxlength="100" (input)="updateSlug('slug'); validateAllSteps()">
                           <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
                               class="fa fa-angle-right" style="font-size: 19px;"></i></button>
@@ -79,7 +79,7 @@
                       </div>
                     </div>
                     <div *ngIf="!isEditSlug">
-                      <div class="inline link" action="action_page.php" style="width: 100%;">
+                      <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
                         <button type="button" class="right-border" (click)="editSlug()"
@@ -314,8 +314,7 @@
                     <div class="input-icon right" id="icon" style="padding-left: 5px;">
                       <input type="text" [(ngModel)]="assetSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                         class="form-control" placeholder="Search..." (keypress)="assetEventHandler($event.keyCode)">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" style=""
-                        *ngIf="assetSortOption.searchKey"
+                      <button class="glyphicon glyphicon-remove search-box-item-clear"    *ngIf="assetSortOption.searchKey"
                         (click)="assetSortOption.searchKey='';searchAssets()"></button>
                       <button type="submit" class="search-box-item-click email-search" (click)="searchAssets()">
                         <i class="fa fa-search cesf-xamp"></i></button>
@@ -917,7 +916,7 @@
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
                       <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                         <div class="form-check">
-                          <label class="form-check-label">
+                          <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
                               <span [style.color]="form.labelColor">{{radioButton.name}}</span>
@@ -930,7 +929,7 @@
                     <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                       <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                         <div class="form-check">
-                          <label class="form-check-label">
+                          <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
                               <span [style.color]="form.labelColor">{{checkBox.name}}</span>

@@ -531,7 +531,7 @@ img.custom-image-css {
   margin-bottom: 0px;
 }
 .overflow-control{
-    overflow: hidden !important;
+    overflow: auto !important;
 }
 .tgrid {
     border: none;
@@ -542,4 +542,13 @@ img.custom-image-css {
 
 .leftBar{
     border-radius: 5px !important;
+}
+/* 1-6-2023 sudha sri */
+.cus-nodatafound-alert {
+    margin: 51px 10px 10px 10px;
+}
+@media (min-width: 300px) and (max-width: 991px) {
+.cus-nodatafound-alert {
+    margin: 10px 10px 10px 10px;
+}
 }

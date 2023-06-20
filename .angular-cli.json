@@ -52,7 +52,8 @@
 				"./assets/global/plugins/select2/select2.css",
 				"./assets/css/material_green.css",
 				"./assets/css/circle.css",
-				"./assets/js/indexjscss/slider-theme.css"
+				"./assets/js/indexjscss/slider-theme.css",
+				"./assets/css/xamplify-responsive.css"
 			],
 			"scripts": [
 				"./assets/js/indexjscss/jquery.js",

@@ -24,7 +24,7 @@
 }
 
 .grid-box {
-    background: #f1f5f9 !important;
+    background: #f1f5f9;
 }
 #min-width {
     min-width: 145px;
@@ -127,7 +127,7 @@
 }
 .actionAlignment_sp_even{
    display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 /* .btnAlignPad{
     padding-left: 35px;

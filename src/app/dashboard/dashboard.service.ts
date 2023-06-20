@@ -958,9 +958,14 @@ deleteThemeProperties(id:number){
     .map(this.extractData)
     .catch(this.handleError);
 }
-getActiveTheme(){
-    const url = this.authenticationService.REST_URL + 'custom/skin/getactiveTheme/'+ this.authenticationService.getUserId() +'/'+'?access_token=' + this.authenticationService.access_token;
-    return this.http.get(url)
+getActiveTheme(vanityLoginDto:VanityLoginDto){
+    let companyProfileName = this.authenticationService.companyProfileName;
+    let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+    if(xamplifyLogin){
+        vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+    }
+    const url = this.authenticationService.REST_URL + 'custom/skin/getactiveTheme/?access_token=' + this.authenticationService.access_token;
+    return this.http.post(url,vanityLoginDto)
     .map(this.extractData)
     .catch(this.handleError);
 }
@@ -1071,4 +1076,19 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
 	}
+
+    findCompanyInfo(emailId:string) {
+        let input = {};
+        input['emailId'] = emailId;
+        const url = this.superAdminUrl + 'findCompanyInfo?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, input)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    upgradeAccount(companyId:number,roleId:number){
+        return this.http.get(this.superAdminUrl + "/upgradeAccount/" + companyId + "/"+roleId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

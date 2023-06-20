@@ -57,7 +57,7 @@
             </th>
             <th class="text-center" id="border-bottom" translate>Created On</th>
             <th class="text-center" id="border-bottom" translate>Custom Reason</th>
-            <th class="text-center float-right" id="border-bottom">Actions</th>
+            <th class="text-center float-right" id="border-bottom-none">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -202,7 +202,7 @@
 
 
 <div class="modal fade right" id="unsubscribePagePopup" tabindex="-1" role="dialog" aria-labelledby="unsubscribePagePopup" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog full-width" role="document">
+  <div class="modal-dialog popup-align" [ngClass] = "isFullPopupShow ? 'custom-popup-width' : ''" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button *ngIf="!modalPopupLoader" type="button" class="close-circle" data-dismiss="modal">
@@ -215,7 +215,7 @@
         <div class="portlet light" style="border: navajowhite;" *ngIf="!modalPopupLoader">
         <img src="{{unsubscribePageContent?.companyLogoPath}}"  class="img-rounded" alt="" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
         <div>
-          <div class="container"  style="margin-top: 50px;">
+          <div   style="margin-top: 50px;">
             <h1 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
             <form style="line-height: 25px; font-size: 15px;">
               <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">

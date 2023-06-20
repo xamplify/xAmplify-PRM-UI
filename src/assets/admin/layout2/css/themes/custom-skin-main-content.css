@@ -76,7 +76,8 @@ h1, h2, h3, h6 {
   background-color:  var(--div-bg-color) !important;
   border:1px solid var(--border-color) !important;  
 }
-.bar,.tile,
+
+.tile,
 .heading-top,
 .progress {
   background-color: var(--page-content) !important;
@@ -98,7 +99,8 @@ h1, h2, h3, h6 {
 .pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
   background: var(--page-content) !important;
 }
-.form-control {
+.form-control,
+.col-item {
   color: var(---text-color) !important;
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
@@ -165,12 +167,17 @@ td > button {
   border-radius: 3px !important;
 }
 .list-group-item,
-.read,
 /* input, */
 .card {
   color: var(---text-color) !important;
   background-color: var(--div-bg-color) !important;
   border: 1px solid var(--border-color) !important;
+}
+
+
+.read {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
 }
 .campaign-type-selected,
 ul.alt-row-style1 li:hover,
@@ -246,7 +253,7 @@ fieldset,
 .table thead > tr > th,
 .ng2-tag-input,
 .tborders >tbody>tr>td {
-  border-bottom: 2px solid var(--border-color)!important;
+  border-bottom: 1px solid var(--border-color)!important;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th,
 .modal-footer,
@@ -417,8 +424,14 @@ input{
   background-color: var(--div-bg-color) !important;
   border:2px dotted var(--border-color)!important;
 }
+.profile-image-wrapper-color{
+  border:1px solid var(--border-color)!important;
+}
 .color-inline{
   background-color: var(--div-bg-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-top: 1px solid var(--border-color) !important;
 }
 .text-dropdown{
   background-color: var(--div-bg-color) !important;
@@ -452,7 +465,8 @@ label{
 .with-nav-tabs.panel-default .nav-tabs > li.active > a, .with-nav-tabs.panel-default .nav-tabs >
  li.active > a:hover, .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
   color: #f8f6f9 !important;
-    background-color: #1c313a !important;
+    /* background-color: #1c313a !important; */
+    background-color: var(--div-bg-color) !important;
  }
  .with-nav-tabs.panel-default .nav-tabs > li > a{
   color: #f8f6f9 !important;
@@ -549,9 +563,10 @@ label{
 .update-status-content{
   border: 1px solid var(--border-color)!important;
 }
-.merge-tag-input-border{
   /*** tharak ***/
-  /* border: 1px solid var(--border-color)!important; */
+.merge-tag-input-border{
+  border: 1px solid var(--border-color) !important;
+  border-radius:3px !important
 }
 .btn-default > i,
 .btn-default{
@@ -566,9 +581,9 @@ label{
   border-bottom: 1px solid var(--border-color) !important;
 }
 .head-h{
-  border: 1px solid var(--border-color)!important;
+  border-bottom: 1px solid var(--border-color)!important;
 }
-.rss-border{  border-color: var(--border-color)!important;
+.portlet.light.rss-border{  border-color: var(--border-color)!important;
 }
 /* hr{
   border-top: 0.5px solid var(--border-color)!important;
@@ -685,9 +700,9 @@ label{
   background-color:  var(--page-content) !important;
   /* color:#5bb2f5 !important; */
 }
-.gray{
+/* .gray{
   background-color: var(--div-bg-color) !important;
-}
+} */
 .button:disabled{
   color: #000000 !important;
 }
@@ -954,16 +969,163 @@ textarea:active, textarea:focus {
 }
 input.field-border-customization {
   border: 2px solid var(--border-color)!important;
-  /* padding: 0px 7px; */
+   /* padding: 0px 7px; */
+  }
+  input#copy-link {
+    border: 2px solid var(--border-color) !important;
+    /* border-radius: 5px;
+    padding: 0px 10px; */
+  }
+  .modal-content{
+    border: 1px solid var(--border-color) !important;
+  }
+  .d-p-bg-color-cust {
+    background: var(--form-bg-color) !important;
+  }
+  table, th {
+    border: none !important;
+  }
+  input.field-border-customization {
+    border: 2px solid var(--border-color)!important;
+  }
+  rect.highcharts-background {
+    fill: none;
+  }
+  .portlet-title.custom-change-css {
+    border-bottom: none !important;
 }
-input#copy-link {
-  border: 2px solid var(--border-color) !important;
-  /* border-radius: 5px;
-  padding: 0px 10px; */
+button.customize-btn-space {
+  margin-top: 4px !important;
 }
-.modal-content{
+/* 1-6-2023 sudha sri */
+.thumbnail-wrapper{
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.tracks-bg-color{
+  background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
-.d-p-bg-color-cust {
-  background: var(--form-bg-color) !important;
+.feature-img-bg{
+  background-color: var(--div-bg-color) !important;
+  border: 2px dotted var(--border-color)!important;
+}
+fieldset.fild-custome-borders-none {
+  border: none !important;
+}
+legend.leg-custome-borders-bot {
+  border: none !important;
+  border-bottom: 1px solid var(--border-color)!important;
+}
+.form-check>.form-check-label {
+  border: none !important;
+}
+button.glyphicon.glyphicon-remove.search-box-item-clear:before {
+  margin-left: -3px;
+}
+/* 5-6-2023 sudha sri */
+.table-filter,
+.table-filter tbody tr:hover,
+.table>tbody>tr>th{
+  background-color: var(--div-bg-color) !important;
+}
+/* 6-6-2023 sudha sri */
+input[type="number"] {
+  border: 1px solid var(--border-color)!important;
+}
+input[type="number"]:focus {
+  border-color: var(--border-color)!important;
+}
+ul.alt-row-style1 li:nth-child(even){
+  border-top: 1px solid #2f4857!important;
+  border-bottom: 1px solid #2f4857!important;
+}
+/* 7-6-2023 sudha sri */
+span.ui-column-resizer{
+  background-color: var(--div-bg-color) !important;
+}
+span.ui-column-resize{
+  background-color: var(--div-bg-color) !important;
+}
+.pricing {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* 7-6-2023 */
+
+#download-template-grid {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border-color)!important;
+  line-height: 1;
+  position: relative;
+  bottom: 2px;
+}
+/* 8-6-2023 sudha sri */
+.cont-info{border-bottom: 1px solid var(--border-color)!important;}
+.profile-usermenu ul li.active a, .active-tab-anchor-text{border-left: 2px solid var(--border-color)!important;}
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
+
+.animated-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  /* background: #f6f7f8; */
+  background: linear-gradient(to right, var(--page-content)  8%,  var(--div-bg-color) 18%, var(--page-content) 33%) !important;
+  background-size: 800px 104px;
+  height: 370px;
+  position: relative;
+}
+/* 9-6-2023 sudha sri */
+.with-nav-tabs.panel-default .nav-tabs > li > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li > a.partnerGroupsC,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnersC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-default .nav-tabs > li.active > a.partnerGroupsC, .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover
+{color: var(---text-color) !important;}
+.nav-tabs>li>a.partnersC:hover, .nav-tabs>li>a.partnerGroupsC:hover{background: none !important;}
+.breadcrumb-font-color{color : var(---text-color) !important;font-size:13px;}
+/* 11-6-2023 sudha sri */
+.td-netbg{
+  border-left: 1px solid var(--border-color)!important;
+    border-right: 1px solid var(--border-color)!important;
+    border-bottom: 1px solid var(--border-color)!important;
+}
+/* 12-6-2023 sudha sri */
+.list__item.list__item--selected > .flex-row{
+  box-shadow: none !important
+}
+.tracks-bg-color {
+  background-color: var(--div-bg-color) !important;
+}
+.img-class{border:1px solid var(--div-bg-color)!important;}
+.border-card{ border: 1px solid var(--border-color)!important}
+/* 14-6-2023 sudha sri */
+.comment .info a, .comment-color{color : var(---text-color) !important;}
+.dropdown-menu li>a>[class*=" fa-"], .bar .fa, i.fa.fa-eye.color-chnage{color : var(---text-color) !important;}
+.partner-company-selected, .table tr.row-selected td{background-color: var(--page-content) !important;}
+
+.custom-line{
+  background-color:  var(--div-bg-color) !important;
+  border: 0 !important;
+}
+
+
+
+input.custom-line:active, input.custom-line:focus {
+outline: none !important;
+}
+
+.green.btn{
+  border: none;
+  color: #FFFFFF !important;
+  background-color: #26a69a !important;
 }

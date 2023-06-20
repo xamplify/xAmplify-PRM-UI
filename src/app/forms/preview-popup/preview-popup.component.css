@@ -124,6 +124,8 @@
  }
 
  
+
+ 
 .form-name-wrap {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -179,3 +181,24 @@ span.quiz_optionname {
 .popup-custom-width{
     width: 60% !important;
 }
+
+.pages-custom-width85{
+    width:85% !important;
+    position: relative!important;
+    top: 67px;
+    height: 89%!important;
+    float: right;
+}
+
+
+.view-banner-white-labeled{
+    background-color: green;
+     color: white !important;
+     padding: 4px;
+     text-align: center;
+     width: 125px;
+     margin: 0 0;
+     font-size: 11px;
+     font-weight: 600;
+ }
+

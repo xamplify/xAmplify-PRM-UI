@@ -250,10 +250,10 @@
 												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
 												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
 												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
-                        						</span>
+                        </span>
 												 <p *ngIf="ownThumbnail" class="help-block" translate>If you want to upload your own thumbnail, please choose a file from your system.
-                           						 <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
-                          						<span style="color:red" translate>*Please upload your thumbnail.</span>
+                            <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
+                          <span style="color:red" translate>*Please upload your thumbnail.</span>
 												</p>
 												   <div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
 														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
@@ -270,7 +270,7 @@
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifFirst()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img id="gifImageIdFirst" [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" (error)="setGifPath($event)" class="sizeImg">
+													<img id="gifImageIdFirst" [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifSecond()">
 													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
@@ -299,25 +299,6 @@
 											<app-select-dropdown *ngIf="showFolderDropDown" [categoryId]="folderId"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
 										</div>
 									</div>
-									<!---XNFR-255-->
-									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
-										<div class="col-xs-9 col-sm-9 col-md-9">
-											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-											 (statusChange)="setWhiteLabeled($event)">
-											</switch>
-											<span class="info-color-xampc">
-												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
-													data-placement="top" aria-hidden="true"
-													title="{{saveVideoFile?.whiteLabeledToolTipMessage}}"></i>
-											</span>
-										</div>
-									</div>
-									<div>
-										<app-partner-company-and-groups [moduleName]="'dam'" [inputId]="saveVideoFile.damId"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
-									</div>
-									<!---XNFR-255-->
 								</div>
 							</div>
 						</div>
@@ -354,7 +335,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Player Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
+													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'" class="field-border-customization"
                            [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -374,7 +355,7 @@
 												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
-													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
+													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" class="field-border-customization"
                            [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
                           <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
 													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
@@ -404,18 +385,25 @@
 												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label" translate>Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
-                       
+                            <!-- <input type="file" *ngIf="!brandLogoUrl" (change)="fileChangeEvent($event)" />
+                            <image-cropper *ngIf="!brandLogoUrl" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                            [aspectRatio]="4 / 3"  [resizeToWidth]="128"  format="png"
+                            (imageCroppedFile)="imageCroppedBase64($event)"
+                            (imageLoaded)="imageLoaded()"
+                            (loadImageFailed)="loadImageFailed()"></image-cropper>
+                           <img  [src]="croppedImage" />
+                           <button *ngIf="!brandLogoUrl" class="btn btn-primary" (click)="saveThumbnail()">submit</button> -->
 													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl" translate>Select Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
-                           							</span>
+                           </span>
 													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
 														<span (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
-                          							</div>
+                          </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
-														<span style="color:red" translate>Please upload a logo</span>
-														<p style="color: blue;" translate>Note:Max image size 10 MB</p>
+                              <span style="color:red" translate>Please upload a logo</span>
+                              <p style="color: blue;" translate>Note:Max image size 10 MB</p>
 													</div>
 												</div>
 											</div>
@@ -423,8 +411,8 @@
 												<label class="col-xs-5 control-label" style="position: relative;top:-7px;" translate>Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
-													(input)="logoDescription(val.value)">
-													<span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
+                           (input)="logoDescription(val.value)" class="field-border-customization">
+                           <span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
 												</div>
 											</div>
 											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
@@ -440,76 +428,76 @@
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
 													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
 												</div>
-                      						</div>
-											<div class="lineplayercontrol"></div> 
-											<div style="text-align: center;margin-top: -17px;font-size: 17px;">
-												<span style="text-align: center;" translate>Video Player Controls</span>
-											</div>
-											<div class="form-group" style="padding-top: 10px;">
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="allowSharing($event)">
-												</switch>
-												</div>
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="enableSettings($event)">
-												</switch>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="changeFullscreen($event)">
-												</switch>
-												</div>
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="allowComments($event)">
-												</switch>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="allowLikes($event)">
-												</switch>
-												</div>
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="enableCastings($event)">
-												</switch>
-												</div>
+                      </div>
+                       <div class="lineplayercontrol"></div> 
+                     <div style="text-align: center;margin-top: -17px;font-size: 17px;">
+						<span style="text-align: center;" translate>Video Player Controls</span>
+					 </div>
+					  <div class="form-group" style="padding-top: 10px;">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowSharing($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="enableSettings($event)">
+                          </switch>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="changeFullscreen($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowComments($event)">
+                          </switch>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowLikes($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="enableCastings($event)">
+                          </switch>
+                        </div>
 
-											</div>
-											<div class="form-group">
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="allowEmbedVideo($event)">
-												</switch>
-												</div>
-												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
-												<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												[offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												(statusChange)="is360VideoCheck($event)">
-												</switch>
-												</div>
-											</div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="allowEmbedVideo($event)">
+                          </switch>
+                        </div>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                          <switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
+                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+                           (statusChange)="is360VideoCheck($event)">
+                          </switch>
+                        </div>
+                      </div>
 										</div>
 									</div>
 								</div>

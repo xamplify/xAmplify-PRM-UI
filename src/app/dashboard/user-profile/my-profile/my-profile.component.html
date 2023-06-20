@@ -34,7 +34,7 @@
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
                 <div class="portlet light profile-sidebar-portlet">
-                    <div class="profile-image-wrapper">
+                    <div class="profile-image-wrapper-color">
                         <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
                             <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                             <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
@@ -193,7 +193,7 @@
                             </li>
                             <!--Team Member Groups-->
                             <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" >
+                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             
@@ -343,16 +343,17 @@
                                                         <td class="mAlignView responsive-alignment">
                                                             <div class="actions-block override-actions ActionAlign">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                                    <a class="mMobileDisable" title="View"
+                                                                    <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
                                                                             aria-hidden="true"
-                                                                            class="fa fa-eye mDisableColor"></i></a>
-                                                                    <a title="Activate"
+                                                                            class="fa fa-eye mDisableColor"></i>
+                                                                        </a>
+                                                                    <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                                         (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                         *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                             _ngcontent-c69="" aria-hidden="true"
                                                                             class="fa fa-power-off"></i></a>
-                                                                    <a class="mMobileDisable" title="Copy"
+                                                                    <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
                                                                         (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                             aria-hidden="true"
                                                                             class="fa fa-files-o mDisableColor"></i></a>
@@ -393,20 +394,20 @@
                                             <td class="mAlignView">
                                                 <div class="actions-block override-actions ActionAlign">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                        <a class="mMobileDisable" title="Edit"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-edit mDisableColor"></i></a>
-                                                        <a title="Activate"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-power-off"></i></a>
-                                                        <a class="mMobileDisable" title="Copy"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Copy"
                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-files-o mDisableColor"></i></a>
-                                                        <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-trash-o"></i></a>
@@ -625,8 +626,9 @@
                                                                 <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
                                                             </div> -->
 
-                                                            <div class="ribbon draft" style="left:10px" *ngIf="integrateRibbonText == 'configured'">
-                                                                <span [style.background-color]="'green'">{{integrateRibbonText}}</span>
+                                                            <div class="ribbon draft config" style="left:10px"  *ngIf="integrateRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'"
+                                                                >{{integrateRibbonText}}</span>
                                                             </div>
                                                             <div class="ribbon draft" style="left:10px" *ngIf="integrateRibbonText != 'configured'">
                                                                 <span [style.background-color]="'yello'">{{integrateRibbonText}}</span>
@@ -657,7 +659,7 @@
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">HubSpot</h5>
 
-                                                            <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText == 'configured'">
+                                                            <div class="ribbon draft config" style="left:10px" *ngIf="hubSpotRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{hubSpotRibbonText}}</span>
                                                             </div>
                                                             <div class="ribbon draft" style="left:10px" *ngIf="hubSpotRibbonText != 'configured'">
@@ -696,7 +698,7 @@
                                                                 <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
                                                             </div> -->
 
-                                                            <div class="ribbon draft" style="left:10px" *ngIf="sfRibbonText == 'configured'">
+                                                            <div class="ribbon draft config" style="left:10px" *ngIf="sfRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{sfRibbonText}}</span>
                                                             </div>
                                                             <div class="ribbon draft" style="left:10px" *ngIf="sfRibbonText != 'configured'">
@@ -732,7 +734,7 @@
                                                                 <span [style.background-color]="microsoftRibbonText == 'configured' ? 'green':'yello'">{{microsoftRibbonText}}</span>
                                                             </div> -->
 
-                                                            <div class="ribbon draft" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
+                                                            <div class="ribbon draft config" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{microsoftRibbonText}}</span>
                                                             </div>
                                                             <div class="ribbon draft" style="left:10px" *ngIf="microsoftRibbonText != 'configured'">
@@ -754,14 +756,14 @@
                                                     <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="pipedriveRibbonText == 'configured'" 
-                                                                    style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+                                                            class="integration-cards">
                                                                     <a (click)="pipedriveSettings()" data-toggle="tooltip"
                                                             data-placement="top" title="Pipedrive Settings"><i class="fa fa-cog"
                                                                     style="font-size: 20px !important;"></i></a>
                                                                 </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Pipedrive</h5>
 
-                                                            <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText == 'configured'">
+                                                            <div class="ribbon draft config" style="left:10px" *ngIf="pipedriveRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{pipedriveRibbonText}}</span>
                                                             </div>
                                                             <div class="ribbon draft" style="left:10px" *ngIf="pipedriveRibbonText != 'configured'">
@@ -1147,6 +1149,15 @@
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
 
+                                    <!-- Customize Left Menu -->
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
+
+                                        <!-- <div>
+                                            <app-customize-leftsidenavbar></app-customize-leftsidenavbar>
+                                        </div> -->    
+                                                                         
+                                        </div>
+
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
@@ -1155,8 +1166,8 @@
                                         <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                             <table class="table table-light" style="border:0px!important;background-color:transparent!important">
                                                 <tbody>
-                                                    <fieldset>
-                                                        <legend>GDPR</legend>
+                                                    <fieldset class="fild-custome-borders-none">
+                                                        <legend class="leg-custome-borders-bot">GDPR</legend>
                                                         <tr class="col-md-12 col-lg-12">
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
@@ -1263,7 +1274,7 @@
                                                             </th>
                                                             <th class="text-center" id="border-bottom" translate>Created On</th>
                                                             <th class="text-center" id="border-bottom" translate>Items Count</th>
-                                                            <th class="text-center float-right" id="border-bottom">Actions</th>
+                                                            <th class="text-center float-right border-top" id="border-bottom">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1436,8 +1447,8 @@
                                             <div>
                                                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
                                                     <div class="col-xs-12" style="padding:0">
-                                                        <fieldset>
-                                                            <legend translate>Video Player Apperance</legend>
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
                                                             <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
                                                                     <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
@@ -1445,7 +1456,7 @@
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
                                                                         class="field-border-customization" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization"
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1464,7 +1475,7 @@
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
                                                                         class="field-border-customization"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController"
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization" 
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -1492,8 +1503,8 @@
                                                     </div>
                                                     <!-- removed bg-color white and shadow white (ss) -->
                                                     <div class="col-xs-12" style="padding:0;">
-                                                        <fieldset>
-                                                            <legend translate>Controls of the player</legend>
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot" translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
                                                                     <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Sharing' | translate}}:</label>
@@ -1574,10 +1585,10 @@
                                             <table class="table table-light" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                                                 style="border: 0px !important; background-color: transparent !important">
                                                 <tbody>
-                                                    <fieldset>
+                                                    <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
-                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                                             Download User CSV Template
                                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                                         </button>
@@ -1733,10 +1744,10 @@
                                             <table class="table table-light"
                                                 style="border: 0px !important; background-color: transparent !important" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                                 <tbody>
-                                                    <fieldset>
+                                                    <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
-                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                             Download Domain CSV Template
                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                         </button>
@@ -1996,7 +2007,7 @@
                 </div>
                 <div *ngIf="!imageChangedEvent">
                     <fieldset
-                        style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+                    class="fild-custome-borders-none"  style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
                     </fieldset>
                 </div>
                 </div>

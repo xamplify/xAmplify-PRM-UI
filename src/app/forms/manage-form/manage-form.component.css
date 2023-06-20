@@ -30,7 +30,7 @@
 	background-color: #ed1c24;
     color: white;
     margin-bottom: 25px;
-    margin-left: -24px;
+    margin-left: -25px;
     margin-top: -5px;
 }
 #notification-list{
@@ -186,4 +186,17 @@ cursor: default;
 
 .pg8{
   top: -1px;
+}
+
+
+/* 14/06/23 */
+
+.ribbon span::before {
+	border-left: 3px solid #5ab1eb;
+	border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5ab1eb ;
+	border-top: 3px solid #5ab1eb;
 }

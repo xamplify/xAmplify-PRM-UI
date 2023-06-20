@@ -151,6 +151,7 @@ body {
 
 .disabled-background-color {
     background-color: #ffffff;
+    /* background-color: #e7e7e7; */
 }
 
 .label-value-correct {
@@ -191,7 +192,6 @@ label.form-check-label.disable-click {
     margin-top : 2px;
 }
 .border-fivepx{
-    background-color: #f1f5f9 ;
     border-radius: 5px !important;
 }
 label.questionclass {

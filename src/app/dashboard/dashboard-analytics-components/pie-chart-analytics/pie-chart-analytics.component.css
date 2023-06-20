@@ -145,3 +145,10 @@
     padding:7px;
     background-color: #6dcff6;
 }
+
+/* 16-06-2023*/
+
+.white-co {
+    display: flex;
+    align-items: stretch;
+}

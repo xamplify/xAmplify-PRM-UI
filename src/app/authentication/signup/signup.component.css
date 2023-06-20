@@ -1,25 +1,24 @@
-.ng-invalid {
-    border: none !important;
-}
 .alert-danger {
-    background: #fff;
-    border: none;
-    color: #ff0600;
-    padding: 10px;
-}
-.fa-question-circle {
-    color: #4ba79a;
-    position: absolute;
-    top: 15px;
-    right: 5px;
-    font-size: 22px;
-    cursor: pointer;
+  background: #fff;
+  border: none;
+  color: #ff0600;
+  padding: 10px;
 }
 
-.agree-link{
+.fa-question-circle {
+  color: #4ba79a;
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.agree-link {
   color: white;
   cursor: pointer;
 }
-.agree-link:hover{
+
+.agree-link:hover {
   color: #5b9bd1;
 }

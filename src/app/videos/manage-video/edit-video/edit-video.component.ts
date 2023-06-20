@@ -932,7 +932,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('#overLayDialog').append($('#overlay-modal').show());
   }
   settingImagePaths(i: number) {
-      return this.saveVideoFile.imageFiles[i] + '?access_token=' + this.authenticationService.access_token;
+       let imagePath = "";
+       if(this.saveVideoFile.imageFiles[i]!=undefined && this.saveVideoFile.imageFiles[i].length>0){
+          imagePath = this.saveVideoFile.imageFiles[i] + '?access_token=' + this.authenticationService.access_token;
+       }
+       return imagePath;
   }
   settingGifPaths(i: number) {
       return this.saveVideoFile.gifFiles[i] + '?access_token=' + this.authenticationService.access_token;

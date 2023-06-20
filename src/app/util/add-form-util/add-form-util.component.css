@@ -514,6 +514,7 @@ label {
     width: calc(50% - 15px);
     padding-top: 1rem;
     border-top: 1px solid #eaebed;
+    margin-right: -4px;
 }
 
 .actions__external-link {
@@ -1651,4 +1652,14 @@ div.switch5>input.switch:focus~label:before {
     line-height: 1.1;
   }
   
-
+/* 6-6-2023 sudha sri */
+/* 06-06-2023 */
+.form-control input[type="number"] {
+    border: 1px solid #e5e5e5 !important;
+}
+.form-control input[type="number"]:focus {
+    border-color: #999 !important;
+}
+.form-control .form-padding-left {
+padding-left: 12px !important;
+}

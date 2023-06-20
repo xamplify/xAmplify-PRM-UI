@@ -1,88 +1,77 @@
-/* #vendor-details-tile {
-    border: lightgrey 1px solid;
-    border-style: solid;
-    height: 102px;
-    border-radius: 10px;
-    padding-top: 15px;
-    background-color: #fff;
-} */
 .profile {
-    background: #9079d2;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 700;
-    min-height: 40px;
-    max-height: 40px;
-    min-width: 40px;
-    max-width: 40px;
-    text-align: center;
-    color: #fff;
-    padding-top: 12px;
+  background: #9079d2;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  min-height: 40px;
+  max-height: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  text-align: center;
+  color: #fff;
+  padding-top: 12px;
 }
 
 .uppercase {
-    text-transform: uppercase !important;
+  text-transform: uppercase !important;
 }
 
 .margin-left {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .user-email {
-    font-weight: 400;
-    float: left;
-    font-size: 13px !important;
+  font-weight: 400;
+  float: left;
+  font-size: 13px !important;
 }
 
 .user-company {
-    margin: 2px 0;
-    font-weight: 600;
-    color: #676767;
+  margin: 2px 0;
+  font-weight: 600;
+  color: #676767;
 }
 
 .user-name {
-    margin: 2px 0;
-    font-weight: 400;
+  margin: 2px 0;
+  font-weight: 400;
 }
 
 .ellipsis {
-    width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    float: left !important;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left !important;
 }
 
 .margin-flex {
-    margin-left: 0px;
+  margin-left: 0px;
 }
 
-img.active {
-    height: 50px;
-}
-
-.campaign-filter-option{
-    display: inline-flex;
+.campaign-filter-option {
+  display: inline-flex;
 }
 
 .campaign-type-selected {
-	background-color: #0095da;
-	color: white;
+  background-color: #0095da;
+  color: white;
 }
 
-.icon-class{
-    color: #0085d5; font-size: 18px !important
+.icon-class {
+  color: #0085d5;
+  font-size: 18px !important;
 }
 
-@media screen and (max-width:600px){
- .mHeight{
-     height: 400px !important;
- }
- .mPad{
-     padding:5px 0px 5px 0px;
-     width:100%
- }
- .mPad2{
-     Padding:5px 30px 5px 30px;
-     width:100%
- }
+@media screen and (max-width: 600px) {
+  .mHeight {
+    height: 400px !important;
+  }
+  .mPad {
+    padding: 5px 0px 5px 0px;
+    width: 100%;
+  }
+  .mPad2 {
+    padding: 5px 30px 5px 30px;
+    width: 100%;
+  }
 }

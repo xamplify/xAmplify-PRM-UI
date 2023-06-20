@@ -158,7 +158,7 @@
   right: -86px;
 }
 
-.profile-image-wrapper {
+.profile-image-wrapper-color {
   display: block;
   width: 100px;
   height: 100px;
@@ -1238,4 +1238,22 @@ p.pt-4 {
  color: #fff !important;
  font-weight: 600 !important;
  font-size: 11px !important;
+}
+/* 6-6-2023 sudha sri */
+th#border-bottom {
+  border-top: none !important;
+}
+th.border-top{border-bottom: none !important}
+
+
+/* 14-06-23 */
+
+.ribbon.draft.config>span::before {
+	border-left: 3px solid green;
+	border-top: 3px solid green;
+}
+
+.ribbon.draft.config>span::after {
+	border-right: 3px solid green;
+	border-top: 3px solid green;
 }

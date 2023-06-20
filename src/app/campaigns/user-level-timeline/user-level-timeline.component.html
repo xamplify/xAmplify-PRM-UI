@@ -1,241 +1,228 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <section>
-<div id="timeline-view" class="page-content">
-  <app-modal-popup-loader *ngIf="dataLoader"></app-modal-popup-loader>
-  <!--REMOVED style="border: 1px solid #CCC;"-->
-  <div class="page-bar white-co"  *ngIf="!dataLoader">
-    <a (click)="goBack()" class="pull-right close-circle custom-css">
-    <i class="fa fa-times" aria-hidden="true"> </i>
-  </a>
-  <a (click)="getUserLevelTimeLineSeriesData()" class="pull-right close-circle refresh-custom-css">
-    <i class="fa fa-refresh" aria-hidden="true"></i>
-  </a>
-  <div data-animation-name="slideInUp">
-    <div class="col-xs-12">
-      <ng-container *ngIf="campaignType == 'SOCIAL'">
-        <div class="f-w-600 p10">Redistributed Accounts</div>
-        <div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
-          <app-social-status [socialStatus]="socialStatus"></app-social-status>
-        </div>
-      </ng-container>
-    </div>
-    <div class="col-xs-12 col-sm-12">
-      <div data-animation="slideInUp">
-        <div class="row mb10" style="margin-left: 30px;">
-          <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
-          <ng-container *ngIf="!disabled">
-            <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
-              <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                class="btn btn-success">{{dealButtonText}}</button>
-            </span>
-          </ng-container>
-          <ng-container *ngIf="disabled">
-            <button title="This campaign has been deleted by your vendor.You can't register a lead"
-              style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
-              class="btn btn-success">{{dealButtonText}}</button>
-          </ng-container>
-          <h5 class="f-w-600 mt10 mb0">
-            <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
-          <span *ngIf="userLevelCampaignAnalyticsDTO?.fullName?.length>20">..</span>
-        </h5>
-        <h6 title="{{userLevelCampaignAnalyticsDTO?.emailId}}" class="m0">{{userLevelCampaignAnalyticsDTO?.emailId| slice:0:35}}
-          <span *ngIf="userLevelCampaignAnalyticsDTO?.emailId?.length>35">...</span>
-        </h6>
-          </div>
-          <div class="row mb10">
-            <div class="col-sm-3 col-xs-6">
-              <a class="text-center">
-                <div>
-                  <img src="assets/images/email-opened.png" class="eoc" alt=""></div>
-                <div>Email Opened</div>
-                <div class="number">
-                  <span data-counter="counterup" class="cuc">{{userLevelCampaignAnalyticsDTO?.emailOpenedCount}}</span>
-                </div>
-              </a>
+   <div id="timeline-view" class="page-content">
+      <app-modal-popup-loader *ngIf="dataLoader"></app-modal-popup-loader>
+      <div class="page-bar white-co"  *ngIf="!dataLoader">
+         <a (click)="goBack()" class="pull-right close-circle custom-css">
+         <i class="fa fa-times" aria-hidden="true"> </i>
+         </a>
+         <a (click)="getUserLevelTimeLineSeriesData()" class="pull-right close-circle refresh-custom-css">
+         <i class="fa fa-refresh" aria-hidden="true"></i>
+         </a>
+         <div data-animation-name="slideInUp">
+            <div class="col-xs-12">
+               <ng-container *ngIf="campaignType == 'SOCIAL'">
+                  <div class="f-w-600 p10">Redistributed Accounts</div>
+                  <div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
+                     <app-social-status [socialStatus]="socialStatus"></app-social-status>
+                  </div>
+               </ng-container>
             </div>
-            <ng-container *ngIf="campaignType != 'EVENT'">
-              <div class="col-sm-3 col-xs-6">
-                <a class="text-center">
-                  <div>
-                    <img src="assets/images/clicked-new.png" class="cnc" alt=""></div>
-                  <div>Clicked URL</div>
-                  <div class="number">
-                    <span data-counter="counterup" class="counterupcss">{{userLevelCampaignAnalyticsDTO?.clickedUrlsCount}}</span>
+            <div class="col-xs-12 col-sm-12">
+               <div data-animation="slideInUp">
+                  <div class="row mb10" style="margin-left: 30px;">
+                     <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
+                     <ng-container *ngIf="!disabled">
+                        <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
+                        <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+                           class="btn btn-success">{{dealButtonText}}</button>
+                        </span>
+                     </ng-container>
+                     <ng-container *ngIf="disabled">
+                        <button title="This campaign has been deleted by your vendor.You can't register a lead"
+                           style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
+                           class="btn btn-success">{{dealButtonText}}</button>
+                     </ng-container>
+                     <h5 class="f-w-600 mt10 mb0">
+                        <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
+                        <span *ngIf="userLevelCampaignAnalyticsDTO?.fullName?.length>20">..</span>
+                     </h5>
+                     <h6 title="{{userLevelCampaignAnalyticsDTO?.emailId}}" class="m0">{{userLevelCampaignAnalyticsDTO?.emailId| slice:0:35}}
+                        <span *ngIf="userLevelCampaignAnalyticsDTO?.emailId?.length>35">...</span>
+                     </h6>
                   </div>
-                </a>
-              </div>
-              <div class="col-sm-3 col-xs-6"
-                [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' ">
-                <a class="text-center">
-                  <div>
-                    <img src="assets/images/video-watched.png" class="vwc" alt=""></div>
-                  <div>Views</div>
-                  <div class="number">
-                    <span data-counter="counterup" class="vwcuc">{{userLevelCampaignAnalyticsDTO?.watchedCount}}</span>
+                  <div class="row mb10">
+                     <div class="col-sm-3 col-xs-6">
+                        <a class="text-center">
+                           <div>
+                              <img src="assets/images/email-opened.png" class="eoc" alt="">
+                           </div>
+                           <div>Email Opened</div>
+                           <div class="number">
+                              <span data-counter="counterup" class="cuc">{{userLevelCampaignAnalyticsDTO?.emailOpenedCount}}</span>
+                           </div>
+                        </a>
+                     </div>
+                     <ng-container *ngIf="campaignType != 'EVENT'">
+                        <div class="col-sm-3 col-xs-6">
+                           <a class="text-center">
+                              <div>
+                                 <img src="assets/images/clicked-new.png" class="cnc" alt="">
+                              </div>
+                              <div>Clicked URL</div>
+                              <div class="number">
+                                 <span data-counter="counterup" class="counterupcss">{{userLevelCampaignAnalyticsDTO?.clickedUrlsCount}}</span>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col-sm-3 col-xs-6"
+                           [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' ">
+                           <a class="text-center">
+                              <div>
+                                 <img src="assets/images/video-watched.png" class="vwc" alt="">
+                              </div>
+                              <div>Views</div>
+                              <div class="number">
+                                 <span data-counter="counterup" class="vwcuc">{{userLevelCampaignAnalyticsDTO?.watchedCount}}</span>
+                              </div>
+                           </a>
+                        </div>
+                        <div class="col-sm-3 col-xs-6"
+                           [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'">
+                           <a class="text-center">
+                              <div>
+                                 <img src="assets/images/total-time-spent.png" class="ttsc" alt="">
+                              </div>
+                              <div>Time Spent</div>
+                              <div class="number">
+                                 <span data-counter="counterup" class="ttscu">{{userLevelCampaignAnalyticsDTO?.totalTimeSpent}}</span>
+                              </div>
+                           </a>
+                        </div>
+                     </ng-container>
+                     <div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
+                        <a class="text-center">
+                           <div>
+                              <img src="assets/images/social-icons.jpg" class="sic" alt="">
+                           </div>
+                           <div>Social Accounts</div>
+                           <div class="number">
+                              <span>5</span>
+                           </div>
+                        </a>
+                     </div>
                   </div>
-                </a>
-              </div>
-              <div class="col-sm-3 col-xs-6"
-                [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'">
-                <a class="text-center">
-                  <div>
-                    <img src="assets/images/total-time-spent.png" class="ttsc" alt=""></div>
-                  <div>Time Spent</div>
-                  <div class="number">
-                    <span data-counter="counterup" class="ttscu">{{userLevelCampaignAnalyticsDTO?.totalTimeSpent}}</span>
-                  </div>
-                </a>
-              </div>
-            </ng-container>
-
-            <div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
-              <a class="text-center">
-                <div>
-                  <img src="assets/images/social-icons.jpg" class="sic" alt="">
-                </div>
-                <div>Social Accounts</div>
-                <div class="number">
-                  <span>5</span>
-                </div>
-              </a>
+               </div>
+               <ul class="timeline" data-animation="slideInUp">
+                  <li class="timeline-inverted">
+                     <div class="timeline-badge warning">
+                        <img src="assets/images/closed-env.png" alt="">
+                     </div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <span class="timeline-title">
+                           <app-timestamp [campaignView]="true" [dateAndTime]="campaignDetails?.displayTime"> </app-timestamp>
+                           </span>
+                        </div>
+                        <div class="timeline-body">
+                           <h5>
+                              <span class="f-w-600" title="{{campaignDetails?.campaignName}}">
+                                 {{campaignDetails?.campaignName | slice: 0: 30}}
+                                 <span *ngIf="campaignDetails?.campaignName?.length>30">...</span>
+                                 Launched at 
+                                 <ng-container *ngIf="campaignDetails?.displayTime!='-'">
+                                    {{campaignDetails?.displayTime | date: 'shortTime'}}
+                                 </ng-container>
+                                 <ng-container *ngIf="campaignDetails?.displayTime=='-'">
+                                    <span>-</span>
+                                 </ng-container>
+                              </span>
+                           </h5>
+                           <h5 title="{{userLevelCampaignAnalyticsDTO?.emailId}}">Email sent to <strong>{{userLevelCampaignAnalyticsDTO?.emailId}}</strong></h5>
+                        </div>
+                     </div>
+                  </li>
+               </ul>
+               <ul class="timeline custompadding" *ngFor="let emailLog of emailLogs">
+                  <li class="timeline-inverted">
+                     <div class="timeline-badge">
+                        <img *ngIf="emailLog?.actionId == 13" alt="opened" src="assets/images/opened.png">
+                        <img *ngIf="emailLog?.actionId == 14" alt="clicked" src="assets/images/clicked.png">
+                        <img *ngIf="emailLog?.actionId == 15" alt="clicked" src="assets/images/clicked.png">
+                        <img *ngIf="emailLog?.actionId == 1 || emailLog?.actionId == 10" alt="watched"
+                           src="assets/images/video.png">
+                        <img *ngIf="emailLog?.autoResponseType" src="assets/images/closed-env.png" alt="">
+                     </div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <span class="timeline-title">
+                              <app-timestamp [dateAndTime]="emailLog?.time"> </app-timestamp>
+                           </span>
+                        </div>
+                        <div class="timeline-body">
+                           <h5>
+                              <span *ngIf="emailLog?.actionId == 13">
+                              campaign<span class="f-w-600" *ngIf="emailLog?.subject" title="{{emailLog?.subject}}">
+                              {{emailLog?.subject | slice:0:30}} 
+                              <span *ngIf="emailLog?.subject?.length>30">...</span>
+                              </span> email opened
+                              </span>
+                              <span *ngIf="emailLog?.actionId == 14 && campaign?.campaignVideoFile">Clicked <span class="f-w-600"
+                                 title="{{campaignDetails?.videoTitle}}">{{campaignDetails?.videoTitle
+                              | slice:0:30}} <span *ngIf="campaignDetails?.videoTitle?.length>30">...</span></span> video GIF</span>
+                              <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url!='Clicked on View in browser'">
+                              Clicked on the URL
+                              <span class="f-w-600">
+                              <a href="{{emailLog?.url}}" target="_blank"
+                                 title="{{emailLog?.url}}">{{emailLog?.url | slice:0:30}}
+                              <span *ngIf="emailLog?.url?.length>30">...</span></a>
+                              </span>
+                              </span>
+                              <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url=='Clicked on View in browser'">
+                              <span class="f-w-600">
+                              <a href="javascript:void(0);" title="{{emailLog?.url}}">{{emailLog?.url}}
+                              </a>
+                              </span>
+                              </span>
+                              <span *ngIf="(emailLog?.actionId == 1 || emailLog?.actionId == 10)">
+                              <span class="f-w-600"
+                                 title="{{campaignDetails?.videoTitle}}">{{campaignDetails?.videoTitle | slice:0:30}}
+                              <span *ngIf="campaignDetails?.videoTitle?.length>30">...</span>
+                              </span> <span *ngIf="emailLog?.actionId == 10">re-</span>played
+                              </span>
+                              <span *ngIf="emailLog?.autoResponseType">
+                                 <h5>Email sent for the auto response: <strong>{{emailLog?.autoResponseType}}</strong></h5>
+                                 <h6>Subject Line: <strong>{{emailLog?.subject}}</strong></h6>
+                              </span>
+                           </h5>
+                           <span *ngIf="emailLog?.countryCode">
+                              <h6>
+                                 <img *ngIf="emailLog?.countryCode"
+                                    src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog?.countryCode | lowercase}}.svg"
+                                    width="20px" class="mr10" alt="">{{emailLog?.country}}, {{emailLog?.city}}
+                              </h6>
+                              <h6 class="mb0">{{emailLog?.isp}} ( <strong>{{emailLog?.ipAddress}}</strong> )</h6>
+                           </span>
+                           <div *ngIf="emailLog?.actionId == 1">
+                              <app-heat-map [sessionId]="emailLog?.sessionId"></app-heat-map>
+                           </div>
+                        </div>
+                     </div>
+                  </li>
+               </ul>
             </div>
-          </div>
-        </div>
-            <ul class="timeline" data-animation="slideInUp">
-              <li class="timeline-inverted">
-                <div class="timeline-badge warning">
-                  <img src="assets/images/closed-env.png" alt=""></div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <span class="timeline-title">
-                      <app-timestamp [campaignView]="true" [dateAndTime]="campaignDetails?.displayTime"> </app-timestamp>
-                    </span>
-                  </div>
-                  <div class="timeline-body">
-                    <h5>
-                      <span class="f-w-600" title="{{campaignDetails?.campaignName}}">
-                      {{campaignDetails?.campaignName | slice: 0: 30}}
-                      <span *ngIf="campaignDetails?.campaignName?.length>30">...</span>
-                     Launched at 
-                    <ng-container *ngIf="campaignDetails?.displayTime!='-'">
-                      {{campaignDetails?.displayTime | date: 'shortTime'}}
-                    </ng-container>
-                    <ng-container *ngIf="campaignDetails?.displayTime=='-'">
-                      <span>-</span>
-                    </ng-container>
-                    </span></h5>
-                    <h5 title="{{userLevelCampaignAnalyticsDTO?.emailId}}">Email sent to <strong>{{userLevelCampaignAnalyticsDTO?.emailId}}</strong></h5>
-                  </div>
-                </div>
-              </li>
-            </ul>
-
-            <ul class="timeline custompadding" *ngFor="let emailLog of emailLogs">
-              <li class="timeline-inverted">
-                <div class="timeline-badge">
-                  <img *ngIf="emailLog?.actionId == 13" alt="opened" src="assets/images/opened.png">
-                  <img *ngIf="emailLog?.actionId == 14" alt="clicked" src="assets/images/clicked.png">
-                  <img *ngIf="emailLog?.actionId == 15" alt="clicked" src="assets/images/clicked.png">
-                  <img *ngIf="emailLog?.actionId == 1 || emailLog?.actionId == 10" alt="watched"
-                    src="assets/images/video.png">
-                  <img *ngIf="emailLog?.autoResponseType" src="assets/images/closed-env.png" alt="">
-                </div>
-                <div class="timeline-panel">
-                  <div class="timeline-heading">
-                    <span class="timeline-title">
-                      <app-timestamp [dateAndTime]="emailLog?.time"> </app-timestamp>
-                    </span>
-                  </div>
-                  <div class="timeline-body">
-                    <h5>
-                      <span *ngIf="emailLog?.actionId == 13">
-                        campaign<span class="f-w-600" *ngIf="emailLog?.subject" title="{{emailLog?.subject}}">
-                          {{emailLog?.subject | slice:0:30}} 
-                          <span *ngIf="emailLog?.subject?.length>30">...</span>
-                        </span> email opened
-                      </span>
-                      <span *ngIf="emailLog?.actionId == 14 && campaign?.campaignVideoFile">Clicked <span class="f-w-600"
-                          title="{{campaignDetails?.videoTitle}}">{{campaignDetails?.videoTitle
-                          | slice:0:30}} <span *ngIf="campaignDetails?.videoTitle?.length>30">...</span></span> video GIF</span>
-                      <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url!='Clicked on View in browser'">
-                        Clicked on the URL
-                        <span class="f-w-600">
-                          <a href="{{emailLog?.url}}" target="_blank"
-                            title="{{emailLog?.url}}">{{emailLog?.url | slice:0:30}}
-                          <span *ngIf="emailLog?.url?.length>30">...</span></a>
-                        </span>
-                      </span>
-                      <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url=='Clicked on View in browser'">
-                        <span class="f-w-600">
-                          <a href="javascript:void(0);" title="{{emailLog?.url}}">{{emailLog?.url}}
-                          </a>
-                        </span>
-                      </span>
-                      <span *ngIf="(emailLog?.actionId == 1 || emailLog?.actionId == 10)">
-                        <span class="f-w-600"
-                          title="{{campaignDetails?.videoTitle}}">{{campaignDetails?.videoTitle | slice:0:30}}
-                          <span *ngIf="campaignDetails?.videoTitle?.length>30">...</span>
-                        </span> <span *ngIf="emailLog?.actionId == 10">re-</span>played
-                      </span>
-                      <span *ngIf="emailLog?.autoResponseType">
-                        <h5>Email sent for the auto response: <strong>{{emailLog?.autoResponseType}}</strong></h5>
-                        <h6>Subject Line: <strong>{{emailLog?.subject}}</strong></h6>
-                      </span>
-                    </h5>
-                    <span *ngIf="emailLog?.countryCode">
-                      <h6>
-                        <img *ngIf="emailLog?.countryCode"
-                          src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog?.countryCode | lowercase}}.svg"
-                          width="20px" class="mr10" alt="">{{emailLog?.country}}, {{emailLog?.city}}
-                      </h6>
-                      <h6 class="mb0">{{emailLog?.isp}} ( <strong>{{emailLog?.ipAddress}}</strong> )</h6>
-                    </span>
-                    <div *ngIf="emailLog?.actionId == 1">
-                      <app-heat-map [sessionId]="emailLog?.sessionId"></app-heat-map>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
+         </div>
       </div>
-  </div>
-  </div>
-</div>
+   </div>
 </section>
-
-<!-- --_Deal Registration -->
-<!-- <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  data-keyboard="false" data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
-  <div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
-    <div class="modal-content">
-      <div class="modal-body" style="overflow:unset">
-        <a (click)="showTimeLineView()" class="pull-right close-circle"
-          style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-        <app-add-leads [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <ng-container *ngIf="isDealRegistration && !isDealPreview">
-  <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaignId"
-    [campaignName]="campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
-  </app-add-lead>
+   <app-add-lead [selectedContact]="selectedRow" [leadId]="leadId" [campaignId]="campaignId"
+   [campaignName]="campaignName" [actionType]="leadActionType" (notifyOtherComponent)="showTimeLineView()">
+   </app-add-lead>
 </ng-container>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  data-keyboard="false" data-backdrop="static" *ngIf="isDealPreview" style="display: block">
-  <div class="modal-dialog modal-css" role="document" style="float: right; position: relative">
-    <div class="modal-content">
-      <div class="modal-body">
-        <a (click)="showTimeLineView()" class="pull-right close-circle"
-          style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
-          <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px;" aria-hidden="true"></span>
-        </a>
-        <app-deal-registration [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId" [isPreview]="true">
-        </app-deal-registration>
+   data-keyboard="false" data-backdrop="static" *ngIf="isDealPreview" style="display: block">
+   <div class="modal-dialog modal-css" role="document" style="float: right; position: relative">
+      <div class="modal-content">
+         <div class="modal-body">
+            <a (click)="showTimeLineView()" class="pull-right close-circle"
+               style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+            <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px;" aria-hidden="true"></span>
+            </a>
+            <app-deal-registration [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId" [isPreview]="true">
+            </app-deal-registration>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
 </div>

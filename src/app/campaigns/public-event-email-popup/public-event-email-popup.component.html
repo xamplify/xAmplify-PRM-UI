@@ -1,46 +1,46 @@
 <div class="modal fade right" id="{{modalPopupId}}" tabindex="-1"
-	role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"
-	data-keyboard="false">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<a class="close-circle" (click)="closePopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-				<h4 class="modal-title left" id="myModalLabel">{{selectedCampaign?.campaignName}}</h4>
-			</div>
-			<div class="modal-body">
-			<div *ngIf="sent">
-				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
- 			</div>
-			<div id="modal-content" *ngIf="!sent">
-			<app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
-			<div class="form-group" *ngIf="!processing">
-				<label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
-       			<tag-input [(ngModel)]='emailIds'
-		              #tagInput
-		              name="emails"
-		              #email="ngModel"
-		              [errorMessages]="errorMessages"
-		              [validators]="validators"
-		              [separatorKeyCodes]="[32,188,186,13,9]"
-		              [placeholder]="'Add email'"
-		              [secondaryPlaceholder]="'Enter email address(es)'"
-		              [clearOnBlur]="true"
-		              [addOnPaste]="true"
-		              [addOnBlur]="true"
-		              [pasteSplitPattern]="splitPattern"
-		              [onAdding]="onAddedFunc"
-		              theme='bootstrap'
-		              [onTextChangeDebounce]="40"
-		              required >
-     			 </tag-input>
-			</div>
-				 <div id="email-template-content"></div>
-  </div>
-    <div class="modal-footer" *ngIf="!processing">
-      <button class="btn btn-default" (click)="closePopup()" data-dismiss="modal">Close</button>
-      <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">Send</button>
-    </div>
-    </div>
-		</div>
-	</div>
+   role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"
+   data-keyboard="false">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" (click)="closePopup()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+            <h4 class="modal-title left" id="myModalLabel">{{selectedCampaign?.campaignName}}</h4>
+         </div>
+         <div class="modal-body">
+            <div *ngIf="sent">
+               <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+            </div>
+            <div id="modal-content" *ngIf="!sent">
+               <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
+               <div class="form-group" *ngIf="!processing">
+                  <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+                  <tag-input [(ngModel)]='emailIds'
+                  #tagInput
+                  name="emails"
+                  #email="ngModel"
+                  [errorMessages]="errorMessages"
+                  [validators]="validators"
+                  [separatorKeyCodes]="[32,188,186,13,9]"
+                  [placeholder]="'Add email'"
+                  [secondaryPlaceholder]="'Enter email address(es)'"
+                  [clearOnBlur]="true"
+                  [addOnPaste]="true"
+                  [addOnBlur]="true"
+                  [pasteSplitPattern]="splitPattern"
+                  [onAdding]="onAddedFunc"
+                  theme='bootstrap'
+                  [onTextChangeDebounce]="40"
+                  required >
+                  </tag-input>
+               </div>
+               <div id="email-template-content"></div>
+            </div>
+            <div class="modal-footer" *ngIf="!processing">
+               <button class="btn btn-default" (click)="closePopup()" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">Send</button>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
