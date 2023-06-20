@@ -231,6 +231,7 @@ h3 {
   border: 1px solid #3598dc;
   border-radius: 3px;
   cursor: pointer;
+  padding: 4px 10px;
 }
 .markas:hover {
   background: #008fd5;
@@ -324,3 +325,8 @@ h6 {
   padding-left: 50px;
   margin-left: 55px;
 }
+
+/* 20-06-2023 */
+.border-btn-small{
+	border-radius: 4px;
+  } 

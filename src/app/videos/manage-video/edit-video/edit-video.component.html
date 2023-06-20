@@ -299,6 +299,25 @@
 											<app-select-dropdown *ngIf="showFolderDropDown" [categoryId]="folderId"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
 										</div>
 									</div>
+									<!---XNFR-255-->
+									<div class="form-group">
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
+										<div class="col-xs-9 col-sm-9 col-md-9">
+											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											 (statusChange)="setWhiteLabeled($event)">
+											</switch>
+											<span class="info-color-xampc">
+												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+													data-placement="top" aria-hidden="true"
+													title="{{saveVideoFile?.whiteLabeledToolTipMessage}}"></i>
+											</span>
+										</div>
+									</div>
+									<div>
+										<app-partner-company-and-groups [moduleName]="'dam'" [inputId]="saveVideoFile.damId"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+									</div>
+									<!---XNFR-255-->
 								</div>
 							</div>
 						</div>

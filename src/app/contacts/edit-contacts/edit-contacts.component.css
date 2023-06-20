@@ -199,3 +199,7 @@ a.disabled {
 .custom-width-modal-popup {
   width: 60% !important;
 }
+/* 20-06-2023 */
+.border-btn-small{
+	border-radius: 4px;
+  } 

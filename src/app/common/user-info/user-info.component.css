@@ -2,6 +2,9 @@
   .margin-left {
     margin-left: 8px;
   }
+  .align-tableimg-center span p {
+    float: left;
+  }
 }
 @media only screen and (min-width: 768px) {
   .margin-left {
@@ -35,3 +38,10 @@
 .ml10 {
   margin-left: 10px;
 }
+
+/* 20-06-2023 */
+.align-tableimg-center {
+  display: flex;
+  align-items: center;
+}
+ 

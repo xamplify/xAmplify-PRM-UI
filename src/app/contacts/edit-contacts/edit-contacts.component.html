@@ -479,7 +479,7 @@
 										<span *ngIf="user.emailId?.length>35">...</span>
 									 </td>
 									 <td>
-										<button id='more_less_button_{{i}}'
+										<button class="border-btn-small" id='more_less_button_{{i}}'
 										   (click)="user.isShowDetails = ! user.isShowDetails">
 										<span *ngIf="!user.isShowDetails" translate>More</span> <span
 										   *ngIf="user.isShowDetails" translate>Less</span>
@@ -696,7 +696,7 @@
 									 <h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 								  </td>
 								  <td align="center" *ngIf="gdprStatus || isPartner">
-									 <button  id='more_less_button_{{i}}'
+									 <button class="border-btn-small" id='more_less_button_{{i}}'
 										(click)="contact.isShowDetails = ! contact.isShowDetails">
 									 <span *ngIf="!contact.isShowDetails" translate>More</span> <span
 										*ngIf="contact.isShowDetails" translate>Less</span>
@@ -994,7 +994,7 @@
 						 <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
 					  <td>
-						 <button id='more_less_button_{{i}}'
+						 <button class="border-btn-small" id='more_less_button_{{i}}'
 							(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 						 <span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span
 							*ngIf="allcontacts.isShowDetails" translate>Less</span>
