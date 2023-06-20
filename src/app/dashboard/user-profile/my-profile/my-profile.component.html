@@ -101,10 +101,6 @@
                                 <a (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                            <!-- Customize left menu -->
-                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('customizeleftmenu');clearCustomResponse()">{{properties.customizeleftmenu | translate}}</a>
-                            </li>
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
                                 <a (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
