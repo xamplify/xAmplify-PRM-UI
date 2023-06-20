@@ -7,6 +7,7 @@
 	// Whether or not to enable debug mode
 	// Setting this to false will disable console output
 	/*************Local*******************************/
+
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
 	window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
 	window.__env.imagesHost = "http://localhost:8000/images/";
@@ -19,9 +20,9 @@
 	// window.__env.imagesHost = "https://xamp.io/vod/images/";
 
 	/*********************QA**********************/
-	// window.__env.CLIENT_URL = 'https://xamplify.co/';
-	// window.__env.SERVER_URL =  'https://aravindu.com/';
-	// window.__env.imagesHost = "https://aravindu.com/vod/images/";
+	 window.__env.CLIENT_URL = 'https://xamplify.co/';
+	 window.__env.SERVER_URL =  'https://aravindu.com/';
+	 window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 
 	/*********************Release**********************/
