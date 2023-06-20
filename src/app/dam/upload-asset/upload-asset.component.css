@@ -162,3 +162,12 @@
 .btn-primary-light:hover {
   background-color: #c0c0c0;
 }
+
+.text-wrap-tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+
+

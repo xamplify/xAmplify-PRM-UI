@@ -9,7 +9,7 @@
 	/*************Local*******************************/
 	window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
 	window.__env.SERVER_URL = 'http://localhost:8090/'; // xamplify backend production server
-	window.__env.imagesHost = "http://127.0.0.1:8887/images/";
+	window.__env.imagesHost = "http://localhost:8000/images/";
 	window.__env.domainName = "";
 	
 	//USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS

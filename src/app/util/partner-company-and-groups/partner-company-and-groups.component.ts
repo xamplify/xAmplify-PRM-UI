@@ -14,25 +14,24 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ParterService } from "app/partners/services/parter.service";
 import { UserService } from "app/core/services/user.service";
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-
 declare var $: any, swal: any;
+
 @Component({
-	selector: 'app-partner-company-and-groups-modal-popup',
-	templateUrl: './partner-company-and-groups-modal-popup.component.html',
-	styleUrls: ['./partner-company-and-groups-modal-popup.component.css'],
-	providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
+  selector: 'app-partner-company-and-groups',
+  templateUrl: './partner-company-and-groups.component.html',
+  styleUrls: ['./partner-company-and-groups.component.css'],
+  providers: [HttpRequestLoader, SortOption, Properties, DamService,CallActionSwitch]
+
 })
-export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDestroy {
-
-
+export class PartnerCompanyAndGroupsComponent implements OnInit {
+ 
 	ngxLoading = false;
 	loggedInUserId: number = 0;
 	pagination: Pagination = new Pagination();
 	customResponse: CustomResponse = new CustomResponse();
-	@Input() companyId: any;
-	@Input() inputId: any;
+	@Input() inputId:any;
 	@Input() moduleName: any;
-	@Output() notifyOtherComponent = new EventEmitter();
+	@Output() partnerCompanyAndGroupsEventEmitter = new EventEmitter();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	sendSuccess = false;
 	responseMessage = "";
@@ -74,25 +73,21 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	}
 
 	ngOnInit() {
-		if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 &&
-			this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
-			this.pagination.vendorCompanyId = this.companyId;
+		if (this.moduleName != undefined && $.trim(this.moduleName).length > 0) {
 			this.pagination.partnerTeamMemberGroupFilter = true;
-			this.openPopup();
+			this.showFilter = true;
+			if(this.inputId!=undefined && this.inputId>0){
+				this.findPublishedType();
+			}else{
+				$('#partners-li').addClass('active');
+				$('#partners').addClass('tab-pane fade in active');
+				this.selectedTab = 1;
+				this.findPartnerCompanies(this.pagination);
+			}
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
-			this.closePopup();
+			this.resetFields();
 		}
-	}
-
-	ngOnDestroy(): void {
-		this.closePopup();
-	}
-
-	openPopup() {
-		$('#partnerCompaniesPopup').modal('show');
-		this.findPublishedType();
-	 this.isModalPopupshow = true ;
 	}
 
 	findPublishedType() {
@@ -114,7 +109,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 				}
 			}, error => {
 				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
-				this.closePopup();
+				this.resetFields();
 			},() => {
 				if (this.isPublishedToPartnerGroup) {
 					this.findPublishedPartnerGroupIdsByInputId();
@@ -175,9 +170,8 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	}
 
 	findPartnerCompanies(pagination: Pagination) {
-		this.referenceService.scrollToModalBodyTopByClass();
 		this.referenceService.startLoader(this.httpRequestLoader);
-		pagination.campaignId = this.inputId;
+		pagination.campaignId = this.inputId;//This is asset id
 		pagination.userId = this.loggedInUserId;
 		this.partnerService.findPartnerCompanies(pagination).subscribe((result: any) => {
 			let data = result.data;
@@ -231,15 +225,6 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		}
 	}
 
-	closePopup() {
-		this.notifyOtherComponent.emit();
-		$('#partnerCompaniesPopup').modal('hide');
-		this.sendSuccess = false;
-		this.responseMessage = "";
-		this.responseImage = "";
-		this.responseClass = "";
-		this.resetFields();
-	}
 
 	resetFields() {
 		this.damPublishPostDto = new DamPublishPostDto();
@@ -250,6 +235,17 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		this.selectedTeamMemberIds = [];
 		this.selectedPartnershipIds = [];
 		this.ngxLoading = false;
+        this.sendEmitterValues();
+
+	}
+
+	sendEmitterValues(){
+		let emitterObject = {};
+		emitterObject['partnerIds'] = this.selectedTeamMemberIds;
+		emitterObject['partnerGroupIds'] = this.selectedPartnerGroupIds;
+		let selectedType = this.selectedTabName();
+		emitterObject['partnerGroupSelected'] = ('partnerGroups' == selectedType);
+		this.partnerCompanyAndGroupsEventEmitter.emit(emitterObject);
 	}
 
 	viewTeamMembers(item: any) {
@@ -372,6 +368,8 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 			$('.partnerGroupsC').css({ 'pointer-events': 'auto' });
 			$('#partnerGroups-li').attr('title', 'Click to see lists');
 		}
+		this.sendEmitterValues();
+
 	}
 
 	selectAllTeamMembersOfTheCurrentPage(ev: any, partnershipId: number) {
@@ -398,6 +396,27 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 		ev.stopPropagation();
 	}
 	clearAll() {
+	 if(this.isEdit){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "Existing data will be deleted",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
+		}).then(function () {
+			self.clearTabs();
+		}, function (dismiss: any) {
+		});
+	 }else{
+		this.clearTabs();
+	 }
+		
+	}
+
+	clearTabs(){
 		let selectedTabName = this.selectedTabName();
 		if ("partners" == selectedTabName) {
 			this.selectedTeamMemberIds = [];
@@ -411,111 +430,11 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 			this.disableOrEnablePartnerCompaniesTab();
 		}
 	}
+
+
 	/************Partner Company Checkbox related code ends here****************/
 	selectedTabName() {
 		return $('.tab-pane.active').attr("id");
-	}
-
-	publish() {
-		this.customResponse = new CustomResponse();
-		if (this.selectedTeamMemberIds.length > 0 || this.selectedPartnerGroupIds.length > 0 || this.isEdit) {
-			let selectedType = this.selectedTabName();
-			this.damPublishPostDto.partnerGroupSelected = ('partnerGroups' == selectedType);
-			if (this.isEdit) {
-				this.publishOrUnPublishToGroupsOrCompanies();
-			} else {
-				this.setValuesAndPublish();
-			}
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one row', true);
-		}
-	}
-
-	publishOrUnPublishToGroupsOrCompanies() {
-		if (this.damPublishPostDto.partnerGroupSelected && !this.isPublishedToPartnerGroup) {
-			this.unPublishToCompaniesAndPublishToGroups();
-		} else if (!this.damPublishPostDto.partnerGroupSelected && this.isPublishedToPartnerGroup) {
-			this.unPublishToGroupsAndPublishToCompanies();
-		} else {
-			this.setValuesAndPublish();
-		}
-	}
-
-
-	unPublishToCompaniesAndPublishToGroups() {
-		if (this.selectedPartnerGroupIds.length > 0) {
-			this.showSweetAlertAndProceed();
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one group', true);
-		}
-	}
-
-	unPublishToGroupsAndPublishToCompanies() {
-		if (this.selectedTeamMemberIds.length > 0) {
-			this.showSweetAlertAndProceed();
-		} else {
-			this.referenceService.goToTop();
-			this.customResponse = new CustomResponse('ERROR', 'Please select atleast one company', true);
-		}
-	}
-
-	showSweetAlertAndProceed() {
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "Existing data will be deleted",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes, delete it!',
-			allowOutsideClick: false,
-      		allowEscapeKey: false
-		}).then(function () {
-			self.setValuesAndPublish();
-		}, function (dismiss: any) {
-		});
-	}
-
-	setValuesAndPublish() {
-		this.startLoaders();
-		this.damPublishPostDto.damId = this.inputId;
-		if (this.selectedTabName() == "partners") {
-			this.damPublishPostDto.partnerIds = this.selectedTeamMemberIds;
-			this.damPublishPostDto.partnerGroupIds = [];
-		} else {
-			this.damPublishPostDto.partnerGroupIds = this.selectedPartnerGroupIds;
-			this.damPublishPostDto.partnerIds = [];
-		}
-		this.damPublishPostDto.publishedBy = this.loggedInUserId;
-		this.publishToPartnersOrGroups();
-	}
-
-	publishToPartnersOrGroups() {
-		this.damService.publish(this.damPublishPostDto).subscribe((data: any) => {
-			this.referenceService.scrollToModalBodyTopByClass();
-			this.stopLoaders();
-			if (data.access) {
-				this.sendSuccess = true;
-				this.statusCode = data.statusCode;
-				if (data.statusCode == 200) {
-					this.responseMessage = "Published Successfully";
-				} else {
-					this.responseMessage = data.message;
-				}
-				this.resetFields();
-			} else {
-				this.ngxLoading = false;
-				this.authenticationService.forceToLogout();
-			}
-		}, _error => {
-			this.stopLoaders();
-			this.sendSuccess = false;
-			this.referenceService.goToTop();
-			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-		});
 	}
 
 	startLoaders() {
@@ -532,10 +451,9 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 	findPartnerGroups(pagination: Pagination) {
 		if (this.selectedTeamMemberIds.length == 0) {
 			this.customResponse = new CustomResponse();
-			this.referenceService.scrollToModalBodyTopByClass();
 			this.referenceService.startLoader(this.httpRequestLoader);
-			pagination.companyId = this.companyId;
 			pagination.campaignId = this.inputId;
+			pagination.userId = this.loggedInUserId;
 			this.partnerService.findPartnerGroups(pagination).subscribe((result: any) => {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
@@ -597,6 +515,7 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 			$('.partnersC').css({ 'pointer-events': 'auto' });
 			$('#partners-li').attr('title', 'Click to see companies');
 		}
+		this.sendEmitterValues();
 	}
 
 	previewUserListUsers(partnerGroup: any) {
