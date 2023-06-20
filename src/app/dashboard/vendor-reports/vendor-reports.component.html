@@ -12,20 +12,22 @@
 		<ul class="page-breadcrumb">
 			<li>
 				<i class="fa fa-home" aria-hidden="true"></i>
-				<a [routerLink]="referenseService.homeRouter">Home</a>
+				<a [routerLink]="referenseService?.homeRouter">Home</a>
 				<i class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
 			<li><a>My Vendors</a></li>
 		</ul>
 	</div>
-	<div class="row">
-		<div class="col-xs-12">
+	<div class="row" >
+		
+		<div class="col-xs-12" >
 			<div class="custome-response-css">
 				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 				</app-response-message>
 			</div>
 			<div class="page-bar" style="padding: 10px 25px 10px 25px; border: 1px solid #CCC;">
-				<div>
+				<app-landing-page-loader [maxBoxLength]=4 *ngIf="loading"></app-landing-page-loader>
+				<div *ngIf="!loading">
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-4 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
 							<div class="cards">

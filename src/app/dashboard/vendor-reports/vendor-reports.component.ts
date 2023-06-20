@@ -38,41 +38,14 @@ export class VendorReportsComponent implements OnInit {
     }
   }
 
-  vendorReports() {
-    this.loading = true;
-    this.pagination.partnerId = this.authenticationService.getUserId();
-
-    this.dashboardService
-      .loadVendorDetails(
-        this.authenticationService.getUserId(),
-        this.pagination
-      )
-      .subscribe(
-        (data) => {
-          this.vendorDetails = data.data;
-          this.pagination.totalRecords = data.totalRecords;
-          this.pagination = this.pagerService.getPagedItems(
-            this.pagination,
-            this.vendorDetails
-          );
-          this.loading = false;
-        },
-        (error) => {
-          this.loading = false;
-          this.referenseService.showSweetAlertServerErrorMessage();
-        }
-      );
-  }
 
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
-    //this.vendorReports();
     this.getVendors();
   }
 
   onChangeAllVendors(event: Pagination) {
     this.pagination = event;
-    //this.vendorReports();
     this.getVendors();
   }
 
@@ -96,17 +69,17 @@ export class VendorReportsComponent implements OnInit {
         this.referenseService.showSweetAlertServerErrorMessage();
       });
   }
-  errorHandler(event) {
+  errorHandler(event:any) {
     event.target.src = "assets/images/default-company.png";
   }
 
   ngOnInit() {
-    //this.vendorReports();
     this.getVendors();
   }
 
   getVendors() {
     this.loading = true;
+    this.referenseService.scrollSmoothToTop();
     this.pagination.partnerId = this.authenticationService.getUserId();
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
@@ -132,7 +105,7 @@ export class VendorReportsComponent implements OnInit {
       );
   }
 
-  userProfileErrorHandler(event) {
+  userProfileErrorHandler(event:any) {
     event.target.src = "assets/images/icon-user-default.png";
   }
 
