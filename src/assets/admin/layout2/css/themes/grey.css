@@ -25,9 +25,9 @@ Page Header
   background-color: #14B9D6;
   color: #ffffff;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
   background-color: #f9fafc;
-}
+} */
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu:before {
   border-bottom-color: #e4e8ee;
 }
@@ -80,10 +80,10 @@ Page Header
   background-color: #dfe2e9;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username {
-  color: #7f96ac;
+  color: #ffffff;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > i {
-  color: #7f96ac;
+  color: #ffffff;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-menu {
   width: 195px;

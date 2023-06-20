@@ -1069,7 +1069,7 @@
                                        </td>
                                        <td class="text-center">
                                           <div class="actions-block no-float">
-                                             <a title="Campaign Analytics" (click)="showCampaigns(contact.id)">
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="showCampaigns(contact.id)">
                                              <i class="fa fa-line-chart" aria-hidden="true"></i>
                                              </a>
                                           </div>
@@ -1080,7 +1080,7 @@
                                        || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
                                        class="text-center">
                                        <div class="actions-block no-float">
-                                          <a title="Delete" (click)="confirmDeleteContact(contact)">
+                                          <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="confirmDeleteContact(contact)">
                                           <i class="fa fa-trash-o" aria-hidden="true"></i>
                                           </a>
                                        </div>

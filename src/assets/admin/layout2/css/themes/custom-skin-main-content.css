@@ -1123,3 +1123,9 @@ span.ui-column-resize{
 input.custom-line:active, input.custom-line:focus {
 outline: none !important;
 }
+
+.green.btn{
+  border: none;
+  color: #FFFFFF !important;
+  background-color: #26a69a !important;
+}

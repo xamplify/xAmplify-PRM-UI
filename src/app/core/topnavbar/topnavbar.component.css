@@ -15,7 +15,7 @@ a.disabled {
   > li.dropdown-user
   .dropdown-toggle
   > img {
-  margin-top: -10px !important;
+  margin-top: -7px !important;
 }
 @media (max-width: 767px) {
   .page-header.navbar
@@ -33,7 +33,7 @@ a.disabled {
     padding: 24px 1px 24px 1px !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle {
-    padding: 28px 5px 19px 0px !important;
+    padding: 6px 0px 6px 0px !important
   }
   .btn {
     padding: 7px 10px !important;
@@ -52,9 +52,22 @@ a.disabled {
     > img {
     margin-right: 0 !important;
   }
-  .btn-group[_ngcontent-c2] button[_ngcontent-c2] {
+  .btn-group  button  {
     padding: 6px 7px !important;
   }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown {
+    margin: 0px 5px;
+  }
+  a.dropdown-toggle.circlebg-none-v {
+    margin-top: 17px;
+  }
+  .topnav-button-css {
+    margin-right: 5px !important;
+  }
+  .refer-vendor-button {
+    padding: 17px 0px 0px 0px !important;
+  }
+
 }
 .img-circle {
   height: 40px;
@@ -170,7 +183,78 @@ label {
 #logoutButton {
   background-color: #e8edf2;
 }
-.topnav-button-css {
+.topnav-button-css{
   margin-top: 17px;
-  margin-right: 5px;
+  margin-right: 15px;
 }
+
+
+/* 19/06/2023 */
+
+a.dropdown-toggle.circlebg-color-bell-v{
+  border-radius: 50%;
+  position: relative;
+  top: 17px;
+  height: 35px;
+  width: 35px;
+  background: #0095da;
+  padding: 8px 8px 8px 8px;
+  font-size: 13px;
+  border: 1px solid #cccccc8f;
+  text-align: center;
+  color: #fff !important;
+}
+a.dropdown-toggle.circlebg-color-bell-v i {
+  font-size: 15px !important;
+}
+a.dropdown-toggle.circlebg-none-v {
+  padding: 7px 0px;
+  border: 1px solid #cccccc8f;
+  border-radius: 30px;
+  margin-top: 18px;
+  background: #0095da;
+}
+a.dropdown-toggle.circlebg-none-v:hover{
+  background: #4db1e2 !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #ffffff;
+}
+.page-header.navbar .top-menu .navbar-nav> li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
+  color: #ffffff;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
+  background-color: #4db1e2;
+  color: #fff;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
+  background-color: #4db1e2;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #fff;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > span {
+  color: #fff;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
+  font-family: 'Gantari',"Open Sans", sans-serif;
+  position: absolute;
+  top: -8px;
+  left: 24px;
+  right: 0px;
+  font-weight: 300;
+  padding: 6px 3px;
+  height: 21px;
+  width: 21px;
+  font-size: 10px !important;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  background-color: #4db1e2;
+} 
+
+/* tablet */
+ @media (min-width: 810px) and (max-width: 850px) {
+  .page-header.navbar .top-menu {
+    margin-top: 22px !important;
+  }
+ } 

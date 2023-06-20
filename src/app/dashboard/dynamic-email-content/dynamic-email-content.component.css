@@ -31,9 +31,9 @@ pointer-events: none;
     margin: 10px auto !important;
    padding-top:10px;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
-    margin-top: -10px !important;
-}
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img{
+    margin-top: -9px !important;
+} */
 
 @media (max-width: 767px) {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-notification .dropdown-menu {
