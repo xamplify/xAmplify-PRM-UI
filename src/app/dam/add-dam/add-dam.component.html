@@ -77,6 +77,23 @@
                            </div>
                         </div>
                      </div>
+                      <!---White Labeled-- XNFR-255-->
+                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
+                        <div class="form-group">
+                          <label class="control-label col-sm-3" translate>White Labeled</label>
+                          <div class="col-sm-8">
+                            <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                            (statusChange)="setWhiteLabeled($event)">
+                            </switch>
+                            <span class="info-color-xampc">
+                              <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                                  data-placement="top" aria-hidden="true"
+                                  title="Share As White Labeled Content"></i>
+                          </span>
+                          </div>
+                        </div>
+                      </div> 
+                      <!---White Labeled-- XNFR-255-->
                      <div class="col-md-12 col-lg-12 ">
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
                            style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
@@ -90,6 +107,7 @@
                            </div>
                         </div>
                      </div>
+                     
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                         <div class="form-group">
                            <label class="control-label col-sm-3" translate>Tags
@@ -162,6 +180,27 @@
                            </div>
                         </div>
                      </div>
+
+                     <!---XNFR-255-->
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                     <table class="table">
+                       <tbody>
+                         <tr>
+                           <td class="desc" style="width: 11%;">
+                             <label class="control-label" translate>
+                             </label>
+                           </td>
+                           <td class="desc">
+                             <div class="mDesc">
+                               <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="assetId" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                             </div>
+                           </td>
+                         </tr>
+                       </tbody>
+                     </table>
+                    </div>
+                   <!---XNFR-255-->
+
                   </div>
                </div>
             </form>

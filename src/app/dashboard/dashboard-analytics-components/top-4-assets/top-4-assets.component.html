@@ -55,7 +55,8 @@
 								</h6>
 							</div>
 							<div class="ribbon">
-								<span *ngIf="asset?.published" translate>Published</span>
+								<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" translate>Published</span>
+								<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress" translate>Publishing</span>
 							</div>
 							<div class="bar auto-height">
 								<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"

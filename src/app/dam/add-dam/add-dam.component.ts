@@ -465,4 +465,11 @@ showFolderCreatedSuccessMessage(message:any){
    this.customResponse = new CustomResponse('SUCCESS',message, true);
    this.listCategories();
 }
+
+/********XNFR-255**********/
+receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+  this.damPostDto.partnerGroupIds = event['partnerGroupIds'];
+    this.damPostDto.partnerIds = event['partnerIds'];
+    this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+}
 }

@@ -170,7 +170,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         /****XNFR-169*****/
         this.listCategories();
         /*******XNFR-255***/
-      //  this.findShareWhiteLabelContentAccess();
+        this.findShareWhiteLabelContentAccess();
+        
 	}
     /*******XNFR-255***/
     findShareWhiteLabelContentAccess() {
@@ -1150,6 +1151,13 @@ showValidExtensionErrorMessage(){
 /****XNFR-255****/
 setWhiteLabeled(event:any){
     this.damUploadPostDto.shareAsWhiteLabeledAsset = event;
+}
+
+/****XNFR-255***/
+receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+    this.damUploadPostDto.partnerGroupIds = event['partnerGroupIds'];
+    this.damUploadPostDto.partnerIds = event['partnerIds'];
+    this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
 }
 
 

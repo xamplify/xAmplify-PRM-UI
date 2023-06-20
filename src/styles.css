@@ -1934,6 +1934,26 @@ border: 1px solid #ddd !important;
 	border-radius: 5px;
 	padding: 0px 10px;
   }
+
+  .span-published{
+	border-left: 3px solid green !important;
+	border-top: 3px solid green !important;
+  }
+  .published{
+	background-color: green !important;
+  }
+
+  .toggle-info-white-label{
+	font-size: 20px !important;
+	margin: -14px 0 0 15px !important;
+  }
+  
+  
+  .info-color-xampc {
+	cursor: pointer;
+	color: #54a7e9;
+  }
+
   .mp-pt-carrdtop {
 	padding-top: 1em;
   }
@@ -2000,3 +2020,4 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 .actions-block i.fa.fa-line-chart {
     font-size: 13px !important;
 }
+
