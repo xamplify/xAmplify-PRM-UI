@@ -525,6 +525,20 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getLeftSideNavBarItems(vanityUrlPostDto: any){
+        const url = this.moduleUrl + 'customizeLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vanityUrlPostDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    updateLeftSideNavBarItems(customleftmenu: any){
+        const url = this.moduleUrl + 'updateLeftMenuItems?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, customleftmenu)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     getWelcomePageItems(vanityUrlPostDto: any) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/getWelcomePageItems?access_token=' + this.authenticationService.access_token;
