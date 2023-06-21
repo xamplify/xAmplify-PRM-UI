@@ -35,7 +35,12 @@ export class WorldmapComponent implements OnInit {
           fontSize: '14px'
         }
       },
-
+      tooltip: {
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
+        }
+      },
       mapNavigation: {
         enabled: true,
         enableMouseWheelZoom: false,

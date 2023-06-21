@@ -358,6 +358,12 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                 marginLeft: i === 0 ? 100 : 10,
                 backgroundColor   :isDark ? "#2b3c46" : "#fff",
             },
+            tooltip: {
+                backgroundColor: 'black', 
+                style: {
+                  color: '#fff' 
+                }
+              },
 
             title: {
                 text: dataset.name,

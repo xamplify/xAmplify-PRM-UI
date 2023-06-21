@@ -1436,7 +1436,12 @@ input.custom-line:focus {
 .popover {
   color: #000 !important;
 }
-
+/*20-06-2023 */
+@media screen and (max-width: 767px){
+  .table-responsive {
+      border:1px solid #2f4857;
+  }
+  }
 
 /* 21-06-2023 header enhancement */
 

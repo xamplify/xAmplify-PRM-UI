@@ -172,7 +172,11 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
           opposite: true
       }],
       tooltip: {
-          shared: true
+          shared: true,
+          backgroundColor: 'black', 
+          style: {
+            color: '#fff' 
+          }
       },
       legend: {
           layout: 'vertical',

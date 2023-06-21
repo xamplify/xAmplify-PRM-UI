@@ -117,16 +117,16 @@
 											<div class="actions-block override-actions ActionAlign" >
 												<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
 													<div class="mActionAlign ActionButtonPad">	
-														<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit" title="History"	(click)="expandHistory(asset,i)"> 
+														<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit"  data-toggle="tooltip" data-placement="top" title="History"	(click)="expandHistory(asset,i)"> 
 															<i class="fa"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 														</a> 
-														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"	title="Design" (click)="addOrEdit(asset.id)">
+														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"	title="Design" (click)="addOrEdit(asset.id)">
 															<i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 														</a> 
-														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit"	(click)="addOrEdit(asset.id)">
+														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"   data-toggle="tooltip" data-placement="top" title="Edit"	(click)="addOrEdit(asset.id)">
 															<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 														</a> 
-														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
+														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
 															<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
 														</a>
 													
@@ -142,21 +142,23 @@
 															<i class="fa fa-bullhorn" aria-hidden="true" ></i>
 														</a>
 													</ng-container>
-													<a *ngIf="!isPartnerView && asset?.showPreviewIcon"	title="Preview" (click)="preview(asset)">
+													<a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top"	title="Preview" (click)="preview(asset)">
 														<i	class="fa fa-eye" aria-hidden="true"></i>
 													</a> 
 													
-													<a *ngIf="!isPartnerView" title="Download"	(click)="openPopup(asset)">
+													<a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top" title="Download"	(click)="openPopup(asset)">
 														<i class="fa fa-download"	aria-hidden="true"></i>
 													</a> 
-													<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
+													<a  data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 														<i class="fa fa-line-chart" aria-hidden="true"></i>
 													</a> 
-													<a *ngIf="isPartnerView" title="View Details"
+													<a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
 														(click)="viewDetails(asset)">
 														<i class="fa fa-eye" aria-hidden="true"></i>
 													</a>
-													<a *ngIf="!isPartnerView && asset?.delete" title="Delete"
+													<a *ngIf="!isPartnerView && asset?.delete" 
+													data-toggle="tooltip" data-placement="top"
+													title="Delete"
 														(click)="confirmDelete(asset)"> 
 														<i class="fa fa-trash-o" aria-hidden="true"></i>
 													</a>
@@ -232,27 +234,27 @@
 																	[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 															<td id="actions-row">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
-																	<a class="mMobileDisable" title="Design" (click)="addOrEdit(asset.id)"> <i
+																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Design" (click)="addOrEdit(asset.id)"> <i
 																		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 																	</a> 
-																	<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView" title="Edit" (click)="addOrEdit(asset.id)"> 
+																	<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="addOrEdit(asset.id)"> 
 																		<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 																	</a> 
-																	<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																	<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
 																		<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
 																	</a> <a title="Preview" (click)="preview(asset)"> <i
 																		class="fa fa-eye" aria-hidden="true"></i>
 																	</a> 
-																	<a *ngIf="!authenticationService?.module?.isMarketingCompany" title="Publish" (click)="openPublishPopup(asset.id)">
+																	<a *ngIf="!authenticationService?.module?.isMarketingCompany"  data-toggle="tooltip" data-placement="top" title="Publish" (click)="openPublishPopup(asset.id)">
 																		<i class="fa fa-share" aria-hidden="true"></i>
 																	</a> 
-																	<a title="Download" (click)="openPopup(asset)"> <i
+																	<a  data-toggle="tooltip" data-placement="top"  title="Download" (click)="openPopup(asset)"> <i
 																		class="fa fa-download" aria-hidden="true"></i>
 																	</a> 
-																	<a title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
+																	<a  data-toggle="tooltip" data-placement="top"  title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
 																		<i class="fa fa-line-chart" aria-hidden="true"></i>
 																	</a> 
-																	<a title="Delete" (click)="confirmDelete(asset)"> <i
+																	<a  data-toggle="tooltip" data-placement="top"  title="Delete" (click)="confirmDelete(asset)"> <i
 																		class="fa fa-trash-o" aria-hidden="true"></i>
 																	</a>
 																</div>
@@ -401,23 +403,35 @@
 									<span *ngIf="asset?.published" translate>Published</span>
 								</div>
 								<div class="bar auto-height">
-									<a class="mMobileDisable" *ngIf="asset?.beeTemplate" title="Design"
+									<a class="mMobileDisable" *ngIf="asset?.beeTemplate"
+									data-toggle="tooltip" data-placement="top"
+									 title="Design"
 										(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
 										aria-hidden="true"></i>
-									</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit" title="Edit"
+									</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"
+									data-toggle="tooltip" data-placement="top"
+									 title="Edit"
 										(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate)">
 										<i class="fa fa-edit mDisableColor"
 										aria-hidden="true"></i>
-									</a> <a title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
+									</a> <a 
+									data-toggle="tooltip" data-placement="top"
+									title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
 										class="fa fa-eye" aria-hidden="true"></i>
 									</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
 										(click)="openPublishPopup(asset.id)"> <i
 										class="fa f-share" aria-hidden="true"></i>
-									</a> <a *ngIf="!isPartnerView" title="Download" (click)="openPopup(asset)"> <i
+									</a> <a *ngIf="!isPartnerView" 
+									data-toggle="tooltip" data-placement="top"
+									title="Download" (click)="openPopup(asset)"> <i
 										class="fa fa-download" aria-hidden="true"></i>
-									</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i
+									</a> <a *ngIf="!authenticationService.module.isMarketingCompany"
+									data-toggle="tooltip" data-placement="top"
+									 title="View Analytics" (click)="viewAnalytics(asset)"> <i
 										class="fa fa-line-chart" aria-hidden="true"></i>
-									</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete" class="delete"
+									</a> <a *ngIf="!isPartnerView && asset?.delete"
+									data-toggle="tooltip" data-placement="top"
+									 title="Delete" class="delete"
 										(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
 										aria-hidden="true"></i>
 									</a>
