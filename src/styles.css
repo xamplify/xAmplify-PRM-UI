@@ -2119,6 +2119,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 /* btn-primary */
 .main-btn {
   background-color: #26a69a;
+  border: 1px solid #2b7770;
   border-radius: 4px !important;
   padding: 7px 14px !important;
   color: #ffffff;

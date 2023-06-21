@@ -10,7 +10,7 @@ a:hover {
   text-decoration: none;
 }
 .campaign-type-selected {
-  background-color: #26a69a;
+  background-color: #0095da;
   color: white;
 }
 img.active {
@@ -192,7 +192,7 @@ table tr:nth-child(even) td {
   }
 }
 .breadcrumb-right-btn {
-  padding: 9px;
+  padding: 9px !important;
 }
 .mix-filter li {
   padding: 6px 5px;
@@ -211,13 +211,13 @@ table tr:nth-child(even) td {
 }
 
 .ribbon span::before {
-	border-left: 3px solid #5ab1eb;
-	border-top: 3px solid #5ab1eb;
+  border-left: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
 }
 
 .ribbon span::after {
-	border-right: 3px solid #5ab1eb ;
-	border-top: 3px solid #5ab1eb;
+  border-right: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
 }
 /* 21-06-2023 */
 .setting-icon-cu {
@@ -244,4 +244,7 @@ span.gearicon-font-cu {
   top: 2px;
   left: 1px;
   box-shadow: none !important;
+}
+.mix-filter li:hover {
+  background: #6dcff6;
 }

@@ -25,7 +25,7 @@
         </li>
      </ul>
      <div class="pull-right" style="padding: 1px 1px 1px;">
-        <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
+        <button type="button" class="btn main-btn breadcrumb-right-btn" *ngIf="!archived"
         (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Archived Campaigns</button>
         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"
         style="background-color: #5cb85c !important;" (click)="showActiveCampaigns()"><i class="fa fa-bullhorn"></i>
@@ -1319,8 +1319,8 @@
            </div>
         </div>
         <div class="modal-footer">
-           <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate>Close</button>
-           <button type="button" [disabled]="clicked" class="btn btn-primary" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
+           <button type="button" class="btn btn-secondary btn-hvr-text GraY-Btn" data-dismiss="modal" translate>Close</button>
+           <button type="button" [disabled]="clicked" class="btn main-btn" (click)="saveAsCampaign(); clicked = true"  translate>Save changes</button>
         </div>
      </div>
   </div>
@@ -1517,8 +1517,8 @@
            </div>
         </div>
         <div class="modal-footer" [hidden]="modalPopupLoader">
-           <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)" translate>Copy Link</a>
-           <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+           <a class="btn main-btn" (click)="copyUrl(publicEventCampaignUrlInput)" translate>Copy Link</a>
+           <a data-dismiss="modal" class="btn GraY-Btn" style="float: right" translate>Close</a>
         </div>
      </div>
   </div>
@@ -1562,8 +1562,8 @@
            </div>
         </div>
         <div class="modal-footer">
-           <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
-           <button type="button" class="btn btn-primary" (click)="updateEndDate()" translate>Save changes</button>
+           <button type="button" class="btn btn-secondary btn-hvr-text GraY-Btn" data-dismiss="modal" translate  (click)="closeEndDateModal()">Close</button>
+           <button type="button" class="btn main-btn" (click)="updateEndDate()" translate>Save changes</button>
         </div>
      </div>
   </div>
