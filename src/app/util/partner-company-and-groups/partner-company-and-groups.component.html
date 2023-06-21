@@ -15,16 +15,12 @@
   <div class="panel-body">
     <div class="tab-content">
       <div class="tab-pane fade in" id="partners">
-        <div class="col-xs-12">
+        <div class="col-xs-12" *ngIf="!httpRequestLoader.isLoading">
           <div class="row">
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           </div>
           <div class="page-toolbar col-xs-6 col-sm-6 col-lg-6 col-md-6">
-            <div class="pull-right">
-              <button class="btn btn-danger margin-space" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
-                (click)="clearAll('partners')">Clear</button>
-            </div>
             <div class="btn-group pull-right">
               <div class="inputs float-right" style="display: inline-flex;">
                 <div class="portlet-input input-inline" id="search-div">
@@ -189,10 +185,6 @@
             <div>
               <div class="col-xs-12">
                 <div class="page-toolbar">
-                  <div class="left-float" style="float: right !important;padding-left: 10px;">
-                    <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0) "
-                      (click)="clearAll('partnerGroups')">Clear</button>
-                  </div>
                   <div class="btn-group pull-right">
                     <div class="inputs float-right" style="display: inline-flex;">
                       <div class="portlet-input input-inline mSearchAlign" id="search-div">
