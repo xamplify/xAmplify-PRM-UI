@@ -408,25 +408,5 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.loading = true;
 	}
 	
-	// customSkinLeftMenu(){
-	// 	this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-	// 		(response) =>{
-	// 	   let cskinMap  = response.data;
-	// 	   this.skin  = cskinMap.LEFT_SIDE_MENU;
-	// 	    document.documentElement.style.setProperty('--left-bg-color', this.skin.backgroundColor);
-	// 	    document.documentElement.style.setProperty('--left-text-color', this.skin.textColor);
-	// 	    document.documentElement.style.setProperty('--left-border-color', this.skin.buttonBorderColor);
-	// 		document.documentElement.style.setProperty('--left-icon-color', this.skin.iconColor);
-	// 		this.authenticationService.isDefaultTheme = this.skin.defaultSkin;
-	// 		this.authenticationService.isDarkForCharts = this.skin.darkTheme;
-	// 		if(!this.skin.defaultSkin && !this.skin.darkTheme) {
-	// 			require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
-	// 		} else if(this.skin.darkTheme && this.skin.defaultSkin) {
-	// 			require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
-	// 		} else {
-	// 			require("style-loader!../../../assets/admin/layout2/css/layout.css");
-	// 		}
-	// 	}
-	// 	)
-	//   }
+	
 }
