@@ -250,17 +250,17 @@
 												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
 												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
 												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
-                        </span>
+                        						</span>
 												 <p *ngIf="ownThumbnail" class="help-block" translate>If you want to upload your own thumbnail, please choose a file from your system.
-                            <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
-                          <span style="color:red" translate>*Please upload your thumbnail.</span>
+                           							 <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
+                          							<span style="color:red" translate>*Please upload your thumbnail.</span>
 												</p>
-												   <div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
-														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
-															<i class="fa fa-times-circle"></i>
-														</span>
-														<img [src]="imageUrlPath">
-													</div>
+												<div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
+													<span (click)="uploader.clearQueue();clearOwnThumbnail()">
+														<i class="fa fa-times-circle"></i>
+													</span>
+													<img [src]="imageUrlPath">
+												</div>
 											</div>
 										</div>
 									</div>
@@ -300,7 +300,7 @@
 										</div>
 									</div>
 									<!---XNFR-255-->
-									<div class="form-group">
+									<div class="form-group" *ngIf="hasShareWhiteLabeledContentAccess">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
