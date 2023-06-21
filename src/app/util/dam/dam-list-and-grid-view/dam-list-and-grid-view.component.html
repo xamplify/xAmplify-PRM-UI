@@ -221,9 +221,9 @@
 																	<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 																</h6>
 																<!---XNFR-255-->
-																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && asset?.status=='COMPLETED'" class="view-banner published"
+																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
 																	translate>Published</h6>
-																<h6 *ngIf="(asset?.published && asset?.publishingOrWhiteLabelingInProgress) || asset?.status!='COMPLETED' " class="view-banner published">
+																<h6 *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress " class="view-banner published">
 																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
 																	Processing
 																</h6>
@@ -328,8 +328,8 @@
 									</div>
 									<!--XNFR-255-->
 									<div class="ribbon">
-										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && asset?.status=='COMPLETED'">Published</span>
-										<span *ngIf="(asset?.published && asset?.publishingOrWhiteLabelingInProgress) || asset?.status!='COMPLETED'">Processing</span>
+										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 									</div>
 									<!--XNFR-255-->
 									<div class="bar auto-height">

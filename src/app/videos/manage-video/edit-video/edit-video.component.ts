@@ -153,6 +153,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   categoryNames: any;
   showFolderDropDown = false;
   folderId:number = 0;
+    hasShareWhiteLabeledContentAccess: any;
+    loading: boolean;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -1022,10 +1024,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultGifPaths();
       /****XNFR-169*****/
       this.listCategories();
+      /*******XNFR-255***/
+      this.findShareWhiteLabelContentAccess();
       } catch (error) {
           this.clientError = true;
       }
   }
+
+  /*******XNFR-255***/
+  findShareWhiteLabelContentAccess() {
+    this.loading = true;
+    this.authenticationService.findShareWhiteLabelContentAccess()
+    .subscribe(
+        response=>{
+            this.hasShareWhiteLabeledContentAccess = response.data;
+            this.loading = false;
+        },error=>{
+            this.loading = false;
+        });
+}
 
   listCategories() {
     this.authenticationService.getCategoryNamesByUserId(this.authenticationService.getUserId()).subscribe(
