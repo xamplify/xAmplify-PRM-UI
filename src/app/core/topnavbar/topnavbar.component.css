@@ -187,9 +187,10 @@ label {
   margin-right: 15px;
 }
 
+
 /* 19/06/2023 */
 
-a.dropdown-toggle.circlebg-color-bell-v {
+a.dropdown-toggle.circlebg-color-bell-v{
   border-radius: 50%;
   position: relative;
   top: 17px;
@@ -206,69 +207,36 @@ a.dropdown-toggle.circlebg-color-bell-v i {
   font-size: 15px !important;
 }
 a.dropdown-toggle.circlebg-none-v {
-  padding: 7px 0px;
+  padding: 6px 0px;
   border: 1px solid #cccccc8f;
   border-radius: 30px;
   margin-top: 18px;
   background: #0095da;
 }
-a.dropdown-toggle.circlebg-none-v:hover {
-  background: #4db1e2 !important;
+a.dropdown-toggle.circlebg-none-v:hover{
+  background: #4db1e2;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown
-  .dropdown-toggle.circlebg-color-bell-v
-  > i {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
   color: #ffffff;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown
-  .dropdown-toggle.circlebg-color-bell-v:hover
-  > i {
+.page-header.navbar .top-menu .navbar-nav> li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
   color: #ffffff;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown
-  .dropdown-toggle.circlebg-color-bell-v:hover {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
   background-color: #4db1e2;
   color: #fff;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown.open
-  .dropdown-toggle.circlebg-color-bell-v {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
   background-color: #4db1e2;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown.open
-  .dropdown-toggle.circlebg-color-bell-v
-  > i {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
   color: #fff;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown.open
-  .dropdown-toggle.circlebg-color-bell-v
-  > span {
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > span {
   color: #fff;
 }
-.page-header.navbar
-  .top-menu
-  .navbar-nav
-  > li.dropdown
-  > .dropdown-toggle
-  > .badge {
-  font-family: "Gantari", "Open Sans", sans-serif;
+.page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
+  font-family: 'Gantari',"Open Sans", sans-serif;
   position: absolute;
   top: -8px;
   left: 24px;
@@ -279,15 +247,13 @@ a.dropdown-toggle.circlebg-none-v:hover {
   width: 21px;
   font-size: 10px !important;
 }
-.nav .open > a,
-.nav .open > a:focus,
-.nav .open > a:hover {
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
   background-color: #4db1e2;
-}
+} 
 
 /* tablet */
-@media (min-width: 810px) and (max-width: 850px) {
+ @media (min-width: 810px) and (max-width: 850px) {
   .page-header.navbar .top-menu {
     margin-top: 22px !important;
   }
-}
+ } 

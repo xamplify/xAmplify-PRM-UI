@@ -1436,3 +1436,27 @@ input.custom-line:focus {
 .popover {
   color: #000 !important;
 }
+
+
+/* 21-06-2023 header enhancement */
+
+a.dropdown-toggle.circlebg-color-bell-v {
+  background: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+a.dropdown-toggle.circlebg-none-v {
+  background: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+a.dropdown-toggle.circlebg-none-v:hover{
+  background: #5a738e !important
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
+  background: #5a738e !important
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
+  background-color: #5a738e !important
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  background-color:  #5a738e !important
+} 
