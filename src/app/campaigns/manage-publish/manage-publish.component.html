@@ -670,11 +670,11 @@
                                          </a>
                                       </ng-container>
                                       <ng-container class="pull-right">
-                                         <div class="btn-group pull-right">
+                                         <div class="btn-group pull-right setting-icon-cu">
                                             <span [class.disablednew]="!campaign.hasAccess"
-                                            class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown"
+                                            class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu" data-toggle="dropdown"
                                             (click)="checkLastElement(i)"></span><span [class.disablednew]="!campaign.hasAccess"
-                                               class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
+                                               class="caret dropdown-toggle caretDropdownMenu dropdown-font-cu" data-toggle="dropdown"></span>
                                             <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
                                                <li>
                                                   <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId

@@ -219,3 +219,29 @@ table tr:nth-child(even) td {
 	border-right: 3px solid #5ab1eb ;
 	border-top: 3px solid #5ab1eb;
 }
+/* 21-06-2023 */
+.setting-icon-cu {
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 26px !important;
+  vertical-align: middle;
+  margin-right: 7px;
+}
+span.dropdown-font-cu {
+  margin-left: 2px;
+  border-top: 3px dashed;
+  border-top: 4px solid\9;
+  border-right: 3px solid transparent;
+  border-left: 3px solid transparent;
+  top: 0px;
+}
+span.gearicon-font-cu {
+  font-size: 13px;
+  top: 2px;
+  left: 1px;
+  box-shadow: none !important;
+}
