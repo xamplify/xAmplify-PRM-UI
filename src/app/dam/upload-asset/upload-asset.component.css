@@ -147,11 +147,7 @@
   padding-bottom: 4px;
   padding-right: 0px;
 }
-.custom {
-  background-color: #008fd5;
-  color: #fff;
-  border: 1px solid #3575b5;
-}
+
 .video {
   background-color: white;
   cursor: default;
@@ -168,6 +164,3 @@
   text-overflow: ellipsis;
   width: 100%;
 }
-
-
-
