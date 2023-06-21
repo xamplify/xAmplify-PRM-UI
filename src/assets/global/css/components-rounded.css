@@ -2184,11 +2184,11 @@ Customized Bootstrap Buttons
   background-color: #fff;
 }
 
-.btn-danger {
+/* .btn-danger {
   color: #fff;
   background-color: #F3565D;
   border-color: #f13e46;
-}
+} */
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active {
   color: #fff;
   background-color: #f1353d;

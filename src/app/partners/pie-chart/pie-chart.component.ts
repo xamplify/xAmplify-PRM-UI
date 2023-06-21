@@ -27,7 +27,11 @@ export class PieChartComponent implements OnInit {
            text: ''
        },
        tooltip: {
-           pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+           pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>',
+           backgroundColor: 'black', 
+           style: {
+             color: '#fff' 
+           }
        },
        plotOptions: {
            pie: {

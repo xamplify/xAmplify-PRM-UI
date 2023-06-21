@@ -29,9 +29,9 @@ Portfolio
 .mix-filter li:hover,
 .mix-filter li.active {
   color: #fff;
-  background: #0da3e2;
+  background: #2bb7aa;
   border-radius: 2px;
-  border: 1px solid #0da3e2;
+  border: 1px solid #2bb7aa;
 }
 
 .mix-grid .mix {
@@ -99,7 +99,6 @@ Portfolio
   -moz-transition: all 0.5s ease;
   -webkit-transition: all 0.5s ease;
 }
-
 
 .mix-grid .mix:hover .mix-details {
   bottom: 0;
@@ -195,28 +194,26 @@ a.mix-preview6 {
 
 .mix-grid .mix a.mix-preview {
   left: 40%;
- }
- .mix-grid .mix a.mix-preview1 {
+}
+.mix-grid .mix a.mix-preview1 {
   left: 17%;
- }
- .mix-grid .mix a.mix-preview2 {
+}
+.mix-grid .mix a.mix-preview2 {
   left: 38%;
- }
- .mix-grid .mix a.mix-preview3 {
+}
+.mix-grid .mix a.mix-preview3 {
   left: 60%;
- }
+}
 
-  .mix-grid .mix a.mix-preview4 {
+.mix-grid .mix a.mix-preview4 {
   left: 17%;
- }
- .mix-grid .mix a.mix-preview5 {
+}
+.mix-grid .mix a.mix-preview5 {
   left: 38%;
- }
- .mix-grid .mix a.mix-preview6 {
+}
+.mix-grid .mix a.mix-preview6 {
   left: 60%;
- }
-
-
+}
 
 .mix-grid .mix a.mix-link {
   right: 50%;

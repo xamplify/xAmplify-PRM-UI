@@ -114,6 +114,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
             tooltip: {
                 formatter: function () {
                     return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
+                },
+                backgroundColor: 'black', 
+                style: {
+                  color: '#fff' 
                 }
             },
             plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },

@@ -10,7 +10,7 @@ a:hover {
   text-decoration: none;
 }
 .campaign-type-selected {
-  background-color: #0095da;
+  background-color: #26a69a;
   color: white;
 }
 img.active {
@@ -208,4 +208,14 @@ table tr:nth-child(even) td {
 }
 .view-banner {
   color: white !important;
+}
+
+.ribbon span::before {
+	border-left: 3px solid #5ab1eb;
+	border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5ab1eb ;
+	border-top: 3px solid #5ab1eb;
 }

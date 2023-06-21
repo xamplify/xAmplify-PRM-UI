@@ -33,7 +33,7 @@ a.disabled {
     padding: 24px 1px 24px 1px !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle {
-    padding: 6px 0px 6px 0px !important
+    padding: 6px 0px 6px 0px !important;
   }
   .btn {
     padding: 7px 10px !important;
@@ -52,7 +52,7 @@ a.disabled {
     > img {
     margin-right: 0 !important;
   }
-  .btn-group  button  {
+  .btn-group button {
     padding: 6px 7px !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown {
@@ -67,7 +67,6 @@ a.disabled {
   .refer-vendor-button {
     padding: 17px 0px 0px 0px !important;
   }
-
 }
 .img-circle {
   height: 40px;
@@ -183,7 +182,7 @@ label {
 #logoutButton {
   background-color: #e8edf2;
 }
-.topnav-button-css{
+.topnav-button-css {
   margin-top: 17px;
   margin-right: 15px;
 }
@@ -208,14 +207,14 @@ a.dropdown-toggle.circlebg-color-bell-v i {
   font-size: 15px !important;
 }
 a.dropdown-toggle.circlebg-none-v {
-  padding: 7px 0px;
+  padding: 6px 0px;
   border: 1px solid #cccccc8f;
   border-radius: 30px;
   margin-top: 18px;
   background: #0095da;
 }
 a.dropdown-toggle.circlebg-none-v:hover{
-  background: #4db1e2 !important;
+  background: #4db1e2;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
   color: #ffffff;

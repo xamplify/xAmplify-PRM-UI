@@ -512,12 +512,10 @@
             </div>
             <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="btn btn-default" id="save_button"
-                    style="background-color: #26a69a; color: white"
+                <button class="btn main-btn" id="save_button"              
                     *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
                     translate>Save</button>
-                <button class="btn btn-default" id="cancel_button"
-                    style="background-color: #26a69a; color: white"
+                <button class="btn main-btn" id="cancel_button"                 
                     *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
@@ -684,8 +682,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="btn btn-default" type="button"
-                                    style="background-color: #26a69a; color: white"
+                                <button class="btn main-btn" type="button"                                  
                                     (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
                             </div>
                             <div class="col-xs-12">
@@ -1171,9 +1168,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                                 (click)="hideZohoModal()" translate>Close</button>
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn main-btn"
                                 (click)="zohoContacts()" translate>Authorize</button>
                         </div>
                     </div>
@@ -1221,9 +1218,9 @@
                             </form>
                         </div>
                         <div class="modal-footer" style="border-top:0px !important">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn main-btn"
                                 (click)="checkingZohoPopupValues()" translate>Submit</button>
                         </div>
                     </div>
@@ -1280,10 +1277,10 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                                 translate>Close</button>
                             <button type="button" id="salesforce_save_button"
-                                class="btn btn-primary" (click)="checkingPopupValues()"
+                                class="btn main-btn" (click)="checkingPopupValues()"
                                 data-dismiss="modal" translate>Submit</button>
                         </div>
                     </div>
@@ -1319,7 +1316,7 @@
                                         credentials.
                                     </h4>
                                    
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn main-btn"
                                         style="margin-left: 38%; margin-top: 2%"
                                         (click)="unlinkSocailAccount()" translate>Unlink
                                         Account</button>
@@ -1327,7 +1324,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                                 translate>Close</button>
                         </div>
                     </div>
@@ -1393,10 +1390,10 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important;">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                         translate>Close</button>
                     <button type="button" id="salesforce_save_button"
-                        class="btn btn-primary" (click)="checkingPopupValues()"
+                        class="btn main-btn" (click)="checkingPopupValues()"
                         data-dismiss="modal" translate>Submit</button>
                 </div>
             </div>
@@ -1478,9 +1475,9 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                        <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                             (click)="hideMarketoModal()" translate>Close</button>
-                        <button type="button" class="btn btn-primary"
+                        <button type="button" class="btn main-btn"
                             [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
                             (click)="getMarketoContacts()" translate>Authorize</button>
                     </div>
@@ -1532,10 +1529,10 @@
                         agree</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
+                    <button type="button" class="btn btn-secondary btn-hvr-text GraY-Btn" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Decline</button>
                     <button type="button" [disabled]="!isCheckTC"
-                        class="btn btn-primary" (click)="saveContactsWithPermission()"
+                        class="btn main-btn" (click)="saveContactsWithPermission()"
                         translate>Accept</button>
                 </div>
             </div>
@@ -1591,10 +1588,10 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn GraY-Btn" data-dismiss="modal"
                         (click)="hideHuspotModal()" translate>Close</button>
                     <button type="button" id="hubspot_save_button"
-                        class="btn btn-primary" (click)="getHubSpotData()"
+                        class="btn main-btn" (click)="getHubSpotData()"
                         data-dismiss="modal" translate>Submit</button>
                 </div>
             </div>
@@ -1633,10 +1630,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
+                    <button type="button" class="btn btn-secondary btn-hvr-text GraY-Btn" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Cancel</button>
                     <button type="button" [disabled]="!cloudPartnersModalCheckBox"
-                        class="btn btn-primary" (click)="proceed()" translate>Accept</button>
+                        class="btn main-btn" (click)="proceed()" translate>Accept</button>
                 </div>
             </div>
         </div>
@@ -1763,7 +1760,7 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn green-haze"
                         (click)="validatePartners()" translate>Continue</button>
-                    <button type="submit" class="btn btn-default"
+                    <button type="submit" class="btn GraY-Btn"
                         (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
                 </div>
             </div>

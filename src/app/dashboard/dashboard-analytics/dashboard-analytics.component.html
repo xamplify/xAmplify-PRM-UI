@@ -106,6 +106,7 @@
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
                             <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"
+                                data-toggle="tooltip" data-placement="bottom"
                                 title="Customize campaign report" id="right">
                                 <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal"
                                     data-target="#customizeCampaignModal" aria-hidden="true"></i>

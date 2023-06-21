@@ -76,6 +76,13 @@ export class DonutPieChartComponent implements OnInit {
       title: {
         text: "",
       },
+      tooltip: {
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
+        }
+      },
+      
       subtitle: {
         text: "",
       },
