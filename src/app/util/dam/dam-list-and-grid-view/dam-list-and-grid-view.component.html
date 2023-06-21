@@ -41,7 +41,7 @@
 									<tr>
 									<td *ngIf="(!isPartnerView && asset.videoId)">
 										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" 
-											[published]="asset?.published" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress"></app-video-thumbnail>
+											[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress"></app-video-thumbnail>
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
 										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
