@@ -170,6 +170,9 @@
 									<tr [ngClass]="{'hidden': !asset?.expand}">
 										<td [attr.colspan]="colspanValue">
 											<div class="table-responsive">
+												<div *ngIf="showRefreshNotificationForHistoryAssets" class="alert alert-info">
+													<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
+												</div>
 												<table class="table tgrid table-condensed"
 													aria-describedby="asset-history" id="asset-history">
 													<thead>
@@ -214,7 +217,7 @@
 																	<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
 																</h6>
 																<h6 class="moreipsis" title="{{asset?.displayName}}">
-																	<span translate> Created By <strong>{{asset?.displayName}}</strong></span>
+																	<span translate> Created By  <strong>{{asset?.displayName}}</strong></span>
 																</h6>
 																<h6 class="moreipsis"
 																	*ngIf="!isPartnerView && asset?.beeTemplate">
@@ -223,7 +226,7 @@
 																<!---XNFR-255-->
 																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
 																	translate>Published</h6>
-																<h6 *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress " class="view-banner published">
+																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress " class="view-banner published">
 																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
 																	Processing
 																</h6>
@@ -326,7 +329,7 @@
 									<!--XNFR-255-->
 									<div class="ribbon">
 										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress">Processing</span>
+										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 									</div>
 									<!--XNFR-255-->
 									<div class="bar auto-height">

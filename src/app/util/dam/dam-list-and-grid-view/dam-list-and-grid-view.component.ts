@@ -86,6 +86,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/****XNFR-255*****/
 	showWhiteLabeledPopup: boolean;
 	showRefreshNotification = false;
+	showRefreshNotificationForHistoryAssets = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -268,7 +269,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
 						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
 					}
-					if(asset.published && asset.publishingOrWhiteLabelingInProgress){
+					if(asset.publishingOrWhiteLabelingInProgress){
 						publishingAssets.push(asset);
 					}
 				});
@@ -385,9 +386,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (result.statusCode === 200) {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
+				let publishingAssets = [];
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
+					if(asset.publishingOrWhiteLabelingInProgress){
+						publishingAssets.push(asset);
+					}
 				});
+				this.showRefreshNotificationForHistoryAssets = publishingAssets.length>0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.loading = false;
