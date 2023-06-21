@@ -11,7 +11,7 @@ import { DragulaService } from 'ng2-dragula';
   styleUrls: ['./leftsidenavbar-custom.component.css']
 })
 export class LeftsidenavbarCustomComponent implements OnInit {
-  menuItems: any;
+  public menuItems:Array<any> =  [];
   data: any;
   loading = false;
   constructor(public authenticationService: AuthenticationService,  public utilService: UtilService, private dashBoardService: DashboardService,  public referenceService: ReferenceService
