@@ -897,9 +897,9 @@ input.cmn-toggle-round-flat:checked + label:after {
   cursor: pointer;
 }
 
-.link button:hover {
+/* .link button:hover {
   background: #0b7dda;
-}
+} */
 
 /* Clear floats */
 
