@@ -153,9 +153,7 @@
 						<div class="portlet box green " style="margin-top: 8px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
 							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
 								<div class="col-xs-12 caption p01">
-									<!-- <i class="fa fa-info-circle"></i> -->
 									<div class="col-xs-11 p01">
-										<!-- <h4 class="p01">{{videoFileService.actionValue}} Video Info</h4> -->
 										<h4 class="p01" translate>Video Info</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
@@ -165,7 +163,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
+							<div class="portlet-body form" [hidden]="!titleDiv" [@fadeInOut]>
 								<div class="form-body" style="padding:9px">
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Title:</label>

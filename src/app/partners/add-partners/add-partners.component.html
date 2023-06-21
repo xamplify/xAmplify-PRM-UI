@@ -687,7 +687,9 @@
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber"
+                                          title="Calendar View" 
                                     [(ngModel)]="clipboardTextareaText"
+                                    data-toggle="tooltip" data-placement="bottom" title="please fill out this form"
                                     placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
@@ -909,9 +911,8 @@
                             <div class="clearfix">
                                 <div class="col-xs-12" style="padding: 0px 0;">
                                     <div class="alert alert-info flex" *ngIf="isLoadingList">
-                                        <div class="loader"
-                                            style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
-                                        <h4 translate>Please wait while we process your request</h4>
+                                        <div class="loader processing-loader-style"></div>
+                                        <strong translate>Please wait while we process your request</strong>
                                     </div>
                                     <div
                                         *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"

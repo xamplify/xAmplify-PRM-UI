@@ -246,8 +246,8 @@
                                                             <i class="fa fa-search cesf-xamp"></i></button>
                                                          </div>
                                                          <div style="padding-left: 10px;">
-                                                            <button type="button" class="btn main-btn add-btn" (click)="addTag()">
-                                                            <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
+                                                            <button type="button" class="btn main-btn add-btn" (click)="addTag()"  data-toggle="tooltip"  data-placement="top" title="Add a Tag"> 
+                                                            <i class="fa fa-plus" aria-hidden="true"></i></button>
                                                          </div>
                                                       </div>
                                                    </div>
@@ -264,11 +264,15 @@
                                                                         [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tag.id)>-1">
                                                                      </label>
                                                                   </div>
-                                                                  <div class="col-sm-5" style="padding-left: 0px !important;" title="{{tag.tagName}}">
+                                                                  <div>
+                                                                  <div class="col-sm-5" style="padding-left: 0px !important;" 
+                                                                  data-toggle="tooltip" data-placement="bottom"
+                                                                  title="{{tag.tagName}}">
                                                                      <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                                                         {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span>
                                                                      </div>
                                                                   </div>
+                                                                 </div>
                                                                </td>
                                                                <td style="padding: 5px;vertical-align: middle;"
                                                                   (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
@@ -279,8 +283,9 @@
                                                                      [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                                                      </label>
                                                                   </div>
-                                                                  <div class="col-sm-5" style="padding-left: 5px !important;">
-                                                                     <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"  title="{{tagsListSecondColumn[i].tagName}}"
+                                                                  <div class="col-sm-5" style="padding-left: 0px !important;" *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                                                     title="{{tagsListSecondColumn[i].tagName}}"  data-toggle="tooltip" data-placement="bottom">
+                                                                     <div 
                                                                         class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
                                                                         {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
                                                                      </div>

@@ -4,17 +4,15 @@
 		<div class="row" style="padding-right: 5px;">
 			<div class="col-xs-6">
 				<h4 class="pull-left m10 text-primary">
-					<!-- <span *ngIf="!this.pagination.categoryType == 'DAM'">{{suffixHeader}} </span> -->
 					{{titleHeader}}</h4>
 			</div>
-			<div class="page-toolbar col-xs-6">
+			<div class="page-toolbar col-xs-6" *ngIf="!httpRequestLoader.isLoading">
 				<div class="btn-group pull-right">
 					<div class="group-dropdown" style="padding-right: 4px;">
 						<button
 							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                    folderViewType == 'fl' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                    			folderViewType == 'fl' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
 							style="padding: 10px !important"></button>
-							<!-- <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button> -->
 						<div class="group-dd-content"
 							style="padding: 10px !important; min-width: max-content;">
 							<ng-container class='m10'> <span

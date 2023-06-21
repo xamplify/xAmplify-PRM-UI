@@ -1,5 +1,5 @@
 .animated-background-modal-popup {
-  animation: pulse 1s infinite ease-in-out;
+  animation: modal-popup-animation 1s infinite ease-in-out;
   background-size: 800px 104px;
   position: relative;
 }
@@ -8,7 +8,7 @@
   margin: 30px auto;
   border-radius: 50%;
 }
-@keyframes pulse {
+@keyframes modal-popup-animation {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
   }

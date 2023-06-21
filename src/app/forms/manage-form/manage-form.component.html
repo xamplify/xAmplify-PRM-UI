@@ -127,7 +127,9 @@
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true">
+                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true"
+                                        data-toggle="tooltip" data-placement="top" title="Refresh"
+                                        >
                                             <i class="fa fa-refresh" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -171,18 +173,18 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                                            <h4 class="moreipsis mt5 mb5 f-w-600">
                                                 <span><b>{{form.name}}</b></span>
                                             </h4>
-                                            <h6 class="moreipsis" title="{{form.categoryName}}">
+                                            <h6 class="moreipsis">
                                                 <span translate> Folder <b>{{form.categoryName}}</b></span>
                                             </h6>
-                                            <h6 class="moreipsis" title="{{form.createdName}}">
+                                            <h6 class="moreipsis" >
                                                 <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
                                             <!---XNFR-255-->
                                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                                <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                <h6 class="moreipsis" >
                                                     <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                                 </h6>
                                                 <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>

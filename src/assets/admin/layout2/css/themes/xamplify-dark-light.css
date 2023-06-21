@@ -1465,3 +1465,15 @@ a.dropdown-toggle.circlebg-none-v:hover{
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
   background-color:  #5a738e !important
 } 
+
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-color: #d6e9c6 !important;
+  color: #3c763d !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f !important;
+}

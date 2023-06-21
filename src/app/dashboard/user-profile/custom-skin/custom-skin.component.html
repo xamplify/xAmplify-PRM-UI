@@ -21,8 +21,8 @@
 		<div class="textCss"></div>
 	 </div>
 	 <div class="btn-group" [ngClass]="isValidContactName || name.hasError('required') ? 'm-top-70':'m-top-50'" style="float: right;">
-		<button class="btn btn-primary padding align" [ngClass]="(isValid || isValidContactName || name.hasError('required')) ?'disabled':''"   [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
-		<button class="btn btn-primary padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required')"  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
+		<button class="btn main-btn padding align" [ngClass]="(isValid || isValidContactName || name.hasError('required')) ?'disabled':''"   [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new" style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme" (click)="getThemePropertiesWrapperObj(form)">Save</button>
+		<button class="btn main-btn padding align" [ngClass]="isValid ?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required')"  style="border-radius: 3px;" *ngIf="!themeDTO.defaultTheme && !isSaveTheme" (click)="update()">Update</button>
 	</div>
 </div>
 

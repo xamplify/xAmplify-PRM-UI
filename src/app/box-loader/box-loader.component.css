@@ -7,13 +7,13 @@
 }
 
 .animated-background-box {
-  animation: pulse 1s infinite ease-in-out;
+  animation: box-loader-animation 1s infinite ease-in-out;
   background-size: 800px 104px;
   height: 96px;
   position: relative;
 }
 
-@keyframes pulse {
+@keyframes box-loader-animation {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
   }

@@ -55,8 +55,12 @@
 				</div>
 			 </div>
 			 <!---Grid Loader------>
+			
 			 <app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
 			 <section *ngIf="!historyLoader.isLoading">
+				<div *ngIf="showRefreshNotification" class="alert alert-info">
+					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
+				</div>
 				<div class="row" *ngIf="!historyLoader.isLoading && !historyLoader.isServerError">
 				   <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 					  <div class="grid-box min-h default-cursor box-shadow">
@@ -93,7 +97,7 @@
 						 </div>
 						 <div class="ribbon">
 							<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-							<span *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress">Publishing</span>
+							<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 						</div>
 						 <div class="bar auto-height">
 							<app-asset-grid-view-actions [isPartnerView]="false" [asset]="asset"

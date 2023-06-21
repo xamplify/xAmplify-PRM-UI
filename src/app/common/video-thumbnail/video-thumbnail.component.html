@@ -40,21 +40,21 @@
      <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
      <span *ngIf="!videoFile.views">0 views</span>
      </span>
-     <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
+     <span *ngIf="videoFile?.viewBy==='DRAFT' || !videoFile?.processed ">0 views</span>
      </h6>
-     <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
+     <p *ngIf="videoFile?.viewBy=='DRAFT' || !videoFile?.processed" class="draft-video mb0"> DRAFT</p>
      <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
-     <h6 *ngIf="published && processing" class="view-banner" translate>
+     <h6 *ngIf="processing" class="view-banner" translate>
        <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
      </h6>
      <!-- tags start -->
      <h6 style="padding-top: 5px;">
-        <ng-container *ngIf="videoFile.tagNames?.length > 0">
-           <div class="tag" title="{{videoFile.tagNames[0]}}">
-              <ng-container *ngIf="videoFile.tagNames?.length == 1">{{videoFile.tagNames[0]}}
+        <ng-container *ngIf="videoFile?.tagNames?.length > 0">
+           <div class="tag" title="{{videoFile?.tagNames[0]}}">
+              <ng-container *ngIf="videoFile?.tagNames?.length == 1">{{videoFile?.tagNames[0]}}
               </ng-container>
-              <ng-container *ngIf="videoFile.tagNames?.length > 1">{{videoFile.tagNames[0]
-                 | slice:0:25}} <span *ngIf="videoFile.tagNames[0]?.length>25">...</span>
+              <ng-container *ngIf="videoFile?.tagNames?.length > 1">{{videoFile?.tagNames[0]
+                 | slice:0:25}} <span *ngIf="videoFile?.tagNames[0]?.length>25">...</span>
               </ng-container>
            </div>
            <ng-container *ngIf="videoFile.tagNames.length > 1">
@@ -75,6 +75,15 @@
         </h6>
      </ng-container>
      <!---XNFR-255-->
+     <!---XNFR-255-->
+     <ng-container *ngIf="videoFile?.whiteLabeledVideoReceivedFromVendor">
+      <span class="view-banner-white-labeled mb5">White-Labeled</span>
+      <h6 class="moreipsis"  title="{{videoFile?.whiteLabeledVideoSharedByVendorCompanyName}}">
+         <span translate>Received From <strong>{{videoFile?.whiteLabeledVideoSharedByVendorCompanyName}}</strong></span>
+      </h6>
+   </ng-container>
+   <!---XNFR-255-->
+     
      </a>
   </div>
   </div>

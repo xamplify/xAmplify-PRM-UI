@@ -396,7 +396,7 @@ export class HomeComponent implements OnInit {
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Dark"){
               this.authenticationService.isDarkForCharts = true;
-              require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
+              require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
           } else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 ) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
             document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
@@ -424,17 +424,7 @@ export class HomeComponent implements OnInit {
           }
 
 
-          // if (this.topCustomChange.name === "Light") {
-          //   require("style-loader!../../../assets/admin/layout2/css/layout.css");
-          // }
-          // else if (this.topCustomChange.name === "Dark") {
-          //   this.authenticationService.isDarkTheme = true;
-          //   this.authenticationService.isDarkForCharts = true;
-          //   require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
-          // }
-          // else {
-          //   this.authenticationService.isLightTheme = true;
-          // }
+      
 
         }, error => {
             this.loader = false;

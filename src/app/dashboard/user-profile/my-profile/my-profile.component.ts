@@ -3938,10 +3938,8 @@ configSalesforce() {
 				 if( form.darkTheme && selectedThemeIndex == 1)
 				 {
 				   window.location.reload();
-				//   require("style-loader!../../../../assets/admin/layout2/css/themes/tharak-dark-light.css");	
 				 }else {
 					this.customAppShow = true;
-				// 	require("style-loader!../../../../assets/admin/layout2/css/layout.css");				
 				 }
 			},error=>{
 				this.ngxloading = false;

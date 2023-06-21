@@ -72,9 +72,11 @@ td h6 {
     text-transform: uppercase;
     padding: 3px 9px;
 }
-
+/* 21-06-2023 */
 .actionButtonAlign{
     display: flex;
+    justify-content: center;
+    float: none;
 }
 
 .actionButtonAlign2{
