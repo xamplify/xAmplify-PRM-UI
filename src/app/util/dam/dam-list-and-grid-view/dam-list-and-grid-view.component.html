@@ -12,7 +12,7 @@
 					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
 				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
-					<ng-template [ngTemplateOutlet]="damHeaderOptions"></ng-template>
+					<ng-template *ngIf="!listLoader?.isLoading" [ngTemplateOutlet]="damHeaderOptions"></ng-template>
 					<app-list-loader
 						*ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
 					<app-grid-loader
