@@ -86,13 +86,13 @@
 
               <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                   <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                  <h4 class="m5">Please wait while we process your request.</h4>
+                  <strong class="m5">Please wait while we process your request.</strong>
               </div>
 
               <div *ngIf="isLoadingList">
                   <app-list-loader></app-list-loader>
                   <!--  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-          <h4 class="m5">Please wait while we process your request.</h4> -->
+          <strong class="m5">Please wait while we process your request.</strong> -->
               </div>
               <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
                   <strong>No results found</strong>
