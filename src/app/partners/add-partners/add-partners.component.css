@@ -141,3 +141,11 @@ textarea.textareaNumber {
   background-color: black;
     color: '#fff'    
 }
+
+.processing-loader-style{
+  position: relative; 
+  top: -3px; 
+  left: -5px; 
+  width: 25px; 
+  height: 27px;
+}
