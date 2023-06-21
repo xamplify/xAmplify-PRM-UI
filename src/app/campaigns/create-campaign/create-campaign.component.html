@@ -713,7 +713,8 @@
                                                                 id="selectedVideoRow"
                                                                 (click)="setClickedRow(savedVideoFile,'my-videos')">
                                                                 <!-- --------------Thumbnail--------------------------- -->
-                                                                <td style="text-align: center;"><input
+                                                                <td style="text-align: center;">
+                                                                    <input
                                                                     class="radio-button-css" type="radio"
                                                                     [checked]="selectedRow==savedVideoFile.id"
                                                                     (click)="setClickedRow(savedVideoFile,'my-videos')"
@@ -735,32 +736,36 @@
                                                                 <!-- --------------Status--------------------------- -->
                                                                 <td class="text-center"><img
                                                                     src="assets/images/draft.png"
-                                                                    *ngIf="savedVideoFile.viewBy=='DRAFT'"> <img
+                                                                    *ngIf="savedVideoFile.viewBy=='DRAFT' || !savedVideoFile?.processed"> <img
                                                                     src="assets/images/success.png"
-                                                                    *ngIf="savedVideoFile.viewBy!='DRAFT'"></td>
+                                                                    *ngIf="savedVideoFile.viewBy!='DRAFT' && savedVideoFile?.processed "></td>
                                                             </tr>
                                                             </ng-container> <!-- --------------------Avalilable Campaign Videos------------ -->
                                                             <ng-container *ngIf="!campaign.createdFromVideos">
                                                             <tr role="row" class="odd"
                                                                 *ngFor="let videoFile of videosPagination.pagedItems;let i =  index"
                                                                 (click)="setClickedRow(videoFile,'my-videos')"
-                                                                [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')"
+                                                                [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT' && videoFile?.processed)"
                                                                 [attr.title]="draftMessage"
                                                                 (mouseover)='showToolTip(videoFile.viewBy)'>
                                                                 <!-- --------------Thumbnail--------------------------- -->
                                                                 <!-- --------------Title--------------------------- -->
-                                                                <td *ngIf="videoFile.id!==videoId"><input
+                                                                <td *ngIf="videoFile.id!==videoId">
+                                                                    <input
                                                                     class="radio-button-css"
-                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId"
+                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed"
                                                                     type="radio" name="videoFileId" [value]="videoFile.id"
                                                                     (click)="setClickedRow(videoFile,'my-videos')"
                                                                     id="campaign_video_id_{{videoFile.id}}"
-                                                                    [checked]="videoFile.id == selectedRow"> <input
+                                                                    [checked]="videoFile.id == selectedRow"> 
+
+                                                                    <input
                                                                     class="radio-button-css"
-                                                                    *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId"
+                                                                    *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
                                                                     type="radio" name="videoFileId" [value]="videoFile.id"
                                                                     disabled="disabled"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
+
                                                                     <app-video-thumbnail
                                                                         [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}"
                                                                         [videoFile]="videoFile"
@@ -780,9 +785,9 @@
                                                                 <!-- --------------Status--------------------------- -->
                                                                 <td class="text-center" *ngIf="videoFile.id!==videoId">
                                                                     <img src="assets/images/draft.png"
-                                                                    *ngIf="videoFile.viewBy=='DRAFT'"> <img
+                                                                    *ngIf="videoFile.viewBy=='DRAFT' || !videoFile?.processed"> <img
                                                                     src="assets/images/success.png"
-                                                                    *ngIf="videoFile.viewBy!='DRAFT'">
+                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile?.processed">
                                                                 </td>
                                                             </tr>
                                                             </ng-container> </ng-container>
@@ -895,27 +900,27 @@
                                                                 </td>
                                                                 <td class="text-center"><img
                                                                     src="assets/images/draft.png"
-                                                                    *ngIf="savedVideoFile.viewBy=='DRAFT'"> <img
+                                                                    *ngIf="savedVideoFile.viewBy=='DRAFT' || !savedVideoFile?.processed"> <img
                                                                     src="assets/images/success.png"
-                                                                    *ngIf="savedVideoFile.viewBy!='DRAFT'"></td>
+                                                                    *ngIf="savedVideoFile.viewBy!='DRAFT' && savedVideoFile?.processed"></td>
                                                             </tr>
                                                             </ng-container> <!-- --------------------Avalilable Campaign Videos------------ -->
                                                             <ng-container *ngIf="!campaign.createdFromVideos">
                                                             <tr role="row" class="odd"
                                                                 *ngFor="let videoFile of channelVideosPagination.pagedItems;let i =  index"
                                                                 (click)="setClickedRow(videoFile,'partner-videos')"
-                                                                [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT')"
+                                                                [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT' && videoFile?.processed)"
                                                                 [attr.title]="draftMessage"
                                                                 (mouseover)='showToolTip(videoFile.viewBy)'>
                                                                 <!-- --------------Thumbnail--------------------------- -->
                                                                 <td class="text-center"
-                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId">
+                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed">
                                                                     <input class="radio-button-css" type="radio"
                                                                     name="videoFileId" [value]="videoFile.id"
                                                                     (click)="setClickedRow(videoFile,'partner-videos')"
                                                                     id="campaign_video_id_{{videoFile.id}}"
                                                                     [checked]="videoFile.id == selectedRow"> <input
-                                                                    *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId"
+                                                                    *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId"
                                                                     class="radio-button-css" type="radio"
                                                                     name="videoFileId" [value]="videoFile.id"
                                                                     disabled="disabled"
@@ -926,7 +931,7 @@
 
                                                                 </td>
                                                                 <td class="text-center"
-                                                                    *ngIf="videoFile.viewBy=='DRAFT'  && videoFile.id!==videoId">
+                                                                    *ngIf="(videoFile?.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId">
                                                                     <input type="radio" name="videoFileId"
                                                                     [value]="videoFile.id" disabled="disabled"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
@@ -949,9 +954,9 @@
                                                                 <!-- --------------Status--------------------------- -->
                                                                 <td class="text-center" *ngIf="videoFile.id!==videoId">
                                                                     <img src="assets/images/draft.png"
-                                                                    *ngIf="videoFile.viewBy=='DRAFT'"> <img
+                                                                    *ngIf="videoFile.viewBy=='DRAFT' || !videoFile?.processed"> <img
                                                                     src="assets/images/success.png"
-                                                                    *ngIf="videoFile.viewBy!='DRAFT'">
+                                                                    *ngIf="videoFile.viewBy!='DRAFT' && videoFile?.processed">
                                                                 </td>
                                                             </tr>
                                                             </ng-container> </ng-container>
