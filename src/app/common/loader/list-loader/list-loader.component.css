@@ -1,11 +1,11 @@
 .text-input__loading--line {
   height: 10px;
   margin: 7px;
-  animation: pulse 1s infinite ease-in-out;
+  animation: list-animation 1s infinite ease-in-out;
   background-size: 800px 104px;
   position: relative;
 }
-@keyframes pulse {
+@keyframes list-animation {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
   }

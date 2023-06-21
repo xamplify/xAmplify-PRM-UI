@@ -7,7 +7,7 @@
 .text-input__loading--line {
   height: 10px;
   margin: 7px;
-  animation: pulse 1s infinite ease-in-out;
+  animation: auto-response-animation 1s infinite ease-in-out;
 }
 .text-input__loading div:nth-child(1) {
   width: 150px;
@@ -39,7 +39,7 @@
 .text-input__loading div:nth-child(8) {
   width: 100px;
 }
-@keyframes pulse {
+@keyframes auto-response-animation {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
   }
