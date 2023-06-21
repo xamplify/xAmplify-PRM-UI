@@ -1195,8 +1195,8 @@
                                 <div class="row">
                                     <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
                                         <div class="col-xs-12">
-                                            <app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading">
-                                            </app-loader>
+                                            <app-landing-page-loader  *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading">
+                                            </app-landing-page-loader>
                                             <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError">
                                             </app-error-pages>
                                             <ng-container *ngIf=" emailTemplatesPagination.totalRecords > 0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
