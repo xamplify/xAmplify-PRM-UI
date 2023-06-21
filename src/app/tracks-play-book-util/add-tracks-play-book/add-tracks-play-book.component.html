@@ -83,10 +83,12 @@
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
                         <button type="button" class="right-border main-btn" (click)="editSlug()"
+                        data-toggle="tooltip" data-placement="top" title="Edit"
                           style="border-radius:0px !important;"><i
                             class="fa fa-edit"></i></button>
                         <button type="button" (click)="copyInputMessage(link)" class="main-btn"
-                          style="border-radius:0px !important;"><i
+                        data-toggle="tooltip" data-placement="top" title="Copy"
+                          style="border-radius:0px !important;"><i                      
                             class="fa fa-copy"></i></button>
                       </div>
                     </div>
@@ -133,8 +135,9 @@
                               <i class="fa fa-search cesf-xamp"></i></button>
                           </div>
                           <div style="padding-left: 10px;">
-                            <button type="button" class="btn main-btn add-btn" (click)="addTag()">
-                              <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
+                            <button type="button" class="btn main-btn add-btn" (click)="addTag()"
+                            data-toggle="tooltip" data-placement="top" title="Add a Tag">
+                              <i class="fa fa-plus" aria-hidden="true"></i></button>
                           </div>
                         </div>
                       </div>
@@ -151,11 +154,11 @@
                                       [checked]="tracksPlayBook.tagIds != undefined && tracksPlayBook.tagIds.length > 0 && tracksPlayBook.tagIds.indexOf(tag.id)>-1">
                                   </label>
                                 </div>
-                                <div class="col-sm-5" style="padding-left: 0px !important;">
-                                  <div title="{{tag?.tagName}}" class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                      {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
-
-                                </div>
+                                <div class="col-sm-5" style="padding-left: 0px !important;" 
+                                data-toggle="tooltip" data-placement="bottom"  title="{{tag?.tagName}}">
+                                <div  class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
+                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                              </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
                                 (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
@@ -166,10 +169,10 @@
                                       [checked]="tracksPlayBook.tagIds != undefined && tracksPlayBook.tagIds.length > 0 && tracksPlayBook.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                   </label>
                                 </div>
-                                <div class="col-sm-5" style="padding-left: 5px !important;">
-
-                                  <div title="{{tagsListSecondColumn[i]?.tagName}}" *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                    class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
+                                <div class="col-sm-5" style="padding-left: 5px !important;" 
+                                  *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                  data-toggle="tooltip" data-placement="bottom" title="{{tagsListSecondColumn[i]?.tagName}}">
+                                  <div   class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
                                     {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
 
                                 </div>
@@ -208,7 +211,7 @@
                     <ng-template #showImage>
                       <img class="img-grids" [src]="featuredImagePath" alt="">
                     </ng-template>
-                    <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
+                    <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="bottom"  title="upload 2:1 ratio logo">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
                         style="font-size:25px;padding-top:4px;margin-right: -5px;"></i></a>
                   </div>
@@ -355,7 +358,7 @@
                           </span>
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
-                          <span [title]="file.assetName">
+                          <span data-toggle="tooltip" data-placement="bottom"  [title]="file.assetName">
                             <strong>{{file.assetName}}</strong>
                           </span>
                         </div>
@@ -367,7 +370,7 @@
                         </div>
                         <div style="padding-top: 10px;">
                           <ng-container *ngIf="file.tagNames?.length > 0">
-                            <div class="tag" title="{{file.tagNames[0]}}">
+                            <div class="tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[0]}}">
                               <ng-container *ngIf="file.tagNames?.length == 1">{{file.tagNames[0] | slice:0:10}} <span
                                 *ngIf="file.tagNames[0]?.length>10">..</span>
                               </ng-container>
@@ -376,11 +379,11 @@
                               </ng-container>
                             </div>
                             <ng-container *ngIf="file.tagNames.length > 1">
-                              <div class="tag" title="{{file.tagNames[1]}}">
+                              <div class="tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[1]}}">
                                 {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
                               </div>
                             </ng-container>
-                            <span *ngIf="file.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+                            <span *ngIf="file.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="bottm"
                               title="{{file.toolTipTagNames}}">...</span>
                           </ng-container>
                         </div>
@@ -559,7 +562,7 @@
                         <input type="radio">
                       </td>
                       <td>
-                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" title="{{form.name}}">
+                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
@@ -660,10 +663,10 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.quiz.name}}" translate>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.quiz.name}}" translate>
                           <span><strong>{{asset.quiz.name}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" title="{{asset.displayName}}">
+                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}">
                           <span translate> Created By
                             <strong>{{asset.quiz.createdName}}</strong></span>
                         </h6>
@@ -693,10 +696,10 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.dam.assetName}}" translate>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.assetName}}" translate>
                           <span><strong>{{asset.dam.assetName}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" title="{{asset.dam.displayName}}">
+                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.displayName}}">
                           <span translate> Created By
                             <strong>{{asset.dam.displayName}}</strong></span>
                         </h6>
@@ -792,7 +795,7 @@
                         <input type="checkbox" [checked]="form.selected">
                       </td>
                       <td>
-                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" title="{{form.name}}">
+                        <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">
                           {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
                         </h4>
                         <h6>
@@ -872,10 +875,10 @@
               [style.borderColor]="form.borderColor">
               <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
                 [style.borderColor]="form.borderColor">
-                <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
+                <div class="panel-title form-name-wrap" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
-                <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
+                <div class="form-name-wrap form-description" data-toggle="tooltip" data-placement="bottom" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">
                     <label class="control-label">
@@ -1068,10 +1071,10 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{asset.assetName}}" translate>
+                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.assetName}}" translate>
                           <span><strong>{{asset.assetName}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" title="{{asset.displayName}}">
+                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}">
                           <span translate> Created By
                             <strong>{{asset.displayName}}</strong></span>
                         </h6>

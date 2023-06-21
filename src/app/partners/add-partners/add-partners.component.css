@@ -135,3 +135,9 @@ button.hidden-xs {
   border-color: #5a6268;
   color: #ffffff;
 }
+
+/* 21-06-23 */
+textarea.textareaNumber {
+  background-color: black;
+    color: '#fff'    
+}

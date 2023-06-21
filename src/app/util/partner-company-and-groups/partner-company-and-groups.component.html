@@ -84,13 +84,13 @@
                           </a>
                         </div>
                       </td>
-                      <td style="width: 10%;" title="{{partner?.companyName}}">
-                        <div class="thumbnail-wrapper img">
+                      <td style="width: 10%; ">
+                        <div class="thumbnail-wrapper img" data-toggle="tooltip" data-placement="right"  title="{{partner?.companyName}}">
                           <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
                             [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                         </div>
                       </td>
-                      <td title="{{partner?.companyName}}" class="text-center">
+                      <td  class="text-center">
                         <span>{{partner?.companyName | slice:0:20}}</span>
                         <span *ngIf="partner?.companyName.length>20">...</span>
                       </td>
