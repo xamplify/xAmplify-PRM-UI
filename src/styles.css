@@ -1613,7 +1613,7 @@ strong {
 /***03 Jun******/
 .view-banner {
   background-color: #00a6e8;
-  color: white !important;
+  color: white;
   padding: 4px;
   text-align: center;
   width: 125px;
@@ -2161,4 +2161,3 @@ fieldset[disabled] .btn-danger.active {
   background-color: #f3565d;
   border-color: #f13e46;
 }
-
