@@ -192,7 +192,7 @@ table tr:nth-child(even) td {
   }
 }
 .breadcrumb-right-btn {
-  padding: 9px !important;
+  padding: 9px;
 }
 .mix-filter li {
   padding: 6px 5px;

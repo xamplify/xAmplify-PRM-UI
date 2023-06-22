@@ -30,7 +30,7 @@
                 </li>
             </ul>
             <div id="folder-margin-xamp">
-                <button class="btn main-btn btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                <button class="btn btn custom  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -979,10 +979,10 @@
                                 </div>
                             </div>
                             <button type="button" style="float: left;"
-                                class="btn GraY-Btn m10"
+                                class="btn btn-default m10"
                                 (click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
                             <button type="button" style="float: right;"
-                                class="btn main-btn btn green m10"
+                                class="btn btn-default btn green m10"
                                 (click)="resetActive($event, 40, 'step-4');"
                                 [disabled]="!isVideo" title="Please Select Video" translate>Next</button>
                         </div>
@@ -1170,8 +1170,8 @@
                              <ng-template *ngIf="!campaign?.oneClickLaunch" [ngTemplateOutlet]="previousButton"></ng-template>
                              <ng-template #previousButton>
                              <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;"> 
-                            <button *ngIf="campaignType=='video'" type="button"  class="btn GraY-Btn margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
-                            <button *ngIf="campaignType!='video'" type="button"  class="btn GraY-Btn margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
+                            <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
+                            <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit"  class="btn  btn green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </ng-template>
@@ -1389,7 +1389,7 @@
                                                 </app-pagination>
                                             </div>
                                             <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
-                                            <button type="button" class="btn GraY-Btn pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
+                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
                                         </div>
                                         </div>
@@ -1684,7 +1684,7 @@
                                                                 </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
-                                                                <a class="btn main-btn btn-sm btn" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
+                                                                <a class="btn btn-default btn-sm btn" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1736,7 +1736,7 @@
                                                                 </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
-                                                                <a class="btn main-btn btn-sm" (click)="resetActive($event, 40, 'step-5')" translate>Change</a>
+                                                                <a class="btn btn-default btn-sm" (click)="resetActive($event, 40, 'step-5')" translate>Change</a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -2547,7 +2547,7 @@
 
                                 <div class="portlet-title border-none">
                                     <div class="col-xs-12 center-block mTop" style="padding-top: 6px;">
-                                        <button type="button" class="btn GraY-Btn mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
+                                        <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam Check</button>
@@ -2600,7 +2600,7 @@
                         <div id="htmlContent"></div>
                     </div>
                     <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right" translate>Close</a>
+                        <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
                     </div>
                 </div>
             </div>
@@ -2651,7 +2651,7 @@
           </div>
           <div class="modal-footer">
              <div style="text-align: right;">
-                <button class="btn GraY-Btn" (click)="clearValues()" translate>Clear</button>
+                <button class="btn btn-default" (click)="clearValues()" translate>Clear</button>
                 <button [attr.class]="marketoButtonClass" [class.disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
              </div>
           </div>
@@ -2674,7 +2674,7 @@
              <app-email-spam-check *ngIf="emailTemplate" [emailTemplate]="emailTemplate"></app-email-spam-check>
           </div>
           <div class="modal-footer">
-             <a href="javascript:void(0)" data-dismiss="modal" class="btn GraY-Btn" style="float: right" translate>Close</a>
+             <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
           </div>
        </div>
     </div>
@@ -2703,8 +2703,8 @@
              </div>
           </div>
           <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-             <button type="button" class="btn GraY-Btn" (click)="closeFilterPopup()" translate>Cancel</button>
-             <button type="button" class="btn main-btn" (click)="closeFilterPopup()" translate>Apply</button>
+             <button type="button" class="btn btn-default" (click)="closeFilterPopup()" translate>Cancel</button>
+             <button type="button" class="btn btn-primary" (click)="closeFilterPopup()" translate>Apply</button>
           </div>
        </div>
     </div>

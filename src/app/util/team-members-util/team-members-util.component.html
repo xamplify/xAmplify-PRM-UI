@@ -69,7 +69,7 @@
                 </div>
             </div>
               <div class="col-xs-12 col-sm-4 pull-right">
-                  <button class="btn-xs main-btn btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
+                  <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
                       <h6 style="font-size:14px;color: #fff !important;" translate>Add</h6>
                   </button>
               </div>
@@ -156,11 +156,11 @@
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
-                  <button class="group-name-cclass main-btn" translate title="{{teamMember?.teamMemberGroupName}}">
+                  <button class="group-name-cclass btn-primary" translate title="{{teamMember?.teamMemberGroupName}}">
                     <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css main-btn" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <button class="tm-group-preview-css btn-primary" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
@@ -375,7 +375,7 @@
                       </div>
                   </div>
                 </div>
-                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn main-btn" (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
+                <button [disabled]="!team?.validForm"   id="right" type="submit" class="btn btn-primary" (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
               </div>
             </div>
           </form>
@@ -457,7 +457,7 @@
         </tr>
       </tbody>
     </table>
-    <button  id="right" type="submit" class="btn main-btn" (click)="addTeamMembers()">Save</button>
+    <button  id="right" type="submit" class="btn btn-primary" (click)="addTeamMembers()">Save</button>
   </div>
 </div>
 <!----End Of Uploaded Team Members-->

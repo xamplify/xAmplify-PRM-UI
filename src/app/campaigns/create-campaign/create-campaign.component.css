@@ -373,17 +373,17 @@ label img {
   border-radius: 0;
   text-transform: uppercase;
   font-weight: 500;
-  /* color: #009688;
-  background-color: #fff; */
+  color: #009688;
+  background-color: #fff;
 }
 .modal-footer .btn:focus {
   outline: 0;
   box-shadow: none;
 }
-/* .modal-footer .btn:focus,
+.modal-footer .btn:focus,
 .modal-footer .btn:hover {
   color: #00796b;
-} */
+}
 .modal-footer .btn + .btn {
   margin-left: 0;
 }
