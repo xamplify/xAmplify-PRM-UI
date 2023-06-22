@@ -42,7 +42,7 @@
      </span>
      <span *ngIf="videoFile?.viewBy==='DRAFT' || !videoFile?.processed ">0 views</span>
      </h6>
-     <p *ngIf="videoFile?.viewBy=='DRAFT' || !videoFile?.processed" class="draft-video mb0"> DRAFT</p>
+     <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
      <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
      <h6 *ngIf="processing" class="view-banner" translate>
        <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
