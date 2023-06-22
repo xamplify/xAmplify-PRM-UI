@@ -12,7 +12,7 @@
                         </h4>
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2" style="padding-top: 2px;">
-                        <button (click)="openFormFields()" class="btn main-btn" style="border-radius: 3px !important;">
+                        <button (click)="openFormFields()" class="btn btn-primary" style="border-radius: 3px !important;">
                             <span class="hidden-xs margin-right-design" translate>Add Fields</span>
                             <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
@@ -22,7 +22,7 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <div *ngIf="!isMdfForm" class="design-btn-group" style="float: right;">
-                            <button (click)="openFormDesignModal()" class="btn main-btn" style="border-radius: 3px !important;">
+                            <button (click)="openFormDesignModal()" class="btn btn-primary" style="border-radius: 3px !important;">
                                 <span class="hidden-xs margin-right-design" translate>Design</span>
                                 <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i>
                             </button>
@@ -433,7 +433,7 @@
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn GraY-Btn btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn btn-primary btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -450,7 +450,7 @@
         <div class="modal-content mPad col-lg-12 col-md-12">
             <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" class="btn GraY-Btn  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
+                <button type="button" class="btn grey  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
                 <button type="submit" [disabled]="!form.isValid"  class="btn green-haze col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
                 <h4 class="modal-title text-center col-lg-8 col-md-8 title-pd">{{formTitle}}</h4>
             </div>
@@ -942,7 +942,7 @@
                     </div>
                 </div>
                 <div>
-                    <button class="btn main-btn" [disabled]="!showCropper" (click)="uploadBackgroundImage()">Save
+                    <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadBackgroundImage()">Save
                         Changes</button>
                 </div>
                 <div>

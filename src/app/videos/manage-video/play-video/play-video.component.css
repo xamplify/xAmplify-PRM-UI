@@ -39,17 +39,17 @@
 }
 .shareVideoButton {
   color: #fff;
-  /* background-color: #00a6e8;
-  border: 1px solid #00a6e8; */
+  background-color: #00a6e8;
+  border: 1px solid #00a6e8;
   border-radius: 0;
   padding: 5px 25px;
   text-transform: lowercase;
   letter-spacing: 1px;
 }
 .embedVideoButton {
-  /* color: #fff !important;
+  color: #fff !important;
   background-color: #fff;
-  border: 1px solid #00a6e8; */
+  border: 1px solid #00a6e8;
   border-radius: 0;
   padding: 5px 25px;
   text-transform: lowercase;

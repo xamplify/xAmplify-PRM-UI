@@ -103,10 +103,10 @@
 				<!--  overlay modal ending -->
 
 				<div class="col-xs-12 col-sm-7 col-md-8" style="padding: 0;margin-top: 10px;">
-					<button *ngIf="shareValues" class="btn main-btn shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo" translate>
+					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo" translate>
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</button>
-					<button *ngIf="embedVideo" class="btn main-btn embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
+					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
 					 [disabled]="isThisDraftVideo" (click)="embedModal()" translate>
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</button>
@@ -145,7 +145,7 @@
 								<div style="float: right">
 									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
-									<button type="button" class="GraY-Btn" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
+									<button type="button" class="btn default" style="margin-left:2px;color:black !important;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
 							</div>
 						</div>

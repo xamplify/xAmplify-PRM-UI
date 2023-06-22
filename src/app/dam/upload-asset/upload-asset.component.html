@@ -33,7 +33,7 @@
                         </a>
                      </div>
                      <div>
-                        <button class="btn btn main-btn" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="btn btn custom" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                      </div>
                   </div>
                </div>
@@ -130,7 +130,7 @@
                                                       Asset
                                                    </h2>
                                                    <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6>
-                                                   <button class="btn main-btn" style="color:#fff" translate>Browse</button>
+                                                   <button class="btn btn-primary" style="color:#fff" translate>Browse</button>
                                                    <br><br>
                                                    <span *ngIf="uploadedAssetName?.length>0">
                                                    <strong>File Name : {{uploadedAssetName | slice: 0: 23}}</strong>
@@ -246,7 +246,7 @@
                                                             <i class="fa fa-search cesf-xamp"></i></button>
                                                          </div>
                                                          <div style="padding-left: 10px;">
-                                                            <button type="button" class="btn main-btn add-btn" (click)="addTag()"  data-toggle="tooltip"  data-placement="top" title="Add a Tag"> 
+                                                            <button type="button" class="btn btn-primary add-btn" (click)="addTag()"  data-toggle="tooltip"  data-placement="top" title="Add a Tag"> 
                                                             <i class="fa fa-plus" aria-hidden="true"></i></button>
                                                          </div>
                                                       </div>
@@ -389,7 +389,7 @@
                      </div>
                      <div class="footer">
                         <button [disabled]="isDisableForm" class="btn GraY-Btn" id="right" style="margin-right: 20px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
-                        <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"  class="btn main-btn" type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate>{{submitButtonText}}</button>
+                        <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate>{{submitButtonText}}</button>
                      </div>
                   </div>
             </div>
