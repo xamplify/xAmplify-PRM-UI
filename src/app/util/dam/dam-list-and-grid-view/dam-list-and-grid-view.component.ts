@@ -669,19 +669,24 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     
     campaignRouter(alias:string, viewBy:string) {
         try{
-         this.xtremandLogger.log('ManageVideoComponent campaign router:');
+		this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
          this.videoFileService.getVideo(alias, viewBy)
              .subscribe((videoFile: SaveVideoFile) => {
                  if(videoFile.access){
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 this.router.navigateByUrl('/home/campaigns/create');
+				 setTimeout(() => {
+					this.router.navigateByUrl('/home/campaigns/create');
+					swal.close();
+				  }, 1500);
                  }else{
+					this.referenceService.closeSweetAlert();
                      this.authenticationService.forceToLogout();
                  }
              },
              (error: string) => {
+				this.referenceService.closeSweetAlert();
                  this.xtremandLogger.error('Error In: show campaign videos ():' + error);
                  this.xtremandLogger.errorPage(error);
              });

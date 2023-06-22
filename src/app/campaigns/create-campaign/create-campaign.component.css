@@ -806,7 +806,15 @@ legend {
 .toggle-info-xampc {
   font-size: 20px !important;
   float: left !important;
-  margin: -14px 0 0 15px !important;
+  margin: 6px 0px 0px 15px !important;
+}
+.toggle-info-xampc-change {
+  font-size: 20px !important;
+  float: left !important;
+  margin: 2px 0px 0px 2px !important;
+}
+.toggle-info-xampc-pipeline {
+  margin: 2px 0px 0px 15px !important;
 }
 .info-color-xampc {
   cursor: pointer;

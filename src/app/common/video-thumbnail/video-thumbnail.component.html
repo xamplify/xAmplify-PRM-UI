@@ -40,9 +40,9 @@
      <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
      <span *ngIf="!videoFile.views">0 views</span>
      </span>
-     <span *ngIf="videoFile?.viewBy==='DRAFT' || !videoFile?.processed ">0 views</span>
+     <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
      </h6>
-     <p *ngIf="videoFile?.viewBy=='DRAFT' || !videoFile?.processed" class="draft-video mb0"> DRAFT</p>
+     <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
      <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
      <h6 *ngIf="processing" class="view-banner" translate>
        <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
@@ -76,10 +76,10 @@
      </ng-container>
      <!---XNFR-255-->
      <!---XNFR-255-->
-     <ng-container *ngIf="videoFile?.whiteLabeledVideoReceivedFromVendor">
+     <ng-container *ngIf="videoFile?.whiteLabeledAssetReceivedFromVendor">
       <span class="view-banner-white-labeled mb5">White-Labeled</span>
-      <h6 class="moreipsis"  title="{{videoFile?.whiteLabeledVideoSharedByVendorCompanyName}}">
-         <span translate>Received From <strong>{{videoFile?.whiteLabeledVideoSharedByVendorCompanyName}}</strong></span>
+      <h6 class="moreipsis"  title="{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}">
+         <span translate>Received From <strong>{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
       </h6>
    </ng-container>
    <!---XNFR-255-->
