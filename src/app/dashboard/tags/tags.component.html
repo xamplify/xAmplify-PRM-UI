@@ -51,7 +51,7 @@
             <tbody>
                 <tr *ngFor="let tag of tagPagination.pagedItems ;let i =index" id="TagList_{{tag.id}}">
                     <td>
-                        <h4 class="moreipsis" title="{{tag.tagName}}">
+                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{tag.tagName}}">
                             <span>{{tag.tagName}}</span>
                         </h4>
                         <h6 class="moreipsis">

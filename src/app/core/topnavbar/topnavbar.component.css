@@ -257,3 +257,6 @@ a.dropdown-toggle.circlebg-none-v:hover{
     margin-top: 22px !important;
   }
  } 
+.cls-pointer{
+  cursor: pointer;
+}

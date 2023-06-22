@@ -30,6 +30,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
   @Output() teamMemberPartnersPopupEventEmitter = new EventEmitter();
   apiError = false;
   statusCode: number;
+  isModalPopupshow = false;
   errorMessage: string;
   isDelete = false;
   customResponse:CustomResponse = new CustomResponse();
@@ -50,6 +51,7 @@ export class TeamMemberPartnersComponent implements OnInit,OnDestroy {
 
   openPopup() {
     $('#teamMemberPartnersPreviewPopup').modal('show');
+    this.isModalPopupshow = true ;
     this.findPartners(this.partnersPagination);
   }
 

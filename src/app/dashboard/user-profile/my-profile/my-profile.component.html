@@ -97,12 +97,13 @@
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
                             <!---Tags-->
-                            <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active': activeTabName == 'tags'}">
-                                <a (click)="activateTab('tags');clearCustomResponse()" translate>
+                            <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active-tab': activeTabName == 'tags'}">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"  (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
-                                <a (click)="activateTab('customskin');clearCustomResponse()" translate>
+                             <!---Themes-->
+                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
                              <!--------------Lead/Deal Configuration----------------------->
@@ -542,10 +543,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,question)">
-                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                        <span  class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addQuestion()" *ngIf="questions.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -591,10 +592,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="deleteDealType(i+1,dealType)">
+                                                                    <button type="button" class="btn-danger button-blue" (click)="deleteDealType(i+1,dealType)" data-toggle="tooltip" data-placement="top" title="Delete" >
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
