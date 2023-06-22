@@ -668,8 +668,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     }
     
     campaignRouter(alias:string, viewBy:string) {
-		this.loading = true;
         try{
+		this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
          this.videoFileService.getVideo(alias, viewBy)
              .subscribe((videoFile: SaveVideoFile) => {
                  if(videoFile.access){
@@ -677,14 +677,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
                  this.router.navigateByUrl('/home/campaigns/create');
-				 this.loading = false;
+				 this.referenceService.closeSweetAlertWithDelay();
                  }else{
-					this.loading = false;
+					this.referenceService.closeSweetAlert();
                      this.authenticationService.forceToLogout();
                  }
              },
              (error: string) => {
-				this.loading = false;
+				this.referenceService.closeSweetAlert();
                  this.xtremandLogger.error('Error In: show campaign videos ():' + error);
                  this.xtremandLogger.errorPage(error);
              });

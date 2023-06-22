@@ -3151,6 +3151,11 @@ export class ReferenceService {
     return description;
   }
 
-
+  closeSweetAlertWithDelay() {
+    setTimeout(() => {
+      swal.close();
+    }, 1000);
+  }
+   
   
 }
