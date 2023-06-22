@@ -2161,3 +2161,11 @@ fieldset[disabled] .btn-danger.active {
   background-color: #f3565d;
   border-color: #f13e46;
 }
+.add-button-xamplify {
+  color: white;
+  background-color: #008fd5;
+  border-radius: 3px;
+}
+.add-button-xamplify:hover {
+  background-color: #4db1e2;
+}

@@ -433,7 +433,7 @@
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn btn-primary btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn btn-primay btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
