@@ -240,9 +240,9 @@ span.dropdown-font-cu {
   top: 0px;
 }
 span.gearicon-font-cu {
-  font-size: 13px;
-  top: 2px;
-  left: 1px;
+  font-size: 15px;
+  top: 3px;
+  left: 0px;
   box-shadow: none !important;
 }
 .mix-filter li:hover {

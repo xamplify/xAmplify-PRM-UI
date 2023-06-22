@@ -155,10 +155,12 @@ a.disabled {
 }
 
 .email-template-preview {
-  height: 96px;
-  width: 51px;
-  margin-left: 18px;
+  height: 140px;
+  width: 90px;
+  max-width: 90px;
+  margin-left: 5px;
   border-radius: 2px;
+  object-fit: cover;
 }
 
 td h6 {
