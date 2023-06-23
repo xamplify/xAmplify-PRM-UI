@@ -237,7 +237,7 @@
                <div class="write-new request-comment-text-area">
                   <textarea placeholder="Write your comment here"  [(ngModel)]="mdfRequestCommentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(mdfRequestCommentDto)"></textarea>
                   <div>
-                     <button (click)="saveComment()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn main-btn request-comment">Submit</button>
+                     <button (click)="saveComment()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn btn-primary request-comment">Submit</button>
                   </div>
                </div>
             </ng-container>

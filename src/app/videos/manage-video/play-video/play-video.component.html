@@ -90,12 +90,12 @@
             <div
               *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
               <button *ngIf="shareVideo==true"
-                class="btn main-btn shareVideoButton" (click)="shareClick()"
+                class="btn btn-primary shareVideoButton" (click)="shareClick()"
                 [disabled]="isThisDraftVideo==true" translate>
                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
               </button>
               <button *ngIf="embedVideo==true"
-                class="btn main-btn embedVideoButton" data-toggle="modal"
+                class="btn btn-primary embedVideoButton" data-toggle="modal"
                 data-target="#myModal" [disabled]="isThisDraftVideo"
                 (click)="embedModal()" translate>
                 <i class="fa fa-external-link" aria-hidden="true"></i> Embed

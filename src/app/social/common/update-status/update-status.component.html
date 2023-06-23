@@ -32,7 +32,7 @@
             </ng-container>
         </ul>
         <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
-            <button class="btn main-btn" id="right" style="padding-bottom: 2px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+            <button class="btn btn custom" id="right" style="padding-bottom: 2px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
          </div>
     </div>
     <div class="row" [hidden]="isRedirectEnabled">
@@ -92,7 +92,7 @@
                             </li>
                         </ul>
                         <div class="text-center mt10">
-                            <button class="btn btn-sm main-btn" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
+                            <button class="btn btn-sm btn-primary" data-target="#manageAccountsModal" data-toggle="modal">Manage Accounts</button>
                         </div>
                     </ng-container>
                 </ng-container>
@@ -506,18 +506,18 @@
                     <div class="form-group col-sm-3 mt5 p0">
                         <br>
                         <div class="col-xs-6 p0">
-                            <button type="button" class="btn main-btn btn-block" (click)="shareLater()">Schedule</button>
+                            <button type="button" class="btn btn custom btn-block" (click)="shareLater()">Schedule</button>
                         </div>
                         <div class="col-xs-6 p0">
-                            <button type="button" class="btn GraY-Btn btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
+                            <button type="button" class="btn btn-default btn-block" (click)="hideScheduleOption('schedule-option-div')">Cancel</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 m0 p0" id="post-actions-button-group">
                     <div class="col-xs-12 col-sm-6 pr10 pull-right">
                         <div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
-                            <button type="button" class="btn main-btn rounded-0" (click)="shareNow()">{{buttonText}}</button>
-                            <button type="button" style="min-width: 32px;" class="btn main-btn dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
+                            <button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">{{buttonText}}</button>
+                            <button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu pull-right">
@@ -819,8 +819,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn GraY-Btn" (click)="closeListVideosModal()">Close</button>
-                    <button type="button" class="btn main-btn" style="color:white" (click)="addVideo()">Select</button>
+                    <button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
+                    <button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
                 </div>
             </div>
         </div>
@@ -870,8 +870,8 @@
                 <div class="clearfix"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn GraY-Btn" data-dismiss="modal">Close</button>
-                <button type="button" class="btn main-btn" (click)="save()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="save()">Save</button>
             </div>
         </div>
     </div>

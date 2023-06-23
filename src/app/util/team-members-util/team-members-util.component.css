@@ -334,8 +334,8 @@ hr {
 }
 
 .btn-group button {
-  /* background-color: #008fd5;
-  border: 1px solid #3575b5; */
+  background-color: #008fd5;
+  border: 1px solid #3575b5;
   color: #fff;
   padding: 6px 16px;
   cursor: pointer;
@@ -353,9 +353,9 @@ hr {
   display: table;
 }
 
-/* .btn-group button:hover {
+.btn-group button:hover {
   background-color: #4db1e2;
-} */
+}
 
 #group-min-td {
   min-width: 250px;
@@ -396,7 +396,8 @@ hr {
 }
 .btn-info {
   color: #fff;
-  background-color: #2bb7aa;
+  background-color: #89c4f4;
+  border-color: #72b8f2;
 }
 .btn-xs {
   padding: 1px 5px !important;

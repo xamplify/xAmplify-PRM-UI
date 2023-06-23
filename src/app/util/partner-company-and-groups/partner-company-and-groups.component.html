@@ -214,7 +214,7 @@
           <strong>
             Selected Lists : {{selectedPartnerGroupIds?.length}}
           </strong>
-          <button (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
+          <button title="Clear"  (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
             <i class="fa fa-times-circle-o"></i>
           </button>
         </div>
@@ -267,7 +267,7 @@
                     </td>
                     <td class="text-center">
                       <div class="actions-block none-float" (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
-                        <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="bottom" title="Preview"><i class="fa fa-eye" aria-hidden="true"></i></a>
                       </div>
                     </td>
                   </tr>

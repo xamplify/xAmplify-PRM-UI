@@ -154,11 +154,11 @@
                                             <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.name}}">
                                                 <span><strong translate>{{landingPage.name}}</strong></span>
                                             </h4>
                                             <ng-container>
-                                                <h6 class="moreipsis" title="{{landingPage.createdUser}}">
+                                                <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{landingPage.createdUser}}">
                                                     <span *ngIf="!isPartnerLandingPage" translate>Created By <strong translate>{{landingPage.createdUser}}</strong></span>
                                                     <span *ngIf="isPartnerLandingPage" translate>Shared By <strong translate>{{landingPage.createdUser}}</strong></span>
                                                 </h6>

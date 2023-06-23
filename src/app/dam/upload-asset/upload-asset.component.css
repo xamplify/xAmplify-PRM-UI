@@ -112,6 +112,11 @@
     width: 290px;
   }
 }
+.custom {
+  background-color: #008fd5;
+  color: #fff;
+  border: 1px solid #3575b5;
+}
 #myVideo {
   background-color: #5fdbf5;
   width: 100%;

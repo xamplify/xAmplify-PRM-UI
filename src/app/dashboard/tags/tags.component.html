@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-lg-12">
             <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                <button class="main-btn" (click)="addTag()" translate>Create a Tag</button>
+                <button class="add-button-xamplify" (click)="addTag()" translate>Create a Tag</button>
             </div>
             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                 <div class="page-toolbar">
@@ -51,7 +51,7 @@
             <tbody>
                 <tr *ngFor="let tag of tagPagination.pagedItems ;let i =index" id="TagList_{{tag.id}}">
                     <td>
-                        <h4 class="moreipsis" title="{{tag.tagName}}">
+                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{tag.tagName}}">
                             <span>{{tag.tagName}}</span>
                         </h4>
                         <h6 class="moreipsis">

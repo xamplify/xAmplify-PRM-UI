@@ -55,7 +55,7 @@
                                         translate>Quiz</li>
                                     <li class="filter" (click)="showAllForms('Survey',3)" 
                                         [class.form-selected]="3 == selectedFormTypeIndex" translate>Survey</li>
-                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn main-btn">Add
+                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add
                                         Default Form</li>
                                 </ul>
                             </div>
@@ -385,7 +385,7 @@
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 8px;">
-                        <a class="btn main-btn" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
                             </a>
                         </div>
                         <br>
@@ -394,13 +394,13 @@
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
-                        <a class="btn main-btn" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn GraY-Btn" id="right" translate>Close</a>
+                    <a data-dismiss="modal" class="btn btn-default" id="right" translate>Close</a>
                 </div>
             </div>
         </div>

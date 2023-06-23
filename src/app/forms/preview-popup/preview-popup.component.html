@@ -1,5 +1,5 @@
 <div style="padding-top:10px;margin-bottom: -5px;">
-<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn main-btn" id="right" style="border-radius: 5px;margin-top:2px;" (click)="showForms()">
+<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn" id="right" style="border-radius: 5px;margin-top:2px;" (click)="showForms()">
   {{buttonText}}
 </button>
 </div>
@@ -137,7 +137,7 @@
 
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal" class="btn GraY-Btn" style="float: right"><span
+                <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
             *ngIf="!authenticationService.isShowForms">Close</span><span
             *ngIf="authenticationService.isShowForms">Submit</span></a>
             </div>
@@ -281,7 +281,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal" class="GraY-Btn" id="bottom-right">Close</a>
+                <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
             </div>
         </div>
     </div>

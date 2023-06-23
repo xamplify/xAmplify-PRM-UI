@@ -1,11 +1,12 @@
 .img-class-list{
-	height: 80px;
-    width: 155px;
-    margin: 0;
+  height: 140px;
+  width: 130px;
+  margin: 0;
+  border-radius: 1px;
+  max-width: 130px;
+  object-fit: cover;
     /* background: #f2f4f9; */
     /* border: solid 1px #008fd5; */
-    border-radius: 1px;
-    max-width: 155px;
 }
 .img-class{
 	  height: 80px;

@@ -73,7 +73,7 @@
                         <div class="inline-box link" action="action_page.php">
                           <input class="select-box inline-box form-control" [(ngModel)]="tracksPlayBook.slug"
                             maxlength="100" (input)="updateSlug('slug'); validateAllSteps()">
-                          <button type="button" (click)="editedSlug()" class="main-btn" style="width: auto;border-radius: 2px;"><i
+                          <button type="button" (click)="editedSlug()" style="width: auto;border-radius: 2px;"><i
                               class="fa fa-angle-right" style="font-size: 19px;"></i></button>
                         </div>
                       </div>
@@ -82,11 +82,11 @@
                       <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" class="right-border main-btn" (click)="editSlug()"
+                        <button type="button" class="right-border" (click)="editSlug()"
                         data-toggle="tooltip" data-placement="top" title="Edit"
                           style="border-radius:0px !important;"><i
                             class="fa fa-edit"></i></button>
-                        <button type="button" (click)="copyInputMessage(link)" class="main-btn"
+                        <button type="button" (click)="copyInputMessage(link)"
                         data-toggle="tooltip" data-placement="top" title="Copy"
                           style="border-radius:0px !important;"><i                      
                             class="fa fa-copy"></i></button>
@@ -135,7 +135,7 @@
                               <i class="fa fa-search cesf-xamp"></i></button>
                           </div>
                           <div style="padding-left: 10px;">
-                            <button type="button" class="btn main-btn add-btn" (click)="addTag()"
+                            <button type="button" class="btn btn-primary add-btn" (click)="addTag()"
                             data-toggle="tooltip" data-placement="top" title="Add a Tag">
                               <i class="fa fa-plus" aria-hidden="true"></i></button>
                           </div>
@@ -196,7 +196,7 @@
                       <span class="caption-subject font-blue-madison bold uppercase ">Featured Image</span>
                     </div>
                     <div class="inline" style="float: right; padding-bottom: 5px;">
-                      <button type="button" class="btn main-btn" (click)="clearImage()">Clear</button>
+                      <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
                     </div>
                   </div>
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
@@ -251,8 +251,8 @@
         <div class="input-icon right pull-right cebp" style="margin-right: -2px;
         padding-top: 5px;">
           <ul class="button-align inline">
-            <li style="margin-right: 5px;"><button class="btn main-btn" (click)="getAssetsList()">Add Media</button></li>
-            <li style="margin-right: 5px;"><button class="btn main-btn" (click)="getFormsList()">Add Forms</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add Media</button></li>
+            <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add Forms</button></li>
           </ul>
         </div>
        </div>
@@ -269,7 +269,7 @@
             </ckeditor>
           </div>
           <div class="row" style="margin: 10px 0px -18px;">
-            <button type="button" class="btn GraY-Btn pull-left" (click)="changeActiveTab('step-1')"
+            <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-1')"
               translate>Previous</button>
             <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-3');"
               [disabled]="!isStepTwoValid" translate>Next</button>
@@ -288,9 +288,9 @@
             <div class="page-toolbar">
 
               <div class="inline mToolBarPad" style="margin-left: -3px;padding-top: 12px;">
-                <button *ngIf="type == undefined || type == 'TRACK'" class="btn main-btn" (click)="openQuizPopup()">Select
+                <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary" (click)="openQuizPopup()">Select
                   Quiz</button>
-                <button class="btn main-btn" (click)="openOrderAssetsPopup()"><span
+                <button class="btn btn-primary" (click)="openOrderAssetsPopup()"><span
                     *ngIf="type == undefined || type == 'TRACK'">Order Assets And Quiz</span><span *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
 
@@ -412,7 +412,7 @@
               <strong>No Assets Found.</strong>
             </div>
             <div style="padding: 0px 0px 15px 0px;">
-              <button type="button" class="btn GraY-Btn pull-left" (click)="changeActiveTab('step-2')"
+              <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-2')"
                 translate>Previous</button>
               <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-4');"
                 [disabled]="!isStepThreeValid" translate>Next</button>
@@ -432,7 +432,7 @@
         [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
-      <button type="button" class="btn GraY-Btn pull-left" (click)="changeActiveTab('step-3')"
+      <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
         <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
@@ -608,7 +608,7 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right"><span
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
             *ngIf="!authenticationService.isShowForms">Close</span><span
             *ngIf="authenticationService.isShowForms">Submit</span></a>
       </div>
@@ -733,7 +733,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span>Close</span></a>
       </div>
     </div>
   </div>
@@ -841,7 +841,7 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right"><span
+        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
             *ngIf="!authenticationService.isShowForms">Close</span><span
             *ngIf="authenticationService.isShowForms">Submit</span></a>
       </div>
@@ -994,7 +994,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" id="bottom-right">Close</a>
+        <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
       </div>
     </div>
   </div>
@@ -1118,7 +1118,7 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right" (click)="closeAssetModal()"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn btn-default" style="float: right" (click)="closeAssetModal()"><span>Close</span></a>
       </div>
     </div>
   </div>
@@ -1140,7 +1140,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn GraY-Btn" style="float: right">Close</a>
+        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
       </div>
     </div>
   </div>
@@ -1199,8 +1199,8 @@
       </div>
       <div class="modal-footer">
         <div class="pull-right">
-          <a class="btn main-btn" (click)="updateDescriptionWithAssetUrl()"><span>Confirm</span></a>
-          <a class="btn GraY-Btn" style="padding-left: 5px;" (click)="closeLinkTitlePopup()"><span>Close</span></a>
+          <a class="btn btn-primary" (click)="updateDescriptionWithAssetUrl()"><span>Confirm</span></a>
+          <a class="btn btn-default" style="padding-left: 5px;" (click)="closeLinkTitlePopup()"><span>Close</span></a>
         </div>
       </div>
     </div>

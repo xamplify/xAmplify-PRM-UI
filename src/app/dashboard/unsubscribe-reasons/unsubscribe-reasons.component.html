@@ -6,15 +6,15 @@
     </app-response-message>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12">
-        <button class="main-btn" style="padding: 5px !important;border-radius: 0px !important;" (click)="openHeaderAndFooterText()" translate>Edit Header/Footer Text</button>
-        <button class="main-btn" style="padding: 5px !important;border-radius: 0px !important;" (click)="openUnsubscribePagePopup()" translate>Preview Unsubscribe Page</button>
+        <button class="btn-info-xamplify" style="padding: 5px !important;border-radius: 0px !important;" (click)="openHeaderAndFooterText()" translate>Edit Header/Footer Text</button>
+        <button class="btn-info-xamplify" style="padding: 5px !important;border-radius: 0px !important;" (click)="openUnsubscribePagePopup()" translate>Preview Unsubscribe Page</button>
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-          <button class="main-btn" style="padding: 5px 9px !important;" (click)="openCreateDiv()" translate>Add</button>
+          <button class="add-button-xamplify" style="padding: 5px 9px !important;" (click)="openCreateDiv()" translate>Add</button>
         </div>
         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
           <div class="page-toolbar">
@@ -136,8 +136,8 @@
         </table>
       </div>
   <div id="right">
-    <button type="button" [disabled]="!unsubscribeReason.isValidForm"  class="btn main-btn" translate (click)="saveOrUpdate()">{{submitButtonText}}</button>
-    <button type="button"  class="btn GraY-Btn" (click)="goToManage()" translate>Cancel</button>
+    <button type="button" [disabled]="!unsubscribeReason.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{submitButtonText}}</button>
+    <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
   </div>
   </form>
   </div>
@@ -193,8 +193,8 @@
       </div>
       </fieldset>
       <div id="right">
-        <button type="button"  class="btn main-btn" translate (click)="updateHeaderAndFooterText()">Update</button>
-        <button type="button"  class="btn GraY-Btn" (click)="goToManage()" translate>Cancel</button>
+        <button type="button"  class="btn btn-primary" translate (click)="updateHeaderAndFooterText()">Update</button>
+        <button type="button"  class="btn btn-default" (click)="goToManage()" translate>Cancel</button>
       </div>
   </form>
   </div>
@@ -229,7 +229,7 @@
             </form>
             <div style="margin-top: 20px;">
               <button type="button" [disabled]="invalidReason"
-                class="btn main-btn">Submit</button>
+                class="btn btn-primary">Submit</button>
             </div>
           <div style="margin-top:20px">
                   <h4 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideFooterText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.footerText}}"></h4>
@@ -239,7 +239,7 @@
         </div>
       </div>
       <div class="modal-footer" *ngIf="!modalPopupLoader">
-       <button type="submit" data-dismiss="modal" class="btn GraY-Btn">Close</button>
+       <button type="submit" data-dismiss="modal" class="btn btn-default">Close</button>
     </div>
     </div>
   </div>

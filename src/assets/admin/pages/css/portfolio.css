@@ -29,9 +29,9 @@ Portfolio
 .mix-filter li:hover,
 .mix-filter li.active {
   color: #fff;
-  background: #2bb7aa;
+  background: #0da3e2;
   border-radius: 2px;
-  border: 1px solid #2bb7aa;
+  border: 1px solid #0da3e2;
 }
 
 .mix-grid .mix {

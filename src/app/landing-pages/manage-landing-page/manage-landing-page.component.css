@@ -50,14 +50,14 @@ a.disabled {
     text-align: center;
     font-size: 10px;
     border-radius: 3px;
-}
-
-
+}   
+ 
 #landing-page-image-preview-custom-css {
-    height: 80px;
-    width: auto;
+    height: 140px;
+    width: 90px;
     margin: 0;
-    max-width: 70px;
+    max-width: 90px;
+    object-fit: cover;
 }
 
 td h6 {
