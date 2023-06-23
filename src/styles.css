@@ -2169,3 +2169,8 @@ fieldset[disabled] .btn-danger.active {
 .add-button-xamplify:hover {
   background-color: #4db1e2;
 }
+/* 23-6-2023 sudha sri */
+h6.view-banner.published,
+h5.view-banner.published {
+  color: white !important;
+}

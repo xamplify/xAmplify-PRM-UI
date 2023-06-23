@@ -1191,9 +1191,9 @@ input#copy-link {
 .right-border {
   border-right: 1px solid #2f4857 !important;
 }
-.view-banner {
+/* .view-banner {
   color: #000 !important;
-}
+} */
 /* .btn:hover{
   color:#0b7dda !important;
 } */
@@ -1437,11 +1437,11 @@ input.custom-line:focus {
   color: #000 !important;
 }
 /*20-06-2023 */
-@media screen and (max-width: 767px){
+@media screen and (max-width: 767px) {
   .table-responsive {
-      border:1px solid #2f4857;
+    border: 1px solid #2f4857;
   }
-  }
+}
 
 /* 21-06-2023 header enhancement */
 
@@ -1454,18 +1454,28 @@ a.dropdown-toggle.circlebg-none-v {
   background: #22313a !important;
   border: 1px solid #2f4857 !important;
 }
-a.dropdown-toggle.circlebg-none-v:hover{
-  background: #5a738e !important
+a.dropdown-toggle.circlebg-none-v:hover {
+  background: #5a738e !important;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
-  background: #5a738e !important
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  .dropdown-toggle.circlebg-color-bell-v:hover {
+  background: #5a738e !important;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
-  background-color: #5a738e !important
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown.open
+  .dropdown-toggle.circlebg-color-bell-v {
+  background-color: #5a738e !important;
 }
-.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-  background-color:  #5a738e !important
-} 
+.nav .open > a,
+.nav .open > a:focus,
+.nav .open > a:hover {
+  background-color: #5a738e !important;
+}
 
 .alert-success {
   background-color: #dff0d8 !important;
