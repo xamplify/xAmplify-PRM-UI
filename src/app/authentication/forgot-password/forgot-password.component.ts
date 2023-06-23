@@ -51,7 +51,6 @@ export class ForgotPasswordComponent implements OnInit {
                     data => {
                         this.loading = false;
                         if (data.message !== "") {
-                            // var response = JSON.parse( body );
                             if (data.message === "An email has been sent. Please login with the credentials") {
                                 this.forgotPasswordForm.reset();
                                 this.referenceService.userName = '';
@@ -59,9 +58,7 @@ export class ForgotPasswordComponent implements OnInit {
                                 this.router.navigate(['./login']);
                             }
                         } else {
-                            // need to change message correctly
                             this.customResponse = new CustomResponse('ERROR', 'Email Id doesn\'t exists', true);
-                            //   this.customResponse =  new CustomResponse('ERROR', data.toLowerCase(), true);
                         }
                     },
                     error => {
