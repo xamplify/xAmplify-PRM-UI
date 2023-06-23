@@ -1137,10 +1137,12 @@ outline: none !important;
 a.dropdown-toggle.circlebg-color-bell-v {
   background-color: var(--top-buton-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
+  color: var(--top-button-value-color) !important;
 }
 a.dropdown-toggle.circlebg-none-v {
   background-color: var(--top-buton-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
+  color: var(--top-button-value-color) !important;
 }
 a.dropdown-toggle.circlebg-none-v:hover{
   background-color: var(--top-buton-color) !important;

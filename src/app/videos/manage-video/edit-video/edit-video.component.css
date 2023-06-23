@@ -235,21 +235,24 @@ textarea {
 
 .thumbnail-wrapper {
   float: left;
-  width: 175px;
-  height: 60px;
+  width: 110px;
+  height: 71px;
   background-color: #fff;
   text-align: center;
   position: relative;
   cursor: pointer;
   padding: 0px !important;
-  border-radius: 5px;
+  border-radius: 0px;
 }
+
 .thumbnail-wrapper > img {
   max-width: 100%;
   max-height: 100%;
   height: 100%;
   width: auto;
   margin: 0 auto;
+  padding: 3px;
+  border-radius: 0px;
 }
 .lineplayercontrol {
   width: 100%;
@@ -267,4 +270,14 @@ textarea {
   color: white !important;
   top: -317px;
   margin-bottom: -300px;
+}
+
+
+/* 23-06-2023 */
+.cance-icon-alignment {
+  position: absolute;
+  right: -9px;
+  color: #0095da;
+  top: -5px;
+  font-size: 16px;
 }
