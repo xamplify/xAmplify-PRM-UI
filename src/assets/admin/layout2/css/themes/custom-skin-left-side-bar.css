@@ -11,7 +11,7 @@ ul.page-custom-sidebar-menu {
   color: var(--left-text-color) !important;
 }
 .page-sidebar .page-sidebar-menu > li:last-child > a {
-  border-bottom: 1px solid var(--left-border-color) !important;
+  border-bottom: 1px solid transparent !important;
 }
 .left-menu-color {
   background-color: var(--left-bg-color) !important;
