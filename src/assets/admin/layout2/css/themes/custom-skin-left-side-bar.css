@@ -1,35 +1,37 @@
 ul.page-custom-sidebar-menu {
-    background-color: var(--left-bg-color) !important;
-    color: var(--left-text-color) !important;
+  background-color: var(--left-bg-color) !important;
+  color: var(--left-text-color) !important;
 }
-.page-custom-sidebar .page-custom-sidebar-menu >li >a {
-    color: var(--left-text-color) !important;
-    border-bottom : 1px solid var(--left-border-color) !important;
+.page-custom-sidebar .page-custom-sidebar-menu > li > a {
+  color: var(--left-text-color) !important;
+  border-bottom: 1px solid var(--left-border-color) !important;
 }
 .page-custom-sidebar .page-custom-sidebar-menu > li.active > a {
-    background-color: var(--left-bg-color) !important;
-    color: var(--left-text-color) !important;
+  background-color: var(--left-bg-color) !important;
+  color: var(--left-text-color) !important;
+}
+.page-sidebar .page-sidebar-menu > li:last-child > a {
+  border-bottom: 1px solid var(--left-border-color) !important;
 }
 .left-menu-color {
- background-color: var(--left-bg-color) !important;
+  background-color: var(--left-bg-color) !important;
 }
 .page-custom-sidebar .page-custom-sidebar-menu .sub-menu > li > a {
-    background-color: var(--left-bg-color) !important;
-    color: var(--left-text-color) !important;
-    border-bottom: 1px solid var(--left-border-color) !important;
+  background-color: var(--left-bg-color) !important;
+  color: var(--left-text-color) !important;
+  border-bottom: 1px solid var(--left-border-color) !important;
 }
 .page-custom-sidebar .page-custom-sidebar-menu > li > a > i {
-    color: var(--left-icon-color) !important;
+  color: var(--left-icon-color) !important;
 }
 .page-custom-sidebar .page-custom-sidebar-menu .sub-menu > li > a > i {
-    color: var(--left-icon-color) !important;
-    border-color: var(--left-border-color) !important;
+  color: var(--left-icon-color) !important;
+  border-color: var(--left-border-color) !important;
 }
 .page-custom-sidebar .page-custom-sidebar-menu > li:hover > a
-/* .page-custom-sidebar .page-custom-sidebar-menu .sub-menu > li:hover > a   */
-{
-    background-color: var(--left-bg-color) !important;
-    color: var(--left-text-color) !important;
+/* .page-custom-sidebar .page-custom-sidebar-menu .sub-menu > li:hover > a   */ {
+  background-color: var(--left-bg-color) !important;
+  color: var(--left-text-color) !important;
 }
 /* .page-custom-sidebar-menu li:hover > .sub-menu {
     background-color: var(--left-bg-color) !important;
