@@ -153,7 +153,7 @@
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
+                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
@@ -318,6 +318,40 @@
 				<app-folder-type-view-util [moduleId]="moduleId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
 			</div>
         </div>
+        <!-- UnPublish Modal Popup-->
+                <div class="modal fade in" id="unpublished-modal" data-backdrop="static">
+                    <div class="modal-dialog modal-copy" role="document">
+                        <div class="modal-content mSweetalertWid" style="width: 84%;top: 118px;left: 40px;">
+                            <div class="modal-header">
+                                <h4 class="modal-title f-w-600" id="" translate="" ng-reflect-translate="">Are you sure you want to unpublish this track?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div _ngcontent-c44="">
+                                    <h4  class="modal-title" translate="" ng-reflect-translate="">Please share your reason for unpublishing this Track.</h4>
+                                </div>
+                                <div _ngcontent-c44="" class="form-group" style="margin-top: 15px;">
+                                    &nbsp; <input type="radio"  [checked]="radioValue == true" value="radioValue">
+                                    &nbsp; <label class="option-color">Want to update Assets/Quiz</label><br>
+                                    &nbsp; <input type="radio"   [checked]="radioValue == true" value="radioValue">
+                                    &nbsp; <label class="option-color">Want to update the Partner/List of partner</label><br>
+                                    &nbsp; <input type="radio"  [checked]="radioValue == true" value="radioValue">
+                                    &nbsp; <label class="option-color">Other</label><br>
+                                    </div>
+                                    <div>
+                                    <h4 style="color: red !important;">* When you unpublish the track,all the related analytics will no
+                                 longer exists.</h4>
+                                </div>
+                                <!--bindings={"ng-reflect-ng-if": "false"}-->
+                            </div>
+                            <div  class="modal-footer">
+                                <button class="btn btn-secondary btn-hvr-text GraY-Btn"  type="button" (click)="closePopUp()" >Cancel</button>
+                                <button  class="btn main-btn"  type="button" (click)="unPublishAction(UnPublishedId, false)">Unpublish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+
         <!-- END PAGE CONTENT-->
     </div>
 </div>

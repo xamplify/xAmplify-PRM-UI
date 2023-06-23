@@ -29,6 +29,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 
   pagination: Pagination = new Pagination();
   loggedInUserId = 0;
+  UnPublishedId =0 ;
+  radioValue=false;
   showFolderView = true;
   message = "";
   customResponse: CustomResponse = new CustomResponse();
@@ -48,6 +50,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   tracksModule:boolean = false;
   moduleId:number = 0;
 	@Output() updatedItemsCountEmitter = new EventEmitter();
+  @Output() notifyParentComponent = new EventEmitter();
 	@Input() folderListViewExpanded = false;
   titleHeader:string = "";
   suffixHeader:string = "";
@@ -300,9 +303,7 @@ setViewType(viewType: string) {
       let text = "";
       if (isPublish) {
         text = "You want to publish.";
-      } else {
-        text = "You want to unpublish.";
-      }
+      } 
       try {
         let self = this;
         swal({
@@ -324,6 +325,28 @@ setViewType(viewType: string) {
         this.referenceService.showServerError(this.httpRequestLoader);
       }
     }
+  }
+
+  UnpublishedModalPopUp(id: number, isPublish: boolean, learningTrack: any){
+    this.UnPublishedId =id ;
+    $('#unpublished-modal').modal('show');
+  }
+
+  unPublishAction(id: number, isPublish: boolean,){
+    if(this.UnPublishedId != 0){
+      this.ChangePublish(this.UnPublishedId, isPublish);
+      this.radioValue=false
+      this.closePopUp()
+    }
+    this.radioValue=false
+    this.closePopUp()
+  }
+
+  closePopUp(){
+    console.log("clicked pavan")
+    this.radioValue=false
+    $('#unpublished-modal').modal('hide');
+    this.notifyParentComponent.emit();
   }
 
   ChangePublish(learningTrackId: number, isPublish: boolean) {

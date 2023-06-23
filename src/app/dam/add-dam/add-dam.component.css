@@ -34,3 +34,7 @@
 .btn-primary-light:hover {
   background-color: #c0c0c0;
 }
+
+.modal-dialog{
+  width: 60% !important;
+}
