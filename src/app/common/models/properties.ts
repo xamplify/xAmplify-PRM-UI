@@ -262,6 +262,9 @@ export class Properties {
 	/****XNFR-224****/
 	supportText = "Enable support access to vendor";
 
+	/****XNFR-314****/
+	teamMemberPartnerFilter = "Default Partner Filter";
+
 
 
 

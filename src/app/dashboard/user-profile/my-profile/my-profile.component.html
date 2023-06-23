@@ -106,6 +106,10 @@
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
+                            <li *ngIf="authenticationService?.module?.isTeamMember"  [ngClass]="{'active-tab': activeTabName == 'teamMemberPartnerFilter'}">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'teamMemberPartnerFilter'}"  (click)="activateTab('teamMemberPartnerFilter');clearCustomResponse()" translate>
+                                    {{properties.customskin | translate}} </a>
+                            </li>
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()

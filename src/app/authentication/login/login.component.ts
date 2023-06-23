@@ -109,12 +109,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginWithUser(userName: string) {
     const authorization = 'Basic ' + btoa('my-trusted-client:');
-    const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-    this.authenticationService.login(authorization, body, userName).subscribe(result => {
+    const body = new URLSearchParams();
+      body.set('username', userName);
+      body.set('password',  this.model.password);
+      body.set('grant_type', 'password');
+    this.authenticationService.login(authorization, body.toString(), userName).subscribe(result => {
       if (localStorage.getItem('currentUser')) {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.xtremandLogger.log(currentUser);
-        this.xtremandLogger.log(currentUser.hasCompany);
         localStorage.removeItem('isLogout');
         this.redirectTo(currentUser);
       } else {
