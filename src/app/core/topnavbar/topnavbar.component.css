@@ -201,7 +201,7 @@ a.dropdown-toggle.circlebg-color-bell-v{
   font-size: 13px;
   border: 1px solid #cccccc;
   text-align: center;
-  color: #0095da;
+  color: #008fd5;
 }
 a.dropdown-toggle.circlebg-color-bell-v:hover{
   color: #ffffff !important;
@@ -217,7 +217,7 @@ a.dropdown-toggle.circlebg-none-v {
   background: transparent;
 }
 a.dropdown-toggle.circlebg-none-v:hover{
-  background: #4db1e2;
+  background: #008fd5;
   color: #fff;
 }
  /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > i {
@@ -231,11 +231,11 @@ a.dropdown-toggle.circlebg-none-v:hover{
   color: #ffffff;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
-  background-color: #4db1e2;
+  background-color: #008fd5;
   color: #fff;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
-  background-color: #4db1e2;
+  background-color: #008fd5;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
   color: #fff;
@@ -256,7 +256,7 @@ a.dropdown-toggle.circlebg-none-v:hover{
   font-size: 10px !important;
 }
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-  background-color: #4db1e2;
+  background-color: #008fd5;
   color:#ffffff;
 } 
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > .username {
