@@ -30,7 +30,6 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   pagination: Pagination = new Pagination();
   loggedInUserId = 0;
   UnPublishedId =0 ;
-  radioValue=false;
   showFolderView = true;
   message = "";
   customResponse: CustomResponse = new CustomResponse();
@@ -335,16 +334,12 @@ setViewType(viewType: string) {
   unPublishAction(id: number, isPublish: boolean,){
     if(this.UnPublishedId != 0){
       this.ChangePublish(this.UnPublishedId, isPublish);
-      this.radioValue=false
       this.closePopUp()
     }
-    this.radioValue=false
     this.closePopUp()
   }
 
   closePopUp(){
-    console.log("clicked pavan")
-    this.radioValue=false
     $('#unpublished-modal').modal('hide');
     this.notifyParentComponent.emit();
   }
