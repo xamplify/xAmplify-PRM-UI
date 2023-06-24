@@ -1383,7 +1383,9 @@ ul.alt-row-style1 li:nth-child(even) {
   color: white !important;
 }
 .table tr.row-selected td {
-  background-color: #22313a !important ;
+  /* background-color: #22313a !important ; */
+  /*****Added By Sravan****/
+  background-color: #2179ad !important;
 }
 .comment .info a,
 .comment-color {
