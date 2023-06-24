@@ -1387,6 +1387,16 @@ ul.alt-row-style1 li:nth-child(even) {
   /*****Added By Sravan****/
   background-color: #2179ad !important;
 }
+
+.table tr.partner-company-selected td {
+  /*****Added By Sravan****/
+  background-color: #2179ad !important;
+}
+
+.table tr.group-selected td {
+  /*****Added By Sravan****/
+  background-color: #2179ad !important;
+}
 .comment .info a,
 .comment-color {
   color: white !important;
