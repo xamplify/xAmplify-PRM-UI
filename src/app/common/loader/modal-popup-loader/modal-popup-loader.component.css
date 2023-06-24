@@ -2,6 +2,7 @@
   animation: modal-popup-animation 1s infinite ease-in-out;
   background-size: 800px 104px;
   position: relative;
+  border-radius: 5px;
 }
 .circle-loader-css {
   width: 300px;

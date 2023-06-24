@@ -819,10 +819,10 @@ input.cmn-toggle-round-flat:checked + label {
 input.cmn-toggle-round-flat + label:before {
   background-color: var(--div-bg-color) !important;
 }
-.timeline-item {
+/* .timeline-item {
   background: var(--border-color) !important ;
   border-color: var(--border-color) !important ;
-}
+} */
 .social-border {
   background-color: var(--border-color) !important;
 }
