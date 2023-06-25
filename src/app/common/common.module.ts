@@ -124,6 +124,7 @@ import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-au
 /*********XNFR-255******/
 import { PartnerCompanyAndGroupsComponent } from 'app/util/partner-company-and-groups/partner-company-and-groups.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
+import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
 
 
 @NgModule({
@@ -148,7 +149,8 @@ import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-mod
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,PartnerCompanyAndGroupsComponent],
+		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -171,7 +173,8 @@ import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-mod
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,PartnerCompanyAndGroupsComponent]
+		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent]
 
 
 
