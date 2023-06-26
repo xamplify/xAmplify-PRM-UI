@@ -2475,6 +2475,10 @@ export class ReferenceService {
     $("#" + modalId).modal("hide");
   }
 
+  openModalPopup(modalId:string) {
+    $("#" + modalId).modal("show");
+  }
+
   deleteAndEditAccess() {
     return (
       this.hasAllAccess() ||

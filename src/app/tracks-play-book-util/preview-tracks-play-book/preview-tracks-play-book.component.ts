@@ -59,6 +59,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     'mpeg', 'm2v', 'm4v', 'svi', '3gp', '3g2', 'mxf', 'roq', 'nsv', 'flv', 'f4v', 'f4p', 'f4a', 'f4b'];
   contentIndexInView: number;
   isCurrentQuizSubmitted: boolean = false;
+  selectedVideoId = 0;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -225,22 +226,18 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetPreview(assetDetails: any) {
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
-    } else {
+    }else if(assetDetails.assetType == 'mp4'){
+      this.isVideo = true;
+      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
+      this.selectedVideoId = assetDetails.videoId;
+    }else {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
       if (assetType == 'mp3') {
         this.showFilePreview = true;
         this.fileType = "audio/mpeg";
         this.isAudio = true;
-      } else if (assetType == 'mp4') {
-        this.showFilePreview = true;
-        this.fileType = "video/mp4";
-        this.isVideo = true;
-        //let videoUrl = assetDetails.assetPath;
-        //videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf('.'));
-        //videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-      } else if (this.imageTypes.includes(assetType)) {
+      }  else if (this.imageTypes.includes(assetType)) {
         this.showFilePreview = true;
         this.isImage = true;
       } else if (this.fileTypes.includes(assetType)) {
@@ -250,13 +247,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         this.transformUrl();
       } else {
         window.open(assetDetails.assetPath, '_blank');
-        //this.referenceService.showSweetAlertErrorMessage('Unsupported file type, Please download the file to view.');
       }
     }
     this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED, false);
-    // if (this.showFilePreview || assetDetails.beeTemplate) {
-    //   this.setProgressAndUpdate(assetDetails.id, ActivityType.VIEWED);
-    // }
   }
 
   closeAssetPreview() {
@@ -364,6 +357,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  xamplifyVideoPlayerReceiver(event:any){
+    this.isVideo = false;
+    this.selectedVideoId = 0;
   }
 
 }

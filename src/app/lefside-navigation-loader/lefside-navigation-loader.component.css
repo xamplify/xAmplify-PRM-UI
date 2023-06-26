@@ -1,31 +1,24 @@
-.timeline-item {
-    border-radius: 3px;
-    border: 1px solid;
-    margin-bottom: 5px;
-}
-
-@keyframes placeHolderShimmer{
-    0%{
-        background-position: -468px 0
-    }
-    100%{
-        background-position: 468px 0
-    }
-}
-
-.animated-background {
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
-    animation-timing-function: linear;
-    background: #f6f7f8;
-    background: linear-gradient(to right, #00000008 8%, #172d44 18%, #172d44  33%);
-    background-size: 800px 104px;
-    height: 70px;
-    position: relative;
-}
-
 #loader-margin-top{
     margin-top: 5px;
 }
+
+.animated-background-menu-loader{
+  animation: menu-loader-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  height: 70px;
+  position: relative;
+  border-radius: 5px;
+}
+@keyframes menu-loader-animation {
+    0% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+  
+    50% {
+      background-color: rgba(165, 165, 165, 0.3);
+    }
+  
+    100% {
+      background-color: rgba(165, 165, 165, 0.1);
+    }
+  }

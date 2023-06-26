@@ -33,7 +33,7 @@
                         </a>
                      </div>
                      <div>
-                        <button class="btn btn custom" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="btn btn-primary" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                      </div>
                   </div>
                </div>
@@ -308,11 +308,11 @@
                                     <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4" style="padding-left: 0;">
                                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                                           <!---Thumbnail Image-->
-                                          <div>
-                                             <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>
+                                          <div>                                            
+                                             <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>        
                                              <div class="asset-thumbnail-div-sm mThumbwidth" (click)="browseThumbnail()">
                                                 <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
-                                                   style="opacity: 0.0; position: absolute;">
+                                                   style="opacity: 0.0; position: absolute;">                                                 
                                                 <span *ngIf="showDefaultLogo && !croppedImage">
                                                 <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
                                                 </span>
@@ -408,7 +408,11 @@
    data-backdrop="static">
    <div class="modal-dialog imgCrop-modal" role="document">
       <div class="modal-content rounded-0">
+         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
          <div class="modal-header">
+            <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+             </a>
             <h4 class="modal-title">{{thumbnailImageText}}</h4>
          </div>
          <div class="modal-body" style="overflow-y: unset !important;">
@@ -425,12 +429,30 @@
             <br>
             <div>
                <div [hidden]="!imageSelected">
-                  <image-cropper [imageChangedEvent]="imageSelected"
+                  <!-- <image-cropper [imageChangedEvent]="imageSelected"
                   [maintainAspectRatio]="false" [onlyScaleDown]="true"
                   [roundCropper]="false" format="jpg" outputType="base64"
                   (imageCropped)="cropThumbnailImage($event)"
                   (imageLoaded)="loadThumbnailImage()"
-                  (imageQuality)=0 	[style.display]="showCropper ? null : 'none'"></image-cropper>
+                  (imageQuality)=0 	[style.display]="showCropper ? null : 'none'"></image-cropper> -->
+                  <app-img-croppr-v2
+                  [imageChangedEvent]="imageSelected"
+                  [maintainAspectRatio]="true"
+                  [containWithinAspectRatio]="containWithinAspectRatio"
+                  [aspectRatio]="16/ 9"
+                  [resizeToWidth]="1920"
+                  [cropperMinWidth]="1080"
+                  [onlyScaleDown]="true"
+                  [roundCropper]="false"
+                  [alignImage]="'left'"
+                  [style.display]="showCropper ? null : 'none'"
+                  format="png"
+                  [transform]="transform"
+                  (imageCropped)="imageCroppedMethod($event)"
+                  (imageLoaded)="imageLoaded()"
+                  (cropperReady)="cropperReady($event)"
+                  (loadImageFailed)="loadImageFailed()">
+                  </app-img-croppr-v2>
                </div>
                <div *ngIf="!imageSelected">
                   <legend style="background: #cacaca; height: 227px; margin-bottom: 5px;">
@@ -438,10 +460,25 @@
                </div>
             </div>
             <br>
+            <div class="d-flex justify-content-between">
+            <div class="button-group" style="position: relative;text-align:left">
+               <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                 <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+                 {{
+                   containWithinAspectRatio
+                   ? 'Fill Aspect Ratio'
+                   : 'Contain Within Aspect Ratio'
+                 }}
+                 </button>
+               <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+               <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                           <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+             </div>
             <div>
                <button class="btn btn-primary" [disabled]="!showCropper"
                (click)="saveThumbnail()">Save Changes</button>
             </div>
+         </div>
          </div>
       </div>
    </div>

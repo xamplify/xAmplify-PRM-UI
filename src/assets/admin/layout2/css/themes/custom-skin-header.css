@@ -15,38 +15,3 @@
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover  {
      background-color: var(--top-buton-color) !important ;
 } */
-
-/* Btn hover */
-.customskin:hover, .custom:hover{
-    opacity: 0.8 !important;
-}
-
-
-
-/* 21-06-2023 header enhancement */
-
-a.dropdown-toggle.circlebg-color-bell-v {
-    background-color: var(--top-buton-color) !important;
-    border: 1px solid var(--top-button-border-color) !important;
-  }
-  a.dropdown-toggle.circlebg-none-v {
-    background-color: var(--top-buton-color) !important;
-    border: 1px solid var(--top-button-border-color) !important;
-  }
-  a.dropdown-toggle.circlebg-none-v:hover{
-    background-color: var(--top-buton-color) !important;
-    opacity: 0.8;
-  }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
-    background-color: var(--top-buton-color) !important;
-    opacity: 0.8;
-  }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
-    background-color: var(--top-buton-color) !important;
-    opacity: 0.8;
-  }
-  .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-    background-color: var(--top-buton-color) !important;
-    opacity: 0.8;
-  } 
-  

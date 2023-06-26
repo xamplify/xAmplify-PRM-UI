@@ -30,7 +30,7 @@
                 </li>
             </ul>
             <div id="folder-margin-xamp">
-                <button class="btn btn custom  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                <button class="btn btn-primary  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -403,7 +403,7 @@
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Email is opened</label>
                                                             </div>
                                                         </div>
@@ -414,7 +414,7 @@
                                                                     (statusChange)="setLinkOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Link is opened</label>
                                                             </div>
                                                         </div>
@@ -425,7 +425,7 @@
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
@@ -436,7 +436,7 @@
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
@@ -447,7 +447,7 @@
                                                                     (statusChange)="setVideoPlayed($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Video is played</label>
                                                             </div>
                                                         </div>
@@ -569,9 +569,9 @@
                                     </div>
                                 </div>
                                 <div class="page-bar" style="padding-right: 21px;box-shadow: none !important;border: none !important;">
-                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
                             </div>
                         </form>
@@ -982,7 +982,7 @@
                                 class="btn btn-default m10"
                                 (click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
                             <button type="button" style="float: right;"
-                                class="btn btn-default btn green m10"
+                                class="btn btn Btn-Green m10"
                                 (click)="resetActive($event, 40, 'step-4');"
                                 [disabled]="!isVideo" title="Please Select Video" translate>Next</button>
                         </div>
@@ -1172,7 +1172,7 @@
                              <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;"> 
                             <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
-                            <button type="submit"  class="btn  btn green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
+                            <button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </ng-template>
                         </div>
@@ -1390,7 +1390,7 @@
                                             </div>
                                             <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
+                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
                                         </div>
                                         </div>
                                     </form>
@@ -1589,7 +1589,7 @@
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
                                             <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
+                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>

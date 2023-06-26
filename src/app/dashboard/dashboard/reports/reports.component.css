@@ -12,3 +12,23 @@
   top: 1px;
   cursor: pointer;color: #54a7e9;
 }
+
+.setting-icon-alg{
+  box-shadow:none;
+  margin-top: 5px;
+  margin-right: 5px;
+  float:right;
+  padding-left: 10px;
+  }
+  
+.setting-icon-cu {
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 20px !important;
+  vertical-align: middle;
+  margin-right: 7px;
+}

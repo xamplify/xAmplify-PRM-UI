@@ -167,3 +167,6 @@
 	position: relative;
   border-radius:5px;
 }
+.option-color{
+    color: #333 !important;
+}

@@ -1,8 +1,4 @@
-.timeline-item {
-  background: #fff;
-  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
-  border-radius: 3px;
-  padding: 5px;
+.timeline-item-box-loader {
   margin-bottom: 10px;
 }
 
@@ -11,6 +7,7 @@
   background-size: 800px 104px;
   height: 96px;
   position: relative;
+  border-radius: 5px;
 }
 
 @keyframes box-loader-animation {

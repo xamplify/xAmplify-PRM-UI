@@ -224,7 +224,7 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
                         </div>
                       </div>
                       <div class="portlet box">
@@ -296,7 +296,7 @@
                           <th class="center-aligned" translate>Lead Details</th>
                           <th class="center" translate>Added By</th>
                           <th class="center" translate>Status</th>
-                          <th style="width: 18%; text-align:right" translate>Actions</th>
+                          <th style="width: 18%; text-align:center" translate>Actions</th>
                         </tr>
                       </thead>
 
@@ -363,7 +363,7 @@
                               </div>
 
                               <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
-                                <a style="color: #008fd5;padding-left: 6px;" (click)="showDealRegistrationForm(lead)" translate>
+                                <a style="color: #008fd5;padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
 

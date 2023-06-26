@@ -226,7 +226,7 @@
                 </div>
               </div>
               <div class="col-sm-12 col-xs-12 row mNextPad" style="padding-right: 20px; padding-bottom: 10px;">
-                <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-2');"
+                <button type="submit" class=" btn Btn-Green pull-right" (click)="changeActiveTab('step-2');"
                   [disabled]="!isStepOneValid" translate>Next</button>
               </div>
             </div>
@@ -271,7 +271,7 @@
           <div class="row" style="margin: 10px 0px -18px;">
             <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-1')"
               translate>Previous</button>
-            <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-3');"
+            <button type="submit" class=" btn Btn-Green pull-right" (click)="changeActiveTab('step-3');"
               [disabled]="!isStepTwoValid" translate>Next</button>
           </div>
         </div>
@@ -414,7 +414,7 @@
             <div style="padding: 0px 0px 15px 0px;">
               <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-2')"
                 translate>Previous</button>
-              <button type="submit" class=" btn green pull-right" (click)="changeActiveTab('step-4');"
+              <button type="submit" class=" btn Btn-Green pull-right" (click)="changeActiveTab('step-4');"
                 [disabled]="!isStepThreeValid" translate>Next</button>
             </div>
           </div>
@@ -435,9 +435,9 @@
       <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
+        <button class="btn btn-primary" type="submit" [disabled]="!tracksPlayBook.isValid"
           (click)="save()">{{SubmitButtonValue}}</button>
-        <button class="btn btn-primary green" type="submit" [disabled]="!tracksPlayBook.isValid"
+        <button class="btn btn-primary" type="submit" [disabled]="!tracksPlayBook.isValid"
           *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
       </div>
     </div>
@@ -460,8 +460,8 @@
       </div>
       <div class="modal-body" style="overflow-y: unset !important;">
         <div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css"
-          *ngIf="!imageChangedEvent">
-          <span>Select image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
+          *ngIf="!imageChangedEvent; else uploadButton">
+          <span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
             (change)="filenewChangeEvent($event)">
         </div>
         <!-- <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button> -->
@@ -474,21 +474,54 @@
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>
           <div [hidden]="!imageChangedEvent">
-            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
+            <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
               [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)"
               (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
               (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
-            </image-cropper>
+            </image-cropper> -->
+            <app-img-croppr-v2
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="true"
+                    [containWithinAspectRatio]="containWithinAspectRatio"
+                    [aspectRatio]="16 / 9"
+                    [resizeToWidth]="1920"
+                    [cropperMinWidth]="1080"
+                    [onlyScaleDown]="true"
+                    [roundCropper]="false"
+                    [alignImage]="'left'"
+                    [style.display]="showCropper ? null : 'none'"
+                    format="png"
+                    [transform]="transform"
+                    (imageCropped)="imageCroppedMethod($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (cropperReady)="cropperReady($event)"
+                    (loadImageFailed)="loadImageFailed()">
+                    </app-img-croppr-v2>
           </div>
           <div *ngIf="!imageChangedEvent">
             <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
             </fieldset>
           </div>
         </div>
+        <div class="d-flex justify-content-between">
+        <div class="button-group" style="position: relative;text-align:left">
+          <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+            <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+            {{
+              containWithinAspectRatio
+              ? 'Fill Aspect Ratio'
+              : 'Contain Within Aspect Ratio'
+            }}
+            </button>
+          <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+          <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                      <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+        </div>
         <div>
           <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadImage()">Save
             Changes</button>
         </div>
+      </div>
         <div>
           <ul style="padding: 0 15px;">
             <li>For optimal results, your logo should fit within the white rectangle.</li>
