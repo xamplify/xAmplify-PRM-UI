@@ -1,0 +1,30 @@
+.popup-align {
+    position: relative !important;
+    top: 67px;
+    height: 89% !important;
+    float: right;
+  }
+  .modal-dialog {
+    width: 85% !important;
+  }
+  .modal-content {
+    box-shadow: 0 0 0 rgb(255 255 255 / 0%) !important;
+    border-radius: 0px !important;
+  }
+  
+  #xamplify-video-player-modal-popup {
+    padding-right: 0px !important;
+  }
+  
+  .rmv-overflow {
+    overflow-y: hidden !important;
+    background: #00000085;
+  }
+  .modal-content {
+    overflow-y: hidden !important;
+    border: 1px solid #dddddd;
+  }
+  .width-btn {
+    width: 112px;
+    margin-left: 18px;
+  }

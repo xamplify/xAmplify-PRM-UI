@@ -1618,11 +1618,7 @@ div.switch5 > input.switch:focus ~ label:before {
   bottom: 22px;
 }
 
-/* .input-group-addon{
-    color:white !important;
-    background-color:  #22313a !important;
-    border: 1px solid #2f4857!important;
-  } */
+
 .preview-edit-color {
   color: #5a5a5a;
 }
