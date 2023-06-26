@@ -1,6 +1,6 @@
 <app-topnavbar [model]="referenceService.topNavBarUserDetails"></app-topnavbar>
 <div class="page-container">
-  <app-leftsidebar></app-leftsidebar>
+  <app-leftsidebar *ngIf="referenceService.hideLeftMenu"></app-leftsidebar>
   <div class="page-content-wrapper">
     <router-outlet></router-outlet>
     <!-- <app-bottomnavbar></app-bottomnavbar> -->

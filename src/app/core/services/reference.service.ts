@@ -138,6 +138,9 @@ export class ReferenceService {
   regularExpressions = new RegularExpressions();
   loaderFromAdmin = false;
   newVersionDeployed = false;
+  /*** XNFR-user-guides */
+  mergeTagName:any;
+  hideLeftMenu : boolean = true;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

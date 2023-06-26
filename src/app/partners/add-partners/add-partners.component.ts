@@ -33,6 +33,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { UserGuide } from 'app/guides/models/user-guide';
 declare var $:any, Papa:any, swal:any;
 
 @Component({
@@ -4326,7 +4327,26 @@ copyGroupUsersModalPopupEventReceiver(){
 	this.mergeOptionClicked = false;
 	this.selectedUserIdsForMerging = [];
 }
+/*********XNFR-297******** */
+urllink: any;
+userGuide: UserGuide = new UserGuide();
+getToHelpPage(tagName: string) {
+	this.referenceService.mergeTagName = tagName;
+	this.referenceService.hideLeftMenu = false;
+	this.userService.showUserGuide(tagName).subscribe(
+		response => {
+			if (response.statusCode === 200) {
+				this.userGuide = response.data;
+				//this.urllink = 'home/help/' + this.userGuide.slug;
+				this.router.navigate(['home/help/' + this.userGuide.slug]);
+			}
+		}, (error: any) => {
+			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+		}
+	)
 
+
+}
 
 
 }

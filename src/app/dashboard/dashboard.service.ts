@@ -1105,4 +1105,24 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    /***  user-guides ***/
+    getUserGuideLeftMenu(vanityLoginDto:VanityLoginDto){
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getSearchResultsOfUserGuides(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/search/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getUserGuidesByModuleName(moduleName:string){
+        return this.http.get(this.authenticationService.REST_URL + 'user/guide/titles/'+moduleName+'/?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }
