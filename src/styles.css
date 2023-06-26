@@ -2057,76 +2057,16 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
 }
 
 /* Button Customization(21-6-2023) sudha sri */
-/* Site green button "success message" */
-.SuccesS-Btn {
-  background-color: #218838 !important;
-  border-color: #218838 !important;
-  color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 7px 14px !important;
-}
-.SuccesS-Btn:hover {
-  background-color: #28a745 !important;
-  border-color: #28a745 !important;
-}
-
-/* Site gray button */
-.GraY-Btn {
-  background-color: #5a6268;
-  border-color: #5a6268;
-  color: #ffffff;
-  border-radius: 4px !important;
-  padding: 7px 14px !important;
-}
-.GraY-Btn:hover {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  color: #ffffff;
-}
-
-/* Site black button */
-.BlacK-Btn {
-  background-color: #000000 !important;
-  border-color: #000000 !important;
-  color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 7px 14px !important;
-}
-.BlacK-Btn:hover {
-  background-color: #202020 !important;
-  border-color: #202020 !important;
-}
-
-/* Site orange button */
-.OrangE-Btn {
-  background-color: #ff6200 !important;
-  border-color: #ff6200 !important;
-  color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 7px 14px !important;
-}
-.OrangE-Btn:hover {
-  background-color: #f28948 !important;
-  border-color: #f28948 !important;
-}
-
-/* 06-06-2013 */
-.action-btn-alignment {
-  float: right !important;
-  margin-left: 10px !important;
-}
+/* all site-buttons */
 
 /* btn-primary */
-.main-btn {
-  background-color: #26a69a;
-  border: 1px solid #2b7770;
-  border-radius: 4px !important;
-  padding: 7px 14px !important;
-  color: #ffffff;
+.btn-primary {
+  background-color: #008fd5;
+  border-radius: 4px;
+  padding: 7px 14px;
 }
-.main-btn:hover {
-  background-color: #2bb7aa;
-  color: #ffffff;
+.btn-primary:hover {
+  background-color: #4db1e2;
 }
 
 /* btn-danger */
@@ -2161,6 +2101,58 @@ fieldset[disabled] .btn-danger.active {
   background-color: #f3565d;
   border-color: #f13e46;
 }
+
+/* Site green button "success message" */
+.Btn-Green {
+  background-color: #26a69a;
+  border-color: #26a69a;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 7px 14px;
+}
+.Btn-Green:hover {
+  background-color: #1f897f;
+  border-color: #1f897f;
+}
+
+/* Site gray button */
+.Btn-Gray {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 7px 14px;
+}
+.Btn-Gray:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Site black button */
+.Btn-Black {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 7px 14px;
+}
+.Btn-Black:hover {
+  background-color: #202020;
+  border-color: #202020;
+}
+
+/* Site orange button */
+.Btn-Orange {
+  background-color: #ff6200;
+  border-color: #ff6200;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 7px 14px;
+}
+.Btn-Orange:hover {
+  background-color: #f28948;
+  border-color: #f28948;
+}
 .add-button-xamplify {
   color: white;
   background-color: #008fd5;
@@ -2171,6 +2163,8 @@ fieldset[disabled] .btn-danger.active {
 }
 /* 23-6-2023 sudha sri */
 h6.view-banner.published,
-h5.view-banner.published {
+h5.view-banner.published,
+h6.view-banner,
+h5.view-banner {
   color: white !important;
 }
