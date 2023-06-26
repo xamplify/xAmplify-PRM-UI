@@ -143,7 +143,7 @@
 						<div class="row">
 							<div class="col-md-offset-6 col-md-5" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
-									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
+									<button type="button" class="btn Btn-Green" [disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
 									<button type="button" class="btn default" style="margin-left:2px;color:black !important;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>

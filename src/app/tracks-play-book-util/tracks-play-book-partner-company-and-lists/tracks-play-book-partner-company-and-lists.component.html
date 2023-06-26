@@ -106,7 +106,7 @@
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                    <tr [class.partner-company-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
+                    <tr [class.row-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
                       <td class="cw">
                         <div class="actions-block left-float">
                           <a (click)="viewTeamMembers(partner)" data-toggle="tooltip" data-placement="bottom"  title="View/Hide Team Members">

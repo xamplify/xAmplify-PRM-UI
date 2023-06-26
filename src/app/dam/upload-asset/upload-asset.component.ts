@@ -20,6 +20,9 @@ import { HttpEventType,HttpResponse} from "@angular/common/http";
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 /****XNFR-255****/
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+
 
 
 declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
@@ -115,6 +118,17 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     categoryId: number;
     folderViewType: string;
     imagepath:string;
+
+    containWithinAspectRatio = false;
+    transform: ImageTransform = {};
+    scale = 1;
+    canvasRotation = 0;
+    rotation = 0;
+    circleData: any;
+    cropRounded = false;
+    imageChangedEvent: any = '';
+    fileObj: any;
+
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     /****XNFR-255*****/
     hasShareWhiteLabeledContentAccess = false;
@@ -1160,5 +1174,74 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
 }
 
-
+toggleContainWithinAspectRatio() {
+    if(this.croppedImage!=''){
+        this.containWithinAspectRatio = !this.containWithinAspectRatio;
+    }else{
+    this.showCropper = false;
+    }
+}
+zoomOut() {
+    if(this.croppedImage!=""){
+      this.scale -= .1;
+      this.transform = {
+        ...this.transform,
+        scale: this.scale       
+      };
+    }else{
+      //this.errorUploadCropper = true;
+      this.showCropper = false; 
+    }
+    }
+    zoomIn() {
+        if(this.croppedImage!=''){
+                this.scale += .1;
+                this.transform = {
+                    ...this.transform,
+                    scale: this.scale
+                };
+          
+        }else{
+            this.showCropper = false;
+          //  this.errorUploadCropper = true;
+            }
+        }
+        resetImage() {
+            if(this.croppedImage!=''){
+                    this.scale = 1;
+                    this.rotation = 0;
+                    this.canvasRotation = 0;
+                    this.transform = {};
+            }else{
+                this.showCropper = false;
+               // this.errorUploadCropper = true;
+            }
+            }
+            imageCroppedMethod(event: ImageCroppedEvent) {
+                this.croppedImage = event.base64;
+                console.log(event, base64ToFile(event.base64));
+                }
+                imageLoaded() {
+                    this.showCropper = true;
+                    console.log('Image loaded')
+                    }
+                    cropperReady(sourceImageDimensions: Dimensions) {
+                        console.log('Cropper ready', sourceImageDimensions);
+                    }
+                    loadImageFailed () {
+                        console.log('Load failed');
+                        }
+                        closeModal() {
+                            this.cropRounded = !this.cropRounded;
+                            this.circleData = {};
+                            this.imageChangedEvent = null;
+                             this.croppedImage = '';
+                          } 
+                          closeImageUploadModal() {
+                            this.cropRounded = !this.cropRounded;
+                            this.imageChangedEvent = null;
+                            this.croppedImage = '';
+                            this.fileObj = null;
+                            $('#cropImage').modal('hide');
+                          }                       
 }

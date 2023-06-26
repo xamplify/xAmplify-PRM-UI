@@ -29,6 +29,8 @@ import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 
 declare var $, swal, CKEDITOR: any;
 @Component({
@@ -163,6 +165,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   selectedGroupIds: any[] = [];
   selectedPartnershipIds: any[] = [];
   selectedUserIds: any[] = [];
+
+  containWithinAspectRatio = false;
+  transform: ImageTransform = {};
+  scale = 1;
+  canvasRotation = 0;
+  rotation = 0;
+  circleData: any;
 
   isAssestPopUpOpen : boolean = false;
   isPreviewFromAssetPopup: boolean = false;
@@ -818,21 +827,21 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
 
-  imageCroppedMethod(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
+  // imageCroppedMethod(event: ImageCroppedEvent) {
+  //   this.croppedImage = event.base64;
+  // }
 
-  imageLoaded() {
-    this.showCropper = true;
-  }
+  // imageLoaded() {
+  //   this.showCropper = true;
+  // }
 
-  cropperReady() {
-  }
+  // cropperReady() {
+  // }
 
-  loadImageFailed() {
-    this.errorUploadCropper = true;
-    this.showCropper = false;
-  }
+  // loadImageFailed() {
+  //   this.errorUploadCropper = true;
+  //   this.showCropper = false;
+  // }
 
   fileChangeEvent() {
     this.cropRounded = false;
@@ -1508,4 +1517,70 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     this.assetPagination.searchKey = this.assetSortOption.searchKey;
     this.listAssets(this.assetPagination);
   }
+
+  toggleContainWithinAspectRatio() {
+		if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+        }
+    }
+
+    zoomOut() {
+      if(this.croppedImage!=""){
+        this.scale -= .1;
+        this.transform = {
+          ...this.transform,
+          scale: this.scale       
+        };
+      }else{
+        //this.errorUploadCropper = true;
+        this.showCropper = false; 
+      }
+      }
+
+      zoomIn() {
+        if(this.croppedImage!=''){
+                this.scale += .1;
+                this.transform = {
+                    ...this.transform,
+                    scale: this.scale
+                };
+          
+        }else{
+            this.showCropper = false;
+          //  this.errorUploadCropper = true;
+            }
+        }
+        resetImage() {
+          if(this.croppedImage!=''){
+                  this.scale = 1;
+                  this.rotation = 0;
+                  this.canvasRotation = 0;
+                  this.transform = {};
+          }else{
+              this.showCropper = false;
+             // this.errorUploadCropper = true;
+          }
+          }
+          imageCroppedMethod(event: ImageCroppedEvent) {
+            this.croppedImage = event.base64;
+            console.log(event, base64ToFile(event.base64));
+            }
+            imageLoaded() {
+              this.showCropper = true;
+              console.log('Image loaded')
+              }
+              cropperReady(sourceImageDimensions: Dimensions) {
+                  console.log('Cropper ready', sourceImageDimensions);
+              }
+            loadImageFailed () {
+              console.log('Load failed');
+              }
+              closeModal() {
+                this.cropRounded = !this.cropRounded;
+                this.circleData = {};
+                this.imageChangedEvent = null;
+                 this.croppedImage = '';
+              }    
 }

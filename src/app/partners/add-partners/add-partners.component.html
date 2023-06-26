@@ -61,8 +61,8 @@
             </ul>
             <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
                 <a (click)="downloadEmptyCsv()">
-                    <button type="button" class="btn green" download
-                        style="color: #ffffff;"
+                    <button type="button" class="btn Btn-Green " download
+                       
                         [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                         translate>
                         Download CSV Template<i class="fa fa-download" aria-hidden="true"
@@ -410,7 +410,7 @@
                     <ng-template #actionsButton>
                         <button class="btn dropdown-toggle" id="save&delete_button"
                             style="color: white; float: right; margin-left: 10px;"
-                            [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
+                            [ngClass]="{'Btn-Green': !referenceService.isMobileScreenSize()}"
                             data-toggle="dropdown">
                             <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
                                 <i class="fa fa-angle-down"></i>
@@ -512,12 +512,12 @@
             </div>
             <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="btn btn-default" id="save_button"    
-                style="background-color: #26a69a; color: white"          
+                <button class="btn Btn-Green" id="save_button"    
+                          
                     *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
                     translate>Save</button>
-                <button class="btn btn-default" id="cancel_button" 
-                style="background-color: #26a69a; color: white"                
+                <button class="btn Btn-Green" id="cancel_button" 
+                          
                     *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
@@ -684,8 +684,8 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="btn btn-default" type="button"  
-                                style="background-color: #26a69a; color: white"                                
+                                <button class="btn Btn-Green" type="button"  
+                                                           
                                     (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
                             </div>
                             <div class="col-xs-12">
@@ -1762,7 +1762,7 @@
                 <ngx-loading [show]="processingPartnersLoader || previewLoader"
                     [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                 <div class="modal-footer">
-                    <button type="submit" class="btn green-haze"
+                    <button type="submit" class="btn Btn-Green"
                         (click)="validatePartners()" translate>Continue</button>
                     <button type="submit" class="btn btn-default"
                         (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
