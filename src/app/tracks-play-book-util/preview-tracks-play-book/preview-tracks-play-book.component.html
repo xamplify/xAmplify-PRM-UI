@@ -75,18 +75,6 @@
                 <section *ngIf="!showTracksPlayBook" style="margin:0 15px 0 15px; ">
                     <div *ngIf="!showAsset" class="portlet light page-bar Form-BgImg" style="margin-top:45px;"
                     [style.backgroundColor]="authenticationService.formBackground">
-                        <!-- <div class="portlet-title">
-                            <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <a (click)="closeView()" class="pull-right close-circle" style="padding: 3px 5px; margin: 4px 0px 0px 0px;">
-                                    <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                                <div class="page-bar" style="padding: 3px;margin-bottom: 1px;                                ">
-                                    <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
-                                        <div class="title-class alert-spf track-text">Track's Title:</div>
-                                        <a class="title padding_bottom alert-spf track-text" style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="portlet-body Form-BgImg">
                         <div class="col-md-12 col-lg-12" style="padding-top: 30px;">
                             <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id"
@@ -130,9 +118,6 @@
                                                                 <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
                                                                     translate>
                                                                     <strong>Type: </strong>{{assetDetails.assetType}}<br>
-                                                                    <!-- <div class="name-wrap" title="{{assetDetails?.assetName}}">
-                                                                                                                                    <strong>Title: </strong>{{assetDetails?.assetName}}
-                                                                                                                                </div> -->
                                                                 </div>
                                                                 <a class="btn btn-primary" (click)="assetPreview(assetDetails)">View</a>
                                                                 <a class="btn btn-primary" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
@@ -158,25 +143,10 @@
                         <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
                             <a class="title padding_bottom text-color content-bg row-space" style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
                         </div>
-                        <!-- <div class="btn-group pull-right">
-                            <ng-container class='m10'>
-                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                                    title="List View" [class.disabled]="modulesDisplayType.isListView"
-                                    (click)="setViewType('List')">
-                                    <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
-                                <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
-                                    data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
-                                    (click)="setViewType('Grid')">
-                                    <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                                </span>
-                            </ng-container>
-                        </div> -->
                     </div>
                     <div class="page-bar">
                         <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
                         </app-list-loader>
-                        <!-- <app-grid-loader *ngIf="trackViewLoader && modulesDisplayType.isGridView">
-                        </app-grid-loader> -->
                         <!---List View----->
                         <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
                             <div class="table-responsive" style="float: left;">
@@ -276,147 +246,10 @@
                                                 </td>
                                             </tr>
                                         </ng-container>
-                                        <!-- <tr *ngIf="(type == undefined || type == 'TRACK') && tracksPlayBook.quiz"
-                                            [ngClass]="{'disable-click': !isCreatedUser && !tracksPlayBook.enableQuiz}" (click)="viewQuiz()">
-                                            <td style="width: 10%;">
-                                                <div class="thumbnail-wrapper">
-                                                    <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
-                                                        onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                                    <div class="ribbon">
-                                                        <span style="background-color: #5cb85c;" translate>Quiz</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h4 class="moreipsis mt5 mb5 f-w-600" title="{{tracksPlayBook.quiz.name}}">
-                                                    <span><strong>{{tracksPlayBook.quiz.name}}</strong></span>
-                                                </h4>
-                                                <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
-                                                    style="padding-top: 5px;">
-                                                    <h6 style="background-color: #5cb85c;" class="banner" translate>
-                                                        Finished</h6>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">Form</td>
-                                            <td id="actions-row" class="text-center">
-                                                <div class="actions-block override-actions custom-width-icon no-float">
-                                                    <a *ngIf="!isCreatedUser"
-                                                        [ngClass]="{'isDisabled' : !tracksPlayBook.enableQuiz}"
-                                                        data-toggle="tooltip" data-placement="top" title="View"
-                                                        (click)="viewQuiz()">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                                    </a>
-                                                    <a *ngIf="isCreatedUser" data-toggle="tooltip" data-placement="top" title="View"
-                                                        (click)="viewQuiz()">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
                             </div>
                         </section>
-                        <!----Grid View------->
-                        <!-- <section *ngIf="modulesDisplayType.isGridView && !trackViewLoader">
-                            <div class="row padding_bottom">
-                                <div class="col-md-3 col-sm-4 col-xs-12"
-                                    *ngFor="let content of tracksPlayBook.contents ;let i =index"
-                                    id="ContentListDiv_{{content.id}}">
-                                    <div
-                                        [ngClass]="{'disable' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}">
-                                        <div class="grid-box box-shadow"
-                                            [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                            (click)="viewContent(content, i)">
-                                            <div
-                                                *ngIf="content?.thumbnailPath?.indexOf('assets/images/')===0;then defaultThumbnail else thumbnail">
-                                            </div>
-                                            <ng-template #defaultThumbnail>
-                                                <img class="image-fixed-default" [src]="content.thumbnailPath"
-                                                    onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                            </ng-template>
-                                            <ng-template #thumbnail>
-                                                <img class="image-fixed" [src]="content.thumbnailPath"
-                                                    onerror="this.src='tracksPlayBook.featuredImage';" alt="{{content.title}}">
-                                            </ng-template>
-                                            <div *ngIf="content?.assetType != undefined && (videoFormats.indexOf(content.assetType?.toLowerCase())>-1)"
-                                                class="overlay-icon padding-grid-overlay">
-                                                <button
-                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                    class="grid-play-icon-wrap" title="View"
-                                                    (click)="$event.stopPropagation();viewContent(content, i)">
-                                                    <i class="fa fa-play grid-play-icon"></i>
-                                                </button>
-                                            </div>
-                                            <div *ngIf="content?.assetType == undefined || !(videoFormats.indexOf(content.assetType?.toLowerCase())>-1)"
-                                                class="overlay-icon padding-grid-overlay">
-                                                <button
-                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                    class="grid-play-icon-wrap" title="View"
-                                                    (click)="$event.stopPropagation();viewContent(content, i)">
-                                                    <i class="fa fa-file grid-file-icon"></i>
-                                                </button>
-                                            </div>
-                                            <h5 class="grid-asset-title" title="{{content.assetName}}" translate>
-                                                <strong>Title: </strong>{{content.assetName | slice:0:25}} <span
-                                                    *ngIf="content.assetName?.length>25">...</span>
-                                            </h5>
-                                            <h6 class="asset-type" title="{{content.assetType}}" translate>
-                                                <strong>Type: </strong>{{content.assetType}}
-                                            </h6>
-                                            <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')" class="ribbon">
-                                                <span style="background-color: #5cb85c;" *ngIf="content.finished"
-                                                    translate>Finished</span>
-                                                <span style="background-color: #819081;" *ngIf="content.opened && !content.finished"
-                                                    translate>In
-                                                    Progress</span>
-                                            </div>
-                                            <div class="bar">
-                                                <a [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && !tracksPlayBook.contents[i-1].finished && !isCreatedUser}"
-                                                    data-toggle="tooltip" data-placement="top" title="View"
-                                                    (click)="$event.stopPropagation();viewContent(content)">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div *ngIf="type == undefined || type == 'TRACK'" class="col-md-3 col-sm-4 col-xs-12">
-                                    <div [ngClass]="{'disable' : !isCreatedUser && !tracksPlayBook.enableQuiz}">
-                                        <div class="grid-box box-shadow"
-                                            [ngClass]="{'disable-click' : !isCreatedUser && !tracksPlayBook.enableQuiz}"
-                                            *ngIf="tracksPlayBook.quiz" (click)="viewQuiz()">
-                                            <img class="image-fixed" [src]="tracksPlayBook.featuredImage"
-                                                onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                            <h5 class="grid-asset-title" title="{{tracksPlayBook.quiz.name}}" translate>
-                                                <strong>Title: </strong>{{tracksPlayBook.quiz.name | slice:0:25}} <span
-                                                    *ngIf="tracksPlayBook.quiz.name?.length>25">...</span><br>
-                                            </h5>
-                                            <h6 class="asset-type" title="Form" translate>
-                                                <strong>Type: </strong>Form
-                                            </h6>
-                                            <div *ngIf="!isCreatedUser && !tracksPlayBook.enableQuiz && tracksPlayBook.progress != undefined && tracksPlayBook.progress === 100"
-                                                class="ribbon">
-                                                <span style="background-color: #5cb85c;" translate>Finished</span>
-                                            </div>
-                                            <div class="ribbon-right">
-                                                <span style="background-color: #5cb85c;" translate>Quiz</span>
-                                            </div>
-                                            <div class="bar">
-                                                <a *ngIf="!isCreatedUser" [ngClass]="{'disable-click' : !tracksPlayBook.enableQuiz}"
-                                                    data-toggle="tooltip" data-placement="top" title="View" (click)="viewQuiz()">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
-                                                <a *ngIf="isCreatedUser" data-toggle="tooltip" data-placement="top" title="View"
-                                                    (click)="viewQuiz()">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section> -->
                         <div *ngIf="tracksPlayBook.contents?.length==0 && !trackViewLoader" class="alert alert-info text-center cus-nodatafound-alert" style="margin-left: 10px;margin-right: 10px;">
                             <strong>No Data Found.</strong>
                         </div>
@@ -438,12 +271,6 @@
         <div class="overlay-content">
             <ng-container *ngIf="isImage">
                 <img class="fit-preview-asset" [src]="filePath" alt="No Image Found"><br>
-            </ng-container>
-            <ng-container *ngIf="isVideo">
-                <video class="fit-preview-asset" controls>
-                    <source [src]="filePath" [type]="fileType">
-                    Your browser does not support the video tag.
-                </video>
             </ng-container>
             <ng-container *ngIf="isAudio">
                 <audio controls>
@@ -481,3 +308,9 @@
         </div>
     </div>
 </div>
+
+<!--Load xAmplify Player-->
+<ng-container  *ngIf="isVideo">
+    <app-xamplify-video-player (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
+</ng-container>
+

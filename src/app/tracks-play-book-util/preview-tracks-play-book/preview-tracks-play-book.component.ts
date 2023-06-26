@@ -225,19 +225,17 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetPreview(assetDetails: any) {
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
-    } else {
+    }else if(assetDetails.assetType == 'mp4'){
+      this.isVideo = true;
+      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
+    }else {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
       if (assetType == 'mp3') {
         this.showFilePreview = true;
         this.fileType = "audio/mpeg";
         this.isAudio = true;
-      } else if (assetType == 'mp4') {
-        this.showFilePreview = true;
-        this.fileType = "video/mp4";
-        this.isVideo = true;
-        this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-      } else if (this.imageTypes.includes(assetType)) {
+      }  else if (this.imageTypes.includes(assetType)) {
         this.showFilePreview = true;
         this.isImage = true;
       } else if (this.fileTypes.includes(assetType)) {
@@ -357,6 +355,10 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  xamplifyVideoPlayerReceiver(event:any){
+    this.isVideo = false;
   }
 
 }

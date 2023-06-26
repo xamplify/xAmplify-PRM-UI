@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,EventEmitter,Output } from '@angular/core';
 import { ReferenceService } from 'app/core/services/reference.service';
 
 declare var $:any;
@@ -11,6 +11,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
 
   modalPopupId= "xamplify-video-player-modal-popup";
   videoTitle = "This is Video Title";
+  @Output() xamplifyVideoPlayerEmitter = new EventEmitter();
 
   constructor(public referenceService:ReferenceService) { }
 
@@ -21,6 +22,11 @@ export class XamplifyVideoPlayerComponent implements OnInit {
 
   close(){
     this.referenceService.closeModalPopup(this.modalPopupId);
+    this.callEmitter();
+  }
+
+  callEmitter(){
+    this.xamplifyVideoPlayerEmitter.emit();
   }
 
 }
