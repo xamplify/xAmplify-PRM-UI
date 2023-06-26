@@ -226,6 +226,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
     }else if(assetDetails.assetType == 'mp4'){
+      console.log(assetDetails);
       this.isVideo = true;
       this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
     }else {

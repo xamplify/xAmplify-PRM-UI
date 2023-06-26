@@ -1,4 +1,5 @@
 import { Component, OnInit,EventEmitter,Output } from '@angular/core';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 
 declare var $:any;
@@ -11,9 +12,11 @@ export class XamplifyVideoPlayerComponent implements OnInit {
 
   modalPopupId= "xamplify-video-player-modal-popup";
   videoTitle = "This is Video Title";
+  selectedVideo:any;
+  fullScreenMode =false;
   @Output() xamplifyVideoPlayerEmitter = new EventEmitter();
 
-  constructor(public referenceService:ReferenceService) { }
+  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService) { }
 
 
   ngOnInit() {
