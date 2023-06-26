@@ -2168,3 +2168,10 @@ h6.view-banner,
 h5.view-banner {
   color: white !important;
 }
+
+
+
+/* 26-6-2023 */
+button {
+  border-radius: 4px;
+}

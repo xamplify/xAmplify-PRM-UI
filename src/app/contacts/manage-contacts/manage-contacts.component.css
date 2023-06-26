@@ -330,3 +330,21 @@ h6 {
 .border-btn-small{
 	border-radius: 4px;
   } 
+
+/* 26-06-2023 */  
+  .table-eye-circle {
+    border: 1px solid #5bb2f5;
+    color: #5bb2f5;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px !important;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 14px !important;
+}
+.table-eye-circle:hover {
+  background: #5bb2f5;
+    color: white;
+  }

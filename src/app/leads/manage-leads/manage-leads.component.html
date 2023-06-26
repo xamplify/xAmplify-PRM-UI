@@ -296,7 +296,7 @@
                           <th class="center-aligned" translate>Lead Details</th>
                           <th class="center" translate>Added By</th>
                           <th class="center" translate>Status</th>
-                          <th style="width: 18%; text-align:right" translate>Actions</th>
+                          <th style="width: 18%; text-align:center" translate>Actions</th>
                         </tr>
                       </thead>
 
@@ -363,7 +363,7 @@
                               </div>
 
                               <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
-                                <a style="color: #008fd5;padding-left: 6px;" (click)="showDealRegistrationForm(lead)" translate>
+                                <a style="color: #008fd5;padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
 
