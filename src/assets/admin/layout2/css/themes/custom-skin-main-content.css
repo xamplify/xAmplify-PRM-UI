@@ -1313,6 +1313,11 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 /* 23-6-2023 sudha sri */
 h6.view-banner.published,
-h5.view-banner.published {
+h5.view-banner.published,
+h6.view-banner,
+h5.view-banner {
   color: var(--title-heading--text) !important;
+}
+.btn-primary-light {
+  background-color: var(--page-content) !important;
 }
