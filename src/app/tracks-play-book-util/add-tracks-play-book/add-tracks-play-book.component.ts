@@ -180,6 +180,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   folderViewType: string;
   selectedFileType = "";
   fileTypesForFilter:Array<any> = new Array<any>();
+  uploadButton = false;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
