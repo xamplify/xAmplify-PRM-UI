@@ -311,6 +311,6 @@
 
 <!--Load xAmplify Player-->
 <ng-container  *ngIf="isVideo">
-    <app-xamplify-video-player (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
+    <app-xamplify-video-player [videoId]="selectedVideoId" (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
 </ng-container>
 

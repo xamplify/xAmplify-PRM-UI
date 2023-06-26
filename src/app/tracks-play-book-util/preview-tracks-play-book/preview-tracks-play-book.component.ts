@@ -59,6 +59,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     'mpeg', 'm2v', 'm4v', 'svi', '3gp', '3g2', 'mxf', 'roq', 'nsv', 'flv', 'f4v', 'f4p', 'f4a', 'f4b'];
   contentIndexInView: number;
   isCurrentQuizSubmitted: boolean = false;
+  selectedVideoId = 0;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -226,9 +227,9 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
     }else if(assetDetails.assetType == 'mp4'){
-      console.log(assetDetails);
       this.isVideo = true;
       this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
+      this.selectedVideoId = assetDetails.videoId;
     }else {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
@@ -360,6 +361,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
 
   xamplifyVideoPlayerReceiver(event:any){
     this.isVideo = false;
+    this.selectedVideoId = 0;
   }
 
 }
