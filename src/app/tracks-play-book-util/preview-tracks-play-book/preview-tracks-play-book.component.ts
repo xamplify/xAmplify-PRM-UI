@@ -60,6 +60,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   contentIndexInView: number;
   isCurrentQuizSubmitted: boolean = false;
   selectedVideoId = 0;
+  videoLoader: boolean;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -173,6 +174,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   viewContent(asset: any, index: number) {
+   this.assetViewLoader = true; 
    this.isVideo = false;
    this.selectedVideoId = 0;
    setTimeout(() => {
@@ -192,9 +194,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
     if(this.isVideo){
       this.selectedVideoId = this.assetDetails.videoId;
       this.assetPreview(this.assetDetails);
+      this.videoLoader = false;
     }
+    this.assetViewLoader = false; 
+
    }, 300);
-   
   }
 
   viewQuiz(asset: any) {
