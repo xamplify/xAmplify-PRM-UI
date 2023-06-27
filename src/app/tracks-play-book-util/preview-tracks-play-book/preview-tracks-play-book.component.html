@@ -120,6 +120,8 @@
                                                                     <strong>Type: </strong>{{assetDetails.assetType}}<br>
                                                                 </div>
                                                                 <a class="btn btn-primary" (click)="assetPreview(assetDetails)">View</a>
+                                                                <a *ngIf="assetDetails?.assetType!='mp4'" class="btn btn-primary" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
+                                                                    (click)="downloadAsset(assetDetails)">Download</a>
                                                             </div>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="isVideo">
