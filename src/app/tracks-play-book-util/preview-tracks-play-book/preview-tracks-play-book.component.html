@@ -95,7 +95,7 @@
                                                     <div class="portlet light cphdam page-bar">
                                                         <div class="portlet-title">
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 breadcrumb-font-color" style="color: #888;padding-right:5px;">
-                                                                <a (click)="closeView()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
+                                                                <a (click)="closeView();closeVideoPlayer()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
                                                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
                                                                 <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;" title="{{tracksPlayBook.title}}">
                                                                     <div class="title-class"> Title:</div>
@@ -109,7 +109,7 @@
                                                                 </h4>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="assetDetails?.assetType!='mp4'">
                                                             <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-none">
                                                                 <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
                                                                     alt="No Image Found">
@@ -120,9 +120,10 @@
                                                                     <strong>Type: </strong>{{assetDetails.assetType}}<br>
                                                                 </div>
                                                                 <a class="btn btn-primary" (click)="assetPreview(assetDetails)">View</a>
-                                                                <a class="btn btn-primary" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
-                                                                    (click)="downloadAsset(assetDetails)">Download</a>
                                                             </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="isVideo">
+                                                            <app-xamplify-video-player [videoId]="selectedVideoId" (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 6px 10px 10px 10px;">
                                                             <div class="description-scroll padding_bottom img-desc-section-wrap" [innerHTML]="assetDetails?.description">
@@ -154,9 +155,10 @@
                                     *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                     <thead>
                                         <tr>
-                                            <th colspan="2" style="width: 70%" id="border-bottom"><span class="gridHea
-                                                                            der" translate>Asset
-                                                    Details </span></th>
+                                            <th colspan="2" style="width: 70%" id="border-bottom">
+                                                <span class="gridHeader" translate>Asset
+                                                    Details </span>
+                                            </th>
                                             <th class="text-center" scope="row" translate>Type</th>
                                             <th class="text-center" id="min-width" translate>Actions</th>
                                         </tr>
@@ -256,6 +258,9 @@
                     </div>
                 </section>
             </div>
+
+            
+            
     </ng-container>
 </div>
 
@@ -310,7 +315,4 @@
 </div>
 
 <!--Load xAmplify Player-->
-<ng-container  *ngIf="isVideo">
-    <app-xamplify-video-player [videoId]="selectedVideoId" (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
-</ng-container>
 
