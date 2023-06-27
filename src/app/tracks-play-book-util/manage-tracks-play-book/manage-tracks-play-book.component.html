@@ -321,7 +321,7 @@
         <!-- UnPublish Modal Popup-->
                 <div class="modal fade in" id="unpublished-modal" data-backdrop="static">
                     <div class="modal-dialog modal-copy" role="document">
-                        <div class="modal-content mSweetalertWid" style="width: 84%;top: 118px;left: 40px;">
+                        <div class="modal-content mSweetalertWid popup-cu-widthalign">
                             <div class="modal-header">
                                 <h4 class="modal-title f-w-600" id="" translate="" >Are you sure you want to unpublish this track?</h4>
                             </div>
@@ -339,20 +339,16 @@
                                     <label class="option-color">Other</label><br>
                                 </div>                     
                             <div>
-                                <h4 style="color: red !important;">* When you unpublish the track,all the related analytics will no
-                                longer exists.</h4>
+                                <p class="warning-red-textcolor">* When you unpublish the track,all the related analytics will no
+                                longer exists.</p>
                               </div>
-                                <!--bindings={"ng-reflect-ng-if": "false"}-->
                             </div>
                             <div  class="modal-footer">
-                                <button class="btn btn-hvr-text Btn-Gray"  type="button" (click)="closePopUp()" >Cancel</button>
+                                <button class="btn Btn-Gray"  type="button" (click)="closePopUp()" >Cancel</button>
                                 <button  class="btn Btn-Green"  type="button"  [disabled]="!selectedOption" (click)="unPublishAction(UnPublishedId, false)">Unpublish</button>
                             </div>
                         </div>
                     </div>
                 </div>
-    
-
-        <!-- END PAGE CONTENT-->
     </div>
 </div>

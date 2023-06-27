@@ -1117,7 +1117,7 @@
                                             <div class="margin-top-10">
                                                 <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn Btn-Green" translate>
                                                     Change Password</button>
-                                                <input type="reset" class="btn default" value="Cancel">
+                                                <input type="reset" class="btn Btn-Gray" value="Cancel">
                                             </div>
                                         </form>
                                     </div>
@@ -1573,7 +1573,7 @@
                                                             </div>
                                                             <div class="col-xs-12 button-align" style="padding-left: 10px;">
                                                                 <button type="submit" class="btn Btn-Green" [disabled]="hasVideoRole" translate>Save Changes</button>
-                                                                <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
+                                                                <button type="button" class="btn Btn-Gray" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
                                                             </div>
                                                         </fieldset>
                                                     </div>
@@ -1649,7 +1649,7 @@
                                     </div>
                                     <button type="submit" class="btn Btn-Green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
                                                                                 translate>Save</button>
-                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
+                                                                            <button class="btn Btn-Gray"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
                                 </div>
                                 <div class="portlet-body">
                                     <app-list-loader *ngIf="isListLoader"></app-list-loader>
@@ -1810,7 +1810,7 @@
                                     </div>
                                     <button type="submit" class="btn Btn-Green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedDomains(excludedDomains)"
                                                                                 translate>Save</button>
-                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
+                                                                            <button class="btn Btn-Gray"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
                                 </div>
                                 <div class="portlet-body">
                                     <app-list-loader *ngIf="isListLoader"></app-list-loader>
@@ -2091,7 +2091,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
+                <button type="button" class="btn Btn-Gray" (click)="closeDeleteCategoryModal()">Cancel</button>
                 <button type="button" class="btn btn-primary" title="Move items to other foler and delete existing folder" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
             </div>
         </div>
@@ -2224,7 +2224,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       </form>
     </div>
     <div class="modal-footer" style="border:none">
-      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
+      <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
       <button  type="button" class="btn Btn-Green"  (click)="confirmAndsaveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
     </div>
   </div>
@@ -2269,7 +2269,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       </form>
     </div>
     <div class="modal-footer" style="border:none">
-      <button class="btn btn-default" (click)="addDomainModalClose()" translate>Cancel</button>
+      <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
       <button  type="button" class="btn Btn-Green"  (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
     </div>
   </div>

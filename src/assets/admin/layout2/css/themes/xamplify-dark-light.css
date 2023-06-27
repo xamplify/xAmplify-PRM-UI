@@ -297,7 +297,8 @@ ul.alt-row-style1 li:hover,
   border-bottom: 1px solid #2f4857 !important;
 }
 .col-block.col-block-disable,
-.bg-card-header {
+.bg-card-header,
+.clear-search {
   background-color: #2b3c46 !important;
 }
 .col-block.col-block-active {
@@ -1161,7 +1162,7 @@ input#copy-link {
   border: 2px dotted #2f4857 !important;
 }
 .btn-primary-dark {
-  background-color: #2b3c46 !important;
+  background-color: #22313a !important;
 }
 .btn-primary-dark:hover {
   background-color: #22313a !important;
@@ -1375,7 +1376,8 @@ ul.alt-row-style1 li:nth-child(even) {
 .img-class {
   border: 1px solid #2f4857 !important;
 }
-.border-card {
+.border-card,
+.videoViews {
   border: 1px solid #2f4857 !important;
 }
 /* 14-6-2023 sudha sri */
@@ -1499,4 +1501,13 @@ a.dropdown-toggle.circlebg-none-v:hover {
   background-color: #d9edf7 !important;
   border-color: #bce8f1 !important;
   color: #31708f !important;
+}
+/* 27-06-2023 */
+.option-color {
+  color: #fff !important;
+}
+
+input.ng-valid.ng-dirty.ng-touched {
+  border: none !important;
+  outline: none !important;
 }

@@ -223,13 +223,13 @@
         </div>
 
         <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
           
         </div>
         <div class="pull-right" *ngIf="!preview && showCustomForm">
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Loading.....

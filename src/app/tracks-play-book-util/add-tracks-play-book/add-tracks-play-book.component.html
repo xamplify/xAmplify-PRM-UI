@@ -269,7 +269,7 @@
             </ckeditor>
           </div>
           <div class="row" style="margin: 10px 0px -18px;">
-            <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-1')"
+            <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-1')"
               translate>Previous</button>
             <button type="submit" class=" btn Btn-Green pull-right" (click)="changeActiveTab('step-3');"
               [disabled]="!isStepTwoValid" translate>Next</button>
@@ -412,7 +412,7 @@
               <strong>No Assets Found.</strong>
             </div>
             <div style="padding: 0px 0px 15px 0px;">
-              <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-2')"
+              <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-2')"
                 translate>Previous</button>
               <button type="submit" class=" btn Btn-Green pull-right" (click)="changeActiveTab('step-4');"
                 [disabled]="!isStepThreeValid" translate>Next</button>
@@ -432,7 +432,7 @@
         [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
-      <button type="button" class="btn btn-default pull-left" (click)="changeActiveTab('step-3')"
+      <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
         <button class="btn btn-primary" type="submit" [disabled]="!tracksPlayBook.isValid"
@@ -641,8 +641,8 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
-            *ngIf="!authenticationService.isShowForms">Close</span><span
+        <a data-dismiss="modal"  style="float: right"><span class="btn Btn-Gray"
+            *ngIf="!authenticationService.isShowForms">Close</span><span class="btn Btn-Green"
             *ngIf="authenticationService.isShowForms">Submit</span></a>
       </div>
     </div>
@@ -766,7 +766,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn Btn-Gray" style="float: right"><span>Close</span></a>
       </div>
     </div>
   </div>
@@ -874,8 +874,8 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
-            *ngIf="!authenticationService.isShowForms">Close</span><span
+        <a data-dismiss="modal" style="float: right"><span class="btn Btn-Gray"
+            *ngIf="!authenticationService.isShowForms">Close</span><span class="btn Btn-Green"
             *ngIf="authenticationService.isShowForms">Submit</span></a>
       </div>
     </div>
@@ -1027,7 +1027,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+        <a data-dismiss="modal" class="btn Btn-Gray" id="bottom-right">Close</a>
       </div>
     </div>
   </div>
@@ -1151,7 +1151,7 @@
 
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right" (click)="closeAssetModal()"><span>Close</span></a>
+        <a data-dismiss="modal" class="btn Btn-Gray" style="float: right" (click)="closeAssetModal()"><span>Close</span></a>
       </div>
     </div>
   </div>
@@ -1173,7 +1173,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        <a data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
       </div>
     </div>
   </div>
@@ -1233,7 +1233,7 @@
       <div class="modal-footer">
         <div class="pull-right">
           <a class="btn btn-primary" (click)="updateDescriptionWithAssetUrl()"><span>Confirm</span></a>
-          <a class="btn btn-default" style="padding-left: 5px;" (click)="closeLinkTitlePopup()"><span>Close</span></a>
+          <a class="btn Btn-Gray" style="padding-left: 5px;" (click)="closeLinkTitlePopup()"><span>Close</span></a>
         </div>
       </div>
     </div>

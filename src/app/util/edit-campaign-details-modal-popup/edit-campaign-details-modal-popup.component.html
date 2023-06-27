@@ -180,7 +180,7 @@
                  </div>
             </ng-container>
             <div class="modal-footer" *ngIf="!loader">
-                <button type="button" class="btn btn-default" (click)="closePopup()" translate>Close</button>
+                <button type="button" class="btn Btn-Gray" (click)="closePopup()" translate>Close</button>
                 <button *ngIf="!dataUpdated" [disabled]="buttonClicked" type="button" class="btn btn-primary"  (click)="update();buttonClicked=true" translate>Update</button>
             </div>
         </div>

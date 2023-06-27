@@ -34,7 +34,7 @@
   color: #fff;
   /* background-color: #00a6e8;
     border: 1px solid #00a6e8; */
-  border-radius: 0;
+  border-radius: 2;
   padding: 5px 25px;
   text-transform: lowercase;
   letter-spacing: 1px;
@@ -43,16 +43,18 @@
   /* color: #FFF;
     background-color: #fff;
     border: 1px solid #00a6e8; */
-  border-radius: 0;
+  border-radius: 2;
   padding: 5px 25px;
   text-transform: lowercase;
   letter-spacing: 1px;
 }
 .videoViews {
-  border-bottom: 1px solid #c3c0c0;
+  border: 1px solid #c3c0c0;
   margin-bottom: 10px;
   width: 50%;
   text-align: right;
+  border-radius: 2px;
+  margin-top: 10px;
 }
 .viewsh4 {
   color: #777;
@@ -271,7 +273,6 @@ textarea {
   top: -317px;
   margin-bottom: -300px;
 }
-
 
 /* 23-06-2023 */
 .cance-icon-alignment {
