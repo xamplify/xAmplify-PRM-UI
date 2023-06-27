@@ -210,7 +210,7 @@
                                                                 </switch>
                                                             </div>
                                                             <!--To Partner-->
-                                                            <div class="col-sm-11 col-xs-12 mToPartner" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11 col-xs-12 mToPartner" style="padding: 0; margin-left: 100px;margin-top: -32px;display:flex;">
                                                                 <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
                                                                     <strong>
                                                                         <ng-container *ngIf="channelCampaignFieldName=='tp'">
@@ -279,7 +279,7 @@
                                                         (statusChange)="setUnsubscribeLink($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
+                                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
                                                             title="Show / Hide Unsubscribe Link"
                                                             style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
