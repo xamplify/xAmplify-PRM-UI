@@ -5,7 +5,7 @@
              <button type="button" class="close-circle" (click)="closePopup()">
              <i class="fa fa-times" aria-hidden="true"></i>
              </button>
-             <h4 class="modal-title text-center">This list is associated with the following campaigns</h4>
+             <h4 class="modal-title text-center">Please select campaigns</h4>
           </div>
           <div class="modal-body">
              <div class="thank-you-pop" *ngIf="sendSuccess">
@@ -105,7 +105,7 @@
        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
        <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
           <button type="submit" class="btn Btn-Green" [disabled]="selectedCampaignIds?.length==0" *ngIf="!sendSuccess" (click)="sendCampaigns()">Share</button>
-          <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
+          <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
        </div>
     </div>
  </div>

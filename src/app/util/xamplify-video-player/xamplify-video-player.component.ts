@@ -15,10 +15,11 @@ declare const $:any, videojs: any;
 export class XamplifyVideoPlayerComponent implements OnInit {
 
   modalPopupId= "xamplify-video-player-modal-popup";
-  videoTitle = "This is Video Title";
+  videoTitle = "";
   fullScreenMode =false;
   @Input() videoId = 0;
   @Output() xamplifyVideoPlayerEmitter = new EventEmitter();
+  @Input() openVideoPlayerInModalPopup:boolean;
   videoFile: SaveVideoFile = new SaveVideoFile();
   modalPopupLoader = false;
   videoWidth: string;
@@ -197,19 +198,19 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('.h-video').remove();
     this.videoUtilService.player360VideoJsFiles();
     this.videoUtilService.video360withm3u8();
-    let str = '<video id=videoId  poster=' + this.posterImg + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+    let str = '<video id=xamplify-video-player-id  poster=' + this.posterImg + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
     $('#xamplify-video-player').append(str);
     this.videoUrl = this.videoFile.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-        this.videoUrl = "https://aravindu.com/vod/videos/54888/26062023/MSDhoni1831687796167215_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
+        this.videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
       }else{
        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
       }
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
-    const player = videojs('videoId').ready(function () {
+    const player = videojs('xamplify-video-player-id').ready(function () {
         this.hotkeys({
             volumeStep: 0.1, seekStep: 5, enableMute: true,
             enableFullscreen: false, enableNumbers: false,
@@ -338,6 +339,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
 
 
   ngOnInit() {
+    this.modalPopupLoader = true;
     if(window.innerHeight<= 600 || window.innerWidth<= 768 ){ 
       this.videoWidth = '260px';
     }else if(window.innerWidth <= 992) {
@@ -345,9 +347,10 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     }else{  
       this.videoWidth = '360px';
     }
-    this.modalPopupLoader = true;
     $('#xamplify-video-player').empty();
-    this.referenceService.openModalPopup(this.modalPopupId);
+    if(this.openVideoPlayerInModalPopup){
+        this.referenceService.openModalPopup(this.modalPopupId);
+    }
     this.videoFileService.getVideoById(this.videoId,'DRAFT').subscribe(
       (response: any)=>{
         if(response.message=='NO MOBINARS FOUND FOR SPECIFIED ID'){
@@ -409,6 +412,10 @@ transperancyControllBar(value: any) {
   }
 
   callEmitter(){
+    $('#xamplify-video-player').empty();
+    $('#xamplify-video-player-id').remove();
+    $('.p-video').remove();
+    this.videoJSplayer.pause();
     this.xamplifyVideoPlayerEmitter.emit();
   }
 

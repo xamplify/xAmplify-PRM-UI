@@ -419,9 +419,9 @@ tr > td > h6 {
   pointer-events: all;
   width: 25px !important;
   right: 60px !important;
-  top: 6px !important;
-  background: #ffffff !important;
-  color: #008fd5 !important;
+  top: 4px !important;
+  background: #ffffff;
+  color: #008fd5;
   font-size: 13px !important;
   position: absolute !important;
 }

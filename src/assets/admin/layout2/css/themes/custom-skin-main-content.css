@@ -161,7 +161,7 @@ ul.alt-row-style1 li a {
   color: var(---text-color) !important;
 }
 .td-new-n {
-  background-color: var(--page-content) !important;
+  background-color: var(--div-bg-color) !important;
   color: var(---text-color) !important;
   border: 1px solid var(--border-color) !important;
 }
@@ -238,7 +238,8 @@ ul.alt-row-style1 li:hover,
   border-bottom: 1px solid var(--border-color) !important;
 }
 .col-block.col-block-disable,
-.bg-card-header {
+.bg-card-header,
+.clear-search {
   background-color: var(--div-bg-color) !important;
 }
 .col-block.col-block-active {
@@ -250,7 +251,8 @@ ul.alt-row-style1 li:hover,
   border: 1px solid var(--border-color) !important;
 }
 .form-body label,
-.form-group label {
+.form-group label,
+.videoViews {
   color: var(---text-color) !important;
 }
 /*** table ***/
@@ -693,8 +695,9 @@ select {
 .border-cu {
   border: 1px solid var(--border-color) !important;
 }
-.alert-warning,
-.register_deal {
+/* .alert-warning,
+.register_deal */
+.alert-warning {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
@@ -927,8 +930,9 @@ textarea:focus {
   background-color: var(--div-bg-color) !important;
 }
 .flatpickr-calendar.showTimeInput.hasTime .flatpickr-time,
-.input-group-addon 
-/**,.input-group-btn**/ {
+.input-group-addon, 
+/**,.input-group-btn**/
+.videoViews {
   border: 1px solid var(--border-color) !important;
 }
 .panel-info > .panel-heading {
@@ -1288,6 +1292,7 @@ a.dropdown-toggle.circlebg-none-v {
 a.dropdown-toggle.circlebg-none-v:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .page-header.navbar
   .top-menu
@@ -1296,6 +1301,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   .dropdown-toggle.circlebg-color-bell-v:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .page-header.navbar
   .top-menu
@@ -1304,20 +1310,29 @@ a.dropdown-toggle.circlebg-none-v:hover {
   .dropdown-toggle.circlebg-color-bell-v {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
-/* 23-6-2023 sudha sri */
-h6.view-banner.published,
-h5.view-banner.published,
-h6.view-banner,
-h5.view-banner {
-  color: var(--title-heading--text) !important;
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
+  color:var(--top-button-value-color) !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
+  color: var(--top-button-value-color) !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+  color: var(--top-button-value-color) !important;
 }
 .btn-primary-light {
   background-color: var(--page-content) !important;
+}
+/* 27-6-2023  */
+
+.option-color {
+  color: var(--title-heading--text) !important;
 }

@@ -60,6 +60,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   contentIndexInView: number;
   isCurrentQuizSubmitted: boolean = false;
   selectedVideoId = 0;
+  videoLoader: boolean;
 
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService,
     public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService,
@@ -173,6 +174,11 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   viewContent(asset: any, index: number) {
+   this.assetViewLoader = true; 
+   this.isVideo = false;
+   this.selectedVideoId = 0;
+   setTimeout(() => {
+    this.isVideo = asset.dam!=undefined && asset.dam.assetType == 'mp4';
     if (!asset.typeQuizId) {
       this.contentIndexInView = index;
       this.showTracksPlayBook = false;
@@ -183,9 +189,16 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
       this.referenceService.goToTop();
       this.setProgressAndUpdate(asset.id, ActivityType.OPENED, false);
     } else if (asset.typeQuizId) {
-      //this.assetDetails = asset.quiz;
       this.viewQuiz(asset);
     }
+    if(this.isVideo){
+      this.selectedVideoId = this.assetDetails.videoId;
+      this.assetPreview(this.assetDetails);
+      this.videoLoader = false;
+    }
+    this.assetViewLoader = false; 
+
+   }, 300);
   }
 
   viewQuiz(asset: any) {
@@ -226,11 +239,7 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   assetPreview(assetDetails: any) {
     if (assetDetails.beeTemplate) {
       this.previewBeeTemplate(assetDetails);
-    }else if(assetDetails.assetType == 'mp4'){
-      this.isVideo = true;
-      this.filePath = assetDetails.assetPath + '?access_token=' + this.authenticationService.access_token;
-      this.selectedVideoId = assetDetails.videoId;
-    }else {
+    }else if(assetDetails.assetType != 'mp4') {
       let assetType = assetDetails.assetType;
       this.filePath = assetDetails.assetPath;
       if (assetType == 'mp3') {
@@ -360,7 +369,14 @@ export class PreviewTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   xamplifyVideoPlayerReceiver(event:any){
+    this.closeVideoPlayer();
+  }
+
+  closeVideoPlayer(){
     this.isVideo = false;
+    if(this.selectedVideoId>0){
+      $('#asset-preview-'+this.selectedVideoId).show(600);
+    }
     this.selectedVideoId = 0;
   }
 

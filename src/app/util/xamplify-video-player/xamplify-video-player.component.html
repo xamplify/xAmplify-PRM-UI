@@ -1,36 +1,15 @@
-<!--Modal Popup For Video Player----------->
-<div class="modal right rmv-overflow" id="xamplify-video-player-modal-popup" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog  modal-sm popup-align">
-      <div class="modal-content mPad col-lg-12 col-md-12">
-          <div class="modal-header">
-              <button type="submit"  class="btn green-haze col-lg-1 col-md-1 float-right" (click)="close()">Close</button>
-              <h4 class="modal-title text-center col-lg-10 col-md-10 title-pd" *ngIf="!modalPopupLoader">{{videoFile?.title}}</h4>
-          </div>
-          <div class="modal-body">
-              <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
-                <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-              <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader || videoStatusCode==404">
-                <div id="overLayImage"></div>
-                <div id="overlay-logo" class="video-js"
-                  [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
-                  <a [href]="videoFile?.brandingLogoDescUri"
-                    target="_blank"
-                    [class.disabled]="videoFile?.brandingLogoDescUri===null">
-                    <img id="imageDivHide" *ngIf="videoFile?.brandingLogoUri"
-                    [src]="authenticationService?.MEDIA_URL + videoFile?.brandingLogoUri"
-                    class="img-responsive">
-                  </a>
-                </div>
-                <div id="xamplify-video-player"></div>
-              </div>
-              <div class="alert alert-danger text-center" *ngIf="videoStatusCode==404">
-                <strong>Video Not Found.</strong>
-              </div>
-              </div>
-          </div>
-          <div class="modal-footer">
-              
-          </div>
-      </div>
+<app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+ <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader">
+  <div id="overLayImage"></div>
+  <div id="overlay-logo" class="video-js"
+    [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
+    <a [href]="videoFile?.brandingLogoDescUri"
+      target="_blank"
+      [class.disabled]="videoFile?.brandingLogoDescUri===null">
+      <img id="imageDivHide" *ngIf="videoFile?.brandingLogoUri"
+      [src]="authenticationService?.MEDIA_URL + videoFile?.brandingLogoUri"
+      class="img-responsive">
+    </a>
   </div>
-</div>
+  <div id="xamplify-video-player"></div>
+</div> 

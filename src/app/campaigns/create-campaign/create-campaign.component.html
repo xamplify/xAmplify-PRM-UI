@@ -210,7 +210,7 @@
                                                                 </switch>
                                                             </div>
                                                             <!--To Partner-->
-                                                            <div class="col-sm-11 col-xs-12 mToPartner" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11 col-xs-12 mToPartner" style="padding: 0; margin-left: 100px;margin-top: -32px;display:flex;">
                                                                 <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">
                                                                     <strong>
                                                                         <ng-container *ngIf="channelCampaignFieldName=='tp'">
@@ -279,7 +279,7 @@
                                                         (statusChange)="setUnsubscribeLink($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
+                                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
                                                             data-placement="top" aria-hidden="true"
                                                             title="Show / Hide Unsubscribe Link"
                                                             style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
@@ -979,7 +979,7 @@
                                 </div>
                             </div>
                             <button type="button" style="float: left;"
-                                class="btn btn-default m10"
+                                class="btn Btn-Gray m10"
                                 (click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
                             <button type="button" style="float: right;"
                                 class="btn btn Btn-Green m10"
@@ -1170,8 +1170,8 @@
                              <ng-template *ngIf="!campaign?.oneClickLaunch" [ngTemplateOutlet]="previousButton"></ng-template>
                              <ng-template #previousButton>
                              <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;"> 
-                            <button *ngIf="campaignType=='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
-                            <button *ngIf="campaignType!='video'" type="button"  class="btn btn-default margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
+                            <button *ngIf="campaignType=='video'" type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
+                            <button *ngIf="campaignType!='video'" type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
                             <button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </ng-template>
@@ -1389,7 +1389,7 @@
                                                 </app-pagination>
                                             </div>
                                             <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
-                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
+                                            <button type="button" class="btn Btn-Gray pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
                                         </div>
                                         </div>
@@ -1588,7 +1588,7 @@
                                             <div style="text-align:left;padding-left: 14px;padding-right: 12px; " [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
-                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
+                                            <button type="button" class="btn Btn-Gray pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
                                             <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
                                         </div>
                                     </form>
@@ -1621,13 +1621,13 @@
                                                             </h4>
                                                             <h4>
                                                                 <ng-container *ngIf="campaignType=='regular'">
-                                                                    <img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
+                                                                    <img style="margin: 20px auto;height: 85px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.svg">
                                                                 </ng-container>
                                                                 <ng-container *ngIf="campaignType=='landingPage'">
-                                                                    <img style="margin: 0 auto;height: 106px;" alt="Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
+                                                                    <img style="margin: 20px auto;height: 85px;" alt="Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.svg">
                                                                 </ng-container>
                                                                 <ng-container *ngIf="campaignType=='survey'">
-                                                                    <img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/survey.png">
+                                                                    <img style="margin: 20px auto;height: 85px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/survey.svg">
                                                                 </ng-container>
                                                             </h4>
                                                         </div>
@@ -2547,7 +2547,7 @@
 
                                 <div class="portlet-title border-none">
                                     <div class="col-xs-12 center-block mTop" style="padding-top: 6px;">
-                                        <button type="button" class="btn btn-default mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
+                                        <button type="button" class="btn Btn-Gray mBtnAlign" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green mBtnAlign" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
                                         <button *ngIf="campaignType!='landingPage'" type="button" class="btn green mBtnAlign" (click)="spamCheck()" style="width: 10em;" translate>Spam Check</button>
@@ -2600,7 +2600,7 @@
                         <div id="htmlContent"></div>
                     </div>
                     <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+                        <a data-dismiss="modal" class="Btn-Gray" style="float: right" translate>Close</a>
                     </div>
                 </div>
             </div>
@@ -2674,7 +2674,7 @@
              <app-email-spam-check *ngIf="emailTemplate" [emailTemplate]="emailTemplate"></app-email-spam-check>
           </div>
           <div class="modal-footer">
-             <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+             <a href="javascript:void(0)" data-dismiss="modal" class="Btn-Gray" style="float: right" translate>Close</a>
           </div>
        </div>
     </div>
@@ -2703,7 +2703,7 @@
              </div>
           </div>
           <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-             <button type="button" class="btn btn-default" (click)="closeFilterPopup()" translate>Cancel</button>
+             <button type="button" class="btn Btn-Gray" (click)="closeFilterPopup()" translate>Cancel</button>
              <button type="button" class="btn btn-primary" (click)="closeFilterPopup()" translate>Apply</button>
           </div>
        </div>
