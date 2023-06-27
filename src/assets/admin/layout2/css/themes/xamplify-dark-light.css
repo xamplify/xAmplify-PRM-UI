@@ -297,7 +297,8 @@ ul.alt-row-style1 li:hover,
   border-bottom: 1px solid #2f4857 !important;
 }
 .col-block.col-block-disable,
-.bg-card-header {
+.bg-card-header,
+.clear-search  {
   background-color: #2b3c46 !important;
 }
 .col-block.col-block-active {

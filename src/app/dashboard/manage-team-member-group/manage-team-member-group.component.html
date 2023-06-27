@@ -96,7 +96,7 @@
       </div>
       <div id="right">
         <button *ngIf="!groupDto?.previewGroup"  type="button" [disabled]="!groupDto.isValidForm"  class="btn btn-primary" translate (click)="saveOrUpdate()">{{groupSubmitButtonText}}</button>
-        <button type="button"  class="btn btn-default" (click)="goToManageOrPreview()" translate>Cancel</button>
+        <button type="button"  class="btn Btn-Gray" (click)="goToManageOrPreview()" translate>Cancel</button>
       </div>
     </form>
   </div>

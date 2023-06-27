@@ -925,7 +925,7 @@
 			 </div>
 		  </div>
 		  <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-		  style="float:left;" class="btn btn-default" (click)="resetTabs('details')">Previous</button>
+		  style="float:left;" class="btn Btn-Gray" (click)="resetTabs('details')">Previous</button>
 		  <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 		  style="float: right;" class="btn btn Btn-Green"
 		  [disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')"
@@ -1107,7 +1107,7 @@
 	<app-pagination [class.disabled]="isPreviewEvent" [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
 	(notifyParent)="setPage($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
  </div>
- <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn btn-default" (click)="resetTabs('recipients')">Previous</button>
+ <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float:left;" class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
  <button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button" style="float: right;" class="btn btn Btn-Green" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
  </div>
  <!--    End Step three templates -->
@@ -1581,7 +1581,7 @@
  </div>
  <div class="portlet-title border-none" [hidden]="isPreviewEvent">
 	<div class="col-xs-12 center-block" [class.disabled]="eventError.eventExpiredError">
-	   <button  *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="font-weight: 600;width: 10em;" class="btn btn-default mBtnAlign" (click)="resetTabs('templates')">Previous</button>
+	   <button  *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" type="button" style="font-weight: 600;width: 10em;" class="btn Btn-Gray mBtnAlign" (click)="resetTabs('templates')">Previous</button>
 	   <button type="submit" *ngIf="checkLaunchOption=='NOW'" class="btn btn-primary button-border" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'NOW')">Launch</button>
 	   <button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'" class="btn btn-warning button-border Sch-class" style="width: 10em;" (click)="scheduleCampaign()">Schedule</button>
 	   <button type="submit" *ngIf="checkLaunchOption=='SAVE'"  class="btn green mBtnAlign button-border" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
@@ -1688,7 +1688,7 @@
 			 <div id="htmlContent"></div>
 		  </div>
 		  <div class="modal-footer">
-			 <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+			 <a href="javascript:void(0)" data-dismiss="modal" class="Btn-Gray" style="float: right">Close</a>
 		  </div>
 	   </div>
 	</div>
@@ -1706,7 +1706,7 @@
 			 <app-email-spam-check *ngIf="eventCampaign.emailTemplate" [emailTemplate] = "eventCampaign.emailTemplate"></app-email-spam-check>
 		  </div>
 		  <div class="modal-footer">
-			 <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+			 <a href="javascript:void(0)" data-dismiss="modal" class="Btn-Gray" style="float: right">Close</a>
 		  </div>
 	   </div>
 	</div>
@@ -1808,7 +1808,7 @@
 			 </div>
 		  </div>
 		  <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-			 <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
+			 <button type="button" class="btn Btn-Gray" (click)="closeFilterPopup()">Cancel</button>
 			 <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
 		  </div>
 	   </div>

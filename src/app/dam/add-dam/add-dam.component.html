@@ -206,7 +206,7 @@
             </form>
          </div>
          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
-            <button class="btn btn-default" type="reset" (click)="hidePopup();" translate>Cancel</button>
+            <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>
             <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
             <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
          </div>
