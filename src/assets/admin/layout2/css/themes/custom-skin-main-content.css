@@ -239,7 +239,7 @@ ul.alt-row-style1 li:hover,
 }
 .col-block.col-block-disable,
 .bg-card-header,
-.clear-search  {
+.clear-search {
   background-color: var(--div-bg-color) !important;
 }
 .col-block.col-block-active {
@@ -1312,19 +1312,12 @@ a.dropdown-toggle.circlebg-none-v:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
 }
-/* 23-6-2023 sudha sri */
-h6.view-banner.published,
-h5.view-banner.published,
-h6.view-banner,
-h5.view-banner {
-  color: var(--title-heading--text) !important;
-}
+
 .btn-primary-light {
   background-color: var(--page-content) !important;
 }
 /* 27-6-2023  */
 
-.option-color{
+.option-color {
   color: var(--title-heading--text) !important;
 }
- 
