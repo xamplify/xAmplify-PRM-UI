@@ -1500,3 +1500,12 @@ a.dropdown-toggle.circlebg-none-v:hover {
   border-color: #bce8f1 !important;
   color: #31708f !important;
 }
+/* 27-06-2023 */
+.option-color{
+  color: #fff !important;
+}
+ 
+input.ng-valid.ng-dirty.ng-touched {
+  border: none !important;
+  outline: none !important;
+}

@@ -1321,3 +1321,9 @@ h5.view-banner {
 .btn-primary-light {
   background-color: var(--page-content) !important;
 }
+/* 27-6-2023  */
+
+.option-color{
+  color: var(--title-heading--text) !important;
+}
+ 
