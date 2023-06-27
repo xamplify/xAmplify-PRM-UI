@@ -201,24 +201,25 @@ a.dropdown-toggle.circlebg-color-bell-v{
   font-size: 13px;
   border: 1px solid #cccccc;
   text-align: center;
-  color: #008fd5;
+  color: #333;
 }
 a.dropdown-toggle.circlebg-color-bell-v:hover{
-  color: #ffffff !important;
+  color: #333;
 }
 a.dropdown-toggle.circlebg-color-bell-v i {
   font-size: 15px !important;
 }
 a.dropdown-toggle.circlebg-none-v {
-  padding: 6px 0px;
+  padding: 6.4px 0px;
   border: 1px solid #cccccc;
   border-radius: 30px;
   margin-top: 18px;
   background: transparent;
+  color: #333;
 }
 a.dropdown-toggle.circlebg-none-v:hover{
-  background: #008fd5;
-  color: #fff;
+  background: #e8eaed;
+  color: #333;
 }
  /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > i {
   color: #0095da;
@@ -228,21 +229,21 @@ a.dropdown-toggle.circlebg-none-v:hover{
   color: #0095da;
 } */
 .page-header.navbar .top-menu .navbar-nav> li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
-  color: #ffffff;
+  color: #333;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
-  background-color: #008fd5;
-  color: #fff;
+  background: #e8eaed;
+  color: #333;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
-  background-color: #008fd5;
+  background-color: #e8eaed;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
-  color: #fff;
-}
-.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > span {
-  color: #fff;
-}
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #333;
+} */
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > span {
+  color: #333;
+} */
 .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
   font-family: 'Gantari',"Open Sans", sans-serif;
   position: absolute;
@@ -256,9 +257,15 @@ a.dropdown-toggle.circlebg-none-v:hover{
   font-size: 10px !important;
 }
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-  background-color: #008fd5;
-  color:#ffffff;
+  background: #e8eaed;
+  color: #333;
 } 
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #333;
+}
+
+
+
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > .username {
   color: #008fd5;
 } */
