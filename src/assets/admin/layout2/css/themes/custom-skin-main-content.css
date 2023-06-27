@@ -1291,6 +1291,7 @@ a.dropdown-toggle.circlebg-none-v {
 a.dropdown-toggle.circlebg-none-v:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .page-header.navbar
   .top-menu
@@ -1299,6 +1300,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   .dropdown-toggle.circlebg-color-bell-v:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .page-header.navbar
   .top-menu
@@ -1307,14 +1309,24 @@ a.dropdown-toggle.circlebg-none-v:hover {
   .dropdown-toggle.circlebg-color-bell-v {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
   background-color: var(--top-buton-color) !important;
   opacity: 0.8;
+  color:var(--top-button-value-color) !important;
 }
-
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
+  color:var(--top-button-value-color) !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
+  color: var(--top-button-value-color) !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+  color: var(--top-button-value-color) !important;
+}
 .btn-primary-light {
   background-color: var(--page-content) !important;
 }

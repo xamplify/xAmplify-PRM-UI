@@ -1490,6 +1490,21 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .nav .open > a:hover {
   background-color: #5a738e !important;
 }
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
+  color: #fff !important;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #fff !important;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  color:#fff !important;
+} 
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+  color: #fff !important;
+}
+
+
+
 
 .alert-success {
   background-color: #dff0d8 !important;
