@@ -692,7 +692,7 @@
                                 <textarea id="copyFromclipTextArea" class="textareaNumber"
                                           title="Calendar View" 
                                     [(ngModel)]="clipboardTextareaText"
-                                    data-toggle="tooltip" data-placement="bottom" title="please fill out this form"
+                                         title="please fill out this field"
                                     placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
@@ -1670,12 +1670,14 @@
                                     <th *ngIf="authenticationService.contactsCount" scope="row"
                                         translate>#Contacts <span id="tooltip-helper"> <i
                                             class="fa fa-question-circle" aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
                                     </span>
                                     </th>
                                     <th scope="row" translate>Sign up Notification <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle"
                                             aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                     </th>
@@ -1683,6 +1685,7 @@
                                         style="text-align: center;" scope="row" translate>Team Member Group <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle"
                                             aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                     </th>
@@ -1721,6 +1724,7 @@
                                                     ({{teamMemberGroup?.teamMembersCount}})</option>
                                             </select> <span class="input-group-btn">
                                                 <button title="Preview Modules"
+                                                data-toggle="tooltip" data-placement="bottom"
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
@@ -1728,6 +1732,7 @@
                                                 </button>
                                             </span> <span class="input-group-btn">
                                                 <button title="Select Team Members"
+                                                data-toggle="tooltip" data-placement="bottom"
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="getTeamMembers(partner,i)">

@@ -1152,14 +1152,16 @@
 							   <span  *ngIf="!isPartnerUserList">Contact List(s)</span>
 							</ng-container>
 							<ng-container *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner())">
-							   <span>
-								  <ng-container *ngIf="contactListTabName=='Partners'">
+								<ng-container *ngIf="contactListTabName=='Partners'">
+								    <span class="partner-txt-aln-center">
 									 {{authenticationService?.partnerModule?.customName | translate}}
-								  </ng-container>
-								  <ng-container *ngIf="contactListTabName!='Partners'">
+									</span>
+								</ng-container>
+								<ng-container *ngIf="contactListTabName!='Partners'">
+									<span>
 									 {{authenticationService?.partnerModule?.customName}} & Recipients
-								  </ng-container>
-							   </span>
+									</span>
+								</ng-container>
 							</ng-container>
 						 </td>
 						 <td *ngIf="isPreviewEvent" width="55%" style="text-align:center">
