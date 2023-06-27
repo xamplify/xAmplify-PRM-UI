@@ -695,8 +695,9 @@ select {
 .border-cu {
   border: 1px solid var(--border-color) !important;
 }
-.alert-warning,
-.register_deal {
+/* .alert-warning,
+.register_deal */
+.alert-warning {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
