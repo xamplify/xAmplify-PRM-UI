@@ -43,7 +43,7 @@
                                 </span>
                                </div>
                                <div class="inputs mDamTop" style="float: right">
-                                <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh">
+                                <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh" data-toggle="tooltip" data-placement="bottom">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                 </a>
                                 <div class="pb3 float-left">
@@ -323,29 +323,30 @@
                     <div class="modal-dialog modal-copy" role="document">
                         <div class="modal-content mSweetalertWid" style="width: 84%;top: 118px;left: 40px;">
                             <div class="modal-header">
-                                <h4 class="modal-title f-w-600" id="" translate="" ng-reflect-translate="">Are you sure you want to unpublish this track?</h4>
+                                <h4 class="modal-title f-w-600" id="" translate="" >Are you sure you want to unpublish this track?</h4>
                             </div>
                             <div class="modal-body">
-                                <div _ngcontent-c44="">
-                                    <h4  class="modal-title" translate="" ng-reflect-translate="">Please share your reason for unpublishing this Track.</h4>
+                                <div>
+                                    <h4  class="modal-title" translate="" >Please share your reason for unpublishing this Track.</h4>
                                 </div>
-                                <div _ngcontent-c44="" class="form-group" style="margin-top: 15px;">
-                                    &nbsp; <input type="radio"  value="">
-                                    &nbsp; <label class="option-color">Want to update Assets/Quiz</label><br>
-                                    &nbsp; <input type="radio"  value="">
-                                    &nbsp; <label class="option-color">Want to update the Partner/List of partner</label><br>
-                                    &nbsp; <input type="radio"  value="">
-                                    &nbsp; <label class="option-color">Other</label><br>
-                                    </div>
-                                    <div>
-                                    <h4 style="color: red !important;">* When you unpublish the track,all the related analytics will no
-                                 longer exists.</h4>
-                                </div>
+                            
+                                <div  class="form-check" style="margin-top: 15px;">
+                                    <input type="radio"  [(ngModel)]="selectedOption"  name="rdaction" value="Assets_or_Quiz">
+                                    <label class="option-color">Want to update Assets/Quiz</label><br>
+                                    <input type="radio"  [(ngModel)]="selectedOption" name="rdaction" value="Partner_List" >
+                                    <label class="option-color">Want to update the Partner/List of partner</label><br>
+                                    <input type="radio" [(ngModel)]="selectedOption" name="rdaction" value="Other"   >
+                                    <label class="option-color">Other</label><br>
+                                </div>                     
+                            <div>
+                                <h4 style="color: red !important;">* When you unpublish the track,all the related analytics will no
+                                longer exists.</h4>
+                              </div>
                                 <!--bindings={"ng-reflect-ng-if": "false"}-->
                             </div>
                             <div  class="modal-footer">
-                                <button class="btn btn-secondary btn-hvr-text GraY-Btn"  type="button" (click)="closePopUp()" >Cancel</button>
-                                <button  class="btn Btn-Green"  type="button" (click)="unPublishAction(UnPublishedId, false)">Unpublish</button>
+                                <button class="btn btn-hvr-text Btn-Gray"  type="button" (click)="closePopUp()" >Cancel</button>
+                                <button  class="btn Btn-Green"  type="button"  [disabled]="!selectedOption" (click)="unPublishAction(UnPublishedId, false)">Unpublish</button>
                             </div>
                         </div>
                     </div>
