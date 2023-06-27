@@ -1,4 +1,5 @@
-<div style="margin-bottom: 1em;" [hidden]="modalPopupLoader">
+<app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+ <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader">
   <div id="overLayImage"></div>
   <div id="overlay-logo" class="video-js"
     [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
@@ -11,5 +12,4 @@
     </a>
   </div>
   <div id="xamplify-video-player"></div>
-  <button class="btn btn-danger float-right mt5" (click)="close()">Close</button>
-</div>
+</div> 
