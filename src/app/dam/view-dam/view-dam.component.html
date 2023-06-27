@@ -45,7 +45,9 @@
 						 <div class="portlet-title port-heading">
 							<div class="caption">Overview</div>
 						 </div>
-						 <app-xamplify-video-player *ngIf="loadVideoPlayer" [videoId]="selectedAsset?.videoId"></app-xamplify-video-player>
+						 <div class="col-md-12 col-lg-12" *ngIf="loadVideoPlayer">
+							<app-xamplify-video-player  [videoId]="selectedAsset?.videoId"></app-xamplify-video-player>
+						 </div>
 						 <div style="margin-left: 10px;">
 							<h2 class="text-wrap" title="{{assetDetailsViewDto?.assetName}}">
 							   <strong>{{assetDetailsViewDto?.assetName}}</strong>
