@@ -28,6 +28,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
   replyVideo: boolean;
   pauseVideo: boolean;
   overLaySet: boolean;
+  videoStatusCode = 0;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public videoFileService:VideoFileService,
     public videoUtilService:VideoUtilService,private envService:EnvService ) { }
  
@@ -348,8 +349,12 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player').empty();
     this.referenceService.openModalPopup(this.modalPopupId);
     this.videoFileService.getVideoById(this.videoId,'DRAFT').subscribe(
-      (videoFile: SaveVideoFile)=>{
-            this.videoFile = videoFile;
+      (response: any)=>{
+        if(response.message=='NO MOBINARS FOUND FOR SPECIFIED ID'){
+            this.videoStatusCode = 404;
+        }else{
+            this.videoStatusCode = 200;
+            this.videoFile = response;
             if(this.videoFile.is360video){
                 this.play360Video();
             }else{
@@ -363,7 +368,8 @@ export class XamplifyVideoPlayerComponent implements OnInit {
             if (!this.videoFile.enableVideoController) {
                  this.defaultVideoControllers();
              }
-            this.modalPopupLoader = false;
+        }
+        this.modalPopupLoader = false;
       },error=>{
           this.referenceService.showSweetAlertServerErrorMessage();
           this.close();
