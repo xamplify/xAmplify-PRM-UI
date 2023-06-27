@@ -9,7 +9,7 @@
           <div class="modal-body">
               <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
                 <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-              <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader">
+              <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader || videoStatusCode==404">
                 <div id="overLayImage"></div>
                 <div id="overlay-logo" class="video-js"
                   [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
@@ -22,6 +22,9 @@
                   </a>
                 </div>
                 <div id="xamplify-video-player"></div>
+              </div>
+              <div class="alert alert-danger text-center" *ngIf="videoStatusCode==404">
+                <strong>Video Not Found.</strong>
               </div>
               </div>
           </div>

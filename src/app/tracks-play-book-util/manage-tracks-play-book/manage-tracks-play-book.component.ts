@@ -31,6 +31,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   loggedInUserId = 0;
   UnPublishedId =0 ;
   showFolderView = true;
+  selectedOption : string ;
   message = "";
   customResponse: CustomResponse = new CustomResponse();
   modulesDisplayType = new ModulesDisplayType();
@@ -326,7 +327,7 @@ setViewType(viewType: string) {
     }
   }
 
-  UnpublishedModalPopUp(id: number, isPublish: boolean, learningTrack: any){
+  UnpublishedModalPopUp(id: number){
     this.UnPublishedId =id ;
     $('#unpublished-modal').modal('show');
   }
@@ -334,13 +335,16 @@ setViewType(viewType: string) {
   unPublishAction(id: number, isPublish: boolean,){
     if(this.UnPublishedId != 0){
       this.ChangePublish(this.UnPublishedId, isPublish);
+      this.selectedOption = null ;
       this.closePopUp()
+      
     }
     this.closePopUp()
   }
 
   closePopUp(){
     $('#unpublished-modal').modal('hide');
+    this.selectedOption = null ;
     this.notifyParentComponent.emit();
   }
 

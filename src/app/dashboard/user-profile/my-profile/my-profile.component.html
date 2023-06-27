@@ -1375,7 +1375,7 @@
                                                             </td>
                                                             <td>
                                                                 <div  class="override-actions">
-                                                                    <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
+                                                                    <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'" data-toggle="tooltip" data-placement="bottom">
                                                                        <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
                                                                        <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
                                                                     </a>
