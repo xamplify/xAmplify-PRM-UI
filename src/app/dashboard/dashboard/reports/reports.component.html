@@ -83,15 +83,11 @@
 			</div>
 			<div class="btn-group pull-right setting-icon-cu" data-toggle="tooltip" data-placement="top" title="Click here to export excel"
 			 [class.disabled]="videoViewsLevelSecond.length == 0" style="margin-top: 4px; cursor:pointer" >
-				<span class="dropdown-toggle setting-icon-alg" data-toggle="dropdown">
-					<i  class="fa fa-cog" style="font-size:20px;"></i>
-
+				<span>
+					<a id="delete_button" (click)="downloadLogs()">  
+					<i  class="fas fa-file-export" style="font-size:15px;margin-right: -4px;"></i>
+				</a>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li>
-						<a id="delete_button" (click)="downloadLogs()"> Export To Excel </a>
-					</li>
-				</ul>
 			</div>
 		</div>
 		<div class="portlet-body clearfix" style="max-width: 100%;">
