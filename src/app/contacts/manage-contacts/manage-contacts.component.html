@@ -372,16 +372,16 @@
                                     style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
                               </td>
                               <td>
-                                 <h4 class="moreipsis" title="{{contactList.name}}">
-                                    <span> {{contactList.name}}</span>
+                                 <h4 class="moreipsis" >
+                                    <span data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}"> {{contactList.name}}</span>
                                  </h4>
-                                 <h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}" translate>
-                                    By <span class='f-w-400'>{{contactList.uploadedBy
+                                 <h5 class='m0 ellipsis'  translate>
+                                    By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
                                     | slice:0:50}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
                                     </span>
                                  </h5>
-                                 <h5 class="mb0 ellipsis" title="{{contactList.companyName}}">
-                                    <strong>{{contactList.companyName | slice:0:50}}</strong> <span
+                                 <h5 class="mb0 ellipsis"  >
+                                    <strong >{{contactList.companyName | slice:0:50}}</strong> <span
                                        *ngIf="contactList.companyName?.length>50">...</span>
                                     <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
                                        <span class="mb0"

@@ -450,9 +450,10 @@
         <div class="modal-content mPad col-lg-12 col-md-12">
             <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" class="btn Btn-Gray col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
-                <button type="submit" [disabled]="!form.isValid"  class="btn Btn-Green col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
-                <h4 class="modal-title text-center col-lg-8 col-md-8 title-pd">{{formTitle}}</h4>
+                <button type="button" class="close-circle"   (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>               
+                <h4 class="modal-title text-center  col-md-8">{{formTitle}}</h4>
             </div>
             <div class="modal-body">
                 <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
@@ -493,7 +494,7 @@
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                
+                <button type="submit" [disabled]="!form.isValid"  class="btn Btn-Green col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>

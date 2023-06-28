@@ -369,18 +369,18 @@
         </div>
         <div class="pull-right" *ngIf="!isVendor && !isPreview && !showSfDealFields">
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
+            class="btn Btn-Green" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
         <div class="pull-right" *ngIf="!isVendor && !isPreview && showSfDealFields">
           <button type="submit" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
-            class="btn green-haze" *ngIf="!dealRegistration.isDeal && !showLoadingButton">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!dealRegistration.isDeal && !showLoadingButton">REGISTER DEAL</button>
           <button type="submit" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
-            class="btn green-haze" *ngIf="dealRegistration.isDeal && !showLoadingButton">UPDATE DEAL</button>
+            class="btn Btn-Green" *ngIf="dealRegistration.isDeal && !showLoadingButton">UPDATE DEAL</button>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Loading.....

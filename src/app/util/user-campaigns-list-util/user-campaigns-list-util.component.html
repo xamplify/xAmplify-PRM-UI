@@ -32,29 +32,30 @@
                                  </span>
                                  <span class="margin-left" style="margin-left: 20px;">
                                      <h6 class='m0 user-email' *ngIf="userDetails?.companyName?.length>0">
-                                         <p class="user-company" title="{{userDetails?.companyName}}">
+                                         <p class="user-company"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.companyName}}">
                                              <span>{{userDetails?.companyName |slice:0:50}}</span>
                                              <span *ngIf="userDetails?.companyName?.length>50">..</span>
                                          </p>
                                        </h6>
                                        <br>
-                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name' title="{{userDetails?.fullName}}">
+                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name'  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.fullName}}">
                                            {{userDetails?.fullName | slice:0:50}}
                                          <span *ngIf="userDetails?.fullName?.length>50">..</span>
                                         </h5>
-                                        <a style="display: table;" title="{{userDetails?.emailId}}">
+                                        <a style="display: table;"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.emailId}}">
                                          {{userDetails?.emailId | slice:0:50}}<span *ngIf="userDetails?.emailId?.length>50">...</span></a>
                                  </span>
                              </div>
                      </div>
                   </div>
-                  <div title="{{totalCampaignsCount}}" class="{{tileClass}} pr0 mtop mWidth">
+                  <div    class="{{tileClass}} pr0 mtop mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
-                        <div class="visual">
+                        <div class="visual" >
                            <i aria-hidden="true" class=""></i>
                         </div>
                         <div class="details">
-                           <div class="number">{{totalCampaignsCount}}</div>
+                           
+                           <div data-toggle="tooltip" data-placement="bottom" title="{{totalCampaignsCount}}" class="number">{{totalCampaignsCount}}</div>
                            <div class="desc">Total Campaigns</div>
                         </div>
                         <span class="morePadding">
@@ -63,13 +64,13 @@
                      </span>
                      </a>
                   </div>
-                  <div title="{{activeCampaignsCount}}" class="{{tileClass}} pr0 mWidth">
+                  <div   class="{{tileClass}} pr0 mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
                         </div>
                         <div class="details">
-                           <div class="number">{{activeCampaignsCount}}</div>
+                           <div data-toggle="tooltip" data-placement="bottom"  title="{{activeCampaignsCount}}" class="number">{{activeCampaignsCount}}</div>
                            <div class="desc">Active Campaigns</div>
                         </div>
                         <span class="morePadding">
@@ -149,7 +150,7 @@
                                   <td>
                                      <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
                                      <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
-                                     <a class="campaign-name-padding" title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
+                                     <a class="campaign-name-padding"  data-toggle="tooltip" data-placement="bottom"  title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
                                        {{campaignAnalytics?.campaignName | slice:0:15}}
                                        <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span> 
                                     </a>
@@ -179,6 +180,7 @@
                                          {{campaignAnalytics?.autoResponsesCount}}</span>
                                        <a class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
+                                         data-toggle="tooltip" data-placement="bottom" 
                                          title="View Auto Response Analytics">
                                          <i class="fa"
                                            [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
@@ -188,7 +190,7 @@
                                   </td>
                                   <td class="center-align">
                                     <div  (click)="viewTimeLine(campaignAnalytics)" >
-                                       <a class="circled-number" title="View History">
+                                       <a class="circled-number"  data-toggle="tooltip" data-placement="bottom"  title="View History">
                                           <i class="fa fa-history action-btn" aria-hidden="true"></i>
                                           </a>
                                        </div>
