@@ -409,7 +409,11 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         visible: false,
       },
       tooltip: {
-        valueSuffix: ''
+        valueSuffix: '',
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
+        }
       },
       plotOptions: {
         bar: {

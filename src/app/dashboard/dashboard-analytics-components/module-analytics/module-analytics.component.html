@@ -4,7 +4,6 @@
 <app-box-loader [countLoader]=4 *ngIf="loader"></app-box-loader>
 <ng-container *ngIf="!loader">
 <div *ngFor="let dto of dashboardModuleAnalyticsViewDtos" data-toggle="tooltip" 
-data-placement="auto" 
  [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
  [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
 <a  class="{{dto.color}}">

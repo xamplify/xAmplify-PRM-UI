@@ -26,13 +26,16 @@
                <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
-                     <div title="{{tileData?.totalPartners}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.totalPartners}}</div>
+                              <div class="number">
+                                 <span data-toggle="tooltip" data-placement="top" title="{{tileData?.totalPartners}}" >
+                                    {{tileData?.totalPartners}}
+                                 </span></div>
                               <div class="desc">Total {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
@@ -41,13 +44,16 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.totalBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
                         <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.totalBalanceInString}}</div>
+                              <div class="number">
+                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.totalBalance}}" >
+                                    {{tileData?.totalBalanceInString}}
+                                 </span></div>
                               <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
@@ -56,13 +62,17 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.usedBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
+                     <div  class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
                         <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.usedBalanceInString}}</div>
+                              <div class="number">
+                                 <span data-toggle="tooltip" data-placement="top" title="$ {{tileData?.usedBalance}}" >
+                                    {{tileData?.usedBalanceInString}}
+                                 </span>
+                                </div>
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
@@ -71,13 +81,14 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.availableBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
                         <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.availableBalanceInString}}</div>
+                              <div class="number">
+                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span></div>
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">
