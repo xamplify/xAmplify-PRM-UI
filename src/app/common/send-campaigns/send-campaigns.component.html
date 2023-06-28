@@ -55,6 +55,12 @@
                 <br>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                 <ng-container *ngIf="!httpRequestLoader.isLoading">
+                  <div class="alert alert-info">
+                     <strong>
+                         **Please be noted that you will only see a list of unshared campaigns. <br/>
+                         **Campaigns that have been chosen will be shared with the {{authenticationService?.partnerModule?.customName}}. It will take some time to process everything. There is no need to reshare it.
+                     </strong>
+                 </div>
                    <div class="table-responsive">
                       <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="campaign-list-table">
                          <thead>
