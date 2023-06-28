@@ -248,7 +248,7 @@
                                 </a>
                                 </div>
                                 <div class="btnAlignPad mbtnAlignPad">
-                                    <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
+                                    <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
                                         <i class="fa fa-reply" aria-hidden="true"></i>
                                     </a>
                                 </div>

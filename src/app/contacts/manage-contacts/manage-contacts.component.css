@@ -348,3 +348,13 @@ h6 {
   background: #5bb2f5;
     color: white;
   }
+  .moreipsis span {
+    position: relative;
+    /* left: 0; */
+    /* right: 0; */
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 30px;
+}
