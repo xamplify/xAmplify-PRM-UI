@@ -167,7 +167,9 @@ export class SortOption {
 
 	shareCampaignSortDropDownOptions = [
 		{ 'name': 'Campaign Name (A-Z)', 'value': 'name-ASC' },
-		{ 'name': 'Campaign Name  (Z-A)', 'value': 'name-DESC' }
+		{ 'name': 'Campaign Name  (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Launched On (ASC)', 'value': 'launchedOn-ASC' },
+		{ 'name': 'Launched On (DESC)', 'value': 'launchedOn-DESC' }
 	];
 
 	activeUsersSortDropDownOptions = [
@@ -381,7 +383,7 @@ export class SortOption {
 	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[3];
 	public selectedDemoRequestSortOption:  any = this.demoRequestSortOptions[7];
 	public selectedCategoryDropDownOption: any = this.categorySortDropDownOptions[0];
-	public selectedShareCampaignDropDownOption: any = this.shareCampaignSortDropDownOptions[0];
+	public selectedShareCampaignDropDownOption: any = this.shareCampaignSortDropDownOptions[3];
 	public selectedActiveUsersSortOption: any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
 	public selectedDamPartnerDropDownOption: any = this.partnerCompaniesDropDownOptions[this.partnerCompaniesDropDownOptions.length - 1];
 	public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
