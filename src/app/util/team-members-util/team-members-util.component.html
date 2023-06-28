@@ -160,7 +160,7 @@
                     <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css btn-primary" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <button class="tm-group-preview-css btn-primary" data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
                   <i class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
@@ -318,7 +318,7 @@
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Team Member Group<span class="required">*</span></label>
-                    <button class="btn btn-info margin-left-negative-fifteen-px" [disabled]="team?.teamMemberGroupId==0" (click)="previewModules(team.teamMemberGroupId)">
+                    <button class="btn btn-info margin-left-negative-fifteen-px" [disabled]="team?.teamMemberGroupId==0" data-toggle="tooltip" data-placement="bottom" title="click to view available modules " (click)="previewModules(team.teamMemberGroupId)">
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">

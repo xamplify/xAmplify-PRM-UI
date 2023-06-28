@@ -256,7 +256,7 @@
 													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
 												</td>
 												<td>
-													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName|
+													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">{{campaign.campaignName|
 														slice:0:25}}
 														<span *ngIf="campaign.campaignName?.length>25">...</span>
 													</h4>
@@ -268,7 +268,7 @@
 													<span align="right">
 														<strong translate>Launched On</strong>
 													</span>
-													<span align="right" title="Upload Date">
+													<span align="right" data-toggle="tooltip" data-placement="bottom" title="Upload Date">
 														<strong>
 															<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchedOn"> </app-timestamp>
 														</strong>
@@ -332,7 +332,7 @@
 													<img class="image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
 												</td>
 												<td>
-													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName|
+													<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">{{campaign.campaignName|
 														slice:0:25}}
 														<span *ngIf="campaign.campaignName?.length>25">...</span>
 													</h4>
@@ -401,10 +401,10 @@
 										<div *ngFor="let campaign of campaignsPagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
 											<div class="grid-box">
 												<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
-												<h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
+												<h4 class="ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 													<span *ngIf="campaign.campaignName?.length>25">...</span>
 												</h4>
-												<h6 class="mt10 mb0" [title]="campaign.launchedBy">By {{campaign.launchedBy | slice:0:15}}<span *ngIf="campaign.launchedBy?.length>15">...</span></h6>
+												<h6 class="mt10 mb0" data-toggle="tooltip" data-placement="bottom" [title]="campaign.launchedBy">By {{campaign.launchedBy | slice:0:15}}<span *ngIf="campaign.launchedBy?.length>15">...</span></h6>
 												<h6 class="mt0"><b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
 												<h6>
 													<span>

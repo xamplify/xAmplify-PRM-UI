@@ -52,6 +52,12 @@ export class BubbleChartComponent implements OnInit {
                         title: {
                                 text: ' '
                         },
+                        tooltip: {
+                                backgroundColor: 'black', 
+                                style: {
+                                  color: '#fff' 
+                                }
+                              },
                         exporting: { enabled: false },
                         credits: { enabled: false },
                         xAxis: {
