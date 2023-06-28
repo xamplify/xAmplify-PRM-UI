@@ -120,11 +120,11 @@
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
-                                                <div class="tag">
+                                                <div class="tag tablegray-tag">
                                                     {{learningTrack.tagNames[0]}}
                                                 </div>
                                                 <ng-container *ngIf="learningTrack.tagNames.length > 1">
-                                                    <div class="tag">
+                                                    <div class="tag tablegray-tag">
                                                         {{learningTrack.tagNames[1]}}
                                                     </div>
                                                 </ng-container>
@@ -135,7 +135,7 @@
                                         <td class="hidden-xs text-center">
                                             <app-timestamp style="display: block;margin-bottom: 4px;" [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                             </app-timestamp>
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
+                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner published" translate>Published</h6>
                                         </td>
                                         <td>
                                             <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" class="row">
@@ -239,7 +239,7 @@
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
+                                <span class="published" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
                             <div [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar" style="padding: 0px 10px;">
                                 <div class="btnAlignPad mbtnAlignPad">

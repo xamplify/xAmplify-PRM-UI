@@ -225,10 +225,10 @@ th {
   border: 1px solid #1c313a !important;
   /* border: 1px solid #2f4857 !important; old one */
 }
-td > button {
+/* td > button {
   background-color: #00a99d !important;
   border-radius: 3px !important;
-}
+} */
 .list-group-item,
 /* input, */
 .card {
@@ -1539,4 +1539,9 @@ a.dropdown-toggle.circlebg-none-v:hover {
 input.ng-valid.ng-dirty.ng-touched {
   border: none !important;
   outline: none !important;
+}
+
+ /* 28-6-2023 table btns,lables and tags*/
+.lightgray-btn:hover {
+  background: #ddd !important;
 }
