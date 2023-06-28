@@ -251,7 +251,7 @@
 					  (click)="saveAs(true)" style="margin-right: 5px;" translate> Save As
 					  </button>
 				   </div>
-				   <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt" style="margin-right: 5px;">
+				   <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9" style="margin-right: 5px;">
 					  <div *ngIf="!clickBoard && !filePrevew"  class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
 						 <div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
 						 data-toggle="modal" data-target="#filterModal">
@@ -300,10 +300,10 @@
 				   <ng-container
 					  *ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 					  && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
-					  <div class="col-xs-12 col-md-6 col-sm-6 p0" style="margin-top: -19px;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+					  <div class="col-xs-12 col-md-6 col-sm-12 p0" style="margin-top: -19px;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
 						 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
 						 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
-						 <div class="btn-group" *ngIf="!isSynchronizationList && !isFormList">
+						 <div class="btn-group mb_pt" *ngIf="!isSynchronizationList && !isFormList">
 							<button id="add_contact" class="btn Btn-Green" (click)="addContactModalOpen()"
 							[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 							translate>

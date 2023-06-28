@@ -1,0 +1,75 @@
+.pb_8{
+    padding-bottom: 8px!important;
+    }
+    /*app-detailed-campaign-analytics */
+    @media only screen and (min-width: 768px) and (max-width: 1281px) { 
+        section.percentage-circle {
+            margin: 0px -22px;
+        }
+        span.dropdown-toggle {
+            float: none!important;
+        }
+        div#vendor-details-tile {
+            word-break: break-all;
+        }
+        .margin-flex{
+            padding-bottom: 12px;
+        }
+        .grid-box{
+            text-align: center;
+            height: 249px;
+        }
+        .bar {
+            width: 230px;
+        }
+        .mp-pt-carrdtop {
+            margin-top: 9px;
+        }
+        .grid-box:hover>.bar {
+            visibility: visible;
+            opacity: 1;
+        }
+        .table-condensed {
+            background-color:unset!important;
+        }
+        .tab_grid{
+         margin-bottom:15px;
+        }
+    }
+    @media only screen and (max-width:578px){
+        div#vendor-details-tile {
+            left: 12px;
+            width: 82.4%!important;
+            
+        }
+        .mb-search{
+            margin-bottom: 11px;
+        }
+        .mb-btn{
+            padding: 6px 10px;
+            border-radius: 3px!important;
+        }
+        .mb-gear{
+            top: 3px;
+            position: relative;
+            font-size: 19px!important;
+        }
+        .grid-box{
+            height: 249px!important;
+        }
+        .table-condensed {
+            background-color:unset!important;
+        }
+        .mt_10{
+            margin-top: 10px;
+        }
+        .mb_pt{
+            padding: 8px 0px;
+        }
+        .mt_9{
+            margin-top: 9px;
+        }
+        .fa-cog {
+         left: unset !important;
+        }
+    }
