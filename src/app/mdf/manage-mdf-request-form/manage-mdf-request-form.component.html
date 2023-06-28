@@ -93,19 +93,19 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a (click)="expandColumns(formDataRow,rowIndex)" title="View More Columns" *ngIf="columns.length>4">
+                                             <a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" data-placement="bottom" title="View More Columns" *ngIf="columns.length>4">
                                              <i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn fa-fa-consistency"aria-hidden="true"></i>
                                              <i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn fa-fa-consistency"aria-hidden="true"></i>
                                              </a>
                                              <!---Change Request-->
-                                             <a title="Change Request" *ngIf="!partnerView">
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Change Request" *ngIf="!partnerView">
                                              <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
                                              <!----Timeline History-->
-                                             <a  title="View History" (click)="goToTimeLine(formDataRow.values[0])">
+                                             <a data-toggle="tooltip" data-placement="bottom" title="View History" (click)="goToTimeLine(formDataRow.values[0])">
                                              <i class="fa fa-history action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
-                                             <a  title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
                                              <i class="fa fa-comment action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
                                           </div>

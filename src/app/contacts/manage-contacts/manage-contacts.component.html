@@ -816,7 +816,7 @@
                </div>
                <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
-                  <div class="portlet-title" style="border:none; margin-top: 10px;">
+                  <div class="portlet-title pb_8" style="border:none; margin-top: 10px;">
                      <div class="caption">
                         <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                         <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
@@ -876,11 +876,11 @@
                            <thead>
                               <tr>
                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <td  align="center" *ngIf="contactsByType.selectedCategory == 'all'">
+                                    <th  align="center" *ngIf="contactsByType.selectedCategory == 'all'">
                                        <input type="checkbox"
                                        name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
                                        id="checkAllExistingContacts" />
-                                    </td>
+                                    </th>
                                     <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                        <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                        (change)="checkAllInvalidContacts($event)" id="checkAllExistingInvalidContacts" />

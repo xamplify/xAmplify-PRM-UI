@@ -39,7 +39,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
+                  <div class="desc" data-toggle="tooltip" data-placement="top" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -65,7 +65,7 @@
                 <div class="details">
                   <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth" style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth"   data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
@@ -86,7 +86,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top" title="{{throughPartnerCampaignsTabName}}">
                     {{throughPartnerCampaignsTabName | slice:0:20}}
                     <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
                   </div>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{approvePartnersCount}}</div>
-                  <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>

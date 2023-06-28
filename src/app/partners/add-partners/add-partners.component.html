@@ -408,14 +408,14 @@
                 </select>
                 </span>
                     <ng-template #actionsButton>
-                        <button class="btn dropdown-toggle" id="save&delete_button"
+                        <button class="btn dropdown-toggle mb-btn" id="save&delete_button"
                             style="color: white; float: right; margin-left: 10px;"
                             [ngClass]="{'Btn-Green': !referenceService.isMobileScreenSize()}"
                             data-toggle="dropdown">
                             <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
                                 <i class="fa fa-angle-down"></i>
                             </span> <span *ngIf="referenceService.isMobileScreenSize()"><i
-                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
+                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog mb-gear"></i></span>
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5"
@@ -489,7 +489,7 @@
                 <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal"
                     (click)="cancelPartners()"><i class="fa fa-times"></i></a>
                 <div class="form-group">
-                    <label for="name" class="col-xs-12 col-sm-2 control-label" translate>Legal
+                    <label for="name" class="col-xs-12 col-sm-3 control-label" translate>Legal
                         Basis Options <span class="danger">*</span>
                     </label>
                     <div id="multiselect-sample" class="control-section">
@@ -523,7 +523,7 @@
             </div>
             </ng-template>
             <div class="row" id="Gfile_preview">
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light">
                         <div class="portlet-title">

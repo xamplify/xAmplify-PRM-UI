@@ -138,21 +138,21 @@
                        <td  class="actions-row">
                           <div class="actions-block override-actions custom-width-icon">
                              <!--Preview--->
-                             <a  title="Preview" (click)="preview(agency.id)" >
+                             <a  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="preview(agency.id)" >
                              <i class="fa fa-eye" aria-hidden="true"></i>
                              </a>
                              <!--Edit--->
-                             <a  title="Edit" (click)="edit(agency.id)" >
+                             <a data-toggle="tooltip" data-placement="bottom"  title="Edit" (click)="edit(agency.id)" >
                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                              </a>
                              <!--Resend Invitation-->
                              <ng-container>
-                                <a title="Resend the invitation email"  (click)="openResendEmailInvitationAlert(agency.id)">
+                                <a data-toggle="tooltip" data-placement="bottom" title="Resend the invitation email"  (click)="openResendEmailInvitationAlert(agency.id)">
                                 <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </a>
                              </ng-container>
                              <!---Delete-->
-                             <a title="Delete"  (click)="showConfirmSweetAlert(agency.id)">
+                             <a data-toggle="tooltip" data-placement="bottom" title="Delete"  (click)="showConfirmSweetAlert(agency.id)">
                              <i class="fa fa-trash red" aria-hidden="true"></i>
                              </a>
                           </div>
@@ -185,7 +185,7 @@
         <span *ngIf="editAgency">Edit {{properties?.agency}}</span>
      </div>
      <div>
-        <a class="close-circle"  title="Go Back" (click)="cancel()">
+        <a class="close-circle" data-toggle="tooltip" data-placement="bottom" title="Go Back" (click)="cancel()">
         <i class="fa fa-close" aria-hidden="true"></i>
         </a>
      </div>

@@ -981,7 +981,7 @@
                              <ng-container
                                 *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                 <div *ngFor="let campaign of pagination.pagedItems; let i= index"
-                                   class="col-xs-12 col-sm-4 col-lg-3">
+                                   class="col-xs-12 col-sm-4 col-lg-3 tab_grid">
                                    <div class="grid-box" style="height:300px">
                                       <img *ngIf="!campaign?.campaignProcessing" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                                       <ng-container *ngIf="campaign?.campaignProcessing">
