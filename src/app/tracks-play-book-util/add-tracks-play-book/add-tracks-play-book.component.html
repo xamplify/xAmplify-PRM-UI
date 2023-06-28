@@ -378,13 +378,14 @@
                                   *ngIf="file.tagNames[0]?.length>5">..</span>
                               </ng-container>
                             </div>
-                            <ng-container *ngIf="file.tagNames.length > 1">
+                            <!-- <ng-container *ngIf="file.tagNames.length > 1">
                               <div class="tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[1]}}">
                                 {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
                               </div>
-                            </ng-container>
+                            </ng-container> -->
                             <span *ngIf="file.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="bottm"
-                              title="{{file.toolTipTagNames}}">...</span>
+                              title="{{file.toolTipTagNames}}" style="font-size: 12px;
+                              padding-left: 4px;">more..</span>
                           </ng-container>
                         </div>
                         <div class="item__actions">
