@@ -1946,16 +1946,6 @@ strong {
   text-overflow: ellipsis;
   width: 100%;
 }
-
-.view-banner-white-labeled {
-  background-color: green;
-  color: white !important;
-  padding: 3px 6px 3px 6px;
-  text-align: center;
-  font-size: 10px;
-  border-radius: 3px;
-}
-
 /* May 23 sudha */
 .list-icons-sm {
   height: 50px;
@@ -1976,6 +1966,9 @@ input#copy-link {
 }
 .published {
   background-color: green !important;
+  width: 75px !important;
+    padding: 5px 10px !important;
+    font-size: 10px !important;
 }
 
 .toggle-info-white-label {
@@ -2185,12 +2178,6 @@ h6.view-banner,
 h5.view-banner {
   color: white !important;
 }
-
-/* 26-6-2023 */
-button {
-  border-radius: 4px;
-}
-
 /* 27-6-2023 */
 .aligncheckbox-lineto-table {
   margin-top: 2px;
@@ -2198,4 +2185,33 @@ button {
   margin-bottom: 0px !important;
   margin-left: 5px;
 }
- 
+
+ /* 28-6-2023 table btns,lables and tags*/
+.lightgray-btn {
+  background: #f1f3fa;
+  border: 1px solid #ddd;
+  border-radius: 3px !important;
+  color: #333;
+}
+.lightgray-btn:hover {
+  background: #ececee;
+}
+.view-banner-white-labeled {
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
+}
+.tag.tablegray-tag {
+  background-color: #c5c5c5 !important;
+  border: 1px solid #b4b4b4 !important;
+  color: #000 !important;
+  border-radius: 2px !important;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+}
+.topand-bottom-padding {
+  margin: 6px 0px !important;
+}

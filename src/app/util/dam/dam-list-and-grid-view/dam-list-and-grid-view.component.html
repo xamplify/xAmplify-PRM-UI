@@ -73,25 +73,6 @@
 														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
 													</span>
 												</h6>
-												<h6 *ngIf="asset.tagNames?.length > 0" style="padding-top: 5px;">
-													<ng-container *ngIf="asset.tagNames?.length > 0">
-														<div class="tag" title="{{asset.tagNames[0]}}">
-															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
-																*ngIf="asset.tagNames[0]?.length>20">..</span>
-															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
-																	*ngIf="asset.tagNames[0]?.length>10">..</span>
-															</ng-container>
-														</div>
-														<ng-container *ngIf="asset.tagNames.length > 1">
-															<div class="tag" title="{{asset.tagNames[1]}}">
-																{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
-															</div>
-														</ng-container>
-														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-															title="{{asset.toolTipTagNames}}">...</span>
-													</ng-container>
-												</h6>
 												<!---XNFR-255-->
 												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published">Published</h6>
 												<h6 *ngIf="asset?.published && asset?.publishingOrWhiteLabelingInProgress" class="view-banner">
@@ -108,6 +89,25 @@
 													</h6>
 												</ng-container>
 												 <!---XNFR-255-->
+												 <h6 *ngIf="asset.tagNames?.length > 0">
+													<ng-container *ngIf="asset.tagNames?.length > 0">
+														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}">
+															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
+																*ngIf="asset.tagNames[0]?.length>20">..</span>
+															</ng-container>
+															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
+																	*ngIf="asset.tagNames[0]?.length>10">..</span>
+															</ng-container>
+														</div>
+														<ng-container *ngIf="asset.tagNames.length > 1">
+															<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}">
+																{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
+															</div>
+														</ng-container>
+														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+															title="{{asset.toolTipTagNames}}">...</span>
+													</ng-container>
+												</h6>
 										</div>
 									</td>
 										<td class="text-center">{{asset?.assetType}}</td>

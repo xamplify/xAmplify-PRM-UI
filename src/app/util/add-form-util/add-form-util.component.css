@@ -1627,8 +1627,6 @@ div.switch5 > input.switch:focus ~ label:before {
 
 .popup-align {
   position: relative !important;
-  top: 67px;
-  height: 89% !important;
   float: right;
 }
 .modal-dialog {
@@ -1642,7 +1640,7 @@ div.switch5 > input.switch:focus ~ label:before {
 #add-form-name-modal {
   padding-right: 0px !important;
 }
-
+/* 
 .rmv-overflow {
   overflow-y: hidden !important;
   background: #00000085;
@@ -1650,7 +1648,7 @@ div.switch5 > input.switch:focus ~ label:before {
 .modal-content {
   overflow-y: hidden !important;
   border: 1px solid #dddddd;
-}
+} */
 .width-btn {
   width: 112px;
   margin-left: 18px;

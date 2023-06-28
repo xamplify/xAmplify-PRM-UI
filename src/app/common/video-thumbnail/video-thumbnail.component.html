@@ -35,7 +35,7 @@
      <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
      </span>
      </span>
-     <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
+     <h6 class='f-w-600 views-draft topand-bottom-padding'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
      <span *ngIf="videoFile?.viewBy!=='DRAFT'">
      <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
      <span *ngIf="!videoFile.views">0 views</span>
@@ -47,26 +47,7 @@
      <h6 *ngIf="processing" class="view-banner" translate>
        <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
      </h6>
-     <!-- tags start -->
-     <h6 style="padding-top: 5px;">
-        <ng-container *ngIf="videoFile?.tagNames?.length > 0">
-           <div class="tag" title="{{videoFile?.tagNames[0]}}">
-              <ng-container *ngIf="videoFile?.tagNames?.length == 1">{{videoFile?.tagNames[0]}}
-              </ng-container>
-              <ng-container *ngIf="videoFile?.tagNames?.length > 1">{{videoFile?.tagNames[0]
-                 | slice:0:25}} <span *ngIf="videoFile?.tagNames[0]?.length>25">...</span>
-              </ng-container>
-           </div>
-           <ng-container *ngIf="videoFile.tagNames.length > 1">
-              <div class="tag" title="{{videoFile.tagNames[1]}}">
-                 {{videoFile.tagNames[1] | slice:0:25}} <span
-                    *ngIf="videoFile.tagNames[1]?.length>25">...</span>
-              </div>
-           </ng-container>
-           <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots" title="{{videoFile.toolTipTagNames}}">...</span>
-        </ng-container>
-     </h6>
-     <!-- tags end -->
+
      <!---XNFR-255-->
      <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
         <span class="view-banner-white-labeled mb5">White-Labeled</span>
@@ -82,6 +63,26 @@
          <span translate>Received From <strong>{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
       </h6>
    </ng-container>
+        <!-- tags start -->
+        <h6 style="padding-top: 5px;">
+         <ng-container *ngIf="videoFile?.tagNames?.length > 0">
+            <div class="tag tablegray-tag" title="{{videoFile?.tagNames[0]}}">
+               <ng-container *ngIf="videoFile?.tagNames?.length == 1">{{videoFile?.tagNames[0]}}
+               </ng-container>
+               <ng-container *ngIf="videoFile?.tagNames?.length > 1">{{videoFile?.tagNames[0]
+                  | slice:0:25}} <span *ngIf="videoFile?.tagNames[0]?.length>25">...</span>
+               </ng-container>
+            </div>
+            <ng-container *ngIf="videoFile.tagNames.length > 1">
+               <div class="tag tablegray-tag" title="{{videoFile.tagNames[1]}}">
+                  {{videoFile.tagNames[1] | slice:0:25}} <span
+                     *ngIf="videoFile.tagNames[1]?.length>25">...</span>
+               </div>
+            </ng-container>
+            <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots" title="{{videoFile.toolTipTagNames}}">...</span>
+         </ng-container>
+      </h6>
+      <!-- tags end -->
    <!---XNFR-255-->
      
      </a>

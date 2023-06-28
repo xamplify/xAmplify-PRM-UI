@@ -170,10 +170,10 @@ th,
 .div.thembgc {
   border: 1px solid var(--border-color) !important;
 }
-td > button {
+/* td > button {
   background-color: #00a99d !important;
   border-radius: 3px !important;
-}
+} */
 .list-group-item,
 /* input, */
 .card {
