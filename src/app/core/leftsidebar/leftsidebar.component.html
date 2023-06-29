@@ -141,7 +141,7 @@
               <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
                  <!--Redistribute Campaign-->
                  <li *ngIf="menuItem?.campaignAccessAsPartner">
-                    <a (click)="startLoader()"  [routerLink]="['./campaigns/partner/all']" >
+                    <a (click)="startLoader()"  [routerLink]="['./campaigns/partner/regular']" >
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Redistribute Campaign</span>
                     </a>

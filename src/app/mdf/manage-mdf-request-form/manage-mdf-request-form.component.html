@@ -52,27 +52,27 @@
                                                       <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
                                                    </div>
                                                    <div class="col-md-10 col-lg-10">
-                                                      <label title="{{columnValue?.values[1]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[1]}}">
                                                       {{columnValue?.values[1] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
                                                       <ng-container *ngIf="columnValue?.values[6].length>0">
-                                                         <label title="{{columnValue?.values[6]}}">
+                                                         <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[6]}}">
                                                             {{columnValue?.values[6] | slice:0:30}}
                                                             <span *ngIf="columnValue?.values[6].length>30">..</span>
                                                          </label><br>
                                                       </ng-container>
-                                                      <label title="{{columnValue?.values[2]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[2]}}">
                                                       {{columnValue?.values[2] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[2].length>30">..</span>
                                                       </label><br>
                                                       <label><strong>Request Created On:</strong></label>
-                                                      <label title="{{columnValue?.values[3]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[3]}}">
                                                       {{columnValue?.values[3]}}
                                                       </label>
                                                       <br>
                                                       <label><strong>Status:</strong></label>
-                                                      <label title="{{columnValue?.values[4]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[4]}}">
                                                       <span class="label label-warning">{{columnValue?.values[4]}}</span>
                                                       </label><br>
                                                    </div>

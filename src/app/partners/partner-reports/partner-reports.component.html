@@ -371,7 +371,7 @@
                   [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-7 col-md-7 p0">
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 p0 mb_6">
                 <div class="btn-group pull-right">
                   <ng-container class='m10 hidden-xs'>
                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
@@ -579,7 +579,7 @@
                   <ng-container
                     *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
-                      class="col-xs-12 col-sm-4 col-lg-3">
+                      class="col-xs-12 col-sm-4 col-lg-3 mt_13">
                       <div class="grid-box">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}

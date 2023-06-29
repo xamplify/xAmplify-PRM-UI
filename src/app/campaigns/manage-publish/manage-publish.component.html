@@ -46,8 +46,7 @@
                     <div class="row m0">
                        <ul class="mix-filter col-xs-12 col-sm-6 col-md-4 p0 m0 mWid"
                           *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                          <li class="filter" (click)="filterCampaigns('NONE',0)"
-                          [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
+                          
                           <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                           [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign || authenticationService?.module?.deletedPartner"
                           translate>
@@ -75,6 +74,8 @@
                           <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                           [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey || authenticationService?.module?.deletedPartner"
                           translate>Survey</li>
+                          <li class="filter" (click)="filterCampaigns('NONE',0)"
+                          [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                           <li class="filter" style="display: none;" translate>Own Template</li>
                        </ul>
                        <div class="page-toolbar col-xs-12 col-sm-6 col-md-8 p0"
@@ -329,19 +330,19 @@
                                    <!---XNFR-255-->
                                 </td>
                                 <td>
-                                   <h4 class="moreipsis" title="{{campaign.campaignName}}">
+                                   <h4 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">
                                       <span><strong>{{campaign.campaignName}}</strong></span>
                                    </h4>
-                                   <h5 class="moreipsis" [title]="campaign.createdBy">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom" [title]="campaign.createdBy">
                                       <span translate> By <strong>{{campaign.createdBy}}</strong></span>
                                    </h5>
-                                   <h5 class="moreipsis" [title]="campaign.companyName">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  [title]="campaign.companyName">
                                       <span translate> From <strong>{{campaign.companyName}}</strong></span>
                                    </h5>
-                                   <h5 class="moreipsis" [title]="campaign.categoryName">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName">
                                       <span translate> Folder <strong>{{campaign.categoryName}}</strong></span>
                                    </h5>
-                                   <h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>
+                                   <h5 *ngIf="campaign.nurtureCampaign" data-toggle="tooltip" data-placement="bottom" [title]="campaign.vendorOrganizationName" translate>
                                    Originated By
                                    <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
                                       *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
@@ -375,7 +376,7 @@
                                             </strong>
                                          </ng-container>
                                       </span>
-                                      <span align="right" title="Launch Time">
+                                      <span align="right" data-toggle="tooltip" data-placement="bottom" title="Launch Time">
                                       <strong *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                                       <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false"
                                       [showInLine]="true" [dateAndTime]="campaign.displayTime">

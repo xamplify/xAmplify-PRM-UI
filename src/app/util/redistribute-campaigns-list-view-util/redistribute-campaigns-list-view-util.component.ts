@@ -197,7 +197,7 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         },()=>{
             this.referenceService.stopLoader(this.httpRequestLoader);
             this.pagination.pageIndex = 1;
-            this.campaignType = "all";
+            this.campaignType = "regular";
            if(this.folderListViewInput!=undefined){
              this.categoryId = this.folderListViewInput['categoryId'];
              }

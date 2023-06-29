@@ -697,7 +697,7 @@
 									 <h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 								  </td>
 								  <td align="center" *ngIf="gdprStatus || isPartner">
-									 <button class="border-btn-small" id='more_less_button_{{i}}'
+									 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
 										(click)="contact.isShowDetails = ! contact.isShowDetails">
 									 <span *ngIf="!contact.isShowDetails" translate>More</span> <span
 										*ngIf="contact.isShowDetails" translate>Less</span>

@@ -337,16 +337,16 @@
 
                             </td>
                             <td style="width: 20%;">
-                              <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
+                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis' title="{{lead.createdByName}}"
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
                                 style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
                               </h5>
                               <h6 class='m0' style="font-weight: 400;">
-                                <a title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="lead.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
@@ -369,7 +369,7 @@
 
                             </td>
                             <td>
-                              <div class="actions-block override-actions">
+                              <div class="actions-block override-actions tb_view_actions">
                                   <a data-rel="fancybox-button" (click)="viewLead(lead)"  data-toggle="tooltip" data-placement="bottom"
                                    title="View Lead" id="lead">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>

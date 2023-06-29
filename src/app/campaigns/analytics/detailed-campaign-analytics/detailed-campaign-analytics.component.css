@@ -584,3 +584,18 @@ a > span.glyphicon.glyphicon-remove {
   background-color: white;
   border-bottom: 1px solid #eee;
 }
+
+  
+.setting-icon-cu {
+  cursor: pointer;
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center !important;
+  /* line-height: 0px!important; */
+  vertical-align: middle;
+  margin-right: 4px;
+  padding: 1px 8px !important;
+}

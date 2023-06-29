@@ -324,9 +324,10 @@
                                     <td>
                                        <app-user-info [userInfo]="campaignUser"></app-user-info>
                                     </td>
-                                    <td *ngIf="previewCampaignType!='SOCIAL'" (click)="viewCampaigns(campaignUser,campaign)" title="Campaign Analytics">
+                                    <td *ngIf="previewCampaignType!='SOCIAL'" (click)="viewCampaigns(campaignUser,campaign)"
+                                    >
                                     <div class="actions-block override-actions">
-                                       <a><i class="fa fa-line-chart" aria-hidden="true"></i></a>
+                                       <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                     </div>
                                     </td>
                                     <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">

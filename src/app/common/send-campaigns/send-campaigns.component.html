@@ -58,7 +58,9 @@
                   <div class="alert alert-info">
                      <strong>
                          **Please be noted that you will only see a list of unshared campaigns. <br/>
-                         **Campaigns that have been chosen will be shared with the {{authenticationService?.partnerModule?.customName}}. It will take some time to process everything. There is no need to reshare it.
+                         **Campaigns that have been chosen will be shared with the
+                         <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span> <span *ngIf="!isPartnersRouter">contact</span>. 
+                         It will take some time to process everything. There is no need to reshare it.
                      </strong>
                  </div>
                    <div class="table-responsive">
