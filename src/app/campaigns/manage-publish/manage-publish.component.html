@@ -329,19 +329,19 @@
                                    <!---XNFR-255-->
                                 </td>
                                 <td>
-                                   <h4 class="moreipsis" title="{{campaign.campaignName}}">
+                                   <h4 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">
                                       <span><strong>{{campaign.campaignName}}</strong></span>
                                    </h4>
-                                   <h5 class="moreipsis" [title]="campaign.createdBy">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom" [title]="campaign.createdBy">
                                       <span translate> By <strong>{{campaign.createdBy}}</strong></span>
                                    </h5>
-                                   <h5 class="moreipsis" [title]="campaign.companyName">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  [title]="campaign.companyName">
                                       <span translate> From <strong>{{campaign.companyName}}</strong></span>
                                    </h5>
-                                   <h5 class="moreipsis" [title]="campaign.categoryName">
+                                   <h5 class="moreipsis" data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName">
                                       <span translate> Folder <strong>{{campaign.categoryName}}</strong></span>
                                    </h5>
-                                   <h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName" translate>
+                                   <h5 *ngIf="campaign.nurtureCampaign" data-toggle="tooltip" data-placement="bottom" [title]="campaign.vendorOrganizationName" translate>
                                    Originated By
                                    <strong>{{campaign.vendorOrganizationName | slice:0:20 }}<span
                                       *ngIf="campaign.vendorOrganizationName?.length>20">...</span></strong>
@@ -375,7 +375,7 @@
                                             </strong>
                                          </ng-container>
                                       </span>
-                                      <span align="right" title="Launch Time">
+                                      <span align="right" data-toggle="tooltip" data-placement="bottom" title="Launch Time">
                                       <strong *ngIf="campaign.scheduleType=='NOW' || campaign.launched">
                                       <app-timestamp *ngIf="!refService.isSafariBrowser()" [isOnlyDate]="false"
                                       [showInLine]="true" [dateAndTime]="campaign.displayTime">

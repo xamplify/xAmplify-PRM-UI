@@ -73,17 +73,18 @@
 								  <ng-container class='m10'>
 									 <button class="btn btn-xs hidden-xs l-g-view"
 									 [class.disabled]="this.modulesDisplayType.isListView"
-									 (click)="setViewType('List')" title="List View">
+									 (click)="setViewType('List')" data-toggle="tooltip" data-placement="bottom" title="List View">
 									 <i class="fa fa-th-list p10" aria-hidden="true"></i>
 									 </button>
 									 <button class="btn btn-xs hidden-xs l-g-view"
 									 [class.disabled]="this.modulesDisplayType.isGridView"
-									 (click)="setViewType('Grid')" title="Grid View">
+									 (click)="setViewType('Grid')" data-toggle="tooltip" data-placement="bottom" title="Grid View">
 									 <i class="fa fa-th-large p10" aria-hidden="true"></i>
 									 </button>
 									 <ng-container
 										*ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined')">
 										<button class="btn btn-xs hidden-xs l-g-view"
+										data-toggle="tooltip" data-placement="bottom"
 										title="Folder Grid View"
 										[class.disabled]="this.modulesDisplayType.isFolderGridView"
 										(click)="setViewType('Folder-Grid')">
@@ -91,6 +92,7 @@
 										</button>
 										<button
 										class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width"
+										data-toggle="tooltip" data-placement="bottom"
 										title="Folder List View"
 										[class.disabled]="this.modulesDisplayType.isFolderListView"
 										(click)="setViewType('Folder-List')">
@@ -104,6 +106,7 @@
 					  </div>
 					  <button *ngIf="pagination.categoryId>0"
 					  class="btn btn-xs hidden-xs l-g-view" style="margin-left: 5px;"
+					  data-toggle="tooltip" data-placement="bottom"
 					  title="Go back" (click)="setViewType('Folder-Grid')">
 					  <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 					  </button>
@@ -231,19 +234,19 @@
 							   </td>
 							   <td>
 								  <h4 class="moreipsis mt5 mb5 f-w-600"
-									 style="font-size: 14px;" title="{{campaign.campaignName}}">
+									 style="font-size: 14px;"   data-toggle="tooltip" data-placement="bottom"  title="{{campaign.campaignName}}">
 									 <span>{{campaign.campaignName}}</span>
 								  </h4>
 								  <h5 class="moreipsis mobile-left"
-									 [title]="campaign.createdBy">
+								  data-toggle="tooltip" data-placement="bottom"  [title]="campaign.createdBy">
 									 <span translate> By <b>{{campaign.createdBy}}</b></span>
 								  </h5>
 								  <h5 class="moreipsis mobile-left"
-									 [title]="campaign.companyName">
+								  data-toggle="tooltip" data-placement="bottom" [title]="campaign.companyName">
 									 <span translate> From <b>{{campaign.companyName}}</b></span>
 								  </h5>
 								  <h5 class="moreipsis mobile-left"
-									 [title]="campaign.categoryName">
+								  data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName">
 									 <span translate> Folder <b>{{campaign.categoryName}}</b></span>
 								  </h5>
 								  <h5 class="ellipsis view-banner"
@@ -254,7 +257,7 @@
 							   </td>
 							   <td class="custom-center hidden-xs"><span align="right">
 								  <b translate>Received On</b>
-								  </span> <span align="right" title="Received On"><b> <app-timestamp
+								  </span> <span align="right" data-toggle="tooltip" data-placement="bottom" title="Received On"><b> <app-timestamp
 								  [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
 								  </app-timestamp>
 								  </b> </span>
@@ -264,12 +267,12 @@
 									 style="text-align: center !important;">
 									 <a *ngIf="campaign.campaignType !== 'SOCIAL'"
 									 (click)="showCampaignPreview(campaign)"
-									 data-toggle="tooltip" data-placement="top"
+									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview Campaign"> <i class="fa fa-eye mr5"
 										aria-hidden="true"></i>
 									 </a> <a *ngIf="campaign.campaignType === 'SOCIAL'"
 									 (click)="showSocialCampaignPreview(campaign)"
-									 data-toggle="tooltip" data-placement="top"
+									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview Campaign"> <i class="fa fa-eye mr5"
 										aria-hidden="true"></i>
 									 </a> 
@@ -290,17 +293,17 @@
 										<ng-container class="pull-right"
 										   *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
 										   <div class="btn-group pull-right" id="download-template"
-											  title="Download"
+										   data-toggle="tooltip" data-placement="bottom" title="Download"
 											  *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
 											  <span
 												 class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
 												 data-toggle="dropdown" id="download-drop"
-												 title="Download"></span> <span data-toggle="dropdown"
-												 title="Download"></span>
+												 data-toggle="dropdown"
+												 title="Download"></span> <span  data-placement="bottom" title="Download"></span>
 											  <ul class="dropdown-menu pull-right">
 												 <li *ngIf="campaign.campaignType != 'EVENT'"><a
 													(click)="downloadFile(campaign,'html')"
-													data-toggle="tooltip" data-placement="top"
+													data-toggle="tooltip" data-placement="bottom"
 													title="Download Html" data-rel="fancybox-button"
 													translate> <i class="fa fa-file"
 													style="width: 30px;" aria-hidden="true"></i> Download
@@ -309,7 +312,7 @@
 												 </li>
 												 <li *ngIf="campaign.campaignType != 'EVENT'"><a
 													(click)="downloadFile(campaign,'pdf')"
-													data-toggle="tooltip" data-placement="top"
+													data-toggle="tooltip" data-placement="bottom"
 													title="Download Pdf" data-rel="fancybox-button"
 													translate> <i class="fa fa-file-pdf-o"
 													style="width: 30px;" aria-hidden="true"></i> Download
@@ -318,7 +321,7 @@
 												 </li>
 												 <li *ngIf="campaign.campaignType === 'EVENT'"><a
 													(click)="downloadHTMLFile(campaign,'html')"
-													data-toggle="tooltip" data-placement="top"
+													data-toggle="tooltip" data-placement="bottom"
 													title="Download Html" data-rel="fancybox-button"
 													translate> <i class="fa fa-file"
 													style="width: 30px;" aria-hidden="true"></i> Download
@@ -327,7 +330,7 @@
 												 </li>
 											  </ul>
 										   </div>
-										   <a data-toggle="tooltip" data-placement="top"
+										   <a data-toggle="tooltip" data-placement="bottom"
 											  (click)="viewDownloadedHistory(campaign)"
 											  title="View Download History" data-rel="fancybox-button">
 										   <i class="fa fa-history" aria-hidden="true"></i>
@@ -377,16 +380,16 @@
 								  <!---XNFR-125-->
 								  <span class="green-banner" *ngIf="campaign?.oneClickLaunch">{{properties?.oneClickLaunch}}</span>
 								  <!---XNFR-125-->
-								  <h6 [title]="campaign.createdBy" translate>
+								  <h6 data-toggle="tooltip" data-placement="bottom" [title]="campaign.createdBy" translate>
 									 By <b>{{campaign.createdBy | slice:0:15}}<span
 										*ngIf="campaign.createdBy?.length>15">...</span></b>
 								  </h6>
-								  <h6 [title]="campaign.companyName" translate>
+								  <h6 data-toggle="tooltip" data-placement="bottom" [title]="campaign.companyName" translate>
 									 From <b>{{campaign.companyName | slice:0:15}} <span
 										*ngIf="campaign.companyName?.length>15">...</span>
 									 </b>
 								  </h6>
-								  <h6 [title]="campaign.categoryName" translate>
+								  <h6 data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName" translate>
 									 Folder <b>{{campaign.categoryName | slice:0:15}} <span
 										*ngIf="campaign.categoryName?.length>15">...</span>
 									 </b>
@@ -421,11 +424,11 @@
 								  <div class="bar">
 									 <a *ngIf="campaign.campaignType !== 'SOCIAL'"
 									 (click)="showCampaignPreview(campaign)"
-									 data-toggle="tooltip" data-placement="top"
+									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview campaign"> <i class="fa fa-eye mr4"></i>
 									 </a> <a *ngIf="campaign.campaignType == 'SOCIAL'"
 									 (click)="showSocialCampaignPreview(campaign)"
-									 data-toggle="tooltip" data-placement="top"
+									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview Campaign"> <i class="fa fa-eye mr5"
 										aria-hidden="true"></i>
 									 </a>
@@ -446,12 +449,12 @@
 										*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
 										<div class="btn-group" id="download-template-grid"
 										   *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)"
-										   title="Download">
+										   data-toggle="dropdown" data-toggle="tooltip" title="Download">
 										   <span
 											  class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
 											  data-toggle="dropdown" id="download-drop" title="Download"
 											  style="color: white;"></span> <span data-toggle="dropdown"
-											  title="Download"></span>
+											  data-toggle="tooltip" data-placement="bottom"  title="Download"></span>
 										   <ul class="dropdown-menu pull-right">
 											  <li><a (click)="downloadFile(campaign,'html')"
 												 data-toggle="tooltip" data-placement="top"
@@ -471,11 +474,11 @@
 										   </ul>
 										</div>
 										<a *ngIf="!campaign.allowDownload" data-toggle="tooltip"
-										   data-placement="top"
+										   data-placement="bottom"
 										   title="Please turn on GDPR settings to download"
 										   data-rel="fancybox-button"> <i
 										   class="fa fa-download cancelled-event" aria-hidden="true"></i>
-										</a> <a data-toggle="tooltip" data-placement="top"
+										</a> <a data-toggle="tooltip" data-placement="bottom"
 										   (click)="viewDownloadedHistory(campaign)"
 										   title="View Download History" data-rel="fancybox-button">
 										<i class="fa fa-history" aria-hidden="true"></i>

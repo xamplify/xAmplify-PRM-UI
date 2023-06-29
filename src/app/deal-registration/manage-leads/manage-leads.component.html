@@ -82,7 +82,7 @@
             
               <ng-container *ngIf="!ownCampaignLeadAndDeal">
                 <td *ngIf="filter.length == 0">
-                  <h5 class='ellipsis' title="{{partner.firstName}} {{partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{partner.firstName | slice:0:20}}
+                  <h5 class='ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{partner.firstName}} {{partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{partner.firstName | slice:0:20}}
                     <span *ngIf="partner.firstName?.length>20">...</span>
                     &nbsp;{{partner.lastName | slice:0:15}}
                     <span *ngIf="partner.lastName?.length>15">...</span>
@@ -97,7 +97,7 @@
                   </h5>
                 </td>
                 <td *ngIf="filter.length > 0 && item.partner != null">
-                  <h5 class='ellipsis' title="{{item.partner.firstName}} {{item.partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.partner.firstName | slice:0:20}}
+                  <h5 class='ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{item.partner.firstName}} {{item.partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.partner.firstName | slice:0:20}}
                     <span *ngIf="item.partner.firstName?.length>20">...</span>
                     &nbsp;{{item.partner.lastName | slice:0:15}}
                     <span *ngIf="item.partner.lastName?.length>15">...</span>
@@ -115,7 +115,7 @@
               </ng-container>
               <ng-container *ngIf="ownCampaignLeadAndDeal">
                 <td>
-                  <h5 class='ellipsis'  style="margin: 7px 0 2px 0;font-weight: 400;">{{item.leadCreatorFirstName | slice:0:20}}
+                  <h5 class='ellipsis' data-toggle="tooltip" data-placement="bottom"  style="margin: 7px 0 2px 0;font-weight: 400;">{{item.leadCreatorFirstName | slice:0:20}}
                     <span *ngIf="item.leadCreatorFirstName?.length>20">...</span>
                     &nbsp;{{item.leadCreatorLastName | slice:0:15}}
                     <span *ngIf="item.leadCreatorLastName?.length>15">...</span>

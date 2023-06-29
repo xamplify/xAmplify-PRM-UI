@@ -82,6 +82,7 @@
                                     </ng-container>
                                     <!----Delete-->
                                     <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
+                                    data-toggle="tooltip" data-placement="bottom"
                                     title="{{actionsDescription.campaign_delete_partner}}"> <i
                                        class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>

@@ -1096,25 +1096,25 @@
 
                                                                   </td>
                                                                   <td style="text-align: left;">
-                                                                    <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contacts?.name}}">
+                                                                    <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{contacts?.name}}">
                                                                         <span><strong>{{contacts?.name}}</strong></span>
                                                                     </h4>
-                                                                    <h6 class="moreipsis" title="{{contacts?.createdName}}">
+                                                                    <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{contacts?.createdName}}">
                                                                         <span translate> Created By <strong>{{contacts?.creatorName}}</strong></span>
                                                                     </h6>
                                                                     <ng-container *ngIf="!contacts?.partnerList">
                                                                         <div style="display: inline-flex;">
                                                                             <h6 class="view-banner" translate>
                                                                                 <span *ngIf="contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                                    title="{{actionsDescription?.contact_list_public}}" translate>Public
+                                                                                data-toggle="tooltip" data-placement="bottom"   title="{{actionsDescription?.contact_list_public}}" translate>Public
                                                                                 </span>
                                                                                 <span *ngIf="!contacts?.publicList" data-toggle="tooltip" data-placement="top"
-                                                                                    title="{{actionsDescription?.contact_list_private}}" translate>Private
+                                                                                data-toggle="tooltip" data-placement="bottom"  title="{{actionsDescription?.contact_list_private}}" translate>Private
                                                                                 </span>
                                                                             </h6> 
                                                                             <h6 *ngIf="contacts?.formList" class="view-banner view-banner-green" translate>
                                                                                 <span data-toggle="tooltip" data-placement="top"
-                                                                                    title="This list is associated with a form." translate>Form Contact List
+                                                                                data-toggle="tooltip" data-placement="bottom"   title="This list is associated with a form." translate>Form Contact List
                                                                                 </span>
                                                                             </h6>                                                                           
                                                                         </div>                                                                        
@@ -1137,7 +1137,7 @@
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <a (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                                        <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                                        <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" data-toggle="tooltip" data-replacement="bottom" title="Preview" data-original-title="Preview"></i>
                                                                     </a>
                                                                 </td>
                                                             </tr>
@@ -1172,7 +1172,7 @@
                              <div class="page-bar" style="padding-left: 26px;padding-top: 6px;border: none !important;box-shadow: none !important; padding-right: 23px;"> 
                             <button *ngIf="campaignType=='video'" type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
                             <button *ngIf="campaignType!='video'" type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
-                            <button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
+                            <button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList"  data-toggle="tooltip" data-placement="bottom" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </ng-template>
                         </div>
@@ -1231,7 +1231,7 @@
                                                                                                             src="{{campaign.emailTemplate.subject}}" alt="" >
                                                                                                             
                                                                                                             <span class="icon-alignments"> 
-                                                                                                                <a data-toggle="tooltip" data-placement="top" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                <a data-toggle="tooltip" data-placement="bottom" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
                                                                                                                 <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
                                                                                                             </span>
                                                                                                 
@@ -1241,12 +1241,12 @@
                                                                                                             <div class="row">
                                                                                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                     <div class="content-hover-align fontsize-cls">
-                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                        <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom"  [title]="emailTemplate.name">
                                                                                                                             <strong>{{emailTemplate.name |slice:0:13}}</strong>
                                                                                                                             <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
                                                                                                                         </span>
                                                                                                                         <br>
-                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                        <span class="item__name"  style="float:left; margin: 3px;">
                                                                                                                             <span>
                                                                                                                                 <app-timestamp
                                                                                                                                     [isOnlyDate]="true"
@@ -1255,7 +1255,7 @@
                                                                                                                             </span>
                                                                                                                         </span>
                                                                                                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                            <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                     <span
@@ -1264,14 +1264,16 @@
                                                                                                                             </p>
                                                                                                                         </ng-container>
                                                                                                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                            <span class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                         *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                 </span>
                                                                                                                             </span>
                                                                                                                         </ng-container> 
-                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar"
+                                                                                                                            data-toggle="tooltip" data-placement="bottom"
+                                                                                                                             title="{{emailTemplate.category}}">
                                                                                                                             <strong translate>Folder:</strong>
                                                                                                                             <span >{{emailTemplate?.category|slice:0:5}}</span>
                                                                                                                             <span *ngIf="emailTemplate?.category?.length>5">..</span>
@@ -1314,7 +1316,7 @@
                                                                                                             src="{{emailTemplate.subject}}" alt="" >
                                                                                                             
                                                                                                             <span class="icon-alignments"> 
-                                                                                                                <a data-toggle="tooltip" data-placement="top" title="" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
+                                                                                                                <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
                                                                                                                 <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
                                                                                                             </span>
                                                                                                 
@@ -1324,12 +1326,12 @@
                                                                                                             <div class="row">
                                                                                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                     <div class="content-hover-align fontsize-cls">
-                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                        <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate.name">
                                                                                                                             <strong>{{emailTemplate.name |slice:0:13}}</strong>
                                                                                                                             <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
                                                                                                                         </span>
                                                                                                                         <br>
-                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                        <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                             <span>
                                                                                                                                 <app-timestamp
                                                                                                                                     [isOnlyDate]="true"
@@ -1338,7 +1340,7 @@
                                                                                                                             </span>
                                                                                                                         </span>
                                                                                                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                            <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                     <span
@@ -1347,14 +1349,14 @@
                                                                                                                             </p>
                                                                                                                         </ng-container>
                                                                                                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                            <span class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                 <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                         *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                 </span>
                                                                                                                             </span>
                                                                                                                         </ng-container> 
-                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.category}}">
                                                                                                                             <strong translate>Folder:</strong>
                                                                                                                             <span >{{emailTemplate?.category|slice:0:5}}</span>
                                                                                                                             <span *ngIf="emailTemplate?.category?.length>5">..</span>
