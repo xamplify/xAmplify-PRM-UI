@@ -78,7 +78,7 @@
   top: -81px;
   left: 71px;
 }
-@media only screen and (max-width: 992px) and (min-width: 601px) {
+@media only screen and (max-width: 1024px) and (min-width: 601px) {
   .cloud-css {
     left: 100px !important;
   }

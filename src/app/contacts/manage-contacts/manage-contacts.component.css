@@ -358,3 +358,8 @@ h6 {
     text-overflow: ellipsis;
     min-height: 30px;
 }
+@media screen and (max-width: 1024px){
+.table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th {
+    white-space: nowrap;
+ }
+}

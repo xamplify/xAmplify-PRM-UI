@@ -230,7 +230,7 @@
                         class="badge badge-primary"> ReLogin</a></h4>
                   </span>
                   <div [className]="checkingContactTypeName=='Contact' ? 'row':'m0' " *ngIf="showListOfContactList">
-                  <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-12 col-md-6':''">
+                  <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-6 col-md-6':''">
                      <ul *ngIf="checkingContactTypeName=='Contact'" class="mix-filter">
                         <li class="filter" (click)="filterContacts('MY-CONTACTS',0)" [class.contact-filter-selected]="0 == selectedFilterIndex" translate>My Contacts</li>
                         <li class="filter" (click)="filterContacts('FORM-LEADS',1)" [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form Contacts</li>
@@ -876,15 +876,15 @@
                            <thead>
                               <tr>
                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <th  align="center" *ngIf="contactsByType.selectedCategory == 'all'">
+                                    <th class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'all'">
                                        <input type="checkbox"
                                        name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
                                        id="checkAllExistingContacts" />
                                     </th>
-                                    <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
+                                    <th  class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                        <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                        (change)="checkAllInvalidContacts($event)" id="checkAllExistingInvalidContacts" />
-                                    </td>
+                                    </th>
                                  </ng-container>
                                  <th scope="row" style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
                                  <th  scope="row" *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs"

@@ -340,7 +340,7 @@
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
                                 style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
@@ -369,7 +369,7 @@
 
                             </td>
                             <td>
-                              <div class="actions-block override-actions">
+                              <div class="actions-block override-actions tb_view_actions">
                                   <a data-rel="fancybox-button" (click)="viewLead(lead)"  data-toggle="tooltip" data-placement="bottom"
                                    title="View Lead" id="lead">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>

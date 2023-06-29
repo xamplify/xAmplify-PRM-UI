@@ -300,7 +300,7 @@
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"  title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
                               </h5>
-                              <h5 class='ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{deal.createdByName | slice:0:20}}
                                 <span *ngIf="deal.createdByName?.length>20">...</span>
                               </h5>

@@ -140,3 +140,14 @@ th {
     width: 160px !important;
   }
 }
+@media screen and (max-width: 600px) {
+  .mb_download{
+    width: unset!important;
+    margin-bottom: 6px;
+ }
+}
+@media screen and (min-width:768px)and (max-width:1024px){
+  .mb_download{
+    width:170px!important;
+  }
+}

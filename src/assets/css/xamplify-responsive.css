@@ -35,6 +35,25 @@
         .tab_grid{
          margin-bottom:15px;
         }
+        td{
+        white-space: nowrap;
+        }
+        .mb_6{
+            margin-bottom:6px;
+        }
+        .tb_view_temp{
+            padding-top: 0px!important;
+            padding-bottom: 6px;
+          }
+          .tb_view_10{
+           margin-top:20px;
+          }
+          .tb_view_actions{
+            white-space: nowrap;
+          }
+          .m_t_view{
+          float: none!important;
+          }
     }
     @media only screen and (max-width:578px){
         div#vendor-details-tile {
@@ -72,4 +91,14 @@
         .fa-cog {
          left: unset !important;
         }
+        .mb_6{
+            margin-bottom:6px;
+        }
+        .tb_view_temp{
+            padding-top: 0px!important;
+            padding-bottom: 6px;
+          }
+          .m_t_view{
+            float: none!important;
+            }
     }
