@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -43,10 +44,11 @@ export class SendCampaignsComponent implements OnInit {
   isLoggedInThroughVanityUrl = false;
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
+  isPartnersRouter = false;
   constructor(private campaignService: CampaignService,private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, 
     public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService,
-    private vanityUrlService:VanityURLService
+    private vanityUrlService:VanityURLService,private router: Router
     ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
@@ -54,10 +56,12 @@ export class SendCampaignsComponent implements OnInit {
 
 
   ngOnInit() {
+   this.isPartnersRouter =  this.router.url.includes("/partners/");
   }
 
 
   openPopUp(partnerListId: number, contact:any,type:string) {
+    
     if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;
