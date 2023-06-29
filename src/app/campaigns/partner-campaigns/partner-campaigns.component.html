@@ -32,13 +32,11 @@
 	</div>
 	<div class="row">
 	   <div class="col-md-12">
-		  <div class="page-bar" style="">
+		  <div class="page-bar">
 			 <div class="row m10">
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0">
 				   <ul class="mix-filter"
 					  *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
-					  <li class="filter" (click)="filterCampaigns('all')"
-					  [class.active]="'all' == campaignType" translate>All</li>
 					  <li class="filter" (click)="filterCampaigns('regular')"
 					  [class.active]="'regular' == campaignType"
 					  *ngIf="campaignAccess.emailCampaign" translate>Email</li>
@@ -54,6 +52,8 @@
 					  <li class="filter" (click)="filterCampaigns('survey')"
 					  [class.active]="'survey' == campaignType"
 					  *ngIf="campaignAccess.survey" translate>Survey</li>
+					  <li class="filter" (click)="filterCampaigns('all')"
+					  [class.active]="'all' == campaignType" translate>All</li>
 					  <li class="filter" style="display: none;" translate>Own
 						 Template
 					  </li>
