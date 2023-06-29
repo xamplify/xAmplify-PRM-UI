@@ -338,6 +338,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.pagination.campaignType = 'REGULAR';
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');
@@ -1106,7 +1107,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         
         this.pagination.maxResults = 12;
         this.itemsSize = this.numberOfItemsPerPage[0];
-        this.pagination.campaignType = 'NONE';
+        this.pagination.campaignType = 'REGULAR';
         this.selectedCampaignTypeIndex = 1;
         this.modulesDisplayType.isListView = true;
         this.modulesDisplayType.isGridView = false;
