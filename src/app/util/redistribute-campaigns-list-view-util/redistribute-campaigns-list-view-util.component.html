@@ -14,8 +14,6 @@
       <div class="tab-content">
         <div class="page-bar m10 tab-border-none " style="border:none !important">
           <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0">
-            <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
-            All</li>
             <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" *ngIf="campaignAccess.emailCampaign">Email</li>
             <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" *ngIf="campaignAccess.videoCampaign">Video</li>
             <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign">Social
@@ -23,6 +21,8 @@
             <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign">Event</li>
             <li class="filter"  (click)="filterCampaigns('survey')" [class.active]="'survey' == campaignType" *ngIf="campaignAccess.survey">Survey</li>
             <li class="filter" style="display: none;">Own Template</li>
+            <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
+              All</li>
           </ul>
           <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
             <div class="row btn-group pull-right">

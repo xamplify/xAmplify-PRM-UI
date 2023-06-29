@@ -40,7 +40,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
-    selectedCampaignTypeIndex = 0;
+    selectedCampaignTypeIndex = 1;
     pager: any = {};
     pagedItems: any[];
     totalRecords = 1;
