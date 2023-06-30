@@ -40,8 +40,13 @@ private beforeAdd( tag: any ) {
             this.addFirstAttemptFailed = true;
             if ( !isPaste ) { this.tagInput.setInputValue( tag ); }
         }
-        if ( isPaste ) { return Observable.throw( this.errorMessages['must_be_email'] ); }
-        else { return Observable.of( '' ).pipe( tap(() => setTimeout(() => this.tagInput.setInputValue( tag ) ) ) ); }
+        if ( isPaste ){ 
+            return Observable.throw( this.errorMessages['must_be_email'] );
+         }else { 
+            return Observable.of( '' ).pipe( tap(() => setTimeout(() => 
+                this.tagInput.setInputValue( tag ) ) ) ); 
+            }
+           
     }
     this.addFirstAttemptFailed = false;
     return Observable.of( tag );
