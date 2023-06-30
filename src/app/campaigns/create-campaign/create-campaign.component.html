@@ -1068,7 +1068,7 @@
                                                     <tbody class="pointer">   
                                                         <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
                                                             <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
-                                                                (mouseover)='showContactsAlert(contacts.count)' [attr.title]="emptyContactsMessage">
+                                                                >
                                                                 <td class="text-center">
                                                                     <div class="form-group">
                                                                         <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
@@ -1121,12 +1121,16 @@
                                                                     </ng-container>
                                                                 </td>
                                                                 <td class="text-center" *ngIf="showContactType">
-                                                                    <ng-container *ngIf="contacts?.listType=='Partners'">
-                                                                        {{authenticationService?.partnerModule?.customName}}
-                                                                    </ng-container>    
-                                                                    <ng-container *ngIf="contacts?.listType!='Partners'">
-                                                                        {{contacts?.listType}}
-                                                                    </ng-container>                                                                                                                                       
+                                                                    <div>
+                                                                        <span  (mouseover)='showContactsAlert(contacts.count)' data-toggle="tooltip" data-placement="bottom" [attr.title]="emptyContactsMessage">
+                                                                            <ng-container *ngIf="contacts?.listType=='Partners'">
+                                                                                {{authenticationService?.partnerModule?.customName}}
+                                                                            </ng-container>    
+                                                                            <ng-container *ngIf="contacts?.listType!='Partners'">
+                                                                                {{contacts?.listType}}
+                                                                            </ng-container>                                                                                                                                       
+                                                                        </span>
+                                                                    </div>
                                                                 </td>
                                                                 <td class="text-center sorting_1">
                                                                     <app-timestamp  [dateAndTime]="contacts?.displayTime">

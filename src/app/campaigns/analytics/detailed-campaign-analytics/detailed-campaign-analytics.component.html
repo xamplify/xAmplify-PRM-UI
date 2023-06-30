@@ -2868,29 +2868,12 @@
                      </div>
                   </div>
                </div>
-               <div class="col-xs-2 col-sm-2 col-lg-2">
-                  <span class="dropdown-toggle" data-toggle="dropdown" style="
-                    box-shadow: none;
-                    margin-top: 8px;
-                    padding-right: 10px;
-                    margin-right: 21px;
-                    float: right;
-                    display: inline-flex;
-                    ">
-                     <i class="fa fa-cog" style="font-size: 20px; margin-right: 5px"></i><i class="fa fa-angle-down"
-                        style="font-size: 14px; float: right"></i>
+               <div class="col-xs-2 col-sm-2 col-lg-2 setting-icon-cu" data-toggle="tooltip" data-placement="top" title="Click here to export excel">
+                  <span>
+                     <a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType)">
+                       <i class="fas fa-file-export"></i>
+                     </a>
                   </span>
-                  <ul class="dropdown-menu pull-right">
-                     <li>
-                        <a id="delete_button" (click)="
-                          downloadCampaignDetailsByActionType(
-                          campaignReport.emailActionType
-                          )
-                          ">
-                           Export To Excel
-                        </a>
-                     </li>
-                  </ul>
                </div>
             </div>
          </div>
