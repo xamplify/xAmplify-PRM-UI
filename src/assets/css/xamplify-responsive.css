@@ -2,7 +2,7 @@
     padding-bottom: 8px!important;
     }
     /*app-detailed-campaign-analytics */
-    @media only screen and (min-width: 768px) and (max-width: 1281px) { 
+    @media only screen and (min-width: 768px) and (max-width: 1024px) { 
         section.percentage-circle {
             margin: 0px -22px;
         }
