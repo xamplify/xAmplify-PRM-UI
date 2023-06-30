@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-send-test-email',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SendTestEmailComponent implements OnInit {
 
+  @Input() id:number = 0;
+  @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  callEventEmitter(){
+    this.sendTestEmailComponentEventEmitter.emit();
   }
 
 }

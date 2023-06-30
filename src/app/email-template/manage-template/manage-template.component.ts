@@ -86,7 +86,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	defaultTemplateInput = {};
 	/**XNFR-317*****/
 	selectedEmailTemplateId = 0;
-	sendTestEmail = false;
+	sendTestEmailIconClicked = false;
 
 
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
@@ -590,7 +590,12 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	/****XNFR-317****/
 	openSendTestEmailModalPopup(emailTemplate:any){
 		this.selectedEmailTemplateId = emailTemplate.id;
-		this.sendTestEmail = true;
+		this.sendTestEmailIconClicked = true;
+	}
+
+	sendTestEmailModalPopupEventReceiver(){
+		this.selectedEmailTemplateId = 0;
+		this.sendTestEmailIconClicked = false;
 	}
 	
 
