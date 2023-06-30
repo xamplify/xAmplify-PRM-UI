@@ -380,3 +380,17 @@ body {
 .mix-filter li:hover {
   background-color: #6dcff6;
 }
+/* 30-6-2023 */
+.email-image-temp-custimize {
+  margin: 0 !important;
+  height: 390px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.ribbon span {
+  font-size: 8px;
+}

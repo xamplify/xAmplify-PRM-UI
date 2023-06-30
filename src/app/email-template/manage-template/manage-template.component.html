@@ -244,8 +244,8 @@
                                     </span>
                             <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'" >{{emailTemplate.emailTemplateType | translate}}</span>
                             </span>
-                            <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                            <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
+                            <img class="email-template-preview email-image-temp-custimize" *ngIf="emailTemplate.subject"  src="{{emailTemplate.subject}}" alt="Image Not Found">
+                            <img alt="" class="email-template-preview email-image-temp-custimize" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
