@@ -383,7 +383,7 @@
 
 <!--XNFR-317-->
 <ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
-    <a *ngIf="!emailTemplate.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+    <a *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
      title="{{actionsDescription?.sendTestEmail}}">
       <i class="fa fa-envelope-o" aria-hidden="true"></i>
     </a>

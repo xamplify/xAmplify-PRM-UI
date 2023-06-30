@@ -14,7 +14,7 @@
             <div id="modal-content" *ngIf="!sent">
                <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
                <div class="form-group" *ngIf="!processing">
-                 
+                 <app-add-multiple-emails-input></app-add-multiple-emails-input>
                </div>
                <div id="emailTemplateBody"></div>
             </div>
