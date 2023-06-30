@@ -239,7 +239,7 @@
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span class="published" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
+                                <span *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
                             <div [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar" style="padding: 0px 10px;">
                                 <div class="btnAlignPad mbtnAlignPad">

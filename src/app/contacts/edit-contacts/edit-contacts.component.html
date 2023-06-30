@@ -480,7 +480,7 @@
 										<span *ngIf="user.emailId?.length>35">...</span>
 									 </td>
 									 <td>
-										<button class="border-btn-small" id='more_less_button_{{i}}'
+										<button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
 										   (click)="user.isShowDetails = ! user.isShowDetails">
 										<span *ngIf="!user.isShowDetails" translate>More</span> <span
 										   *ngIf="user.isShowDetails" translate>Less</span>
@@ -995,7 +995,7 @@
 						 <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
 					  <td>
-						 <button class="border-btn-small" id='more_less_button_{{i}}'
+						 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
 							(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 						 <span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span
 							*ngIf="allcontacts.isShowDetails" translate>Less</span>

@@ -2245,3 +2245,36 @@ h5.view-banner {
   padding: 4px 10px !important;
   font-size: 10px !important;
 }
+.white-labeled-cu {
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
+  width: 100px;
+}
+.Cancelled-tag-cu {
+  background-color: red !important;
+  color: white !important;
+  padding: 5px 10px !important;
+  text-align: center;
+  font-size: 10px !important;
+  border-radius: 3px !important;
+  width: 85px !important;
+}
+.white-labeled-cu1 {
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
+}
+.orange-lable-cu1 {
+  background: #e87e04 !important;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+  color: #fff !important;
+  border-radius: 3px !important;
+}
