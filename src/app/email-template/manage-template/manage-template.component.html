@@ -388,7 +388,7 @@
       <i class="fa fa-envelope-o" aria-hidden="true"></i>
     </a>
 </ng-template>
-<app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" ()></app-send-test-email>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 <!--XNFR-317-->
 
 
