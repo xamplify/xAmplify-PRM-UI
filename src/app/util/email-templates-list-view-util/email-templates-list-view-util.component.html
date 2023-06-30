@@ -171,6 +171,9 @@
                                             <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> 
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                             </a>
+                                            <!--XNFR-317-->
+                                                <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            <!--XNFR-317-->
                                             <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
                                             *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor  ||
                                              authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
@@ -264,6 +267,9 @@
                             <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
                                  <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
+                             <!--XNFR-317-->
+                             <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                             <!--XNFR-317-->
                             <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
                             *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor   || 
                             authenticationService.module.isPrm || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
@@ -326,4 +332,13 @@
 <ng-container *ngIf="saveAsDefaultTemplate">
   <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
   </ng-container>
+
+  <!--XNFR-317-->
+<ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
+    <a *ngIf="!emailTemplate.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+     title="{{actionsDescription?.sendTestEmail}}">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+    </a>
+</ng-template>
+<!--XNFR-317-->
 <app-scroll-top></app-scroll-top>

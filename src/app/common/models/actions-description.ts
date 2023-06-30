@@ -58,6 +58,9 @@ export class ActionsDescription {
     comments = "Comments";
     changeStatus = "Change Status";
 
+    /***Send Test Email*****/
+    sendTestEmail = "Send Test Email";
+
 
 
     
