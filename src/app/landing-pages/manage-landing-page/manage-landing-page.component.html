@@ -184,11 +184,11 @@
                                                 <span class="view-banner-white-labeled">White-Labeled</span>
                                             </ng-container>
                                              <!---XNFR-255-->
-                                            <span class="view-banner" translate>{{landingPage.type}}</span>
+                                            <span class="view-banner green-btn-cu" translate>{{landingPage.type}}</span>
                                         </td>
                                         <td class="hidden-xs text-center">
-                                            <span *ngIf="landingPage.coBranded" class="view-banner" translate>Co-Branded</span>
-                                            <span *ngIf="!landingPage.coBranded" class="view-banner" translate>Regular</span>
+                                            <span *ngIf="landingPage.coBranded" class="view-banner Assigned-lable" translate>Co-Branded</span>
+                                            <span *ngIf="!landingPage.coBranded" class="view-banner Assigned-lable" translate>Regular</span>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>

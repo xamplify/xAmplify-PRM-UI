@@ -20,7 +20,7 @@
             /* height: 249px; */
         }
         .bar {
-            width: 230px;
+            width: 100%;
         }
         .mp-pt-carrdtop {
             margin-top: 9px;
@@ -54,6 +54,13 @@
           .m_t_view{
           float: none!important;
           }
+          .grid-box h6 {
+            text-align: left;
+            margin: 5px 0 5px 7px;
+        }
+        h6 {
+            font-size: 11px;
+        }
     }
     @media only screen and (max-width:578px){
         div#vendor-details-tile {

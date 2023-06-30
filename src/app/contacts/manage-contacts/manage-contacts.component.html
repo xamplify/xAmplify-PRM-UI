@@ -407,13 +407,12 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="assignLeads" style="text-align: center;">
-                                 <h5 class="view-banner" style="width: 90%;"
+                                 <h5 class="view-banner Assigned-lable"
                                     *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status"
                                        translate>Assigned</span>
                                  </h5>
-                                 <h5 class="view-banner" style="width: 90%;"
-                                    style="background-color: orange; width: 90%;"
+                                 <h5 class="view-banner orange-lable-cu" 
                                     *ngIf="contactList?.assignedLeadsList && !contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status" translate>Not
                                     Assigned</span>
@@ -431,7 +430,7 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="!assignLeads && !isPartner">
-                                 <h5 class="view-banner" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
+                                 <h5 class="view-banner green-btn-cu" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
                                  <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_public}}" translate>Public</span>
                                  <span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
@@ -589,8 +588,8 @@
                   <h4 class="ellipsis" title="{{contactList.name}}" style="float:none !important">
                      {{contactList.name | slice:0:25}} <span *ngIf="contactList.name?.length>25">...</span>
                   </h4>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner" style="position: relative;top: -3px;" translate>Assigned</span>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" style="position: relative;top: -3px;background-color: orange;" translate>Not Assigned</span>
+                  <span class="view-banner Assigned-lable" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
+                  <span class="view-banner orange-lable-cu" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
                   <h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">
                      By {{contactList.uploadedBy | slice:0:30}} <span
                         *ngIf="contactList.uploadedBy?.length>30">...</span>
@@ -620,7 +619,7 @@
                   </h6>
                   <!--  -->
                   <td class="hidden-xs" *ngIf="!isPartner&& !assignLeads">
-                     <h6 class="mt10 mb0 ellipsis"  translate>
+                     <h6 class="mt10 mb0 ellipsis green-btn-cu"  translate>
                         Type:
                         <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                            title="{{actionsDescription.contact_list_public}}"><strong translate>Public</strong></span>
@@ -809,7 +808,7 @@
             <div class="col-xs-12">
                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;">
                   <div class="loader"></div>
-                  <strong translate style="padding-left:10px;">Please wait while we process your request</strong>
+                  <strong translate>Please wait while we process your request</strong>
                </div>
                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
