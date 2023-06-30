@@ -809,7 +809,7 @@
             <div class="col-xs-12">
                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;">
                   <div class="loader"></div>
-                  <strong translate>Please wait while we process your request</strong>
+                  <strong translate style="padding-left:10px;">Please wait while we process your request</strong>
                </div>
                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
