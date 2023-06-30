@@ -373,16 +373,17 @@
                               </td>
                               <td>
                                  <h4 class="moreipsis" >
-                                    <span data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}"> {{contactList.name}}</span>
-                                 </h4>
+                                    <span> <strong data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}</strong>
+                                    </span> <strong><span *ngIf="contactList.name?.length>20">...</span></strong>
+                                    </h4>
                                  <h5 class='m0 ellipsis'  translate>
                                     By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
-                                    | slice:0:50}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
+                                    | slice:0:15}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
                                     </span>
                                  </h5>
                                  <h5 class="mb0 ellipsis"  >
-                                    <strong >{{contactList.companyName | slice:0:50}}</strong> <span
-                                       *ngIf="contactList.companyName?.length>50">...</span>
+                                    <strong >{{contactList.companyName | slice:0:15}}</strong> <span
+                                       *ngIf="contactList.companyName?.length>15">...</span>
                                     <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
                                        <span class="mb0"
                                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
