@@ -4,8 +4,15 @@ import { Properties } from '../../common/models/properties';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import "rxjs/add/observable/of";
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
-declare var $:any;
+
+declare var swal:any, $: any;
+
 
 @Component({
   selector: 'app-send-test-email',
@@ -24,11 +31,39 @@ export class SendTestEmailComponent implements OnInit {
   processing = false;
   customResponse: CustomResponse = new CustomResponse();
   success = true;
+  @ViewChild( 'tagInput' )
+  tagInput: SourceTagInput;
+  public validators = [this.must_be_email.bind( this )];
+  public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
+  public onAddedFunc = this.beforeAdd.bind( this );
+  private addFirstAttemptFailed = false;
   constructor(public referenceService:ReferenceService) { }
 
   ngOnInit() {
     this.referenceService.openModalPopup(this.modalPopupId);
   }
+  
+  private must_be_email( control: FormControl ) {
+    if ( this.addFirstAttemptFailed && !this.referenceService.validateEmailId( control.value ) ) {
+        return { "must_be_email": true };
+    }
+    return null;
+}
+private beforeAdd( tag: any ) {
+    let isPaste = false;
+    if ( tag['value'] ) { isPaste = true; tag = tag.value; }
+    if ( !this.referenceService.validateEmailId( tag ) ) {
+        if ( !this.addFirstAttemptFailed ) {
+            this.addFirstAttemptFailed = true;
+            if ( !isPaste ) { this.tagInput.setInputValue( tag ); }
+        }
+        if ( isPaste ) { return Observable.throw( this.errorMessages['must_be_email'] ); }
+        else { return Observable.of( '' ).pipe( tap(() => setTimeout(() => this.tagInput.setInputValue( tag ) ) ) ); }
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of( tag );
+}
+
 
   callEventEmitter(){
     this.referenceService.closeModalPopup(this.modalPopupId);

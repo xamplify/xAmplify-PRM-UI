@@ -14,7 +14,25 @@
             <div id="modal-content" *ngIf="!sent">
                <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
                <div class="form-group" *ngIf="!processing">
-                 <app-add-multiple-emails-input></app-add-multiple-emails-input>
+                  <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
+                  <tag-input [(ngModel)]='emailIds'
+                  #tagInput
+                  name="emails"
+                  #email="ngModel"
+                  [errorMessages]="errorMessages"
+                  [validators]="validators"
+                  [separatorKeyCodes]="[32,188,186,13,9]"
+                  [placeholder]="'Add email'"
+                  [secondaryPlaceholder]="'Enter email address(es)'"
+                  [clearOnBlur]="true"
+                  [addOnPaste]="true"
+                  [addOnBlur]="true"
+                  [pasteSplitPattern]="splitPattern"
+                  [onAdding]="onAddedFunc"
+                  theme='bootstrap'
+                  [onTextChangeDebounce]="40"
+                  required >
+                  </tag-input>
                </div>
                <div id="emailTemplateBody"></div>
             </div>
