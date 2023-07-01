@@ -13,38 +13,28 @@
             </div>
             <div id="modal-content" *ngIf="!sent">
                <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
-               <div class="form-group" *ngIf="!processing">
-                  <label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
-                  <tag-input [(ngModel)]='emailIds'
-                  #tagInput
-                  name="emails"
-                  #email="ngModel"
-                  [errorMessages]="errorMessages"
-                  [validators]="validators"
-                  [separatorKeyCodes]="[32,188,186,13,9]"
-                  [placeholder]="'Add email'"
-                  [secondaryPlaceholder]="'Enter email address(es)'"
-                  [clearOnBlur]="true"
-                  [addOnPaste]="true"
-                  [addOnBlur]="true"
-                  [pasteSplitPattern]="splitPattern"
-                  [onAdding]="onAddedFunc"
-                  theme='bootstrap'
-                  [onTextChangeDebounce]="40"
-                  required >
-                  </tag-input>
+               <div [hidden]="processing">
+                  <div class="form-group" >
+                     <label>Email Address<span class="required">*</span></label>
+                     <input type="email" placeholder="Please Enter Email Address" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control" maxlength="200">
+                     <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
+                  </div>
+                  <div class="form-group">
+                     <label>Email Subject<span class="required">*</span></label>
+                     <input type="text"  [(ngModel)]="subject" (input)="validateForm()" [ngModelOptions]="{standalone: true}" placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" maxlength="200" />
+                  </div>
+                  <div class="form-group">
+                     <label>Email Body</label>
+                  </div>
+                  <hr/>
+                  <div id="sendTestEmailHtmlBody"></div>
                </div>
-               <div class="alert alert-info">
-                  <strong>This is the preview of your email</strong>
-               </div>
-               <hr>
-               <div id="sendTestEmailHtmlBody"></div>
             </div>
             
          </div>
          <div class="modal-footer" *ngIf="!processing">
             <button class="btn btn-default" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">
+            <button type="submit" class="btn green" [disabled]="!isValidForm" (click)="send()" *ngIf="!sent">
                <i class="fa fa-paper-plane mr5" aria-hidden="true"></i>Send Test
             </button>
          </div>

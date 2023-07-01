@@ -23,8 +23,9 @@ declare var swal:any, $: any;
 export class SendTestEmailComponent implements OnInit {
 
   @Input() id:number = 0;
+  @Input() subject:string = "";
+  email = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
-  subject = "";
   emailIds = [];
   modalPopupId = "send-test-email-modal-popup";
   sent = false;
@@ -37,6 +38,10 @@ export class SendTestEmailComponent implements OnInit {
   public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
   public onAddedFunc = this.beforeAdd.bind( this );
   private addFirstAttemptFailed = false;
+  isValidForm = false;
+  isValidEmailFormat = true;
+  isValidEmailLength = false;
+  isValidSubject = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
@@ -64,9 +69,28 @@ private beforeAdd( tag: any ) {
         else { return Observable.of( '' ).pipe( tap(() => setTimeout(() => this.tagInput.setInputValue( tag ) ) ) ); }
     }
     this.addFirstAttemptFailed = false;
+    this.validateSubject();
     return Observable.of( tag );
 }
 
+validateSubject(){
+  let subject = $.trim(this.subject);
+  let isValidSubject = subject.length>0;
+  let emailIds = this.tagInput['items'];
+  this.isValidForm = isValidSubject && emailIds!=undefined && emailIds.length>0;
+}
+
+validateForm(){
+  let email = $.trim(this.email);
+  let subject = $.trim(this.subject);
+  this.isValidSubject = subject.length>0;
+  this.isValidEmailLength = email.length>0;
+  this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
+  let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
+  this.isValidForm = isValidEmail && this.isValidSubject;
+
+
+}
 
 getTemplateHtmlBodyAndMergeTagsInfo(){
   this.processing = true;
@@ -80,7 +104,8 @@ getTemplateHtmlBodyAndMergeTagsInfo(){
       this.processing = false;
     },error=>{
       this.processing = false;
-      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      this.callEventEmitter();
+      this.referenceService.showSweetAlertServerErrorMessage();
     }
   );
 }
