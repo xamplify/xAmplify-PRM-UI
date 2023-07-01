@@ -37,10 +37,13 @@ export class SendTestEmailComponent implements OnInit {
   public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
   public onAddedFunc = this.beforeAdd.bind( this );
   private addFirstAttemptFailed = false;
-  constructor(public referenceService:ReferenceService) { }
+  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
+    this.processing = true;
     this.referenceService.openModalPopup(this.modalPopupId);
+    $('#sendTestEmailHtmlBody').val('');
+    this.getTemplateHtmlBodyAndMergeTagsInfo();
   }
   
   private must_be_email( control: FormControl ) {
@@ -62,6 +65,29 @@ private beforeAdd( tag: any ) {
     }
     this.addFirstAttemptFailed = false;
     return Observable.of( tag );
+}
+
+
+getTemplateHtmlBodyAndMergeTagsInfo(){
+  this.processing = true;
+  this.authenticationService.getTemplateHtmlBodyAndMergeTagsInfo(this.id).subscribe(
+    response=>{
+      let map = response.data;
+      let htmlBody = map['emailTemplateDTO']['body'];
+      let mergeTagsInfo = map['mergeTagsInfo'];
+      htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
+      $('#sendTestEmailHtmlBody').append(htmlBody);
+      this.processing = false;
+    },error=>{
+      this.processing = false;
+      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    }
+  );
+}
+
+
+send(){
+ 
 }
 
 

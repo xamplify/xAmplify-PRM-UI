@@ -1042,10 +1042,17 @@ copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
   copyGroupUsersDto.loggedInUserId = this.getUserId();
   return this.callPostMethod(url,copyGroupUsersDto);
 }
-
-
 /*****XNFR-278****/
 
+/****XNFR-317****/
+getTemplateHtmlBodyAndMergeTagsInfo(id:number) {
+  let url = this.REST_URL +"email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
+  let map = {};
+  map['id'] = id;
+  map['emailId'] = this.user.emailId;
+  return this.callPostMethod(url,map);
+}
+/****XNFR-317****/
 
 private callGetMethod(url: string) {
   return this.http.get(url)

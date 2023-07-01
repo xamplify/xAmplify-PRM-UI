@@ -34,12 +34,19 @@
                   required >
                   </tag-input>
                </div>
-               <div id="emailTemplateBody"></div>
+               <div class="alert alert-info">
+                  <strong>This is the preview of your email</strong>
+               </div>
+               <hr>
+               <div id="sendTestEmailHtmlBody"></div>
             </div>
-            <div class="modal-footer" *ngIf="!processing">
-               <button class="btn btn-default" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">Send</button>
-            </div>
+            
+         </div>
+         <div class="modal-footer" *ngIf="!processing">
+            <button class="btn btn-default" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">
+               <i class="fa fa-paper-plane mr5" aria-hidden="true"></i>Send Test
+            </button>
          </div>
       </div>
    </div>
