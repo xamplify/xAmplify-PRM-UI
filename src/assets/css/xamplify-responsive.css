@@ -21,6 +21,7 @@
         }
         .bar {
             width: 100%;
+            position: inherit;
         }
         .mp-pt-carrdtop {
             margin-top: 9px;
@@ -35,9 +36,9 @@
         .tab_grid{
          margin-bottom:15px;
         }
-        td{
+        /* td{
         white-space: nowrap;
-        }
+        } */
         .mb_6{
             margin-bottom:6px;
         }
@@ -60,6 +61,9 @@
         }
         h6 {
             font-size: 11px;
+        }
+        .mrg_btm_23{
+         margin-bottom: 23px;
         }
     }
     @media only screen and (max-width:578px){
@@ -107,5 +111,8 @@
           }
           .m_t_view{
             float: none!important;
+            }
+            .mb_v_search{
+                top: 3px;
             }
     }

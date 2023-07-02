@@ -240,7 +240,7 @@
                 </section>
                 <!---Grid View---->
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                    <div class="col-md-3 col-sm-4 col-xs-12 mt_13 tb_view_10" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+                    <div class="col-md-3 col-sm-4 col-xs-12 mt_13 tb_view_10 mrg_btm_23" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box cardHeight">
                             <span class="ribbon1">
                                 <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'" translate>Email Co-Branding
