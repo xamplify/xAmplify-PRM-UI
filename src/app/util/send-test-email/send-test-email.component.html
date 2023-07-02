@@ -16,7 +16,7 @@
                <div [hidden]="processing">
                   <div class="form-group" >
                      <label>Email Address<span class="required">*</span></label>
-                     <input type="email" placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.email" [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control" maxlength="200">
+                     <input type="email" placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control" maxlength="200">
                      <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
                   </div>
                   <div class="form-group">
