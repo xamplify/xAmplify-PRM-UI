@@ -24,7 +24,7 @@ export class SendTestEmailComponent implements OnInit {
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
   emailIds = [];
   modalPopupId = "send-test-email-modal-popup";
-  sent = false;
+  sending = false;
   processing = false;
   customResponse: CustomResponse = new CustomResponse();
   success = true;
@@ -39,6 +39,7 @@ export class SendTestEmailComponent implements OnInit {
   isValidEmailLength = false;
   isValidSubject = false;
   sendTestEmailDto:SendTestEmailDto = new SendTestEmailDto();
+  clicked = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
@@ -78,7 +79,7 @@ validateSubject(){
 }
 
 validateForm(){
-  let email = $.trim(this.sendTestEmailDto.fromEmail);
+  let email = $.trim(this.sendTestEmailDto.toEmail);
   let subject = $.trim(this.sendTestEmailDto.subject);
   this.isValidSubject = subject.length>0;
   this.isValidEmailLength = email.length>0;
@@ -108,16 +109,28 @@ getTemplateHtmlBodyAndMergeTagsInfo(){
 
 
 send(){
+this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
  this.validateForm();
  if(this.isValidForm){
   this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
     response=>{
       this.referenceService.showSweetAlertSuccessMessage(response.message);
+      this.callEventEmitter();
     },error=>{
-      this.referenceService.showSweetAlertSuccessMessage("Unable to send test email.Please try after some time.");
+      this.showErrorMessage("Unable to send test email.Please try after some time.");
     });
+ }else{
+  this.showErrorMessage("Please provide valid inputs.");
+  
  }
  
+}
+
+showErrorMessage(errorMessage:string){
+  this.processing = false;
+  this.customResponse = new CustomResponse();
+  this.referenceService.showSweetAlertErrorMessage("Please provide valid inputs.");
+  this.clicked = false;
 }
 
 

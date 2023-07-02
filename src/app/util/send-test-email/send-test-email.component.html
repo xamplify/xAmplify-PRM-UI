@@ -8,10 +8,7 @@
             <h4 class="modal-title left" id="myModalLabel">Send Test Email</h4>
          </div>
          <div class="modal-body">
-            <div *ngIf="sent">
-               <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-            </div>
-            <div id="modal-content" *ngIf="!sent">
+            <div id="modal-content">
                <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
                <div [hidden]="processing">
                   <div class="form-group" >
@@ -34,7 +31,7 @@
          </div>
          <div class="modal-footer" *ngIf="!processing">
             <button class="btn btn-default" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn green" [disabled]="!isValidForm" (click)="send()" *ngIf="!sent">
+            <button type="submit" class="btn green" [disabled]="!isValidForm || clicked" (click)="send();clicked = true" *ngIf="!sent">
                <i class="fa fa-paper-plane mr5" aria-hidden="true"></i>Send Test
             </button>
          </div>
