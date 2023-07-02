@@ -28,6 +28,7 @@ import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -1051,6 +1052,12 @@ getTemplateHtmlBodyAndMergeTagsInfo(id:number) {
   map['id'] = id;
   map['emailId'] = this.user.emailId;
   return this.callPostMethod(url,map);
+}
+
+sendTestEmail(sendTestEmailDto:SendTestEmailDto){
+  sendTestEmailDto.fromEmail = this.user.emailId;
+  let url = this.REST_URL +"email-template/sendTestEmail?access_token=" + this.access_token;
+  return this.callPostMethod(url,sendTestEmailDto);
 }
 /****XNFR-317****/
 

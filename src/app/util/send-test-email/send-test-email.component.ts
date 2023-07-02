@@ -1,7 +1,6 @@
 import { Component, OnInit,Input,Output,EventEmitter, ViewChild } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
@@ -9,11 +8,8 @@ import "rxjs/add/observable/of";
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-
-
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 declare var swal:any, $: any;
-
-
 @Component({
   selector: 'app-send-test-email',
   templateUrl: './send-test-email.component.html',
@@ -42,6 +38,7 @@ export class SendTestEmailComponent implements OnInit {
   isValidEmailFormat = true;
   isValidEmailLength = false;
   isValidSubject = false;
+  sendTestEmailDto:SendTestEmailDto = new SendTestEmailDto();
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
@@ -81,15 +78,13 @@ validateSubject(){
 }
 
 validateForm(){
-  let email = $.trim(this.email);
-  let subject = $.trim(this.subject);
+  let email = $.trim(this.sendTestEmailDto.fromEmail);
+  let subject = $.trim(this.sendTestEmailDto.subject);
   this.isValidSubject = subject.length>0;
   this.isValidEmailLength = email.length>0;
   this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
   let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
   this.isValidForm = isValidEmail && this.isValidSubject;
-
-
 }
 
 getTemplateHtmlBodyAndMergeTagsInfo(){
@@ -100,6 +95,7 @@ getTemplateHtmlBodyAndMergeTagsInfo(){
       let htmlBody = map['emailTemplateDTO']['body'];
       let mergeTagsInfo = map['mergeTagsInfo'];
       htmlBody = this.referenceService.replaceMyMergeTags(mergeTagsInfo, htmlBody);
+      this.sendTestEmailDto.body = htmlBody;
       $('#sendTestEmailHtmlBody').append(htmlBody);
       this.processing = false;
     },error=>{
@@ -112,11 +108,21 @@ getTemplateHtmlBodyAndMergeTagsInfo(){
 
 
 send(){
+ this.validateForm();
+ if(this.isValidForm){
+  this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+    response=>{
+      this.referenceService.showSweetAlertSuccessMessage(response.message);
+    },error=>{
+      this.referenceService.showSweetAlertSuccessMessage("Unable to send test email.Please try after some time.");
+    });
+ }
  
 }
 
 
   callEventEmitter(){
+    this.sendTestEmailDto = new SendTestEmailDto();
     this.referenceService.closeModalPopup(this.modalPopupId);
     this.sendTestEmailComponentEventEmitter.emit();
   }
