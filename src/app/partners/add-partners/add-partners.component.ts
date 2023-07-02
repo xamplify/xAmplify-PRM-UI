@@ -254,7 +254,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    mergeOptionClicked = false;
    selectedUserIdsForMerging: any[];
 	/****XNFR-278****/
-
+   /****** User guide ******/
+   mergeTagForGuide:any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2640,10 +2641,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
+ urlLink:any;
 	ngOnInit() {
 		try {
 			this.socialContactImage();
+			this.urlLink = "partner_onboarding";
+			this.mergeTagForGuide = "partner_onboarding";
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
@@ -4327,26 +4330,7 @@ copyGroupUsersModalPopupEventReceiver(){
 	this.mergeOptionClicked = false;
 	this.selectedUserIdsForMerging = [];
 }
-/*********XNFR-297******** */
-urllink: any;
-userGuide: UserGuide = new UserGuide();
-getToHelpPage(tagName: string) {
-	this.referenceService.mergeTagName = tagName;
-	this.referenceService.hideLeftMenu = false;
-	this.userService.showUserGuide(tagName).subscribe(
-		response => {
-			if (response.statusCode === 200) {
-				this.userGuide = response.data;
-				//this.urllink = 'home/help/' + this.userGuide.slug;
-				this.router.navigate(['home/help/' + this.userGuide.slug]);
-			}
-		}, (error: any) => {
-			this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-		}
-	)
 
-
-}
 
 
 }

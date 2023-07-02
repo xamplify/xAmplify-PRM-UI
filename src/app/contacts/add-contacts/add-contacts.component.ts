@@ -29,7 +29,7 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
-
+import { UserGuideHelpButtonComponent } from 'app/common/user-guide-help-button/user-guide-help-button.component';
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -208,7 +208,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     pipedriveApiKeyError: boolean;
     pipedriveCurrentUser: string;
     pipedriveLoading: boolean = false;
-
+   /**** user guide ****** */
+   mergeTagForGuide:any;
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -223,11 +224,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.isPartner = false;
 			this.module = "contacts";
             this.checkingContactTypeName = "Contact"
+            this.mergeTagForGuide = "import_contact_lists_from_hubspot";
         } else if( currentUrl.includes( 'home/assignleads' ) ){
             this.isPartner = false;
             this.assignLeads = true;
             this.checkingContactTypeName = "Share Lead"
             this.module = "leads";
+            this.mergeTagForGuide = "import_share_leads_lists_from_csv";
         }
         else {
             this.isPartner = true;

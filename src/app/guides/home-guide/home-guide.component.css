@@ -1,4 +1,9 @@
 /* dashboard*/
+.guide-width {
+    width: 1200px;
+    display: block;
+    margin: 0 auto !important;
+}
 .bg-img{
     background-image: url(/assets/images/user-guide.png);
 	background-repeat: no-repeat;
@@ -71,7 +76,7 @@ td.text-center {
   .m-auto{
      padding-top: 15px;
       display: block;
-      width: 100px;
+      width: 64px;
       height: auto;
       margin: 0 auto;
   }
@@ -83,5 +88,5 @@ td.text-center {
     margin-bottom: 16px;
   }
   .p_20{
-    padding:20px 20px 0px 20px;
+    padding:30px 30px 30px 30px;
   }

@@ -16,6 +16,7 @@
             <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
             
       </ul>
+      <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
    </div>
    <!---Component Comes here-->
    <app-dam-list-and-grid-view *ngIf="manageDam && !editVideo && !playVideo" ></app-dam-list-and-grid-view>

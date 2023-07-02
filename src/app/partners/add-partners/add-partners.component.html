@@ -70,11 +70,7 @@
                     </button>
                 </a>
             </div>
-            <div style="float: right;margin: 10px;" (click)="getToHelpPage('onboarding_partner')">
-                <a  target="_blank">
-                    <i class="fa fa-question-circle" title="User Guide"></i>
-                </a>
-            </div>
+            <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
         </div>
         <div class="">
             <!----XNFR-222-->

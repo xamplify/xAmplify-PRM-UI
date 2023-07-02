@@ -122,6 +122,8 @@ import { ImgCropprV2Component } from './image-cropper-v2/img-croppr-v2/img-cropp
 import { LoginAsPartnerComponent } from 'app/util/login-as-partner/login-as-partner.component';
 import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-authentication-popup/pipedrive-authentication-popup.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
+import { UserGuideHelpButtonComponent } from './user-guide-help-button/user-guide-help-button.component';
+import { GuideLeftMenuComponent } from 'app/guides/guide-left-menu/guide-left-menu.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
@@ -145,7 +147,7 @@ import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-mod
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent],
+		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent, UserGuideHelpButtonComponent,GuideLeftMenuComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -168,7 +170,7 @@ import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-mod
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent]
+		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,UserGuideHelpButtonComponent]
 
 
 

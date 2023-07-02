@@ -6,12 +6,12 @@ import { HomeGuideComponent } from './home-guide/home-guide.component';
 import { GuideLeftMenuComponent } from './guide-left-menu/guide-left-menu.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { SharedModule } from 'app/shared/shared.module';
-import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import { CommonComponentModule } from 'app/common/common.module';
 import { SharedLibraryModule } from 'app/shared/shared-library.module';
 import { DashboardModule } from 'app/dashboard/dashboard.module';
-import { SharedRssModule } from 'app/shared/shared-rss.module';
 import { RouterModule } from '@angular/router';
+import { GuideHelpIconComponent } from './guide-help-icon/guide-help-icon.component';
+
 
 @NgModule({
   imports: [
@@ -21,9 +21,11 @@ import { RouterModule } from '@angular/router';
     CKEditorModule,
     CommonComponentModule,
     SharedLibraryModule,
-    RouterModule
+    RouterModule,
   ],
   providers:[],
-  declarations: [HomeGuideComponent, GuideLeftMenuComponent]
+  declarations: [HomeGuideComponent, GuideHelpIconComponent],
+  exports:[GuideHelpIconComponent],
+
 })
 export class GuidesModule { }

@@ -48,6 +48,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isGridView = false;
     isFolderGridView = false;
     exportObject:any = {};
+    mergeTagForGuide:any;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
 	modulesDisplayType = new ModulesDisplayType();
@@ -292,7 +293,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.pagination.filterKey = "All";
             this.isPartnerLandingPage = false;
         }
-
+        /******** user guides ************/
+        this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing _shared_assets':'manage_pages';
+        
         if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
             this.setViewType('Folder-Grid');
         }else{

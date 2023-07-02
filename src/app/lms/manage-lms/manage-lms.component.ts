@@ -12,7 +12,7 @@ export class ManageLmsComponent implements OnInit {
 
   isPartnerView: boolean = false;
   type:string = TracksPlayBookType[TracksPlayBookType.TRACK];
-
+  mergeTagForGuide:any;
   constructor(public referenceService: ReferenceService, private router: Router) {
     if (this.router.url.indexOf('/manage') > -1) {
       this.isPartnerView = false;
@@ -22,6 +22,11 @@ export class ManageLmsComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(!this.isPartnerView || this.router.url.indexOf('/manage') > -1) {
+      this.mergeTagForGuide = "manage_tracks";
+    } else {
+      this.mergeTagForGuide = "access_shared_tracks";
+    }   
   }
 
 }

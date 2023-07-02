@@ -16,6 +16,7 @@
         <div id="folder-margin-xamp">
             <button class="btn btn custom" style="margin-left: 5px;float: right;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
         </div>
+        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <app-add-tracks-play-book #addTracksPlayBookComponent [type]="type"></app-add-tracks-play-book>
 </div>

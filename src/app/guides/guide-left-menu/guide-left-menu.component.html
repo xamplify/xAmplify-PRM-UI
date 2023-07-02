@@ -1,9 +1,11 @@
+<!-- <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading && isSearch"></app-loader> -->
+
 <section class="bg-img">
-  <div class="row justify-content-center d-flex">
+  <div class="row justify-content-center d-flex" style= "padding-top: 20px;">
     <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 text-center search-guide">
-      <form role="search" class="user-search">
+      <!-- <form role="search" class="user-search">
         <div class="input-group">
-          <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+          <input type="serach" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search" (keypress)="eventHandler($event.keyCode)">
           <button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';search()"></button>
           <div class="input-group-btn">
@@ -12,11 +14,32 @@
             </button>
           </div>
         </div>
-      </form>
+      </form> -->
+      <div class="col-xs-12 p0" *ngIf="refService.isMobileScreenSize()">
+        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+          placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+          (click)="searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <!-- Removed style="color: black !important"-->
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="input-icon right">
+        <input type="text" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+          class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+          (click)="searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <!-- REmoved style="color: black !important"-->
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+
     </div>
   </div>
 </section>
-<div class="page-content m10">
+<div class="m10 guide-width" style="padding-top: 20px;padding-left: 50px; padding-right: 50px;">
 
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -26,7 +49,7 @@
       </li>
       <li *ngIf="!isSearch">
         <i class="fa fa-angle-right" aria-hidden="true"></i>
-        <a>Designing Forms</a>
+        <a>{{userGuide.title}}</a>
       </li>
       <li *ngIf="isSearch">
         <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -36,12 +59,13 @@
   </div>
   <div class="page-bar">
     <div class="row">
+      {{guideMergeTag}}
       <div class="col-md-3 col-lg-3">
         <div class="wrapper">
           <div>
             <!-- <ng-template #showTitles>
               <ul class="collapse list-unstyled" id="{{showListId}}">
-                <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <li *ngFor="let name of userGudeTitles"><a >{{name.title}}</a></li>
               </ul>
             </ng-template> -->
           </div>
@@ -49,49 +73,50 @@
           <nav id="sidebar">
             <ul class="list-unstyled components">
               <li *ngIf="menuItem?.accountDashboard" [ngClass]="showListId === 'Account Dashboard'? 'active':''">
-                <a href="#Account" data-toggle="collapse" aria-expanded="false"
+                <a href="#Account"
                   (click)="getUserGuidesByModuleName('Account Dashboard')">
                   <i class="fa fa-home" aria-hidden="true"></i>
                   <span class="title" translate>Account Dashboard</span>
                   <span class=""></span>
                 </a>
-                <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled"  id="Account">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled" id="Account">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
               <!--Partners-->
-              <li *ngIf="menuItem?.partners" [ngClass]="showListId === 'partner'? 'active':''">
-                <a href="#partner" data-toggle="collapse" aria-expanded="false"
-                  (click)="getUserGuidesByModuleName('partner')">
+              <li *ngIf="menuItem?.partners" [ngClass]="showListId === 'Partner'? 'active':''">
+                <a href="#Partner" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Partner')">
                   <i class="fa fa-handshake-o" aria-hidden="true"></i>
                   <span class="title" translate>{{customNamePartners}}</span>
                 </a>
-                <ul *ngIf="showListId === 'partner' " class="collapse list-unstyled" id="partner">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <ul *ngIf="showListId === 'Partner' " class="collapse list-unstyled" id="Partner">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
               <!--Content-->
-              <li *ngIf="menuItem?.content" [ngClass]="showListId === 'content'? 'active':''">
+              <li *ngIf="menuItem?.content" [ngClass]="showListId === 'Content'? 'active':''">
                 <a href="#Content" data-toggle="collapse" aria-expanded="false"
-                  (click)="getUserGuidesByModuleName('content')">
+                  (click)="getUserGuidesByModuleName('Content')">
                   <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                   <span class="title" translate>Content</span>
                 </a>
-                <ul  *ngIf="showListId === 'content'" class="collapse list-unstyled" id="Content">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <ul *ngIf="showListId === 'Content'" class="collapse list-unstyled" id="Content">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
               <!--Contacts-->
-              <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner" [ngClass]="showListId === 'Contacts'? 'active':''">
+              <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"
+                [ngClass]="showListId === 'Contacts'? 'active':''">
                 <a href="#Contacts" data-toggle="collapse" aria-expanded="false"
                   (click)="getUserGuidesByModuleName('Contacts')">
                   <i class="fa fa-id-card" aria-hidden="true"></i>
                   <span class="title" translate>Contacts</span>
                 </a>
-                <ul  *ngIf="showListId === 'Contacts'" class="collapse list-unstyled" id="Contacts">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <ul *ngIf="showListId === 'Contacts'" class="collapse list-unstyled" id="Contacts">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
@@ -103,7 +128,7 @@
                   <span class="title" translate>Share Leads</span>
                 </a>
                 <ul *ngIf="showListId === 'Share Leads'" class="collapse list-unstyled" id="shareLeads">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
               <!--Shared Leads-->
@@ -115,7 +140,7 @@
                   <!-- <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Shared Leads'" class="collapse list-unstyled" id="sharedLeads">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
@@ -127,8 +152,8 @@
                   <span class="title" translate>Pages</span>
                   <!-- <span class="selected"></span> -->
                 </a>
-                <ul *ngIf="showListId === 'Pages'"  class="collapse list-unstyled" id="pagesAccessAsPartner">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                <ul *ngIf="showListId === 'Pages'" class="collapse list-unstyled" id="pagesAccessAsPartner">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
@@ -141,7 +166,7 @@
                   <!-- <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Design'" class="collapse list-unstyled" id="design">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
@@ -157,12 +182,13 @@
                   <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Campaign'" class="collapse list-unstyled" id="Campaign">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
 
               <!-- ------Oppportunities----- -->
-              <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner" [ngClass]="showListId === 'Opportunities'? 'active':''">
+              <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner"
+                [ngClass]="showListId === 'Opportunities'? 'active':''">
                 <a href="#Opportunities" data-toggle="collapse" aria-expanded="false"
                   (click)="getUserGuidesByModuleName('Opportunities')">
                   <i class="fa fa-money" aria-hidden="true"></i>
@@ -171,7 +197,7 @@
        <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Opportunities'" class="collapse list-unstyled" id="Opportunities">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
               <!--------Team------->
@@ -183,22 +209,22 @@
                   <!-- <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Team'" class="collapse list-unstyled" id="team">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
               <!-------Configuration-------->
               <li
                 *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"
                 [ngClass]="showListId === 'Configuration'? 'active':''">
-                <a href="#Configuration" data-toggle="collapse" aria-expanded="false"
+                <a href="#Configuration"
                   (click)="getUserGuidesByModuleName('Configuration')">
                   <i class="fa fa-cog" aria-hidden="true"></i>
                   <span class="title" translate>Configuration</span>
                   <!-- <span class="selected"></span> -->
                 </a>
-                <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration">
-                  <li *ngFor="let name of titles"><a href="#">{{name}}</a></li>
-                </ul>
+                <!-- <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration">
+                  <li *ngFor="let name of userGudeTitles"><a (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul> -->
               </li>
 
             </ul>
@@ -206,13 +232,21 @@
         </div>
       </div>
       <div class="col-md-9 col-lg-9">
-        <div class="page-bar">
-          <div *ngIf="!isSearch">
-            <div [innerHTML]="guideLink"></div>
+        {{mergeTag}}
+        <div class="" style="padding: 10px;">
+          <div *ngIf="!isSearch" style="margin-top: 20px;">
+            <div style="border-bottom: 1px solid #ddd;">
+            <h4>
+              {{userGuide.title}}
+            </h4>
+            </div>
+            <div [innerHTML]="guideLinkIframe">
+              <!-- <iframe id="myFrame"  width="100%" height="1110" src="{{[guideLink"}}" frameborder="0" allowfullscreen></iframe> -->
+            </div>
           </div>
           <div *ngIf="isSearch">
             <div *ngFor="let guide of userGuides">
-              <h3>{{guide.customName}}</h3>
+              <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
               <div>
                 {{guide.description}}
               </div>

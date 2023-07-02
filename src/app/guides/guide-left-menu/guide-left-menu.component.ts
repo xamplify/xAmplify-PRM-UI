@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Pagination } from 'app/core/models/pagination';
 import { Roles } from 'app/core/models/roles';
@@ -17,7 +17,8 @@ import { MenuItem } from 'app/core/models/menu-item';
 import { Module } from 'app/core/models/module';
 import { ModuleCustomName } from 'app/dashboard/models/module-custom-name';
 import { EEXIST } from 'constants';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-guide-left-menu',
@@ -25,15 +26,15 @@ import { Router } from '@angular/router';
 	styleUrls: ['./guide-left-menu.component.css']
 })
 export class GuideLeftMenuComponent implements OnInit {
+	@Input() guideMergeTag:any;
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	pagination: Pagination = new Pagination();
 	loggedInUserId: number;
 	public searchKey: string;
-	isLoadingList: boolean = true;
 	customResponse: CustomResponse = new CustomResponse();
 	pager: any = {};
 	isSearch: boolean = false;
-	loading = false;
+	loading:boolean = false;
 	public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	menuItem: MenuItem = new MenuItem();
 	menuItemError = false;
@@ -43,8 +44,17 @@ export class GuideLeftMenuComponent implements OnInit {
 	isLoggedInAsPartner = false;
 	roleName: Roles = new Roles();
 	moduleName:any;
-	constructor(public authenticationService: AuthenticationService, public dashboardService: DashboardService,
-		public userService: UserService, public utilService: UtilService, public router:Router,
+	userGuide: UserGuide = new UserGuide();
+	guideLink: any;
+	guideLinkIframe:any;
+	userGuides: UserGuide[];
+	mergeTag:any;
+    slug:any;
+	userGuideLink :any;
+	userGudeTitles:UserGuide[] = [];
+	showListId = "";
+	constructor(private route: ActivatedRoute,public authenticationService: AuthenticationService, public dashboardService: DashboardService,
+		public userService: UserService, public utilService: UtilService, public router:Router, public location: Location,
 		public sanitizer: DomSanitizer, public refService: ReferenceService, public pagerService: PagerService, public socialPagerService: SocialPagerService) {
 		/**** XNFR-134 ****/
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -56,25 +66,26 @@ export class GuideLeftMenuComponent implements OnInit {
 		} else {
 			this.pagination.vanityUrlFilter = false;
 		}
-
 	}
-	userGuide: UserGuide = new UserGuide();
-	guideLink: any;
-	getUserGuideByTag() {
-		let name = this.refService.mergeTagName;
-		this.userService.showUserGuide(name).subscribe(
+	getUserGuideBySlug(slug:any) {
+		this.loading = true;
+		this.dashboardService.getGuideGuideBySlug(slug).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
 					this.userGuide = response.data;
-					this.guideLink = this.sanitizer.bypassSecurityTrustHtml(this.userGuide.link)
+					this. guideLink = this.userGuide.link;
+					this.showListId =this.userGuide.customName
+					this.guideLinkIframe =this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src='+this. guideLink+' frameborder="0" allowfullscreen></iframe>');
+					
 				}
+				this.loading = false;
 			}, (error: any) => {
 				// this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			})
 	}
-	userGuides: UserGuide[];
+
 	getSearchResultsOfUserGuides(pagination: Pagination) {
-		this.isLoadingList = true;
+		this.loading = true;
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
 		this.dashboardService.getSearchResultsOfUserGuides(pagination).subscribe(
@@ -84,7 +95,7 @@ export class GuideLeftMenuComponent implements OnInit {
 					this.userGuides = userGuide.list;
 					console.log(userGuide.totalRecords);
 					console.log(userGuide.list)
-					this.isLoadingList = false;
+					this.loading = false;
 					pagination.totalRecords = userGuide.totalRecords;
 					pagination = this.pagerService.getPagedItems(pagination, userGuide.list);
 					this.pager = this.socialPagerService.getPager(userGuide.totalRecords, this.pagination.pageIndex, this.pagination.maxResults);
@@ -92,6 +103,7 @@ export class GuideLeftMenuComponent implements OnInit {
 					this.refService.loading(this.httpRequestLoader, false);
 				}
 			}, (error: any) => {
+				this.loading = false;
 				this.refService.loading(this.httpRequestLoader, false);
 				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
 			})
@@ -111,12 +123,13 @@ export class GuideLeftMenuComponent implements OnInit {
 		this.pagination.pageIndex = event.page;
 		this.getSearchResultsOfUserGuides(this.pagination);
 	}
-
+   
 	ngOnInit() {
-		this.getUserGuideByTag();
-		//this.getSearchResultsOfUserGuides(this.pagination);
+		
 		this.findMenuItems();
-		this.showLeftMenuItems();
+		this.slug = this.route.snapshot.params['slug'];
+		this.getUserGuideBySlug(this.slug);
+		this.mergeTag=this.guideMergeTag;
 	}
 	findMenuItems() {
 		this.loading = true;
@@ -329,54 +342,26 @@ export class GuideLeftMenuComponent implements OnInit {
 	startLoader() {
 		this.loading = true;
 	}
-	menuItemsWithTitles:ModuleCustomName[];
-	titles:any[] = [];
-	userGudeTitles:UserGuide[] = [];
-	showListId = "";
+	
 	getUserGuidesByModuleName(moduleName: any) {
 		this.showListId = "";
-		let mName = "";
+		this.pagination.moduleName = "";
 		this.userGudeTitles = [];
-		mName = moduleName;
-		this.isLoadingList = true;
+		this.loading = true;
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
 		this.showListId = moduleName;
-		this.dashboardService.getUserGuidesByModuleName(mName).subscribe(
+		this.pagination.moduleName =  moduleName;
+		// alert(this.pagination.moduleName)
+		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
 					this.userGudeTitles= response.data;
-					this.titles = [];
-					for(let dto  of this.userGudeTitles) {
-						this.titles.push(dto.title);
-					}
-					//alert(this.titles)
 					console.log(this.userGudeTitles)
-					this.isLoadingList  = false;
+					this.loading  = false;
 				}
 			}, (error: any) => {
-				this.isLoadingList  = false;
-				this.refService.loading(this.httpRequestLoader, false);
-				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
-			})
-	}
-   
-	showLeftMenuItems(){
-		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-			this.vanityLoginDto.vanityUrlFilter = true;
-		} else {
-			this.vanityLoginDto.vanityUrlFilter = false;
-		}
-		this.vanityLoginDto.userId = this.authenticationService.getUserId();
-		this.vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
-		this.dashboardService.getUserGuideLeftMenu(this.vanityLoginDto).subscribe(
-			(response) => {
-				if(response.statusCode === 200)
-				this.menuItemsWithTitles= response.data
-				this.isLoadingList  = false;
-			}, (error: any) => {
-				this.isLoadingList  = false;
+				this.loading  = false;
 				this.refService.loading(this.httpRequestLoader, false);
 				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
 			})
@@ -384,6 +369,32 @@ export class GuideLeftMenuComponent implements OnInit {
 
 	gotoHome() {
 		this.router.navigate(['home/help/guides']);
+	}
+	
+	getGuideLinkByTitle(title:string){
+		this.loading = true;
+		this.dashboardService.getGuideLinkByTitle(title).subscribe(
+			(response) => {
+				this.loading = false;
+				this.isSearch = false;
+				if(response.statusCode === 200){
+				let map= response.map;
+				this.userGuide.title = title;
+				this.userGuideLink = map.link;
+                this.slug = map.slug;
+				this.guideLinkIframe =this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src='+this.userGuideLink+' frameborder="0" allowfullscreen></iframe>');
+				this.location.replaceState('home/help/' +this.slug);
+			    } else {
+
+				}
+				this.refService.scrollSmoothToTop();
+				this.loading  = false;
+			}, (error: any) => {
+				this.loading  = false;
+				this.refService.loading(this.httpRequestLoader, false);
+				this.refService.scrollSmoothToTop();
+				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
+			})
 	}
 
 }  

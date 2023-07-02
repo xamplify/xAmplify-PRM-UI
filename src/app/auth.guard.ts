@@ -28,6 +28,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     lmsUrl = 'tracks';
     playbookUrl = 'playbook';
     addCompanyProfileUrl = "/home/dashboard/add-company-profile";
+    /*** user guide **** */
+    userGuideUrl = 'help';
     /*******XNFR-83*******/
     agencyUrl = 'agency';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
@@ -211,6 +213,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
          if(url.indexOf(this.agencyUrl)>-1){
             return this.authorizeUrl(roles, url, this.agencyUrl);
          }
+         /*********** user guide****** */
+         if(url.indexOf(this.userGuideUrl)>-1){
+            return this.authorizeUrl(roles, url, this.userGuideUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -305,6 +311,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         else if(urlType==this.agencyUrl){
             return true;
         }
+        /***** user guide*******/
+        else if (urlType == this.userGuideUrl){
+            return true;
+        }
+
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;
             let partnerLandingPageAccess = false;

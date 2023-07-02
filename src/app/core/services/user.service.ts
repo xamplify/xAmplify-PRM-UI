@@ -511,11 +511,11 @@ export class UserService {
         .catch(this.handleServerError);
 	}
 
-    /**** user-guides ***** */
-     showUserGuide(tagName: string) {
-        return this.http.get(this.authenticationService.REST_URL + 'user/guide/get/' + tagName + '?access_token=' + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+     /**** user-guides ***** */
+ showUserGuide(tagName: string) {
+    return this.http.get(this.authenticationService.REST_URL + 'user/guide/get/' + tagName + '?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
 
 }
