@@ -1257,3 +1257,13 @@ th.border-top{border-bottom: none !important}
 	border-right: 3px solid green;
 	border-top: 3px solid green;
 }
+
+
+/* 30/06/23 */
+
+.process-sync{
+  position: absolute;
+  font-size: 12px;
+  left: 16px;
+  bottom: 66px;
+}

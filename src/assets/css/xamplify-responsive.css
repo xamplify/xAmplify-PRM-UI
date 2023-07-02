@@ -2,7 +2,7 @@
     padding-bottom: 8px!important;
     }
     /*app-detailed-campaign-analytics */
-    @media only screen and (min-width: 768px) and (max-width: 1281px) { 
+    @media only screen and (min-width: 768px) and (max-width: 1024px) { 
         section.percentage-circle {
             margin: 0px -22px;
         }
@@ -17,10 +17,10 @@
         }
         .grid-box{
             text-align: center;
-            height: 249px;
+            /* height: 249px; */
         }
         .bar {
-            width: 230px;
+            width: 100%;
         }
         .mp-pt-carrdtop {
             margin-top: 9px;
@@ -54,6 +54,13 @@
           .m_t_view{
           float: none!important;
           }
+          .grid-box h6 {
+            text-align: left;
+            margin: 5px 0 5px 20px;
+        }
+        h6 {
+            font-size: 11px;
+        }
     }
     @media only screen and (max-width:578px){
         div#vendor-details-tile {

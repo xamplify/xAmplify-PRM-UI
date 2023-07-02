@@ -85,6 +85,9 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     loggedInAsSuperAdmin = false;
     saveAsDefaultTemplate = false;
     defaultTemplateInput = {};
+    /**XNFR-317*****/
+	selectedEmailTemplateId = 0;
+	sendTestEmailIconClicked = false;
     constructor(private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -481,5 +484,18 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
         this.saveAsDefaultTemplate = false;
         this.defaultTemplateInput = {};
     }
+
+    /****XNFR-317****/
+	openSendTestEmailModalPopup(emailTemplate:any){
+		this.selectedEmailTemplateId = emailTemplate.id;
+		this.sendTestEmailIconClicked = true;
+	}
+
+	sendTestEmailModalPopupEventReceiver(){
+		this.selectedEmailTemplateId = 0;
+		this.sendTestEmailIconClicked = false;
+	}
+    /****XNFR-317****/
+	
 
 }

@@ -793,8 +793,9 @@ span.ui-column-resize {
 .activeCRM {
   background-color: #2f4857 !important;
 }
-.alert-warning,
-.register_deal {
+/* .alert-warning,
+.register_deal */
+.alert-warning {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
@@ -1544,4 +1545,9 @@ input.ng-valid.ng-dirty.ng-touched {
  /* 28-6-2023 table btns,lables and tags*/
 .lightgray-btn:hover {
   background: #ddd !important;
+}
+
+ /*01-07-2023*/
+ .rss-title {
+  color: white !important;
 }

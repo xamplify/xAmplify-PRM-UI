@@ -299,21 +299,18 @@
                                       style="position: relative;top: 0px;background-color: #d9534f;margin-top: 5px;" translate>
                                       Private
                                    </h6>
-                                   <h6 class="view-banner"
-                                      *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1"
-                                      style="background-color: red;">
+                                   <h6 class="view-banner Cancelled-tag-cu"
+                                      *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
                                       <span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
                                       <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
                                    </h6>
-                                   <h5 class="view-banner"
-                                      *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
-                                      style="background-color: #f76c1a !important">Draft</h5>
+                                   <h5 class="view-banner orange-lable-cu1"
+                                      *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Draft</h5>
                                    <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'"
                                       translate>
                                       Scheduled
                                    </h5>
-                                   <h6 class="view-banner banner-top" *ngIf="archived" style="background-color: #f76c1a !important"
-                                      translate>
+                                   <h6 class="view-banner banner-top orange-lable-cu1" *ngIf="archived" translate>
                                       Archived
                                    </h6>
                                    <h6 class="view-banner banner-top" *ngIf="campaign.ended" style="background-color: #b6039e !important"
@@ -326,7 +323,7 @@
                                       <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
                                    </h6>
                                    <!---XNFR-255-->
-                                   <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
+                                   <h6 class="view-banner banner-top white-labeled-cu1" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
                                    <!---XNFR-255-->
                                 </td>
                                 <td>
@@ -1006,7 +1003,7 @@
                                          </ng-container>
                                          <!--XNFR-125--->
                                          <!---XNFR-255-->
-                                         <span class="green-banner prt3px" *ngIf="campaign?.whiteLabeled">White-Labeled</span>
+                                         <span class="green-banner prt3px white-labeled-cu1" *ngIf="campaign?.whiteLabeled">White-Labeled</span>
                                          <!---XNFR-255-->
                                          <span class="view-banner"
                                             *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"

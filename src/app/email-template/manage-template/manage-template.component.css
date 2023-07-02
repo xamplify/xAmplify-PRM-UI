@@ -146,12 +146,12 @@ a.disabled {
 
 .view-banner {
   color: #fff;
-  padding: 6px;
+  padding: 5px 10px;
   text-align: center;
-  width: 175px;
+  width: 120px;
   border-radius: 3px;
-  /*25-01-2023*/
   margin: 10px 0px;
+  font-size: 10px;
 }
 
 .email-template-preview {
@@ -379,4 +379,18 @@ body {
 }
 .mix-filter li:hover {
   background-color: #6dcff6;
+}
+/* 30-6-2023 */
+.email-image-temp-custimize {
+  margin: 0 !important;
+  height: 390px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+.ribbon span {
+  font-size: 8px;
 }

@@ -179,7 +179,7 @@
                                                 <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}">
                                                     <span translate>Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}</strong></span>
                                                 </h6>
-                                                <h5 class="view-banner-green">White-Labeled</h5>
+                                                <h5 class="view-banner-green white-labeled-cu">White-Labeled</h5>
                                             </ng-container>
                                              <!---XNFR-255-->
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore"
@@ -219,6 +219,9 @@
                                                 </a>
                                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
+                                                <!--XNFR-317-->
+                                                    <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                                <!--XNFR-317-->
                                                 </div>
                                                 <div class="mActionDiv">
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" 
@@ -244,8 +247,8 @@
                                     </span>
                             <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'" >{{emailTemplate.emailTemplateType | translate}}</span>
                             </span>
-                            <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                            <img alt="" class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
+                            <img class="email-template-preview email-image-temp-custimize" *ngIf="emailTemplate.subject"  src="{{emailTemplate.subject}}" alt="Image Not Found">
+                            <img alt="" class="email-template-preview email-image-temp-custimize" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
@@ -310,6 +313,9 @@
                                 </a>
                                 <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
+                                <!--XNFR-317-->
+                                <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                <!--XNFR-317-->
                                 <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}"
                                  *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor || 
                                  authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
@@ -374,3 +380,15 @@
 <ng-container *ngIf="saveAsDefaultTemplate">
 <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
+
+<!--XNFR-317-->
+<ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
+    <a *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+     title="{{actionsDescription?.sendTestEmail}}">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+    </a>
+</ng-template>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<!--XNFR-317-->
+
+

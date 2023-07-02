@@ -250,9 +250,8 @@
                                             <span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
                                             <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
                                         </h6>
-                                        <h5 class="view-banner"
-                                            *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
-                                            style="background-color: #f76c1a !important">Draft</h5>
+                                        <h5 class="view-banner orange-lable-cu1"
+                                            *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Draft</h5>
                                         <h5 class="view-banner"
                                             *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
                                             Scheduled
@@ -268,7 +267,7 @@
                                             <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
                                         </h6>  
                                         <!---XNFR-255-->
-                                            <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
+                                            <h6 class="view-banner banner-top white-labeled-cu1" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
                                         <!---XNFR-255--> 
                                     </td>
                                     <td>
@@ -1053,9 +1052,9 @@
                                 <!---XNFR-255-->
                                     <span class="green-banner prt3px" *ngIf="campaign?.whiteLabeled">White-Labeled</span>
                                 <!---XNFR-255-->
-                                <span class="view-banner"
+                                <span class="view-banner orange-lable-cu1"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
-                                    style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
+                                    style="position: relative;top: -3px;">Draft</span>
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'"
                                     style="position: relative;top: -3px;">Scheduled</span>

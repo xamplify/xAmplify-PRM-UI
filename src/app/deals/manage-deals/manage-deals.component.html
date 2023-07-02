@@ -318,7 +318,7 @@
                                 <select
                                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
                                   class="form-control" [(ngModel)]="deal.pipelineStageId"
-                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 135px">
+                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 115px">
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                                 </select>
                                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
@@ -341,7 +341,7 @@
                                     </a>
                                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
                                     data-toggle="tooltip" data-placement="bottom" title="Delete Deal" id="deal">
-                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                   </ng-container>
                                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" 

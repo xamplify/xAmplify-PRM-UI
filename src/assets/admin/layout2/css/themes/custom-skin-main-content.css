@@ -1351,3 +1351,8 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .option-color {
   color: var(--title-heading--text) !important;
 }
+
+ /*01-07-2023*/
+ .rss-title {
+  color: var(--title-heading--text) !important;
+}

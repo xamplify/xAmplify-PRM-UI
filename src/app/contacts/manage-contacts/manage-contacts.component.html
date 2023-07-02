@@ -373,16 +373,17 @@
                               </td>
                               <td>
                                  <h4 class="moreipsis" >
-                                    <span data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}"> {{contactList.name}}</span>
-                                 </h4>
+                                    <span> <strong data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}</strong>
+                                    </span> <strong><span *ngIf="contactList.name?.length>20">...</span></strong>
+                                    </h4>
                                  <h5 class='m0 ellipsis'  translate>
                                     By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
-                                    | slice:0:50}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
+                                    | slice:0:15}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
                                     </span>
                                  </h5>
                                  <h5 class="mb0 ellipsis"  >
-                                    <strong >{{contactList.companyName | slice:0:50}}</strong> <span
-                                       *ngIf="contactList.companyName?.length>50">...</span>
+                                    <strong >{{contactList.companyName | slice:0:15}}</strong> <span
+                                       *ngIf="contactList.companyName?.length>15">...</span>
                                     <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
                                        <span class="mb0"
                                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
@@ -407,13 +408,12 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="assignLeads" style="text-align: center;">
-                                 <h5 class="view-banner" style="width: 90%;"
+                                 <h5 class="view-banner Assigned-lable"
                                     *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status"
                                        translate>Assigned</span>
                                  </h5>
-                                 <h5 class="view-banner" style="width: 90%;"
-                                    style="background-color: orange; width: 90%;"
+                                 <h5 class="view-banner orange-lable-cu" 
                                     *ngIf="contactList?.assignedLeadsList && !contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status" translate>Not
                                     Assigned</span>
@@ -431,7 +431,7 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="!assignLeads && !isPartner">
-                                 <h5 class="view-banner" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
+                                 <h5 class="view-banner green-btn-cu" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
                                  <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_public}}" translate>Public</span>
                                  <span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
@@ -589,8 +589,8 @@
                   <h4 class="ellipsis" title="{{contactList.name}}" style="float:none !important">
                      {{contactList.name | slice:0:25}} <span *ngIf="contactList.name?.length>25">...</span>
                   </h4>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner" style="position: relative;top: -3px;" translate>Assigned</span>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" style="position: relative;top: -3px;background-color: orange;" translate>Not Assigned</span>
+                  <span class="view-banner Assigned-lable" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
+                  <span class="view-banner orange-lable-cu" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
                   <h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">
                      By {{contactList.uploadedBy | slice:0:30}} <span
                         *ngIf="contactList.uploadedBy?.length>30">...</span>
@@ -994,14 +994,14 @@
                                        valid</span>
                                     </td>
                                     <td *ngIf="isPartner">
-                                       <button class="border-btn-small" id='more_less_button_{{i}}'
+                                       <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
                                           (click)="contact.isShowDetails = ! contact.isShowDetails">
                                        <span *ngIf="!contact.isShowDetails" translate>More</span> <span
                                           *ngIf="contact.isShowDetails" translate>Less</span>
                                        </button>
                                     </td>
                                     <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
-                                       <button class="btn Btn-Green" [disabled] = "assignLeads"
+                                       <button class="btn table-scbscribe-btn" [disabled] = "assignLeads"
                                        *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner()) && !authenticationService?.module?.deletedPartner"
                                        (click)="activateUnsubscribedUser(contact.id)" translate>
                                        Subscribe
