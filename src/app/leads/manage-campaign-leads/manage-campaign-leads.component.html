@@ -144,7 +144,7 @@
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
               </h5>
-              <h5 class='ellipsis' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
+              <h5 class='ellipsis m_t_view' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
                 <span *ngIf="lead.createdByName?.length>20">...</span>
               </h5>
               <h6 class='m0' style="font-weight: 400;">

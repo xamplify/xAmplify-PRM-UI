@@ -55,7 +55,7 @@
                        <ng-container *ngFor='let campaign of pagination.pagedItems; let i=index'>
                           <tr>
                              <td>
-                                <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
+                                <h4 class="ellipsis mt5 mb5 f-w-600 m_t_view" style="font-size: 14px;" title="{{campaign.campaignName}}">
                                    {{campaign.campaignName | slice:0:50}}
                                    <span *ngIf="campaign.campaignName?.length>50">...</span>
                                 </h4>
