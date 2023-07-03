@@ -22,7 +22,7 @@
     padding-bottom: 8px!important;
     }
     /*app-detailed-campaign-analytics */
-    @media only screen and (min-width: 768px) and (max-width: 1024px) { 
+    @media only screen and (min-width: 768px) and (max-width: 991px) { 
         section.percentage-circle {
             margin: 0px -22px;
         }
@@ -41,7 +41,7 @@
         }
         .bar {
             width: 100%;
-            position: inherit;
+            width: calc(100% - 30px);
         }
         .mp-pt-carrdtop {
             margin-top: 9px;
@@ -87,7 +87,15 @@
         }
     
     }
-    @media only screen and (max-width:578px){
+
+    @media only screen and (min-width: 601px) and (max-width: 767px) { 
+        .bar {
+            width: 100%;
+            width: calc(100% - 30px);
+        }
+    }
+
+    @media only screen and (min-width: 360px) and (max-width: 767px) { 
         div#vendor-details-tile {
             left: 12px;
             width: 82.4%!important;
