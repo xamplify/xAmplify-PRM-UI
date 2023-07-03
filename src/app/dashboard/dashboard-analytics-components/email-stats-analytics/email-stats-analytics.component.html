@@ -58,7 +58,6 @@
 
 
 <div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  <!-- style="width: 80%; margin: 1em auto" -->
   <div class="modal-dialog modal-css" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -90,9 +89,7 @@
               </div>
 
               <div *ngIf="isLoadingList">
-                  <app-list-loader></app-list-loader>
-                  <!--  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-          <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong> -->
+                  <app-list-loader></app-list-loader>                 
               </div>
               <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
                   <strong>No results found</strong>

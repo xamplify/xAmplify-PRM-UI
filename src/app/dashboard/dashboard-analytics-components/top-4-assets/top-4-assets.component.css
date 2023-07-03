@@ -1,25 +1,11 @@
-
 .min-h {
-	min-height: 245px;
+  min-height: 245px;
 }
-
 .view-banner-dam {
-	background-color: #00a6e8;
-	color: white;
-	padding: 3px 6px 3px 6px;
-	text-align: center;
-	font-size: 10px;
-	border-radius: 3px;
-}
-
-
-
-.ribbon span::before {
-	border-left: 3px solid #5ab1eb;
-	border-top: 3px solid #5ab1eb;
-}
-
-.ribbon span::after {
-	border-right: 3px solid #5ab1eb ;
-	border-top: 3px solid #5ab1eb;
+  background-color: #00a6e8;
+  color: white;
+  padding: 3px 6px 3px 6px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
 }

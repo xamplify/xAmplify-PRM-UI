@@ -126,7 +126,7 @@
         <div class="modal-dialog modal-customize" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button> -->
+                   
                     <a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null">
                         <i class="fa fa-times"></i>
                     </a>
@@ -220,7 +220,7 @@
                 <section *ngFor="let campaign of campaigns; let i=index">
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
                         <div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign)" style="cursor: pointer">
-                            <!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo // [routerLink]="['/home/campaigns/', campaign[0], 'details']"-->
+                           
                             <div class="bookmark-ribbon">
                                 <span style="margin: 0px -7px; font-size: 17px; color: white;">
                     <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top" title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
@@ -506,7 +506,7 @@
                 <div class="portlet-body clearfix">
                     <div class="clearfix">
                         <section *ngFor="let socialConnection of socialConnections">
-                            <!--  [class.disabled]="!hasSocialStatusRole?true:null" -->
+                          
                             <div class="col-xs-12 col-sm-6 col-md-4 p10">
                                 <div class="dashboard-stat2 m0" style="height: 130px;">
                                     <div class="display">
@@ -665,7 +665,7 @@
 </ng-container>
 <!-- Modals -->
 <div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-    <!-- style="width: 80%; margin: 1em auto" -->
+
     <div class="modal-dialog modal-css" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -809,7 +809,6 @@
 </div>
 <!-- world map user details  -->
 <div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-    <!-- style="width: 80%; margin: 1em auto" -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

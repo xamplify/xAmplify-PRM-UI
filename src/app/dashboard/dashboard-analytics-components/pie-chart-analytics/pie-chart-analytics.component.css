@@ -1,154 +1,44 @@
 #container {
-    height: 210px;
+  height: 210px;
 }
-
-.highcharts-figure-pie,
-.highcharts-data-table table {
-    min-width: 210px;
-    max-width: 800px; 
+.highcharts-figure-pie {
+  min-width: 210px;
+  max-width: 800px;
 }
-
-.highcharts-data-table table {
-    font-family: Verdana, sans-serif;
-    border-collapse: collapse;
-    border: 1px solid #ebebeb;
-    width: 100%;
-    max-width: 500px;
+.mix-filter {
+  margin: 5px;
 }
-
-.highcharts-data-table caption {
-    font-size: 1.2em;
-    color: #555;
+.mix-filter li {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 5px 12px;
 }
-
-.highcharts-data-table th {
-    font-weight: 600;
+.portlet.light .portlet-body {
+  padding: 1em;
 }
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-     padding: 0.5em; 
+.portlet.light.block:hover {
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  -webkit-transform: translateY(-0.5rem);
+  -ms-transform: translateY(-0.5rem);
+  transform: translateY(-0.5rem);
+  cursor: pointer;
+  cursor: hand;
 }
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
+.fa-4x {
+  font-size: 4em;
 }
-
-.mix-filter{
-    margin: 5px;
+.emailtemplate-selected {
+  background-color: #6dcff6;
 }
- .mix-filter li {
-    font-size: 11px;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 5px 12px;
+[type="checkbox"] {
+  vertical-align: sub;
+  width: 16px;
+  height: 16px;
 }
- .box{
-    padding: 10px;
-}
-
- .text-center{
-    text-align: center;
-}
- .portlet > .portlet-title > .caption {
-    float: none;
-    display: inherit;
-}
- .portlet.light .portlet-body {
-    padding: 1em;
-}
- .portlet.light.block:hover{
-     -webkit-box-shadow: 0 5px 20px rgba(0,0,0,.15);
-     box-shadow: 0 5px 20px rgba(0,0,0,.15);
-     -webkit-transform: translateY(-.5rem);
-     -ms-transform: translateY(-.5rem);
-     transform: translateY(-.5rem);
-     cursor: pointer;
-     cursor: hand;
-}
- .fa-4x{
-    font-size: 4em;
-}
- .profile-img-container {
-     height: auto;
-     width: 100%;
-     position:relative;
-}
- .email-template-container:hover img {
-    opacity: 0.4;
-}
- .email-template-container:not(:hover) .email-template-i-container {
-    display: none;
-}
- .email-template-i-container {
-     position: absolute;
-     top: 8em;
-     left: 0px;
-     display: block;
-     height: 100%;
-     width: 100%;
-     z-index: 500;
-     text-align:center;
-}
- .email-template-i-container i {
-     display:block;
-     line-height: inherit;
-}
- h1 {
-     background: #e3e3e3;
-     background: -moz-linear-gradient(top, #e3e3e3, #c8c8c8);
-     background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#c8c8c8));
-     padding: 10px 20px;
-     margin-left: -20px;
-     margin-top: 0;
-     position: relative;
-     width: 70%;
-     -moz-box-shadow: 1px 1px 3px #292929;
-     -webkit-box-shadow: 1px 1px 3px #292929;
-     box-shadow: 1px 1px 3px #292929;
-     color: #454545;
-}
- .arrow {
-     width: 0;
-     height: 0;
-     line-height: 0;
-     border-left: 20px solid transparent;
-     border-top: 10px solid #c8c8c8;
-     top: 104%;
-     left: 0;
-     position: absolute;
-}
- .emailtemplate-selected{
-     background-color: #6dcff6;
-}
- .grid-box img {
-     margin: 0 auto;
-     height: 390px!important;
-     width: 100%!important;
-     border-radius: 5px;
-}
-@media screen and (max-width:600px){.modal-template { width:100% !important; right:0} }
-@media screen and (min-width:601px){.modal-template { width:75% !important; right: 0} }
-
-
-
-[type="checkbox"]
-{
-    vertical-align: sub;
-    width: 16px;height: 16px;
-}
-.select-all-filter{
-    text-transform: uppercase;
-    font-size: 14px;
-    padding:7px;
-    background-color: #6dcff6;
-}
-
 /* 16-06-2023*/
-
 .white-co {
-    display: flex;
-    align-items: stretch;
+  display: flex;
+  align-items: stretch;
 }
