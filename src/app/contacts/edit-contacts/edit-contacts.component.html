@@ -61,7 +61,7 @@
 							<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
 							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" data-toggle="tooltip" data-placement="top" title="Edit list Name"
 							style="cursor:pointer;font-size: 16px;" (click)="editListName()">
-							<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
+							<span class="ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 							<span *ngIf="selectedContactListName?.length>30">...</span>
 							</span>
 							</span>
@@ -470,13 +470,13 @@
 							<tbody>
 							   <ng-container *ngFor="let user of csvPagedItems; let i = index">
 								  <tr>
-									 <td title="{{user.firstName}}">{{user.firstName | slice:0:30}}
+									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName | slice:0:30}}
 										<span *ngIf="user.firstName?.length>30">...</span>
 									 </td>
-									 <td title="{{user.lastName}}">{{user.lastName | slice:0:25}}
+									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName | slice:0:25}}
 										<span *ngIf="user.lastName?.length>25">...</span>
 									 </td>
-									 <td title="{{user.emailId}}">{{user.emailId | slice:0:35}}
+									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId | slice:0:35}}
 										<span *ngIf="user.emailId?.length>35">...</span>
 									 </td>
 									 <td>
@@ -611,10 +611,10 @@
 										<app-user-info  [userInfo]="newContact"></app-user-info>
 									 </td>
 									 <td class="hidden-xs">
-										<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
+										<h5 class='mb0 textWhite ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
 										   <span *ngIf="newContact.jobTitle?.length>25">...</span>
 										</h5>
-										<h6 class='mt0 textWhite ellipsis' *ngIf="!isPartner" title="{{newContact.contactCompany}}">{{newContact.contactCompany | slice:0:25}}
+										<h6 class='mt0 textWhite ellipsis' *ngIf="!isPartner" data-toggle="tooltip" data-placement="bottom" title="{{newContact.contactCompany}}">{{newContact.contactCompany | slice:0:25}}
 										   <span *ngIf="newContact.contactCompany?.length>25">...</span>
 										</h6>
 									 </td>
@@ -649,7 +649,7 @@
 									 <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
 										<span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
 										   <ng-container *ngIf="contact?.teamMemberGroupId>0">
-											  <strong title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
+											  <strong data-toggle="tooltip" data-placement="bottom" title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
 											  <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
 											  </strong><br>
 											  <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
@@ -665,23 +665,23 @@
 										</span>
 									 </ng-container>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
 									 <span *ngIf="contact.vertical?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" title="contact.region">{{contact.region | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="contact.region">{{contact.region | slice:0:14}}
 									 <span *ngIf="contact.region?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" title="contact.partnerType">{{contact.partnerType | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="contact.partnerType">{{contact.partnerType | slice:0:14}}
 									 <span *ngIf="contact.partnerType?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" title="{{contact.category}}">{{contact.category | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.category}}">{{contact.category | slice:0:14}}
 									 <span *ngIf="contact.category?.length>14">..</span>
 								  </td>
 								  <td *ngIf="!isPartner">
 									 <app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 								  </td>
 								  <td class="hidden-xs" *ngIf="!isPartner">
-									 <h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
+									 <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 										<span *ngIf="contact.jobTitle?.length>25">...</span>
 									 </h5>
 								  </td>
@@ -705,10 +705,10 @@
 								  </td>
 								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard && !sharedLeads">
 									 <div class="actions-block override-actions" style="width:170px" >
-										<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
+										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
 										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 										</a>
-										<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
+										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList">
@@ -937,7 +937,7 @@
 						 <ng-container *ngIf="!allcontacts?.multipleTeamMemberGroupsAssigned">
 							<span [className]="allcontacts?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
 							   <ng-container *ngIf="allcontacts?.teamMemberGroupId>0">
-								  <strong title="{{allcontacts?.selectedTeamMemberGroupName}}">Group Name : {{allcontacts?.selectedTeamMemberGroupName | slice:0:10}}
+								  <strong data-toggle="tooltip" data-placement="bottom" title="{{allcontacts?.selectedTeamMemberGroupName}}">Group Name : {{allcontacts?.selectedTeamMemberGroupName | slice:0:10}}
 								  <span *ngIf="allcontacts?.selectedTeamMemberGroupName?.length>10">..</span>
 								  </strong>
 								  <br>
@@ -960,20 +960,20 @@
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
 						 <span *ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
 					  </td>
-					  <td *ngIf="isPartner" title="allcontacts.vertical">{{allcontacts.vertical | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.vertical">{{allcontacts.vertical | slice:0:14}}
 						 <span *ngIf="allcontacts.vertical?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" title="allcontacts.region">{{allcontacts.region | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.region">{{allcontacts.region | slice:0:14}}
 						 <span *ngIf="allcontacts.region?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" title="allcontacts.partnerType">{{allcontacts.partnerType | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.partnerType">{{allcontacts.partnerType | slice:0:14}}
 						 <span *ngIf="allcontacts.partnerType?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" title="allcontacts.category">{{allcontacts.category | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.category">{{allcontacts.category | slice:0:14}}
 						 <span *ngIf="allcontacts.category?.length>14">..</span>
 					  </td>
 					  <td class="hidden-xs" *ngIf="!isPartner">
-						 <h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
+						 <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
 							<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 						 </h5>
 					  </td>
@@ -1221,7 +1221,7 @@
 							<td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
 							   <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
 							</td>
-							<td *ngIf="showNotifyPartnerOption" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''">
+							<td *ngIf="showNotifyPartnerOption" data-toggle="tooltip" data-placement="bottom" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''">
 							<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
 							[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
 							</switch>
@@ -1235,12 +1235,12 @@
 								  </option> 
 								  </select>
 								  <span class="input-group-btn">
-								  <button title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
+								  <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
 								  <i class="fa fa-eye white" aria-hidden="true"></i>
 								  </button>
 								  </span>
 								  <span class="input-group-btn" >
-								  <button title="Select Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+								  <button data-toggle="tooltip" data-placement="bottom" title="Select Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
 								  <i  class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
 								  </button>
 								  </span>

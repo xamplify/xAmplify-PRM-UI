@@ -341,7 +341,7 @@
                            <tr [class.isProcessing]="contactList.uploadInProgress || contactList.validationInProgress || !contactList.emailValidationInd">
                               <td class="cw" *ngIf="showExpandButton">
                                  <div class="actions-block left-float">
-                                    <a (click)="viewMatchedContacts(contactList)" title="Matched Results">
+                                    <a (click)="viewMatchedContacts(contactList)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
                                     <i class="fa"
                                        [ngClass]="{'fa-angle-right': !contactList.expand, 'fa-angle-down': contactList.expand}"
                                        aria-hidden="true"></i>
@@ -372,9 +372,9 @@
                                     style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
                               </td>
                               <td>
-                                 <h4 class="moreipsis" >
-                                    <span> <strong data-toggle="tooltip" data-placement="bottom"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}</strong>
-                                    </span> <strong><span *ngIf="contactList.name?.length>20">...</span></strong>
+                                 <h4 class="moreipsis">
+                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}
+                                    </span><span *ngIf="contactList.name?.length>20">...</span>
                                     </h4>
                                  <h5 class='m0 ellipsis'  translate>
                                     By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
@@ -418,9 +418,9 @@
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status" translate>Not
                                     Assigned</span>
                                  </h5>
-                                 <h6 title="{{contactList.partnerCompanyName}}" *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner" style="text-align:center" translate>
+                                 <h6   *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner" style="text-align:center" translate>
                                     Shared To: <strong>{{contactList.partnerCompanyName | slice:0:7}}</strong>
-                                    <span *ngIf="contactList.partnerCompanyName?.length>7">...</span>
+                                    <span data-toggle="tooltip" data-placement="top" title="{{contactList.partnerCompanyName}}" *ngIf="contactList.partnerCompanyName?.length>7">...</span>
                                  </h6>
                                  <h5>
                                     <a  *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
@@ -586,16 +586,16 @@
                         <span class="arrow"></span>
                      </h3>
                   </div>
-                  <h4 class="ellipsis" title="{{contactList.name}}" style="float:none !important">
+                  <h4 class="ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.name}}" style="float:none !important">
                      {{contactList.name | slice:0:25}} <span *ngIf="contactList.name?.length>25">...</span>
                   </h4>
                   <span class="view-banner Assigned-lable" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
                   <span class="view-banner orange-lable-cu" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
-                  <h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">
+                  <h6 class="mt10 mb0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.uploadedBy}}">
                      By {{contactList.uploadedBy | slice:0:30}} <span
                         *ngIf="contactList.uploadedBy?.length>30">...</span>
                   </h6>
-                  <h6 class="mt0 ellipsis" title="{{contactList.companyName}}">
+                  <h6 class="mt0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.companyName}}">
                      <b>{{contactList.companyName | slice:0:30}}</b> <span
                         *ngIf="contactList.companyName?.length>30">...</span>
                   </h6>
@@ -1327,13 +1327,13 @@
                                     <app-user-info [userInfo]="item"></app-user-info>
                                  </td>
                                  <td>
-                                    <h6 title="{{item.name}}">{{item.name | slice:0:30}}
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{item.name}}">{{item.name | slice:0:30}}
                                        <span *ngIf="item.name?.length>30">...</span>
                                     </h6>
                                     <h4 *ngIf="item.name==null">-</h4>
                                  </td>
                                  <td>
-                                    <h6 title="{{item.company}}">{{item.company | slice:0:30}}
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{item.company}}">{{item.company | slice:0:30}}
                                        <span *ngIf="item.company?.length>30">...</span>
                                     </h6>
                                     <h4 *ngIf="item.company==null">-</h4>

@@ -100,10 +100,10 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
           <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
             <span class="input-group-btn">
-              <button title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
+              <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
-              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
+              <button data-toggle="tooltip" data-placement="bottom" title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
                 <i class="fa fa-users white" aria-hidden="true"></i>
               </button>
             </span>
