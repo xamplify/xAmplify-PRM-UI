@@ -1,20 +1,17 @@
 .headerCss {
-    font-size: 12px;
-    font-weight: 500;
+  font-size: 12px;
+  font-weight: 500;
 }
-
 .center {
-    text-align: center;
+  text-align: center;
 }
-.tooltip-custom{
+.tooltip-custom {
   position: relative;
   left: -3px;
   top: 1px;
-  cursor: pointer;color: #54a7e9;
+  cursor: pointer;
+  color: #54a7e9;
 }
-
-
-  
 .setting-icon-cu {
   border: 1px solid #5bb2f5;
   color: #5bb2f5;
@@ -22,7 +19,7 @@
   height: 28px;
   border-radius: 50%;
   text-align: center;
-  line-height: 26px!important;
+  line-height: 26px !important;
   vertical-align: middle;
   margin-right: 7px;
 }
