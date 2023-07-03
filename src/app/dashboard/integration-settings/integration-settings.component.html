@@ -60,11 +60,12 @@
         <tbody>
           <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
             <tr>    
-                  (click)="selectCf(sfCustomField.name)" id="{{sfCustomField.name}}" name="sfcf[]"
-                  [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
-                  [disabled]="sfCustomField.required" /></td>
-              <td><span>{{sfCustomField.label}}</span></td>
-              <td><span>{{sfCustomField.type}}</span></td>
+              <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
+                (click)="selectCf(sfCustomField.name)" id="{{sfCustomField.name}}" name="sfcf[]"
+                [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
+                [disabled]="sfCustomField.required" /></td>
+            <td><span>{{sfCustomField.label}}</span></td>
+            <td><span>{{sfCustomField.type}}</span></td>
             </tr>
           </ng-container>
         </tbody>
