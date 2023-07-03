@@ -248,6 +248,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.campaignType = 'regular';
+                        this.pagination.campaignType = this.campaignType;
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');
