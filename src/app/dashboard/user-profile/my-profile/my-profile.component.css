@@ -1046,13 +1046,14 @@ i.fa.fa-cog {
 @media screen and (max-width: 768px)  {
   .img_padding {left: 0px;top: 2px;}img.img-custome { width: 58%; position: relative;bottom: 12px;}.top-bottom-margins {margin-top: 12px;}.div.thembgc {padding: 28px 15px 4px 15px;}.card {margin: 10px 0px 10px 0px; padding: 5px;}
    .selectcolor {font-size: 10px;}.notselectcolor {font-size: 10px;}.btn-size{font-size: 10px;}.family-style { font-size: 10px;} h5.card-title {font-size: 13px;}.themefont {margin-top: 5px; margin-bottom: 7px;}.text-bottom { padding-bottom: 0px;margin-top: 5px;margin-bottom: 12px;}i.fa.fa-eye {font-size: 8px;}i.fa.fa-cog {font-size: 8px;} i.fa.fa-chevron-circle-down {font-size: 8px;}
-}
-@media (min-width: 479px) and (max-width: 767px)  {.div.thembgc {padding: 15px 25px 25px 25px;} img.img-custome { width: 96%; margin-bottom: 6px;margin-top: 11px;}.topcard-padding {margin-top: 15px;} img.img-custome { position: relative;bottom: 0px;right: 9px;}}
+   .align-itms-center {margin: 0px 0px !important;}
+  }
+@media (min-width: 479px) and (max-width: 767px)  {.div.thembgc {padding: 15px 25px 25px 25px;} img.img-custome { width: 96%; margin-bottom: 6px;margin-top: 11px;}.topcard-padding {margin-top: 15px;} img.img-custome { position: relative;bottom: 0px;right: 9px;} }
 
 
 /* mobile */
 @media screen and (max-width: 480px) { .img_padding {left: -10px;top: 10px;} .card {margin: 10px 0px 10px 0px; padding: 10px 5px;} .top-bottom-margins {margin: 0px;} .div.thembgc {padding: 0px 15px 15px 15px;} img.img-custome { width: 95%; margin-bottom: 6px;margin-top: 11px;}
-.div.table-color {overflow: scroll;} .topcard-padding { margin-top: 15px;} .iconmobile-align a i {margin: 5px 0px!important;}}
+.div.table-color {overflow: scroll;} .topcard-padding { margin-top: 15px;} .iconmobile-align a i {margin: 5px 0px!important;}.custome-video {height: 171px !important; margin-bottom: 20px !important;}}
 
 
 
@@ -1266,4 +1267,12 @@ th.border-top{border-bottom: none !important}
   font-size: 12px;
   left: 16px;
   bottom: 66px;
+}
+/* 03-07-2023  */
+.align-itms-center {
+  vertical-align: middle;
+  margin: 33px 0px;
+}
+.custome-video {
+  height: 231px;
 }

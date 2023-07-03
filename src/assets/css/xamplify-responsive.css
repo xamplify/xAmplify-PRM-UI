@@ -93,6 +93,7 @@
         .mrg_btm_23{
          margin-bottom: 23px;
         }
+    
     }
     @media only screen and (max-width:578px){
         div#vendor-details-tile {
