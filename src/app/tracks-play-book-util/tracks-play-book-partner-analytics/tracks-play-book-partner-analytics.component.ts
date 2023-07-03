@@ -281,7 +281,15 @@ export class TracksPlayBookPartnerAnalyticsComponent implements OnInit, OnDestro
   previewForm(id: number) {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.formService.getById(id)
+    let formInput:Form = new Form();
+    formInput.id = id;
+    formInput.userId = this.authenticationService.getUserId();
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      formInput.vendorCompanyProfileName = companyProfileName;
+      formInput.vanityUrlFilter = true;
+    }
+    this.formService.getById(formInput)
         .subscribe(
             (data: any) => {
                 if (data.statusCode === 200) {

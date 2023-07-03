@@ -330,7 +330,7 @@
           <div class="portlet-body pt5" style="padding-left: 12px;
           padding-right: 12px;">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
-            <div class="row" *ngIf="!assetError">
+            <div class="row" *ngIf="!assetError && !assetLoader.isLoading">
               <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
                   <div class="flex-row pointer mContentHeight custom-height">
@@ -895,7 +895,7 @@
       </div>
       <div
         [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}"
-        [style.backgroundColor]="pageBackgroundColor">
+        id="form-background-image">
         <div class="modal-body">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div *ngIf="form.showCompanyLogo">
@@ -905,49 +905,47 @@
               alt="" />
           </div>
           <div class="vertical-center">
-            <div class="panel panel-info mFormWidth " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
-              [style.borderColor]="form.borderColor">
-              <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
-                [style.borderColor]="form.borderColor">
+           <div class="panel panel-info mFormWidth " *ngIf="!formError">
+              <div *ngIf="form.showTitleHeader" class="panel-heading">
                 <div class="panel-title form-name-wrap" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
-                <div class="form-name-wrap form-description" data-toggle="tooltip" data-placement="bottom" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
+                <div class="form-name-wrap form-description" data-toggle="tooltip" data-placement="bottom" title="{{form.description}}">{{form.description}}</div>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                  <div class="form-group">
+                  <div class="form-group form-custom form-placeholder">
                     <label class="control-label">
-                      <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                      <span class="label-name" >{{columnInfo.labelName}}</span>
                       <span class="required" *ngIf="columnInfo.required">*</span>
                     </label>
                     <ng-container
                       *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                      <input type="{{columnInfo.labelType}}" class="form-control"
+                      <input type="{{columnInfo.labelType}}" class="form-control form-placeholder"
                         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000"
                         disabled="disabled">
                     </ng-container>
  
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                      <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+                      <textarea rows="4" cols="4" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}"
                         maxlength="1000" disabled="disabled"></textarea>
                     </ng-container>
                     <!-- ---------------------------Date----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='date'">
-                      <app-date-picker [class.disabled]='true' [isFromForm]='true'>
+                      <app-date-picker class="form-placeholder" [class.disabled]='true' [isFromForm]='true'>
                       </app-date-picker>
                     </ng-container>
                     <!-- ---------------------------Price----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='price'">
                       <div class="input-group prefix">
-                        <span class="input-group-addon" style="pointer-events: none;">
+                        <span class="input-group-addon form-placeholder" style="pointer-events: none;">
                           {{columnInfo.priceSymbol}}
                         </span>
-                        <input type="number" min="0" class="form-control" disabled="disabled"
+                        <input type="number" min="0" class="form-control form-placeholder" disabled="disabled"
                           placeholder="{{columnInfo.placeHolder}}">
                       </div>
                     </ng-container>
                     <!-- ---------------------------Upload----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='upload'">
-                      <input type="file" class="form-control" disabled="disabled">
+                      <input type="file" class="form-control form-placeholder" disabled="disabled">
                     </ng-container>
                     <!-- ---------------------------Radio Button----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -956,7 +954,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor">{{radioButton.name}}</span>
+                              <span class="label-name">{{radioButton.name}}</span>
                           </label>
                         </div>
         
@@ -969,7 +967,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor">{{checkBox.name}}</span>
+                              <span class="label-name">{{checkBox.name}}</span>
                           </label>
                         </div>
                         <!-- <br> -->
@@ -977,7 +975,7 @@
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='select'">
-                      <select class="form-control">
+                      <select class="form-control form-placeholder">
                         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                           {{dropDownValue.name}}</option>
                       </select>
@@ -990,7 +988,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor" class="quiz_optionname">{{choice.name}} </span>
+                              <span class="label-name quiz_optionname">{{choice.name}} </span>
 
                           </label>
                         </div>

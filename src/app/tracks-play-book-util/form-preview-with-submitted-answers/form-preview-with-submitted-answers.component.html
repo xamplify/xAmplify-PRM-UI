@@ -7,7 +7,7 @@
             </button>
             <h4 class="modal-title text-center">Form Preview</h4>
           </div>
-          <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
+          <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" id="form-background-image">
               <div class="modal-body">
                   <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                   <div *ngIf="form.showCompanyLogo">
@@ -15,14 +15,14 @@
                       <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                   </div>
                   <div class="vertical-center">
-                      <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
-                          <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                      <div class="panel panel-info " *ngIf="!formError">
+                          <div *ngIf="form.showTitleHeader" class="panel-heading">
                               <div class="panel-title name-wrap" title="{{form.name}}" >{{form.name}}</div>
                           </div>
                           <div class="panel-body border-fivepx" *ngIf="!formError">
-                              <h5 class="name-wrap" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</h5>
+                              <h5 class="name-wrap" title="{{form.description}}">{{form.description}}</h5>
                               <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                                  <div class="form-group label-box" [ngClass]="{'emailorName' : !columnInfo.choices}">
+                                  <div class="form-group form-custom form-placeholder label-box" [ngClass]="{'emailorName' : !columnInfo.choices}">
                                       <span
                                         *ngIf="columnInfo.labelType.split('_')[0]=='quiz' && columnInfo.choices && columnInfo.choices.length > 0">
                                         <i *ngIf="!columnInfo.skipped && !columnInfo.submittedAnswerCorrect" class="fas fa-times fa-lg label-value-incorrect"
@@ -32,8 +32,7 @@
                                       </span>
                                       <!--  No  Options -->
                                       <ng-container *ngIf="!columnInfo.choices">
-                                        <label> <span *ngIf="form.quizForm">{{i+1}}. </span>
-                                          {{columnInfo.labelName}}
+                                        <label> <span class="label-name" *ngIf="form.quizForm">{{i+1}}. {{columnInfo.labelName}}</span>
                                           <span class="required" *ngIf="columnInfo.required">*</span>
                                         </label>
                                       </ng-container>
@@ -41,23 +40,25 @@
                                       <ng-container *ngIf="columnInfo.choices && columnInfo.choices.length > 0">
                                         <label class="questionclass"
                                           [ngClass]="{'answer_correct': !columnInfo.skipped && columnInfo.submittedAnswerCorrect, 'answer_incorrect': !columnInfo.skipped && !columnInfo.submittedAnswerCorrect, 'question_skipped': columnInfo.skipped}">
-                                          <span *ngIf="form.quizForm">{{i+1}}. </span>
-                                           <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                                          <span *ngIf="columnInfo.labelType.split('_')[0]!='quiz'" class="label-name"> <span *ngIf="form.quizForm">{{i+1}}.
+                                            </span>{{columnInfo.labelName}}</span>
+                                          <span *ngIf="columnInfo.labelType.split('_')[0]=='quiz'"> <span *ngIf="form.quizForm">{{i+1}}.
+                                            </span>{{columnInfo.labelName}}</span>
                                           <span class="required" *ngIf="columnInfo.required">*</span>
                                         </label>
                                       </ng-container>
 
                                       <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                                          <input type="{{columnInfo.labelType}}" class="form-control disable-click" [value]="columnInfo?.value" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000">
+                                          <input type="{{columnInfo.labelType}}" class="form-control form-placeholder disable-click" [value]="columnInfo?.value" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000">
                                       </ng-container>
 
                                       <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                          <textarea rows="4" cols="4" [value]="columnInfo?.value" class="form-control disable-click" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
+                                          <textarea rows="4" cols="4" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
                                       </ng-container>
                                       <!-- ---------------------------Date----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='date'">
 
-                                          <app-date-picker class="disable-click" [(dataField)]="columnInfo.value" [class.disabled]='true' [isFromForm]='true'  style="pointer-events: none;"></app-date-picker>
+                                          <app-date-picker class="disable-click form-placeholder" [(dataField)]="columnInfo.value" [class.disabled]='true' [isFromForm]='true'  style="pointer-events: none;"></app-date-picker>
 
                                       </ng-container>
                                       <!-- ---------------------------Price----------------------------- -->
@@ -67,15 +68,16 @@
                                             {{columnInfo.priceSymbol}}
                                           </span>
 
-                                          <input type="number" min="0" [value]="columnInfo?.value" class="form-control disable-click" disabled="disabled" placeholder="{{columnInfo.placeHolder}}" style="padding-left: 10px !important;">
+                                          <input id="formPriceField" type="number" min="0" [value]="columnInfo?.value" class="form-control form-placeholder disable-click" disabled="disabled" placeholder="{{columnInfo.placeHolder}}" style="padding-left: 10px !important;">
 
                                         </div>
                                       </ng-container>
                                       <!-- ---------------------------Upload----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='upload'">
-
-                                        <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank"
-                                          style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
+                                        <div class="form-control form-placeholder">
+                                          <a *ngIf="columnInfo.value" [href]="columnInfo.value" target="_blank"
+                                            style="overflow-wrap: break-word;">{{columnInfo?.fileName}}</a>
+                                        </div>
                                       </ng-container>
                                       <!-- ---------------------------Radio Button----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -86,7 +88,7 @@
 
                                               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 disabled="disabled" [checked]="columnInfo?.value?.indexOf(radioButton.id) > -1">
-                                                <span [style.color]="form.labelColor">{{radioButton.name}}</span>
+                                                <span class="label-name">{{radioButton.name}}</span>
                                             </label>
                                           </div>
                                           <br>
@@ -100,7 +102,7 @@
 
                                               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 disabled="disabled" [checked]="columnInfo?.value?.indexOf(checkBox.id) > -1">
-                                                <span [style.color]="form.labelColor">{{checkBox.name}}</span>
+                                                <span class="label-name">{{checkBox.name}}</span>
                                             </label>
                                           </div>
                                           <br>
@@ -108,9 +110,9 @@
                                       </ng-container>
                                       <!-- ---------------------------DropDown Menu----------------------------- -->
                                       <ng-container *ngIf="columnInfo.labelType=='select'">
-
-                                        <select class="form-control disable-click" style="background-color: #eeeeee;" disabled="disabled" [value]="columnInfo.value">
-                                          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [selected]="columnInfo.value == dropDownValue.id"
+                                      
+                                        <select class="form-control form-placeholder disable-click" style="background-color: #eeeeee;" disabled="disabled" [value]="columnInfo.value">
+                                          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [value]="columnInfo.value"
                                             disabled>{{dropDownValue.name}}</option>
 
                                         </select>
@@ -131,7 +133,7 @@
                                               [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
                                               <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 [checked]="choice.isChecked  || choice.isSelected" class="form-check-input">
-                                              <span class="quiz_optionname">{{choice.name}} </span>
+                                              <span class="quiz_optionname label-name">{{choice.name}} </span>
                                             </label>
                                             <span style="float:right"><i *ngIf="!choice.correct && choice.isSelected"
                                                 class="fas fa-times fa-lg label-value-incorrect" aria-hidden="true"></i>
@@ -149,15 +151,15 @@
                                               [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
                                               <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                 class="form-check-input">
-                                              <span [style.color]="form.labelColor" class="quiz_optionname">{{choice.name}} </span>
+                                              <span class="label-name quiz_optionname">{{choice.name}} </span>
                                             </label>
                                           </div>
                                           <!-- <br> -->
                                         </ng-container>
                                         <ng-container *ngIf="columnInfo.description !== undefined && columnInfo.description.length > 0 ">
                                           <div class="form-group">
-                                            <label class="control-label">Explanation</label>
-                                            <div style="overflow-wrap: break-word;">{{columnInfo.description}}</div>
+                                            <label class="control-label" id="formQuizExplanation">Explanation</label>
+                                            <div class="label-name" style="overflow-wrap: break-word;">{{columnInfo.description}}</div>
                                           </div>
 
                                         </ng-container>

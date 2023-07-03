@@ -17,12 +17,14 @@ import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-cam
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
+import { AddCampaignComponent } from "./add-campaign/add-campaign.component";
 
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
   { path: "create", component: CreateCampaignComponent },
+  { path: "create/:campaignType", component: AddCampaignComponent },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
