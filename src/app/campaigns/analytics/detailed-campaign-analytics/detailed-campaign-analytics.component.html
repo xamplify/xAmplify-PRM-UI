@@ -134,7 +134,7 @@
                               }})
                            </div>
                            <div class="camp-number">
-                              <strong class="m0" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 17">...</span>
@@ -159,7 +159,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Video Info</div>
                            <div class="camp-number">
-                              <strong class="m0" title="{{ campaign.campaignVideoFile.title }}">{{
+                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
                                  campaign.campaignVideoFile.title | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignVideoFile.title?.length > 17">...</span>
@@ -198,7 +198,7 @@
                         <div class="camp-details">
                            <div class="camp-title">{{ campaignType }}</div>
                            <div class="camp-number">
-                              <strong class="m0" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 25
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 25">..</span>
@@ -234,7 +234,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Email Info</div>
                            <div class="camp-number">
-                              <strong class="m0" title="{{ campaign.emailTemplate.name }}">{{
+                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.emailTemplate.name }}">{{
                                  campaign.emailTemplate.name | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.emailTemplate.name?.length > 12">...</span>
@@ -272,7 +272,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Page Info</div>
                            <div class="camp-number">
-                              <strong class="m0" title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
+                              <strong class="m0" data-toggle="tooltip" data-placement="top" title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
                                  slice : 0 : 12 }}</strong>
                               <span *ngIf="campaign.landingPage.name?.length > 12">...</span>
                            </div>
@@ -1312,9 +1312,10 @@
      let i = index
      ">
                                                 <tr (click)="userTimeline(item)"
+                                                data-toggle="tooltip" data-placement="bottom"
                                                    title="Click here to see all campaigns analytics">
                                                    <td>
-                                                      <i title="This user is unsubscribed"
+                                                      <i data-toggle="tooltip" data-placement="bottom" title="This user is unsubscribed"
                                                          *ngIf="item?.unsubscribedUser" class="fa fa-flag"
                                                          id="unsubscribed-flag" aria-hidden="true"></i>
                                                       <app-user-info [isCompanyInfo]="true" [userInfo]="item">
@@ -1326,7 +1327,7 @@
      campaignType != 'REGULAR' &&
      campaignType != 'SURVEY'
      ">
-                                                      <h6 title="{{ campaign.campaignName }}">
+                                                      <h6 data-toggle="tooltip" data-placement="top" title="{{ campaign.campaignName }}">
                                                          {{ item.campaignName | slice : 0 : 35 }}
                                                          <span *ngIf="
      campaign.campaignName?.length > 35
@@ -1912,7 +1913,7 @@
                                        </ng-container>
                                        <td>
                                           <a class="close-circle" (click)="expandColumns(formDataRow, rowIndex)"
-                                             data-toggle="tooltip" title="View More Columns"
+                                          data-toggle="tooltip" data-placement="top" title="View More Columns"
                                              *ngIf="leadsFormHeaders.length > 4">
                                              <i class="fa" [ngClass]="{
                                          'fa-plus': !formDataRow.expanded,
@@ -2048,14 +2049,14 @@
                   <div class="portlet-body clearfix">
                      <div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
                         <span class="btn btn-sm btn-primary pull-right" style="cursor: default"
-                           title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice : 0 : 20 }}
+                        data-toggle="tooltip" data-placement="bottom"  title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice : 0 : 20 }}
                            <span *ngIf="campaign.campaignName?.length > 20">...</span></span>
-                        <h4 class="m0" title="{{ campaignReport.selectedPartnerFirstName }}">
+                        <h4 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerFirstName }}">
                            {{ campaignReport.selectedPartnerFirstName | slice : 0 : 20 }}
                            <span *ngIf="campaignReport.selectedPartnerFirstName?.length > 20">...</span>
                         </h4>
                         <!-- <h4 class="m0" title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4> -->
-                        <h4 class="m0" title="{{ campaignReport.selectedPartnerEmailId }}">
+                        <h4 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerEmailId }}">
                            {{ campaignReport.selectedPartnerEmailId | slice : 0 : 24 }}
                            <span *ngIf="campaignReport.selectedPartnerEmailId?.length > 24">...</span>
                         </h4>
@@ -2065,6 +2066,7 @@
                      </div>
                      <div class="col-xs-12" *ngIf="rsvpDetailType === 'partnerRsvp'">
                         <span class="btn btn-sm btn-primary pull-right" style="cursor: default"
+                        data-toggle="tooltip" data-placement="bottom"
                            title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice : 0 : 40 }}
                            <span *ngIf="campaign.campaignName?.length > 40">...</span></span>
                         <h4 class="m0">Your Campaign Response</h4>
@@ -2435,7 +2437,7 @@
                         </span>
                      </ng-container>
                      <ng-container *ngIf="disabled">
-                        <button title="This campaign has been deleted by your vendor.You can't register a lead" style="
+                        <button data-toggle="tooltip" data-placement="bottom" title="This campaign has been deleted by your vendor.You can't register a lead" style="
                        position: absolute;
                        left: 350px;
                        margin-top: 7px;
@@ -2556,7 +2558,7 @@
                         </div>
                         <div class="timeline-body">
                            <h5>
-                              <span class="f-w-600" title="{{ campaign.campaignName }}">
+                              <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
                                  {{ campaign.campaignName | slice : 0 : 30 }}
                                  <span *ngIf="campaign.campaignName?.length > 30">...</span>
                               </span>
@@ -2593,7 +2595,7 @@
                            <h5>
                               <span *ngIf="emailLog.actionId == 13">
                                  Campaign
-                                 <span class="f-w-600" *ngIf="emailLog.subject" title="{{ emailLog.subject }}">
+                                 <span class="f-w-600" *ngIf="emailLog.subject" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.subject }}">
                                     {{ emailLog.subject | slice : 0 : 30 }}
                                     <span *ngIf="emailLog.subject?.length > 30">...</span>
                                  </span>
@@ -2602,7 +2604,7 @@
                               <span *ngIf="
                              emailLog.actionId == 14 && campaign.campaignVideoFile
                              ">Clicked
-                                 <span class="f-w-600" title="{{ campaign.campaignVideoFile.title }}">{{
+                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
                                     campaign.campaignVideoFile.title | slice : 0 : 30
                                     }}
                                     <span *ngIf="campaign.campaignVideoFile.title?.length > 30">...</span></span>
@@ -2614,7 +2616,7 @@
                              ">
                                  Clicked on the URL
                                  <span class="f-w-600">
-                                    <a href="{{ emailLog.url }}" target="_blank" title="{{ emailLog.url }}">{{
+                                    <a href="{{ emailLog.url }}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.url }}">{{
                                        emailLog.url | slice : 0 : 30 }}
                                        <span *ngIf="emailLog.url?.length > 30">...</span></a>
                                  </span>
@@ -2625,7 +2627,7 @@
                              emailLog.url == 'Clicked on View in browser'
                              ">
                                  <span class="f-w-600">
-                                    <a href="javascript:void(0);" title="{{ emailLog.url }}">{{ emailLog.url }}
+                                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.url }}">{{ emailLog.url }}
                                     </a>
                                  </span>
                               </span>
@@ -2633,7 +2635,7 @@
                              campaign.campaignVideoFile &&
                              (emailLog.actionId == 1 || emailLog.actionId == 10)
                              ">
-                                 <span class="f-w-600" title="{{ campaign.campaignVideoFile.title }}">{{
+                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
                                     campaign.campaignVideoFile.title | slice : 0 : 30 }}
                                     <span *ngIf="campaign.campaignVideoFile.title?.length > 30">...</span>
                                  </span>
@@ -2917,7 +2919,7 @@
                                        </app-user-info>
                                     </td>
                                     <td *ngIf="campaignReport.emailActionType === 'open'">
-                                       <h6 title="{{ item.subject }}">
+                                       <h6 data-toggle="tooltip" data-placement="bottom" title="{{ item.subject }}">
                                           {{ item.subject | slice : 0 : 40 }}
                                           <span *ngIf="item.subject?.length > 40">...</span>
                                        </h6>
@@ -2984,8 +2986,8 @@
                                           <tbody>
                                              <tr *ngFor="let emailLog of item.emailLogHistory">
                                                 <td *ngIf="
-                                               campaignReport.emailActionType === 'open'
-                                               " [title]="emailLog.subject">
+                                               campaignReport.emailActionType === 'open'" 
+                                               data-toggle="tooltip" data-placement="bottom" [title]="emailLog.subject">
                                                    <h6>
                                                       {{ emailLog.subject | slice : 0 : 40 }}
                                                       <span *ngIf="emailLog.subject?.length > 40">...</span>
@@ -3128,7 +3130,7 @@
                                     </app-user-info>
                                  </td>
                                  <td>
-                                    <h6 title="{{ item.campaignName }}">
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{ item.campaignName }}">
                                        {{ item.campaignName | slice : 0 : 30 }}
                                        <span *ngIf="campaign.campaignName?.length > 30">...</span>
                                     </h6>
@@ -3448,7 +3450,8 @@
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactLists">
-                              <td class="center" (click)="getSelectedListOfContacts(item.id)" [title]="item.name"
+                              <td class="center" (click)="getSelectedListOfContacts(item.id)" 
+                              data-toggle="tooltip" data-placement="bottom" [title]="item.name"
                                  [ngStyle]="{
                              'background-color':
                              contactListId === item.id ? 'lightblue' : ''
@@ -3726,7 +3729,7 @@
                                     </app-user-info>
                                  </td>
                                  <td>
-                                    <h6 title="{{ item.campaignName }}">
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{ item.campaignName }}">
                                        {{ item.campaignName | slice : 0 : 30 }}
                                        <span *ngIf="campaign.campaignName?.length > 30">...</span>
                                     </h6>
@@ -3913,7 +3916,7 @@
                                        </ng-container>
                                        <td>
                                           <a class="close-circle" (click)="expandColumns(formDataRow, rowIndex)"
-                                             data-toggle="tooltip" title="View More Columns"
+                                          data-toggle="tooltip" data-placement="bottom" title="View More Columns"
                                              *ngIf="partnerLeadsFormHeaders.length > 4">
                                              <i class="fa" [ngClass]="{
                                          'fa-plus': !formDataRow.expanded,
@@ -4001,7 +4004,7 @@
                Analytics</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li class="breadcrumb-font-color" style="color: #888" *ngIf="isDataShare" title="{{ campaign.campaignName }}">
+         <li class="breadcrumb-font-color" style="color: #888" *ngIf="isDataShare" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
             {{ campaign.campaignName | slice : 0 : 35
             }}<span *ngIf="campaign.campaignName?.length > 35">...</span>
             <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color: #0195da">(Interactive Data)</strong>
@@ -4011,7 +4014,7 @@
          </li>
       </ng-container>
       <li [ngClass]="hidePageContent ? 'caption-subject font-red-sunglo' : ''" style="color: #888"
-         *ngIf="!isDataShare || hidePageContent" title="{{ campaign.campaignName }}">
+         *ngIf="!isDataShare || hidePageContent" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
          {{ campaign.campaignName | slice : 0 : 35
          }}<span *ngIf="campaign.campaignName?.length > 35">...</span>
       </li>
