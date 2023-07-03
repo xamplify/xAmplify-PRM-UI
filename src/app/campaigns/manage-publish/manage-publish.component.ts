@@ -919,12 +919,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
@@ -937,6 +939,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
            }
+           this.pagination.campaignType = 'REGULAR';
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
             if(this.teamMemberId!=undefined){
