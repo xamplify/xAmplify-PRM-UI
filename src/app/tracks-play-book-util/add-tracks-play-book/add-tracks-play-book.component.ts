@@ -614,7 +614,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   previewForm(id: number) {
     this.customResponse = new CustomResponse();
     this.ngxloading = true;
-    this.formService.getById(id)
+    let formInput:Form = new Form();
+    formInput.id = id;
+    formInput.userId = this.authenticationService.getUserId();
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      formInput.vendorCompanyProfileName = companyProfileName;
+      formInput.vanityUrlFilter = true;
+    }
+    this.formService.getById(formInput)
       .subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
@@ -634,6 +642,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 value.choices = value.checkBoxChoices;
               }
             });
+            this.setCustomCssValues();
             this.formError = false;
           } else {
             this.formError = true;
@@ -1583,5 +1592,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 this.circleData = {};
                 this.imageChangedEvent = null;
                  this.croppedImage = '';
-              }    
+              }   
+              
+  setCustomCssValues() {
+    document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+    document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+    document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+    document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+    document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+    document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+    require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
+  } 
 }
