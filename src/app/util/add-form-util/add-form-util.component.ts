@@ -1216,7 +1216,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
      
   }
 
-  changeControllerColor(event: any, form: Form, type: string, customSkinColor: string) {
+  changeControllerColor(event: any, form: Form, type: string) {
       try {
           const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
           $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
