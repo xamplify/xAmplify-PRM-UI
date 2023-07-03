@@ -1,21 +1,13 @@
-/* Responsive for desktop and laptop screens (1920px to 1000px) */
-
-@media (min-width: 1920px) and (max-width: 1000px)  { 
-/* Account Dashboard */
-/* 03-07-2023 */
-
-
+/* 03-07-2023 - Account Dashboard */
+@media (min-width: 1025px) and (max-width: 1300px)  { 
+    /* Dashboard icons size */
+    .dashboard-stat .visual > i {font-size: 50px !important;}   
 }
-
-
-
-
-
-
-
-
-
-
+@media (min-width: 1025px) and (max-width: 1114px)  { 
+    /* Dashboard Regional Statistics height */
+    div#world-map {max-width: 100%; min-height: 327px !important;}
+ 
+}
 
 
 
