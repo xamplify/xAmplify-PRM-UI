@@ -57,6 +57,7 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LeftsidenavbarCustomComponent } from 'app/dashboard/leftsidenavbar-custom/leftsidenavbar-custom.component';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -150,6 +151,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	errorUploadCropper = false;
 	integrationTabIndex = 0;
 	@ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
+	@ViewChild(LeftsidenavbarCustomComponent) leftMenuCustomize: LeftsidenavbarCustomComponent;
 	integrateRibbonText: string;
 
 	hubSpotRibbonText: string;
@@ -1840,6 +1842,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listCategories(this.categoryPagination);
 		} else if (this.activeTabName == "dbButtonSettings") {
 			this.activeTabHeader = 'Dashboard Buttons';
+		} else if (this.activeTabName == "customizeleftmenu") {
+			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
 			this.activeTabHeader = 'Your Templates';
 		} else if (this.activeTabName == "leadPipelines") {
@@ -4139,6 +4143,9 @@ configSalesforce() {
 		this.activeTabHeader = "Theme View";
 		this.themeResponse.isVisible = false;
 		this.referenceService.goToTop();
+	}
+	getCustomizedMenuItems(){
+		this.leftMenuCustomize.getMenuItems();
 	}
  /************* XNFR-238 *********************/	
 }

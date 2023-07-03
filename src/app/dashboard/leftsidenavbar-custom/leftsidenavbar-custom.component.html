@@ -1,66 +1,15 @@
-<!-- <div class="col-xs-12" style="padding: 0">
-  <div class="portlet light border-radius-0">      
-      <div [dragula]='"leftSideMenuDragula"' [dragulaModel]='menuItmes'>     
-      <div *ngFor="let menu of menuItems">
-          <ul>
-            <li>{{menu.customName}}</li>
-          </ul>
-        </div>
-        </div>
-        <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
-  </div>
-  </div>  -->
-
-  <!-- <div class="col-xs-12" style="padding: 0">
+<div class="my-container">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
+<div class="col-xs-12" style="padding: 0">
     <div class="portlet light border-radius-0">
-    
-    <div class="portlet-body" 
-     dragula="leftSideMenuDragula" [(dragulaModel)]=" menuItems">
         <div class="gu-block">
             <h6 class="gu-block-content"></h6>
-        </div>        
-        <div *ngFor="let menu of menuItems">
-            <ul>
-              <li >{{menu.customName}}</li>
-            </ul>
-          </div>
-          <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
+        </div>
+        <ul class="list-group" [dragula]="leftSideMenuDragula" [dragulaModel]="menuItems">
+            <li class="list-group-item" *ngFor="let menu of menuItems"
+                style="border-color: rgb(114, 212, 251); margin-top: 2px; margin-right: 50%;">{{menu.customName}}</li>
+        </ul>
     </div>
-    </div>
-    </div>  -->
-
-    <!-- <ol dragula="leftSideMenuDragula" [(dragulaModel)]="menuItems" id="sortable" list-group>
-      <li *ngFor="let menu of menuItems">
-        {{menu.customName}}
-      </li>
-      
-      <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
-    </ol> -->
-
-
-
-    <!-- <div class="col-xs-12" style="padding: 0">
-      <div class="portlet light border-radius-0">
-      
-      <div class="portlet-body launchedCampaignsChild" 
-      >
-          <div class="gu-block" >
-              <h6 class="gu-block-content"></h6>
-          </div>        
-          
-          <ul class="list-group" dragula="leftSideMenuDragula" [(dragulaModel)]="menuItems">
-                <li class="list-group-item" *ngFor="let menu of menuItems">{{menu.customName}}</li>
-              </ul>
-            
-              <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
-      </div>
-      </div>
-      </div>  -->
-  
-  
-
-
-    <ul class="list-group" dragula="leftSideMenuDragula" [(dragulaModel)]="menuItems">
-      <li class="list-group-item" *ngFor="let menu of menuItems">{{menu.customName}}</li>
-      <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
-    </ul>
+    <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
+</div>
