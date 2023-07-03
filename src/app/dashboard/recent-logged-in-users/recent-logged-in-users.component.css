@@ -1,36 +1,26 @@
-#search-margin{
-	margin-right: 15px;
+#search-margin {
+  margin-right: 15px;
 }
-#icon-right{
-	position: relative;right: -11px;
+#icon-right {
+  position: relative;
+  right: -11px;
 }
-
-.prrtpx{
-	position: relative;
-	right: -3px;
+.prrtpx {
+  position: relative;
+  right: -3px;
 }
-
-#search-text{
-	height:34px;
+#search-text {
+  height: 34px;
 }
-.fa.fa-refresh.margin{
-	line-height: 15px;
+.fa.fa-refresh.margin {
+  line-height: 15px;
 }
-#left{
-	float:left;
+#left {
+  float: left;
 }
-#center{
-	text-align: center;
+.highletedRow {
+  cursor: pointer;
 }
-
-.highletedRow{
-	cursor:pointer
-}
-
 .highletedRow:hover {
-	background-color:#a6d9f5;
-}
-
-.selectedRow {
-	background-color:#a6d9f5;
+  background-color: #a6d9f5;
 }

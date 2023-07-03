@@ -1,14 +1,9 @@
 .disable-click {
-    pointer-events: none;
-    opacity: 0.3;
-}
-
-.disable {
-    cursor: not-allowed;
-    opacity: 0.6;
+  pointer-events: none;
+  opacity: 0.3;
 }
 /* 12-6-2023 sudha sri */
-.border-top-bottom{
-    border-bottom: 0px !important;
-    border-top: 0px !important;
+.border-top-bottom {
+  border-bottom: 0px !important;
+  border-top: 0px !important;
 }

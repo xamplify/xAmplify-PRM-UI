@@ -1,24 +1,9 @@
-
-
-.bold-font{
-    font-size: 14px;
+.bold-font {
+  font-size: 14px;
 }
-
-
-.bold-font-weight{
-    font-weight: bold;
+.bold-font-weight {
+  font-weight: bold;
 }
-
-.h5-custom-font{
-    font-size: 17px;
-}
-
-.btp{
-    padding-bottom: 30px !important;
-}
-
-.alert-spf{
-    background-color: #546b812b;
-    border-color: #546b812b;
-    color: #546b81;
+.h5-custom-font {
+  font-size: 17px;
 }
