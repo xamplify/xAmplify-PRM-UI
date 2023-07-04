@@ -234,10 +234,10 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
       this.campaignSuccessMessage = "Campaign updated successfully";
       this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
   }
-		if(this.viewType!="fl" && this.viewType!="fg"){
-      this.referenceService.scrollSmoothToTop();
-			this.getCampaignTypes();		
-		}
+    if(this.viewType!="fl" && this.viewType!="fg"){
+        this.referenceService.scrollSmoothToTop();
+        this.getCampaignTypes();		
+    }
   }
 
 
@@ -278,8 +278,9 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
         this.pagination.vanityUrlFilter = true;
     }
     this.pagination.archived = this.archived;
-    if(this.categoryId!=undefined ){
+    if(this.categoryId!=undefined){
         this.pagination.categoryId = this.categoryId;
+        this.pagination.categoryType = 'c';
     }
     if(this.selectedCampaignTypeIndex==1){
         this.pagination.campaignType = 'REGULAR';
@@ -1208,8 +1209,10 @@ this.editButtonClicked = false;
 
 callFolderListViewEmitter(){
     if(this.folderListView){
+        alert("Eimmter");
         this.exportObject['categoryId'] = this.categoryId;
         this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+        alert(this.pagination.totalRecords);
         this.updatedItemsCountEmitter.emit(this.exportObject);
     }
  }
