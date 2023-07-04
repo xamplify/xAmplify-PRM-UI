@@ -30,11 +30,11 @@ export const campaignRoutes: Routes = [
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
-  // { path: "manage", component: ManagePublishComponent },
-  // { path: "manage/:categoryId", component: ManagePublishComponent },
-  // { path: "manage/tm/:teamMemberId", component: ManagePublishComponent },
-  // { path: "manage/tm/:teamMemberId/", component: ManagePublishComponent },
-  // { path: "manage/:categoryId/:teamMemberId", component: ManagePublishComponent },
+  { path: "manage", component: ManagePublishComponent },
+  { path: "manage/:categoryId", component: ManagePublishComponent },
+  { path: "manage/tm/:teamMemberId", component: ManagePublishComponent },
+  { path: "manage/tm/:teamMemberId/", component: ManagePublishComponent },
+  { path: "manage/:categoryId/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
   { path: ":campaignId/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
@@ -68,8 +68,8 @@ export const campaignRoutes: Routes = [
   { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent},
 
 
-  { path: "manage/:viewType", component: ManageCampaignsComponent },
-	{ path: "manage/:viewType/:categoryId/:folderViewType", component: ManageCampaignsComponent },
+  // { path: "manage/:viewType", component: ManageCampaignsComponent },
+	// { path: "manage/:viewType/:categoryId/:folderViewType", component: ManageCampaignsComponent },
 
 
 
