@@ -1,31 +1,38 @@
 h2.views-report {
-    font-weight: 600;color: #54a7e9;font-size: 30px;
+  font-weight: 600;
+  color: #54a7e9;
+  font-size: 30px;
 }
-.views-report-heading {text-align: center; color: dimgrey; margin-top: 50px;font-size: 13px;font-weight: 600;
+.views-report-heading {
+  text-align: center;
+  color: dimgrey;
+  margin-top: 50px;
+  font-size: 13px;
+  font-weight: 600;
 }
-.views-box{border: 1px solid #e7e6e3; padding:5px; margin-bottom:10px;}
+.views-box {
+  border: 1px solid #e7e6e3;
+  padding: 5px;
+  margin-bottom: 10px;
+}
 .input-icon > .form-control {
-    padding: 10px !important;
+  padding: 10px !important;
 }
-
 .portlet.light {
-padding: 15px;
+  padding: 15px;
 }
-
 .videoTitle {
-word-break: break-all;
-color: #5a5a5a;
-font-weight: 500;
+  word-break: break-all;
+  color: #5a5a5a;
+  font-weight: 500;
 }
-
 .p0 {
-padding: 0
+  padding: 0;
 }
-
 .block-with-text {
-white-space: nowrap;
-text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.center{
+.center {
   text-align: center;
 }

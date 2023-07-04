@@ -520,7 +520,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <span style="cursor: pointer;color: #54a7e9;" title="Enable SMS services for this campaign">
+                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Enable SMS services for this campaign">
                                                                     <i class="fa fa-question-circle"
                                                                         style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
                                                                 </span>
@@ -569,9 +569,9 @@
                                     </div>
                                 </div>
                                 <div class="page-bar" style="padding-right: 21px;box-shadow: none !important;border: none !important;">
-                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
-                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-3');" data-toggle="tooltip" data-placement="bottom" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage' || campaignType=='survey'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" data-toggle="tooltip" data-placement="bottom" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
+                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn Btn-Green" (click)="resetActive($event, 40, 'step-4');" data-toggle="tooltip" data-placement="bottom" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
                             </div>
                         </form>
@@ -746,6 +746,7 @@
                                                                 *ngFor="let videoFile of videosPagination.pagedItems;let i =  index"
                                                                 (click)="setClickedRow(videoFile,'my-videos')"
                                                                 [class.active]="(videoFile.id == selectedRow && videoFile.viewBy!=='DRAFT' && videoFile?.processed)"
+                                                                data-toggle="tooltip" data-placement="bottom"
                                                                 [attr.title]="draftMessage"
                                                                 (mouseover)='showToolTip(videoFile.viewBy)'>
                                                                 <!-- --------------Thumbnail--------------------------- -->
@@ -763,7 +764,7 @@
                                                                     class="radio-button-css"
                                                                     *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
                                                                     type="radio" name="videoFileId" [value]="videoFile.id"
-                                                                    disabled="disabled"
+                                                                    disabled="disabled" data-toggle="tooltip" data-placement="bottom"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
 
                                                                     <app-video-thumbnail
@@ -923,7 +924,7 @@
                                                                     *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId"
                                                                     class="radio-button-css" type="radio"
                                                                     name="videoFileId" [value]="videoFile.id"
-                                                                    disabled="disabled"
+                                                                    disabled="disabled" data-toggle="tooltip" data-placement="bottom"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                                                     <app-video-thumbnail [videoFile]="videoFile"
                                                                         (notifyParent)="showPreview($event)">
@@ -933,7 +934,7 @@
                                                                 <td class="text-center"
                                                                     *ngIf="(videoFile?.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId">
                                                                     <input type="radio" name="videoFileId"
-                                                                    [value]="videoFile.id" disabled="disabled"
+                                                                    [value]="videoFile.id" disabled="disabled" data-toggle="tooltip" data-placement="bottom"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                                                     <app-video-thumbnail
                                                                         [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}"
@@ -984,7 +985,7 @@
                             <button type="button" style="float: right;"
                                 class="btn btn Btn-Green m10"
                                 (click)="resetActive($event, 40, 'step-4');"
-                                [disabled]="!isVideo" title="Please Select Video" translate>Next</button>
+                                [disabled]="!isVideo" data-toggle="tooltip" data-placement="bottom" title="Please Select Video" translate>Next</button>
                         </div>
                     </div>
                 </div>
@@ -1078,7 +1079,7 @@
                                                                 </td>
                                                                 <td class="cw" *ngIf="showExpandButton">
                                                                     <div class="actions-block left-float">
-                                                                      <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
+                                                                      <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
                                                                         <i class="fa" [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
                                                                           aria-hidden="true" style=" padding-top: 0px;"></i>
                                                                       </a>
@@ -1396,7 +1397,7 @@
                                             </div>
                                             <div style="padding-top: 10px;padding-left: 13px;padding-right: 13px;">
                                             <button type="button" class="btn Btn-Gray pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
+                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"  translate>Next</button>
                                         </div>
                                         </div>
                                     </form>
@@ -1469,12 +1470,12 @@
                                                                                                                 <div class="row">
                                                                                                                     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                         <div class="content-hover-align fontsize-cls">
-                                                                                                                            <span class="item__name cardDetails-mar"  [title]="campaign.landingPage.name">
+                                                                                                                            <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom"  [title]="campaign.landingPage.name">
                                                                                                                                 <strong>{{campaign.landingPage.name |slice:0:15}}</strong>
                                                                                                                                 <strong *ngIf="campaign.landingPage?.name?.length>13">..</strong>
                                                                                                                             </span>
                                                                                                                             <br>
-                                                                                                                            <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                            <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                                 <span>
                                                                                                                                     <app-timestamp
                                                                                                                                         [isOnlyDate]="true"
@@ -1482,7 +1483,8 @@
                                                                                                                                     </app-timestamp>
                                                                                                                                 </span>
                                                                                                                             </span>
-                                                                                                                             <span class="campaign-email-template-category cardDetails-mar"            
+                                                                                                                             <span class="campaign-email-template-category cardDetails-mar"    
+                                                                                                                             data-toggle="tooltip" data-placement="bottom"        
                                                                                                                               title="{{campaign?.landingPage?.createdUser}}">
                                                                                                                                <strong translate>By:</strong>
                                                                                                                                 <span>{{campaign.landingPage?.createdUser|slice:0:13}}
@@ -1490,7 +1492,8 @@
                                                                                                                              </span>
                                                                                                                        
                                                                                                                             
-                                                                                                                            <span *ngIf="campaign.landingPage?.categoryName?.length>0"  class="campaign-email-template-category cardDetails-mar" title="{{campaign.landingPage?.categoryName}}">
+                                                                                                                            <span *ngIf="campaign.landingPage?.categoryName?.length>0"  class="campaign-email-template-category cardDetails-mar" 
+                                                                                                                                data-toggle="tooltip" data-placement="bottom" title="{{campaign.landingPage?.categoryName}}">
                                                                                                                                 <strong translate>Folder:</strong>
                                                                                                                                 <span >{{campaign.landingPage?.categoryName|slice:0:5}}</span>
                                                                                                                                 <span *ngIf="campaign.landingPage?.categoryName?.length>5">..</span>
@@ -1545,12 +1548,12 @@
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                 <div class="content-hover-align fontsize-cls">
-                                                                                                                    <span class="item__name cardDetails-mar"  [title]="landingPage.name">
+                                                                                                                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="landingPage.name">
                                                                                                                         <strong>{{landingPage.name |slice:0:13}}</strong>
                                                                                                                         <strong *ngIf="landingPage?.name?.length>13">..</strong>
                                                                                                                     </span>
                                                                                                                     <br>
-                                                                                                                    <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                    <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                         <span>
                                                                                                                             <app-timestamp
                                                                                                                                 [isOnlyDate]="true"
@@ -1558,13 +1561,13 @@
                                                                                                                             </app-timestamp>
                                                                                                                         </span>
                                                                                                                     </span>
-                                                                                                                    <span class="campaign-email-template-category cardDetails-mar" title="{{landingPage.createdUser}}">
+                                                                                                                    <span class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.createdUser}}">
                                                                                                                         <strong translate>Created By:</strong>
                                                                                                                         <span>{{landingPage.createdUser|slice:0:13}} </span>
                                                                                                                             <strong *ngIf="landingPage.createdUser?.length>13">..</strong>
                                                                                                                        
                                                                                                                         </span>
-                                                                                                                    <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{landingPage?.categoryName}}">
+                                                                                                                    <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{landingPage?.categoryName}}">
                                                                                                                         <strong translate>Folder:</strong><span>{{landingPage?.categoryName|slice:0:7}}</span>
                                                                                                                         <span *ngIf="landingPage?.categoryName?.length>7">..</span>
                                                                                                                     </span>
@@ -1595,7 +1598,7 @@
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
                                             <button type="button" class="btn Btn-Gray pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
-                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select Page" translate>Next</button>
+                                            <button type="submit" class=" btn Btn-Green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1623,7 +1626,7 @@
                                                     <div id="main_video_src" [hidden]="campaignType!='video'"></div>
                                                     <div class="pricing hover-effect" [hidden]="campaignType=='video'">
                                                         <div class="pricing-head">
-                                                            <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">..</span>
+                                                            <h4 data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">..</span>
                                                             </h4>
                                                             <h4>
                                                                 <ng-container *ngIf="campaignType=='regular'">
@@ -1667,7 +1670,7 @@
                                                             <td style="width: 55%;">
                                                                 <ng-container *ngFor="let contactListName of selectedContactListNames;let i=index;">
                                                                     <div>
-                                                                        <a *ngIf="i<2" title="{{contactListName}}">
+                                                                        <a *ngIf="i<2" data-toggle="tooltip" data-placement="bottom" title="{{contactListName}}">
                                                                             <span *ngIf="contactListName">
                                                                                 {{contactListName | slice:0:40}}<span
                                                                                     *ngIf="contactListName?.length>40">..</span>
@@ -1717,7 +1720,7 @@
                                                             </td>
                                                             <td width="55%">
                                                                 <ng-container *ngIf="campaignType == 'video' || campaignType == 'regular' || campaignType == 'survey'">
-                                                                    <a (click)="getTemplateById(emailTemplate)" title="{{emailTemplate.name}}">
+                                                                    <a (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.name}}">
                                                                         <ng-container
                                                                             *ngIf="emailTemplate.name?.length>50">
                                                                             {{emailTemplate.name | slice:0:50}}..
@@ -1729,7 +1732,7 @@
                                                                     </a>
                                                                 </ng-container>
                                                                 <ng-container *ngIf="campaignType == 'landingPage'">
-                                                                    <a (click)="showLandingPagePreview(landingPage)" title="{{landingPage?.name}}">
+                                                                    <a (click)="showLandingPagePreview(landingPage)" data-toggle="tooltip" data-placement="bottom" title="{{landingPage?.name}}">
                                                                         <ng-container
                                                                             *ngIf="landingPage?.name?.length>50">
                                                                             {{landingPage?.name | slice:0:50}}..
@@ -1972,12 +1975,12 @@
                                                                                                                                                         <div class="row">
                                                                                                                                                             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                                                                 <div class="content-hover-align fontsize-cls">
-                                                                                                                                                                    <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate.name">
                                                                                                                                                                         <strong>{{reply.emailTemplate.name |slice:0:15}}</strong>
                                                                                                                                                                         <strong *ngIf="reply.emailTemplate?.name?.length>13">..</strong>
                                                                                                                                                                     </span>
                                                                                                                                                                     <br>
-                                                                                                                                                                    <span class="item__name cardDetails-mar" title="created on" style="float:left">
+                                                                                                                                                                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left">
                                                                                                                                                                         <span>
                                                                                                                                                                             <app-timestamp
                                                                                                                                                                                 [isOnlyDate]="true"
@@ -1986,13 +1989,14 @@
                                                                                                                                                                         </span>
                                                                                                                                                                     </span>
                                                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
-                                                                                                                                                                        <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
+                                                                                                                                                                        <span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{reply?.emailTemplate?.createdBy}}">
                                                                                                                                                                             <strong translate>By:</strong>
                                                                                                                                                                             <span>{{reply?.emailTemplate?.createdBy|slice:0:11}}<span
                                                                                                                                                                                     *ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
                                                                                                                                                                         </span>
                                                                                                                                                                     </ng-container>
-                                                                                                                                                                    <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category  cardDetails-mar" title="{{reply?.emailTemplate?.category}}">
+                                                                                                                                                                    <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category  cardDetails-mar"
+                                                                                                                                                                        data-toggle="tooltip" data-placement="bottom"  title="{{reply?.emailTemplate?.category}}">
                                                                                                                                                                         <strong antranslate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:5}}</span>
                                                                                                                                                                         <span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
                                                                                                                                                                     </span>
@@ -2047,12 +2051,12 @@
                                                                                                                                                         <div class="row">
                                                                                                                                                             <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                                                                 <div class="content-hover-align fontsize-cls">
-                                                                                                                                                                    <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom"  [title]="emailTemplate.name">
                                                                                                                                                                         <strong>{{emailTemplate.name |slice:0:13}}</strong>
                                                                                                                                                                         <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
                                                                                                                                                                     </span>
                                                                                                                                                                     <br>
-                                                                                                                                                                    <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                    <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                                                                         <span>
                                                                                                                                                                             <app-timestamp
                                                                                                                                                                                 [isOnlyDate]="true"
@@ -2061,7 +2065,7 @@
                                                                                                                                                                         </span>
                                                                                                                                                                     </span>
                                                                                                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                                                        <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                                                        <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
                                                                                                                                                                             <strong translate>Created by:</strong>
                                                                                                                                                                             <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                                                                 <span
@@ -2070,14 +2074,15 @@
                                                                                                                                                                         </p>
                                                                                                                                                                     </ng-container>
                                                                                                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                                                        <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                                                        <span class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
                                                                                                                                                                             <strong translate>Created by:</strong>
                                                                                                                                                                             <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                                                                     *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                                                             </span>
                                                                                                                                                                         </span>
                                                                                                                                                                     </ng-container> 
-                                                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" 
+                                                                                                                                                                        data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.category}}">
                                                                                                                                                                         <strong translate>Folder:</strong>
                                                                                                                                                                         <span >{{emailTemplate?.category|slice:0:5}}</span>
                                                                                                                                                                         <span *ngIf="emailTemplate?.category?.length>5">..</span>
@@ -2311,13 +2316,13 @@
                                                                                                                                                             <div class="row">
                                                                                                                                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                                                                     <div class="content-hover-align fontsize-cls">
-                                                                                                                                                                        <span class="item__name cardDetails-mar"  [title]="url.emailTemplate.name">
+                                                                                                                                                                        <span class="item__name cardDetails-mar"  data-toggle="tooltip" data-placement="bottom" [title]="url.emailTemplate.name">
                                                                                                                                                                             <strong>{{url.emailTemplate.name |slice:0:15}}</strong>
                                                                                                                                                                             <strong *ngIf="url.emailTemplate?.name?.length>13">..</strong>
                                                                                                                                                                         </span>
                                                                                                                                                                         <br>
                                                                                                                                                                        
-                                                                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                        <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                                                                             <span>
                                                                                                                                                                                 <app-timestamp
                                                                                                                                                                                     [isOnlyDate]="true"
@@ -2326,7 +2331,7 @@
                                                                                                                                                                             </span>
                                                                                                                                                                         </span>   
                                                                                                                                                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                                                            <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
                                                                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                                                                 <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                                                                     <span
@@ -2335,14 +2340,14 @@
                                                                                                                                                                             </p>
                                                                                                                                                                         </ng-container>
                                                                                                                                                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                                                            <span class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
                                                                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                                                                 <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                                                                         *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                                                                 </span>
                                                                                                                                                                             </span>
                                                                                                                                                                         </ng-container> 
-                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.category}}">
                                                                                                                                                                             <strong translate>Folder:</strong>
                                                                                                                                                                             <span >{{emailTemplate?.category|slice:0:5}}</span>
                                                                                                                                                                             <span *ngIf="emailTemplate?.category?.length>5">..</span>
@@ -2398,12 +2403,12 @@
                                                                                                                                                             <div class="row">
                                                                                                                                                                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
                                                                                                                                                                     <div class="content-hover-align fontsize-cls">
-                                                                                                                                                                        <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+                                                                                                                                                                        <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom"  [title]="emailTemplate.name">
                                                                                                                                                                             <strong>{{emailTemplate.name |slice:0:13}}</strong>
                                                                                                                                                                             <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
                                                                                                                                                                         </span>
                                                                                                                                                                         <br>
-                                                                                                                                                                        <span class="item__name" title="created on" style="float:left; margin: 3px;">
+                                                                                                                                                                        <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left; margin: 3px;">
                                                                                                                                                                             <span>
                                                                                                                                                                                 <app-timestamp
                                                                                                                                                                                     [isOnlyDate]="true"
@@ -2412,7 +2417,7 @@
                                                                                                                                                                             </span>
                                                                                                                                                                         </span>
                                                                                                                                                                         <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                                                                                                                                                            <p class="cardDetails-mar" title="{{emailTemplate.createdBy}}">
+                                                                                                                                                                            <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
                                                                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                                                                 <span>{{emailTemplate.createdBy|slice:0:11}}
                                                                                                                                                                                     <span
@@ -2421,14 +2426,15 @@
                                                                                                                                                                             </p>
                                                                                                                                                                         </ng-container>
                                                                                                                                                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                                                                                                                                                            <span class="cardDetails-mar" title="{{emailTemplate.vendorName}}">
+                                                                                                                                                                            <span class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
                                                                                                                                                                                 <strong translate>Created by:</strong>
                                                                                                                                                                                 <span>{{emailTemplate.vendorName|slice:0:11}}<span
                                                                                                                                                                                         *ngIf="emailTemplate.vendorName?.length>11">..</span>
                                                                                                                                                                                 </span>
                                                                                                                                                                             </span>
                                                                                                                                                                         </ng-container> 
-                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" title="{{emailTemplate.category}}">
+                                                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" 
+                                                                                                                                                                            title="{{emailTemplate.category}}">
                                                                                                                                                                             <strong translate>Folder:</strong>
                                                                                                                                                                             <span >{{emailTemplate?.category|slice:0:5}}</span>
                                                                                                                                                                             <span *ngIf="emailTemplate?.category?.length>5">..</span>

@@ -932,10 +932,10 @@ legend {
   left: 0px;
   top: 100%;
   z-index: -1;
-  border-left: 3px solid #5cb85c;
+  border-left: 3px solid #5ab1eb;
   border-right: 3px solid transparent;
   border-bottom: 3px solid transparent;
-  border-top: 3px solid #5cb85c;
+  border-top: 3px solid #5ab1eb;
 }
 
 .ribbon span::after {
@@ -2203,6 +2203,7 @@ h5.view-banner {
   text-align: center;
   font-size: 10px;
   border-radius: 3px;
+  line-height: 3.5;
 }
 .tag.tablegray-tag {
   background-color: #c5c5c5 !important;

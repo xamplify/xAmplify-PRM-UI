@@ -22,7 +22,7 @@
                    <span *ngIf="name.lastName!=='null'"> {{name.lastName | slice:0:12}}</span>
                    <span *ngIf="name.lastName.lengtht>12">..</span>
                 </h6>
-                <h6 class="m0" title="{{name.emailId}}">{{name.emailId | slice:0:28}}
+                <h6 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{name.emailId}}">{{name.emailId | slice:0:28}}
                    <span *ngIf="name.emailId.lengtht>28">..</span>
                 </h6>
              </td>

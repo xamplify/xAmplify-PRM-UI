@@ -70,19 +70,19 @@
                                                     <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
                                                  </div>
                                                  <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                    <input type="checkbox" disabled="disabled" title="Contacts are in progress">
+                                                    <input type="checkbox" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Contacts are in progress">
                                                  </div>
                                               </td>
                                               <td class="cw" *ngIf="showExpandButton">
                                                  <div class="actions-block left-float">
-                                                    <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
+                                                    <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
                                                     <i class="fa"
                                                        [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
                                                        aria-hidden="true"></i>
                                                     </a>
                                                  </div>
                                               </td>
-                                              <td class="text-center moreipsis" title="{{contacts.name}}">
+                                              <td class="text-center moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}">
                                                  <span>{{contacts.name}}</span>
                                               </td>
                                               <td *ngIf="showContactType">
@@ -152,7 +152,7 @@
              <i class="fa fa-times" aria-hidden="true"></i>
              </button>
              <div>
-                <h4 class="modal-title center-align" id="user-list-name"  title="{{listName}}">
+                <h4 class="modal-title center-align" id="user-list-name" data-toggle="tooltip" data-placement="bottom" title="{{listName}}">
                    <strong>{{listName|slice:0:50}}<span *ngIf="listName?.length>50">...</span></strong>
                 </h4>
              </div>

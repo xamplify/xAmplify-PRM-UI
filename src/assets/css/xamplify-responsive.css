@@ -1,21 +1,13 @@
-/* Responsive for desktop and laptop screens (1920px to 1000px) */
-
-@media (min-width: 1920px) and (max-width: 1000px)  { 
-/* Account Dashboard */
-/* 03-07-2023 */
-
-
+/* 03-07-2023 - Account Dashboard */
+@media (min-width: 1025px) and (max-width: 1300px)  { 
+    /* Dashboard icons size */
+    .dashboard-stat .visual > i {font-size: 50px !important;}   
 }
-
-
-
-
-
-
-
-
-
-
+@media (min-width: 1025px) and (max-width: 1114px)  { 
+    /* Dashboard Regional Statistics height */
+    div#world-map {max-width: 100%; min-height: 327px !important;}
+ 
+}
 
 
 
@@ -30,7 +22,7 @@
     padding-bottom: 8px!important;
     }
     /*app-detailed-campaign-analytics */
-    @media only screen and (min-width: 768px) and (max-width: 1024px) { 
+    @media only screen and (min-width: 768px) and (max-width: 991px) { 
         section.percentage-circle {
             margin: 0px -22px;
         }
@@ -49,7 +41,7 @@
         }
         .bar {
             width: 100%;
-            position: inherit;
+            width: calc(100% - 30px);
         }
         .mp-pt-carrdtop {
             margin-top: 9px;
@@ -93,8 +85,17 @@
         .mrg_btm_23{
          margin-bottom: 23px;
         }
+    
     }
-    @media only screen and (max-width:578px){
+
+    @media only screen and (min-width: 601px) and (max-width: 767px) { 
+        .bar {
+            width: 100%;
+            width: calc(100% - 30px);
+        }
+    }
+
+    @media only screen and (min-width: 360px) and (max-width: 767px) { 
         div#vendor-details-tile {
             left: 12px;
             width: 82.4%!important;

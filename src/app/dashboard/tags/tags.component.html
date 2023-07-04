@@ -91,35 +91,3 @@
     <app-add-tags-util [pagination]="tagPagination" [isAddTag]="isAddTag" [selectedTag]="selectedTag" (notifyParent)="resetTagValues($event)"></app-add-tags-util>
 </div>
 
-<!------------------------------Add/Edit Tag----------->
-<!-- <div class="modal fade right" id="addTagModalPopup" tabindex="-1" role="dialog" aria-labelledby="addTagModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" *ngIf="(tag.isValid && tag.isTagNameValid) || isAddTag" (click)="closeTagModal()">
-          <i class="fa fa-times"></i>
-        </button>
-                <h4 class="modal-title text-center">{{tagModalTitle}}</h4>
-            </div>
-            <div class="modal-body">
-                <app-dashboard-loader *ngIf="addTagLoader.isLoading"></app-dashboard-loader>
-                <ng-container *ngIf="!addTagLoader.isLoading">
-                    <span *ngIf="!tag.isValid" class="required">{{tagErrorMessage}}</span>
-                    <div class="form-group" id="tagNamesDiv">
-                        <label>Name <font class="required">*</font></label>
-                        <div *ngIf="isAddTag">
-                            <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag" (keyup)="validateTagName($event.keyCode)"
-                                required></tag-input>
-                        </div>
-                        <div *ngIf="!isAddTag">
-                            <input class="form-control" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event.keyCode)">
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" [disabled]="!tag.isTagNameValid || addTagLoader.isLoading " class="btn green-haze" (click)="saveOrUpdateTag()">{{tagButtonSubmitText}}</button>
-            </div>
-        </div>
-    </div>
-</div> -->

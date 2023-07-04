@@ -373,8 +373,8 @@
                               </td>
                               <td>
                                  <h4 class="moreipsis">
-                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}
-                                    </span><span *ngIf="contactList.name?.length>20">...</span>
+                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:30}}
+                                    </span><span *ngIf="contactList.name?.length>30">...</span>
                                     </h4>
                                  <h5 class='m0 ellipsis'  translate>
                                     By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
@@ -809,7 +809,7 @@
             <div class="col-xs-12">
                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;">
                   <div class="loader"></div>
-                  <strong translate>Please wait while we process your request</strong>
+                  <strong class="loadertextcolor" translate>Please wait while we process your request</strong>
                </div>
                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>

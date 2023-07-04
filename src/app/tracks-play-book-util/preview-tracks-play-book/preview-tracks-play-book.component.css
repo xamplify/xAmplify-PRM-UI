@@ -383,13 +383,13 @@ body {
 }
 
 .ribbon span::after {
-  border-right: 3px solid #5cb85c;
-  border-top: 3px solid #5cb85c;
+  border-right: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
 }
 
 .ribbon span::before {
-  border-left: 3px solid #5cb85c;
-  border-top: 3px solid #5cb85c;
+  border-left: 3px solid #5ab1eb;
+  border-top: 3px solid #5ab1eb;
 }
 
 .ribbon-right span::before {

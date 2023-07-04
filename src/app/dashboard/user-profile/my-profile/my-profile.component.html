@@ -106,10 +106,6 @@
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
-                            <!-- <li *ngIf="authenticationService?.module?.isTeamMember"  [ngClass]="{'active-tab': activeTabName == 'teamMemberPartnerFilter'}">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'teamMemberPartnerFilter'}"  (click)="activateTab('teamMemberPartnerFilter');clearCustomResponse()" translate>
-                                    {{properties.customskin | translate}} </a>
-                            </li> -->
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
@@ -272,9 +268,7 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
-                                    <!-- <span class="caption-subject font-blue-madison bold"  *ngIf="activeTabName== 'customskin' ">
-                                        
-                                    </span> -->
+                                   
                                     <div class="btn-toolbar" style="float: right;"
                                     *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                              || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
@@ -283,20 +277,7 @@
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
-                                        <!-- <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;" *ngIf="activeTabName == 'DarkTheme'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismLight'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismDark'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button> -->
+                                        
                                     </div>
 
                                     <a class="close-circle xamp-margin-left-icon"
@@ -334,16 +315,7 @@
                                                     <br>
                                                     <h5 class="card-title themefont">{{dto.name}} Theme</h5>
 
-                                                    <!-- <button type="button" class="btn  btn-size btn-selectcolor"
-                                                        (click)="viewTheme();showDto(dto)"> <i
-                                                            class="fa fa-eye" aria-hidden="true"></i>
-                                                        View </button>
-                                                    <button type="button" *ngIf="dto.defaultTheme"
-                                                        class="btn  btn-size"
-                                                        [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
-                                                        (click)="goToCustomThemes();showDto(dto);"> <i
-                                                            class="fa fa-files-o" aria-hidden="true"></i>
-                                                        Copy</button> -->
+                                                   
                                                         <!-- responsive-alignment -->
                                                         <td class="mAlignView responsive-alignment">
                                                             <div class="actions-block override-actions ActionAlign">
@@ -627,9 +599,7 @@
                                                                     style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
-                                                            </div> -->
+                                                           
 
                                                             <div class="ribbon draft config" style="left:10px"  *ngIf="integrateRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'"
@@ -671,9 +641,6 @@
                                                                 <span [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
                                                             </div>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -699,9 +666,6 @@
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="sfRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{sfRibbonText}}</span>
@@ -714,8 +678,7 @@
                                                                     <img src="assets/images/crm/xamplify-salesforce.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-                                                            <!-- <a (click)="salesforceSettings()" style="margin:5px"><span class="fa fa-cogs" *ngIf="sfRibbonText == 'configured'"> Settings</span></a>
-                                                             -->
+                                                           
                                                              <a (click)="configSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" translate>configure</a>
                                                             <a (click)="reConfigSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" translate>re configure</a>
                                                         </div>
@@ -735,9 +698,6 @@
                                                                 </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Microsoft</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="microsoftRibbonText == 'configured' ? 'green':'yello'">{{microsoftRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{microsoftRibbonText}}</span>
@@ -822,14 +782,12 @@
                                         	
                                         	<div>*Note: Please pick all fields that are marked required in Salesforce.  Otherwise, leads and deals will not be pushed into Salesforce. </div>
                                         	
-                                        	<!-- <app-response-message [customResponse]="customResponse"
-														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->
+                                        	
 													<form class="form-horizontal" autocomplete="off">
 														<table class='table tgrid'>
 															<thead>
 															<tr>
-																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
-																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
+																
 																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
 																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
 																		
@@ -841,8 +799,7 @@
 																<ng-container
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
-																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	
 																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
 																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
@@ -926,8 +883,7 @@
                                                                     <ng-container
                                                                         *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                     <tr>
-                                                                        <!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                                                                            id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+                                                                       
                                                                         <td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
                                                                             id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
                                                                         <td><span>{{sfCustomField.label}}</span></td>
@@ -1021,9 +977,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index" id="pipeline_{{pipeline.id}}">
-                                                                        <!-- <td class="custom-icon-width">
-                                                                            <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
-                                                                        </td> -->
+                                                                       
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
                                                                             border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
                                                                             <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
@@ -1157,10 +1111,7 @@
                                     <!-- Customize Left Menu -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
 
-                                        <!-- <div>
-                                            <app-customize-leftsidenavbar></app-customize-leftsidenavbar>
-                                        </div> -->    
-                                                                         
+                                                        
                                         </div>
 
                                     <!-- GDPR SETTINGS TAB -->
@@ -1427,9 +1378,7 @@
                                                     Activated On:<app-display-date-and-time
                                                         [dateAndTimeUTCString]="activeThemeDetails?.updatedDate"></app-display-date-and-time>
                                                 </p>
-                                                <!-- <div class="col-md-4 col-sm-4 col-xs-12"> 
-                                                <span class="button-style float-right"> Customize </span>
-                                            </div> -->
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -1454,7 +1403,7 @@
                                                     <div class="col-xs-12" style="padding:0">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
-                                                            <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 align-itms-center" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
                                                                     <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
                                                                         {{'Player Color' | translate}}:</label>
@@ -1493,8 +1442,8 @@
                                                                         {{valueRange}}</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-12 col-sm-6 col-md-4">
-                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 custome">
+                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull custome-video" controls height="160" poster="" data-setup='{"example_option":true }'>
                                                                     <source [src]="videoUrl"
                                                                         type="application/x-mpegURL">
                                                                 </video>
@@ -1693,10 +1642,7 @@
                                                 *ngIf="excludeUserPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                       
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1705,7 +1651,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                       
                                                         <td>
                                                         <app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
                                                         </td>
@@ -1855,10 +1801,7 @@
                                                 *ngIf="excludeDomainPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                    
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1867,7 +1810,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                     
                                                         <td><h6>
                                                         {{obj.domainName}}  </h6>
                                                         </td>
@@ -1988,8 +1931,8 @@
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
-                    </img-cropper> -->
+                   
+                    
                     <div [hidden]="!imageChangedEvent">
                     <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
@@ -2019,7 +1962,7 @@
                 <div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
-							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							
 							{{
 							  containWithinAspectRatio
 								? 'Fill Aspect Ratio'
@@ -2117,8 +2060,7 @@
                         <label>Name of the Pipeline<font class="required">*</font></label>
                         <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
                         <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
-                        <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
-                        <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
+                       
                     </div>
                     <div class="form-group">
                         <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
@@ -2180,7 +2122,7 @@
             </div> 
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn Btn-Green" (click)="saveOrUpdatePipeline()">Submit</button>
-                <!-- <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading " class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button> -->
+               
             </div>
         </div>
     </div>
@@ -2238,7 +2180,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
-    <!-- <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader> -->
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>
