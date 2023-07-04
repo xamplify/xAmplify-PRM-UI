@@ -92,7 +92,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Partner' " class="collapse list-unstyled" id="Partner"
                   [ngClass]="expansionModuleName === 'Partner'?'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -106,7 +106,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Content'" class="collapse list-unstyled" id="Content"
                   [ngClass]="expansionModuleName === 'Content'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -121,7 +121,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Contacts'" class="collapse list-unstyled"
                   [ngClass]="expansionModuleName === 'Contacts'?'in':''" id="Contacts">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -136,7 +136,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Share Leads'" class="collapse list-unstyled" id="shareLeads"
                   [ngClass]="expansionModuleName === 'Share Leads'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -151,7 +151,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Shared Leads'" class="collapse list-unstyled" id="sharedLeads"
                   [ngClass]="expansionModuleName === 'Shared Leads'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -166,7 +166,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Pages'" class="collapse list-unstyled" id="pagesAccessAsPartner"
                   [ngClass]="expansionModuleName === 'Pages'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -181,7 +181,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Design'" class="collapse list-unstyled" id="design"
                   [ngClass]="expansionModuleName === 'Design'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -199,7 +199,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Campaign'" class="collapse list-unstyled" id="Campaign"
                   [ngClass]="expansionModuleName === 'Campaign'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -217,7 +217,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Opportunities'" class="collapse list-unstyled" id="Opportunities"
                   [ngClass]="expansionModuleName === 'Opportunities'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -231,7 +231,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Team'" class="collapse list-unstyled" id="team"
                   [ngClass]="expansionModuleName === 'Team'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -248,7 +248,7 @@
                 </a>
                 <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration"
                   [ngClass]="expansionModuleName === 'Configuration'? 'in':''">
-                  <li *ngFor="let name of userGudeTitles"><a
+                  <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
@@ -259,8 +259,8 @@
       </div>
       <div class="col-md-9 col-lg-9" *ngIf="statusCode === 200">
         {{mergeTag}}
-        <div class="" style="padding: 10px;">
-          <div *ngIf="!isSearch" style="margin-top: 20px;">
+        <div class=""[ngClass]="isSearch?'':'guide-title'">
+          <div *ngIf="!isSearch">
             <div style="border-bottom: 1px solid #ddd;">
               <h4>
                 {{userGuide.title}}
@@ -272,8 +272,8 @@
 
           </div>
         </div>
-        <div *ngIf="isSearch" style="padding: 10px; margin-top: 20px;">
-          <div class="page-bar bg-result-color" style="padding: 0px 10px 10px 10px;" *ngFor="let guide of userGuides">
+        <div *ngIf="isSearch" style="padding: 10px; margin: 20px;">
+          <div class="page-bar bg-result-color" *ngFor="let guide of userGuides">
             <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
             <div>
               {{guide.description}}

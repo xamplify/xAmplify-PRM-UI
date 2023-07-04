@@ -396,7 +396,7 @@ export class GuideLeftMenuComponent implements OnInit {
 		this.loading = true;
 		this.showListId = "";
 		this.userGudeTitles = [];
-		
+		//this.expansionModuleName = moduleName;
 		// this.refService.loading(this.httpRequestLoader, true);
 		// this.httpRequestLoader.isHorizontalCss = true;
 		this.showListId = moduleName;
