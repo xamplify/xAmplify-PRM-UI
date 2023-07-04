@@ -100,4 +100,5 @@ export class Pagination {
 	loginAsUserId = 0;
 	/** user guides ***/
 	moduleName:string = "";
+	slug:string = "";
 }

@@ -224,7 +224,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.isPartner = false;
 			this.module = "contacts";
             this.checkingContactTypeName = "Contact"
-            this.mergeTagForGuide = "import_contact_lists_from_hubspot";
+            this.mergeTagForGuide = "import_contact_lists_from_csv";
         } else if( currentUrl.includes( 'home/assignleads' ) ){
             this.isPartner = false;
             this.assignLeads = true;

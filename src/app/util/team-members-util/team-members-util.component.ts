@@ -86,6 +86,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   adminsLoader:HttpRequestLoader = new HttpRequestLoader();
   admins:Array<any> = new Array<any>();
+  mergeTagForGuide:any;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -104,6 +105,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.primaryAdminSweetAlertParameterDto.confirmButtonText = "Yes, Change It";
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
+    this.mergeTagForGuide = 'add_and_manage_team_members';
     this.findAll(this.pagination);
     
   }

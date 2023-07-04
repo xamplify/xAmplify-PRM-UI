@@ -1133,8 +1133,9 @@ getDefaultThemes(){
         .catch(this.handleError);
     }
 
-    getGuideGuideBySlug(slug:string){
-        return this.http.get(this.authenticationService.REST_URL + 'user/guide/slug/'+slug+'/?access_token=' + this.authenticationService.access_token)
+    getGuideGuideBySlug(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/slug/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,pagination)
         .map(this.extractData)
         .catch(this.handleError);
     }

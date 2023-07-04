@@ -20,13 +20,14 @@ import { EEXIST } from 'constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+var $: any;
 @Component({
 	selector: 'app-guide-left-menu',
 	templateUrl: './guide-left-menu.component.html',
 	styleUrls: ['./guide-left-menu.component.css']
 })
 export class GuideLeftMenuComponent implements OnInit {
-	@Input() guideMergeTag:any;
+	@Input() guideMergeTag: any;
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	pagination: Pagination = new Pagination();
 	loggedInUserId: number;
@@ -34,7 +35,7 @@ export class GuideLeftMenuComponent implements OnInit {
 	customResponse: CustomResponse = new CustomResponse();
 	pager: any = {};
 	isSearch: boolean = false;
-	loading:boolean = false;
+	loading: boolean = false;
 	public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	menuItem: MenuItem = new MenuItem();
 	menuItemError = false;
@@ -43,18 +44,18 @@ export class GuideLeftMenuComponent implements OnInit {
 	customNamePartners = "Partners";
 	isLoggedInAsPartner = false;
 	roleName: Roles = new Roles();
-	moduleName:any;
+	moduleName: any;
 	userGuide: UserGuide = new UserGuide();
 	guideLink: any;
-	guideLinkIframe:any;
+	guideLinkIframe: any;
 	userGuides: UserGuide[];
-	mergeTag:any;
-    slug:any;
-	userGuideLink :any;
-	userGudeTitles:UserGuide[] = [];
+	mergeTag: any;
+	slug: any;
+	userGuideLink: any;
+	userGudeTitles: UserGuide[] = [];
 	showListId = "";
-	constructor(private route: ActivatedRoute,public authenticationService: AuthenticationService, public dashboardService: DashboardService,
-		public userService: UserService, public utilService: UtilService, public router:Router, public location: Location,
+	constructor(private route: ActivatedRoute, public authenticationService: AuthenticationService, public dashboardService: DashboardService,
+		public userService: UserService, public utilService: UtilService, public router: Router, public location: Location,
 		public sanitizer: DomSanitizer, public refService: ReferenceService, public pagerService: PagerService, public socialPagerService: SocialPagerService) {
 		/**** XNFR-134 ****/
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -67,25 +68,71 @@ export class GuideLeftMenuComponent implements OnInit {
 			this.pagination.vanityUrlFilter = false;
 		}
 	}
-	getUserGuideBySlug(slug:any) {
+	statusCode: any;
+	getUserGuideBySlug(pagination: Pagination) {
 		this.loading = true;
-		this.dashboardService.getGuideGuideBySlug(slug).subscribe(
+		this.pagination.slug = this.slug;
+		this.dashboardService.getGuideGuideBySlug(pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
+					this.statusCode = 200;
 					this.userGuide = response.data;
-					this. guideLink = this.userGuide.link;
-					this.showListId =this.userGuide.customName
-					this.guideLinkIframe =this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src='+this. guideLink+' frameborder="0" allowfullscreen></iframe>');
-					
+					this.guideLink = this.userGuide.link;
+					this.showListId = this.userGuide.customName
+					this.expansionOfDIvByModuleId(this.userGuide.moduleId)
+					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
+				} else {
+					this.statusCode = 500;
 				}
 				this.loading = false;
 			}, (error: any) => {
 				// this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			})
 	}
-
+	expansionModuleName: any;
+	expansionOfDIvByModuleId(moduleId: number) {
+		if (moduleId === 2) {
+			this.expansionModuleName = "Campaign";
+		} else if (moduleId === 3) {
+			this.expansionModuleName = "Contacts";
+		} else if (moduleId === 4) {
+			this.expansionModuleName = 'Content';
+		} else if (moduleId === 5) {
+			this.expansionModuleName = 'DAM';
+		} else if (moduleId === 6) {
+			this.expansionModuleName = 'Design';
+		} else if (moduleId === 7) {
+			this.expansionModuleName = 'Forms';
+		} else if (moduleId === 8) {
+			this.expansionModuleName = 'MDF';
+		} else if (moduleId === 9) {
+			this.expansionModuleName = 'Opportunities';
+		} else if (moduleId === 10) {
+			this.expansionModuleName = 'Pages';
+		} else if (moduleId === 11) {
+			this.expansionModuleName = 'Partner';
+		} else if (moduleId === 12) {
+			this.expansionModuleName = 'Play Book';
+		} else if (moduleId === 13) {
+			this.expansionModuleName = 'Share Leads';
+		} else if (moduleId === 14) {
+			this.expansionModuleName = 'Shared Leads';
+		} else if (moduleId === 15) {
+			this.expansionModuleName = 'Social Feeds';
+		} else if (moduleId === 16) {
+			this.expansionModuleName = 'Team';
+		} else if (moduleId === 17) {
+			this.expansionModuleName = 'Templates';
+		} else if (moduleId === 18) {
+			this.expansionModuleName = 'Track Builder';
+		} else if (moduleId === 19) {
+			this.expansionModuleName = 'Configuration';
+		}
+		this.getUserGuidesByModuleName(this.expansionModuleName);
+	}
 	getSearchResultsOfUserGuides(pagination: Pagination) {
 		this.loading = true;
+		this.showListId = "";
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
 		this.dashboardService.getSearchResultsOfUserGuides(pagination).subscribe(
@@ -123,13 +170,12 @@ export class GuideLeftMenuComponent implements OnInit {
 		this.pagination.pageIndex = event.page;
 		this.getSearchResultsOfUserGuides(this.pagination);
 	}
-   
+
 	ngOnInit() {
-		
 		this.findMenuItems();
 		this.slug = this.route.snapshot.params['slug'];
-		this.getUserGuideBySlug(this.slug);
-		this.mergeTag=this.guideMergeTag;
+		this.getUserGuideBySlug(this.pagination);
+		this.mergeTag = this.guideMergeTag;
 	}
 	findMenuItems() {
 		this.loading = true;
@@ -342,26 +388,32 @@ export class GuideLeftMenuComponent implements OnInit {
 	startLoader() {
 		this.loading = true;
 	}
-	
+
 	getUserGuidesByModuleName(moduleName: any) {
-		this.showListId = "";
-		this.pagination.moduleName = "";
-		this.userGudeTitles = [];
-		this.loading = true;
+		// this.pagination.moduleName = "";
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
+		this.loading = true;
+		this.showListId = "";
+		this.userGudeTitles = [];
+		
+		// this.refService.loading(this.httpRequestLoader, true);
+		// this.httpRequestLoader.isHorizontalCss = true;
 		this.showListId = moduleName;
-		this.pagination.moduleName =  moduleName;
+		this.pagination.moduleName = moduleName;
 		// alert(this.pagination.moduleName)
 		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
-					this.userGudeTitles= response.data;
+					this.statusCode = 200;
+					this.userGudeTitles = response.data;
 					console.log(this.userGudeTitles)
-					this.loading  = false;
+					this.loading = false;
+				} else {
+					this.statusCode = 200;
 				}
 			}, (error: any) => {
-				this.loading  = false;
+				this.loading = false;
 				this.refService.loading(this.httpRequestLoader, false);
 				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
 			})
@@ -370,27 +422,30 @@ export class GuideLeftMenuComponent implements OnInit {
 	gotoHome() {
 		this.router.navigate(['home/help/guides']);
 	}
-	
-	getGuideLinkByTitle(title:string){
+
+	getGuideLinkByTitle(title: string) {
+		//this.showListId = "";
 		this.loading = true;
 		this.dashboardService.getGuideLinkByTitle(title).subscribe(
 			(response) => {
 				this.loading = false;
 				this.isSearch = false;
-				if(response.statusCode === 200){
-				let map= response.map;
-				this.userGuide.title = title;
-				this.userGuideLink = map.link;
-                this.slug = map.slug;
-				this.guideLinkIframe =this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src='+this.userGuideLink+' frameborder="0" allowfullscreen></iframe>');
-				this.location.replaceState('home/help/' +this.slug);
-			    } else {
-
+				if (response.statusCode === 200) {
+					this.statusCode = 200;
+					let map = response.map;
+					this.userGuide.title = title;
+					this.userGuideLink = map.link;
+					this.slug = map.slug;
+					this.expansionOfDIvByModuleId(map.moduleId);
+					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.userGuideLink + ' frameborder="0" allowfullscreen></iframe>');
+					this.location.replaceState('home/help/' + this.slug);
+				} else {
+					this.statusCode = 500;
 				}
 				this.refService.scrollSmoothToTop();
-				this.loading  = false;
+				this.loading = false;
 			}, (error: any) => {
-				this.loading  = false;
+				this.loading = false;
 				this.refService.loading(this.httpRequestLoader, false);
 				this.refService.scrollSmoothToTop();
 				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);

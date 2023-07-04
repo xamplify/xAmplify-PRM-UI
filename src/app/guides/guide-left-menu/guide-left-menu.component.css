@@ -4,6 +4,9 @@
     background-size: cover;
     height: 180px;
 }
+.bg-result-color {
+  background-color: #ddd !important;
+}
 .input-icon.right > .form-control {
   padding-left: 10px;
 }
