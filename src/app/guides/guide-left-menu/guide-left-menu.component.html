@@ -205,22 +205,20 @@
               </li>
 
               <!-- ------Oppportunities----- -->
-              <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner"
+              <!-- <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner"
                 [ngClass]="showListId === 'Opportunities'? 'active':''">
                 <a href="#Opportunities" data-toggle="collapse" aria-expanded="false"
                   (click)="getUserGuidesByModuleName('Opportunities')"
                   [ngClass]="expansionModuleName === 'Opportunities'? 'show':''">
                   <i class="fa fa-money" aria-hidden="true"></i>
                   <span class="title" translate>Opportunities</span>
-                  <!-- <span class="arrow"></span>
-       <span class="selected"></span> -->
                 </a>
                 <ul *ngIf="showListId === 'Opportunities'" class="collapse list-unstyled" id="Opportunities"
                   [ngClass]="expansionModuleName === 'Opportunities'? 'in':''">
                   <li *ngFor="let name of userGudeTitles" ><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
-              </li>
+              </li> -->
               <!--------Team------->
               <li *ngIf="menuItem?.team" [ngClass]="showListId === 'Team'? 'active':''">
                 <a href="#team" data-toggle="collapse" aria-expanded="false" (click)="getUserGuidesByModuleName('Team')"

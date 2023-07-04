@@ -155,7 +155,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 }
             }else{
                 if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 && (url.indexOf("home/campaigns/manage")>-1 
-                || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1)){
+                || url.indexOf("home/campaigns/calendar")>-1 || url.indexOf("/details")>-1) || url.includes("home/help")){
                     return true;
                 }else{
                     return this.authorizeUrl(roles, url, this.campaignBaseUrl);
@@ -163,7 +163,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
         }
         if(url.indexOf(this.teamBaseUrl)>-1){
-            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1){
+            if(roles.indexOf('ROLE_USER')>-1 && roles.length==1 || url.includes("home/help")){
                 return true;
             }else{
                 return this.authorizeUrl(roles, url, this.teamBaseUrl);
@@ -313,6 +313,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         /***** user guide*******/
         else if (urlType == this.userGuideUrl){
+            if(urlType == this.campaignBaseUrl){
+                role = this.roles.campaignRole;
+                return true;
+            } else if(urlType == this.teamBaseUrl) {
+              role = this.roles.orgAdminRole;
+              return true;
+            }
             return true;
         }
 
