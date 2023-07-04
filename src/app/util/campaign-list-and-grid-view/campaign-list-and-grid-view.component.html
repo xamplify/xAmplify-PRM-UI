@@ -92,6 +92,9 @@
                                             </div>
                                          </ng-container>
                                       </div>
+                                      <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                                       <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                    </span>
                                    </div>
                                 </div>
                                 <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 5px;"
@@ -180,10 +183,10 @@
                           </div>
                        </div>
                     </div>
+                    <!--Folder List View / Folder Grid View -->
                     <ng-container
                        *ngIf="(modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView) && !isloading">
-                       <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"
-                       (navigatingToRelatedComponent)="navigatedToCategoryItems()"></app-category-folder-view-util>
+                       <app-folder-type-view-util [moduleId]="roles.campaignId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
                     </ng-container>
                     <app-grid-loader
                        *ngIf="httpRequestLoader.isLoading && (modulesDisplayType.isGridView || modulesDisplayType.isFolderGridView)">

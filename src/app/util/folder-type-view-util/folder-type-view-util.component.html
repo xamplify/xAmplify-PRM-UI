@@ -190,18 +190,33 @@
 				</tr>
 				<tr [ngClass]="{'hidden': !category.expanded}"
 					id="list-folder-items">
-					<td class="td-netbg" colspan="5"><ng-container *ngIf="category.expanded">
-						<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+					<td class="td-netbg" colspan="5">
+						<!----DAM---->
+						<ng-container *ngIf="category.expanded">
+							<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+								[folderListViewCategoryId]="category.id"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
+							</ng-container>
+						<!----TRACKS / PLAYBOOKS---->
+						 <ng-container	*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
+							<app-manage-tracks-play-book
+								[folderListViewCategoryId]="category.id" [type]="type"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
+						</ng-container> 
+
+						<!----Manage Campaigns---->
+						<ng-container *ngIf="moduleId==roles.campaignId">
+							 <app-campaign-list-and-grid-view
 							[folderListViewCategoryId]="category.id"
 							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
-						</ng-container> <ng-container
-							*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
-						<app-manage-tracks-play-book
-							[folderListViewCategoryId]="category.id" [type]="type"
-							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
-						</ng-container> </ng-container></td>
+							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-campaign-list-and-grid-view>
+						</ng-container>
+
+
+					</ng-container>
+				</td>
 				</tr>
 				</ng-container>
 			</tbody>
