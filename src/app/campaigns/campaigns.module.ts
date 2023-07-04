@@ -44,6 +44,7 @@ import { OneClickLaunchRedistributedComponent } from './analytics/one-click-laun
 import { DetailedCampaignAnalyticsComponent } from './analytics/detailed-campaign-analytics/detailed-campaign-analytics.component';
 import { AddCampaignComponent } from './add-campaign/add-campaign.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
+import { ManageCampaignsComponent } from './manage-campaigns/manage-campaigns.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
     OneClickLaunchRedistributedComponent,
     DetailedCampaignAnalyticsComponent,
     AddCampaignComponent,
-    CampaignDetailsComponent  ],
+    CampaignDetailsComponent,
+    ManageCampaignsComponent  ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]

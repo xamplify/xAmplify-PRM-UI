@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
-
 /*****Common Imports**********************/
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
