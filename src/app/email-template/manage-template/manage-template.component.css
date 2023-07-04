@@ -156,8 +156,8 @@ a.disabled {
 
 .email-template-preview {
   height: 140px;
-  width: 90px;
-  max-width: 90px;
+  width: 100%;
+  max-width: 100%;
   margin-left: 5px;
   border-radius: 2px;
   object-fit: cover;
@@ -393,4 +393,9 @@ body {
 }
 .ribbon span {
   font-size: 8px;
+}
+
+/* 04-07-2023 */
+div#htmlContent {
+  padding-left: 15px;
 }

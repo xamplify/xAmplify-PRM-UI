@@ -367,13 +367,21 @@ fieldset,
   background-color: #22313a !important;
   color: white !important;
 }
+/* 04-07-2023 Templates privew background */
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
 .search-box-item-clear,
 input {
-  background-color: #2b3c46 !important ;
+  background-color: transparent !important;
 }
+.table .table {
+  background: transparent !important;
+}
+table#folder-list-view, tr {
+  background: transparent !important;
+}
+
 .table-hover > tbody > tr:hover,
 .page-header.navbar
   .top-menu
