@@ -27,6 +27,7 @@ import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-
 import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
 import { UserService } from 'app/core/services/user.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import { utc } from 'moment';
 
 
 declare var swal:any, $: any, flatpickr:any;
@@ -64,9 +65,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   loggedInUserId = 0;
   campaigns: Campaign[];
   templateEmailOpenedAnalyticsAccess = false;
-  selectedCampaignTypeIndex = 0;
-
-
+  selectedCampaignTypeIndex = 1;
   isCampaignDeleted = false;
   hasCampaignRole = false;
   hasStatsRole = false;
@@ -150,6 +149,11 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
     private route: ActivatedRoute,public renderer:Renderer,public properties:Properties) {
       this.referenceService.renderer = this.renderer;    
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.hasCampaignRole = this.referenceService.hasSelectedRole(this.referenceService.roles.campaignRole);
+      this.hasStatsRole = this.referenceService.hasSelectedRole(this.referenceService.roles.statsRole);
+      this.hasAllAccess = this.referenceService.hasAllAccess();
+      this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+      this.itemsSize = this.numberOfItemsPerPage[0];
      }
   
   
@@ -223,6 +227,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
       this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
   }
 		if(this.viewType!="fl" && this.viewType!="fg"){
+      this.referenceService.scrollSmoothToTop();
 			this.getCampaignTypes();		
 		}
   }
@@ -305,5 +310,959 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
     this.isloading = false;
 
   }
+
+  setPage(event) {
+    this.pagination.pageIndex = event.page;
+    this.findCampaigns(this.pagination);
+}
+
+searchCampaigns() {
+    this.getAllFilteredResults(this.pagination);
+}
+
+getSortedResult(text: any) {
+    this.selectedSortedOption = text;
+    this.getAllFilteredResults(this.pagination);
+}
+
+getNumberOfItemsPerPage(items: any) {
+    this.itemsSize = items;
+    this.getAllFilteredResults(this.pagination);
+}
+
+getAllFilteredResults(pagination: Pagination) {
+    this.pagination = pagination;
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = this.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.selectedSortedOption, this.pagination);
+    this.pagination.maxResults = pagination.maxResults;
+    if (this.itemsSize.value === "0") {
+        this.pagination.maxResults = this.pagination.totalRecords;
+    } else {
+        this.pagination.maxResults = this.itemsSize.value;
+    }
+    this.findCampaigns(this.pagination);
+}
+eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }
+checkLastElement(i: any) {
+    if (this.pagination.pagedItems.length > 2 && (i === (this.pagination.pagedItems.length - 1) || i === this.pagination.pagedItems.length - 2)) { this.isLastElement = true; } else { this.isLastElement = false; }
+}
+
+updateEvent(campaign: any) {
+  this.router.navigate(['/home/campaigns/event-update/' + campaign.campaignId])
+}
+
+editCampaign(campaign: any) {
+  this.isloading = true;
+  this.customResponse = new CustomResponse();
+  if(campaign.launched){
+      this.editButtonClicked = true;
+      this.selectedCampaignId = campaign.campaignId;
+      this.isloading = false;
+  }else{
+      this.editCampaignsWhichAreNotLaunched(campaign);
+  }
+}
+
+editCampaignsWhichAreNotLaunched(campaign:any){
+  if (campaign.campaignType.indexOf('EVENT') > -1) {
+      let obj = { 'campaignId': campaign.campaignId }
+      this.campaignService.editCampaign(obj)
+          .subscribe(
+          data => {
+                  this.campaignService.campaign = data; 
+                  let endDate = this.campaignService.campaign.endDate;
+                  if (endDate != undefined && endDate != null) {
+                      this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                  }                      
+                  let isLaunched = this.campaignService.campaign.launched;
+                  if (isLaunched || data.campaignProcessing) {
+                    this.isScheduledCampaignLaunched = true;
+                      this.isloading = false;
+                  } else {
+                     if (campaign.nurtureCampaign) {
+                           this.campaignService.reDistributeEvent = false;
+                           this.isPartnerGroupSelected(campaign.campaignId,true);
+                       } else {
+                            this.router.navigate(['/home/campaigns/event-edit/' + campaign.campaignId]); 
+                        }
+                  }
+          },
+          error => {
+              this.showErrorResponse(error);
+              });
+      this.isScheduledCampaignLaunched = false;     	
+  }
+  else {
+      let obj = { 'campaignId': campaign.campaignId }
+      this.campaignService.editCampaign(obj)
+          .subscribe(
+          data => {
+              if (data.campaignType === 'SOCIAL') {
+                  let isLaunched = data.launched;
+                  if (isLaunched || data.campaignProcessing) {
+                      this.isScheduledCampaignLaunched = true;
+                      this.isloading = false;
+                  }else{
+                      this.editButtonClicked = true;
+                      this.selectedCampaignId = campaign.campaignId;
+                      this.isloading = false;
+                  }
+              } else {
+                  this.campaignService.campaign = data;
+                  let endDate = this.campaignService.campaign.endDate;
+                  if (endDate != undefined && endDate != null) {
+                      this.campaignService.campaign.endDate = utc(endDate).local().format("YYYY-MM-DD HH:mm");
+                  }
+                  let isLaunched = this.campaignService.campaign.launched;
+                  let isNurtureCampaign = this.campaignService.campaign.nurtureCampaign;
+                  if (isLaunched || data.campaignProcessing) {
+                      this.isScheduledCampaignLaunched = true;
+                      this.isloading = false;
+                  } else {
+                      if (isNurtureCampaign) {
+                          /*********XNFR-125*********/
+                          if(campaign.oneClickLaunch){
+                              this.checkOneClickLaunchRedistributeEditAccess(data,campaign);
+                          }else{
+                             this.navigateToRedistributeCampaign(data,campaign);
+                          }
+                      }
+                      else {
+                          /********XNFR-125*******/
+                          this.checkOneClickLaunchAccess(campaign.campaignId);
+                      }
+                  }
+              }
+          },
+          error => {
+              this.showErrorResponse(error);
+          });
+      this.isScheduledCampaignLaunched = false;
+  }
+}
+private showErrorResponse(error: any) {
+  let statusCode = JSON.parse(error["status"]);
+  if (statusCode == 400) {
+      this.referenceService.scrollSmoothToTop();
+      this.isScheduledCampaignLaunched = true;
+      this.isloading = false;
+  } else {
+      this.logger.errorPage(error);
+  }
+}
+
+/*****XNFR-125*****/
+checkOneClickLaunchAccess(campaignId:number){
+  this.isloading = true;
+  this.customResponse = new CustomResponse();
+  this.campaignService.checkOneClickLaunchAccess(campaignId).
+  subscribe(
+      response=>{
+          let access = response.data;
+          if(access){
+              this.referenceService.isEditNurtureCampaign = false;
+              this.router.navigate(["/home/campaigns/edit"]);
+          }else{
+              this.referenceService.scrollSmoothToTop();
+              let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
+              this.customResponse = new CustomResponse('ERROR',message,true);
+          }
+          this.isloading = false;
+      },error=>{
+          this.isloading = false;
+          this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+      });
+}
+
+
+/**********XNFR-125***********/
+checkOneClickLaunchRedistributeEditAccess(data:any,campaign:any){
+  this.customResponse = new CustomResponse();
+  this.campaignService.checkOneClickLaunchRedistributeEditAccess(campaign.campaignId).
+  subscribe(
+      response=>{
+          if(response.data){
+              this.navigateToRedistributeCampaign(data,campaign);
+          }else{
+              this.referenceService.goToTop();
+              let statusCode = response.statusCode;
+              let message = statusCode==400 ? this.properties.emptyShareListErrorMessage : this.properties.oneClickLaunchRedistributeAccessRemovedErrorMessage;
+              this.customResponse = new CustomResponse("ERROR",message,true);
+              this.isloading = false;
+          }
+      },_error=>{
+          this.isloading = false;
+          this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+      }
+  );
+}
+/**********XNFR-125***********/
+navigateToRedistributeCampaign(data:any,campaign:any){
+  this.campaignService.reDistributeCampaign = data;
+  this.campaignService.isExistingRedistributedCampaignName = true;
+  this.isPartnerGroupSelected(campaign.campaignId,false);
+}
+
+
+
+isPartnerGroupSelected(campaignId:number,eventCampaign:boolean){
+  this.pagination.campaignId = campaignId;
+  this.pagination.userId = this.loggedInUserId;
+  this.campaignService.isPartnerGroupSelected(this.pagination).
+  subscribe(
+      response=>{
+         if(response.data){
+             let message = "This campaign cannot be edited as "+this.authenticationService.partnerModule.customName+" group has been selected.";
+             this.customResponse = new CustomResponse('ERROR',message,true); 
+             this.isloading = false;
+      this.referenceService.goToTop();
+         }else{
+             if(eventCampaign){
+              this.router.navigate(['/home/campaigns/re-distribute-manage/' + campaignId]);
+             }else{
+              this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+
+             }
+         }
+  },error=>{
+      this.isloading = false;
+      this.logger.errorPage(error);
+  });
+}
+
+confirmDeleteCampaign(id: number, position: number, name: string) {
+  let self = this;
+  swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, delete it!'
+
+  }).then(function () {
+      self.deleteCampaign(id, position, name);
+  }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+  });
+}
+
+deleteCampaign(id: number, position: number, campaignName: string) {
+  this.customResponse = new CustomResponse();
+  this.referenceService.goToTop();
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.campaignService.delete(id)
+      .subscribe(
+      data => {
+          if(data.access){
+              this.referenceService.loading(this.httpRequestLoader, false);
+              this.isCampaignDeleted = true;
+              const deleteMessage = campaignName + ' deleted successfully';
+              this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+              this.pagination.pagedItems.splice(position, 1);
+              this.pagination.pageIndex = 1;
+              this.findCampaigns(this.pagination);
+              this.listNotifications();
+          }else{
+              this.authenticationService.forceToLogout();
+          }
+          
+      },
+      error => { 
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.customResponse = new CustomResponse('ERROR','This campaign cannot be deleted at this time.Please try after sometime',true);
+         // this.logger.errorPage(error)
+       },
+      () => console.log("Campaign Deleted Successfully")
+      );
+  this.isCampaignDeleted = false;
+}
+
+ngOnDestroy() {
+  this.isCampaignDeleted = false;
+  this.referenceService.campaignSuccessMessage = "";
+  swal.close();
+  $('#saveAsModal').modal('hide');
+  $('#campaignFilterModal').modal('hide');
+  $('#cancelEventModal').modal('hide');
+  $('#public-event-url-modal').modal('hide');
+  $('#public-event-url-modal').modal('hide');
+  $('#endDateModal').modal('hide');
+          
+}
+openSaveAsModal(campaign: any) {
+  $('#saveAsModal').modal('show');
+  this.saveAsCampaignId = campaign.campaignId;
+  this.saveAsCampaignName = campaign.campaignName + "_copy";
+  this.saveAsCampaignInfo = campaign;
+}
+setCampaignData() {
+  let campaignData: any;
+  if (this.saveAsCampaignInfo.campaignType === 'EVENT') {
+      const saveAsCampaignData = new EventCampaign();
+      saveAsCampaignData.id = this.saveAsCampaignInfo.campaignId;
+      saveAsCampaignData.campaign = this.saveAsCampaignName;
+      campaignData = saveAsCampaignData;
+      campaignData.campaignType = this.saveAsCampaignInfo.campaignType;
+  }
+  else {
+      const campaign = new Campaign();
+      campaign.campaignName = this.saveAsCampaignName;
+      campaign.campaignId = this.saveAsCampaignId;
+      campaign.scheduleCampaign = "SAVE";
+      campaign.campaignType = this.saveAsCampaignInfo.campaignType;
+      
+      campaignData = campaign;
+  }
+  return campaignData;
+}
+saveAsCampaign() {
+  this.customResponse = new CustomResponse();
+  $('#saveAsModal').modal('hide');
+  this.referenceService.loading(this.httpRequestLoader, true);
+  const campaignData = this.setCampaignData();
+  campaignData.userId = this.authenticationService.getUserId();
+  this.campaignService.saveAsCampaign(campaignData)
+      .subscribe(data => {
+          this.clicked = false;
+          if(data.access){
+              this.referenceService.loading(this.httpRequestLoader, false);
+              let statusCode =  data.statusCode;
+              if(statusCode==404){
+                  this.referenceService.scrollSmoothToTop();
+                  this.customResponse = new CustomResponse('ERROR',data.message,true);
+              }else{
+                  this.campaignSuccessMessage = "Campaign copied successfully";
+                  $('#lanchSuccess').show(600);
+                  this.showMessageOnTop();
+                  this.findCampaigns(this.pagination);
+              }
+          }else{
+              this.authenticationService.forceToLogout();
+          }
+      },
+      error => {
+          this.clicked = false;
+          $('#saveAsModal').modal('hide'); this.logger.errorPage(error)
+          this.customResponse = new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
+      },
+      () => console.log("saveAsCampaign Successfully")
+      );
+}
+filterCampaigns(type: string, index: number) {
+  this.selectedCampaignTypeIndex = index;//This is to highlight the tab
+  this.pagination.pageIndex = 1;
+  this.pagination.maxResults = 12;
+  this.itemsSize = this.numberOfItemsPerPage[0];
+  this.pagination.campaignType = type;
+  this.findCampaigns(this.pagination);
+}
+campaginRouter(campaign: any) {
+  this.referenceService.campaignType = campaign.campaignType;
+  this.router.navigate(['/home/campaigns/' + campaign.campaignId + '/details']);
+}
+showCampaignPreview(campaign: any) {
+  this.referenceService.loadingPreview = true;
+  if (campaign.campaignType.indexOf('EVENT') > -1) {
+      this.campaignType = 'EVENT';
+      this.previewCampaign = campaign.campaignId;
+  } else {
+      this.campaignType = campaign.campaignType.toLocaleString();
+      this.previewCampaign = campaign.campaignId;
+  }
+}
+goToRedistributedCampaigns(campaign: Campaign) {
+  this.isloading = true;
+  this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/re-distributed"]);
+}
+goToPreviewPartners(campaign: Campaign) {
+  this.isloading = true;
+  this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/plc"]);
+}
+
+goToTemplateDownloadPartners(campaign: Campaign) {
+  this.isloading = true;
+  this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/tda"]);
+}
+
+goToTemplateEmailOpenedAnalytics(campaign: Campaign) {
+  this.isloading = true;
+  this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/teoa"]);
+}
+
+getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {
+  this.selectedCancelEventId = campaignId;
+  this.selectedCancelEventChannelCampaign = channelCampaign;
+  this.selectedCancelEventNurtureCampaign=nurtureCampaign;
+  this.selectedCancelEventToPartnerCampaign=toPartner;
+  this.campaignService.getEventCampaignById(campaignId).subscribe(
+      (result) => {
+          this.eventCampaign = result.data;
+          $('#cancelEventModal').modal('show');
+      });
+}
+cancelEvent() {
+  var cancelEventData = {
+      "id": this.selectedCancelEventId,
+      "isCancelled": true,
+      "message": this.cancelEventMessage,
+      "subject": this.cancelEventSubjectLine
+  }
+
+  this.isloading = true;
+  $('#cancelEventModal').modal('hide');
+  this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId, this.selectedCancelEventChannelCampaign,this.selectedCancelEventNurtureCampaign,
+      this.selectedCancelEventToPartnerCampaign)
+      .subscribe(data => {
+        if(data.access){
+          console.log(data);
+          $(window).scrollTop(0);
+          this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
+          console.log("Event Successfully cancelled");
+          this.cancelEventMessage = "";
+          this.findCampaigns(this.pagination);
+          this.isloading = false;
+      }else{
+          this.authenticationService.forceToLogout();
+      }
+      },
+      error => { $('#cancelEventModal').modal('hide'); this.logger.errorPage(error) },
+      () => console.log("cancelCampaign completed")
+      );
+}
+
+closeCancelEventodal() {
+  $('#cancelEventModal').modal('hide');
+  this.cancelEventMessage = "";
+}
+
+validateCancelEventButton() {
+  if (this.cancelEventMessage.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.cancelEventSubjectLine.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ")) {
+      this.cancelEventButton = true;
+  } else {
+      this.cancelEventButton = false;
+  }
+}
+closePreviewCampaign(event) {
+  this.previewCampaign = undefined;
+  if (event === 'copy campaign success') {
+      this.showMessageOnTop();
+      this.pagination.pageIndex = 1;
+      this.findCampaigns(this.pagination);
+  }
+  if (event.delete === 'deleted campaign success') {
+      this.referenceService.loading(this.httpRequestLoader, false);
+      this.isCampaignDeleted = true;
+      const deleteMessage = event.campaignName + ' campaign deleted successfully';
+      this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+      this.pagination.pageIndex = 1;
+      this.findCampaigns(this.pagination);
+  }
+  if (event.delete === 'something went wrong in delete') {
+      this.referenceService.loading(this.httpRequestLoader, false);
+      const deleteMessage = 'something went wrong  when ' + event.campaignName + ' deleting. please try again';
+      this.customResponse = new CustomResponse('ERROR', deleteMessage, true);
+  }
+  if (event === 'something went wrong') {
+      this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
+  }
+  if(event['updated']){
+      this.resetValues('updated');
+  }
+}
+
+goToFormAnalytics(id:number){
+  this.router.navigate(['/home/forms/cf/'+id]);
+}
+
+openEventUrlModal(campaign:Campaign){
+  this.modalPopupLoader = true;
+  this.publicEventAliasUrl = "";
+  this.publicEventAlias = "";
+  this.copiedLinkCustomResponse = new CustomResponse();
+  $('#public-event-url-modal').modal('show');
+  this.campaignService.getPublicEventCampaignAlias(campaign.campaignId).
+  subscribe(
+      data =>{
+          this.publicEventAlias = data;
+          if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
+              this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+            }else{              
+              this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+            }
+            this.modalPopupLoader = false;
+      },_error =>{
+          this.modalPopupLoader = false;
+          this.copiedLinkCustomResponse = new CustomResponse('ERROR','Please try after sometime',true);
+      });
+  }
+copyUrl(inputElement){
+  this.copiedLinkCustomResponse = new CustomResponse();
+  inputElement.select();
+  document.execCommand('copy');
+  inputElement.setSelectionRange(0, 0);
+  this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+}
+inviteMore(campaign:Campaign){
+  this.adddMoreReceiversComponent.showPopup(campaign);
+}
+sendEventEmail(campaign:Campaign){
+  this.publicEventEmailPopupComponent.showPopup(campaign);
+}
+
+listNotifications() {
+  try{
+    this.userService.listNotifications(this.authenticationService.getUserId())
+        .subscribe(
+        data => {
+            console.log("list Notifications in manage publish page "+data);
+            this.getUnreadNotificationsCount();
+        },
+        error => console.log(error),
+        () => console.log('Finished')
+        );
+    }catch(error) {console.error('error'+error); }
+}
+getUnreadNotificationsCount() {
+   try{
+    this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
+      .subscribe(
+      data => {
+        this.userService.unreadNotificationsCount = data;
+      },
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
+      );
+    }catch(error) {this.logger.error('error'+error); }
+    }
+  
+    
+    goToCalendarView(){
+        this.navigatingToRelatedComponent = true;
+        if(this.teamMemberId>0){
+          if(this.categoryId!=undefined && this.categoryId>0){
+              this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
+          }else{
+              this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId]);
+          }
+          
+        }else{
+            if(this.categoryId!=undefined && this.categoryId>0){
+              this.router.navigate(['/home/campaigns/calendar/f/'+this.categoryId]);
+            }else{
+              this.router.navigate(['/home/campaigns/calendar']);
+            }
+          
+        }
+    }     
+    
+/************Adding Workflows**************** */
+addWorkFlows(campaign:Campaign){
+  this.customResponse = new CustomResponse();
+  this.addWorkflows = true;
+  this.selectedCampaign = campaign;
+  
+}
+setViewType(viewType:string){
+  if("List"==viewType){
+      this.modulesDisplayType.isListView = true;
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderGridView = false;
+      this.modulesDisplayType.isFolderListView = false;
+      this.navigateToManageSection(viewType);    
+  }else if("Grid"==viewType){
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = true;
+      this.modulesDisplayType.isFolderGridView = false;
+      this.modulesDisplayType.isFolderListView = false;
+      this.navigateToManageSection(viewType);    
+  }else if("Folder-Grid"==viewType){
+      this.closeFilterOption();
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderGridView = true;
+      this.modulesDisplayType.isFolderListView = false;
+      this.exportObject['type'] = 4;
+      this.exportObject['folderType'] = viewType;
+      this.exportObject['teamMemberId'] = this.teamMemberId;
+      this.exportObject['archived'] = this.archived;
+      if(this.categoryId>0){
+          this.navigatingToRelatedComponent = true;
+          if(this.teamMemberId!=undefined && this.teamMemberId>0){
+              this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+          }else{
+              this.router.navigateByUrl('/home/campaigns/manage/');
+          }
+          
+      }
+  }else if("Folder-List"==viewType){
+      this.modulesDisplayType.isListView = false;
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderGridView = false;
+      this.modulesDisplayType.isFolderListView = true;
+this.exportObject['folderType'] = viewType;
+      this.exportObject['type'] = 4;
+this.exportObject['teamMemberId'] = this.teamMemberId;
+      this.exportObject['archived'] = this.archived;
+      this.closeFilterOption();
+  }
+}
+
+navigateToManageSection(viewType:string){
+  if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+      this.modulesDisplayType.isListView = true;
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isFolderGridView = false;
+      this.modulesDisplayType.isFolderListView = false;
+      this.pagination.campaignType = 'REGULAR';
+      this.findCampaigns(this.pagination);
+  }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+      this.modulesDisplayType.isGridView = true;
+      this.modulesDisplayType.isFolderGridView = false;
+      this.modulesDisplayType.isFolderListView = false;
+      this.modulesDisplayType.isListView = false;
+      this.pagination.campaignType = 'REGULAR';
+      this.findCampaigns(this.pagination);
+  }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+           &&  (this.categoryId==undefined || this.categoryId==0)){
+     this.modulesDisplayType.isFolderGridView = false;
+     this.modulesDisplayType.isFolderListView = false;
+     if("List"==viewType){
+      this.modulesDisplayType.isGridView = false;
+      this.modulesDisplayType.isListView = true;
+     }else{
+      this.modulesDisplayType.isGridView = true;
+      this.modulesDisplayType.isListView = false;
+     }
+     this.pagination.campaignType = 'REGULAR';
+     this.findCampaigns(this.pagination);
+  }else  if(this.router.url.endsWith('/')){
+      if(this.teamMemberId!=undefined){
+          this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+      }else{
+          this.router.navigateByUrl('/home/campaigns/manage');
+      }
+      
+  }
+}
+
+
+getUpdatedValue(event:any){
+  //this.archived = event.archived;
+  let viewType = event.viewType;        
+  if(viewType!=undefined){
+      this.setViewType(viewType);
+  }
+  
+}
+
+downloadCampaignHighLevelAnalytics() {
+let param = null;
+  let campaignType = this.pagination.campaignType;
+  let teamMemberId : number = 0;
+  let teamMemberAnalytics = null;
+  let categoryId : number = 0;
+  let categoryType = '';
+  let searchKey = this.pagination.searchKey;
+
+if(this.teamMemberId!=undefined){
+  teamMemberId = this.teamMemberId;
+  teamMemberAnalytics = true;
+  }else{
+    teamMemberAnalytics = false;
+  }
+
+if(this.categoryId!=undefined){
+      categoryId = this.categoryId;
+      categoryType = 'c';
+  }
+ 
+   if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+       param = {
+           'userId': this.loggedInUserId,
+           'vendorCompanyProfileName': this.authenticationService.companyProfileName,
+           'vanityUrlFilter': true,
+           'campaignType' : campaignType,
+           'teamMemberId' : teamMemberId,
+           'teamMemberAnalytics' : teamMemberAnalytics,
+           'categoryId' :categoryId,
+           'categoryType' : categoryType,
+           'searchKey' : searchKey,
+           'fromDate' : this.pagination.fromDateFilterString,
+           'toDate' : this.pagination.toDateFilterString,
+           'archived': this.pagination.archived,
+           'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+       };
+   } else {
+       param = {
+           'userId': this.loggedInUserId,
+           'vanityUrlFilter': false,
+           'vendorCompanyProfileName':null,
+           'campaignType' : campaignType,
+           'teamMemberId' :  teamMemberId,
+           'teamMemberAnalytics' : teamMemberAnalytics,
+           'categoryId' :categoryId,
+           'categoryType' : categoryType,
+           'searchKey' : searchKey,
+           'fromDate' : this.pagination.fromDateFilterString,
+           'toDate' : this.pagination.toDateFilterString,
+           'archived': this.pagination.archived,
+           'timeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+       };
+   }
+   let completeUrl = this.authenticationService.REST_URL + "campaign/download-campaign-highlevel-analytics?access_token=" + this.authenticationService.access_token;
+   this.referenceService.post(param, completeUrl);
+}
+
+refreshPage() {
+   try {
+     this.isScheduledCampaignLaunched = false;
+      this.getCampaignTypes();
+  } catch (error) {
+      this.logger.error("error in manage-publish-component init() ", error);
+  }
+}
+
+toggleFilterOption() {
+  this.showFilterOption = !this.showFilterOption;    
+  this.fromDateFilter = "";
+  this.toDateFilter = "";
+  if (!this.showFilterOption) {
+    this.pagination.fromDateFilterString = "";
+    this.pagination.toDateFilterString = "";
+    this.filterResponse.isVisible = false;
+    if (this.filterMode) {
+      this.pagination.pageIndex = 1;
+      this.findCampaigns(this.pagination);
+      this.filterMode = false;
+    }      
+  } else {
+    this.filterMode = false;
+  }
+}
+
+closeFilterOption() {
+  this.showFilterOption = false;
+  this.fromDateFilter = "";
+  this.toDateFilter = ""; 
+  this.pagination.fromDateFilterString = "";
+  this.pagination.toDateFilterString = "";
+  this.filterResponse.isVisible = false;
+  if (this.filterMode) {
+    this.pagination.pageIndex = 1;
+    this.findCampaigns(this.pagination);
+    this.filterMode = false;
+  }    
+}
+
+validateDateFilters() {
+  if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+      var fromDate = Date.parse(this.fromDateFilter);
+      if (this.toDateFilter != undefined && this.toDateFilter != "") {
+          var toDate = Date.parse(this.toDateFilter);
+          if (fromDate <= toDate) {
+              this.pagination.pageIndex = 1;
+              this.pagination.fromDateFilterString = this.fromDateFilter;
+              this.pagination.toDateFilterString = this.toDateFilter;
+              this.filterMode = true;
+              this.filterResponse.isVisible = false;
+              this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              this.findCampaigns(this.pagination);
+          } else {
+              this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+          }
+      } else {
+          this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+      }
+  } else {
+      this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+  }
+}
+
+showArchivedCampaigns() {
+  this.archived = true;
+  this.campaignService.archived = true;
+  this.resetPagination();        
+  this.findCampaigns(this.pagination);
+}
+
+showActiveCampaigns() {
+  this.archived = false;
+  this.campaignService.archived = false;  
+  this.resetPagination();      
+  this.findCampaigns(this.pagination);
+}
+
+resetPagination() {
+  this.pagination.pageIndex = 1;
+  this.searchKey = this.pagination.searchKey = "";
+  this.pagination.sortcolumn = this.pagination.sortingOrder = null;
+  if (this.archived) {
+      this.selectedSortedOption = this.sortByDropDownArchived[0];
+  } else {
+      this.selectedSortedOption = this.sortByDropDown[0];
+  }
+  
+  this.pagination.maxResults = 12;
+  this.itemsSize = this.numberOfItemsPerPage[0];
+  this.pagination.campaignType = 'REGULAR';
+  this.selectedCampaignTypeIndex = 1;
+  this.modulesDisplayType.isListView = true;
+  this.modulesDisplayType.isGridView = false;
+  this.modulesDisplayType.isFolderGridView = false;
+  this.modulesDisplayType.isFolderListView = false;
+
+  this.showFilterOption = false;
+  this.fromDateFilter = "";
+  this.toDateFilter = ""; 
+  this.pagination.fromDateFilterString = "";
+  this.pagination.toDateFilterString = "";
+  this.filterResponse.isVisible = false;
+  this.filterMode = false;
+  this.customResponse = new CustomResponse();
+
+  if (this.categoryId != undefined && this.categoryId > 0) {
+      this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+      this.navigatingToRelatedComponent = true;
+      if(this.teamMemberId!=undefined && this.teamMemberId>0){
+          this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+      }else{
+          this.router.navigateByUrl('/home/campaigns/manage');
+      }
+  }
+}
+
+archiveCampaign(campaign: any) {
+  var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+  this.campaignService.archiveCampaign(request)
+      .subscribe(
+          response => {
+              this.isloading = false;
+              if (response.statusCode == 200) {
+                  this.findCampaigns(this.pagination);
+                  this.referenceService.loading(this.httpRequestLoader, false);
+                  this.customResponse = new CustomResponse('SUCCESS', "Campaign Archived Successfully", true);
+              }
+          },
+          error => {
+              this.isloading = false;
+              this.logger.errorPage(error);
+          },
+          () => this.logger.info("Finished archiveCampaign()", campaign)
+      );
+}
+
+unarchiveCampaign(campaign: any) {
+  var request = { loggedInUserId: this.loggedInUserId, id: campaign.campaignId };
+  this.campaignService.unarchiveCampaign(request)
+      .subscribe(
+          response => {
+              this.isloading = false;
+              if (response.statusCode == 200) {
+                  this.findCampaigns(this.pagination);
+                  this.referenceService.loading(this.httpRequestLoader, false);
+                  this.customResponse = new CustomResponse('SUCCESS', "Campaign Unarchived Successfully", true);
+              }
+          },
+          error => {
+              this.isloading = false;
+              this.logger.errorPage(error);
+          },
+          () => this.logger.info("Finished archiveCampaign()", campaign)
+      );
+}
+
+navigatedToCategoryItems() {
+  this.navigatingToRelatedComponent = true;
+}
+
+showEndDateModal(campaign: any) {
+  this.showEditEndDateForm = true;
+  $('#endDateModal').modal('show');
+  this.selectedCampaign = campaign;
+
+  if (campaign.endDate != undefined && campaign.endDate != null) {
+      this.selectedEndDate = utc(campaign.endDate).local().format("YYYY-MM-DD HH:mm");
+      let selectedDate = new Date(this.selectedEndDate);            
+      if (Array.isArray(this.endDatePickr)) {
+          $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+              endDatePickrObj.setDate(selectedDate);                        
+          });
+      } else {
+          this.endDatePickr.setDate(selectedDate);
+      }
+  } else {
+      this.clearEndDate();
+  }
+
+  if (Array.isArray(this.endDatePickr)) {
+      $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+          endDatePickrObj.set("minDate", new Date());                        
+      });
+  } else {
+      this.endDatePickr.set("minDate", new Date());
+  }
+  
+}
+
+closeEndDateModal() {       
+  this.showEditEndDateForm = false;
+  this.selectedCampaign = undefined;        
+  this.endDateCustomResponse.isVisible = false;
+
+  //this.selectedEndDate = undefined;
+  //this.endDatePickr.clear();
+  this.clearEndDate();
+
+  $('#endDateModal').modal('hide');
+}
+
+updateEndDate() {
+  this.referenceService.loading(this.endDateRequestLoader, true);
+  let obj = {
+      'campaignId': this.selectedCampaign.campaignId, 'endDate': this.selectedEndDate,
+      'userId': this.loggedInUserId, 'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone
+  };
+  this.campaignService.updateEndDate(obj)
+      .subscribe(
+      data => {
+          if(data.statusCode == 200){
+              this.closeEndDateModal();
+              this.customResponse = new CustomResponse('SUCCESS','End Date updated successfully',true);
+              this.findCampaigns(this.pagination);               
+          } else {
+              this.endDateCustomResponse = new CustomResponse('ERROR', data.message, true);
+          }
+          this.referenceService.loading(this.endDateRequestLoader, false);
+      },
+      error => { 
+          this.referenceService.loading(this.endDateRequestLoader, false);
+          this.endDateCustomResponse = new CustomResponse('ERROR','Failed to update end date',true);
+       },
+      () => console.log("End date updated Successfully")
+      );
+}
+
+clearEndDate() {        
+  if (Array.isArray(this.endDatePickr)) {
+      $.each(this.endDatePickr, function (_index:number, endDatePickrObj) {
+          endDatePickrObj.clear();                        
+      });
+  } else {
+      this.endDatePickr.clear();
+  }       
+  this.selectedEndDate = undefined;
+}
+
+/*****XNFR-118********/
+resetValues(event:any){
+if("updated"==event){
+this.findCampaigns(this.pagination);
+}
+this.selectedCampaignId = 0;
+this.editButtonClicked = false;
+}
 
 }
