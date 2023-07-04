@@ -41,14 +41,16 @@ declare var swal:any, $: any, flatpickr:any;
 export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 
   @Input() folderListViewCategoryId:any;
+  @Output() updatedItemsCountEmitter = new EventEmitter();
+  @Input() folderListViewExpanded = false;
+
   categoryId = 0;
   folderListView = false;
   viewType: string;
-	modulesDisplayType = new ModulesDisplayType();
+  modulesDisplayType = new ModulesDisplayType();
   folderViewType = "";
-	showUpArrowButton = false;
-  @Input() folderListViewExpanded = false;
-
+  showUpArrowButton = false;
+  roles:Roles = new Roles();
   showEditEndDateForm: boolean;
   endDate: any;
   selectedEndDate: any;
@@ -564,6 +566,7 @@ deleteCampaign(id: number, position: number, campaignName: string) {
               this.pagination.pagedItems.splice(position, 1);
               this.pagination.pageIndex = 1;
               this.findCampaigns(this.pagination);
+              this.callFolderListViewEmitter();
               this.listNotifications();
           }else{
               this.authenticationService.forceToLogout();
@@ -1190,5 +1193,13 @@ this.findCampaigns(this.pagination);
 this.selectedCampaignId = 0;
 this.editButtonClicked = false;
 }
+
+callFolderListViewEmitter(){
+    if(this.folderListView){
+        this.exportObject['categoryId'] = this.categoryId;
+        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+        this.updatedItemsCountEmitter.emit(this.exportObject);
+    }
+ }
 
 }
