@@ -1559,3 +1559,7 @@ input.ng-valid.ng-dirty.ng-touched {
  .rss-title {
   color: white !important;
 }
+/* 04-07-2024 */
+.dark-beige {
+  background: transparent;
+}

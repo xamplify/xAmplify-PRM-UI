@@ -87,6 +87,31 @@
         }
     
     }
+    /* Manage Campaigns ribbon adjustment 04-07-2023 */
+    @media only screen and (min-width: 601px) and (max-width: 991px) { 
+
+        .grid-box{
+            background: #f1f1f1 !important;
+        }
+        .tab-ribbon {
+            left: 10px;
+        }
+        .tab-bookmark-ribbon{
+            right: 22px;
+        }
+        /* Manage Campaigns folder view */
+        .full-width-folder {
+            width: 100% !important;
+            width: calc(100% - 0px) !important;
+        }
+        .full-height-folder {
+            height: 100% !important;
+            max-height: 100% !important;
+        }
+
+
+    }
+
 
     @media only screen and (min-width: 601px) and (max-width: 767px) { 
         .bar {
@@ -113,8 +138,10 @@
             position: relative;
             font-size: 19px!important;
         }
+        /* Manage Campaigns 04-07-2023 */
         .grid-box{
             height: 249px!important;
+            background: #f1f1f1 !important;
         }
         .table-condensed {
             background-color:unset!important;
