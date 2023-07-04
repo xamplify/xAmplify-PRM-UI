@@ -3043,7 +3043,7 @@ export class ReferenceService {
       categoryType="LEARNING_TRACK";
     }else if(this.roles.playbookId==moduleId){
       categoryType = "PLAY_BOOK";
-    }else if(this.roles.playbookId==moduleId){
+    }else if(this.roles.campaignId==moduleId){
       categoryType = "CAMPAIGN";
     }
     return categoryType;

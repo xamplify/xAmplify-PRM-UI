@@ -566,6 +566,7 @@ deleteCampaign(id: number, position: number, campaignName: string) {
               this.pagination.pagedItems.splice(position, 1);
               this.pagination.pageIndex = 1;
               this.findCampaigns(this.pagination);
+              this.callFolderListViewEmitter();
               this.listNotifications();
           }else{
               this.authenticationService.forceToLogout();
