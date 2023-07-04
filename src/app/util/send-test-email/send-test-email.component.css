@@ -1,3 +1,6 @@
 .plspx{
     padding-left: 16px;
 }
+.table-striped > tbody > tr:nth-of-type(odd), table tr:nth-child(odd) td, table tr:nth-child(even) td, .search-box-item-clear, input{
+    background: none !important;
+}
