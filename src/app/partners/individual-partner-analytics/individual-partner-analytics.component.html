@@ -23,29 +23,6 @@
     <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
   </div>
 
-  <!--card start -->
-  <div class="page-bar p20">
-    <div class="row">
-<div class="col-sm-12 col-md-12 col-lg-12">
-  <div class="col-sm-4 col-md-4 col-lg-4">
-    <div _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-        <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
-    </div>
-  </div>
-  <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-     <p><b>Partner Comapny Name:</b> veera</p>
-     <p><b>Email Id:</b> veera@gmail.com</p>
-     <p><b>Full Name:</b> veera venkatrao</p>
-  </div>
-  <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-     <p><b>Contact:</b> 9700926011</p>
-     <p><b>Recent Login:</b> 29-06-2023 11:42AM</p>
-  </div>
-</div>
-</div>
-</div>
-<!--card End -->
-
   <div class="row">
     <div class="col-xs-12 col-md-12 col-sm-12">
       <div>
@@ -172,6 +149,153 @@
       </div>
     </div>
   </div>
+  <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
+  <div class="col-xs-12">
+    <div class="dataTables_wrapper form-inline no-footer">
+    <!-- list name -->
+    <div class="note-vid pull-left" style="margin-top:18px;font-size: 16px;margin-left: -4px;">
+      Partner Journey Analytics
+   </div> 
+    <!---Search & Sort-->
+    <div class="inputs pull-right" style="margin-top: 10px;">
+      <div class="input-icon right" id="icon-right" style="padding-right: 1px;margin-right: -5px;">
+         <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+         [ngModelOptions]="{standalone: true}" placeholder="Search..."
+         (keypress)="eventHandler($event.keyCode)" autocomplete="off">
+         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+         (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
+         <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
+         <i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+   </div>       
+  <div class="row pb10 portlet light" style="margin-top: -9px !important;">
+    <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0" style="padding-top: 10px !important;">
+      <div class="table-responsive">
+         <table class="table tgrid table-hover table-sm" role="grid" aria-describedby="" >
+            <thead>
+               <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Company Logo</th>
+                  <th scope="col" class="text-center">Company Name</th>
+                  <th scope="col">Created Time</th>
+                  <th scope="col" class="text-center">Analytics</th>
+               </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cw">
+                  <!-- <input class="form-control" type="radio"> -->
+               </td>
+               <td class="wtpc">
+                <div class="thumbnail-wrapper">
+                   <img alt="No image found" src="assets/images/company-profile-logo.png">
+                </div>
+             </td>
+             <td class="text-center">
+              <span>Stratapps Company</span>
+              <span *ngIf="partner?.companyName.length>50">...</span>
+              <h5>
+                 <strong>
+                 Company Name By Vendor : 
+                 <span title="{{partner?.companyNameAddedByVendor}}">Xamplify</span>
+                 <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
+                 </strong>
+              </h5>
+           </td>
+           <td class="text-center">
+            Jun 29,2023 11:00 AM
+         </td>
+         <td class="text-center">
+          <div>
+            <a      
+               data-toggle="tooltip" data-placement="bottom"
+              title="Analytics"
+              (click)="goToAnalytics()" class="icon-border-circle"> <i
+              class="fa fa-line-chart" aria-hidden="true"></i>
+            </a>
+          </div>
+       </td>
+              </tr>
+              <!-- second row -->
+              <tr>
+                <td class="cw">
+                  <!-- <input class="form-control" type="radio"> -->
+               </td>
+               <td class="wtpc">
+                <div class="thumbnail-wrapper">
+                   <img alt="No image found" src="assets/images/company-profile-logo.png">
+                </div>
+             </td>
+             <td class="text-center">
+              <span>TATA Motors</span>
+              <span *ngIf="partner?.companyName.length>50">...</span>
+              <h5>
+                 <strong>
+                 Company Name By Vendor : 
+                 <span title="{{partner?.companyNameAddedByVendor}}">Ratan Tata</span>
+                 <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
+                 </strong>
+              </h5>
+           </td>
+           <td class="text-center">
+            Jun 27,2023 1:00 AM
+         </td>
+         <td class="text-center">
+          <div>
+            <a      
+               data-toggle="tooltip" data-placement="bottom"
+              title="Analytics"
+              (click)="goToAnalytics()" class="icon-border-circle"> <i
+              class="fa fa-line-chart" aria-hidden="true"></i>
+            </a>
+          </div>
+       </td>
+              </tr>
+              <!-- third row -->
+              <tr>
+                <td class="cw">
+                  <!-- <input class="form-control" type="radio"> -->
+               </td>
+               <td class="wtpc">
+                <div class="thumbnail-wrapper">
+                   <img alt="No image found" src="assets/images/company-profile-logo.png">
+                </div>
+             </td>
+             <td class="text-center">
+              <span>New Jersey</span>
+              <span *ngIf="partner?.companyName.length>50">...</span>
+              <h5>
+                 <strong>
+                 Company Name By Vendor : 
+                 <span title="{{partner?.companyNameAddedByVendor}}">Max Well</span>
+                 <span *ngIf="partner?.companyNameAddedByVendor.length>50">...</span>
+                 </strong>
+              </h5>
+           </td>
+           <td class="text-center">
+            July 1,2023 9:00 PM
+         </td>
+         <td class="text-center">
+          <div>
+            <a      
+               data-toggle="tooltip" data-placement="bottom"
+              title="Analytics"
+              (click)="goToAnalytics()" class="icon-border-circle"> <i
+              class="fa fa-line-chart" aria-hidden="true"></i>
+            </a>
+          </div>
+       </td>
+              </tr>
+            </tbody>
+            </table>
+  </div>
+  </div>
+
+  
+  </div>
+</div>
+</div>
+</div>
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;padding-bottom: 10px;">
     <div class="row">

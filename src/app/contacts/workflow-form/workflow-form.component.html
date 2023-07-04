@@ -53,29 +53,637 @@
       </ul>
       <div align="right" style="margin-top: 3px;" class="hidden-xs"		 >
 		  <a>
-		  <button type="button" class="btn Btn-Green" download
+		  <!-- <button type="button" class="btn Btn-Green" download
 			 style="margin-right: 3px;" (click)="goToWorkflow()"
 			 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
 			 translate>
 		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
-		  </button>
+		  </button> -->
 		  </a>
 	   </div>
    </div>
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <!--2 cards start -->
+   <div class="page-bar p10">
+    <div class="row">
+<div class="col-sm-12 col-md-12 col-lg-12">
+ <div class="portlet light row steps-view">
+    <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id="" (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
+        <div  class="cenetered-block colorbox-1">
+            <img  alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
+            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
+        </div>
+    </div>
+    <div ng-reflect-ng-style="[object Object]" class="col-block" (click)="showAndHideDivs()" [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" [ngClass]="">
+        <div  class="cenetered-block colorbox-2">
+            <img  alt="" class="newicons" src="assets/images/campaignnew-icon/8.svg">
+            <h5 class="hidden-xs text-clr">
+                Notification
+            </h5>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<!--2 cards End -->
    <div id="manageContacts">
       <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
       <div *ngIf="showAll">
          <!-- END PAGE HEADER-->
          <!-- BEGIN PAGE CONTENT-->
          <div>
+            <div class="row" style="margin-right: -4px;margin-left: 0px;">
+                 <!--Trigger start -->
+   <div class="page-bar p20 activeStepInfo"  id="step-1">
+    <div class="caption" style="padding-top: 11px !important;" >
+      <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
+       <span class="textaligncenter">Trigger</span> 
+   </div>
+   <hr>  
+   <!-- Partner forms row start -->
+   <div class="row">
+    <p class="align-paratext">Define the trigger when this happens"</p>
+    <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
+             <option value="1" selected>Partner has not</option>
+             <option value="2">Partner has</option>
+           </select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
+             <option value="1" selected>Opend Email </option>
+             <option value="2">Redistribution campaign</option>
+             <option value="3">Opend Shared Leads</option>
+             <option value="4">Leads</option>
+             <option value="5">Deals</option>
+             <option value="7">MDF Amount($) </option>
+             <option value="8"> Assets </option>
+             <option value="9"> Tracks </option>
+             <option value="10"> Playbook </option>
+           </select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched">
+             <option selected>In the past day </option>
+             <option value="1">In the past 7 day</option>
+             <option value="2">In the past 14 day</option>
+             <option value="3">In the past 30 day</option>
+             <option value="3">In the past 60 day</option>
+             <option value="3">In the past 90 day</option>
+             <option value="3">In the past year</option>
+             <option value="3">Custom</option>
+           </select>
+        </div>
+    </div>
+</div>
+<!-- Partner forms row end -->
+
+<!-- 1nd st dropdown row start -->
+ <div id="closeablecard" class="row card card-hover-shadow mt-4 separate-card">
+   <div class="card-header bg-transparent border-bottom-0">
+     <button data-dismiss="alert" data-target="#closeablecard" type="button" class="close close-circle-cu" aria-label="Close">
+       <i aria-hidden="true" class="fa fa-times"></i>
+     </button>
+   </div>
+
+   <div class="card-body mt-n5">
+    <div class="col-sm-12 p-m-zero">
+       <p class="align-second-paratext">Trigger Filters (optinal)</p>
+    <div class="col-sm-4">
+       <div class="form-group">
+         <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
+            <option selected>Partner</option>
+            <option value="1">Partner and his team members</option>
+            <!-- <option value="2">Two</option>
+            <option value="3">Three</option> -->
+          </select>
+       </div>
+   </div>
+   <div class="col-sm-4">
+       <div class="form-group">
+         <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
+            <option value="1">Inactive from 7 days</option>
+            <option value="1">Inactive from 14 days</option>
+            <!-- <option value="2">Two</option>
+            <option value="3">Three</option> -->
+          </select>
+       </div>
+   </div>
+   <div class="col-sm-4">
+       <div class="form-group">
+         <select class="form-control ng-pristine ng-valid ng-touched">
+            <option selected>Once</option>
+            <option value="1">Twice</option>
+            <!-- <option value="2">Two</option>
+            <option value="3">Three</option> -->
+          </select>
+       </div>
+   </div>
+ </div>
+  <div class="row">
+ <div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
+  <div class="col-sm-3 col-md-6 col-lg-2 swich-alignmantes">
+   <div _ngcontent-c47="" class="email-options-checkbox clearfix">
+      <div _ngcontent-c47="" class="col-sm-1 col-xs-6 ui-switch-custom-div mSwitch">
+          <switch _ngcontent-c47="" class="ng-tns-c21-13" ng-reflect-status="false" ng-reflect-on-text="ON" ng-reflect-off-text="ON" ng-reflect-on-color="green" ng-reflect-off-color="green" ng-reflect-size="small">
+            <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-off bootstrap-switch-small" ng-reflect-klass="bootstrap-switch bootstrap-swi" ng-reflect-ng-class="bootstrap-switch-small " style="width: 76px;">
+            <div class="bootstrap-switch-container ng-trigger ng-trigger-statusChange" style="width: 114px; transform: translateX(-33.333%);">
+            <span class="bootstrap-switch-handle-on bootstrap-switch-success" ng-reflect-klass="bootstrap-switch-handle-on" ng-reflect-ng-class="bootstrap-switch-success" ng-reflect-ng-style="[object Object]" style="min-width: 30px; width: 38px;">And</span>
+            <span class="bootstrap-switch-label" style="width: 28px;"></span>
+            <span class="bootstrap-switch-handle-off bootstrap-switch-success" ng-reflect-klass="bootstrap-switch-handle-off " ng-reflect-ng-class="bootstrap-switch-success" style="width: 38px;">Or</span>
+            </div>
+            </div>
+         </switch>
+      </div>
+   </div>
+  </div>
+  <div class="col-sm-9 col-md-10 col-lg-10 pull-left">
+    <button  data-toggle="collapse" data-target="#addform" type="button" class="circle-icon" >
+       <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
+     </button>
+  </div>
+ </div>
+ </div>
+   </div>
+ </div>
+<!-- 1nd st dropdown row start -->
+
+<!-- 2nd st dropdown row start -->
+ <div id="addform" class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading">
+    <div class="card-header bg-transparent border-bottom-0">
+      <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close">
+        <i aria-hidden="true" class="fa fa-times"></i>
+      </button>
+    </div>
+     <div class="card-body mt-n5">
+    <div class="col-sm-12 p-m-zero">
+          <p class="align-second-paratext">Trigger Filters (optinal)</p>
+     <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
+            <option selected>Partner</option>
+            <option value="1">Partner and his team members</option>
+           </select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
+             <option value="1">Inactive from 7 days</option>
+             <option value="1">Inactive from 14 days</option>
+             <!-- <option value="2">Two</option>
+             <option value="3">Three</option> -->
+           </select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+          <select class="form-control ng-pristine ng-valid ng-touched">
+            <option selected>Once</option>
+            <option value="1">Twice</option>
+             <!-- <option value="2">Two</option>
+             <option value="3">Three</option> -->
+           </select>
+        </div>
+    </div>
+ </div>
+   <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
+   <div class="col-sm-3 col-md-6 col-lg-2 swich-alignmantes">
+    <div _ngcontent-c47="" class="email-options-checkbox clearfix">
+       <div _ngcontent-c47="" class="col-sm-1 col-xs-6 ui-switch-custom-div mSwitch">
+           <switch _ngcontent-c47="" class="ng-tns-c21-13" ng-reflect-status="false" ng-reflect-on-text="ON" ng-reflect-off-text="ON" ng-reflect-on-color="green" ng-reflect-off-color="green" ng-reflect-size="small">
+             <div class="bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate bootstrap-switch-off bootstrap-switch-small" ng-reflect-klass="bootstrap-switch bootstrap-swi" ng-reflect-ng-class="bootstrap-switch-small " style="width: 76px;">
+             <div class="bootstrap-switch-container ng-trigger ng-trigger-statusChange" style="width: 114px; transform: translateX(-33.333%);">
+             <span class="bootstrap-switch-handle-on bootstrap-switch-success" ng-reflect-klass="bootstrap-switch-handle-on" ng-reflect-ng-class="bootstrap-switch-success" ng-reflect-ng-style="[object Object]" style="min-width: 30px; width: 38px;">And</span>
+             <span class="bootstrap-switch-label" style="width: 28px;"></span>
+             <span class="bootstrap-switch-handle-off bootstrap-switch-success" ng-reflect-klass="bootstrap-switch-handle-off " ng-reflect-ng-class="bootstrap-switch-success" style="width: 38px;">Or</span>
+             </div>
+             </div>
+          </switch>
+       </div>
+    </div>
+   </div>
+   <div class="col-sm-9 col-md-10 col-lg-10 pull-left">
+     <button  data-target="#addform" type="button" class="circle-icon" >
+        <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
+      </button>
+   </div>
+ </div>
+  </div>
+    </div>
+  </div>
+<!-- 1nd st dropdown row end -->
+<button type="submit"  class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()" translate>Next</button>
+ </div>
+  <!--Trigger End -->
+
+
+
+ <!--Action start -->
+ <div class="page-bar p20 {{activeStepInfo}}" id="step-2" *ngIf="activeClass2">
+    <div class="caption" style="padding-top: 11px !important;" >
+      <img src="assets/admin/pages/media/works/mail.png" class="icon-alignmnt for-Action-only" alt="">
+      <span class="textaligncenterforaction">Action</span>
+   </div>
+   <hr> <br> 
+   <!-- Action forms row start -->
+   <div class="row">
+    <div class="col-sm-12">
+    </div>
+    <!-- <div class="col-sm-12">
+        <div class="form-group">
+          <label for="sel1" class="form-label">Send To</label>
+          <input type="text" class="form-control"   placeholder="Send To">
+        </div>
+    </div> -->
+    <!-- table -->
+    <div class="col-xs-12">
+      <div class="mt10">
+        <div class="note-vid pull-left" style="padding-top: 8px;">
+          <div class="">Send To
+          </div>
+      </div>
+        <div class="inputs search-align" style="float: right;margin-top: -12px">
+          <div _ngcontent-c63="" style="float: left;;margin-right: 10px;margin-top: -5px">
+            <select _ngcontent-c63="" class="form-control cc mTopSort ng-pristine ng-valid ng-touched">                                                    
+               <option _ngcontent-c63="" value="0: Object">Create On(DESC)</option><option _ngcontent-c63="" value="1: Object">Name(Z-A)</option><option _ngcontent-c63="" value="2: Object">Created On(ASC)</option><option _ngcontent-c63="" value="3: Object">Created On(DESC)</option><option _ngcontent-c63="" value="4: Object">Count(ASC)</option><option _ngcontent-c63="" value="5: Object">Count(DESC)</option>
+           </select> 
+       </div>
+       <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
+          <div class="input-icon right" id="icon-right" style="padding-right: 1px;margin-right: -5px;">
+            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search..."
+            (keypress)="eventHandler($event.keyCode)" autocomplete="off">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+            (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+         </div>
+        </div>
+      </div>
+    <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+      <div class="table-responsive pt">
+        <table class="table tgrid table-hover table-sm">
+          <thead>
+            <tr>
+                <th scope="row" class="text-center">
+                    <input type="checkbox" name="all"/>
+                </th>
+                <th class="hidden-xs"scope="col"></th>
+                <th class="hidden-xs"colspan="2" style="width: 35%">
+                    <span class="ui-column-resizer"></span>
+                    <span class="gridHeader" translate>List Name</span>
+                </th>
+                <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                    List Info
+                </th>
+                <th scope="row" style="text-align: center;" translate>Type
+                </th>
+                <th scope="row" style="text-align: center;" translate>Created On</th>
+                <th scope="row" style="text-align: center;" translate>Count</th>
+                <th scope="row" style="text-align: center;" translate>Preview </th>
+            </tr>
+        </thead>
+        <tbody class="pointer"> 
+          <tr role="row">
+          <td class="text-center">
+            <div class="form-group">
+                <input type="checkbox" class="chk"
+               (click)="highlightRow(contacts,$event)">
+            </div>
+        </td>
+      <td style="width: 10%;text-align: left;" class="hidden-xs">
+        <img  src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
+      </td>
+      <td>
+        Partner Journey<br>
+        Created By Xamplify
+      </td>
+      <td></td>
+      <td class="text-center">
+        Contacts                                                                                                                            
+    </td>
+      <td  class="text-center sorting_1">
+        May 26, 2023,4:19 PM
+      </td>
+      <td class="text-center">3</td>
+      <td  class="text-center">
+        <a >
+          <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+      </a>
+      </td>
+      </tr>
+      <!-- 2nd row -->
+      <tr>
+      <td class="text-center">
+        <div class="form-group">
+            <input type="checkbox" class="chk"
+           (click)="highlightRow(contacts,$event)">
+        </div>
+    </td>
+    <td style="width: 10%;text-align: left;" class="hidden-xs">
+      <img  src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
+    </td>
+    <td>
+      Indian Tourism<br>
+      Created By India
+    </td>
+    <td></td>
+    <td class="text-center">
+      Partner                                                                                                                            
+  </td>
+    <td  class="text-center sorting_1">
+      july 26, 2023,9:19 PM
+    </td>
+    <td class="text-center">3</td>
+    <td  class="text-center">
+      <a >
+        <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+    </a>
+    </td>
+    </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- <div class="col-sm-12">
+        <div class="form-group">
+          <label for="sel1" class="form-label">CC</label>
+          <input type="text" class="form-control"   placeholder="CC">
+        </div>
+    </div> -->
+    <div class="col-sm-12">
+       <div class="form-group">
+         <label for="sel1" class="form-label">Subject</label>
+         <input type="text" class="form-control"   placeholder="Subject">
+       </div>
+   </div>
+   <div class="col-sm-12">
+    <div class="form-group">
+       <!-- <img src="assets/admin/pages/media/works/1.png"alt="" class="formadding"> -->
+       <!-- <label for="exampleFormControlTextarea1">Message</label>
+       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> -->
+            <!--Email templates start -->
             <div class="row">
-              
+               <div class="col-xs-12 col-md-12 col-sm-12">
+                  <div class=""> 
+                     <!-- removed page-bar class -->
+                     <fieldset>
+                        <legend>Message</legend>
+                        <div>
+                            <div class="portlet light dashboard-stat2" >
+                                <div class="portlet-title custom-change-css" >
+                                    <div class="col-xs-6">
+                                        <h4 class="text-left">Add your Message to Trigger</h4>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="pull-right">
+                                            <label class="switch-choose" translate>Choose Template
+                                                </label>
+                                            <switch class="switch-choose"  (click)="onTemplate =! onTemplate">
+                                            </switch>
+                                            <button type="button" class="btn btn-danger button-blue">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary button-blue">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <form class="role add-reply">
+                                        <div class="col-xs-12 p0" >
+                                            <div class="col-xs-12">
+                                                <div>
+                                                   
+                                                    <div>
+                                                      <ckeditor 
+                                                    > </ckeditor>
+                                                    </div>
+                                                </div>
+                                            
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </fieldset>
+                  </div>
+               </div>
+            </div>
+
+   <div class="page-bar p20" *ngIf="onTemplate">
+      <div class="row">
+ <div class="col-sm-12 col-md-12 col-lg-12">
+ 
+   <!-- Email templates 1 start-->
+    <div class="col-sm-6 col-md-3 col-lg-3">
+      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
+         <span class="select-check-box">
+             <label>
+                 <input class="radio-custimization" type="radio">
+             </label>
+         </span>
+         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/130407.png">
+             <span class="icon-alignments"> 
+                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
+             </span>
+         <div class="bar hover-bar">
+         <a class="border-none-dark" data-placement="top">
+             <div class="row">
+                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                     <div class="content-hover-align fontsize-cls">
+                         <span  class="item__name cardDetails-mar" title="">
+                             <strong >Jun7-analytif</strong><strong>..</strong>
+                         </span>
+                         <br>
+                         <span  class="item__name cardDetails-mar" title="created on">
+                           <span>Jun 28, 2023</span>
+                       </span>
+                        <p class="cardDetails-mar" title=" ">
+                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                 <span >orgadmin_pa
+                                 <span>..</span>
+                                 </span>
+                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
+                          <strong translate="" ng-reflect-translate="">Folder:</strong>
+                          <span>india</span><span>..</span>
+                         </span> 
+                     </div> 
+                     <span class="label-color-custmization">Edit</span>
+                 </div>       
+             </div>
+             </a>
+         </div>
+     </div>
+    </div>
+   <!-- Email templates 1 end-->
+
+    <!-- Email templates 2 start-->
+    <div class="col-sm-6 col-md-3 col-lg-3">
+      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
+         <span class="select-check-box">
+             <label>
+                 <input class="radio-custimization" type="radio">
+             </label>
+         </span>
+         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/189625.png">
+             <span class="icon-alignments"> 
+                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
+             </span>
+         <div class="bar hover-bar">
+         <a class="border-none-dark" data-placement="top">
+             <div class="row">
+                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                     <div class="content-hover-align fontsize-cls">
+                         <span  class="item__name cardDetails-mar" title="">
+                             <strong >Jun7-analytif</strong><strong>..</strong>
+                         </span>
+                         <br>
+                         <span  class="item__name cardDetails-mar" title="created on">
+                           <span>Jun 28, 2023</span>
+                       </span>
+                        <p class="cardDetails-mar" title=" ">
+                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                 <span >orgadmin_pa
+                                 <span>..</span>
+                                 </span>
+                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
+                          <strong translate="" ng-reflect-translate="">Folder:</strong>
+                          <span>india</span><span>..</span>
+                         </span> 
+                     </div> 
+                     <span class="label-color-custmization">Edit</span>
+                 </div>       
+             </div>
+             </a>
+         </div>
+     </div>
+    </div>
+   <!-- Email templates 2 end-->
+
+   <!-- Email templates 3 start-->
+   <div class="col-sm-6 col-md-3 col-lg-3">
+      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
+         <span class="select-check-box">
+             <label>
+                 <input class="radio-custimization" type="radio">
+             </label>
+         </span>
+         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/117491.png">
+             <span class="icon-alignments"> 
+                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
+             </span>
+         <div class="bar hover-bar">
+         <a class="border-none-dark" data-placement="top">
+             <div class="row">
+                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                     <div class="content-hover-align fontsize-cls">
+                         <span  class="item__name cardDetails-mar" title="">
+                             <strong >Jun7-analytif</strong><strong>..</strong>
+                         </span>
+                         <br>
+                         <span  class="item__name cardDetails-mar" title="created on">
+                           <span>Jun 28, 2023</span>
+                       </span>
+                        <p class="cardDetails-mar" title=" ">
+                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                 <span >orgadmin_pa
+                                 <span>..</span>
+                                 </span>
+                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
+                          <strong translate="" ng-reflect-translate="">Folder:</strong>
+                          <span>india</span><span>..</span>
+                         </span> 
+                     </div> 
+                     <span class="label-color-custmization">Edit</span>
+                 </div>       
+             </div>
+             </a>
+         </div>
+     </div>
+    </div>
+   <!-- Email templates 3 end-->
+
+   <!-- Email templates 4 start-->
+   <div class="col-sm-6 col-md-3 col-lg-3">
+      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
+         <span class="select-check-box">
+             <label>
+                 <input class="radio-custimization" type="radio">
+             </label>
+         </span>
+         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/122386.png">
+             <span class="icon-alignments"> 
+                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
+             </span>
+         <div class="bar hover-bar">
+         <a class="border-none-dark" data-placement="top">
+             <div class="row">
+                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                     <div class="content-hover-align fontsize-cls">
+                         <span  class="item__name cardDetails-mar" title="">
+                             <strong >Jun7-analytif</strong><strong>..</strong>
+                         </span>
+                         <br>
+                         <span  class="item__name cardDetails-mar" title="created on">
+                           <span>Jun 28, 2023</span>
+                       </span>
+                        <p class="cardDetails-mar" title=" ">
+                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                 <span >orgadmin_pa
+                                 <span>..</span>
+                                 </span>
+                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
+                          <strong translate="" ng-reflect-translate="">Folder:</strong>
+                          <span>india</span><span>..</span>
+                         </span> 
+                     </div> 
+                     <span class="label-color-custmization">Edit</span>
+                 </div>       
+             </div>
+             </a>
+         </div>
+     </div>
+    </div>
+   <!-- Email templates 4 end-->
+
+
+
+ </div>
+ </div>
+</div>
+<!--Email templates End -->
+    </div>
+</div>
+</div>
+<!-- Action forms row end -->
+
+<button  type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="goToPrevious()" translate>Previous</button>
+<button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()"translate>Submit</button>
+</div>
+  <!--Action End -->
                   <!-- Start Tiles here-->
-                  <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;padding-top:10px;">
+                  <!-- <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;padding-top:10px;">
                      <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
                      
-                     <!---Active Partners Count-->
+                     
                      <div  class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l" (click)="goToAnalytics()">
                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                          <div class="visual">
@@ -96,7 +704,7 @@
                        </a>
                      </div>
          
-                     <!--Redistributed Campaigns Count-->
+                     
                      <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
                      <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths" >
                        <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
@@ -109,7 +717,7 @@
                          </div>
                          <div class="details">
                            <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
-                               *ngIf="!redistributedCampaignsCount">100</span></div>
+                               *ngIf="!redistributedCampaignsCount">0</span></div>
                            <div class="desc mlabelWidth" style="font-size: 13px">Triggers</div>
                          </div>
                          <span id="permhref" class="morePadding">
@@ -119,7 +727,7 @@
                        </a>
                      </div>
          
-                     <!--Through Partner Campaigns Count-->
+                    
                      <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
                      <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
                        <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
@@ -130,7 +738,7 @@
                              aria-hidden="true"></i>
                          </div>
                          <div class="details">
-                           <div class="number">63</div>
+                           <div class="number">3</div>
                            <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
                              Email Notifications
                              <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
@@ -143,7 +751,7 @@
                        </a>
                      </div>
          
-                     <!--InActive Partner Campaigns Count-->
+                 
                      <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
                      <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToInActivePartnersDiv()">
                        <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
@@ -166,7 +774,7 @@
                        </a>
                      </div>
          
-                     <!--Active Partner Campaigns Count-->
+                   =
                      <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
                      <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths" (click)="goToApprovePartnersDiv()">
                        <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
@@ -189,13 +797,13 @@
                        </a>
                      </div>
          
-                   </div>
+                   </div> -->
          <!-- End tile here-->
-         <div [ngClass]="{'page-bar p10': showListOfContactList}">
+         <!-- <div [ngClass]="{'page-bar p10': showListOfContactList}">
             <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                <div class="tab-pane active" >
                   <div class="clearfix"></div>
-                  <!-- Remove Tiles here-->
+                  
                   <span *ngIf="iszohoAccessTokenExpired">
                      <h4>{{zohoExpiredAccessTokenMessage}}<a
                         (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')"
@@ -209,9 +817,7 @@
                         <li class="filter" (click)="filterContacts('ALL',2)" [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                      </ul>
                      <ul class="page-breadcrumb" *ngIf="checkingContactTypeName!='Contact'">
-                        <!-- <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
-                           Your {{authenticationService?.partnerModule?.customName}} Lists
-                        </li> -->
+                       
                         <li id="header-custom-li-font">Workflow Triggers</li>
                         <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                            Your {{checkingContactTypeName}} Lists
@@ -265,10 +871,10 @@
                      </app-response-message>
                   </div>
                </div>
-               <!-- END DASHBOARD STATS -->
+               
                <div class="clearfix"></div>
             </div>
-            <!-- END FILTER -->
+           
             <section class="col-xs-12 p0" *ngIf="showListOfContactList">
                <div class="clearfix">
                   <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
@@ -299,7 +905,7 @@
                            <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"><span
                               [hidden]="!assignLeads">Date</span></th>
                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'">
-                              Trigger Hits
+                              Notification
                            </th>
                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'">
                               Total <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
@@ -310,7 +916,7 @@
                      </thead>
                      <tbody>
                         <ng-container *ngFor="let contactList of pagination.pagedItems ;let i =index">
-                           <!-- XNFR-211 -->
+                         
                            <tr [class.isProcessing]="contactList.uploadInProgress || contactList.validationInProgress || !contactList.emailValidationInd">
                               <td class="cw" *ngIf="showExpandButton">
                                  <div class="actions-block left-float">
@@ -322,27 +928,7 @@
                                  </div>
                               </td>
                               <td style="width: 10%;" class="hidden-xs">
-                                 <!-- <img *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"
-                                    alt="zoho" style="height: 70px;">
-                                 <img *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList" src="{{properties?.googleImage}}"
-                                    alt="google" style="height: 70px;">
-                                 <img *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
-                                    src="{{properties?.salesforceImage}}" alt="salesforce" style="height: 70px;"> <img
-                                    *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList" src="{{properties?.manualImage}}"
-                                    alt="manual" style="height: 54px;">
-                                 <img *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList" src="{{properties?.hubspotImage}}"
-                                    alt="manual" style="height: 70px;">
-                                 <img *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList" src="{{properties?.microsoftImage}}"
-                                    alt="manual" style="height: 70px;">
-                                 <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
-                                    alt="manual" style="height: 54px;">
-                                 <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
-                                    alt="manual" style="height: 70px;"> -->
-                                 <!-- XNFR-211 -->
-                                 <!-- <img
-                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
-                                    src="assets/images/Spinner.gif"
-                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt=""> -->
+                                
                                     <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
                               </td>
                               <td>
@@ -442,7 +1028,7 @@
                                     *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
                                  <strong>-</strong></span>
                               </td>
-                              <!-- XNFR-211 -->
+                          
                               <td *ngIf="!authenticationService.isSuperAdmin()">
                                  <div class="actions-block override-actions" style="float:none !important;"
                                     *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
@@ -450,12 +1036,12 @@
                                     || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
-                                    (click)="goToWorkflow()"
+                                    (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                     title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share" aria-hidden="true"></i>
                                     </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
-                                    (click)="goToWorkflow()"
+                                    (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}">
                                     <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -491,7 +1077,7 @@
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                     </span> 
-                                    <!---XNFR-81----->
+                              
                                     <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList  && !contactList?.teamMemberPartnerList">
                                        <a
                                        *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
@@ -592,7 +1178,7 @@
                      Assigned On: 
                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.assignedDate"> </app-timestamp>
                   </h6>
-                  <!--  -->
+               
                   <td class="hidden-xs" *ngIf="!isPartner&& !assignLeads">
                      <h6 class="mt10 mb0 ellipsis"  translate>
                         Type:
@@ -604,7 +1190,7 @@
                            title="{{actionsDescription.contact_list_private}}"><strong translate>, Form Contact List</strong></span>
                      </h6>
                   </td>
-                  <!--  -->
+               
                   <div class="bar" 
                      *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
                      <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
@@ -656,7 +1242,7 @@
                         <i class="fa fa-refresh" aria-hidden="true" style="color: white;"></i>
                         </a>
                      </ng-container>
-                     <!---XNFR-81----->
+                     
                      <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList && !contactList?.teamMemberPartnerList">
                         <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList" style=""
                         *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
@@ -694,7 +1280,7 @@
             </div>
          </div>
          <div id="pagination" [ngStyle]="{'margin-top':isListView ? '-5px': ''}">
-            <!--pager here  -->
+            
             <app-pagination
             [hidden]="httpRequestLoader.isLoading" [pagination]="pagination" [type]="'contacts'"
             (notifyParent)="setPage($event)" (notifyParentDropDown)="loadContactLists($event)">
@@ -702,7 +1288,7 @@
          </div>
          </section>
       </div>
-   </div>
+   </div> -->
 
 </div>
 </div>
@@ -1221,7 +1807,7 @@
                <span style="color: red">{{saveAsError}}</span>
             </div>
             <!-- ------------Legal Basis------------ -->
-            <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts' ">
+            <!-- <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts' ">
                <label for="campaignName" translate>Legal Basis Options <span class="danger">*</span></label>
                <div id="multiselect-sample" class="control-section">
                   <div class="col-lg-14">
@@ -1233,7 +1819,7 @@
                      </div>
                   </div>
                </div>
-            </div>
+            </div> -->
             <!-- start   -->
             <div class="form-group" class="col-xs-12"
                *ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner && !assignLeads">
