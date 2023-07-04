@@ -28,7 +28,6 @@
                     <div class="row m0">
                        <ul class="mix-filter col-xs-12 col-sm-6 col-md-4 p0 m0 mWid"
                           *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                          
                           <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                           [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign || authenticationService?.module?.deletedPartner"
                           translate>
@@ -75,30 +74,21 @@
                                             <div style="display: flex; justify-content: space-between; padding-left: 0;">
                                                <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                                                   title="Calendar View" tabindex="0">
-                                               <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
+                                                 <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                                                </span>
-                                               <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
-                                               title="List View" [class.disabled]="modulesDisplayType.isListView"
-                                               (click)="setViewType('List')" >
-                                               <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                                               </span>
-                                               <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
-                                               title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
-                                               (click)="setViewType('Grid')">
-                                               <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                                               </span>
-                                               <ng-container *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">
-                                                  <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
-                                                  title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
-                                                  (click)="setViewType('Folder-Grid')">
-                                                  <i class="fa fa-folder p10" aria-hidden="true"></i>
-                                                  </span>
-                                                  <span class="btn btn-xs hidden-xs l-g-view margin-space"
-                                                  data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                                                  [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">                
-                                                  <i class="fa fa-th p10" aria-hidden="true"></i>
-                                                  </span>
-                                               </ng-container>
+                                               <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
+                                                <i class="fa fa-th-list p10" aria-hidden="true"></i></span> 
+                                                <span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
+                                                   <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                                </span>
+                                                 <ng-container *ngIf="!showUpArrowButton && !folderListView">
+                                                   <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"  (click)="setViewType('fg')">
+                                                      <i  class="fa fa-folder p10" aria-hidden="true"></i>
+                                                   </span>
+                                                   <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View"  (click)="setViewType('fl')">
+                                                      <i  class="fa fa-th p10" aria-hidden="true"></i>
+                                                   </span>
+                                                </ng-container>
                                             </div>
                                          </ng-container>
                                       </div>
