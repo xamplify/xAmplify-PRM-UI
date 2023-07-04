@@ -146,7 +146,7 @@
                       </a>
 
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
 
                         <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
