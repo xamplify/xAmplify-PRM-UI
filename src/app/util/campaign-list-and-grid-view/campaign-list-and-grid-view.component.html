@@ -72,7 +72,7 @@
                                       <div class="group-dd-content">
                                          <ng-container class='m10' >
                                             <div style="display: flex; justify-content: space-between; padding-left: 0;">
-                                               <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
+                                               <span [hidden]="modulesDisplayType.isFolderListView || modulesDisplayType.isFolderGridView" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                                                   title="Calendar View" tabindex="0">
                                                  <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                                                </span>
@@ -92,15 +92,11 @@
                                             </div>
                                          </ng-container>
                                       </div>
-                                      <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
-                                       <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span>
                                    </div>
                                 </div>
-                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 5px;"
-                                data-toggle="tooltip" data-placement="bottom" title="Go back"
-                                (click)="setViewType('Folder-Grid')">
-                                <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                                <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                                 <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                              </span>
                                 <div class="col-xs-4 col-sm-4 col-md-4 p0">
                                    <div class="mSortWid">
                                       <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"

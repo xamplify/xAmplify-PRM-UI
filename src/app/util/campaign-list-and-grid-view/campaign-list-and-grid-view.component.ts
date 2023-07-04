@@ -188,8 +188,8 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 
   callInitMethods(){
     if(this.folderListViewCategoryId!=undefined){
-			this.categoryId = this.folderListViewCategoryId;
-			this.folderListView = true;
+        this.categoryId = this.folderListViewCategoryId;
+        this.folderListView = true;
 		}else{
 			this.viewType = this.route.snapshot.params['viewType'];
 			this.categoryId = this.route.snapshot.params['categoryId'];
@@ -202,13 +202,13 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-        if(this.modulesDisplayType.isFolderListView){
-					this.viewType = "fl";
-					this.referenceService.goToManageCampaigns(this.viewType);
-				}else if(this.modulesDisplayType.isFolderGridView){
-					this.viewType = "fg";
-					this.referenceService.goToManageCampaigns(this.viewType);
-				}
+            if(this.modulesDisplayType.isFolderListView){
+                this.viewType = "fl";
+                this.referenceService.goToManageCampaigns(this.viewType);
+			}else if(this.modulesDisplayType.isFolderGridView){
+                this.viewType = "fg";
+                this.referenceService.goToManageCampaigns(this.viewType);
+			}
 			}
 		}
     if (this.referenceService.campaignSuccessMessage == "SCHEDULE") {
@@ -260,8 +260,8 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 
   findCampaigns(pagination: Pagination) {
     if(!this.folderListView){
-			this.referenceService.goToTop();
-		}
+	this.referenceService.goToTop();
+	}
     this.startLoaders();
     if(this.pagination.teamMemberAnalytics){
         this.pagination.teamMemberId = this.teamMemberId;
@@ -272,6 +272,12 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
         this.pagination.vanityUrlFilter = true;
     }
     this.pagination.archived = this.archived;
+    if(this.categoryId!=undefined ){
+        this.pagination.categoryId = this.categoryId;
+    }
+    if(this.selectedCampaignTypeIndex==1){
+        this.pagination.campaignType = 'REGULAR';
+    }
     this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
