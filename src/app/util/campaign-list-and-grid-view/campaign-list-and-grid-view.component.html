@@ -72,7 +72,7 @@
                                       <div class="group-dd-content">
                                          <ng-container class='m10' >
                                             <div style="display: flex; justify-content: space-between; padding-left: 0;">
-                                               <span [hidden]="modulesDisplayType.isFolderListView || modulesDisplayType.isFolderGridView" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
+                                               <span *ngIf="showCalendarView" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
                                                   title="Calendar View" tabindex="0">
                                                  <i class="fa fa-calendar p10" (click)="goToCalendarView()" aria-hidden="true"></i>
                                                </span>

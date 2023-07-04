@@ -142,7 +142,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   clicked = false;
   editButtonClicked = false;
   selectedCampaignId = 0;
-
+  showCalendarView = false;
 
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, 
     private router: Router, private logger: XtremandLogger,
@@ -190,10 +190,16 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
     if(this.folderListViewCategoryId!=undefined){
         this.categoryId = this.folderListViewCategoryId;
         this.folderListView = true;
+        this.showCalendarView = false;
 		}else{
 			this.viewType = this.route.snapshot.params['viewType'];
 			this.categoryId = this.route.snapshot.params['categoryId'];
 			this.folderViewType = this.route.snapshot.params['folderViewType'];
+            if(this.folderViewType=='fg'){
+                this.showCalendarView = false;
+            }else{
+                this.showCalendarView = true;
+            }
 			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
 		}
 		if (this.viewType != undefined) {
