@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,AfterViewInit,ViewChild,Renderer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 /*****Common Imports**********************/
@@ -22,6 +22,11 @@ import { Roles } from 'app/core/models/roles';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { Campaign } from 'app/campaigns/models/campaign';
+import { EventCampaign } from 'app/campaigns/models/event-campaign';
+import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-more-receivers.component';
+import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
+import { UserService } from 'app/core/services/user.service';
+import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 
 
 declare var swal:any, $: any, flatpickr:any;
@@ -29,7 +34,8 @@ declare var swal:any, $: any, flatpickr:any;
 @Component({
   selector: 'app-campaign-list-and-grid-view',
   templateUrl: './campaign-list-and-grid-view.component.html',
-  styleUrls: ['./campaign-list-and-grid-view.component.css']
+  styleUrls: ['./campaign-list-and-grid-view.component.css'],
+  providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, CallActionSwitch,Properties]
 })
 export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 
@@ -46,9 +52,10 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   endDate: any;
   selectedEndDate: any;
   endDatePickr: any;
-  listLoader: HttpRequestLoader = new HttpRequestLoader();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   campaignSuccessMessage = "";
   customResponse: CustomResponse = new CustomResponse();
+  filterResponse: CustomResponse = new CustomResponse(); 
   isloading: boolean;
   campaignAccess:CampaignAccess = new CampaignAccess();
   pagination:Pagination = new Pagination();
@@ -57,9 +64,91 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   loggedInUserId = 0;
   campaigns: Campaign[];
   templateEmailOpenedAnalyticsAccess = false;
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
-    public campaignService:CampaignService,private route: ActivatedRoute,public properties:Properties,
-    public xtremandLogger:XtremandLogger,private pagerService: PagerService) {
+  selectedCampaignTypeIndex = 0;
+
+
+  isCampaignDeleted = false;
+  hasCampaignRole = false;
+  hasStatsRole = false;
+  isScheduledCampaignLaunched = false;
+  hasAllAccess = false;
+  pager: any = {};
+  pagedItems: any[];
+  totalRecords = 1;
+  searchKey = "";
+  isLastElement = false;
+  campaignType: string;
+  sortByDropDown = [
+      { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+      { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+      { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
+  ];
+
+  sortByDropDownArchived = [
+      { 'name': 'Sort By', 'value': 'createdTime-DESC' },
+      { 'name': 'Name (A-Z)', 'value': 'campaign-ASC' },
+      { 'name': 'Name (Z-A)', 'value': 'campaign-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+      { 'name': 'Archived On (ASC)', 'value': 'archivedTime-ASC' },
+      { 'name': 'Archived On (DESC)', 'value': 'archivedTime-DESC' }
+  ];
+
+  numberOfItemsPerPage = [
+      { 'name': '12', 'value': '12' },
+      { 'name': '24', 'value': '24' },
+      { 'name': '48', 'value': '48' },
+      { 'name': 'All', 'value': '0' },
+  ]
+  itemsSize: any;
+  selectedSortedOption: any = this.sortByDropDown[0];
+  campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
+  endDateRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  isError = false;
+  saveAsCampaignId = 0;
+  saveAsCampaignName = '';
+  isOnlyPartner = false;
+  saveAsCampaignInfo: any;
+  partnerActionResponse: CustomResponse = new CustomResponse();
+  partnersPagination: Pagination = new Pagination();
+
+  cancelEventMessage = "";
+  selectedCancelEventId: number;
+  selectedCancelEventChannelCampaign=false;
+  selectedCancelEventNurtureCampaign=false;
+  selectedCancelEventToPartnerCampaign=false;
+  eventCampaign: EventCampaign = new EventCampaign();
+  cancelEventSubjectLine = "";
+  cancelEventButton = false;
+  previewCampaign: any;
+  copiedLinkCustomResponse: CustomResponse = new CustomResponse();
+  publicEventAlias:string = "";
+  publicEventAliasUrl:string = "";
+  @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+  @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
+  addWorkflows = false;
+  selectedCampaign:any;
+  exportObject:any = {};
+  modalPopupLoader = false;
+  showFilterOption: boolean = false;
+  fromDateFilter: any = "";
+  toDateFilter: any = "";
+  filterMode: boolean = false;
+  navigatingToRelatedComponent: boolean = false;
+  endDateCustomResponse: CustomResponse = new CustomResponse();
+  clicked = false;
+  editButtonClicked = false;
+  selectedCampaignId = 0;
+
+
+  constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, 
+    private router: Router, private logger: XtremandLogger,
+    private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
+    public referenceService: ReferenceService,public authenticationService: AuthenticationService,
+    private route: ActivatedRoute,public renderer:Renderer,public properties:Properties) {
+      this.referenceService.renderer = this.renderer;    
       this.loggedInUserId = this.authenticationService.getUserId();
      }
   
@@ -87,7 +176,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
     }
 
   ngOnInit() {
-
+    this.callInitMethods();
 
   }
 
@@ -107,7 +196,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
 			if(this.categoryId==undefined || this.categoryId==0){
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-				if(this.modulesDisplayType.isFolderListView){
+        if(this.modulesDisplayType.isFolderListView){
 					this.viewType = "fl";
 					this.referenceService.goToManageCampaigns(this.viewType);
 				}else if(this.modulesDisplayType.isFolderGridView){
@@ -154,9 +243,8 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
         this.campaignAccess.survey = campaignAccess.survey;
     },error=>{
               this.stopLoaders();
-              this.xtremandLogger.errorPage(error);
+              this.logger.errorPage(error);
     },()=>{
-      this.pagination.campaignType = 'REGULAR';
       this.findCampaigns(this.pagination);
     }
      )
@@ -198,7 +286,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
             },
             error => {
                 this.stopLoaders();
-                this.xtremandLogger.errorPage(error);
+                this.logger.errorPage(error);
             });
 
   }
@@ -209,11 +297,11 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
   }
 
   startLoaders() {
-		this.referenceService.loading(this.listLoader, true);
+		this.referenceService.loading(this.httpRequestLoader, true);
 	}
 
   stopLoaders(){
-    this.referenceService.loading(this.listLoader, false);
+    this.referenceService.loading(this.httpRequestLoader, false);
     this.isloading = false;
 
   }
