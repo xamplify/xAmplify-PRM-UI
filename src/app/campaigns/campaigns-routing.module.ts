@@ -68,9 +68,9 @@ export const campaignRoutes: Routes = [
   { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent},
 
 
-  // { path: "manage", component: ManageCampaignsComponent },
-  // { path: "manage/:viewType", component: ManageCampaignsComponent },
-	// { path: "manage/:viewType/:categoryId/:folderViewType", component: ManageCampaignsComponent },
+  //  { path: "manage", component: ManageCampaignsComponent },
+  //  { path: "manage/:viewType", component: ManageCampaignsComponent },
+	//  { path: "manage/:viewType/:categoryId/:folderViewType", component: ManageCampaignsComponent },
 
 
 
