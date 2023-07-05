@@ -123,6 +123,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editButtonClicked = false;
     selectedCampaignId = 0;
     showUpArrowButton = false;
+    /******** user guide *************/
+    mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -288,6 +290,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 });
+                this.mergeTagForGuide = 'manage_campaigns';
             
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
