@@ -297,13 +297,24 @@ fieldset,
   background-color: var(--page-content) !important;
   /* color: var(---text-color) !important; */
 }
+
+/* 04-07-2023 Templates privew background */
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
 .search-box-item-clear,
 input {
-  background-color: var(--div-bg-color) !important ;
+  background-color: transparent !important;
 }
+.table .table {
+  background: transparent !important;
+}
+table#folder-list-view, tr {
+  background: transparent !important;
+}
+
+
+
 .table-hover > tbody > tr:hover,
 .page-header.navbar
   .top-menu

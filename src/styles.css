@@ -2295,3 +2295,8 @@ button.table-scbscribe-btn:hover {
   color: #fff;
 }
 .white-labeled-width {width: 125px;}
+
+/* 04-07-2023 */
+.panel-body {
+  border-radius: 5px !important;
+}

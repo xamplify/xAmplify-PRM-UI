@@ -33,7 +33,7 @@
 }
 
 .ffolder.big:after {
-    top: -48px;
+    top: -47px;
     left: 72px;
     border: 24px solid transparent
 }
@@ -280,3 +280,4 @@ span.Track-countbg {
 }
 
 }
+
