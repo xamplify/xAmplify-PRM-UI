@@ -11,6 +11,15 @@ import { CampaignService } from '../services/campaign.service';
 })
 export class AddCampaignComponent implements OnInit {
 
+  activeClass1 = "";
+  activeClass2 = "";
+
+  defaultTabClass = "col-block";
+  activeTabClass = "col-block col-block-active width";
+  completedTabClass = "col-block col-block-complete";
+  disableTabClass = "col-block col-block-disable";
+  campaignDetailsTabClass = this.activeTabClass;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public campaignService:CampaignService) { }
 
   ngOnInit() {

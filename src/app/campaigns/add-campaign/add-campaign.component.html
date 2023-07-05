@@ -1,3 +1,44 @@
-<div class="page-content" [style.background-color]="referenceService?.pageContnetBgColor">
+<div class="page-content" [class.ml0]="authenticationService?.isSuperAdmin()">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a [routerLink]="['../campaigns/select']" translate>Select Campaign</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a translate>Create Campaign</a>
+            </li>
+        </ul>
+        <div id="folder-margin-xamp">
+            <button class="btn btn-primary  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>
+    </div>
+    <div class="page-bar p10">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="portlet light row steps-view">
+                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"  (click)="goToPrevious()"  style="width: 50%;">
+                       <div  class="cenetered-block colorbox-1">
+                           <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
+                           <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Campaign Details & Templates</h5>
+                       </div>
+                   </div>
+                   <div  class="col-block" (click)="showAndHideDivs()" [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" >
+                       <div  class="cenetered-block colorbox-2">
+                           <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
+                           <h5 class="hidden-xs text-clr">
+                               Select Partners & Launch
+                           </h5>
+                       </div>
+                   </div>
+               </div>
+               </div>
 
-</div>  
+        </div>
+    </div>
+</div>
