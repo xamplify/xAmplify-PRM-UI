@@ -133,3 +133,17 @@ table.table-bordered.dataTable {
 .inc-width {
   padding: 0px 25px;
 }
+@media(max-width:578px){
+  .fa-users{
+    margin-left:unset!important;
+  }
+  .height160{
+    height: unset !important;
+  }
+  .mb_wrap{
+    white-space: unset!important;
+  }
+  .mb_flex{
+    display: flex;
+  }
+}

@@ -195,7 +195,7 @@
                                             <!--Through Partner / To Partner / To Recipients-->
                                             <div class="form-group" *ngIf="!isOnlyPartner &&  !authenticationService?.module?.isMarketingCompany">
                                                  <!--Through Partner-->
-                                                <label class="control-label col-sm-4 mThroughLabel" data-toggle="tooltip" 
+                                                <label class="control-label col-sm-4 col-xs-4 mThroughLabel" data-toggle="tooltip" 
                                                 data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}">
                                                     <strong *ngIf="campaign.channelCampaign" translate>Through {{authenticationService?.partnerModule?.customName}} </strong>
                                                     <ng-container *ngIf="!campaign.channelCampaign">Through {{authenticationService?.partnerModule?.customName}}</ng-container>
@@ -398,56 +398,56 @@
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Email is opened</label>
                                                             </div>
                                                         </div>
 
                                                         <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setLinkOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Link is opened</label>
                                                             </div>
                                                         </div>
 
                                                         <div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
 
                                                         <div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setEmailOpened($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
 
                                                         <div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="setVideoPlayed($event)">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
                                                                 <label translate>Video is played</label>
                                                             </div>
                                                         </div>
@@ -462,12 +462,12 @@
                                                 <div class="col-sm-3">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="configurePipelines()">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; margin-left: 100px;margin-top: -32px">
                                                                 <span style="cursor: pointer;color: #54a7e9;" >
                                                                     <i class="fa fa-question-circle toggle-info-xampc-pipeline" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
                                                                         style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
@@ -511,7 +511,7 @@
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                            <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
                                                                 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)"
                                                                     id="falseAction" *ngIf="!smsService">
                                                                 </switch>
@@ -519,7 +519,7 @@
                                                                     id="trueAction" *ngIf="smsService">
                                                                 </switch>
                                                             </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                            <div class="col-sm-11 tb_c_details" style="padding: 0; margin-left: 100px;margin-top: -32px">
                                                                 <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Enable SMS services for this campaign">
                                                                     <i class="fa fa-question-circle"
                                                                         style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>

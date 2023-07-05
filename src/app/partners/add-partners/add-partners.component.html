@@ -580,7 +580,7 @@
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
                                                 *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11">
-                                                <button id='more_less_button_{{i}}'
+                                                <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
                                                         *ngIf="user.isShowDetails" translate>Less</span>

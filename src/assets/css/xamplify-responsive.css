@@ -83,7 +83,7 @@
             font-size: 11px;
         }
         .mrg_btm_23{
-         margin-bottom: 23px;
+         margin-bottom: 6px;
         }
     
     }
@@ -108,8 +108,10 @@
             height: 100% !important;
             max-height: 100% !important;
         }
-
-
+        .move-position-left {
+            position: relative;
+            left: 15px!important;
+        }
     }
 
 
@@ -170,5 +172,13 @@
             }
             .mb_v_search{
                 top: 3px;
+            }
+            .mb_dwl{
+                margin-right: 9px!important;
+                margin-bottom: 9px;
+            }
+            .move-position-left {
+                position: relative;
+                left: 0px!important;
             }
     }

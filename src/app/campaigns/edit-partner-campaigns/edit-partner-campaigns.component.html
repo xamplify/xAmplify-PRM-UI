@@ -185,7 +185,7 @@
                        </div>
                        <div class="col-xs-8">
                           <a>
-                             <h4 class="ellipsis mt5 mb5" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+                             <h4 class="ellipsis mt5 mb5 mb_wrap" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
                                 <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                              </h4>
                              <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
@@ -198,9 +198,11 @@
                              </h5>
                           </a>
                           <br>
+                          <div class="d-flex">
                           <a class="pull-right btn btn-primary btn-sm" (click)="previewEmailTemplate(campaign.emailTemplate)">  <i class="fa fa-eye"></i> Preview </a>
                           <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
-                       </div>
+                          </div>
+                        </div>
                     </div>
                  </fieldset>
                  <!-- ----------Landing Page---------- -->
@@ -753,9 +755,11 @@
                     </div>
                     <div class="portlet-title border-none">
                        <div class="col-xs-12 center-block pt20 text-center">
+                        <div class="mb_flex">
                           <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
                           <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
                        </div>
+                     </div>
                     </div>
                  </fieldset>
               </div>

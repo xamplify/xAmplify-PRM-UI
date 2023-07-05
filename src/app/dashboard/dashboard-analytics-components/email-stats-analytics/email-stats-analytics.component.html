@@ -136,7 +136,7 @@
                                       <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
                                   </td>
                                   <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                      <button id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
+                                      <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
                     <span *ngIf="!emailClicked.isShowDetails">More</span>
                     <span *ngIf="emailClicked.isShowDetails">Less</span>
                   </button>

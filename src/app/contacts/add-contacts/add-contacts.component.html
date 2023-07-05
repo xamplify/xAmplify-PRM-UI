@@ -563,7 +563,7 @@
 								  <td class="hidden-xs">{{newContact.firstName}}</td>
 								  <td class="hidden-xs">{{newContact.lastName}}</td>
 								  <td>
-									 <button id='more_less_button_{{i}}'
+									 <button  class="lightgray-btn"id='more_less_button_{{i}}'
 										(click)="newContact.isShowDetails = ! newContact.isShowDetails">
 									 <span *ngIf="!newContact.isShowDetails" translate>More</span>
 									 <span *ngIf="newContact.isShowDetails">Less</span>
@@ -647,7 +647,7 @@
 							   <table class="table tgrid" id="google-contacts-table">
 								  <thead>
 									 <tr>
-										<th align="center"><input type="checkbox" name="all"
+										<th align="center" class="text-center"><input type="checkbox" name="all"
 										   [(ngModel)]="isHeaderCheckBoxChecked"
 										   (change)="checkAll($event)" class=""
 										   id="checkAllExistingContacts" />
@@ -692,7 +692,7 @@
 										   <td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
 										   <td
 											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
-											  <button id='more_less_button_{{i}}'
+											  <button class="lightgray-btn" id='more_less_button_{{i}}'
 												 (click)="user.isShowDetails = ! user.isShowDetails">
 											  <span *ngIf="!user.isShowDetails" translate>More</span> <span
 												 *ngIf="user.isShowDetails" translate>Less</span>
@@ -818,7 +818,7 @@
 											  slice:0:35}} <span *ngIf="user.emailId?.length>35">...</span>
 										   </td>
 										   <td>
-											  <button id='more_less_button_{{i}}'
+											  <button  class="lightgray-btn" id='more_less_button_{{i}}'
 												 (click)="user.isShowDetails = ! user.isShowDetails">
 											  <span *ngIf="!user.isShowDetails" translate>More</span> <span
 												 *ngIf="user.isShowDetails" translate>Less</span>

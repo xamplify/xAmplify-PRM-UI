@@ -70,7 +70,7 @@
                                       <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
                                   </td>
                                   <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                      <button id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
+                                      <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
                         <span *ngIf="!item.isShowDetails">More</span>
                         <span *ngIf="item.isShowDetails">Less</span>
                       </button>

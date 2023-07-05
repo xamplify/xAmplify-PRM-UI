@@ -1113,8 +1113,15 @@ input.radio-custimization:checked:before {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
   }
+  .mb_c_switch{
+    width:100%;
+ }
 }
-
 .mr-btm{
   margin-bottom: 6px;
 }
+@media screen and (min-width: 768px) and (max-width:1024px) {
+  .tb_c_details{
+      left:39px!important;
+  }
+} 
