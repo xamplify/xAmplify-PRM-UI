@@ -6,8 +6,12 @@ import { Campaign } from '../models/campaign';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { ActivatedRoute } from '@angular/router';
+import { CampaignAccess } from '../models/campaign-access';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { Pipeline } from 'app/dashboard/models/pipeline';
+import { IntegrationService } from 'app/core/services/integration.service';
 
-declare var $:any;
+declare var $:any, swal:any;
 
 @Component({
   selector: 'app-add-campaign',
@@ -43,17 +47,24 @@ export class AddCampaignComponent implements OnInit {
   editedCampaignName = "";
   isValidCampaignName = false;
   categoryNames: any;
-  campaignNamesLoader = false;
-  categoryNamesLoader = false;
   partnerModuleCustomName = "Partner";
   toPartnerToolTipMessage = "";
   throughPartnerToolTipMessage = "";
   throughPartnerAndToPartnerHelpToolTip: string;
   shareWhiteLabeledContent = false;
+  campaignDetailsLoader = false;
+  campaignAccess:any;
+  activeCRMDetails: any;
+  leadPipelines = new Array<Pipeline>();
+  dealPipelines = new Array<Pipeline>();
+  defaultLeadPipelineId = 0;
+  defaultDealPipelineId = 0;
+  showConfigurePipelines = false;
+  pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
-    private activatedRoute:ActivatedRoute) {
+    private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
@@ -62,22 +73,107 @@ export class AddCampaignComponent implements OnInit {
   }
 
   loadCampaignDetailsSection(){
-    this.findCampaignNames(this.loggedInUserId);
-    this.findCategories();
-    let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-    if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
-      this.partnerModuleCustomName = partnerModuleCustomName;
+        this.campaignDetailsLoader = true;
+        let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+        if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+        this.partnerModuleCustomName = partnerModuleCustomName;
+        }
+        this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
+        if ('landingPage' == this.campaignType) {
+        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
+        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
+    } else {
+        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
+        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
     }
-    this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
-    if ('landingPage' == this.campaignType) {
-      this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
-      this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
-  } else {
-      this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
-      this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
-  }
     this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+    this.findCampaignDetailsData();
   }
+
+  findCampaignDetailsData(){
+    this.campaignService.findCampaignDetailsData().subscribe(
+        response=>{
+            let data = response.data;
+            this.names.push(data['campaignNames']);
+            this.categoryNames = data['categories'];
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
+                this.campaign.categoryId = categoryIds[0];
+            }
+            this.campaignAccess = data['campaignAccess'];
+            this.activeCRMDetails = data['activeCRMDetails'];
+        },error=>{
+            this.xtremandLogger.errorPage(error);
+    },()=>{
+        if (this.activeCRMDetails.activeCRM) {
+            if("SALESFORCE" === this.activeCRMDetails.type){
+                this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                    let cfResponse = data;                            
+                    if (cfResponse.statusCode === 400) {
+                        swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                    } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                        swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                    }
+                }, error => {
+                    this.xtremandLogger.error(error, "Error in salesforce checkIntegrations()");
+                });
+            }else{
+                this.listCampaignPipelines();
+            }
+        }else{
+            this.listCampaignPipelines();
+        }
+        this.campaignDetailsLoader = false;
+    });
+  }
+
+  listCampaignPipelines() {
+    if (this.campaignAccess.enableLeads) {
+        this.showConfigurePipelines = true;
+        this.referenceService.startLoader(this.pipelineLoader);
+        this.campaignService.listCampaignPipelines(this.loggedInUserId)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        let data = response.data;
+                        this.leadPipelines = data.leadPipelines;
+                        this.dealPipelines = data.dealPipelines;
+                        if (!this.activeCRMDetails.activeCRM) {
+                            this.leadPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultLeadPipelineId = pipeline.id;
+                                    if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                                        this.campaign.leadPipelineId = pipeline.id;
+                                    }                                     }
+                            });
+
+                            this.dealPipelines.forEach(pipeline => {
+                                if (pipeline.default) {
+                                    this.defaultDealPipelineId = pipeline.id;
+                                    if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                        this.campaign.dealPipelineId = pipeline.id;
+                                    }                                     }
+                            });
+                        } else {
+                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                            this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                            this.defaultDealPipelineId = this.dealPipelines[0].id;
+                            if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                            }
+                            
+                        }
+
+                    }
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                },
+                error => {
+                    this.referenceService.stopLoader(this.pipelineLoader);
+                    this.xtremandLogger.error(error);
+                });
+    }
+
+}
 
 
   /****************Campaign Details***********/
@@ -148,38 +244,9 @@ export class AddCampaignComponent implements OnInit {
 }
 
 
-/*********Find Campaign Names*******/
-findCampaignNames(userId:number){
-  this.campaignNamesLoader = true;
-   this.campaignService.getCampaignNames(userId)
-   .subscribe(
-   data => {
-       this.names.push(data);
-       this.campaignNamesLoader = false;
-   },
-   error =>{
-    
-   });
-}
 
-/**********Find Categories*****/
-findCategories(){
-  this.categoryNamesLoader = true;
-  this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
-      ( data: any ) => {
-          this.categoryNames = data.data;
-          let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
-          if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
-              this.campaign.categoryId = categoryIds[0];
-          }
-          this.categoryNamesLoader = false;
-      },
-      error => {
-         this.xtremandLogger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error );
-      });
-}
 
-setChannelCampaign(event){
+setChannelCampaign(event:any){
   this.campaign.channelCampaign = event;
 }
 
