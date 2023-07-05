@@ -1114,3 +1114,7 @@ input.radio-custimization:checked:before {
     border-bottom-left-radius: 0px;
   }
 }
+
+.mr-btm{
+  margin-bottom: 6px;
+}
