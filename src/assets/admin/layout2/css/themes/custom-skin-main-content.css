@@ -1367,3 +1367,6 @@ a.dropdown-toggle.circlebg-none-v:hover {
  .rss-title {
   color: var(--title-heading--text) !important;
 }
+.dark-beige {
+  background: transparent;
+}
