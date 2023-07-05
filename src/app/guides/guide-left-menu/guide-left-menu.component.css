@@ -1,11 +1,22 @@
+.pagebody {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 .bg-img{
     background-image: url(/assets/images/user-guide.png);
 	background-repeat: no-repeat;
     background-size: cover;
     height: 180px;
+    padding: 0px 20px;
 }
 .guide-title {
-padding: 10px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 30px;
+}
+.side-border-differentiation {
+  border-left: 1px dashed #ddd;
 }
 .bg-result-color  {
   background-color: #f1f3fa4f !important;
@@ -20,9 +31,12 @@ li.title-active> a  {
   padding-left: 10px;
 }
 .guide-width {
-  width: 1200px;
+  /* width: 1200px; */
   display: block;
   margin: 0 auto !important;
+}
+.pad-row {
+  padding: 20px 50px;
 }
 .search-guide{
     transform: translate(0px, 50px); 
@@ -103,8 +117,8 @@ td.text-center {
   }
   
   #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    min-width: 100%;
+    max-width: 100%;
     background: #fff;
     color: #000;
     transition: all 0.3s;
@@ -127,7 +141,7 @@ td.text-center {
   }
   
   #sidebar ul.components {
-    padding: 15px 15px;
+    /* padding: 15px 15px; */
     /* border-bottom: 1px solid #47748b; */
   }
   
@@ -141,18 +155,19 @@ td.text-center {
     font-size: 14px;
     display: block;
     /* width: max-content; */
+    background: #f1f3fa7a;
   }
   
   #sidebar ul li a:hover {
     color: #000;
-    background: #eee;
+    background: #8dd8f82e;
     /* width:max-content; */
   }
   
   #sidebar ul li.active > a,
   a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    background: #1F94D2;
   }
   
   a[data-toggle="collapse"] {
@@ -213,14 +228,33 @@ td.text-center {
     transition: all 0.3s;
   }
   
-  #content p a {
-    
-  }
+.list-unstyled li > .list-unstyled {
+    margin-left: 10px;
+}
+nav a {
+   background-color: #fff;
+}
+.page-bar-padding-cu {
+  padding: 20px;
+  margin-bottom: 0px !important;
+}
+.hide-mobile-menu {
+  display: none;
+} 
 
-  .list-unstyled li > .list-unstyled {
-    margin-bottom: 10px;
-  }
 
-  nav a {
-    background-color: #fff;
-  }
+@media (min-width: 769px) and (max-width: 1119px)  {
+  .pad-row{padding: 20px 5px;}
+}
+@media (min-width: 769px) and (max-width: 991px)  {
+  .guide-title {padding-left:0px;}
+  .side-border-differentiation {border:none;}
+}
+/* @media (min-width: 300px) and (max-width: 992px)  {
+  .hide-mobile-menu {display: block;} 
+} */
+@media (min-width: 300px) and (max-width: 768px)  {
+  .pad-row{padding: 20px 20px;}
+  .guide-title {padding-left:0px;}
+  .side-border-differentiation {border:none;}
+}

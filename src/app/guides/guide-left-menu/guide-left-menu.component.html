@@ -1,5 +1,5 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
+<div class="pagebody">
 <section class="bg-img">
   <div class="row justify-content-center d-flex" style="padding-top: 20px;">
     <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 text-center search-guide">
@@ -39,7 +39,7 @@
     </div>
   </div>
 </section>
-<div class="m10 guide-width" style="padding-top: 20px;padding-left: 50px; padding-right: 50px;">
+<div class="m10 guide-width container pad-row">
 
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -57,10 +57,10 @@
       </li>
     </ul>
   </div>
-  <div class="page-bar">
+  <div class="page-bar page-bar-padding-cu">
     <div class="row">
       {{guideMergeTag}}
-      <div class="col-md-3 col-lg-3">
+      <div class="col-lg-3 col-md-3 col-sm-12">
         <div class="wrapper">
           <div>
             <!-- <ng-template #showTitles>
@@ -250,14 +250,16 @@
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                 </ul>
               </li>
-
             </ul>
           </nav>
         </div>
       </div>
-      <div class="col-md-9 col-lg-9" *ngIf="statusCode === 200">
+      <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200">
+        <!-- <button type="button" (click)="hideAndShow()" class="btn btn-primary hide-mobile-menu" >
+          <i class="glyphicon glyphicon-align-left"> Menu</i> 
+         </button> -->
         {{mergeTag}}
-        <div class=""[ngClass]="isSearch?'':'guide-title'">
+        <div class="side-border-differentiation" [ngClass]="isSearch?'':'guide-title'">
           <div *ngIf="!isSearch">
             <div style="border-bottom: 1px solid #ddd;">
               <h4>
@@ -285,7 +287,7 @@
             (notifyParentDropDown)="getSearchResultsOfUserGuides($event)"></app-pagination>
         </div>
       </div>
-      <div class="col-md-9 col-lg-9" *ngIf="statusCode === 500" style="padding: 10px;">
+      <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 500" style="padding: 10px;">
         <div class="">
           <div class="text-center">
             <h1>403</h1>
@@ -297,5 +299,5 @@
       </div>
     </div>
   </div>
-
+</div>
 </div>
