@@ -2300,3 +2300,7 @@ button.table-scbscribe-btn:hover {
 .panel-body {
   border-radius: 5px !important;
 }
+/***05/07/2023 */
+.cursor-pointer {
+  cursor: pointer;
+}
