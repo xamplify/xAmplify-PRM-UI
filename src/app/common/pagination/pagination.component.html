@@ -13,27 +13,27 @@
   </div>
 </div>
 <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
-  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" data-toggle="tooltip" data-placement="bottom" title="First">
+  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
      <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">
-     <span><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+     <span><i data-toggle="tooltip" data-placement="bottom" title="First" class="fa fa-angle-double-left" aria-hidden="true"></i></span>
      </a>
   </li>
-  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}" data-toggle="tooltip" data-placement="bottom" title="Previous">
+  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
      <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">
-     <span><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+     <span><i  data-toggle="tooltip" data-placement="bottom" title="Previous" class="fa fa-angle-left" aria-hidden="true"></i></span>
      </a>
   </li>
   <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
   <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
   </li>
-  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" data-toggle="tooltip" data-placement="bottom" title="Next">
+  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
      <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
-     <span><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+     <span><i data-toggle="tooltip" data-placement="bottom" title="Next" class="fa fa-angle-right" aria-hidden="true"></i></span>
      </a>
   </li>
-  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" data-toggle="tooltip" data-placement="bottom" title="Last">
+  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
      <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
-     <span><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+     <span><i data-toggle="tooltip" data-placement="bottom" title="Last" class="fa fa-angle-double-right" aria-hidden="true"></i></span>
      </a>
   </li>
 </ul>
