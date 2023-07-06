@@ -114,5 +114,8 @@ export class Module {
     showAddLeadOrDealButtonInMyProfileSection = false;
     navigateToPartnerSection = false;
 
+    /***XNFR-318***/
+    isOrgAdminCompany = false;
+
 
 }
