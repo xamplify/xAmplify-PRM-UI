@@ -72,18 +72,18 @@
             <div class="row">
               
                   <!-- Start Tiles here-->
-                  <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;padding-top:10px;">
+                  <div class="page-bar" style="padding-bottom: 10px;padding-top: 10px;margin-left: 12px;margin-right: 12px;">
                      <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
                      
                      <!---Active Partners Count-->
-                     <div  class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l" (click)="goToAnalytics()">
+                     <div  class="col-sm-4 col-xs-6 col-lg-4 col-md-4" (click)="goToAnalytics()" style="padding-left: 14px;padding-right: 0px;">
                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                          <div class="visual">
                            <i  style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
                              [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
                              aria-hidden="true"></i>
                          </div>
-                         <div class="details">
+                         <div class="details" style="right: 13px !important;">
                            <div class="number">10</div>
                            <div class="desc" title="Active Partner" style="font-size: 13px">Partner Journey Analytics                           
                              <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
@@ -98,7 +98,7 @@
          
                      <!--Redistributed Campaigns Count-->
                      <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-                     <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths" >
+                     <div *ngIf="!redistributedCampaignsCountLoader" class="col-sm-4 col-xs-6 col-lg-4 col-md-4" style="padding-right: 0px;">
                        <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                          (click)="goToReDistributedPartnersDiv()">
                          <div class="visual">
@@ -107,7 +107,7 @@
                              [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
                            </i>
                          </div>
-                         <div class="details">
+                         <div class="details" style="right: 13px !important;">
                            <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                                *ngIf="!redistributedCampaignsCount">100</span></div>
                            <div class="desc mlabelWidth" style="font-size: 13px">Triggers</div>
@@ -121,7 +121,7 @@
          
                      <!--Through Partner Campaigns Count-->
                      <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
-                     <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
+                     <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
                        <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                          (click)="goToThroughPartnersDiv()">
                          <div class="visual">
@@ -129,7 +129,7 @@
                              [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
                              aria-hidden="true"></i>
                          </div>
-                         <div class="details">
+                         <div class="details" style="right: 13px !important;">
                            <div class="number">63</div>
                            <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
                              Email Notifications
@@ -144,7 +144,7 @@
                      </div>
          
                      <!--InActive Partner Campaigns Count-->
-                     <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
+                     <!-- <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
                      <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToInActivePartnersDiv()">
                        <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                          <div class="visual">
@@ -164,10 +164,10 @@
                              <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                          </span>
                        </a>
-                     </div>
+                     </div> -->
          
                      <!--Active Partner Campaigns Count-->
-                     <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
+                     <!-- <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
                      <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths" (click)="goToApprovePartnersDiv()">
                        <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                          <div class="visual">
@@ -187,11 +187,11 @@
                              <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
                          </span>
                        </a>
-                     </div>
+                     </div> -->
          
                    </div>
          <!-- End tile here-->
-         <div [ngClass]="{'page-bar p10': showListOfContactList}">
+         <div [ngClass]="{'page-bar p10': showListOfContactList}" style="margin-left: 12px;margin-right: 12px;">
             <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                <div class="tab-pane active" >
                   <div class="clearfix"></div>
@@ -284,7 +284,7 @@
                            <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
                               <span class="ui-column-resizer"
                                  (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
-                              <span class="gridHeader" translate>Tiggers</span>
+                              <span class="gridHeader" translate>Triggers</span>
                            </th>
                            <th scope="col" class="visible-xs" colspan="1" style="width: 35%" translate>
                               List Info
@@ -506,7 +506,7 @@
                                     && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
-                                    title="Notification"> <i class="fa fa-bullhorn"
+                                    title="Notification"> <i class="icon-bell"
                                        aria-hidden="true"></i>
                                     </a>
                                  </div>
