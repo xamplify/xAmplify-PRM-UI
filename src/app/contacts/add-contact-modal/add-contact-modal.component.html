@@ -99,7 +99,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             </p>
           </div>
           <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
-            <span class="input-group-btn">
+            <span class="input-group-btn" style="border:none !important">
               <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>

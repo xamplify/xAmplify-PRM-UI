@@ -659,8 +659,7 @@ select {
   background-color: #22313a;
   border: 1px solid #2f4857 !important;
 }
-.input-group-addon,
-.input-group-btn {
+.input-group-addon {
   border: 1px solid #2f4857 !important;
 }
 .design-bgcolor {
@@ -1531,17 +1530,17 @@ a.dropdown-toggle.circlebg-none-v:hover {
   color: #fff !important;
 }
 
-.alert-success {
+/* .alert-success {
   background-color: #dff0d8 !important;
   border-color: #d6e9c6 !important;
   color: #3c763d !important;
-}
+} */
 
-.alert-info {
+/* .alert-info {
   background-color: #d9edf7 !important;
   border-color: #bce8f1 !important;
   color: #31708f !important;
-}
+} */
 /* 27-06-2023 */
 .option-color {
   color: #fff !important;

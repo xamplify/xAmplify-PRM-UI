@@ -992,7 +992,7 @@ textarea:focus {
     linear-gradient(to bottom, #2f4758, #2f4758) !important;
 }
 .phone {
-  color: #fff !important;
+  color: #000 !important;
 }
 .c-btn {
   border: 1px solid var(--border-color) !important;
