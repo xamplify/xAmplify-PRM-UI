@@ -245,7 +245,7 @@
                             <!--From Email-->
                             <div class="form-group" [attr.class]="fromEmaiDivClass">
                                 <label class="control-label col-sm-4" translate>From Email
-                                    <span style="color: red">
+                                    <span class="required">
                                         <strong>*</strong>
                                     </span>
                                 </label>
@@ -261,8 +261,9 @@
 
                             <!--Pre Header-->
                             <div class="form-group" [attr.class]="preHeaderDivClass">
-                                <label class="control-label col-sm-4" translate>Pre Header<span
-                                        style="color: red"><strong>*</strong></span></label>
+                                <label class="control-label col-sm-4" translate>Pre Header
+                                    <span class="required"><strong>*</strong></span>
+                                </label>
                                 <div class="col-sm-8">
                                     <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
                                 </div>
@@ -274,56 +275,35 @@
                             <div class="col-sm-8">
                                 <div class="email-options-checkbox-group email-options-notify">
                                     <div class="email-options-checkbox clearfix">
-                                        <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
+                                        <div>
                                             <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setEmailOpened($event)">
                                             </switch>
                                         </div>
-                                        <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
                                             <label translate>Email is opened</label>
                                         </div>
                                     </div>
 
                                     <div class="email-options-checkbox clearfix">
-                                        <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
+                                        <div>
                                             <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setLinkOpened($event)">
                                             </switch>
                                         </div>
-                                        <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
                                             <label translate>Link is opened</label>
                                         </div>
                                     </div>
 
-                                    <div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
-                                        <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
-                                            <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setEmailOpened($event)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
-                                            <label translate>SMS is opened</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
-                                        <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
-                                            <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setEmailOpened($event)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
-                                            <label translate>SMS is opened</label>
-                                        </div>
-                                    </div>
 
                                     <div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
-                                        <div class="col-sm-1 ui-switch-custom-div mb_c_switch">
+                                        <div>
                                             <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setVideoPlayed($event)">
                                             </switch>
                                         </div>
-                                        <div class="col-sm-11 tb_c_details" style="padding: 0; position: relative;top: 10px;left: 0px;">
+                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
                                             <label translate>Video is played</label>
                                         </div>
                                     </div>
@@ -331,6 +311,55 @@
                             </div>
                             </div>
 
+                            <!--Configure Pipelines-->
+                            <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='landingPage') || (campaignAccess?.enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
+                                <label class="control-label col-sm-4" translate>Configure Pipelines
+                                    </label>
+                                <div class="col-sm-3">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div >
+                                                <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="configurePipelines()">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-11 col-xs-12 to-partner-padding" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                <span style="cursor: pointer;color: #54a7e9;" >
+                                                    <i class="fa fa-question-circle toggle-info-xampc-pipeline" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
+                                                        style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                             <!--Lead Pipeline-->
+                             <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                             *ngIf="campaign?.configurePipelines">
+                                 <label class="control-label col-sm-4">Lead Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                         <option [value]="0">Select Pipeline</option>
+                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                     </select>
+                                 </div>
+                                 
+                             </div>
+
+                             <!--Deal Pipeline-->  
+                             <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
+                             *ngIf="campaign.configurePipelines">
+                                 <label class="control-label col-sm-4">Deal Pipeline<span class="required"><b>*</b></span></label>
+                                 <div class="col-sm-8">
+                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                         <option [value]="0">Select Pipeline</option>
+                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                     </select>
+                                 </div>
+                             </div>
 
                         </div>
                     </div>

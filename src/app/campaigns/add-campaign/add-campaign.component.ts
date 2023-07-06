@@ -87,6 +87,11 @@ export class AddCampaignComponent implements OnInit {
   showUsersPreview = false;
   mergeTagsInput: any = {};
   teamMemberEmailIds: any[] = [];
+  showMarketingAutomationOption = false;
+  leadPipelineClass: string = this.formGroupClass;
+  dealPipelineClass: string = this.formGroupClass;
+  endDateDivClass: string = this.formGroupClass;
+  isOrgAdminCompany = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
@@ -99,6 +104,7 @@ export class AddCampaignComponent implements OnInit {
 
   loadCampaignDetailsSection(){
         this.campaignDetailsLoader = true;
+        this.campaign.emailNotification = true;
         let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
         if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
         this.partnerModuleCustomName = partnerModuleCustomName;
@@ -130,6 +136,8 @@ export class AddCampaignComponent implements OnInit {
             this.campaignAccess = data['campaignAccess'];
             this.activeCRMDetails = data['activeCRMDetails'];
             this.isGdprEnabled = data['isGdprEnabled'];
+            this.isOrgAdminCompany  = data['isOrgAdminCompany'];
+            this.showMarketingAutomationOption = this.isOrgAdminCompany;
             this.setFromEmailAndFromName(data);
         },error=>{
             this.xtremandLogger.errorPage(error);
@@ -202,6 +210,16 @@ export class AddCampaignComponent implements OnInit {
             this.campaign.fromName = this.campaign.email;
         }
     }
+
+    configurePipelines() {
+         this.campaign.configurePipelines = !this.campaign.configurePipelines;
+         if (!this.campaign.configurePipelines) {
+             this.campaign.leadPipelineId = this.defaultLeadPipelineId;
+             if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId === 0) {
+                 this.campaign.dealPipelineId = this.defaultDealPipelineId;
+             } 
+         }
+     }
 
     listCampaignPipelines() {
         if (this.campaignAccess.enableLeads) {
