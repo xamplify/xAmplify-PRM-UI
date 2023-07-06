@@ -1,3 +1,125 @@
-<div class="page-content" [style.background-color]="referenceService?.pageContnetBgColor">
+<div class="page-content" [class.ml0]="authenticationService?.isSuperAdmin()">
+    <ngx-loading [show]="loading || categoryNamesLoader || campaignNamesLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a [routerLink]="['../campaigns/select']" translate>Select Campaign</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a translate>Create Campaign</a>
+            </li>
+        </ul>
+        <div id="folder-margin-xamp">
+            <button class="btn btn-primary  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+        </div>
+    </div>
+    <div class="page-bar p10">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="portlet light row steps-view">
+                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"  (click)="goToPrevious()"  style="width: 50%;">
+                       <div  class="cenetered-block colorbox-1">
+                           <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
+                           <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Campaign Details & Templates</h5>
+                       </div>
+                   </div>
+                   <div  class="col-block" (click)="showAndHideDivs()" [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" >
+                       <div  class="cenetered-block colorbox-2">
+                           <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
+                           <h5 class="hidden-xs text-clr">
+                               Select Partners & Launch
+                           </h5>
+                       </div>
+                   </div>
+               </div>
+               </div>
 
-</div>  
+        </div>
+    </div>
+
+    <!---Campaign Details---->
+    <div class="portlet light shadow">
+        <div class="portlet-body clearfix">
+            <div class="col-xs-12">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Campaign details</legend>
+                <div class="col-xs-6">
+                     <!--Campaign Name---->
+                    <div class="form-group" [attr.class]="campaignNameDivClass">
+                        <label>Campaign name (save as)</label>
+                        <span class="required"><strong> * </strong></span>
+                        <span class="required" *ngIf="!isValidCampaignName && campaign?.campaignName?.length>0">Already Exists</span>
+                        <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"/>
+                     </div>
+                     <!--Folder---->
+                     <div class="form-group" [attr.class]="fromEmaiDivClass">
+                        <label class="control-label">Folder<span class="required"><strong> * </strong></span></label>             
+                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId">
+                            <option *ngFor="let category of categoryNames"  [ngValue]="category.id">
+                                    {{category.name}}
+                            </option>
+                        </select>
+                     </div>
+
+                     <!--Through Partner / To Partner / To Recipients-->
+                     <div class="form-group ml-fpx" *ngIf="!authenticationService?.module?.isMarketingCompany">
+                         <!--Through Partner Label-->
+                         <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
+                         data-placement="top" title="{{throughPartnerToolTipMessage}}">
+                            <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">Through {{authenticationService?.partnerModule?.customName}}</span>
+                         </label>
+                         <div class="col-sm-8 col-xs-6">
+                            <div class="email-options-checkbox-group email-options-notify">
+                                <div class="col-sm-1 col-xs-6 ui-switch-custom-div mSwitch">
+                                    <switch  [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+                                        (statusChange)="setChannelCampaign($event)">
+                                    </switch>
+                                </div>
+                                <!--To Partner Label-->
+                                <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                    <label class="cursor-pointer"  data-toggle="tooltip" data-placement="top" title="{{toPartnerToolTipMessage}}">
+                                        <span [className]="!campaign?.channelCampaign ? 'custom-font-weight':''">To {{authenticationService?.partnerModule?.customName}}</span>
+                                    </label>
+                                    <!--Help Access-->
+                                    <span class="info-color-xampc">
+                                        <i class="fa fa-question-circle toggle-info-xampc-change" data-html="true"
+                                            data-toggle="tooltip" data-placement="bottom" title="{{throughPartnerAndToPartnerHelpToolTip}}"
+                                             aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                         </div> 
+
+
+                     </div>
+
+                       <!--White Labeled XNFR-255-->
+                       <div class="form-group" *ngIf="(campaignType=='landingPage' && shareWhiteLabeledContent) || (campaign?.channelCampaign && shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
+                        <label class="control-label col-sm-4" translate>White Labeled</label>
+                        <div class="col-sm-8">
+                            <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                (statusChange)="setWhiteLabeled($event)">
+                            </switch>
+                            <span class="info-color-xampc">
+                                <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                    data-placement="top" aria-hidden="true"
+                                    title="Share As White Labeled Content"></i>
+                            </span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </fieldset>
+            </div>
+        </div>
+    </div>
+</div>

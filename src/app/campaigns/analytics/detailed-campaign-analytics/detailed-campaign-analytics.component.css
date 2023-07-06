@@ -597,8 +597,12 @@ a > span.glyphicon.glyphicon-remove {
   /* line-height: 0px!important; */
   vertical-align: middle;
   margin-right: 4px;
-  padding: 3px 8px !important;
+  padding: 1px 8px !important;
 }
 .excel-icon-size{
  font-size: 13px;
+}
+.move-position-left{
+  position: relative;
+  left: 38px;
 }

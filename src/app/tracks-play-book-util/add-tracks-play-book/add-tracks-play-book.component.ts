@@ -469,7 +469,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           let toolTipTagNames: string = "";
           asset.tagNames.sort();
           $.each(asset.tagNames, function (index, tagName) {
-            if (index > 1) {
+            if (index > 0) {
               if (toolTipTagNames.length > 0) {
                 toolTipTagNames = toolTipTagNames + ", " + tagName;
               } else {

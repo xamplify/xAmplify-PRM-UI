@@ -367,7 +367,7 @@
 							*ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 							<div
 							   *ngFor="let campaign of pagination.pagedItems; let i= index"
-							   class="col-xs-12 col-sm-4 col-lg-3">
+							   class="col-xs-12 col-sm-4 col-lg-3 tab_grid">
 							   <div class="grid-box h220">
 								  <img
 									 src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"
@@ -455,7 +455,7 @@
 											  data-toggle="dropdown" id="download-drop" title="Download"
 											  style="color: white;"></span> <span data-toggle="dropdown"
 											  data-toggle="tooltip" data-placement="bottom"  title="Download"></span>
-										   <ul class="dropdown-menu pull-right">
+										   <ul class="dropdown-menu pull-right custome-dropdown-changs">
 											  <li><a (click)="downloadFile(campaign,'html')"
 												 data-toggle="tooltip" data-placement="top"
 												 data-rel="fancybox-button" target="_blank" translate>

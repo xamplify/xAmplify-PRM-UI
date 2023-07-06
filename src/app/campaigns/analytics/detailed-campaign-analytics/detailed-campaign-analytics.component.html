@@ -39,7 +39,7 @@
             <b>Check In</b>
             <img src="assets/images/attendees.png" id="custom-width-button" />
          </button>
-         <a class="close-circle" *ngIf="
+         <a class="close-circle mb_dwl" *ngIf="
      campaignType != 'EVENT' &&
      campaignType != 'SOCIAL' &&
      !isDataShare &&
@@ -819,11 +819,11 @@
                      </div>
                   </div>
                   <div class="col-xs-12 col-sm-6 p-5x" [hidden]="
-     campaignType !== 'VIDEO' ||
-     mainLoader ||
-     hasClientError ||
-     !campaign.emailNotification
-     ">
+                     campaignType !== 'VIDEO' ||
+                     mainLoader ||
+                     hasClientError ||
+                     !campaign.emailNotification
+                     ">
                      <div class="p-5x">
                         <div class="portlet light">
                            <div class="portlet-title">
@@ -833,14 +833,14 @@
                               </div>
                               <div>
                                  <span style="
-     float: right;
-     font-size: 13px;
-     color: #fff;
-     background: #00a6e8;
-     padding: 0px 17px;
-     margin-right: 1px;
-     margin-top: 2px;
-     ">
+                                       float: right;
+                                       font-size: 13px;
+                                       color: #fff;
+                                       background: #00a6e8;
+                                       padding: 0px 17px;
+                                       margin-right: 1px;
+                                       margin-top: 2px;
+                                       ">
                                     <ng-container *ngIf="campaignType != 'LANDINGPAGE'">
                                        {{ campaignType }}
                                     </ng-container>
@@ -873,8 +873,8 @@
                            </div>
                            <div class="portlet-body clearfix">
                               <div class="col-sm-4 col-xs-12" *ngFor="
-     let socialStatus of socialCampaign.socialStatusList
-     ">
+                                 let socialStatus of socialCampaign.socialStatusList
+                                 ">
                                  <app-social-status [socialStatus]="socialStatus"></app-social-status>
                               </div>
                            </div>
@@ -882,11 +882,11 @@
                      </div>
                   </section>
                   <div class="col-xs-12 col-sm-6 p-5x" [hidden]="
-     campaignType !== 'VIDEO' ||
-     mainLoader ||
-     hasClientError ||
-     !campaign.emailNotification
-     ">
+                        campaignType !== 'VIDEO' ||
+                        mainLoader ||
+                        hasClientError ||
+                        !campaign.emailNotification
+                        ">
                      <div class="col-xs-12 p-5x">
                         <div class="portlet light" style="padding-bottom: 36px !important">
                            <div class="portlet-title">
@@ -899,10 +899,10 @@
                               [ngClass]="{ forbidden: !isDataShare ? true : null }">
                               <div class="col-xs-12 col-sm-4 col-lg-4 text-center" style="padding-top: 36px"
                                  [class.disabled]="
-     campaignReport.lifetimeViewsCount < 1 || !isDataShare
-     ? true
-     : null
-     ">
+                                    campaignReport.lifetimeViewsCount < 1 || !isDataShare
+                                    ? true
+                                    : null
+                                    ">
                                  <section class="percentage-circle" style="cursor: pointer"
                                     (click)="campaignViewsDonut('life-time')">
                                     <app-donut-chart [percentageValue]="campaignReport.lifetimeViewsCount"
@@ -922,19 +922,19 @@
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
                                  <h5 style="
-     text-align: center;
-     color: #00a6e8;
-     margin-top: 3.5em;
-     ">
+                                    text-align: center;
+                                    color: #00a6e8;
+                                    margin-top: 3.5em;
+                                    ">
                                     Lifetime
                                  </h5>
                               </div>
                               <div class="col-xs-12 col-sm-4 col-lg-4 text-center" style="padding-top: 36px"
                                  [class.disabled]="
-  campaignReport.thisMonthViewsCount < 1 || !isDataShare
-  ? true
-  : null
-  " (click)="campaignViewsDonut('current-month')">
+                                    campaignReport.thisMonthViewsCount < 1 || !isDataShare
+                                    ? true
+                                    : null
+                                    " (click)="campaignViewsDonut('current-month')">
                                  <section class="percentage-circle" style="cursor: pointer">
                                     <app-donut-chart [percentageValue]="campaignReport.thisMonthViewsCount"
                                        [totalValue]="campaignReport.emailSentCount">
@@ -953,19 +953,19 @@
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
                                  <h5 style="
-     text-align: center;
-     color: #00a6e8;
-     margin-top: 3.5em;
-     ">
+                                    text-align: center;
+                                    color: #00a6e8;
+                                    margin-top: 3.5em;
+                                    ">
                                     This Month
                                  </h5>
                               </div>
                               <div class="col-xs-12 col-sm-4 col-lg-4 text-center" style="padding-top: 36px"
                                  [class.disabled]="
-     campaignReport.todayViewsCount < 1 || !isDataShare
-     ? true
-     : null
-     ">
+                                    campaignReport.todayViewsCount < 1 || !isDataShare
+                                    ? true
+                                    : null
+                                    ">
                                  <section class="percentage-circle" style="cursor: pointer"
                                     (click)="campaignViewsDonut('today')">
                                     <app-donut-chart [percentageValue]="campaignReport.todayViewsCount"
@@ -985,10 +985,10 @@
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
                                  <h5 style="
-     text-align: center;
-     color: #00a6e8;
-     margin-top: 3.5em;
-     ">
+                                    text-align: center;
+                                    color: #00a6e8;
+                                    margin-top: 3.5em;
+                                    ">
                                     Today
                                  </h5>
                               </div>
@@ -1008,12 +1008,12 @@
                            </div>
                         </div>
                         <div class="portlet light" [hidden]="
-     mainLoader ||
-     hasClientError ||
-     !campaignViews ||
-     totalCampaignViewsLoader ||
-     !campaign.emailNotification
-     ">
+                           mainLoader ||
+                           hasClientError ||
+                           !campaignViews ||
+                           totalCampaignViewsLoader ||
+                           !campaign.emailNotification
+                           ">
                            <div class="portlet-title col-xs-12" style="border-bottom: none !important">
                               <div class="caption col-xs-12 col-sm-7" style="padding-top: 4px !important">
                                  <span class="caption-subject font-red-sunglo" style="font-size: 13px !important">
@@ -1021,8 +1021,8 @@
                                     <span *ngIf="campaignType === 'SOCIAL' && isChannelCampaign">TOTAL REDISTRIBUTED FOR
                                        THIS CAMPAIGN</span>
                                     <span *ngIf="
-     campaignType === 'SOCIAL' && !isChannelCampaign
-     ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
+                                       campaignType === 'SOCIAL' && !isChannelCampaign
+                                       ">TOTAL RECIPIENTS FOR THIS CAMPAIGN</span>
                                     <span *ngIf="campaignType === 'REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                                     <span *ngIf="campaignType === 'EVENT' && isChannelCampaign">{{
                                        authenticationService?.partnerModule?.customName
@@ -1033,18 +1033,19 @@
                                     <span *ngIf="campaignType === 'SURVEY'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
                                  </span>
                               </div>
+                              <div class="move-position-left">
                               <div class="col-xs-5 col-sm-2" style="margin-top: -4px; padding-left: 0px" *ngIf="
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     ">
+                                 campaignType === 'VIDEO' ||
+                                 campaignType === 'REGULAR' ||
+                                 campaignType === 'SURVEY'
+                                 ">
                                  <div class="btn-group pull-right" style="cursor: pointer; color: #7d8c98">
                                     <div class="">
                                        <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
                                           (ngModelChange)="campaignViewSortBy($event)">
                                           <option *ngFor="
-  let sortOption of campaignViewsSortByDropDown
-  " [ngValue]="sortOption">
+                                             let sortOption of campaignViewsSortByDropDown
+                                             " [ngValue]="sortOption">
                                              {{ sortOption.name }}
                                           </option>
                                        </select>
@@ -1052,19 +1053,19 @@
                                  </div>
                               </div>
                               <div class="col-xs-5" [ngClass]="{
-     'col-sm-4':
-     campaignType !== 'VIDEO' &&
-     campaignType !== 'REGULAR' &&
-     campaignType !== 'SURVEY',
-     'col-sm-2':
-     campaignType === 'VIDEO' ||
-     campaignType === 'REGULAR' ||
-     campaignType === 'SURVEY'
-     }" style="
-     margin-top: -4px;
-     padding-right: 0px;
-     padding-left: 0px;
-     ">
+                                 'col-sm-4':
+                                 campaignType !== 'VIDEO' &&
+                                 campaignType !== 'REGULAR' &&
+                                 campaignType !== 'SURVEY',
+                                 'col-sm-2':
+                                 campaignType === 'VIDEO' ||
+                                 campaignType === 'REGULAR' ||
+                                 campaignType === 'SURVEY'
+                                 }" style="
+                                 margin-top: -4px;
+                                 padding-right: 0px;
+                                 padding-left: 0px;
+                                 ">
                                  <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{ standalone: true }"
                                     class="form-control" placeholder="Search"
                                     (keypress)="eventHandler($event.keyCode)" />
@@ -1076,7 +1077,7 @@
                                     (click)="search()">
                                     <i class="fa fa-search" style="padding: 4px" aria-hidden="true"></i>
                                  </button>
-                              </div>
+                              </div>  </div>
                               <div *ngIf="
                                     'LANDINGPAGE' != campaignType &&
                                     'SOCIAL' != campaignType

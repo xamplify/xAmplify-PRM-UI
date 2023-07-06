@@ -203,3 +203,7 @@ a.disabled {
 .border-btn-small{
 	border-radius: 4px;
   } 
+
+ .alert-message-aln{
+  margin-top: 8px; 
+ } 

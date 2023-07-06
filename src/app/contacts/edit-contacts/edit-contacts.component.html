@@ -386,7 +386,10 @@
 				</h4>
 			 </div>
 			 <div *ngIf="noContactsFound==true" class="alert alert-info" style="padding: 10px!important;">
-				<h4 style="margin-top: 8px; color: white;" translate>No results found</h4>
+				
+				<h4  style="padding-top: 6px;">
+					<span  id="responseMessage" class="text alert-message-fw" >No results found.</span>
+				 </h4>
 			 </div>
 			 <div *ngIf="showInvalidMaills==true" class="col-md-6"
 				class="col-md-9 alert alert alert-danger alert-dismissable">
@@ -668,10 +671,10 @@
 								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
 									 <span *ngIf="contact.vertical?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="contact.region">{{contact.region | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.region}}">{{contact.region | slice:0:14}}
 									 <span *ngIf="contact.region?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="contact.partnerType">{{contact.partnerType | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
 									 <span *ngIf="contact.partnerType?.length>14">..</span>
 								  </td>
 								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.category}}">{{contact.category | slice:0:14}}
@@ -1221,8 +1224,9 @@
 							<td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
 							   <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
 							</td>
-							<td *ngIf="showNotifyPartnerOption" data-toggle="tooltip" data-placement="bottom" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''">
+							<td *ngIf="showNotifyPartnerOption" >
 							<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+							data-toggle="tooltip" data-placement="bottom" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''"
 							[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
 							</switch>
 							</td>

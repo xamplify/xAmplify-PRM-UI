@@ -13,7 +13,7 @@
   </div>
   <div class="details">
     <div class="number">{{dto.count}}</div>
-    <div data-toggle="tooltip" title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
+    <div [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
   </div>
   <span class="morePadding">
     <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 

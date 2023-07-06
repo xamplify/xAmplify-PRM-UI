@@ -1,6 +1,7 @@
 :host /deep/.video-js .vjs-big-play-button {
-  top: 51px !important;
-  left: 93px !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 :host /deep/ .video-js .vjs-mute-control {
@@ -1276,3 +1277,4 @@ th.border-top{border-bottom: none !important}
 .custome-video {
   height: 231px;
 }
+

@@ -42,3 +42,13 @@
 .login-success {
   color: #3c763d;
 }
+.mrg-tobo{
+  position: relative;
+  top:34px;
+  margin-bottom : 20px;
+}
+
+.msg-algn{
+  text-align: center;
+  padding-top: 6px;
+}
