@@ -1061,6 +1061,7 @@ strong {
   color: #fff;
   text-align: center;
   border-radius: 1;
+  word-wrap: break-word;
 }
 
 .field-icon {
