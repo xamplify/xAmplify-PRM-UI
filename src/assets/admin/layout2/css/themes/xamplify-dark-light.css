@@ -1531,11 +1531,11 @@ a.dropdown-toggle.circlebg-none-v:hover {
   color: #fff !important;
 }
 
-.alert-success {
+/* .alert-success {
   background-color: #dff0d8 !important;
   border-color: #d6e9c6 !important;
   color: #3c763d !important;
-}
+} */
 
 .alert-info {
   background-color: #d9edf7 !important;
