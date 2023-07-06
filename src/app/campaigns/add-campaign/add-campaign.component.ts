@@ -61,6 +61,8 @@ export class AddCampaignComponent implements OnInit {
   defaultDealPipelineId = 0;
   showConfigurePipelines = false;
   pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
+  isGdprEnabled = false;
+  oneClickLaunchToolTip = "";
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -87,6 +89,8 @@ export class AddCampaignComponent implements OnInit {
         this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
     }
     this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+    this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
+
     this.findCampaignDetailsData();
   }
 
@@ -102,6 +106,7 @@ export class AddCampaignComponent implements OnInit {
             }
             this.campaignAccess = data['campaignAccess'];
             this.activeCRMDetails = data['activeCRMDetails'];
+            this.isGdprEnabled = data['isGdprEnabled'];
         },error=>{
             this.xtremandLogger.errorPage(error);
     },()=>{
