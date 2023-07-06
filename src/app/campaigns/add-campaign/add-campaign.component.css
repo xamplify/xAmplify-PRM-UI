@@ -516,8 +516,27 @@ table.table-bordered.dataTable {
 .to-partner-padding{
   margin-left: 100px;
   margin-top: -24px;
+  display: flex;
 }
 
 .ml-fpx{
   margin-left: -14px
+}
+
+.toggle-info-xampc {
+  font-size: 20px !important;
+  float: left !important;
+  margin: 6px 0px 0px 15px !important;
+}
+.toggle-info-xampc-change {
+  font-size: 20px !important;
+  float: left !important;
+  margin: 2px 0px 0px 2px !important;
+}
+.toggle-info-xampc-pipeline {
+  margin: 2px 0px 0px 15px !important;
+}
+.info-color-xampc {
+  cursor: pointer;
+  color: #54a7e9;
 }

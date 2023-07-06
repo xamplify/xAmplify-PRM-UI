@@ -1,5 +1,5 @@
 <div class="page-content" [class.ml0]="authenticationService?.isSuperAdmin()">
-    <ngx-loading [show]="loading || categoryNamesLoader || campaignNamesLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li>
@@ -16,20 +16,20 @@
             </li>
         </ul>
         <div id="folder-margin-xamp">
-            <button class="btn btn-primary  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+            <button class="btn btn-primary  btn-bt-aln" id="right"   translate>Create a Folder</button>
         </div>
     </div>
     <div class="page-bar p10">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="portlet light row steps-view">
-                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"  (click)="goToPrevious()"  style="width: 50%;">
+                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"    style="width: 50%;">
                        <div  class="cenetered-block colorbox-1">
                            <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
                            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Campaign Details & Templates</h5>
                        </div>
                    </div>
-                   <div  class="col-block" (click)="showAndHideDivs()" [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" >
+                   <div  class="col-block"  style="width: 50%;" >
                        <div  class="cenetered-block colorbox-2">
                            <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
                            <h5 class="hidden-xs text-clr">
@@ -50,6 +50,7 @@
             <fieldset class="scheduler-border">
                 <legend class="scheduler-border">Campaign details</legend>
                 <div class="col-xs-6">
+
                      <!--Campaign Name---->
                     <div class="form-group" [attr.class]="campaignNameDivClass">
                         <label>Campaign name (save as)</label>
@@ -57,6 +58,7 @@
                         <span class="required" *ngIf="!isValidCampaignName && campaign?.campaignName?.length>0">Already Exists</span>
                         <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"/>
                      </div>
+
                      <!--Folder---->
                      <div class="form-group" [attr.class]="fromEmaiDivClass">
                         <label class="control-label">Folder<span class="required"><strong> * </strong></span></label>             
@@ -99,20 +101,100 @@
 
                      </div>
 
-                       <!--White Labeled XNFR-255-->
-                       <div class="form-group" *ngIf="(campaignType=='landingPage' && shareWhiteLabeledContent) || (campaign?.channelCampaign && shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
-                        <label class="control-label col-sm-4" translate>White Labeled</label>
+                    <!--White Labeled XNFR-255-->
+                    <div class="form-group" *ngIf="(campaignType=='landingPage' && campaignAccess?.shareWhiteLabeledContent) || (campaign?.channelCampaign && campaignAccess?.shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
+                    <label class="control-label col-sm-4" translate>White Labeled</label>
+                    <div class="col-sm-8">
+                        <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                            (statusChange)="setWhiteLabeled($event)">
+                        </switch>
+                        <span class="info-color-xampc">
+                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                data-placement="top" aria-hidden="true"
+                                title="Share As White Labeled Content"></i>
+                        </span>
+                    </div>
+                    </div>
+                   
+                    <!--View In Browser && GDPR Enabled--> 
+                    <ng-container *ngIf="campaignType=='email' && !campaign?.channelCampaign && campaignAccess?.salesEnablement">
+                         <!--View In Browser-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" translate>View In Browser</label>
+                            <div class="col-sm-8">
+                                <switch class="pull-left" [status]="campaign?.viewInBrowserTag" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                    (statusChange)="setViewInBrowser($event)">
+                                </switch>
+                                <span class="info-color-xampc">
+                                    <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                        data-placement="top" aria-hidden="true"
+                                        title="Show / Hide View In Browser Tag"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!--GDPR Enabled-->
+                        <div class="form-group" *ngIf="isGdprEnabled">
+                            <label class="control-label col-sm-4" translate>Unsubscribe Link</label>
+                            <div class="col-sm-8">
+                                <switch class="pull-left" [status]="campaign?.unsubscribeLink" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                    (statusChange)="setUnsubscribeLink($event)">
+                                </switch>
+                                <span class="info-color-xampc">
+                                    <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                        data-placement="top" aria-hidden="true"
+                                        title="Show / Hide Unsubscribe Link"
+                                        style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!--One Click Launch-->
+                    <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='landingPage'">
+                        <label class="control-label col-sm-4" translate>One-Click Launch</label>
                         <div class="col-sm-8">
-                            <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                (statusChange)="setWhiteLabeled($event)">
+                            <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                (statusChange)="setOneClickLaunch($event)">
                             </switch>
                             <span class="info-color-xampc">
                                 <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
                                     data-placement="top" aria-hidden="true"
-                                    title="Share As White Labeled Content"></i>
+                                    title="{{oneClickLaunchToolTip}}"></i>
                             </span>
                         </div>
                     </div>
+
+                    <!--Co Branding Logo-->
+                    <div class="form-group" *ngIf="campaign?.channelCampaign">
+                        <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
+                        <div class="col-sm-8">
+                            <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                (statusChange)="setCoBrandingLogo($event)">
+                            </switch>
+                            <span class="info-color-xampc">
+                                <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                    data-placement="top" aria-hidden="true"
+                                    title="Enable logo of your {{authenticationService?.partnerModule?.customName}} to be displayed in redistributed campaigns"
+                                    ></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!--Notify Partners-->
+                    <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && campaign?.channelCampaign">
+                        <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
+                        <div class="col-sm-8">
+                            <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                (statusChange)="setPartnerEmailNotification($event)">
+                            </switch>
+                            <span style="cursor: pointer;color: #54a7e9;">
+                                <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                            </span>
+
+                        </div>
+                    </div>
+
 
 
 
