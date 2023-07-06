@@ -519,8 +519,8 @@ table.table-bordered.dataTable {
   display: flex;
 }
 
-.ml-fpx{
-  margin-left: -14px
+.ml-hpx{
+  margin-left: -100px;
 }
 
 .toggle-info-xampc {
