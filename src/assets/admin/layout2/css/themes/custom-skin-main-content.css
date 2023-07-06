@@ -309,11 +309,10 @@ input {
 .table .table {
   background: transparent !important;
 }
-table#folder-list-view, tr {
+table#folder-list-view,
+tr {
   background: transparent !important;
 }
-
-
 
 .table-hover > tbody > tr:hover,
 .page-header.navbar
@@ -430,7 +429,8 @@ table#folder-list-view, tr {
   color: var(---text-color) !important;
 }
 /** alert **/
-.swal2-modal {
+.swal2-modal,
+.hash-table-color {
   background-color: var(--div-bg-color) !important;
 }
 .loader-container {
@@ -1363,8 +1363,8 @@ a.dropdown-toggle.circlebg-none-v:hover {
   color: var(--title-heading--text) !important;
 }
 
- /*01-07-2023*/
- .rss-title {
+/*01-07-2023*/
+.rss-title {
   color: var(--title-heading--text) !important;
 }
 .dark-beige {

@@ -17,6 +17,7 @@
 }
 #sort-text {
   height: 34px;
+  margin-top: 14px;
 }
 .table tr.row-selected td {
   background-color: #00a6e847;
@@ -131,4 +132,9 @@
 }
 .marg-top {
   margin-top: -14px !important;
+}
+
+.search-position{
+  position: relative;
+  right: 12px;
 }

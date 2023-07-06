@@ -92,7 +92,8 @@ body,
 }
 .portlet.box > .portlet-body,
 .copyright-css,
-.video {
+.video,
+.hash-table-color {
   background-color: #2b3c46 !important;
 }
 .page-bar .page-breadcrumb > li > a,
@@ -378,7 +379,8 @@ input {
 .table .table {
   background: transparent !important;
 }
-table#folder-list-view, tr {
+table#folder-list-view,
+tr {
   background: transparent !important;
 }
 
@@ -1550,13 +1552,13 @@ input.ng-valid.ng-dirty.ng-touched {
   outline: none !important;
 }
 
- /* 28-6-2023 table btns,lables and tags*/
+/* 28-6-2023 table btns,lables and tags*/
 .lightgray-btn:hover {
   background: #ddd !important;
 }
 
- /*01-07-2023*/
- .rss-title {
+/*01-07-2023*/
+.rss-title {
   color: white !important;
 }
 /* 04-07-2024 */
