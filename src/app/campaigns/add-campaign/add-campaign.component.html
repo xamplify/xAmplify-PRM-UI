@@ -202,7 +202,7 @@
                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                         (statusChange)="setPartnerEmailNotification($event)">
                                     </switch>
-                                    <span style="cursor: pointer;color: #54a7e9;">
+                                    <span class="info-color-xampc">
                                         <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
                                     </span>
                                 </div>
@@ -285,7 +285,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="email-options-checkbox clearfix">
+                                    <div class="email-options-checkbox clearfix mt10">
                                         <div>
                                             <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setLinkOpened($event)">
@@ -296,8 +296,7 @@
                                         </div>
                                     </div>
 
-
-                                    <div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
+                                    <div class="email-options-checkbox clearfix mt10" *ngIf="campaignType=='video'">
                                         <div>
                                             <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setVideoPlayed($event)">

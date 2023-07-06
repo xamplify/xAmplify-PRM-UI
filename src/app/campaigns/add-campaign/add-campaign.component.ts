@@ -462,6 +462,25 @@ export class AddCampaignComponent implements OnInit {
     }
     }
 
+    setEmailOpened(event: any) {
+        this.campaign.emailOpened = event;
+    }
+
+    setLinkOpened(event: any) {
+        this.campaign.linkOpened = event;
+    }
+
+    setVideoPlayed(event: any) {
+        this.campaign.videoPlayed = event;
+    }
+    setReplyWithVideo(event: any) {
+        this.campaign.replyVideo = event;
+    }
+    setSocialSharingIcons(event: any) {
+        this.campaign.socialSharingIcons = event;
+    }
+
+
     filterCoBrandedLandingPages(event: any) {
         //throw new Error('Method not implemented.');
     }
