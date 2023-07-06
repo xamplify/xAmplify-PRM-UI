@@ -272,7 +272,7 @@
 
           </div>
         </div>
-        <div *ngIf="isSearch" style="padding: 10px; margin: 20px;">
+        <div *ngIf="isSearch" class="card-left-padd">
           <div class="page-bar bg-result-color" *ngFor="let guide of userGuides">
             <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
             <div>

@@ -241,7 +241,10 @@ nav a {
 .hide-mobile-menu {
   display: none;
 } 
-
+.card-left-padd {
+  padding-left: 10px;
+  padding-top: 10px;
+}
 
 @media (min-width: 769px) and (max-width: 1119px)  {
   .pad-row{padding: 20px 5px;}
