@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CampaignService } from '../services/campaign.service';
@@ -14,6 +14,8 @@ import { Pagination } from 'app/core/models/pagination';
 import { EmailTemplateType } from 'app/email-template/models/email-template-type';
 import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 declare var $:any, swal:any;
 
@@ -28,7 +30,7 @@ export class AddCampaignComponent implements OnInit {
   loggedInUserId = 0;
   campaign: Campaign = new Campaign();
   loading = false;
-
+  isAdd = false;
 
   defaultTabClass = "col-block";
   activeTabClass = "col-block col-block-active width";
@@ -79,8 +81,10 @@ export class AddCampaignComponent implements OnInit {
   selectedPartnershipId: number;
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
-    dataError: boolean;
-  
+  dataError: boolean;
+  folderCustomResponse: CustomResponse = new CustomResponse();
+  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+  showUsersPreview = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
@@ -336,7 +340,7 @@ export class AddCampaignComponent implements OnInit {
     }
 
     setPartnerEmailNotification(event: any) {
-        this.campaign.emailNotification = event;
+      this.campaign.emailNotification = event;
         if (!event) {
             this.campaign.emailOpened = false;
             this.campaign.videoPlayed = false;
@@ -376,18 +380,18 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.unsubscribeLink = event;
     }
 
-       /***XNFR-125****/
-       setOneClickLaunch(event:any){
-        this.campaign.oneClickLaunch = event;
-        this.contactsPagination.pageIndex = 1;
-        this.contactsPagination.maxResults = 12;
-        this.selectedContactListIds = [];
-        this.userListDTOObj = [];
-        this.isContactList = false;
-        this.selectedPartnershipId = 0;
-        if(!event){
-            this.loadContacts();
-        }
+    /***XNFR-125****/
+    setOneClickLaunch(event:any){
+    this.campaign.oneClickLaunch = event;
+    this.contactsPagination.pageIndex = 1;
+    this.contactsPagination.maxResults = 12;
+    this.selectedContactListIds = [];
+    this.userListDTOObj = [];
+    this.isContactList = false;
+    this.selectedPartnershipId = 0;
+    if(!event){
+        this.loadContacts();
+    }
     }
 
     filterCoBrandedLandingPages(event: any) {
@@ -409,6 +413,32 @@ export class AddCampaignComponent implements OnInit {
 
     openMergeTagsPopup(type:string,index:number){
 
+    }
+
+    openCreateFolderPopup() {
+        this.folderCustomResponse = new CustomResponse('');
+        this.addFolderModalPopupComponent.openPopup();
+    }
+
+    showSuccessMessage(message: any) {
+        this.folderCustomResponse = new CustomResponse('SUCCESS', message, true);
+        this.listCategories();
+    }
+    listCategories() {
+        this.campaignDetailsLoader = true;
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+            (data: any) => {
+                this.categoryNames = data.data;
+                let categoryIds = this.categoryNames.map(function (a: any) { return a.id; });
+                if (this.isAdd || this.campaign.categoryId == undefined || this.campaign.categoryId == 0) {
+                    this.campaign.categoryId = categoryIds[0];
+                }
+                this.campaignDetailsLoader = false;
+            },
+            error => {
+                this.campaignDetailsLoader = false;
+              },
+           );
     }
 
 

@@ -16,9 +16,16 @@
             </li>
         </ul>
         <div id="folder-margin-xamp">
-            <button class="btn btn-primary  btn-bt-aln" id="right"   translate>Create a Folder</button>
+            <button class="btn btn-primary  btn-bt-aln" id="right" (click)="openCreateFolderPopup()"   translate>Create a Folder</button>
         </div>
     </div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="alert alert-success" *ngIf="folderCustomResponse?.isVisible">
+        <strong>{{folderCustomResponse?.responseMessage}}</strong>
+        <button  type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="customResponse.responseType = null">
+            <span aria-hidden="true">x</span>
+        </button>
+    </div>    
     <div class="page-bar p10">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -200,3 +207,5 @@
         </div>
     </div>
 </div>
+
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
