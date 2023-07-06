@@ -85,6 +85,8 @@ export class AddCampaignComponent implements OnInit {
   folderCustomResponse: CustomResponse = new CustomResponse();
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   showUsersPreview = false;
+  mergeTagsInput: any = {};
+  teamMemberEmailIds: any[] = [];
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
@@ -128,6 +130,7 @@ export class AddCampaignComponent implements OnInit {
             this.campaignAccess = data['campaignAccess'];
             this.activeCRMDetails = data['activeCRMDetails'];
             this.isGdprEnabled = data['isGdprEnabled'];
+            this.setFromEmailAndFromName(data);
         },error=>{
             this.xtremandLogger.errorPage(error);
     },()=>{
@@ -153,51 +156,98 @@ export class AddCampaignComponent implements OnInit {
     });
   }
 
-  listCampaignPipelines() {
-    if (this.campaignAccess.enableLeads) {
-        this.showConfigurePipelines = true;
-        this.referenceService.startLoader(this.pipelineLoader);
-        this.campaignService.listCampaignPipelines(this.loggedInUserId)
-            .subscribe(
-                response => {
-                    if (response.statusCode == 200) {
-                        let data = response.data;
-                        this.leadPipelines = data.leadPipelines;
-                        this.dealPipelines = data.dealPipelines;
-                        if (!this.activeCRMDetails.activeCRM) {
-                            this.leadPipelines.forEach(pipeline => {
-                                if (pipeline.default) {
-                                    this.defaultLeadPipelineId = pipeline.id;
-                                    if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
-                                        this.campaign.leadPipelineId = pipeline.id;
-                                    }                                     }
-                            });
-
-                            this.dealPipelines.forEach(pipeline => {
-                                if (pipeline.default) {
-                                    this.defaultDealPipelineId = pipeline.id;
-                                    if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
-                                        this.campaign.dealPipelineId = pipeline.id;
-                                    }                                     }
-                            });
-                        } else {
-                            this.defaultLeadPipelineId = this.leadPipelines[0].id;
-                            this.campaign.leadPipelineId = this.leadPipelines[0].id;
-                            this.defaultDealPipelineId = this.dealPipelines[0].id;
-                            if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
-                                this.campaign.dealPipelineId = this.dealPipelines[0].id;
-                            }
-                            
-                        }
-
-                    }
-                    this.referenceService.stopLoader(this.pipelineLoader);
-                },
-                error => {
-                    this.referenceService.stopLoader(this.pipelineLoader);
-                    this.xtremandLogger.error(error);
-                });
+    private setFromEmailAndFromName(data: any) {
+        let teamMembers = data['teamMembers'];
+        let self = this;
+        $.each(teamMembers, function (index: number, value: any) {
+            self.teamMemberEmailIds.push(teamMembers[index]);
+        });
+        if (this.isAdd) {
+            let teamMember = this.teamMemberEmailIds.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
+            this.campaign.email = teamMember.emailId;
+            this.campaign.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+            this.setEmailIdAsFromName();
+        } else {
+            let existingTeamMemberEmailIds = this.teamMemberEmailIds.map(function (a) { return a.emailId; });
+            if (existingTeamMemberEmailIds.indexOf(this.campaign.email) < 0) {
+                this.setLoggedInUserEmailId();
+            }
+        }
     }
+
+    setFromName() {
+        let user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId == this.campaign.email)[0];
+        this.campaign.fromName = $.trim(user.firstName + " " + user.lastName);
+        this.setEmailIdAsFromName();
+    }
+
+    setLoggedInUserEmailId() {
+        const userProfile = this.authenticationService.userProfile;
+        this.campaign.email = userProfile.emailId;
+        if (userProfile.firstName !== undefined && userProfile.lastName !== undefined) {
+            this.campaign.fromName = $.trim(userProfile.firstName + " " + userProfile.lastName);
+        }
+        else if (userProfile.firstName !== undefined && userProfile.lastName == undefined) {
+            this.campaign.fromName = $.trim(userProfile.firstName);
+        }
+        else {
+            this.campaign.fromName = $.trim(userProfile.emailId);
+        }
+        this.setEmailIdAsFromName();
+    }
+
+
+    setEmailIdAsFromName() {
+        if (this.campaign.fromName.length == 0) {
+            this.campaign.fromName = this.campaign.email;
+        }
+    }
+
+    listCampaignPipelines() {
+        if (this.campaignAccess.enableLeads) {
+            this.showConfigurePipelines = true;
+            this.referenceService.startLoader(this.pipelineLoader);
+            this.campaignService.listCampaignPipelines(this.loggedInUserId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            let data = response.data;
+                            this.leadPipelines = data.leadPipelines;
+                            this.dealPipelines = data.dealPipelines;
+                            if (!this.activeCRMDetails.activeCRM) {
+                                this.leadPipelines.forEach(pipeline => {
+                                    if (pipeline.default) {
+                                        this.defaultLeadPipelineId = pipeline.id;
+                                        if (this.campaign.leadPipelineId == undefined || this.campaign.leadPipelineId == null || this.campaign.leadPipelineId === 0) {
+                                            this.campaign.leadPipelineId = pipeline.id;
+                                        }                                     }
+                                });
+
+                                this.dealPipelines.forEach(pipeline => {
+                                    if (pipeline.default) {
+                                        this.defaultDealPipelineId = pipeline.id;
+                                        if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                            this.campaign.dealPipelineId = pipeline.id;
+                                        }                                     }
+                                });
+                            } else {
+                                this.defaultLeadPipelineId = this.leadPipelines[0].id;
+                                this.campaign.leadPipelineId = this.leadPipelines[0].id;
+                                this.defaultDealPipelineId = this.dealPipelines[0].id;
+                                if (this.campaign.dealPipelineId == undefined || this.campaign.dealPipelineId == null || this.campaign.dealPipelineId === 0) {
+                                    this.campaign.dealPipelineId = this.dealPipelines[0].id;
+                                }
+                                
+                            }
+
+                        }
+                        this.referenceService.stopLoader(this.pipelineLoader);
+                    },
+                    error => {
+                        this.referenceService.stopLoader(this.pipelineLoader);
+                        this.xtremandLogger.error(error);
+                    });
+        }
 
     }
 
@@ -411,8 +461,35 @@ export class AddCampaignComponent implements OnInit {
         }
     }
 
-    openMergeTagsPopup(type:string,index:number){
+    openMergeTagsPopup(type: string, autoResponseSubject: any) {
+        this.mergeTagsInput['isEvent'] = false;
+        this.mergeTagsInput['isCampaign'] = true;
+        this.mergeTagsInput['hideButton'] = true;
+        this.mergeTagsInput['type'] = type;
+        this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+    }
 
+    clearHiddenClick() {
+        this.mergeTagsInput['hideButton'] = false;
+    }
+
+    appendValueToSubjectLine(event: any) {
+        if (event != undefined) {
+            let type = event['type'];
+            let copiedValue = event['copiedValue'];
+            if (type == "campaignSubjectLine") {
+                let subjectLine = $('#subjectLineId').val();
+                let updatedValue = subjectLine + " " + copiedValue;
+                $('#subjectLineId').val(updatedValue);
+                this.campaign.subjectLine = updatedValue;
+                this.validateField('subjectLine');
+                this.validateForm();
+            } else {
+                let autoResponse = event['autoResponseSubject'];
+                autoResponse.subject = autoResponse.subject + " " + copiedValue;
+            }
+        }
+        this.mergeTagsInput['hideButton'] = false;
     }
 
     openCreateFolderPopup() {
