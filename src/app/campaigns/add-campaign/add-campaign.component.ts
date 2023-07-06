@@ -302,7 +302,7 @@ export class AddCampaignComponent implements OnInit {
     validateField(fieldId:string){
     var errorClass = "form-group has-error has-feedback";
     var successClass = "form-group has-success has-feedback";
-    let fieldValue = $.trim($('#'+fieldId).val())
+    let fieldValue = $.trim($('#'+fieldId).val());
     if(fieldId=="campaignName"){
         if(fieldValue.length>0&&this.isValidCampaignName){
             this.campaignNameDivClass = successClass;
@@ -317,7 +317,7 @@ export class AddCampaignComponent implements OnInit {
             this.fromNameDivClass = errorClass;
         }
     }else if(fieldId=="subjectLine"){
-        if(this.campaign.subjectLine.length>0){
+        if($.trim(this.campaign.subjectLine).length>0){
             this.subjectLineDivClass = successClass;
         }else{
             this.subjectLineDivClass = errorClass;
@@ -490,8 +490,7 @@ export class AddCampaignComponent implements OnInit {
 
 
     clearSelectedContactList() {
-        let isOrgAdminCompany = this.authenticationService.module.isOrgAdminCompany;
-        if (isOrgAdminCompany) {
+        if (this.isOrgAdminCompany) {
             this.selectedContactListIds = [];
             this.userListDTOObj = [];
             this.isContactList = false;
@@ -515,7 +514,7 @@ export class AddCampaignComponent implements OnInit {
             let type = event['type'];
             let copiedValue = event['copiedValue'];
             if (type == "campaignSubjectLine") {
-                let subjectLine = $('#subjectLineId').val();
+                let subjectLine = $.trim($('#subjectLineId').val());
                 let updatedValue = subjectLine + " " + copiedValue;
                 $('#subjectLineId').val(updatedValue);
                 this.campaign.subjectLine = updatedValue;
