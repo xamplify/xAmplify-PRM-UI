@@ -1033,7 +1033,7 @@
                             <ng-container *ngIf="campaign?.campaignProcessing">
                                 <img   src="assets/images/processing.gif" alt="Processing">
                               </ng-container>
-                            <h4 class="ellipsis" title="{{campaign.campaignName}}">
+                            <h4 class="ellipsis active-campaigns-all-btns-oneinline" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
                                 <span *ngIf="campaign.campaignName?.length>22">...</span>
                                 <br><br>
@@ -1042,11 +1042,11 @@
                                     style="position: relative;top: -3px;">Through Campaign</span>
                                     <span class="view-banner"
                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                        style="position: relative;top: -3px;">To Campaign</span>
+                                        style="position: relative;top: -3px;">To Campaign</span><br>
                                 </ng-container>
                                 <!--XNFR-125--->
                                 <ng-container *ngIf="campaign?.oneClickLaunch">
-                                    <br><br>
+                                    <!-- <br><br> -->
                                     <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
                                 </ng-container>
                                 <!--XNFR-125--->

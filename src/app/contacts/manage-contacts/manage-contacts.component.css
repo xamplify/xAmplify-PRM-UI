@@ -371,3 +371,15 @@ h6 {
   color: #555555
 }
 
+/* 07-07-2023 - PARTner Manage PARTner grid view glad logins */
+@media (min-width: 1322px) and (max-width: 1358px)  { 
+  .media-querryfor-small-dev {
+    height: 225px;
+}
+}
+
+@media (min-width: 1049px) and (max-width: 1076px)  { 
+  .media-querryfor-small-dev {
+    height: 225px;
+}
+}
