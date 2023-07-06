@@ -473,13 +473,13 @@
 							<tbody>
 							   <ng-container *ngFor="let user of csvPagedItems; let i = index">
 								  <tr>
-									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName | slice:0:30}}
+									 <td> <span data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName | slice:0:30}}</span>
 										<span *ngIf="user.firstName?.length>30">...</span>
 									 </td>
-									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName | slice:0:25}}
+									 <td><span data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName | slice:0:25}}</span>
 										<span *ngIf="user.lastName?.length>25">...</span>
 									 </td>
-									 <td data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId | slice:0:35}}
+									 <td ><span data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId | slice:0:35}}</span>
 										<span *ngIf="user.emailId?.length>35">...</span>
 									 </td>
 									 <td>
@@ -963,16 +963,16 @@
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
 						 <span *ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.vertical">{{allcontacts.vertical | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.vertical}}">{{allcontacts.vertical | slice:0:14}}
 						 <span *ngIf="allcontacts.vertical?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.region">{{allcontacts.region | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.region}}">{{allcontacts.region | slice:0:14}}
 						 <span *ngIf="allcontacts.region?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.partnerType">{{allcontacts.partnerType | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.partnerType}}">{{allcontacts.partnerType | slice:0:14}}
 						 <span *ngIf="allcontacts.partnerType?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="allcontacts.category">{{allcontacts.category | slice:0:14}}
+					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.category}}">{{allcontacts.category | slice:0:14}}
 						 <span *ngIf="allcontacts.category?.length>14">..</span>
 					  </td>
 					  <td class="hidden-xs" *ngIf="!isPartner">
@@ -1120,9 +1120,9 @@
 					  </div>
 				   </div>
 				   <div class="row col-sm-1" style="margin-left: 30px;">
-					  <div data-toggle="tooltip" data-placement="left" title="Add a condition">
-						 <span [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
-						 <i class="fa fa-plus-square" aria-hidden="true"
+					  <div>
+						 <span  [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
+						 <i data-toggle="tooltip" data-placement="left" title="Add a condition" class="fa fa-plus-square" aria-hidden="true"
 							style="color: #0196da"></i>
 						 </span>
 					  </div>
