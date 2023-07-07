@@ -11,8 +11,8 @@
      <span *ngIf="videoFile?.title?.length>25">...</span>
      </h4>
      <!-- XNFR-169 -->
-     <h6 class="moreipsis" *ngIf="categoryName!=undefined">
-        <span translate> Folder <strong data-toggle="tooltip" data-placement="bottom" title="{{categoryName}}">{{categoryName}}</strong></span>
+     <h6  *ngIf="categoryName!=undefined">
+        <span data-toggle="tooltip" data-placement="bottom" title="{{categoryName}}" translate> Folder <strong >{{categoryName}}</strong></span>
      </h6>
      <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
      <h5 data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:25}}

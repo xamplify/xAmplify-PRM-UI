@@ -684,8 +684,8 @@ a {
 }
 
 .actions-block .fa-trash-o {
-  color: #cb5a5e;
-  border: 1px solid #cb5a5e;
+  color: #cb5a5e !important;
+  border: 1px solid #cb5a5e !important;
 }
 
 .actions-block i:hover,

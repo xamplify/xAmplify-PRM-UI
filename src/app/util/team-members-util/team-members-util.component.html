@@ -156,12 +156,13 @@
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
-                  <button class="group-name-cclass btn-primary" translate data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
-                    <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <button class="group-name-cclass btn-primary" >
+                    <span translate data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
+                      {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css btn-primary" data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <button class="tm-group-preview-css btn-primary">
+                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)" class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
             <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">

@@ -30,7 +30,7 @@
 		(click)="viewDetails(asset)"> <i class="fa fa-eye"
 		aria-hidden="true"></i>
 	</a> <a *ngIf="!isPartnerView && asset?.delete"  data-toggle="tooltip" data-placement="top" title="Delete"
-		class="delete" (click)="confirmDelete(asset)"> <i
+		 (click)="confirmDelete(asset)"> <i
 		class="fa fa-trash-o" aria-hidden="true"></i>
 	</a>
 	<ng-container
