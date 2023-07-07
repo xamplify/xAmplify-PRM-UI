@@ -17,7 +17,8 @@ import { Url } from '../models/campaign-url';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
-declare var $:any, swal:any;
+declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
+
 
 @Component({
   selector: 'app-add-campaign',
@@ -92,77 +93,99 @@ export class AddCampaignComponent implements OnInit {
   dealPipelineClass: string = this.formGroupClass;
   endDateDivClass: string = this.formGroupClass;
   isOrgAdminCompany = false;
+  endDatePickr: any;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
+    if("email"!=this.campaignType){
+        this.referenceService.goToPageNotFound();
+    }
    }
 
-  ngOnInit() {
-    this.loadCampaignDetailsSection();
-  }
-
-  loadCampaignDetailsSection(){
-        this.campaignDetailsLoader = true;
-        this.campaign.emailNotification = true;
-        let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-        if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
-        this.partnerModuleCustomName = partnerModuleCustomName;
-        }
-        this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
-        if ('landingPage' == this.campaignType) {
-        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
-        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
-    } else {
-        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
-        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+    ngOnInit() {
+        this.loadCampaignDetailsSection();
     }
-    this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
-    this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
 
-    this.findCampaignDetailsData();
-  }
-
-  findCampaignDetailsData(){
-    this.campaignService.findCampaignDetailsData().subscribe(
-        response=>{
-            let data = response.data;
-            this.names.push(data['campaignNames']);
-            this.categoryNames = data['categories'];
-            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
-            if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
-                this.campaign.categoryId = categoryIds[0];
+    loadCampaignDetailsSection(){
+            this.campaignDetailsLoader = true;
+            this.campaign.emailNotification = true;
+            let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+            if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+            this.partnerModuleCustomName = partnerModuleCustomName;
             }
-            this.campaignAccess = data['campaignAccess'];
-            this.activeCRMDetails = data['activeCRMDetails'];
-            this.isGdprEnabled = data['isGdprEnabled'];
-            this.isOrgAdminCompany  = data['isOrgAdminCompany'];
-            this.showMarketingAutomationOption = this.isOrgAdminCompany;
-            this.setFromEmailAndFromName(data);
-        },error=>{
-            this.xtremandLogger.errorPage(error);
-    },()=>{
-        if (this.activeCRMDetails.activeCRM) {
-            if("SALESFORCE" === this.activeCRMDetails.type){
-                this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
-                    let cfResponse = data;                            
-                    if (cfResponse.statusCode === 400) {
-                        swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-                    } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
-                        swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
-                    }
-                }, error => {
-                    this.xtremandLogger.error(error, "Error in salesforce checkIntegrations()");
-                });
+            
+            if ('landingPage' == this.campaignType) {
+            this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
+            this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
+        } else {
+            this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
+            this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+        }
+        this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+        this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
+        this.initializeEndDatePicker();
+        this.findCampaignDetailsData();
+    }
+
+    private initializeEndDatePicker() {
+        let now: Date = new Date();
+        let defaultDate = now;
+        if (this.campaign.endDate != undefined && this.campaign.endDate != null) {
+            defaultDate = new Date(this.campaign.endDate);
+        }
+
+        this.endDatePickr = flatpickr('#campaignEndDatePicker', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            time_24hr: true,
+            minDate: now,
+            defaultDate: defaultDate
+        });
+    }
+
+    findCampaignDetailsData(){
+        this.campaignService.findCampaignDetailsData().subscribe(
+            response=>{
+                let data = response.data;
+                this.names.push(data['campaignNames']);
+                this.categoryNames = data['categories'];
+                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+                if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
+                    this.campaign.categoryId = categoryIds[0];
+                }
+                this.campaignAccess = data['campaignAccess'];
+                this.activeCRMDetails = data['activeCRMDetails'];
+                this.isGdprEnabled = data['isGdprEnabled'];
+                this.isOrgAdminCompany  = data['isOrgAdminCompany'];
+                this.showMarketingAutomationOption = this.isOrgAdminCompany;
+                this.setFromEmailAndFromName(data);
+            },error=>{
+                this.xtremandLogger.errorPage(error);
+        },()=>{
+            if (this.activeCRMDetails.activeCRM) {
+                if("SALESFORCE" === this.activeCRMDetails.type){
+                    this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
+                        let cfResponse = data;                            
+                        if (cfResponse.statusCode === 400) {
+                            swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+                        } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
+                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
+                        }
+                    }, error => {
+                        this.xtremandLogger.error(error, "Error in salesforce checkIntegrations()");
+                    });
+                }else{
+                    this.listCampaignPipelines();
+                }
             }else{
                 this.listCampaignPipelines();
             }
-        }else{
-            this.listCampaignPipelines();
-        }
-        this.campaignDetailsLoader = false;
-    });
-  }
+            this.campaignDetailsLoader = false;
+        });
+    }
 
     private setFromEmailAndFromName(data: any) {
         let teamMembers = data['teamMembers'];
@@ -552,6 +575,11 @@ export class AddCampaignComponent implements OnInit {
                 this.campaignDetailsLoader = false;
               },
            );
+    }
+
+    clearEndDate() {
+        this.endDatePickr.clear();
+        this.campaign.endDate = undefined;
     }
 
 

@@ -56,312 +56,339 @@
             <form class="form-horizontal form-bordered form-label-stripped">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Campaign details</legend>
-                    <div class="col-xs-6">
-                        <div class="form-body">
-                            <!---Campaign Name-->
-                            <div class="form-group" [attr.class]="campaignNameDivClass">
-                                <label class="control-label col-sm-4 mName" translate>Campaign name
-                                    <br><small class="mNameSave" translate>(Save as)</small>
-                                    <span class="required">*</span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"/>
-                                    <span class="pull-left required" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0">Already Exists</span>
-                                </div>
-                            </div>
-
-                            <!--Folder-->    
-                            <div class="form-group">
-                                <label class="control-label col-sm-4" translate>Folder
-                                    <span class="required"><strong>*</strong></span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
-                                        <option *ngFor="let category of categoryNames"
-                                            [ngValue]="category.id">
-                                            {{category.name}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!--Through Partner / To Partner / To Recipients-->
-                            <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                <!--Through Partner Label-->
-                                <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
-                                data-placement="top" title="{{throughPartnerToolTipMessage}}">
-                                    <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">Through {{authenticationService?.partnerModule?.customName}}</span>
-                                </label>
-                                <div class="col-sm-8 col-xs-6">
-                                    <div class="email-options-checkbox-group email-options-notify">
-                                        <div>
-                                            <switch  [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setChannelCampaign($event)">
-                                            </switch>
-                                        </div>
-                                        <!--To Partner Label-->
-                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
-                                            <label class="cursor-pointer"  data-toggle="tooltip" data-placement="top" title="{{toPartnerToolTipMessage}}">
-                                                <span [className]="!campaign?.channelCampaign ? 'custom-font-weight':''">To {{authenticationService?.partnerModule?.customName}}</span>
-                                            </label>
-                                            <!--Help Access-->
-                                            <span class="info-color-xampc">
-                                                <i class="fa fa-question-circle toggle-info-xampc-change" data-html="true"
-                                                    data-toggle="tooltip" data-placement="bottom" title="{{throughPartnerAndToPartnerHelpToolTip}}"
-                                                    aria-hidden="true"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div> 
-                            </div>
-
-                            <!--White Labeled XNFR-255-->
-                            <div class="form-group" *ngIf="(campaignType=='landingPage' && campaignAccess?.shareWhiteLabeledContent) || (campaign?.channelCampaign && campaignAccess?.shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
-                            <label class="control-label col-sm-4" translate>White Labeled</label>
-                            <div class="col-sm-8">
-                                <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                    (statusChange)="setWhiteLabeled($event)">
-                                </switch>
-                                <span class="info-color-xampc">
-                                    <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
-                                        data-placement="top" aria-hidden="true"
-                                        title="Share As White Labeled Content"></i>
-                                </span>
-                            </div>
-                            </div>
-
-                             <!--View In Browser && GDPR Enabled--> 
-                            <ng-container *ngIf="campaignType=='email' && !campaign?.channelCampaign && campaignAccess?.salesEnablement">
-                                <!--View In Browser-->
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4" translate>View In Browser</label>
-                                    <div class="col-sm-8">
-                                        <switch class="pull-left" [status]="campaign?.viewInBrowserTag" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                            (statusChange)="setViewInBrowser($event)">
-                                        </switch>
-                                        <span class="info-color-xampc">
-                                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
-                                                data-placement="top" aria-hidden="true"
-                                                title="Show / Hide View In Browser Tag"></i>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!--GDPR Enabled-->
-                                <div class="form-group" *ngIf="isGdprEnabled">
-                                    <label class="control-label col-sm-4" translate>Unsubscribe Link</label>
-                                    <div class="col-sm-8">
-                                        <switch class="pull-left" [status]="campaign?.unsubscribeLink" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                            (statusChange)="setUnsubscribeLink($event)">
-                                        </switch>
-                                        <span class="info-color-xampc">
-                                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
-                                                data-placement="top" aria-hidden="true"
-                                                title="Show / Hide Unsubscribe Link"
-                                                style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </ng-container>
-
-                            <!--One Click Launch-->
-                            <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='landingPage'">
-                                <label class="control-label col-sm-4" translate>One-Click Launch</label>
-                                <div class="col-sm-8">
-                                    <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                        (statusChange)="setOneClickLaunch($event)">
-                                    </switch>
-                                    <span class="info-color-xampc">
-                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
-                                            data-placement="top" aria-hidden="true"
-                                            title="{{oneClickLaunchToolTip}}"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!--Co Branding Logo-->
-                            <div class="form-group" *ngIf="campaign?.channelCampaign">
-                                <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
-                                <div class="col-sm-8">
-                                    <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                        (statusChange)="setCoBrandingLogo($event)">
-                                    </switch>
-                                    <span class="info-color-xampc">
-                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
-                                            data-placement="top" aria-hidden="true"
-                                            title="Enable logo of your {{authenticationService?.partnerModule?.customName}} to be displayed in redistributed campaigns"
-                                            ></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!--Notify Partners-->
-                            <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && campaign?.channelCampaign">
-                                <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
-                                <div class="col-sm-8">
-                                    <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                        (statusChange)="setPartnerEmailNotification($event)">
-                                    </switch>
-                                    <span class="info-color-xampc">
-                                        <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-xs-6">
-                        <div class="form-body">
-                            <!---From Name-->
-                            <div class="form-group" [attr.class]="fromNameDivClass">
-                                <label class="control-label col-sm-4" translate>From Name
-                                    <span class="required"> <strong>*</strong></span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
-                                </div>
-                            </div>
-
-                            <!--Subject Line-->
-                            <div class="form-group" [attr.class]="subjectLineDivClass">
-                                <label class="control-label col-sm-4" translate>Subject Line
-                                    <span class="required"> <strong>*</strong> </span>
-                                </label>
-                                <div class="col-sm-8 col-xs-12">
-                                    <div class="input-group merge-tag-input-border">
-                                        <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default button-color" type="button" 
-                                            data-toggle="tooltip" data-placement="right"
-                                            title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
-                                                <i class="fa fa-plus-circle npcfs plus-color" aria-hidden="true"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!--From Email-->
-                            <div class="form-group" [attr.class]="fromEmaiDivClass">
-                                <label class="control-label col-sm-4" translate>From Email
-                                    <span class="required">
-                                        <strong>*</strong>
-                                    </span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%" (change)="setFromName()">
-                                        <option *ngFor="let teamMember of teamMemberEmailIds"
-                                            [ngValue]="teamMember.emailId">
-                                            {{teamMember.emailId}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!--Pre Header-->
-                            <div class="form-group" [attr.class]="preHeaderDivClass">
-                                <label class="control-label col-sm-4" translate>Pre Header
-                                    <span class="required"><strong>*</strong></span>
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
-                                </div>
-                            </div>
-
-                            <!--Notify Me When-->
-                            <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch">
-                            <label class="control-label col-sm-4" translate>Notify Me When</label>
-                            <div class="col-sm-8">
-                                <div class="email-options-checkbox-group email-options-notify">
-                                    <div class="email-options-checkbox clearfix">
-                                        <div>
-                                            <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setEmailOpened($event)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
-                                            <label translate>Email is opened</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="email-options-checkbox clearfix mt10">
-                                        <div>
-                                            <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setLinkOpened($event)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
-                                            <label translate>Link is opened</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="email-options-checkbox clearfix mt10" *ngIf="campaignType=='video'">
-                                        <div>
-                                            <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                (statusChange)="setVideoPlayed($event)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-11 col-xs-12 to-partner-padding">
-                                            <label translate>Video is played</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
-
-                            <!--Configure Pipelines-->
-                            <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='landingPage') || (campaignAccess?.enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
-                                <label class="control-label col-sm-4" translate>Configure Pipelines
+                    <app-modal-popup-loader *ngIf="campaignDetailsLoader"></app-modal-popup-loader>
+                    <div [hidden]="campaignDetailsLoader">
+                        <div class="col-xs-6">
+                            <div class="form-body">
+                                <!---Campaign Name-->
+                                <div class="form-group" [attr.class]="campaignNameDivClass">
+                                    <label class="control-label col-sm-4 mName" translate>Campaign name
+                                        <br><small class="mNameSave" translate>(Save as)</small>
+                                        <span class="required">*</span>
                                     </label>
-                                <div class="col-sm-3">
-                                    <div class="email-options-checkbox-group email-options-notify">
-                                        <div class="email-options-checkbox clearfix">
-                                            <div >
-                                                <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                    (statusChange)="configurePipelines()">
+                                    <div class="col-sm-8">
+                                        <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"/>
+                                        <span class="pull-left required" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0">Already Exists</span>
+                                    </div>
+                                </div>
+
+                                <!--Folder-->    
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" translate>Folder
+                                        <span class="required"><strong>*</strong></span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                            <option *ngFor="let category of categoryNames"
+                                                [ngValue]="category.id">
+                                                {{category.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!--Through Partner / To Partner / To Recipients-->
+                                <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <!--Through Partner Label-->
+                                    <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
+                                    data-placement="top" title="{{throughPartnerToolTipMessage}}">
+                                        <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">Through {{authenticationService?.partnerModule?.customName}}</span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-6">
+                                        <div class="email-options-checkbox-group email-options-notify">
+                                            <div>
+                                                <switch  [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setChannelCampaign($event)">
                                                 </switch>
                                             </div>
-                                            <div class="col-sm-11 col-xs-12 to-partner-padding" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                <span style="cursor: pointer;color: #54a7e9;" >
-                                                    <i class="fa fa-question-circle toggle-info-xampc-pipeline" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
-                                                        style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
+                                            <!--To Partner Label-->
+                                            <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                                <label class="cursor-pointer"  data-toggle="tooltip" data-placement="top" title="{{toPartnerToolTipMessage}}">
+                                                    <span [className]="!campaign?.channelCampaign ? 'custom-font-weight':''">To {{authenticationService?.partnerModule?.customName}}</span>
+                                                </label>
+                                                <!--Help Access-->
+                                                <span class="info-color-xampc">
+                                                    <i class="fa fa-question-circle toggle-info-xampc-change" data-html="true"
+                                                        data-toggle="tooltip" data-placement="bottom" title="{{throughPartnerAndToPartnerHelpToolTip}}"
+                                                        aria-hidden="true"></i>
                                                 </span>
                                             </div>
                                         </div>
+                                    </div> 
+                                </div>
+
+                                <!--White Labeled XNFR-255-->
+                                <div class="form-group" *ngIf="(campaignType=='landingPage' && campaignAccess?.shareWhiteLabeledContent) || (campaign?.channelCampaign && campaignAccess?.shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
+                                <label class="control-label col-sm-4" translate>White Labeled</label>
+                                <div class="col-sm-8">
+                                    <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                        (statusChange)="setWhiteLabeled($event)">
+                                    </switch>
+                                    <span class="info-color-xampc">
+                                        <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                            data-placement="top" aria-hidden="true"
+                                            title="Share As White Labeled Content"></i>
+                                    </span>
+                                </div>
+                                </div>
+
+                                <!--View In Browser && GDPR Enabled--> 
+                                <ng-container *ngIf="campaignType=='email' && !campaign?.channelCampaign && campaignAccess?.salesEnablement">
+                                    <!--View In Browser-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" translate>View In Browser</label>
+                                        <div class="col-sm-8">
+                                            <switch class="pull-left" [status]="campaign?.viewInBrowserTag" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                (statusChange)="setViewInBrowser($event)">
+                                            </switch>
+                                            <span class="info-color-xampc">
+                                                <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                    data-placement="top" aria-hidden="true"
+                                                    title="Show / Hide View In Browser Tag"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!--GDPR Enabled-->
+                                    <div class="form-group" *ngIf="isGdprEnabled">
+                                        <label class="control-label col-sm-4" translate>Unsubscribe Link</label>
+                                        <div class="col-sm-8">
+                                            <switch class="pull-left" [status]="campaign?.unsubscribeLink" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                (statusChange)="setUnsubscribeLink($event)">
+                                            </switch>
+                                            <span class="info-color-xampc">
+                                                <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                    data-placement="top" aria-hidden="true"
+                                                    title="Show / Hide Unsubscribe Link"
+                                                    style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <!--One Click Launch-->
+                                <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='landingPage'">
+                                    <label class="control-label col-sm-4" translate>One-Click Launch</label>
+                                    <div class="col-sm-8">
+                                        <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                            (statusChange)="setOneClickLaunch($event)">
+                                        </switch>
+                                        <span class="info-color-xampc">
+                                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                data-placement="top" aria-hidden="true"
+                                                title="{{oneClickLaunchToolTip}}"></i>
+                                        </span>
                                     </div>
                                 </div>
+
+                                <!--Co Branding Logo-->
+                                <div class="form-group" *ngIf="campaign?.channelCampaign">
+                                    <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
+                                    <div class="col-sm-8">
+                                        <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                            (statusChange)="setCoBrandingLogo($event)">
+                                        </switch>
+                                        <span class="info-color-xampc">
+                                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                data-placement="top" aria-hidden="true"
+                                                title="Enable logo of your {{authenticationService?.partnerModule?.customName}} to be displayed in redistributed campaigns"
+                                                ></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!--Notify Partners-->
+                                <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && campaign?.channelCampaign">
+                                    <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
+                                    <div class="col-sm-8">
+                                        <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                            (statusChange)="setPartnerEmailNotification($event)">
+                                        </switch>
+                                        <span class="info-color-xampc">
+                                            <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
                             </div>
+                        </div>
 
-                             <!--Lead Pipeline-->
-                             <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
-                             *ngIf="campaign?.configurePipelines">
-                                 <label class="control-label col-sm-4">Lead Pipeline<span class="required"><b>*</b></span></label>
-                                 <div class="col-sm-8">
-                                     <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
-                                         placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
-                                         <option [value]="0">Select Pipeline</option>
-                                         <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
-                                     </select>
-                                 </div>
-                                 
-                             </div>
+                        <div class="col-xs-6">
+                            <div class="form-body">
+                                <!---From Name-->
+                                <div class="form-group" [attr.class]="fromNameDivClass">
+                                    <label class="control-label col-sm-4" translate>From Name
+                                        <span class="required"> <strong>*</strong></span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
+                                    </div>
+                                </div>
 
-                             <!--Deal Pipeline-->  
-                             <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
-                             *ngIf="campaign.configurePipelines">
-                                 <label class="control-label col-sm-4">Deal Pipeline<span class="required"><b>*</b></span></label>
-                                 <div class="col-sm-8">
-                                     <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
-                                         placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
-                                         <option [value]="0">Select Pipeline</option>
-                                         <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
-                                     </select>
-                                 </div>
-                             </div>
+                                <!--Subject Line-->
+                                <div class="form-group" [attr.class]="subjectLineDivClass">
+                                    <label class="control-label col-sm-4" translate>Subject Line
+                                        <span class="required"> <strong>*</strong> </span>
+                                    </label>
+                                    <div class="col-sm-8 col-xs-12">
+                                        <div class="input-group merge-tag-input-border">
+                                            <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default button-color" type="button" 
+                                                data-toggle="tooltip" data-placement="right"
+                                                title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                                    <i class="fa fa-plus-circle npcfs plus-color" aria-hidden="true"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <!--From Email-->
+                                <div class="form-group" [attr.class]="fromEmaiDivClass">
+                                    <label class="control-label col-sm-4" translate>From Email
+                                        <span class="required">
+                                            <strong>*</strong>
+                                        </span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%" (change)="setFromName()">
+                                            <option *ngFor="let teamMember of teamMemberEmailIds"
+                                                [ngValue]="teamMember.emailId">
+                                                {{teamMember.emailId}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!--Pre Header-->
+                                <div class="form-group" [attr.class]="preHeaderDivClass">
+                                    <label class="control-label col-sm-4" translate>Pre Header
+                                        <span class="required"><strong>*</strong></span>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
+                                    </div>
+                                </div>
+
+                                <!--Notify Me When-->
+                                <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch">
+                                <label class="control-label col-sm-4" translate>Notify Me When</label>
+                                <div class="col-sm-8">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div>
+                                                <switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setEmailOpened($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                                <label translate>Email is opened</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="email-options-checkbox clearfix mt10">
+                                            <div>
+                                                <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setLinkOpened($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                                <label translate>Link is opened</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="email-options-checkbox clearfix mt10" *ngIf="campaignType=='video'">
+                                            <div>
+                                                <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setVideoPlayed($event)">
+                                                </switch>
+                                            </div>
+                                            <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                                <label translate>Video is played</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <!--Configure Pipelines-->
+                                <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='landingPage') || (campaignAccess?.enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
+                                    <label class="control-label col-sm-4" translate>Configure Pipelines
+                                        </label>
+                                    <div class="col-sm-3">
+                                        <div class="email-options-checkbox-group email-options-notify">
+                                            <div class="email-options-checkbox clearfix">
+                                                <div >
+                                                    <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                        (statusChange)="configurePipelines()">
+                                                    </switch>
+                                                </div>
+                                                <div class="col-sm-11 col-xs-12 to-partner-padding" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                                    <span style="cursor: pointer;color: #54a7e9;" >
+                                                        <i class="fa fa-question-circle toggle-info-xampc-pipeline" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
+                                                            style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--Lead Pipeline-->
+                                <div class="form-group" [attr.class]="leadPipelineClass" style="margin-bottom: 20px"
+                                *ngIf="campaign?.configurePipelines">
+                                    <label class="control-label col-sm-4">Lead Pipeline<span class="required"><b>*</b></span></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" [(ngModel)]="campaign.leadPipelineId" [ngModelOptions]="{standalone: true}"
+                                            placeholder="leadPipelineId" id="leadPipelineId" (change)="validateForm();">
+                                            <option [value]="0">Select Pipeline</option>
+                                            <option *ngFor="let pipeline of leadPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+
+                                <!--Deal Pipeline-->  
+                                <div class="form-group" [attr.class]="dealPipelineClass" style="margin-bottom: 20px"
+                                *ngIf="campaign.configurePipelines">
+                                    <label class="control-label col-sm-4">Deal Pipeline<span class="required"><b>*</b></span></label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" [(ngModel)]="campaign.dealPipelineId" [ngModelOptions]="{standalone: true}"
+                                            placeholder="dealPipelineId" id="dealPipelineId" (change)="validateForm();">
+                                            <option [value]="0">Select Pipeline</option>
+                                            <option *ngFor="let pipeline of dealPipelines" [value]="pipeline.id">{{pipeline.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                 <!-- End Date -->
+                                 <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign?.channelCampaign || campaignType == 'landingPage'">
+                                    <label class="control-label col-sm-4" translate>End Date</label>
+                                    <div class="col-sm-8" style="display:flex">
+                                        <div class="input-group">
+                                            <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr"
+                                                [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
+                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
+                                                <button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
+                                                        (click)="clearEndDate()"></i></button>
+                                            </span>
+                                        </div>
+                                        <div style="padding: 0; margin-left: 15px;margin-top: 6px">
+                                            <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top"
+                                                title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
+                                                <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                                                                                                                                                                         
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+
+
                     
                 </fieldset>
             </form>
@@ -369,6 +396,22 @@
             </div>
         </div>
     </div>
+
+     <!---Email Templates---->
+     <div class="portlet light shadow">
+        <div class="portlet-body clearfix">
+            <div class="col-xs-12">
+            <form class="form-horizontal form-bordered form-label-stripped">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Select An Email Template</legend>
+                    <app-landing-page-loader></app-landing-page-loader>
+                </fieldset>
+            </form>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
