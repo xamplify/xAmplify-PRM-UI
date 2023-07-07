@@ -195,7 +195,7 @@
     </div>
 
     
-    <div *ngIf="pagination.pagedItems.length !== 0" style="margin-top: 25px;">
+    <div *ngIf="pagination.pagedItems.length !== 0">
             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
         </div>
         <!-- End of 24 -->

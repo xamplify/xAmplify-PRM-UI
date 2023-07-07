@@ -1272,7 +1272,7 @@
                  <!-- End Of tab Content -->
               </div>
               <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                 <div class="col-xs-12 pt5" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
+                 <div class="col-xs-12 pt5 scroll-top-margin" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="row" style="padding-left: 10px;margin-top: -15px;">
                        <app-pagination class="col-xs-10" [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
                        (notifyParent)="setPage($event)"></app-pagination>
