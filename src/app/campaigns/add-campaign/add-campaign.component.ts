@@ -77,10 +77,7 @@ export class AddCampaignComponent implements OnInit {
   selectedContactListIds = [];
   userListDTOObj = [];
   isContactList = false;
-  selectedEmailTemplateRow: number;
-  isEmailTemplate: boolean;
   selectedLandingPageRow: number;
-  isLandingPage: boolean;
   selectedPartnershipId: number;
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
@@ -101,6 +98,12 @@ export class AddCampaignComponent implements OnInit {
   emailTemplatesOrLandingPagesLoader = false;
   selectedFolderIds = [];
   campaignEmailTemplates:Array<any> = Array<any>();
+  selectedEmailTemplateRow: number;
+  isEmailTemplate: boolean;
+  isLandingPage: boolean;
+
+
+  
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService) {
@@ -627,7 +630,7 @@ export class AddCampaignComponent implements OnInit {
     }
 
     showFolderFilterPopup(){
-        
+
     }
 
 }
