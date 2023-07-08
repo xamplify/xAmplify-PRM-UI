@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <div class="portlet light row steps-view">
-                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"    style="width: 50%;">
+                   <div class="col-block width" [attr.class]="campaignDetailsTabClass"   style="width: 50%;">
                        <div  class="cenetered-block colorbox-1">
                            <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
                            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Campaign Details & Templates</h5>
@@ -56,8 +56,7 @@
             <form class="form-horizontal form-bordered form-label-stripped">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Campaign details</legend>
-                    <app-modal-popup-loader *ngIf="campaignDetailsLoader"></app-modal-popup-loader>
-                    <div [hidden]="campaignDetailsLoader">
+                    <div>
                         <div class="col-xs-6">
                             <div class="form-body">
                                 <!---Campaign Name-->
@@ -365,17 +364,18 @@
                                  <!-- End Date -->
                                  <div class="form-group" [attr.class]="endDateDivClass" [hidden]="!campaign?.channelCampaign || campaignType == 'landingPage'">
                                     <label class="control-label col-sm-4" translate>End Date</label>
-                                    <div class="col-sm-8" style="display:flex">
+                                    <div class="col-sm-8 flex">
                                         <div class="input-group">
                                             <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                 [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
-                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Clear">
-                                                <button class="btn btn-default" type="button"><i class="fa fa-refresh npcfs" aria-hidden="true"
-                                                        (click)="clearEndDate()"></i></button>
+                                            <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-refresh npcfs" aria-hidden="true" (click)="clearEndDate()"></i>
+                                                </button>
                                             </span>
                                         </div>
-                                        <div style="padding: 0; margin-left: 15px;margin-top: 6px">
-                                            <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top"
+                                        <div>
+                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top"
                                                 title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
                                                 <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true"></i>
                                             </span>
@@ -387,9 +387,6 @@
                             </div>
                         </div>
                     </div>
-
-
-                    
                 </fieldset>
             </form>
 
@@ -404,7 +401,21 @@
             <form class="form-horizontal form-bordered form-label-stripped">
                 <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Select An Email Template</legend>
-                    <app-landing-page-loader></app-landing-page-loader>
+                    <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
+                    <div class="col-xs-12 portlet light" *ngIf="!emailTemplatesOrLandingPagesLoader">
+                        <div class="input-icon right pull-right cebp" style="padding-right: 8px;">
+                            <input type="text" [(ngModel)]="emailTemplatesPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findEmailTemplatesOnKeyPress($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px 10px 0px 0px;" *ngIf="emailTemplatesPagination.searchKey" (click)="emailTemplatesPagination.searchKey='';searchEmailTemplates()"></button>
+                            <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplates()" style="right: 9px !important;">
+                                <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                        </div>
+                        <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
+                            <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                             *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+                            <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                             *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </fieldset>
             </form>
 

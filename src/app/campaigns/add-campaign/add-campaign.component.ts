@@ -16,10 +16,8 @@ import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
-
+import { PagerService } from 'app/core/services/pager.service';
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
-
-
 @Component({
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
@@ -32,6 +30,10 @@ export class AddCampaignComponent implements OnInit {
   campaign: Campaign = new Campaign();
   loading = false;
   isAdd = false;
+  isEmailCampaign = false;
+  isVideoCampaign = false;
+  isPageCampaign = false;
+  isSurveyCampaign = false;
 
   defaultTabClass = "col-block";
   activeTabClass = "col-block col-block-active width";
@@ -95,31 +97,42 @@ export class AddCampaignComponent implements OnInit {
   isOrgAdminCompany = false;
   endDatePickr: any;
 
+  /****Email Templates****/
+  emailTemplatesOrLandingPagesLoader = false;
+  selectedFolderIds = [];
+  campaignEmailTemplates:Array<any> = Array<any>();
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
-    private activatedRoute:ActivatedRoute,public integrationService: IntegrationService) {
+    private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
+    let currentUrl = this.referenceService.getCurrentRouteUrl();
+    this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
     if("email"!=this.campaignType){
         this.referenceService.goToPageNotFound();
     }
+    this.isEmailCampaign = "email"==this.campaignType;
+    this.isVideoCampaign = "video"==this.campaignType;
+    this.isSurveyCampaign = "survey"==this.campaignType;
+    this.isPageCampaign = "page"==this.campaignType;
+
    }
 
     ngOnInit() {
         this.loadCampaignDetailsSection();
+        this.findEmailTemplates();
     }
 
     loadCampaignDetailsSection(){
-            this.campaignDetailsLoader = true;
-            this.campaign.emailNotification = true;
-            let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-            if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
-            this.partnerModuleCustomName = partnerModuleCustomName;
-            }
-            
-            if ('landingPage' == this.campaignType) {
-            this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
-            this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
+        this.campaignDetailsLoader = true;
+        this.campaign.emailNotification = true;
+        let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+        if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+        this.partnerModuleCustomName = partnerModuleCustomName;
+        }
+        if ('landingPage' == this.campaignType) {
+        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
+        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
         } else {
             this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
             this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
@@ -455,9 +468,9 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.enableCoBrandingLogo = event;
         this.removeTemplateAndAutoResponse();
         if (this.campaignType != 'landingPage') {
-            this.filterCoBrandedTemplates(event);
+            this.findEmailTemplates();
         } else {
-            this.filterCoBrandedLandingPages(event);
+            this.findEmailTemplates();
         }
     }
 
@@ -582,5 +595,39 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.endDate = undefined;
     }
 
+
+    /*************************Email Templates**************************/
+    findEmailTemplates(){
+        this.emailTemplatesOrLandingPagesLoader = true;
+        if(this.isEmailCampaign){
+            this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            if(this.campaign.enableCoBrandingLogo){
+                this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            }else{
+                this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
+        }
+        this.campaignService.findCampaignEmailTemplates(this.emailTemplatesPagination).subscribe(
+            response=>{
+                this.campaignEmailTemplates = response.data.list;
+                this.emailTemplatesPagination = this.pagerService.getPagedItems(this.emailTemplatesPagination, this.campaignEmailTemplates);
+                this.emailTemplatesOrLandingPagesLoader =  false;
+            },error=>{
+                this.emailTemplatesOrLandingPagesLoader = false;
+            });
+
+    }
+
+    findEmailTemplatesOnKeyPress(eventKeyCode){
+
+    }
+
+    searchEmailTemplates(){
+
+    }
+
+    showFolderFilterPopup(){
+        
+    }
 
 }
