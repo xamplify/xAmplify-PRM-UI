@@ -953,7 +953,7 @@ export class CampaignService {
 
     listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
         let url = "listEmailTemplateCategories";
-        if("landingPage"==campaignType){
+        if("landingPage"==campaignType || "page"==campaignType){
             url = "listLandingPageCategories"
         }
         return this.http.get(this.URL + "category/"+url+"/"+userId+"?access_token=" + this.authenticationService.access_token, "")

@@ -58,6 +58,7 @@ export class AddCampaignComponent implements OnInit {
   editedCampaignName = "";
   isValidCampaignName = false;
   categoryNames: any;
+  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   partnerModuleCustomName = "Partner";
   toPartnerToolTipMessage = "";
   throughPartnerToolTipMessage = "";
@@ -84,8 +85,6 @@ export class AddCampaignComponent implements OnInit {
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
   dataError: boolean;
-  folderCustomResponse: CustomResponse = new CustomResponse();
-  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   showUsersPreview = false;
   mergeTagsInput: any = {};
   teamMemberEmailIds: any[] = [];
@@ -96,16 +95,24 @@ export class AddCampaignComponent implements OnInit {
   isOrgAdminCompany = false;
   endDatePickr: any;
 
+
   /****Email Templates****/
   emailTemplatesOrLandingPagesLoader = false;
-  selectedFolderIds = [];
   campaignEmailTemplates:Array<any> = Array<any>();
   selectedEmailTemplateRow: number;
   isEmailTemplate: boolean;
   isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
-
-
+ /***Filter Popup****/
+  public selectedFolderIds = [];
+  public emailTemplateFolders: Array<any>;
+  public folderFields: any;
+  public folderFilterPlaceHolder: string = 'Select folder';
+  folderErrorCustomResponse: CustomResponse = new CustomResponse();
+  isFolderSelected = true;
+  folderCustomResponse: CustomResponse = new CustomResponse();
+  filterCategoryLoader = false;
+  isShowFilterDiv = false;
   
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -616,7 +623,10 @@ export class AddCampaignComponent implements OnInit {
         }
         this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
             response=>{
-                this.campaignEmailTemplates = response.data.list;
+                const data = response.data;
+                this.campaignEmailTemplates = data.list;
+                emailTemplatesPagination.totalRecords = data.totalRecords;
+                this.emailTemplatesSortOption.totalRecords = data.totalRecords;
                 emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, this.campaignEmailTemplates);
                 this.emailTemplatesOrLandingPagesLoader =  false;
             },error=>{
@@ -629,6 +639,11 @@ export class AddCampaignComponent implements OnInit {
         if(eventKeyCode==13){
             this.searchEmailTemplates();
         }
+    }
+
+    paginateEmailTempaltes(event:any){
+        this.emailTemplatesPagination.pageIndex = event.page;
+		this.findEmailTemplates(this.emailTemplatesPagination);
     }
 
     sortEmailTemplates(text: any) {
@@ -647,8 +662,40 @@ export class AddCampaignComponent implements OnInit {
         this.findEmailTemplates(pagination);
     }
 
-    showFolderFilterPopup(){
-
+    findEmailTemplatesOrPagesFolder() {
+        if(this.isShowFilterDiv){
+            this.filterCategoryLoader = true;
+            this.folderFields = { text: 'name', value: 'id' };
+            this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId, this.campaignType).
+            subscribe(data => {
+                this.emailTemplateFolders = data;
+                this.filterCategoryLoader = false;
+            }, error => {
+                this.emailTemplateFolders = [];
+                this.filterCategoryLoader = false;
+            });
+        }
     }
+
+    clearFilter() {
+        this.isShowFilterDiv = false;
+        if(this.selectedFolderIds.length>0){
+            this.selectedFolderIds = [];
+            this.applyFilter();
+        }else{
+            this.selectedFolderIds = [];
+        }
+    }
+
+    applyFilter(){
+        if (this.selectedFolderIds.length > 0) {
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+        } else {
+            this.emailTemplatesPagination.categoryIds = [];
+        }
+        this.emailTemplatesPagination.pageIndex = 1;
+        this.findEmailTemplates(this.emailTemplatesPagination);
+    }
+
 
 }

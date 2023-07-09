@@ -403,12 +403,11 @@
                     <legend class="scheduler-border">Select An Email Template</legend>
                     <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                     <div class="col-xs-12 portlet light" *ngIf="!emailTemplatesOrLandingPagesLoader">
-                      
                         <!--Filter Icon-->
-                        <button type="submit" class="float-right" (click)="showFolderFilterPopup()">
-                            <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                        <button type="submit"  class="float-right fontsize-16px" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                            <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                              *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
-                            <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
+                            <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                              *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
                         </button>
                         <!--Search Key Icon-->
@@ -424,6 +423,19 @@
                             <option   *ngFor="let option of emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                             </select>
                         </div>
+                        <!--Filter Option-->
+                        <div *ngIf="!filterCategoryLoader && isShowFilterDiv">
+                            <h4  translate>Apply Filter</h4>
+                            <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+                            [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                            [dataSource]='emailTemplateFolders' [fields]='folderFields'
+                            [placeholder]='folderFilterPlaceHolder'>
+                            </ejs-multiselect>
+                            <div class="float-right">
+                                <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                                <button class="btn btn-info" (click)="applyFilter()">Apply</button>
+                            </div>
+                        </div>
                         <!--List Of Email Templates-->
                         <div class="portlet-body">
                             <div class="row">
@@ -437,7 +449,7 @@
                                                             <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
                                                         </label>
                                                     </span>
-                                                    <img class="img-grid-track" src="{{emailTemplate?.subject}}" alt="" >
+                                                    <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
                                                         <span class="icon-alignments"> 
                                                             <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();getTemplateById(emailTemplate)" data-original-title="Preview">
                                                             <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
@@ -454,7 +466,7 @@
                                                                         <br>
                                                                         <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On" style="float:left; margin: 3px;">
                                                                             <span>
-                                                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"></app-timestamp>
+                                                                               <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                                                                             </span>
                                                                         </span>
                                                                         <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
@@ -479,10 +491,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader" class="alert alert-info">
+                                        <strong>No Data Found.</strong>
+                                    </div>
                                 </form>      
                              </div>
                          </div>       
-                        <!--Pagination-->
+                    </div>
+                    <!--Pagination-->
+                    <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="emailTemplatesOrLandingPagesLoader">
+                        <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)">
+                        </app-pagination>
                     </div>
                 </fieldset>
             </form>
@@ -496,3 +515,4 @@
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 
 <app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
+ <!-----------------------------View Filter Popup----------->
