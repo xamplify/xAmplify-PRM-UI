@@ -403,6 +403,7 @@
                     <legend class="scheduler-border">Select An Email Template</legend>
                     <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                     <div class="col-xs-12 portlet light" *ngIf="!emailTemplatesOrLandingPagesLoader">
+                      
                         <!--Filter Icon-->
                         <button type="submit" class="float-right" (click)="showFolderFilterPopup()">
                             <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply a filter"
@@ -412,10 +413,16 @@
                         </button>
                         <!--Search Key Icon-->
                         <div class="input-icon right pull-right pr-epx">
-                            <input type="text" [(ngModel)]="emailTemplatesPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findEmailTemplatesOnKeyPress($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px 10px 0px 0px;" *ngIf="emailTemplatesPagination.searchKey" (click)="emailTemplatesPagination.searchKey='';searchEmailTemplates()"></button>
+                            <input type="text" [(ngModel)]="emailTemplatesSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findEmailTemplatesOnEnterKeyPress($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px 10px 0px 0px;" *ngIf="emailTemplatesSortOption.searchKey" (click)="emailTemplatesSortOption.searchKey='';searchEmailTemplates()"></button>
                             <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplates()" style="right: 9px !important;">
                                 <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                        </div>
+                         <!--Sort DropDown-->
+                        <div class="input-icon right pull-right pr-epx">
+                            <select class="form-control" [(ngModel)]="emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortEmailTemplates($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
+                            <option   *ngFor="let option of emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                            </select>
                         </div>
                         <!--List Of Email Templates-->
                         <div class="portlet-body">

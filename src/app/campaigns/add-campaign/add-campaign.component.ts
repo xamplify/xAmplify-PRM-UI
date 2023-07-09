@@ -6,7 +6,6 @@ import { Campaign } from '../models/campaign';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { ActivatedRoute } from '@angular/router';
-import { CampaignAccess } from '../models/campaign-access';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pipeline } from 'app/dashboard/models/pipeline';
 import { IntegrationService } from 'app/core/services/integration.service';
@@ -17,12 +16,15 @@ import { Url } from '../models/campaign-url';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { PagerService } from 'app/core/services/pager.service';
+import { SortOption } from 'app/core/models/sort-option';
+import { UtilService } from 'app/core/services/util.service';
+
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 @Component({
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.css'],
-  providers:[CallActionSwitch]
+  providers:[CallActionSwitch,SortOption]
 })
 export class AddCampaignComponent implements OnInit {
 
@@ -101,12 +103,14 @@ export class AddCampaignComponent implements OnInit {
   selectedEmailTemplateRow: number;
   isEmailTemplate: boolean;
   isLandingPage: boolean;
+  emailTemplatesSortOption:SortOption = new SortOption();
 
 
   
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
-    private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService) {
+    private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
+    private utilService:UtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     let currentUrl = this.referenceService.getCurrentRouteUrl();
@@ -123,7 +127,7 @@ export class AddCampaignComponent implements OnInit {
 
     ngOnInit() {
         this.loadCampaignDetailsSection();
-        this.findEmailTemplates();
+        this.findEmailTemplates(this.emailTemplatesPagination);
     }
 
     loadCampaignDetailsSection(){
@@ -471,9 +475,9 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.enableCoBrandingLogo = event;
         this.removeTemplateAndAutoResponse();
         if (this.campaignType != 'landingPage') {
-            this.findEmailTemplates();
+            this.findEmailTemplates(this.emailTemplatesPagination);
         } else {
-            this.findEmailTemplates();
+            this.findEmailTemplates(this.emailTemplatesPagination);
         }
     }
 
@@ -600,20 +604,20 @@ export class AddCampaignComponent implements OnInit {
 
 
     /*************************Email Templates**************************/
-    findEmailTemplates(){
+    findEmailTemplates(emailTemplatesPagination:Pagination){
         this.emailTemplatesOrLandingPagesLoader = true;
         if(this.isEmailCampaign){
-            this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            emailTemplatesPagination.filterBy = "CampaignRegularEmails";
             if(this.campaign.enableCoBrandingLogo){
-                this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
             }else{
-                this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
         }
-        this.campaignService.findCampaignEmailTemplates(this.emailTemplatesPagination).subscribe(
+        this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
             response=>{
                 this.campaignEmailTemplates = response.data.list;
-                this.emailTemplatesPagination = this.pagerService.getPagedItems(this.emailTemplatesPagination, this.campaignEmailTemplates);
+                emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, this.campaignEmailTemplates);
                 this.emailTemplatesOrLandingPagesLoader =  false;
             },error=>{
                 this.emailTemplatesOrLandingPagesLoader = false;
@@ -621,12 +625,26 @@ export class AddCampaignComponent implements OnInit {
 
     }
 
-    findEmailTemplatesOnKeyPress(eventKeyCode){
-
+    findEmailTemplatesOnEnterKeyPress(eventKeyCode:number){
+        if(eventKeyCode==13){
+            this.searchEmailTemplates();
+        }
     }
 
-    searchEmailTemplates(){
+    sortEmailTemplates(text: any) {
+		this.emailTemplatesSortOption.selectedGroupsDropDownOption = text;
+		this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
+	}
 
+    searchEmailTemplates(){
+        this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination,this.emailTemplatesSortOption);
+    }
+
+    setSearchAndSortOptionsForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption){
+		pagination.pageIndex = 1;
+		pagination.searchKey = emailTemplatesSortOption.searchKey;
+        pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedGroupsDropDownOption, pagination);
+        this.findEmailTemplates(pagination);
     }
 
     showFolderFilterPopup(){
