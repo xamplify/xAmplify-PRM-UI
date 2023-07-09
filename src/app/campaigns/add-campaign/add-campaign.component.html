@@ -166,7 +166,7 @@
                                 </ng-container>
 
                                 <!--One Click Launch-->
-                                <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='landingPage'">
+                                <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='page'">
                                     <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                     <div class="col-sm-8">
                                         <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -312,25 +312,17 @@
                                 </div>
 
                                 <!--Configure Pipelines-->
-                                <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='landingPage') || (campaignAccess?.enableLeads && campaignType!='landingPage' && showMarketingAutomationOption))">
-                                    <label class="control-label col-sm-4" translate>Configure Pipelines
-                                        </label>
-                                    <div class="col-sm-3">
-                                        <div class="email-options-checkbox-group email-options-notify">
-                                            <div class="email-options-checkbox clearfix">
-                                                <div >
-                                                    <switch [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                                        (statusChange)="configurePipelines()">
-                                                    </switch>
-                                                </div>
-                                                <div class="col-sm-11 col-xs-12 to-partner-padding" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                    <span style="cursor: pointer;color: #54a7e9;" >
-                                                        <i class="fa fa-question-circle toggle-info-xampc-pipeline" data-toggle="tooltip" data-placement="right" title="Configure Pipelines for this Campaign"
-                                                            style="font-size: 20px;float: left;margin: -18px 0 0 0px;" aria-hidden="true"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='page') || (campaignAccess?.enableLeads && campaignType!='page' && showMarketingAutomationOption))">
+                                    <label class="control-label col-sm-4" translate>Configure Pipelines</label>
+                                    <div class="col-sm-8">
+                                        <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                (statusChange)="configurePipelines()">
+                                        </switch>
+                                        <span class="info-color-xampc">
+                                            <i class="fa fa-question-circle toggle-info-xampc" data-toggle="tooltip"
+                                                data-placement="top" aria-hidden="true"
+                                                title="Configure Pipelines for this Campaign"></i>
+                                        </span>
                                     </div>
                                 </div>
 
@@ -369,13 +361,13 @@
                                             <input type="text" id="campaignEndDatePicker" placeholder="YYYY-MM-DD" class="form-control flatpickr"
                                                 [(ngModel)]="campaign.endDate" name="endDate" [value]="campaign.endDate" />
                                             <span class="input-group-btn flex" data-toggle="tooltip" data-placement="top" title="Clear">
-                                                <button class="btn btn-default" type="button">
+                                                <button class="btn btn-default margin-0px" type="button">
                                                     <i class="fa fa-refresh npcfs" aria-hidden="true" (click)="clearEndDate()"></i>
                                                 </button>
                                             </span>
                                         </div>
                                         <div>
-                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top"
+                                            <span class="input-group-btn info-color-xampc" data-toggle="tooltip" data-placement="top"
                                                 title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
                                                 <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true"></i>
                                             </span>

@@ -395,18 +395,19 @@ export class AddCampaignComponent implements OnInit {
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
-        if(this.campaignType!='landingPage'){
+        if(this.campaignType!='page'){
             this.campaign.whiteLabeled = false;
         }
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
-            if (this.campaignType != 'landingPage') {
+            if (this.campaignType != 'page') {
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
           //  this.loadContacts();
         } else {
             this.campaign.oneClickLaunch = false;
+            this.campaign.configurePipelines = false;
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
@@ -481,7 +482,7 @@ export class AddCampaignComponent implements OnInit {
     setCoBrandingLogo(event: any) {
         this.campaign.enableCoBrandingLogo = event;
         this.removeTemplateAndAutoResponse();
-        if (this.campaignType != 'landingPage') {
+        if (this.campaignType != 'page') {
             this.findEmailTemplates(this.emailTemplatesPagination);
         } else {
             this.findEmailTemplates(this.emailTemplatesPagination);
