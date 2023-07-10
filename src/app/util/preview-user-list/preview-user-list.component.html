@@ -5,7 +5,8 @@
         <button type="button" class="close-circle" (click)="closePopup()">
           <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <h4 class="modal-title center-align" title="{{userListName}}">
+          <h4 class="modal-title center-align" data-toggle="tooltip" data-placement="bottom"
+           title="{{userListName}}">
             <strong>{{userListName|slice:0:50}}<span *ngIf="userListName?.length>50">...</span></strong>
         </h4>
         </div>
@@ -30,9 +31,9 @@
                   <td>
                     <strong>{{user?.companyName}}</strong>
                   </td>
-                  <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']"
-                    [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">
-                    {{user.emailId}}
+                  <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']">
+                    <span  data-toggle="tooltip" data-placement="bottom"
+                    [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}</span>
                   </td>
                   <td>
                     {{user?.firstName}}
