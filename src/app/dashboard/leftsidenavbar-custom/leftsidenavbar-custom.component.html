@@ -1,5 +1,6 @@
 <div class="my-container">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <app-response-message [customResponse]="leftMenuCustomResponse"></app-response-message>
 </div>
 <div class="col-xs-12" style="padding: 0">
     <div class="portlet light border-radius-0">
@@ -11,5 +12,5 @@
                 style="border-color: rgb(114, 212, 251); margin-top: 2px; margin-right: 50%;">{{menu.customName}}</li>
         </ul>
     </div>
-    <button class="btn green-haze" style="float: right;" (click)="updateMenuItems()">Submit</button>
+    <button class="btn green-haze" style="float: right;" (click)="updateLeftMenuItems()">Submit</button>
 </div>

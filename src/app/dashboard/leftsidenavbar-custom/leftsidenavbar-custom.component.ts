@@ -4,7 +4,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from '../dashboard.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DragulaService } from 'ng2-dragula';
-
+import { CustomResponse } from 'app/common/models/custom-response';
+declare var swal : any;
 @Component({
   selector: 'app-leftsidenavbar-custom',
   templateUrl: './leftsidenavbar-custom.component.html',
@@ -15,6 +16,7 @@ export class LeftsidenavbarCustomComponent implements OnInit {
   data: any;
   ngxloading: boolean;
   menuItems1: any;
+  leftMenuCustomResponse: CustomResponse = new CustomResponse();
   constructor(public authenticationService: AuthenticationService, public utilService: UtilService, private dashBoardService: DashboardService, public referenceService: ReferenceService
     , private dragulaService: DragulaService) {
     dragulaService.setOptions('leftSideMenuDragula', { removeOnSpill: true })
@@ -54,6 +56,25 @@ export class LeftsidenavbarCustomComponent implements OnInit {
         () => console.log('finished'));
   }
 
+  updateLeftMenuItems(upadte: string){
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: 'Clicking "Update" will change the Leftside menu and reload the entire application.',
+			type: 'success',
+			icon: "success",
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Update'
+
+		}).then(function () {
+			self.updateMenuItems();
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+	}
+
   updateMenuItems() {
     this.ngxloading = true;
     let customleftmenu = {};
@@ -64,8 +85,9 @@ export class LeftsidenavbarCustomComponent implements OnInit {
         data => {
           if (data.statusCode == 200) {
             this.ngxloading = false;
-            this.referenceService.showSweetAlertSuccessMessage(data.message);
+            this.leftMenuCustomResponse = new CustomResponse('SUCCESS', data.message, true);
             this.menuItems1 = data;
+            window.location.reload();
           }
         },
         error => console.log(error),
@@ -73,3 +95,7 @@ export class LeftsidenavbarCustomComponent implements OnInit {
   }
 
 }
+
+
+
+
