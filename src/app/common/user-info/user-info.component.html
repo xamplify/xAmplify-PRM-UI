@@ -20,7 +20,7 @@
 			 <span *ngIf="userInfo?.lastName?.length>15">..</span>
 		  </h5>
 	   </ng-container>
-	   <h5 *ngIf="!isFromAdminList" class='' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} {{userInfo?.lastName}}">{{userInfo?.firstName | slice:0:15}}
+	   <h5 *ngIf="!isFromAdminList" class='' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} ">{{userInfo?.firstName | slice:0:15}}
 		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
 		  &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 	   </h5>

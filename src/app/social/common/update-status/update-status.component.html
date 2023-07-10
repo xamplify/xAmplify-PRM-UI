@@ -599,7 +599,7 @@
                                     <ng-container *ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
                                     <tr role="row" id="social-campaignContactListTable_{{contactList?.id}}" (click)="highlightContactRow(contactList,$event,contactList.count,contactList.emailValidationInd)"
                                          [class.contact-list-selected]="(socialCampaign?.userListIds.indexOf(contactList.id)>-1 && contactList.count>0)"
-                                        (mouseover)='showContactsAlert(contactList.count)' [attr.title]="emptyContactsMessage">
+                                        (mouseover)='showContactsAlert(contactList.count)'>
                                         <td class='m0 text-center'>
                                             <input type="checkbox" class="chk" lang="{{contactList?.name}}" id="{{contactList?.id}}" [checked]="socialCampaign?.userListIds.indexOf(contactList.id)>-1" 
                                                  name="social-campaignContact[]" value="{{contactList.id}}" (click)="highlightRow(contactList,$event)"
@@ -607,7 +607,7 @@
                                          </td>   
                                         <td class="cw" *ngIf="showExpandButton">
                                             <div class="actions-block left-float">
-                                              <a (click)="$event.stopPropagation();viewMatchedContacts(contactList)" title="Matched Results">
+                                              <a (click)="$event.stopPropagation();viewMatchedContacts(contactList)" data-toggle="tooltip" data-placement="bottom"  title="Matched Results">
                                                 <i class="fa" [ngClass]="{'fa-angle-right': !contactList?.expand, 'fa-angle-down': contactList?.expand}"
                                                   aria-hidden="true" style=" padding-top: 0px;"></i>
                                               </a>
@@ -624,8 +624,9 @@
                                             <img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'" src="{{properties?.pipedriveImage}}" alt="Pipedrive" class="img-class-list list-icons-sm">
                                           </td>
                                           <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{contactList?.name}}">
-                                                <span><strong>{{contactList?.name}}</strong></span>
+                                            <h4 class="mt5 mb5 f-w-600" >
+                                                <span data-toggle="tooltip" data-placement="bottom" title="{{contactList?.name}}"
+                                                ><strong>{{contactList?.name}}</strong></span>
                                             </h4>
                                             <h6 *ngIf="!showNavigationBreadCrumbToPartner" class="moreipsis" title="{{contactList?.createdName}}">
                                                 <span translate> Created By <strong>{{contactList?.creatorName}}</strong></span>
@@ -660,7 +661,7 @@
                                         </td>
                                         <td class='text-center'>
                                             <a class="actions-block float-none">
-                                                <i class="fa fa-eye" (click)="$event.stopPropagation();previewUsers(contactList)" aria-hidden="true"></i>
+                                                <i class="fa fa-eye"  data-toggle="tooltip" data-placement="bottom" [attr.title]="emptyContactsMessage" (click)="$event.stopPropagation();previewUsers(contactList)" aria-hidden="true"></i>
                                             </a>
                                         </td>
                                     </tr>
