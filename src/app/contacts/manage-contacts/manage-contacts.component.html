@@ -519,7 +519,7 @@
                                     </span> 
                                     <!---XNFR-81----->
                                     <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList  && !contactList?.teamMemberPartnerList">
-                                       <a
+                                       <a 
                                        *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                        || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                        && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
@@ -688,7 +688,7 @@
                         *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                         && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
-                        (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
+                        (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top" class="delete"
                         title="{{actionsDescription.contact_list_delete}}" data-rel="fancybox-button" lang="{{contactList.id}}"> <i
                            class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>

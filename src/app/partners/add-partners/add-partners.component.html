@@ -1723,20 +1723,20 @@
                                                     {{teamMemberGroup?.name}}
                                                     ({{teamMemberGroup?.teamMembersCount}})</option>
                                             </select> <span class="input-group-btn">
-                                                <button title="Preview Modules"
-                                                data-toggle="tooltip" data-placement="bottom"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                                                    <i title="Preview Modules"
+                                                    data-toggle="tooltip" data-placement="top" class="fa fa-eye white" aria-hidden="true"></i>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button title="Select Team Members"
-                                                data-toggle="tooltip" data-placement="bottom"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="getTeamMembers(partner,i)">
-                                                    <i class="fa"
+                                                    <i title="Select Team Members"
+                                                    data-toggle="tooltip" data-placement="top" class="fa" 
                                                         [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
                                                         aria-hidden="true"></i>
                                                 </button>

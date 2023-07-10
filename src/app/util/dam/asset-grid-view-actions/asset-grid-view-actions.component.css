@@ -60,4 +60,7 @@
     cursor: not-allowed;
     text-decoration: underline;
 }  
-    
+
+.delete{
+    background: #cb5a5e;
+}
