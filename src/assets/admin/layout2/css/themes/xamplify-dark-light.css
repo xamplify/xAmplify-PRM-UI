@@ -1564,3 +1564,15 @@ input.ng-valid.ng-dirty.ng-touched {
 .dark-beige {
   background: transparent;
 }
+
+/* 10-07-2023 */
+.vendor-img-cu img {
+  background-color: #22313a54 !important;
+}
+.dark-card-body-cu {
+  background-color: #22313a !important;
+}
+.number-vedor-card {
+  background: #b8def1;
+  color:#333;
+}

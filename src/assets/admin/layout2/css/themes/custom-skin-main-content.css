@@ -1371,3 +1371,8 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .dark-beige {
   background: transparent;
 }
+
+/* 10-07-2023 */
+.dark-card-body-cu {
+  background-color: var(--page-content) !important;
+}
