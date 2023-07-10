@@ -271,10 +271,10 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
+                <div class="row tab_mt_grid" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="col-md-3 col-sm-4 col-xs-12 tab_grid" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box" style="height: 250px !important;">
-                            <div class="img-class">
+                            <div class="img-class tab_view_img">
                                 <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
@@ -303,7 +303,7 @@
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
-                            <div class="ribbon">
+                            <div class="ribbon tab-ribbon">
                                 <span *ngIf="form.formSubType === 'REGULAR'" translate>Regular</span>
                                 <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
