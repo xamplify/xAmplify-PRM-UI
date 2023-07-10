@@ -67,8 +67,7 @@
                                     <button
                       [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
                             modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
-                      style="padding: 10px !important"></button>
-                                    <!-- <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button> -->
+                      style="padding: 10px !important"></button>                                 
                                 <div class="group-dd-content">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
@@ -82,15 +81,10 @@
                                         <i class="fa fa-folder p10" aria-hidden="true"></i>
                                     </span>
                                     <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
-                                        title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                        <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
+                                        title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">                                      
                                         <i class="fa fa-th p10" aria-hidden="true"></i>
                                     </span>
                                 </ng-container>
-                                    <!-- <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
-                                        title="Go back" (click)="setViewType('Folder-Grid')"> 
-                                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                    </span> -->
                                 </ng-container>
                                 </div>
                                 </div>

@@ -1,41 +1,9 @@
-#textarea {
-    white-space: pre-wrap;
+.success {
+  color: green;
 }
-
-.div-loader {
-    padding: 5px 5px 10px 10px;
-    background-color: #fff;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
-    border-radius: 0;
-    margin: 1em;
-    height:500px;
-    position: relative;
-}
-
-
-#process-loader{
-	position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-   border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid #3498db;
-  width: 80px;
-  height: 80px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
-.success{
-	color: green;
-}
-#upload-type{
-	border-left: 1px solid #42A948;
-}
-#templateTypeDiv{
-font-weight: 500;font-size: 17px;margin-bottom: 34px; padding: 2px;
-	
+#templateTypeDiv {
+  font-weight: 500;
+  font-size: 17px;
+  margin-bottom: 34px;
+  padding: 2px;
 }
