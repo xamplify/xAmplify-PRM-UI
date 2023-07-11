@@ -1255,7 +1255,8 @@ span.ui-column-resize {
 }
 /* 14-6-2023 sudha sri */
 .comment .info a,
-.comment-color {
+.comment-color,
+.countColor {
   color: var(---text-color) !important;
 }
 .dropdown-menu li > a > [class*=" fa-"],
@@ -1369,4 +1370,9 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 .dark-beige {
   background: transparent;
+}
+
+/* 10-07-2023 */
+.dark-card-body-cu {
+  background-color: var(--page-content) !important;
 }

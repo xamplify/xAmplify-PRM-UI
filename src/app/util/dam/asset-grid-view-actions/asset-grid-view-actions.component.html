@@ -29,7 +29,7 @@
 	</a> <a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
 		(click)="viewDetails(asset)"> <i class="fa fa-eye"
 		aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView && asset?.delete"  data-toggle="tooltip" data-placement="top" title="Delete"
+	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete"  data-toggle="tooltip" data-placement="top" title="Delete"
 		 (click)="confirmDelete(asset)"> <i
 		class="fa fa-trash-o" aria-hidden="true"></i>
 	</a>

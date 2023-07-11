@@ -138,7 +138,8 @@
                 <ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
                     <tr id="folder-row-{{i}}" class="child-row-list-view">
                         <td class="custom-icon-width">
-                            <a  (click)="$event.stopPropagation();viewFolderItems(category,i)"  title="View Items">
+                            <a  (click)="$event.stopPropagation();viewFolderItems(category,i)" 
+                            data-toggle="tooltip" data-placement="bottom" title="View Items">
                             <i class="fa" id="fa-folder-custom-size"
                               [ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}" aria-hidden="true">
                             </i>
@@ -148,8 +149,9 @@
                             </a>
                         </td>
                         <td>
-                            <h4 class="moreipsis" title="{{category.name}}">
-                                <span>{{category.name}}</span>
+                            <h4 class="" >
+                                <span data-toggle="tooltip" data-placement="bottom"
+                                title="{{category.name}}"> {{category.name}}</span>
                             </h4>
                             <h6 class="moreipsis">
                                 <span translate> Created By <strong>{{category.createdBy}}</strong></span>

@@ -47,8 +47,7 @@
                             <div>
                                 <select class="form-control" id="uploadType" [(ngModel)]="model.uploadType" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectUploadType($event)">
 							<option [value]="'REGULAR'" selected>REGULAR</option>
-							<option [value]="'VIDEO'">VIDEO</option>
-							<!-- <option [value]="'EVENT'">EVENT</option> -->
+							<option [value]="'VIDEO'">VIDEO</option>							
 						</select>
                             </div>
                         </div>
@@ -73,15 +72,9 @@
                         <label class="control-label col-sm-5">Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
-                    </div>
-                    <!-- <div>
-					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you�re doing a mail merge.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
-					</div> -->
-
+                    </div>                  
                 </div>
                 <div class="col-xs-12">
-                    <!--  -->
                     <ckeditor [(ngModel)]="model.content" name="subject"></ckeditor>
                 </div>
                 <div class="clearfix" style="margin: 5px;"></div>

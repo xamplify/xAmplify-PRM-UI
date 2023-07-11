@@ -152,6 +152,7 @@
 				<tr id="folder-row-{{i}}" class="child-row-list-view border-cls" >
 					<td class="custom-icon-width"><a
 						(click)="$event.stopPropagation();viewFolderItems(category,i)"
+						data-toggle="tooltip" data-placement="bottom"
 						title="View Items"> <i class="fa" id="fa-folder-custom-size"
 							[ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}"
 							aria-hidden="true"> </i> <i class="fa" id="fa-folder-custom-size"
@@ -159,8 +160,9 @@
 							aria-hidden="true"> </i>
 					</a></td>
 					<td>
-						<h4 class="moreipsis" title="{{category.name}}">
-							<span>{{category.name}}</span>
+						<h4 class="">
+							<span data-toggle="tooltip" data-placement="bottom" title="{{category.name}}"
+							>{{category.name}}</span>
 						</h4>
 						<h6 class="moreipsis">
 							<span translate> Created By <strong>{{category.createdBy}}</strong></span>
