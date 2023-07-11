@@ -309,12 +309,11 @@ input {
 .table .table {
   background: transparent !important;
 }
-table#folder-list-view, tr {
+table#folder-list-view,
+tr {
   background: transparent !important;
 }
-
-
-
+/* 04-07-2023 Templates privew background */
 .table-hover > tbody > tr:hover,
 .page-header.navbar
   .top-menu
@@ -430,7 +429,8 @@ table#folder-list-view, tr {
   color: var(---text-color) !important;
 }
 /** alert **/
-.swal2-modal {
+.swal2-modal,
+.hash-table-color {
   background-color: var(--div-bg-color) !important;
 }
 .loader-container {
@@ -992,7 +992,7 @@ textarea:focus {
     linear-gradient(to bottom, #2f4758, #2f4758) !important;
 }
 .phone {
-  color: #fff !important;
+  color: #000 !important;
 }
 .c-btn {
   border: 1px solid var(--border-color) !important;
@@ -1255,7 +1255,8 @@ span.ui-column-resize {
 }
 /* 14-6-2023 sudha sri */
 .comment .info a,
-.comment-color {
+.comment-color,
+.countColor {
   color: var(---text-color) !important;
 }
 .dropdown-menu li > a > [class*=" fa-"],
@@ -1363,10 +1364,15 @@ a.dropdown-toggle.circlebg-none-v:hover {
   color: var(--title-heading--text) !important;
 }
 
- /*01-07-2023*/
- .rss-title {
+/*01-07-2023*/
+.rss-title {
   color: var(--title-heading--text) !important;
 }
 .dark-beige {
   background: transparent;
+}
+
+/* 10-07-2023 */
+.dark-card-body-cu {
+  background-color: var(--page-content) !important;
 }

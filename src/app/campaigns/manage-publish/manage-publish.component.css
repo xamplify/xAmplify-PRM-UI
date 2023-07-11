@@ -248,3 +248,9 @@ span.gearicon-font-cu {
 .mix-filter li:hover {
   background: #6dcff6;
 }
+
+/* 06-07-2023 */
+.active-campaigns-all-btns-oneinline span {
+  white-space: break-spaces;
+  line-height: 2.5;
+}

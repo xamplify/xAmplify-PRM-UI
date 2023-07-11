@@ -92,17 +92,18 @@
                     <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
                   </td>
                   <td>
-                    <h4 class="moreipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
-                      <span>{{campaign.campaignName}}</span>
+                    <h4 class=" mt5 mb5 f-w-600" style="font-size: 14px;"
+                  >
+                      <span   data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">{{campaign.campaignName}}</span>
                     </h4>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.createdBy">
-                      <span> By <b>{{campaign.createdBy}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span [title]="campaign.createdBy" data-toggle="tooltip" data-placement="bottom"> By <b>{{campaign.createdBy}}</b></span>
                     </h5>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.companyName">
-                      <span> From <b>{{campaign.companyName}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span [title]="campaign.companyName"  data-toggle="tooltip" data-placement="bottom"> From <b>{{campaign.companyName}}</b></span>
                     </h5>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.categoryName">
-                      <span> Folder <b>{{campaign.categoryName}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span  data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName"> Folder <b>{{campaign.categoryName}}</b></span>
                     </h5>
                     <h5 class="ellipsis view-banner Cancelled-tag-cu" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</h5>
                   </td>

@@ -402,6 +402,7 @@ nav a.active {
   text-overflow: ellipsis;
   white-space: nowrap;
   float: left !important;
+  padding: 0px 5px;
 }
 
 /* full calendar */
@@ -683,8 +684,8 @@ a {
 }
 
 .actions-block .fa-trash-o {
-  color: #cb5a5e;
-  border: 1px solid #cb5a5e;
+  color: #cb5a5e !important;
+  border: 1px solid #cb5a5e !important;
 }
 
 .actions-block i:hover,
@@ -1535,12 +1536,13 @@ strong {
 .green-banner {
   background-color: green;
   color: white !important;
-  padding: 4px;
+  padding: 5px 10px;
   text-align: center;
   width: 158px;
   font-size: 11px;
   font-weight: 600;
   margin: 0 0;
+  border-radius: 3px;
 }
 
 .welcome-header {
@@ -1615,11 +1617,11 @@ strong {
 .view-banner {
   background-color: #00a6e8;
   color: white;
-  padding: 4px;
+  padding: 5px 10px;
   text-align: center;
   width: 125px;
   margin: 0 auto;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   border-radius: 3px;
 }
@@ -1635,7 +1637,7 @@ strong {
 
 /***08 Jun 2022*****/
 .h220 {
-  height: 220px !important;
+  height: 240px !important;
 }
 
 .prt3px {

@@ -3,11 +3,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import "rxjs/add/observable/of";
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 declare var swal:any, $: any;
 @Component({
@@ -20,7 +15,10 @@ export class SendTestEmailComponent implements OnInit {
 
   @Input() id:number = 0;
   @Input() subject:string = "";
+  @Input() isPreviewEmailTemplate = false;
+  @Input() templateName:string = "";
   email = "";
+  headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
   emailIds = [];
   modalPopupId = "send-test-email-modal-popup";
@@ -28,12 +26,6 @@ export class SendTestEmailComponent implements OnInit {
   processing = false;
   customResponse: CustomResponse = new CustomResponse();
   success = true;
-  @ViewChild( 'tagInput' )
-  tagInput: SourceTagInput;
-  public validators = [this.must_be_email.bind( this )];
-  public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
-  public onAddedFunc = this.beforeAdd.bind( this );
-  private addFirstAttemptFailed = false;
   isValidForm = false;
   isValidEmailFormat = true;
   isValidEmailLength = false;
@@ -44,46 +36,19 @@ export class SendTestEmailComponent implements OnInit {
 
   ngOnInit() {
     this.processing = true;
+    this.headerTitle =  this.isPreviewEmailTemplate ? this.templateName:"Send Test Email";
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
     this.getTemplateHtmlBodyAndMergeTagsInfo();
   }
-  
-  private must_be_email( control: FormControl ) {
-    if ( this.addFirstAttemptFailed && !this.referenceService.validateEmailId( control.value ) ) {
-        return { "must_be_email": true };
-    }
-    return null;
-}
-private beforeAdd( tag: any ) {
-    let isPaste = false;
-    if ( tag['value'] ) { isPaste = true; tag = tag.value; }
-    if ( !this.referenceService.validateEmailId( tag ) ) {
-        if ( !this.addFirstAttemptFailed ) {
-            this.addFirstAttemptFailed = true;
-            if ( !isPaste ) { this.tagInput.setInputValue( tag ); }
-        }
-        if ( isPaste ) { return Observable.throw( this.errorMessages['must_be_email'] ); }
-        else { return Observable.of( '' ).pipe( tap(() => setTimeout(() => this.tagInput.setInputValue( tag ) ) ) ); }
-    }
-    this.addFirstAttemptFailed = false;
-    this.validateSubject();
-    return Observable.of( tag );
-}
 
-validateSubject(){
-  let subject = $.trim(this.subject);
-  let isValidSubject = subject.length>0;
-  let emailIds = this.tagInput['items'];
-  this.isValidForm = isValidSubject && emailIds!=undefined && emailIds.length>0;
-}
 
 validateForm(){
   let email = $.trim(this.sendTestEmailDto.toEmail);
   let subject = $.trim(this.sendTestEmailDto.subject);
   this.isValidSubject = subject.length>0;
   this.isValidEmailLength = email.length>0;
-  this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmailId(email);
+  this.isValidEmailFormat = this.isValidEmailLength && this.referenceService.validateEmail(email);
   let isValidEmail = this.isValidEmailLength && this.isValidEmailFormat;
   this.isValidForm = isValidEmail && this.isValidSubject;
 }

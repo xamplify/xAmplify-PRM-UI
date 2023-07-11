@@ -106,15 +106,19 @@
                                             <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="Image Not Found">
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" translate>
-                                                <span><strong>{{learningTrack.title}}</strong></span>
+                                            <h4 class="mt5 mb5 f-w-600" translate>
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack.title}}" ><strong>{{learningTrack.title}}</strong></span>
                                             </h4>
-                                            <h6 class="moreipsis" title="{{learningTrack?.category?.name}}">
-                                                <span translate> Folder
+                                            <h6 class="">
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack?.category?.name}}"
+                                                translate> Folder
                                                     <strong>{{learningTrack?.category?.name}}</strong></span>
                                             </h6>
-                                            <h6 class="moreipsis" title="{{learningTrack.createdByName}}">
-                                                <span translate> Created By
+                                            <h6 class="">
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack.createdByName}}" translate> Created By
                                                     <strong>{{learningTrack.createdByName}}</strong></span>
                                             </h6>
                                         </td>

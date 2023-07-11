@@ -29,32 +29,36 @@
 				<app-landing-page-loader [maxBoxLength]=3 *ngIf="loading"></app-landing-page-loader>
 				<div *ngIf="!loading">
 					<div class="row">
-						<div class="col-12 col-sm-12 col-md-4 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
-							<div class="cards">
-								<div class="card-header bg-card-header p-3 px-3 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
-									<div class="flex-row d-flex">
-										<div class="col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
-											<div class="cards p-3 mb-2 clogo" style="background-color:#eee; border-radius: 5px;">
-												<img style="width: 160px; height: 60px;"
+						<div class="col-12 col-sm-6 col-md-6 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
+							<div class="cards boxshadow-to-card">
+								<div class="card-header bg-card-header card-paddings-vcu" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
+									<div class="flex-row">
+										<div class="col-12 col-lg-auto">
+											<div class="vendor-img-cu">
+												<img 
 													src="{{vendorReport.companyLogo}}"
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
 											</div>											
 										</div>
-										<div class="col-6 col-lg-auto text-center text-lg-end pt10">
+										<!-- <div class="col-12 col-lg-auto text-center text-lg-end pt10">
 											<h3 class="mt-0 justify-content-end d-flex">
 												<b>{{vendorReport.counts[0].count}}</b></h3>
 											<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[0].name}}</h5>
-										</div>
+										</div> -->
 									</div>
-									<div class="flex-row d-flex col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
+									<!-- <div class="flex-row d-flex col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
 									<div class="col-6 col-lg-auto text-center text-lg-end pt10" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'">
 										<h3 class="mt-0 justify-content-end d-flex">
 											<b>{{vendorReport.counts[i].count}}</b></h3>
 										<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[i].name}}</h5>	
 									</div>									
+								</div> -->
 								</div>
-								</div>
-								<div class="card-body p-0 card-bgcolor">
+								<div class="card-body p-0 card-bgcolor dark-card-body-cu">
+									<div class="col-12 number-vedor-card"> 
+										<span> {{vendorReport.counts[0].count}} | {{vendorReport.counts[0].name}} </span>
+										<span *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'"> {{vendorReport.counts[i].count}} | {{vendorReport.counts[i].name}} </span>
+									</div>
 									<div class="flex-row pl10 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
 										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0"
 											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">

@@ -181,10 +181,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
-                  Please contact admin for 'Deals'
-                </div> -->
+                </div>              
                 <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
@@ -204,15 +201,13 @@
                           <div class="form-group">
                             <div class="form-inline col-sm-12 ">
                               <div class="form-group col-sm-4">
-                                <label class="control-label">From Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
+                                <label class="control-label">From Date &nbsp;                              
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4 form-group-mr">
-                                <label class="control-label">To Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
+                                <label class="control-label">To Date &nbsp;                              
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
@@ -239,11 +234,7 @@
                                     </option>
                                   </select>
                                 </div>
-                              </div>
-                      
-                        <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                        </div>  -->
+                              </div>                                          
                       </div>
                     </div>
                     </form>

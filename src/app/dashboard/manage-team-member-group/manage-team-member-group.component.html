@@ -125,7 +125,7 @@
 
 <!--ng-template-outlet-->
 <ng-template #groupGridView let-group="groupInfo" let-isPreview="showPreviewIcon">
-  <div class="col-md-4 col-sm-4 col-xs-12">
+  <div class="col-md-4 col-sm-4 col-xs-12 col-lg-4">
     <div class="grid-box-team">
       <h4 class="ellipsis mt5 mb5 f-w-600 left-align plfpx" title="{{group?.name}}">
         {{group?.name | slice:0:15}}
@@ -156,7 +156,7 @@
           </tbody>
         </table>
        </div> 
-      <div class="bar" *ngIf="isPreview">
+      <div class="bar full-width-folder" *ngIf="isPreview">
         <a  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
         </a>

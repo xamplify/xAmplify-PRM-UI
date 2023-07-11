@@ -50,15 +50,16 @@
 										</div>
 										<div class="title-div" style="width: 50%;">
 												<h4 class="mt5 mb5 f-w-600"
-													title="{{asset?.assetName}}">
-													<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
+												  >
+													<span   data-toggle="tooltip" data-placement="bottom"
+													title="{{asset?.assetName}}"><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 													<span *ngIf="asset?.assetName?.length>25">...</span>
 												</h4>
 												<!-- XNFR-169 -->
-												<h6 class="moreipsis">
-													<span translate> Folder <strong title="{{asset?.categoryName}}">{{asset?.categoryName}}</strong></span>
+												<h6>
+													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.categoryName}}" translate> Folder <strong >{{asset?.categoryName}}</strong></span>
 												</h6>
-												<h6 class="moreipsis" title="{{asset?.displayName}}">
+												<h6 class="" data-toggle="tooltip" data-placement="bottom" title="{{asset?.displayName}}">
 													<span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
 													<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName | slice: 0: 23}}</strong></span>
 												</h6>
@@ -67,8 +68,8 @@
 													<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 												</h6>
 												<h6 class="moreipsis" *ngIf="isPartnerView"
-													title="{{asset?.vendorCompanyName}}">
-													<span translate> From <strong>{{asset?.vendorCompanyName
+												>
+													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}" translate> From <strong>{{asset?.vendorCompanyName
 															| slice:0:20}}</strong> <strong
 														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
 													</span>
@@ -289,13 +290,13 @@
 								<div class="grid-box min-h default-cursor mHeight">
 									<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
 										alt="Image Not Found">
-									<h4 class="ellipsis overflow-hidden mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>
 									</h4>
 									<!---XNFR-255-->
 									<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-										<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+										<h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
 											<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
 										</h6>
 										<span class="view-banner-white-labeled mb5">White-Labeled</span>
@@ -310,19 +311,19 @@
 												</app-timestamp>
 											</strong>
 										</h6>
-										<h6 title="{{asset?.displayName}}" translate>
+										<h6  translate>
 											By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
 												*ngIf="asset?.displayName?.length>17">..</span>
 										</h6>
-										<h6 class="moreipsis" title="{{asset?.categoryName}}">
-											<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+										<h6 class="moreipsis" >
+											<span data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}" translate> Folder <strong>{{asset?.categoryName}}</strong></span>
 										</h6>
 										<h6 class="moreipsis"
 											*ngIf="!isPartnerView && asset?.beeTemplate">
 											<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 										</h6>
-										<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
-											From <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
+										<h6 *ngIf="isPartnerView" >
+											From <strong  data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}">{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
 												*ngIf="asset?.vendorCompanyName?.length>17">..</span>
 										</h6>
 									</div>
@@ -524,7 +525,7 @@
 					<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 				</span>
 				<div class="inputs mDamTop" style="float: right">
-					<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
+					<a class="close-circle ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
 						<i class="fa fa-refresh" aria-hidden="true"></i>
 					</a>
 					<div class="pb3 float-left">

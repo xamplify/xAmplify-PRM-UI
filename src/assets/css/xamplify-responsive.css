@@ -8,6 +8,15 @@
     div#world-map {max-width: 100%; min-height: 327px !important;}
  
 }
+/* 07-07-2023 - Campaign  -- Manage Campaigns */
+
+@media (min-width: 767px) and (max-width: 1205px)  { 
+    .scroll-top-margin { margin-top: 30px;}
+}
+
+
+
+
 
 
 
@@ -20,7 +29,11 @@
 
 .pb_8{
     padding-bottom: 8px!important;
-    }
+ }
+ .btn_add{
+    padding: 5px 10px!important;
+    border-radius: 4px;
+  }
     /*app-detailed-campaign-analytics */
     @media only screen and (min-width: 768px) and (max-width: 991px) { 
         section.percentage-circle {
@@ -85,6 +98,21 @@
         .mrg_btm_23{
          margin-bottom: 6px;
         }
+        .tab_view_img{
+            margin-left:30px!important;
+          }
+          .tab_mt_grid{
+           margin-top:12px;
+          }
+          .intg_mb_16{
+            margin-bottom: 17px;
+          }
+          .tab_mt_20{
+            margin-top:0px!important;
+          }
+          .tab_mt_20{
+           margin-bottom: 20px;
+          }
     
     }
     /* Manage Campaigns ribbon adjustment 04-07-2023 */
@@ -142,7 +170,7 @@
         }
         /* Manage Campaigns 04-07-2023 */
         .grid-box{
-            height: 249px!important;
+            /* height: 249px!important; */
             background: #f1f1f1 !important;
         }
         .table-condensed {
@@ -181,4 +209,21 @@
                 position: relative;
                 left: 0px!important;
             }
+            .mb_10{
+                margin-bottom: 10px;
+            }
+            .tab_mt_20{
+                margin-top:0px!important;
+              }
+              .intg_mb_16{
+                margin-bottom: 18px;
+              }
+              .mb_hgh_grid{
+             height: unset!important;
+              }
+    }
+    @media only screen and (max-width:1024px){
+        #bee-plugin-container{
+            overflow-x: scroll!important;
+        }
     }

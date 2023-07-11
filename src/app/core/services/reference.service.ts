@@ -342,6 +342,11 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
+  validateEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
+  }
+
   validateWebsiteURL(url: string) {
     return this.regularExpressions.URL_PATTERN.test(url);
   }

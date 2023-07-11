@@ -980,12 +980,12 @@
                                 *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                 <div *ngFor="let campaign of pagination.pagedItems; let i= index"
                                    class="col-xs-12 col-sm-4 col-lg-3 tab_grid">
-                                   <div class="grid-box" style="height:300px">
+                                   <div class="grid-box" style="height:315px">
                                       <img *ngIf="!campaign?.campaignProcessing" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                                       <ng-container *ngIf="campaign?.campaignProcessing">
                                          <img src="assets/images/processing.gif" alt="Processing">
                                       </ng-container>
-                                      <h4 class="ellipsis" title="{{campaign.campaignName}}">
+                                      <h4 class="ellipsis active-campaigns-all-btns-oneinline" title="{{campaign.campaignName}}">
                                          {{campaign.campaignName | slice:0:22}}
                                          <span *ngIf="campaign.campaignName?.length>22">...</span>
                                          <br><br>
@@ -994,11 +994,11 @@
                                                style="position: relative;top: -3px;" translate>Through Campaign</span>
                                             <span class="view-banner"
                                                *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                               style="position: relative;top: -3px;" translate>To Campaign</span>
+                                               style="position: relative;top: -3px;" translate>To Campaign</span><br>
                                          </ng-container>
                                          <!--XNFR-125--->
                                          <ng-container *ngIf="campaign?.oneClickLaunch">
-                                            <br><br>
+                                            <!-- <br><br> -->
                                             <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
                                          </ng-container>
                                          <!--XNFR-125--->
@@ -1017,9 +1017,9 @@
                                          <span class="view-banner"
                                             *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign"
                                             style="position: relative;top: -3px;background-color: #d9534f;" translate>Private</span>
-                                         <span class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
+                                         <span id="onelinebtnposition" class="view-banner" *ngIf="archived" style="position: relative;top: -3px; background-color: #f76c1a !important"
                                             translate>Archived</span>
-                                         <span class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
+                                         <span id="onelinebtnposition" class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
                                             translate>Ended</span>
                                          <br>
                                          <span class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
@@ -1272,7 +1272,7 @@
                  <!-- End Of tab Content -->
               </div>
               <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                 <div class="col-xs-12 pt5" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
+                 <div class="col-xs-12 pt5 scroll-top-margin" [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="padding: 0px 25px 10px 0px;">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="row" style="padding-left: 10px;margin-top: -15px;">
                        <app-pagination class="col-xs-10" [pagination]="pagination" [type]="'campaign'" [isDropdown]="true"
                        (notifyParent)="setPage($event)"></app-pagination>

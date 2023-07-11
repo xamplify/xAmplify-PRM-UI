@@ -410,6 +410,8 @@ export class SortOption {
 	public selectedAgencySortDropDownOption: any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
 	/****XNFR-278*****/
 	public selectedUserListGroupDropDownOption = this.campaignRecipientsDropDownOptions[0];
+	/*****XNFR-318*****/
+	public selectedCampaignEmailTemplateDropDownOption = this.eventCampaignRecipientsDropDownOptions[this.eventCampaignRecipientsDropDownOptions.length-1];
 
 
 }

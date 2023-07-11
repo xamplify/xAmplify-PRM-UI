@@ -400,5 +400,8 @@ hr {
   border-color: #72b8f2;
 }
 .btn-xs {
-  padding: 1px 5px !important;
+  padding: 0px 5px;
+}
+.btn-padding {
+  padding: 1px 5px;
 }

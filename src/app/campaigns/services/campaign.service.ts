@@ -953,7 +953,7 @@ export class CampaignService {
 
     listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
         let url = "listEmailTemplateCategories";
-        if("landingPage"==campaignType){
+        if("landingPage"==campaignType || "page"==campaignType){
             url = "listLandingPageCategories"
         }
         return this.http.get(this.URL + "category/"+url+"/"+userId+"?access_token=" + this.authenticationService.access_token, "")
@@ -1282,6 +1282,14 @@ export class CampaignService {
     /*******XNFR-318******/
     findCampaignDetailsData() {
         return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
+        emailTemplatesPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, emailTemplatesPagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
