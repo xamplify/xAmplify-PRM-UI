@@ -114,7 +114,7 @@
 				<div class="col-xs-12 col-sm-5 col-md-4" style="padding: 0;">
 					<div class="col-xs-12" style="padding: 0;">
 						<span class="pull-right videoViews">
-							<h4 class="viewsh4">{{saveVideoFile.views}} views</h4>
+							<h4 class="viewsh4" style="padding-right:7px;">{{saveVideoFile.views}} views</h4>
 						</span>
 					</div>
 					<div [hidden]="true" *ngIf="likes" class="col-xs-12" style="padding: 0;">
@@ -143,9 +143,9 @@
 						<div class="row">
 							<div class="col-md-offset-6 col-md-5" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
-									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
+									<button type="button" class="btn Btn-Green" [disabled]="!videoForm.valid || upperTextValid==false
 									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
-									<button type="button" class="btn default" style="margin-left:2px;color:black !important;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
+									<button type="button" class="btn Btn-Gray" style="margin-left:2px" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
 							</div>
 						</div>
@@ -153,9 +153,7 @@
 						<div class="portlet box green " style="margin-top: 8px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
 							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
 								<div class="col-xs-12 caption p01">
-									<!-- <i class="fa fa-info-circle"></i> -->
 									<div class="col-xs-11 p01">
-										<!-- <h4 class="p01">{{videoFileService.actionValue}} Video Info</h4> -->
 										<h4 class="p01" translate>Video Info</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
@@ -165,7 +163,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
+							<div class="portlet-body form" [hidden]="!titleDiv" [@fadeInOut]>
 								<div class="form-body" style="padding:9px">
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Title:</label>
@@ -250,17 +248,17 @@
 												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
 												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
 												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
-                        </span>
+                        						</span>
 												 <p *ngIf="ownThumbnail" class="help-block" translate>If you want to upload your own thumbnail, please choose a file from your system.
-                            <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
-                          <span style="color:red" translate>*Please upload your thumbnail.</span>
+                           							 <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
+                          							<span style="color:red" translate>*Please upload your thumbnail.</span>
 												</p>
-												   <div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
-														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
-															<i class="fa fa-times-circle"></i>
-														</span>
-														<img [src]="imageUrlPath">
-													</div>
+												<div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
+													<span (click)="uploader.clearQueue();clearOwnThumbnail()">
+														<i class="fa fa-times-circle cance-icon-alignment"></i>
+													</span>
+													<img [src]="imageUrlPath">
+												</div>
 											</div>
 										</div>
 									</div>
@@ -299,6 +297,25 @@
 											<app-select-dropdown *ngIf="showFolderDropDown" [categoryId]="folderId"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
 										</div>
 									</div>
+									<!---XNFR-255-->
+									<div class="form-group" *ngIf="hasShareWhiteLabeledContentAccess">
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
+										<div class="col-xs-9 col-sm-9 col-md-9">
+											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+											 (statusChange)="setWhiteLabeled($event)">
+											</switch>
+											<span class="info-color-xampc">
+												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+													data-placement="top" aria-hidden="true"
+													title="{{saveVideoFile?.whiteLabeledToolTipMessage}}"></i>
+											</span>
+										</div>
+									</div>
+									<div>
+										<app-partner-company-and-groups [moduleName]="'dam'" [inputId]="saveVideoFile.damId"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+									</div>
+									<!---XNFR-255-->
 								</div>
 							</div>
 						</div>
@@ -398,7 +415,7 @@
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
                            </span>
 													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
-														<span (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
+														<span class="logo-rmv" (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">

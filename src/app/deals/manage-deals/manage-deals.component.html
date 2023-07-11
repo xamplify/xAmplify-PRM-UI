@@ -146,7 +146,7 @@
                       </a>
 
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
 
                         <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
                           title="Synchronize" translate>
@@ -181,10 +181,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
-                  Please contact admin for 'Deals'
-                </div> -->
+                </div>              
                 <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
@@ -204,15 +201,13 @@
                           <div class="form-group">
                             <div class="form-inline col-sm-12 ">
                               <div class="form-group col-sm-4">
-                                <label class="control-label">From Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
+                                <label class="control-label">From Date &nbsp;                              
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4 form-group-mr">
-                                <label class="control-label">To Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
+                                <label class="control-label">To Date &nbsp;                              
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
@@ -239,11 +234,7 @@
                                     </option>
                                   </select>
                                 </div>
-                              </div>
-                      
-                        <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                        </div>  -->
+                              </div>                                          
                       </div>
                     </div>
                     </form>
@@ -297,15 +288,15 @@
                 
                             </td>
                             <td style="width: 20%;">
-                              <h5 *ngIf="!isPartnerVersion">{{deal.createdByCompanyName | slice:0:30}}
+                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"  title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
                               </h5>
-                              <h5 class='ellipsis' title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{deal.createdByName | slice:0:20}}
                                 <span *ngIf="deal.createdByName?.length>20">...</span>
                               </h5>
                               <h6 class='m0' style="font-weight: 400;">
-                                <a title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="deal.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
@@ -318,7 +309,7 @@
                                 <select
                                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
                                   class="form-control" [(ngModel)]="deal.pipelineStageId"
-                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 135px">
+                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 115px">
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                                 </select>
                                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
@@ -328,22 +319,24 @@
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions">
-                                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
+                                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                     <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" title="Edit Deal"
+                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" 
+                                    data-toggle="tooltip" data-placement="bottom" title="Edit Deal"
                                       id="deal">
                                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                                     </a>
                                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
-                                      title="Delete Deal" id="deal">
-                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                    data-toggle="tooltip" data-placement="bottom" title="Delete Deal" id="deal">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                   </ng-container>
-                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" 
+                                    data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
                                       <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
                                       <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
                                         style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
@@ -404,9 +397,9 @@
                                 style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
-                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaign}}">
-                                {{campaign.campaign|
-                                slice:0:25}}
+                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" >
+                                <span data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaign}}">{{campaign.campaign|
+                                  slice:0:25}}</span>
                                 <span *ngIf="campaign.campaign?.length>25">...</span>
                               </h4>
                             </td>

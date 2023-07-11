@@ -1,70 +1,68 @@
 <div class="modal right fade" id="{{modalPopupId}}" data-backdrop="static">
   <div class="modal-dialog modal-lg" id="lg-template">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close-circle" (click)="closePopup()" aria-hidden="true">
-          <i class="fa fa-times"></i>
-        </button>
-        <h4 class="modal-title">Clicked Urls History</h4>
-      </div>
-      <div class="modal-body">
-        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-        <div class="col-xs-12" *ngIf="!httpRequestLoader.isLoading">
-          <div class="portlet light">
-            <div class="portlet-title">
-              <div class="inputs" align="right">
-				<a href="{{authenticationService.REST_URL}}campaign/downloadClickedUrlAnalyticsForVendor/{{pagination.campaignId}}/Urls.csv?access_token={{authenticationService.access_token}}"
-				 *ngIf="pagination.totalRecords>0" class="close-circle"  title="Download">
-                  <i class="fa fa-download margin"></i>
-                </a>
-                <div class="portlet-input input-inline input-large" id="search-margin">
-                  <div class="input-icon right" id="icon-right">
-                    <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                      [ngModelOptions]="{standalone: true}" placeholder="search..."
-                      (keypress)="eventHandler($event.keyCode)">
-                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                      (click)="sortOption.searchKey='';searchUrls()"></button>
-                    <button type="submit" class="search-box-item-click" (click)="searchUrls()">
-                      <i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="portlet-body">
-              <table class="table tgrid">
-                <thead>
-                  <tr>
-                    <th class="text-center">Url</th>
-                    <th class="text-center">Count</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
-                    <td class="text-center">
-                      {{item.url}}
-                    </td>
-                    <td class="text-center">
-                      {{item.clickedCount}}
-                    </td>
-
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-              <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                (notifyParentDropDown)="listItems($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-            </div>
-            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-              <strong>No data found</strong>
-            </div>
-          </div>
-
+     <div class="modal-content">
+        <div class="modal-header">
+           <button type="button" class="close-circle" (click)="closePopup()" aria-hidden="true">
+           <i class="fa fa-times"></i>
+           </button>
+           <h4 class="modal-title">Clicked Urls History</h4>
         </div>
-      </div>
-      <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-        <a (click)="closePopup()" class="btn btn-default" style="float: right">Close</a>
-      </div>
-    </div>
+        <div class="modal-body">
+           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+           <div class="col-xs-12" *ngIf="!httpRequestLoader.isLoading">
+              <div class="portlet light">
+                 <div class="portlet-title">
+                    <div class="inputs" align="right">
+                       <a href="{{authenticationService.REST_URL}}campaign/downloadClickedUrlAnalyticsForVendor/{{pagination.campaignId}}/Urls.csv?access_token={{authenticationService.access_token}}"
+                          *ngIf="pagination.totalRecords>0" class="close-circle" data-toggle="tooltip" data-placement="bottom"  title="Download">
+                       <i class="fa fa-download margin"></i>
+                       </a>
+                       <div class="portlet-input input-inline input-large" id="search-margin">
+                          <div class="input-icon right" id="icon-right">
+                             <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                             [ngModelOptions]="{standalone: true}" placeholder="search..."
+                             (keypress)="eventHandler($event.keyCode)">
+                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                             (click)="sortOption.searchKey='';searchUrls()"></button>
+                             <button type="submit" class="search-box-item-click" (click)="searchUrls()">
+                             <i class="fa fa-search"></i></button>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="portlet-body">
+                    <table class="table tgrid">
+                       <thead>
+                          <tr>
+                             <th class="text-center">Url</th>
+                             <th class="text-center">Count</th>
+                          </tr>
+                       </thead>
+                       <tbody>
+                          <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
+                             <td class="text-center">
+                                {{item.url}}
+                             </td>
+                             <td class="text-center">
+                                {{item.clickedCount}}
+                             </td>
+                          </tr>
+                       </tbody>
+                    </table>
+                 </div>
+                 <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                    (notifyParentDropDown)="listItems($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                 </div>
+                 <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                    <strong>No data found</strong>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
+           <a (click)="closePopup()" class="btn btn-default" style="float: right">Close</a>
+        </div>
+     </div>
   </div>
 </div>

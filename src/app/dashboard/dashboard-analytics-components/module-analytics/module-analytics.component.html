@@ -3,7 +3,7 @@
   <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-box-loader [countLoader]=4 *ngIf="loader"></app-box-loader>
 <ng-container *ngIf="!loader">
-<div *ngFor="let dto of dashboardModuleAnalyticsViewDtos"
+<div *ngFor="let dto of dashboardModuleAnalyticsViewDtos" data-toggle="tooltip" 
  [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
  [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
 <a  class="{{dto.color}}">
@@ -13,7 +13,7 @@
   </div>
   <div class="details">
     <div class="number">{{dto.count}}</div>
-    <div title="{{dto?.moduleName}}" [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
+    <div [className]="dto?.moduleName?.length>=31 ? 'desc custom-name-font':'desc default-name-font'">{{dto.moduleName | translate}}</div>
   </div>
   <span class="morePadding">
     <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 

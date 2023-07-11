@@ -1,13 +1,47 @@
-@media only screen and (max-width:768px){ .margin-left{   margin-left: 8px; } }
-@media only screen and (min-width:768px){ .margin-left{  margin-left: 20px; } }
-@media only screen and (min-width:768px){ .margin-flex{  margin-left: 0px; } }
-@media only screen and (max-width:768px){ .margin-flex{  margin-left: -7px; } }
+@media only screen and (max-width: 768px) {
+  .margin-left {
+    margin-left: 8px;
+  }
+  .align-tableimg-center span p {
+    float: left;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .margin-left {
+    margin-left: 20px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .margin-flex {
+    margin-left: 0px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .margin-flex {
+    margin-left: -7px;
+  }
+}
+.user-name {
+  margin: 2px 0;
+  font-weight: 400;
+}
+.user-email {
+  font-weight: 400;
+  float: left;
+  font-size: 13px !important;
+}
+.user-company {
+  margin: 2px 0;
+  font-weight: 600;
+  color: #676767;
+}
+.ml10 {
+  margin-left: 10px;
+}
 
-@media only screen and (max-width:768px){ .company-css { float: left; } }
-
-.user-name { margin: 2px 0;font-weight: 400;}
-.user-email { font-weight: 400;float: left; font-size: 13px !important;}
-.user-company { margin: 2px 0;font-weight: 600; color: #676767;}
-.ml10{ margin-left:10px }
-@media only screen and (max-width:479px){ .pl10{padding-left: 15px !important;} }
-    
+/* 20-06-2023 */
+.align-tableimg-center {
+  display: flex;
+  align-items: center;
+}
+ 

@@ -1,32 +1,32 @@
 <style>
-td, th {
-        border: 0px solid #dddddd;
-}
-.td-css{
+    td, th {
+    border: 0px solid #dddddd;
+    }
+    .td-css{
     width: 20px;
     height: 20px;
     margin: 7px 10px;
-}
-</style>
-<div class="col-xs-12">
+    }
+ </style>
+ <div class="col-xs-12">
     <div class="col-xs-6 m0 p0" id="bubble-chart" style="height: 250px;z-index: 555"></div>
-<div class="col-xs-6" style="padding: 9px 0px 0px 0px;margin: auto -15px;">
-<table style="border-collapse: collapse;">
-<tr *ngFor="let name of names">
-    <td>
-        <div [style.background]="name.color" class="td-css"></div>
-    </td>
-    <td>
-        <h6 *ngIf="name.firstName!=='null'" class="bold m0">{{name.firstName | slice:0:16}}
-        <span *ngIf="name.firstName.lengtht>16">..</span>
-            <span *ngIf="name.lastName!=='null'"> {{name.lastName | slice:0:12}}</span>
-            <span *ngIf="name.lastName.lengtht>12">..</span>
-        </h6>
-        <h6 class="m0" title="{{name.emailId}}">{{name.emailId | slice:0:28}}
-        <span *ngIf="name.emailId.lengtht>28">..</span>
-        </h6>
-    </td>
-</tr>
-</table>
-</div>
-</div>
+    <div class="col-xs-6" style="padding: 9px 0px 0px 0px;margin: auto -15px;">
+       <table style="border-collapse: collapse;">
+          <tr *ngFor="let name of names">
+             <td>
+                <div [style.background]="name.color" class="td-css"></div>
+             </td>
+             <td>
+                <h6 *ngIf="name.firstName!=='null'" class="bold m0">{{name.firstName | slice:0:16}}
+                   <span *ngIf="name.firstName.lengtht>16">..</span>
+                   <span *ngIf="name.lastName!=='null'"> {{name.lastName | slice:0:12}}</span>
+                   <span *ngIf="name.lastName.lengtht>12">..</span>
+                </h6>
+                <h6 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{name.emailId}}">{{name.emailId | slice:0:28}}
+                   <span *ngIf="name.emailId.lengtht>28">..</span>
+                </h6>
+             </td>
+          </tr>
+       </table>
+    </div>
+ </div>

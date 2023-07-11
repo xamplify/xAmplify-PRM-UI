@@ -137,7 +137,7 @@
                                             <h6 class="moreipsis"  title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}">
                                                 <span translate>Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}</strong></span>
                                             </h6>
-                                            <h5 class="view-banner-green">White-Labeled</h5>
+                                            <h5 class="view-banner-green white-labeled-cu1 ">White-Labeled</h5>
                                         </ng-container>
                                          <!---XNFR-255-->
                                         <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
@@ -155,8 +155,8 @@
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                         </app-timestamp>
                                     </td>
-                                    <td style="width: 14%">
-                                        <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet':'actions-block override-actions'">
+                                    <td>
+                                        <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet flex':'actions-block override-actions flex'">
                                           <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
                                               <i class="fa fa-plus" aria-hidden="true"></i>
                                           </a>                                
@@ -171,6 +171,9 @@
                                             <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}"> 
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                             </a>
+                                            <!--XNFR-317-->
+                                                <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                            <!--XNFR-317-->
                                             <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
                                             *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor  ||
                                              authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
@@ -187,7 +190,7 @@
             <!--Grid View---->
             <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                 <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
-                    <div class="grid-box">
+                    <div class="grid-box cardHeight">
                         <span class="ribbon1">
                             <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email
                                 Co-Branding</span>
@@ -264,6 +267,9 @@
                             <a *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
                                  <i class="fa fa-eye" aria-hidden="true"></i>
                             </a>
+                             <!--XNFR-317-->
+                             <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                             <!--XNFR-317-->
                             <a (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" 
                             *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor   || 
                             authenticationService.module.isPrm || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
@@ -326,4 +332,15 @@
 <ng-container *ngIf="saveAsDefaultTemplate">
   <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
   </ng-container>
+
+<!--XNFR-317-->
+<ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
+    <a *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+     title="{{actionsDescription?.sendTestEmail}}">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+    </a>
+</ng-template>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<!--XNFR-317-->
+
 <app-scroll-top></app-scroll-top>

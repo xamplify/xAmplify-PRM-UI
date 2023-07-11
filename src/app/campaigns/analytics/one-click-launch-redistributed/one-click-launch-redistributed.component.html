@@ -1,5 +1,5 @@
 <div [ngClass]="hideDiv ? '':'col-xs-12 p5'">
-   <app-modal-popup-loader *ngIf="loader" ></app-modal-popup-loader>
+  <app-modal-popup-loader *ngIf="loader" ></app-modal-popup-loader>
   <div *ngIf="!loader" class="portlet light">
      <div class="portlet-title">
         <div class="caption">
@@ -7,97 +7,93 @@
         </div>
      </div>
      <div class="portlet-body">
-       <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="'analytics'" [redistributedCount]="redistributedCount"></app-one-click-launch-partner-preview>
-      </div>
-   </div>
+        <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="'analytics'" [redistributedCount]="redistributedCount"></app-one-click-launch-partner-preview>
+     </div>
+  </div>
 </div>
-
 <!---Campaign Redistributed Only One Time-->
 <div *ngIf="!loader && redistributedCount==1" class="portlet light">
   <app-detailed-campaign-analytics *ngIf="redistributedCount==1" [campaignId]="redistributedCampaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
 </div>
-
-
 <!--Campaign Redistributed More Than One Time--->
 <div class="row" *ngIf="redistributedCount>1" >
-     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-       <div class="tabbable tabbable-custom tabbable-noborder" id="header">
-         <div class="tab-content">
+  <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+     <div class="tabbable tabbable-custom tabbable-noborder" id="header">
+        <div class="tab-content">
            <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
            <div class="page-bar m10" [hidden]="httpRequestLoader.isLoading">
-             <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
-               <div class="btn-group pull-right">
-                 <div class="inputs" style="float: right;display: inline-flex;">
-                   <div class="portlet-input input-inline ml10" style="display: inline-flex;">
-                     <div class="input-icon right mr5" style="position: relative;">
-                       <input type="text" class="form-control" [(ngModel)]="pagination.searchKey"
-                         [ngModelOptions]="{standalone: true}" placeholder="Search for a Campaign"
-                         (keypress)="eventHandler($event.keyCode)">
-                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-                         (click)="pagination.searchKey='';search()"></button>
-                       <button type="submit" class="search-box-item-click"
-                         (click)="search()">
-                         <i class="fa fa-search" aria-hidden="true"></i></button>
-                     </div>
-                   </div>
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
+                 <div class="btn-group pull-right">
+                    <div class="inputs" style="float: right;display: inline-flex;">
+                       <div class="portlet-input input-inline ml10" style="display: inline-flex;">
+                          <div class="input-icon right mr5" style="position: relative;">
+                             <input type="text" class="form-control" [(ngModel)]="pagination.searchKey"
+                             [ngModelOptions]="{standalone: true}" placeholder="Search for a Campaign"
+                             (keypress)="eventHandler($event.keyCode)">
+                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+                             (click)="pagination.searchKey='';search()"></button>
+                             <button type="submit" class="search-box-item-click"
+                                (click)="search()">
+                             <i class="fa fa-search" aria-hidden="true"></i></button>
+                          </div>
+                       </div>
+                    </div>
                  </div>
-               </div>
-             </div>
+              </div>
            </div>
            <section class='m10' *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-             <div class="table-responsive">
-               <table class='table tgrid table-hover table-sm' aria-describedby="">
-                 <thead>
-                   <tr>
-                     <th scope="col">Campaign</th>
-                     <th scope="col" class="text-center">Redistributed On</th>
-                     <th scope="col" class="text-center">Analytics</th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                    <ng-container *ngFor='let campaign of pagination.pagedItems; let i=index'>
-                     <tr>
-                        <td>
-                          <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
-                            {{campaign.campaignName | slice:0:50}}
-                            <span *ngIf="campaign.campaignName?.length>50">...</span>
-                          </h4>
-                        </td>
-                        <td class="text-center">
-                           <app-display-date-and-time	[dateAndTimeUTCString]="campaign?.redistributedUtcString"> </app-display-date-and-time>
-                        </td>
-                        <td class="text-center">
-                          <a data-rel="fancybox-button" (click)="showCampaignAnalytics(campaign)"
-                            data-toggle="tooltip" data-placement="top" title="Anlaytics" class='circled-number'>
-                            <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}" aria-hidden="true"></i>
-                          </a>
-                        </td>
-                      </tr>
-                      <tr *ngIf="campaign?.expand">
-                        <td colspan="5">
-                           <div>
-                              <app-detailed-campaign-analytics  [campaignId]="campaign.campaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
-                           </div>
-                        </td>
-                      </tr>
-                    </ng-container>
-                 </tbody>
-               </table>
-             </div>
+              <div class="table-responsive">
+                 <table class='table tgrid table-hover table-sm' aria-describedby="">
+                    <thead>
+                       <tr>
+                          <th scope="col">Campaign</th>
+                          <th scope="col" class="text-center">Redistributed On</th>
+                          <th scope="col" class="text-center">Analytics</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                       <ng-container *ngFor='let campaign of pagination.pagedItems; let i=index'>
+                          <tr>
+                             <td>
+                                <h4 class="ellipsis mt5 mb5 f-w-600 m_t_view" style="font-size: 14px;" data-toggle="tooltip" data-placement="top" title="{{campaign.campaignName}}">
+                                   {{campaign.campaignName | slice:0:50}}
+                                   <span *ngIf="campaign.campaignName?.length>50">...</span>
+                                </h4>
+                             </td>
+                             <td class="text-center">
+                                <app-display-date-and-time	[dateAndTimeUTCString]="campaign?.redistributedUtcString"> </app-display-date-and-time>
+                             </td>
+                             <td class="text-center">
+                                <a data-rel="fancybox-button" (click)="showCampaignAnalytics(campaign)"
+                                   data-toggle="tooltip" data-placement="top" title="Anlaytics" class='circled-number'>
+                                <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}" aria-hidden="true"></i>
+                                </a>
+                             </td>
+                          </tr>
+                          <tr *ngIf="campaign?.expand">
+                             <td colspan="5">
+                                <div>
+                                   <app-detailed-campaign-analytics  [campaignId]="campaign.campaignId" [hidePageContent]="true"></app-detailed-campaign-analytics>
+                                </div>
+                             </td>
+                          </tr>
+                       </ng-container>
+                    </tbody>
+                 </table>
+              </div>
            </section>
-            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-            <app-pagination [pagination]="pagination"
+           <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+              <app-pagination [pagination]="pagination"
               (notifyParent)="setPage($event)"
               (notifyParentDropDown)="findRedistributedCampaigns($event)"
               [hidden]="httpRequestLoader.isLoading">
-            </app-pagination>
-            </div>
-            <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+              </app-pagination>
+           </div>
+           <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
               <strong>No Data Found.</strong>
-            </div>
-         </div>
-         <!-- End Of tab Content -->
-       </div>
+           </div>
+        </div>
+        <!-- End Of tab Content -->
      </div>
-   
+  </div>
 </div>

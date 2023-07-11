@@ -126,7 +126,7 @@
         <div class="modal-dialog modal-customize" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userCampaignReport.response = null"><span aria-hidden="true">&times;</span></button> -->
+                   
                     <a class="close-circle" data-dismiss="modal" (click)="userCampaignReport.response = null">
                         <i class="fa fa-times"></i>
                     </a>
@@ -220,7 +220,7 @@
                 <section *ngFor="let campaign of campaigns; let i=index">
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
                         <div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign)" style="cursor: pointer">
-                            <!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo // [routerLink]="['/home/campaigns/', campaign[0], 'details']"-->
+                           
                             <div class="bookmark-ribbon">
                                 <span style="margin: 0px -7px; font-size: 17px; color: white;">
                     <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top" title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
@@ -506,7 +506,7 @@
                 <div class="portlet-body clearfix">
                     <div class="clearfix">
                         <section *ngFor="let socialConnection of socialConnections">
-                            <!--  [class.disabled]="!hasSocialStatusRole?true:null" -->
+                          
                             <div class="col-xs-12 col-sm-6 col-md-4 p10">
                                 <div class="dashboard-stat2 m0" style="height: 130px;">
                                     <div class="display">
@@ -665,7 +665,7 @@
 </ng-container>
 <!-- Modals -->
 <div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-    <!-- style="width: 80%; margin: 1em auto" -->
+
     <div class="modal-dialog modal-css" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -693,14 +693,9 @@
 
                 <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                     <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                    <h4 class="m5">Please wait while we process your request.</h4>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
                 </div>
 
-                <div *ngIf="isLoadingList">
-                    <app-list-loader></app-list-loader>
-                    <!--  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-            <h4 class="m5">Please wait while we process your request.</h4> -->
-                </div>
                 <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
                     <strong>No results found</strong>
                 </div>
@@ -746,7 +741,7 @@
                                         <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
                                     </td>
                                     <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                        <button id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
+                                        <button  class="lightgray-btn" id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
                       <span *ngIf="!emailClicked.isShowDetails">More</span>
                       <span *ngIf="emailClicked.isShowDetails">Less</span>
                     </button>
@@ -814,7 +809,6 @@
 </div>
 <!-- world map user details  -->
 <div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-    <!-- style="width: 80%; margin: 1em auto" -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -837,7 +831,7 @@
             <div class="modal-body clearfix">
                 <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                     <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                    <h4 class="m5">Please wait while we process your request.</h4>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
                 </div>
                 <div *ngIf="isLoadingList">
                     <app-list-loader></app-list-loader>
@@ -869,7 +863,7 @@
                                         <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
                                     </td>
                                     <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                        <button id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
+                                        <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
                           <span *ngIf="!item.isShowDetails">More</span>
                           <span *ngIf="item.isShowDetails">Less</span>
                         </button>

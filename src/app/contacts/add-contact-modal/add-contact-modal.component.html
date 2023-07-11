@@ -82,11 +82,11 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </div>
         <!-----XNFR-85-------->
         <!---Team Member Group-->
-        <div *ngIf="authenticationService?.module?.adminOrSuperVisor" class="form-group">
+        <div *ngIf="authenticationService?.module?.adminOrSuperVisor" class="form-group" style="display:flex;">
           <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue;">
             <span class="star"> *</span>
           </label>
-          <div class="form-group col-xs-6 col-sm-6">
+          <div class="form-group col-xs-7 col-sm-7">
             <select class="form-control" id="sel-partner-tm" (ngModelChange)="validateTeamMemberGroupId($event)"
               [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}" placeholder="Select Team Member Group">
               <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">{{teamMemberGroup.name}} ({{teamMemberGroup?.teamMembersCount}})</option>
@@ -99,11 +99,11 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             </p>
           </div>
           <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
-            <span class="inputs-group-btn" style="margin:-1px;">
-              <button title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info blue-buttons-radius" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
+            <span class="input-group-btn" style="border:none !important">
+              <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
                 <i class="fa fa-eye white" aria-hidden="true"></i>
               </button>
-              <button  title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx blue-buttons-radius" type="button" tabindex="-1" (click)="previewTeamMembers()" style="    margin-left: 7px;">
+              <button data-toggle="tooltip" data-placement="bottom" title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
                 <i class="fa fa-users white" aria-hidden="true"></i>
               </button>
             </span>
@@ -231,17 +231,17 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       </form>
     </div>
     <div class="modal-footer" style="border:none" *ngIf="!isPartner">
-      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
+      <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
 
     </div>
     <div class="modal-footer" *ngIf="isPartner"  style="border:none" >
-       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Proceed</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
+       <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Proceed</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
     </div>
 
      

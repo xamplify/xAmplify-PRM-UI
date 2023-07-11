@@ -1,1655 +1,1415 @@
 <style>
-	.textCss {
-		background-color: rgba(0, 0, 0, 0.12);
-		bottom: -2px;
-		height: 1px;
-		left: 13;
-		margin: 0;
-		padding: 0;
-		width: 91%;
-	}
-	
 	.disabled {
-		pointer-events: none;
-		cursor: default;
+	pointer-events: none;
+	cursor: default;
 	}
-	
 	.imageblurNormal {
-		-webkit-filter: grayscale(0%);
-		filter: grayscale(0%);
-		-webkit-filter: blur(0px);
-		-moz-filter: blur(0px);
-		-o-filter: blur(0px);
-		-ms-filter: blur(0px);
-		filter: blur(0px);
+	-webkit-filter: grayscale(0%);
+	filter: grayscale(0%);
+	-webkit-filter: blur(0px);
+	-moz-filter: blur(0px);
+	-o-filter: blur(0px);
+	-ms-filter: blur(0px);
+	filter: blur(0px);
 	}
-	
 	.imageblur {
-		-webkit-filter: grayscale(100%);
-		filter: grayscale(100%);
-		opacity: 0.9;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	opacity: 0.9;
 	}
-	
 	img:hover {
-		-webkit-filter: grayscale(0%);
-		/* background-image: url('assets/images/crm/dynamics.png'); */
-		background-color: #3598dc;
-		filter: grayscale(0%);
-		opacity: 2;
+	-webkit-filter: grayscale(0%);	
+	background-color: #3598dc;
+	filter: grayscale(0%);
+	opacity: 2;
 	}
-	
-	.changeImage:hover {
-		background-image: url("assets/images/crm/connecting.png");
-	}
-	
 	.fa fa-cog:hover {
-		color: blue;
+	color: blue;
 	}
-	
-	.alert-dismissible .close {
-		top: 5px;
-		right: 0;
-	}
-	
-	.alert-success, .alert-danger, .alert-warning, .alert-info {
-		color: #ffffff;
-		border-radius: 0;
-		margin: 0;
-	}
-	
-	.alert-success {
-		background-color: #77bf81;
-	}
-	
 	.alert-danger {
-		background-color: #ec6262;
+	color: #ffffff;
+	border-radius: 0;
+	margin: 0;
 	}
-	
-	.alert-warning {
-		background-color: #f1d43b;
+	.alert-danger {
+	background-color: #ec6262;
 	}
-	
-	.alert-success, .alert-danger, .alert-warning>h5 {
-		font-size: 16px;
+	.alert-danger {
+	font-size: 16px;
 	}
-	</style>
-	<div class="page-content">
-		<div class="my-container">
-			<ngx-loading [show]="loading"
-				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-		</div>
-		<div></div>
-		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-		<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true"></button>
-						<h4 class="modal-title">Modal title</h4>
-					</div>
-					<div class="modal-body">Widget settings form goes here</div>
-					<div class="modal-footer">
-						<button type="button" class="btn blue">Save changes</button>
-						<button type="button" class="btn default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
-		<div class="page-bar">
-			<ul class="page-breadcrumb">
-				<li><i class="fa fa-home"></i> <a
-					[routerLink]="referenceService.homeRouter" translate>Home</a> <i
-					class="fa fa-angle-right"></i></li>
-				<li class= "breadcrumb-font-color" style="color: #888" translate>Add
-					{{checkingContactTypeName}}s</li>
-	
-			</ul>
-			<div align="right" style="margin-top: 3px;" class="hidden-xs"
-				*ngIf="!assignLeads">
-				<a (click)="downloadEmptyCsv()">
-					<button type="button" class="btn green" download
-						style="color: #ffffff;margin-right: 3px;"
-						[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
-						translate>
-						Download Contact CSV Template <i class="fa fa-download"
-							aria-hidden="true" style="margin-left: 5px"></i>
-					</button>
-				</a>
-			</div>
-		</div>
-		<!-- BEGIN PAGE CONTENT-->
-	
-		<div class="portlet-body">
-			<form #f="ngForm">
+ </style>
+ <div class="page-content">
+	<div class="my-container">
+	   <ngx-loading [show]="loading"
+	   [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
+	<div></div>
+	<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+	<div class="modal fade" id="portlet-config" tabindex="-1" role="dialog"
+	   aria-labelledby="myModalLabel" aria-hidden="true">
+	   <div class="modal-dialog">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+				   aria-hidden="true"></button>
+				<h4 class="modal-title">Modal title</h4>
+			 </div>
+			 <div class="modal-body">Widget settings form goes here</div>
+			 <div class="modal-footer">
+				<button type="button" class="btn blue">Save changes</button>
+				<button type="button" class="btn default" data-dismiss="modal">Close</button>
+			 </div>
+		  </div>
+		  <!-- /.modal-content -->
+	   </div>
+	   <!-- /.modal-dialog -->
+	</div>
+	<div class="page-bar">
+	   <ul class="page-breadcrumb">
+		  <li><i class="fa fa-home"></i> <a
+			 [routerLink]="referenceService.homeRouter" translate>Home</a> <i
+			 class="fa fa-angle-right"></i></li>
+		  <li class= "breadcrumb-font-color" style="color: #888" translate>Add
+			 {{checkingContactTypeName}}s
+		  </li>
+	   </ul>
+	   <div align="right" style="margin-top: 3px;" class="hidden-xs"
+		  *ngIf="!assignLeads">
+		  <a (click)="downloadEmptyCsv()">
+		  <button type="button" class="btn Btn-Green" download
+			 style="color: #ffffff;margin-right: 3px;"
+			 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
+			 translate>
+		  Download Contact CSV Template <i class="fa fa-download"
+			 aria-hidden="true" style="margin-left: 5px"></i>
+		  </button>
+		  </a>
+	   </div>
+	</div>
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="portlet-body">
+	   <form #f="ngForm">
+		  <div class="row">
+			 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+				style="">
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-						style="">
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
-								<div class="portlet light add-options">
-									<!-- Add your {{checkingContactTypeName}}s with given options -->
-									<div class="portlet-title" translate>How would you like to
-										add your {{checkingContactTypeName}}s?</div>
-									<div class="portlet-body">
-										<div class="row">
-											<div class="col-xs-12 col-sm-4 col-md-4">
-												<button class="btn-primary btn-block" id="addContacts"
-													(click)="addContactModalOpen()"
-													[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i class="fa fa-user-plus"></i>
-													<!-- <span>Add {{checkingContactTypeName}}</span> -->
-													<span translate>One at a Time</span>
-												</button>
-											</div>
-											<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-												<button class="btn-success btn-block" id="copyFromClipBoard"
-													(click)="copyFromClipboard()"
-													[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<i class="fa fa-users"></i> <span translate>Copy list
-														from clipboard</span>
-												</button>
-											</div>
-											<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-												<button class="btn-info fileinput-button btn-block"
-													id="uploadCSV"
-													
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-													<i
-														style="display: block; margin-top: 0px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
-														class="fa fa-file-excel-o"></i> <span
-														style="display: block; font-size: 12px; text-align: center"
-														translate>Upload a CSV</span> <input type="file" title=" "
-														(click)="input.value = null;resetResponse();"
-														(change)="fileChange(input)" accept=".csv" #input
-														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
-											</button>
-												<div style="margin-top: 5px;">
-													<a (click)="downloadEmptyCsv()"> <i
-														class="fa fa-download" aria-hidden="true"
-														style="display: contents !important; font-size: 15px !important"></i><b
-														translate>&nbsp;CSV Template</b>
-													</a>
-												</div>
-												<!--  ng2FileSelect *ngIf="uploader.queue.length==0" [uploader]="uploader" -->
-											</div>
-											<!-- </ng-container> -->
-	
-											<!-- The global file processing state -->
-											<span class="fileupload-process"> </span>
-	
-											<div class="clearfix"></div>
-										</div>
-									</div>
-								</div>
+				   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+					  <div class="portlet light add-options">
+						 <!-- Add your {{checkingContactTypeName}}s with given options -->
+						 <div class="portlet-title" translate>How would you like to
+							add your {{checkingContactTypeName}}s?
+						 </div>
+						 <div class="portlet-body">
+							<div class="row">
+							   <div class="col-xs-12 col-sm-4 col-md-4">
+								  <button class="btn-primary btn-block" id="addContacts"
+								  (click)="addContactModalOpen()"
+								  [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+								  <i class="fa fa-user-plus"></i>													
+								  <span translate>One at a Time</span>
+								  </button>
+							   </div>
+							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
+								  <button class="btn-success btn-block" id="copyFromClipBoard"
+								  (click)="copyFromClipboard()"
+								  [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
+								  <i class="fa fa-users"></i> <span translate>Copy list
+								  from clipboard</span>
+								  </button>
+							   </div>
+							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
+								  <button class="btn-info fileinput-button btn-block"
+									 id="uploadCSV"
+									 [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
+								  <i
+									 style="display: block; margin-top: 0px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
+									 class="fa fa-file-excel-o"></i> <span
+									 style="display: block; font-size: 12px; text-align: center"
+									 translate>Upload a CSV</span> <input type="file" title=" "
+								  (click)="input.value = null;resetResponse();"
+								  (change)="fileChange(input)" accept=".csv" #input
+								  [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
+								  </button>
+								  <div style="margin-top: 5px;">
+									 <a (click)="downloadEmptyCsv()"> <i
+										class="fa fa-download" aria-hidden="true"
+										style="display: contents !important; font-size: 15px !important"></i><b
+										translate>&nbsp;CSV Template</b>
+									 </a>
+								  </div>
+							   </div>
+							   <!-- </ng-container> -->
+							   <!-- The global file processing state -->
+							   <span class="fileupload-process"> </span>
+							   <div class="clearfix"></div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-								<div class="portlet light cloud-services"
-									style="padding-bottom: 33px !important;">
-									<div class="portlet-title" translate>Import
-										{{checkingContactTypeName}}s from the cloud:
-										<a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
-										class="fa fa-chevron-down" aria-hidden="true"
-										style="display: contents !important; font-size: 15px !important"></i></a>
-									</div>
-									<div class="portlet-body">
-										<div class="row">
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
-													style="background-color: white"
-													(click)="salesforceContacts()"
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/sf.png" class="salesForceImageClass" style="border-radius:8px;"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Salesforce account"
-													height="86" width="90" alt="No Image Found">
-												</a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
-													style="background-color: white"
-													(click)="salesforceContacts()"
-													[class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
-													src="assets/images/crm/sf.png" class="salesForceImageClass"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Salesforce account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/sf.png';"
-													alt="Image Not Found">
-												</a>
-												<div id="salesforceGear" style="position: absolute"
-													id="salesforceGear" *ngIf="sfImageNormal">
-													<a
-														[class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-														(click)="settingSocialNetworkOpenModal('Salesforce')">
-														<i id="SgearIcon" class="fa fa-cog cloud-items cloud-css"
-														aria-hidden="true"></i>
-													</a>
-												</div>
-											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="googleImageBlur" id="googleContact_button"
-													style="background-color: white" (click)="googleContacts()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google.png" class="googleImageClass" style="border-radius:8px;"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Google account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/google.png';">
-												</a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
-													style="background-color: white" (click)="googleContacts()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
-													src="assets/images/crm/google.png" class="googleImageClass" style="border-radius:8px;"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Google account"
-													height="86" width="90">
-												</a>
-												<div id="GoogleGear" style="position: absolute"
-													*ngIf="googleImageNormal">
-													<a
-														[class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-														(click)="settingSocialNetworkOpenModal('Google')"> <i
-														id="GgearIcon" class="fa fa-cog cloud-css cloud-items"
-														aria-hidden="true"></i>
-													</a>
-												</div>
-											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="zohoImageBlur" id="zohoContact_button"
-													style="background-color: white"
-													(click)="checkingZohoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho.png" class="zohoImageClass"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Zoho account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/Zoho.png';">
-												</a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
-													style="background-color: white"
-													(click)="checkingZohoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
-													src="assets/images/crm/Zoho.png" class="zohoImageClass" style="border-radius:8px;"
-													data-toggle="tooltip" data-placement="bottom"
-													title="Click here to access contacts from your Zoho account"
-													height="86" width="90">
-												</a>
-												<div id="zohoGear" style="position: absolute"
-													*ngIf="zohoImageNormal">
-													<a
-														[class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
-														(click)="settingSocialNetworkOpenModal('Zoho')"> <i
-														id="ZgearIcon" class="fa fa-cog cloud-items cloud-css"
-														aria-hidden="true"></i>
-													</a>
-												</div>
-												<!-- <div style="position: relative" *ngIf="!zohoImageNormal">
-														<a [class.disabled]="selectedAddContactsOption != 5" (click)="checkingZohoContactsAuthentication()">
-															<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
-														</a>
-													</div> -->
-											</div>
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="marketoImageBlur" id="marketoContact_button"
-													style="background-color: white"
-													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-													src="assets/images/crm/marketo.png" style="border-radius:8px;"
-													class="marketoImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your Marketo account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/marketo.png';">
-												</a> <a *ngIf="marketoImageNormal"
-													id="MarketoContact_buttonNormal"
-													style="background-color: white"
-													(click)="checkingMarketoContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-													src="assets/images/crm/marketo.png" style="border-radius:8px;"
-													class="marketoImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your Marketo account"
-													height="86" width="90">
-												</a>
-												<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-														<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
-															<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
-														</a>
-													</div> -->
-												<!-- <div style="position: relative" *ngIf="!marketoImageNormal">
-														<a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
-															<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
-														</a>
-													</div> -->
-											</div>
-	
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="hubspotImageBlur" id="hubspotContact_button"
-													style="background-color: white"
-													(click)="checkingHubSpotContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
-													src="assets/images/crm/hubspot.png"
-													class="hubspotImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your HubSpot account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/hubspot.png';">
-												</a> <a *ngIf="hubspotImageNormal"
-													id="HubspotContact_buttonNormal"
-													style="background-color: white"
-													(click)="checkingHubSpotContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
-													src="assets/images/crm/hubspot.png" style="border-radius:8px;"
-													class="hubspotImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your HubSpot account"
-													height="86" width="90">
-												</a>
-												<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-														<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
-															<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
-														</a>
-													</div> -->
-												<!-- <div style="position: relative" *ngIf="!hubspotImageNormal">
-														<a [class.disabled]="selectedAddContactsOption != 9" (click)="checkingHubSpotContactsAuthentication()">
-															<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
-														</a>
-													</div> -->
-											</div>
-	
-											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-												style="margin-top: 10px;">
-												<a *ngIf="microsoftDynamicsImageBlur"
-													id="MicrosoftContact_button" style="background-color: white"
-													(click)="checkingMicrosoftContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft.png" style="border-radius: 8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/microsoft.png';">
-												</a> <a *ngIf="microsoftDynamicsImageNormal"
-													id="MicrosoftContact_buttonNormal"
-													style="background-color: white"
-													(click)="checkingMicrosoftContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft.png" style="border-radius:8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="86" width="90">
-												</a>
-											</div>
-											<!-- XNFR-230 -->
-											<div id="showCRM" class="collapse">
-												<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
-													style="margin-top: 10px;">
-												<a *ngIf="pipedriveImageBlur"
-													id="pipedriveContact_button" style="background-color: white"
-													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
-													src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
-													class="pipedriveImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your Pipedrive account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/pipedrive.png';">
-												</a> <a *ngIf="pipedriveImageNormal"
-													id="pipedrive_buttonNormal"
-													style="background-color: white"
-													(click)="checkingPipedriveContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
-													<img
-													[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
-													src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
-													class="pipedriveImageClass" data-toggle="tooltip"
-													data-placement="bottom"
-													title="Click here to access contacts from your pipedrive account"
-													height="86" width="90">
-												</a>
-												</div>
-
-											</div>
-												
-											
-										</div>
-										<div class="clearfix"></div>
-	
-									</div>
-								</div>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+					  <div class="portlet light cloud-services"
+						 style="padding-bottom: 33px !important;">
+						 <div class="portlet-title" translate>Import
+							{{checkingContactTypeName}}s from the cloud:
+							<a href="#showCRM" data-toggle="collapse" style="float: right;"> <i
+							   class="fa fa-chevron-down" aria-hidden="true"
+							   style="display: contents !important; font-size: 15px !important"></i></a>
+						 </div>
+						 <div class="portlet-body">
+							<div class="row">
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
+								  style="background-color: white"
+								  (click)="salesforceContacts()"
+								  [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 2 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+									 src="assets/images/crm/sf.png" class="salesForceImageClass" style="border-radius:8px;"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Salesforce account"
+									 height="86" width="90" alt="No Image Found">
+								  </a> <a *ngIf="sfImageBlur" id="salesforceContact_button"
+								  style="background-color: white"
+								  (click)="salesforceContacts()"
+								  [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
+									 src="assets/images/crm/sf.png" class="salesForceImageClass"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Salesforce account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/sf.png';"
+									 alt="Image Not Found">
+								  </a>
+								  <div id="salesforceGear" style="position: absolute"
+									 id="salesforceGear" *ngIf="sfImageNormal">
+									 <a
+									 [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+									 (click)="settingSocialNetworkOpenModal('Salesforce')">
+									 <i id="SgearIcon" class="fa fa-cog cloud-items cloud-css"
+										aria-hidden="true"></i>
+									 </a>
+								  </div>
+							   </div>
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="googleImageBlur" id="googleContact_button"
+								  style="background-color: white" (click)="googleContacts()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+									 src="assets/images/crm/google.png" class="googleImageClass" style="border-radius:8px;"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Google account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/google.png';">
+								  </a> <a id="googleContact_buttonNormal" *ngIf="googleImageNormal"
+								  style="background-color: white" (click)="googleContacts()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
+									 src="assets/images/crm/google.png" class="googleImageClass" style="border-radius:8px;"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Google account"
+									 height="86" width="90">
+								  </a>
+								  <div id="GoogleGear" style="position: absolute"
+									 *ngIf="googleImageNormal">
+									 <a
+									 [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+									 (click)="settingSocialNetworkOpenModal('Google')"> <i
+										id="GgearIcon" class="fa fa-cog cloud-css cloud-items"
+										aria-hidden="true"></i>
+									 </a>
+								  </div>
+							   </div>
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="zohoImageBlur" id="zohoContact_button"
+								  style="background-color: white"
+								  (click)="checkingZohoContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+									 src="assets/images/crm/Zoho.png" class="zohoImageClass"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Zoho account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/Zoho.png';">
+								  </a> <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal"
+								  style="background-color: white"
+								  (click)="checkingZohoContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
+									 src="assets/images/crm/Zoho.png" class="zohoImageClass" style="border-radius:8px;"
+									 data-toggle="tooltip" data-placement="bottom"
+									 title="Click here to access contacts from your Zoho account"
+									 height="86" width="90">
+								  </a>
+								  <div id="zohoGear" style="position: absolute"
+									 *ngIf="zohoImageNormal">
+									 <a
+									 [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality"
+									 (click)="settingSocialNetworkOpenModal('Zoho')"> <i
+										id="ZgearIcon" class="fa fa-cog cloud-items cloud-css"
+										aria-hidden="true"></i>
+									 </a>
+								  </div>
+							   </div>
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="marketoImageBlur" id="marketoContact_button"
+								  style="background-color: white"
+								  (click)="checkingMarketoContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+									 src="assets/images/crm/marketo.png" style="border-radius:8px;"
+									 class="marketoImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your Marketo account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/marketo.png';">
+								  </a> <a *ngIf="marketoImageNormal"
+								  id="MarketoContact_buttonNormal"
+								  style="background-color: white"
+								  (click)="checkingMarketoContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+									 src="assets/images/crm/marketo.png" style="border-radius:8px;"
+									 class="marketoImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your Marketo account"
+									 height="86" width="90">
+								  </a>												
+							   </div>
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="hubspotImageBlur" id="hubspotContact_button"
+								  style="background-color: white"
+								  (click)="checkingHubSpotContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
+									 src="assets/images/crm/hubspot.png"
+									 class="hubspotImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your HubSpot account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/hubspot.png';">
+								  </a> <a *ngIf="hubspotImageNormal"
+								  id="HubspotContact_buttonNormal"
+								  style="background-color: white"
+								  (click)="checkingHubSpotContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}"
+									 src="assets/images/crm/hubspot.png" style="border-radius:8px;"
+									 class="hubspotImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your HubSpot account"
+									 height="86" width="90">
+								  </a>
+							   </div>
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  style="margin-top: 10px;">
+								  <a *ngIf="microsoftDynamicsImageBlur"
+								  id="MicrosoftContact_button" style="background-color: white"
+								  (click)="checkingMicrosoftContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+									 src="assets/images/crm/microsoft.png" style="border-radius: 8px;"
+									 class="microsoftImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your Microsoft Dynamics account"
+									 height="86" width="90"
+									 onmouseover="this.src='assets/images/crm/connecting.png';"
+									 onmouseout="this.src='assets/images/crm/microsoft.png';">
+								  </a> <a *ngIf="microsoftDynamicsImageNormal"
+								  id="MicrosoftContact_buttonNormal"
+								  style="background-color: white"
+								  (click)="checkingMicrosoftContactsAuthentication()"
+								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+								  <img
+									 [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+									 src="assets/images/crm/microsoft.png" style="border-radius:8px;"
+									 class="microsoftImageClass" data-toggle="tooltip"
+									 data-placement="bottom"
+									 title="Click here to access contacts from your Microsoft Dynamics account"
+									 height="86" width="90">
+								  </a>
+							   </div>
+							   <!-- XNFR-230 -->
+							   <div id="showCRM" class="collapse">
+								  <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+									 style="margin-top: 10px;">
+									 <a *ngIf="pipedriveImageBlur"
+									 id="pipedriveContact_button" style="background-color: white"
+									 (click)="checkingPipedriveContactsAuthentication()"
+									 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+									 <img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+										src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
+										class="pipedriveImageClass" data-toggle="tooltip"
+										data-placement="bottom"
+										title="Click here to access contacts from your Pipedrive account"
+										height="86" width="90"
+										onmouseover="this.src='assets/images/crm/connecting.png';"
+										onmouseout="this.src='assets/images/crm/pipedrive.png';">
+									 </a> <a *ngIf="pipedriveImageNormal"
+									 id="pipedrive_buttonNormal"
+									 style="background-color: white"
+									 (click)="checkingPipedriveContactsAuthentication()"
+									 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 11">
+									 <img
+										[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :pipedriveImageBlur==true}"
+										src="assets/images/crm/pipedrive.png" style="border-radius:8px;"
+										class="pipedriveImageClass" data-toggle="tooltip"
+										data-placement="bottom"
+										title="Click here to access contacts from your pipedrive account"
+										height="86" width="90">
+									 </a>
+								  </div>
+							   </div>
 							</div>
-						</div>
-						<!-- remove here Contact List Name Text Box -->
-						
-						<!--  // -->
-						<!-- <div class="col-xs-12 col-md-6" *ngIf="assignLeads">
-							<div class="form-group">
-							<label for="name" class="col-xs-12 col-sm-4 control-label" style="padding-left: 0;" translate> Select Partner</label>
-							<button class="btn btn-primary" [disabled]="selectedAddContactsOption === 8" (click)="authenticationService.isSharePartnerModal = true" >Select Partner</button>
-										<div class="col-xs-12 col-sm-8">
-											<input type="text" class="form-control" id="contactListName" autocomplete="off" (ngModelChange)="changEvent($event)" required
-											 [(ngModel)]="model.contactListName" name="contactListName" (input)="validateContactName(model.contactListName)"
-											 minlength="1" maxlength="250" placeholder="List Name" #contactListName="ngModel">
-										</div>
-							  
-											  <button (click)="authenticationService.isSharePartnerModal = true">Share</button>
-							<div class="col-xs-12 share-partner" *ngIf="sharedPartnerDetails">
-							 <h4><b>Selected partner details:</b></h4>
-							  <h5>Name: <b>{{sharedPartnerDetails.firstName}} {{sharedPartnerDetails.lastName}}</b></h5>
-							  <h5>Email: <b>{{sharedPartnerDetails.emailId}}</b></h5>
-							  <h5>Company: <b>{{sharedPartnerDetails.companyName}}</b></h5>
-							 
-							
+							<div class="clearfix"></div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+				<div class="row">
+				   <div class="col-xs-12 col-md-12">
+					  <app-response-message [customResponse]="customResponse"
+					  *ngIf="customResponse.isVisible"></app-response-message>
+				   </div>
+				</div>
+				<div class="portlet light mt10"
+				   *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+				   <div class="row" style="margin-bottom: 15px;"
+					  *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
+					  <br>
+					  <br>
+					  <div class="col-xs-12 col-md-12">
+						 <div class="form-group">
+							<label for="name" class="col-xs-12 col-sm-2 control-label"
+							   translate>Legal Basis Options
+							<span class="danger">*</span>
+							</label>
+							<div id="multiselect-sample" class="control-section">
+							   <div class="col-lg-4 content-wrapper">
+								  <div class="control-styles">
+									 <ejs-multiselect [(ngModel)]='selectedLegalBasisOptions'
+									 [ngModelOptions]="{standalone: true}"
+									 [allowFiltering]='true' [ignoreAccent]='true'
+									 id='multiselectelement' [dataSource]='legalBasisOptions'
+									 [fields]='fields' [placeholder]='placeHolder'
+									 (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+									 <span class="custom-error-message chagneText"
+										*ngIf="!isValidLegalOptions" translate>Please select
+									 at least one option</span>
+								  </div>
+							   </div>
 							</div>
+						 </div>
+						 <ng-template *ngIf="clipBoard" [ngTemplateOutlet]="verifyData"></ng-template>
+					  </div>
+					  <ng-template #verifyData>
+						 <div class="row" *ngIf="clipBoard">
+							<div class="col-sm-12">
+							   <h3 style="margin-left: 30px;" translate>Copy from text --
+								  paste below
+							   </h3>
+							   <div class="col-xs-12 col-sm-7">
+								  <div class="col-xs-6" style="margin-bottom: 10px">
+									 <select class="opts form-control">
+										<option selected value="DEFAULT" translate>Delimiter
+										   Type
+										</option>
+										<option value="CommaSeperated" translate>Comma
+										   Separated
+										</option>
+										<option value="TabSeperated" translate>Tab
+										   Separated
+										</option>
+									 </select>
+								  </div>
+								  <div class="col-xs-6" style="margin-bottom: 10px">
+									 <button class="btn Btn-Green" type="button"
+										
+										(click)="clipboardShowPreview()" translate>VERIFY
+									 DATA</button>
+								  </div>
+								  <div class="col-xs-12">
+									 <textarea id="copyFromclipTextArea" class="textareaNumber white-text"
+									 [(ngModel)]="clipboardTextareaText"
+									 placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
+									 [ngModelOptions]="{standalone: true}"
+									 style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+									 required="required">
+									 </textarea>
+								  </div>
+							   </div>
+							   <div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
+								  <span id="clipBoardValidationMessage"></span>
+							   </div>
 							</div>
-							</div> -->
-	
-	
-	
-						<!-- 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:20px; margin-bottom:20px" *ngIf="assignLeads">
-							<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
-							<div  class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-								<div class="form-group">
-									<label for="hostedBy" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 labal-css color-css"
-										translate><b>Select Partner:</b></label>
-									<div class="col-xs-8 col-sm-6 col-md-6 col-lg-6 p0">
-										<select class="form-control" [(ngModel)]="model.assignedTo"
-											[ngModelOptions]="{standalone: true}">
-											<option [value]="" selected>{{partnerEmailIds[0]}} </option>>
-											   <option value="" disabled selected>Select your Partner</option>
-											   
-											  <button>Share</button>
-											
-											<option *ngFor="let partnerEmailId of partnerEmailIds"
-												[value]="partnerEmailId" >{{partnerEmailId}}</option>
-										</select>
-									</div>
-								</div>
-								</div>
-								<div  class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs"></div>
-							</div> -->
-						<!--  // -->
-						<div class="row">
-							<div class="col-xs-12 col-md-12">
-							<app-response-message [customResponse]="customResponse"
-								*ngIf="customResponse.isVisible"></app-response-message>
+						 </div>
+					  </ng-template>
+				   </div>
+				   <div *ngIf="uploadedCsvFileName">
+					  <strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
+				   </div>
+				</div>
+				<!-- Contact List Name Text Box -->
+				<div class="row portlet light m0">
+				   <div class="col-xs-12 col-md-6 p0">
+					  <div class="form-group">
+						 <label for="name" class="col-xs-12 col-sm-4 p0 control-label"
+							style="margin-top: 12px;" translate>{{checkingContactTypeName}}
+						 List Name<span class="danger">*</span></label>
+						 <div class="col-xs-12 col-sm-8" style="margin-top: 4px;">
+							<input type="text" class="form-control" id="contactListName"
+							autocomplete="off" (ngModelChange)="changEvent($event)"
+							required [(ngModel)]="model.contactListName"
+							name="contactListName"
+							(input)="validateContactName(model.contactListName)"
+							minlength="1" maxlength="250" placeholder="List Name"
+							#contactListName="ngModel">
+							<!-- Validation Messages -->
+							<div *ngIf="isValidContactName">
+							   <p class="custom-error-message chagneText" translate>{{invalidContactNameError}}</p>
 							</div>
-						</div>
-						<div class="portlet light mt10"
-							*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
-							<div class="row" style="margin-bottom: 15px;"
-								*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
-								<br>
-								<br>
-								<div class="col-xs-12 col-md-12">
-									<div class="form-group">
-										<label for="name" class="col-xs-12 col-sm-2 control-label"
-											translate>Legal Basis Options
-											<span class="danger">*</span>
-										</label>
-										<div id="multiselect-sample" class="control-section">
-											<div class="col-lg-4 content-wrapper">
-												<div class="control-styles">
-													<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions'
-														[ngModelOptions]="{standalone: true}"
-														[allowFiltering]='true' [ignoreAccent]='true'
-														id='multiselectelement' [dataSource]='legalBasisOptions'
-														[fields]='fields' [placeholder]='placeHolder'
-														(blur)="validateLegalBasisOptions()"></ejs-multiselect>
-													<span class="custom-error-message chagneText"
-														*ngIf="!isValidLegalOptions" translate>Please select
-														at least one option</span>
-												</div>
-											</div>
-										</div>
-									</div>
-									<ng-template *ngIf="clipBoard" [ngTemplateOutlet]="verifyData"></ng-template>
-								</div>
-	
-								<ng-template #verifyData>
-								<div class="row" *ngIf="clipBoard">
-	
-									<div class="col-sm-12">
-										<h3 style="margin-left: 30px;" translate>Copy from text --
-											paste below</h3>
-										<div class="col-xs-12 col-sm-7">
-											<div class="col-xs-6" style="margin-bottom: 10px">
-												<select class="opts form-control">
-													<option selected value="DEFAULT" translate>Delimiter
-														Type</option>
-													<option value="CommaSeperated" translate>Comma
-														Separated</option>
-													<option value="TabSeperated" translate>Tab
-														Separated</option>
-												</select>
-											</div>
-											<div class="col-xs-6" style="margin-bottom: 10px">
-												<button class="btn btn-default" type="button"
-													style="background-color: #26a69a; color: white"
-													(click)="clipboardShowPreview()" translate>VERIFY
-													DATA</button>
-											</div>
-											<div class="col-xs-12">
-												<textarea id="copyFromclipTextArea" class="textareaNumber white-text"
-													[(ngModel)]="clipboardTextareaText"
-													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
-													[ngModelOptions]="{standalone: true}"
-													style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
-													required="required">
-											</textarea>
-											</div>
-										</div>
-										<div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
-											<span id="clipBoardValidationMessage"></span>
-										</div>
-									</div>
-	
-								</div>
-								</ng-template>
+							<div *ngIf="contactListNameError">
+							   <p class="custom-error-message chagneText" translate>Please
+								  enter the {{checkingContactTypeName}} list name.
+							   </p>
 							</div>
-							<div *ngIf="uploadedCsvFileName">
-								<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
+							<div *ngIf="noOptionsClickError ">
+							   <p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
 							</div>
-						</div>
-						<!-- Contact List Name Text Box -->
-						<div class="row portlet light m0">
-							<div class="col-xs-12 col-md-6 p0">
-								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-4 p0 control-label"
-										style="margin-top: 12px;" translate>{{checkingContactTypeName}}
-										List Name<span class="danger">*</span></label>
-									<div class="col-xs-12 col-sm-8" style="margin-top: 4px;">
-										<input type="text" class="form-control" id="contactListName"
-											autocomplete="off" (ngModelChange)="changEvent($event)"
-											required [(ngModel)]="model.contactListName"
-											name="contactListName"
-											(input)="validateContactName(model.contactListName)"
-											minlength="1" maxlength="250" placeholder="List Name"
-											#contactListName="ngModel">
-	
-										<!-- Validation Messages -->
-										<div *ngIf="isValidContactName">
-											<p class="custom-error-message chagneText" translate>{{invalidContactNameError}}</p>
-										</div>
-										<div *ngIf="contactListNameError">
-											<p class="custom-error-message chagneText" translate>Please
-												enter the {{checkingContactTypeName}} list name.</p>
-										</div>
-										<div *ngIf="noOptionsClickError ">
-											<p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
-										</div>
-									</div>
-								</div>
+						 </div>
+					  </div>
+				   </div>
+				   <!--  // -->
+				   <div class="col-xs-12 col-md-4 p0" *ngIf="!assignLeads">
+					  <div class="portlet-title" style="display: block">
+						 <h4 class="pull-left f-w-600" translate>Public vs Private</h4>
+						 <span style="cursor: pointer; color: #54a7e9;"> <i
+							class="fa fa-question-circle" data-html="true"
+							data-toggle="tooltip" data-placement="bottom"
+							title="Public: This list and subsequent campaigns can be viewed by all team members and admins. 
+							<br> <br> 
+							Private: This list and subsequent campaigns can only be viewed by you and admins."
+							style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
+						 </i>
+						 </span> <span style="margin-left: 5px;"> <switch
+						 [status]="model.isPublic" [onText]="'Public'"
+						 [offText]="'Private'"
+						 [onColor]="callActionSwitch.onGreenColorSwitch"
+						 [offColor]="callActionSwitch.offPrivateColor"
+						 [size]="callActionSwitch.size"
+						 (statusChange)="changeStatus($event)"> </switch>
+						 </span>
+					  </div>
+				   </div>
+				   <!--  // -->
+				   <div class="col-xs-12 col-md-6" class="pull-right">
+					  <section class="pull-right"
+						 style="margin-bottom: 10px; margin-top: 3px;">
+						 <button id="sample_editable_1_new" class="btn Btn-Green"
+							(click)="saveContacts()" translate>
+						 Save <i class="fa fa-save"></i>
+						 </button>
+						 <button id="cancel_button" class="btn Btn-Green"
+							(click)="cancelContacts()" translate>
+						 Cancel<i class="fa fa-cancel"></i>
+						 </button>
+					  </section>
+				   </div>
+				</div>
+				<div>
+				   <!-- The table listing the files available for upload/download -->
+				   <table role="presentation"
+					  class="table table-striped clearfix mt10"
+					  style="width: 100%; max-width: 100%; margin-bottom: 0px;">
+					  <tbody class="files">
+					  </tbody>
+				   </table>
+				   <div class="table-responsive">
+					  <table class='portlet light table tgrid' id="sample_editable_1">
+						 <thead>
+							<tr>
+							   <th translate>EMAILID</th>
+							   <th class="hidden-xs" translate>FIRST NAME</th>
+							   <th class="hidden-xs" translate>LAST NAME</th>
+							   <th translate>MORE</th>
+							   <th translate>CANCEL</th>
+							</tr>
+						 </thead>
+						 <tbody>
+							<ng-container
+							   *ngFor="let newContact of newUsers; let i = index">
+							   <tr class='row_{{i}}'>
+								  <td>{{newContact.emailId}}</td>
+								  <td class="hidden-xs">{{newContact.firstName}}</td>
+								  <td class="hidden-xs">{{newContact.lastName}}</td>
+								  <td>
+									 <button  class="lightgray-btn"id='more_less_button_{{i}}'
+										(click)="newContact.isShowDetails = ! newContact.isShowDetails">
+									 <span *ngIf="!newContact.isShowDetails" translate>More</span>
+									 <span *ngIf="newContact.isShowDetails">Less</span>
+									 </button>
+								  </td>
+								  <td><a class="delete" (click)="cancelRow(i)" translate>Cancel
+									 </a>
+								  </td>
+							   </tr>
+							   <tr
+								  [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}">
+								  <td colspan="6">
+									 <table cellpadding="5" cellspacing="0" class="border"
+										style="border:none !important;">
+										<tbody>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Company:</td>
+											  <td class='pt10 pb10'>{{newContact.contactCompany}}</td>
+										   </tr>
+										   <tr class="border-bottom"
+											  *ngIf="gdprStatus">
+											  <td class='pt10 pb10' translate>Legal Basis:</td>
+											  <td class='pt10 pb10'>{{newContact.legalBasisString}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Job Title:</td>
+											  <td class='pt10 pb10'>{{newContact.jobTitle}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Address:</td>
+											  <td class='pt10 pb10'>{{newContact.address}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>City:</td>
+											  <td class='pt10 pb10'>{{newContact.city}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>State:</td>
+											  <td class='pt10 pb10'>{{newContact.state}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Country:</td>
+											  <td class='pt10 pb10'>{{newContact.country}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Zip Code:</td>
+											  <td class='pt10 pb10'>{{newContact.zipCode}}</td>
+										   </tr>
+										   <tr class="border-bottom">
+											  <td class='pt10 pb10' translate>Phone Number:</td>
+											  <td class='pt10 pb10'>
+												 <a
+													href="tel:{{newContact.mobileNumber}}"><i
+													class="fa fa-phone" aria-hidden="true"
+													style="padding-right: 4px;"></i>{{newContact?.mobileNumber}}</a>
+											  </td>
+										   </tr>
+										</tbody>
+									 </table>
+								  </td>
+							   </tr>
+							</ng-container>
+						 </tbody>
+					  </table>
+				   </div>
+				</div>
+				<div class="row" id="Gfile_preview">
+				   <div class="col-md-12">
+					  <!-- BEGIN EXAMPLE TABLE PORTLET-->
+					  <div class="portlet light">
+						 <div class="portlet-title">
+							<div class="caption"
+							   style="padding-top: 7px !important; font-size: 20px;"
+							   translate>
+							   <i class="fa fa-edit" style="font-size: 19px;"></i>File
+							   Preview
 							</div>
-							<!--  // -->
-							<div class="col-xs-12 col-md-4 p0" *ngIf="!assignLeads">
-								<div class="portlet-title" style="display: block">
-									<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
-									<span style="cursor: pointer; color: #54a7e9;"> <i
-										class="fa fa-question-circle" data-html="true"
-										data-toggle="tooltip" data-placement="bottom"
-										title="Public: This list and subsequent campaigns can be viewed by all team members and admins. 
-											<br> <br> 
-											Private: This list and subsequent campaigns can only be viewed by you and admins."
-										style="font-size: 20px; margin-left: 10px; margin-top: 12px;">
-									</i>
-									</span> <span style="margin-left: 5px;"> <switch
-											[status]="model.isPublic" [onText]="'Public'"
-											[offText]="'Private'"
-											[onColor]="callActionSwitch.onGreenColorSwitch"
-											[offColor]="callActionSwitch.offPrivateColor"
-											[size]="callActionSwitch.size"
-											(statusChange)="changeStatus($event)"> </switch>
-									</span>
-								</div>
-							</div>
-	
-							<!--  // -->
-							<div class="col-xs-12 col-md-6" class="pull-right">
-								<section class="pull-right"
-									style="margin-bottom: 10px; margin-top: 3px;">
-									<button id="sample_editable_1_new" class="btn green"
-										(click)="saveContacts()" translate>
-										Save <i class="fa fa-save"></i>
-									</button>
-									<button id="cancel_button" class="btn green"
-										(click)="cancelContacts()" translate>
-										Cancel<i class="fa fa-cancel"></i>
-									</button>
-								</section>
-							</div>
-	
-						</div>
-						<!-- <div class="portlet light mt10" *ngIf="uploadedCsvFileName">
-							<div *ngIf="uploadedCsvFileName">
-								<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
-							</div>
-						</div> -->
-	
-						<!-- <div *ngIf="removeCsvName" id="removeCsv"
-								style="margin-top: 15px; margin-bottom: -20px; padding-left: 1cm">
-								<table class="table">
-									<thead>
-									</thead>
-									<tbody>
-										<tr *ngFor="let item of uploader.queue">
-											<td width="18%"><strong>{{ item?.file?.name }}</strong></td>
-											<td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-											<td *ngIf="uploader.isHTML5">
-												<div class="progress" style="margin-bottom: 10px;">
-													<div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-												</div>
-											</td>
-											<td class="text-center"><span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span> <span *ngIf="item.isCancel"><i
-													 class="glyphicon glyphicon-ban-circle"></i></span> <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span></td>
-											<td nowrap>
-												<button type="button" class="btn btn-danger btn-xs" (click)="item.remove();removeCsv()">
-													<span class="glyphicon glyphicon-trash"></span> Remove
-												</button>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div> -->
-						<!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
-	
-						<!-- <div class="col-xs-12" style="padding: 0 0 10px 0">
-			  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-			</div> -->
-	
-						<!-- <div class="row" *ngIf="clipBoard">
-								<div class="col-sm-12">
-									<h3 style="margin-left: 30px;" translate>Copy from text -- paste below
-									</h3>
-									<div class="col-xs-12 col-sm-7">
-										<div class="col-xs-6" style="margin-bottom: 10px">
-											<select class="opts form-control">
-												<option selected value="DEFAULT" translate>Delimiter Type</option>
-												<option value="CommaSeperated" translate>Comma Separated</option>
-												<option value="TabSeperated" translate>Tab Separated</option>
-											</select>
-										</div>
-										<div class="col-xs-6" style="margin-bottom: 10px">
-											<button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()" translate>
-												VERIFY DATA
-											</button>
-										</div>
-										<div class="col-xs-12">
-											<textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
-											 [ngModelOptions]="{standalone: true}" style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
-											 required="required">
-										</textarea>
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
-										<span id="clipBoardValidationMessage"></span>
-									</div>
-								</div>
-							</div> -->
-	
-						<div>
-							<!-- The table listing the files available for upload/download -->
-							<table role="presentation"
-								class="table table-striped clearfix mt10"
-								style="width: 100%; max-width: 100%; margin-bottom: 0px;">
-								<tbody class="files">
-								</tbody>
-							</table>
+						 </div>
+						 <div class="portlet-body">
 							<div class="table-responsive">
-								<table class='portlet light table tgrid' id="sample_editable_1">
-									<thead>
+							   <table class="table tgrid" id="google-contacts-table">
+								  <thead>
+									 <tr>
+										<th align="center" class="text-center"><input type="checkbox" name="all"
+										   [(ngModel)]="isHeaderCheckBoxChecked"
+										   (change)="checkAll($event)" class=""
+										   id="checkAllExistingContacts" />
+										</th>
+										<th translate>EMAIL</th>
+										<th translate>FIRST NAME</th>
+										<th translate>LAST NAME</th>
+										<th *ngIf="selectedAddContactsOption === 5" translate>COMPANY</th>
+										<th
+										   *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"></th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <ng-container *ngFor="let user of pagedItems;let i = index">
 										<tr>
-											<th translate>EMAILID</th>
-											<th class="hidden-xs" translate>FIRST NAME</th>
-											<th class="hidden-xs" translate>LAST NAME</th>
-											<th translate>MORE</th>
-											<th translate>CANCEL</th>
+										   <td align="center"
+											  *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11"><input
+											  type="checkbox"
+											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
+											  class="chk"
+											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+											  lang="{{user.name}}" name="campaignContact[]"
+											  value="{{user.id}}" id="{{user.id}}"
+											  (click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,user.company,user.contactCompany,$event)" />
+										   </td>
+										   <td align="center"
+											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"><input
+											  type="checkbox"
+											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
+											  class="chk"
+											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+											  lang="{{user.name}}" name="campaignContact[]"
+											  value="{{user.id}}" id="{{user.id}}"
+											  (click)="highlightMarketoRow(user)" />
+										   </td>
+										   <td
+											  *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption !=11">{{user.emailId}}</td>
+										   <td
+											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">{{user.email}}</td>
+										   <td>{{user.firstName}}</td>
+										   <td>{{user.lastName}}</td>
+										   <td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
+										   <td
+											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
+											  <button class="lightgray-btn" id='more_less_button_{{i}}'
+												 (click)="user.isShowDetails = ! user.isShowDetails">
+											  <span *ngIf="!user.isShowDetails" translate>More</span> <span
+												 *ngIf="user.isShowDetails" translate>Less</span>
+											  </button>
+										   </td>
 										</tr>
-									</thead>
-									<tbody>
-										<ng-container
-											*ngFor="let newContact of newUsers; let i = index">
-										<tr class='row_{{i}}'>
-											<td>{{newContact.emailId}}</td>
-											<td class="hidden-xs">{{newContact.firstName}}</td>
-											<td class="hidden-xs">{{newContact.lastName}}</td>
-											<td>
-												<button id='more_less_button_{{i}}'
-													(click)="newContact.isShowDetails = ! newContact.isShowDetails">
-													<span *ngIf="!newContact.isShowDetails" translate>More</span>
-													<span *ngIf="newContact.isShowDetails">Less</span>
-												</button>
-											</td>
-											<td><a class="delete" (click)="cancelRow(i)" translate>Cancel
-											</a></td>
+										<tr *ngIf="pagedItems"
+										[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+										<td colspan="8">
+										   <table cellpadding="5" cellspacing="0"class="border"
+											  style="border:none !important;">
+											  <tbody>
+												 <tr *ngIf="user?.company">
+													<td class='pt10 pb10 bold' translate>Company:</td>
+													<td class='pt10 pb10' style="padding-left: 20px;">
+													   {{user.company}}
+													</td>
+												 </tr>
+												 <tr *ngIf="user?.title">
+													<td class='pt10 pb10 bold' translate>Job Title:</td>
+													<td class='pt10 pb10' style="padding-left: 20px;">
+													   {{user.title}}
+													</td>
+												 </tr>
+												 <tr>
+													<td class='pt10 pb10 bold' translate>Phone:</td>
+													<td class='pt10 pb10'>{{user?.mobilePhone}}
+													</td>
+												 </tr>
+												 <tr>
+													<td class='pt10 pb10 bold' translate>Address:</td>
+													<td align="center" class="hidden-xs">
+													   <h5 *ngIf="user?.address" class='mb0'>{{user.address}}</h5>
+													   <h5 class='m0' *ngIf="user?.city">
+														  {{user.city}}<span *ngIf="user.city && user.state">,&nbsp;</span>{{user.state}}
+													   </h5>
+													   <h5 *ngIf="user?.postalCode || user?.country"
+														  class='mt0'>
+														  {{user.postalCode}}<span
+															 *ngIf="user?.postalCode && user.country">,&nbsp;</span>{{user.country}}
+													   </h5>
+													</td>
+												 </tr>
+												 <tr *ngIf="user?.website">
+													<td class='pt10 pb10 bold' translate>Website:</td>
+													<td class='pt10 pb10'>{{user.website}}</td>
+												 </tr>
+											  </tbody>
+										   </table>
+										</td>
+										</tr>
+									 </ng-container>
+								  </tbody>
+							   </table>
+							</div>
+							<ul *ngIf="pager.pages && pager.pages.length"
+							   class="pagination">
+							   <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+								  (click)="setPage(1)">First</a></li>
+							   <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+								  (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+							   <li *ngFor="let page of pager.pages"
+							   [ngClass]="{active:pager.currentPage === page}"><a
+								  (click)="setPage(page)">{{page}}</a></li>
+							   <li
+								  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+							   </li>
+							   <li
+								  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.totalPages)">Last</a>
+							   </li>
+							</ul>
+							<div class="p-drop-down" style="width: max-content;">
+							   <select class="form-control" style="cursor: pointer"
+							   [(ngModel)]="pageNumber"
+							   [ngModelOptions]="{standalone: true}"
+							   (ngModelChange)="selectedPageNumber($event.value)">
+							   <option
+							   *ngFor="let pageNo of paginationComponent.numberPerPage"
+							   [ngValue]="pageNo">{{pageNo.name}}</option>
+							   </select>
+							</div>
+						 </div>
+					  </div>
+					  <!-- END EXAMPLE TABLE PORTLET-->
+				   </div>
+				</div>
+				<div class="row" id="file_preview">
+				   <div class="col-md-12">
+					  <!-- BEGIN EXAMPLE TABLE PORTLET-->
+					  <div class="portlet light">
+						 <div class="portlet-title">
+							<div class="caption"
+							   style="padding-top: 7px !important; font-size: 20px;"
+							   translate>
+							   <i class="fa fa-edit" style="font-size: 19px;"></i>File
+							   Preview
+							</div>
+						 </div>
+						 <div class="portlet-body">
+							<app-list-loader *ngIf="isListLoader"></app-list-loader>
+							<div class="table-responsive">
+							   <table class="table tgrid" id="sample_editable_2">
+								  <thead>
+									 <tr>
+										<th translate>FIRST NAME</th>
+										<th translate>LAST NAME</th>
+										<th translate>EMAILID</th>
+										<th translate>MORE</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <ng-container *ngFor="let user of pagedItems;let i=index">
+										<tr>
+										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName |
+											  slice:0:30}} <span *ngIf="user.firstName?.length>30">...</span>
+										   </td>
+										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName |
+											  slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span>
+										   </td>
+										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId |
+											  slice:0:35}} <span *ngIf="user.emailId?.length>35">...</span>
+										   </td>
+										   <td>
+											  <button  class="lightgray-btn" id='more_less_button_{{i}}'
+												 (click)="user.isShowDetails = ! user.isShowDetails">
+											  <span *ngIf="!user.isShowDetails" translate>More</span> <span
+												 *ngIf="user.isShowDetails" translate>Less</span>
+											  </button>
+										   </td>
 										</tr>
 										<tr
-											[ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}">
-											<td colspan="6">
-												<table cellpadding="5" cellspacing="0" class="border"
-													style="border:none !important;">
-													<tbody>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Company:</td>
-															<td class='pt10 pb10'>{{newContact.contactCompany}}</td>
-														</tr>
-														<tr class="border-bottom"
-															*ngIf="gdprStatus">
-															<td class='pt10 pb10' translate>Legal Basis:</td>
-															<td class='pt10 pb10'>{{newContact.legalBasisString}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Job Title:</td>
-															<td class='pt10 pb10'>{{newContact.jobTitle}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Address:</td>
-															<td class='pt10 pb10'>{{newContact.address}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>City:</td>
-															<td class='pt10 pb10'>{{newContact.city}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>State:</td>
-															<td class='pt10 pb10'>{{newContact.state}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Country:</td>
-															<td class='pt10 pb10'>{{newContact.country}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Zip Code:</td>
-															<td class='pt10 pb10'>{{newContact.zipCode}}</td>
-														</tr>
-														<tr class="border-bottom">
-															<td class='pt10 pb10' translate>Phone Number:</td>
-															<td class='pt10 pb10'>
-																<!-- <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-																			<int-phone-prefix [(ngModel)]="newContact.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																		</div> --> <!-- {{newContact.mobileNumber}} --> <a
-																href="tel:{{newContact.mobileNumber}}"><i
-																	class="fa fa-phone" aria-hidden="true"
-																	style="padding-right: 4px;"></i>{{newContact?.mobileNumber}}</a>
-															</td>
-														</tr>
-														<!-- <tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Notes:</td>
-																<td class='pt10 pb10'>{{newContact.description}}</td>
-															</tr> -->
-													</tbody>
-												</table>
-											</td>
+										   [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+										   <td colspan="6">
+											  <table cellpadding="5" cellspacing="0"class="border"
+												 style="border:none !important;">
+												 <tbody>
+													<tr style="">
+													   <td class='bold' translate>Company:</td>
+													   <td class=''>{{user.contactCompany}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>Job Title:</td>
+													   <td class=''>{{user.jobTitle}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>Address:</td>
+													   <td class=''>{{user.address}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>City:</td>
+													   <td class=''>{{user.city}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>State:</td>
+													   <td class=''>{{user.state}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>Zip Code:</td>
+													   <td class=''>{{user.zipCode}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>Country:</td>
+													   <td class=''>{{user.country}}</td>
+													</tr>
+													<tr style="">
+													   <td class='bold' translate>Phone Number:</td>
+													   <td class=''>
+														  <!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+															 <int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+															 </div> --> <!-- {{user.mobileNumber}} --> <a
+															 href="tel:{{user.mobileNumber}}"><i
+															 class="fa fa-phone" aria-hidden="true"
+															 style="padding-right: 4px;"></i>{{user?.mobileNumber}}</a>
+													   </td>
+													</tr>
+												 </tbody>
+											  </table>
+										   </td>
 										</tr>
-										</ng-container>
-									</tbody>
-								</table>
+									 </ng-container>
+								  </tbody>
+							   </table>
 							</div>
-						</div>
-						<div class="row" id="Gfile_preview">
-							<div class="col-md-12">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
-								<div class="portlet light">
-									<div class="portlet-title">
-										<div class="caption"
-											style="padding-top: 7px !important; font-size: 20px;"
-											translate>
-											<i class="fa fa-edit" style="font-size: 19px;"></i>File
-											Preview
-										</div>
-									</div>
-									<div class="portlet-body">
-										<div class="table-responsive">
-											<table class="table tgrid" id="google-contacts-table">
-												<thead>
-													<tr>
-														<td align="center"><input type="checkbox" name="all"
-															[(ngModel)]="isHeaderCheckBoxChecked"
-															(change)="checkAll($event)" class=""
-															id="checkAllExistingContacts" /></td>
-														<th translate>EMAIL</th>
-														<th translate>FIRST NAME</th>
-														<th translate>LAST NAME</th>
-														<th *ngIf="selectedAddContactsOption === 5" translate>COMPANY</th>
-														<th
-															*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"></th>
-													</tr>
-												</thead>
-												<tbody>
-													<ng-container *ngFor="let user of pagedItems;let i = index">
-													<tr>
-														<td align="center"
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11"><input
-															type="checkbox"
-															[checked]="selectedContactListIds.indexOf(user.id)>-1"
-															class="chk"
-															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
-															lang="{{user.name}}" name="campaignContact[]"
-															value="{{user.id}}" id="{{user.id}}"
-															(click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,user.company,user.contactCompany,$event)" />
-														</td>
-														<td align="center"
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"><input
-															type="checkbox"
-															[checked]="selectedContactListIds.indexOf(user.id)>-1"
-															class="chk"
-															[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
-															lang="{{user.name}}" name="campaignContact[]"
-															value="{{user.id}}" id="{{user.id}}"
-															(click)="highlightMarketoRow(user)" /></td>
-														<td
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption !=11">{{user.emailId}}</td>
-														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">{{user.email}}</td>
-														<td>{{user.firstName}}</td>
-														<td>{{user.lastName}}</td>
-														<td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
-														<!--<td>{{user.contactCompany}}</td> -->
-														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
-															<button id='more_less_button_{{i}}'
-																(click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails" translate>More</span> <span
-																	*ngIf="user.isShowDetails" translate>Less</span>
-															</button>
-														</td>
-													</tr>
-	
-													<tr *ngIf="pagedItems"
-														[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
-														<td colspan="8">
-															<table cellpadding="5" cellspacing="0"class="border"
-															style="border:none !important;">
-																<tbody>
-																	<tr *ngIf="user?.company">
-																		<td class='pt10 pb10 bold' translate>Company:</td>
-																		<td class='pt10 pb10' style="padding-left: 20px;">
-																			{{user.company}}</td>
-																	</tr>
-																	<tr *ngIf="user?.title">
-																		<td class='pt10 pb10 bold' translate>Job Title:</td>
-																		<td class='pt10 pb10' style="padding-left: 20px;">
-																			{{user.title}}</td>
-																	</tr>
-																	<tr>
-																		<td class='pt10 pb10 bold' translate>Phone:</td>
-																		<td class='pt10 pb10'>
-																			<!-- <div *ngIf="user?.mobilePhone"
-																			[class.disabled]="true"
-																			style="pointer-events: none !important; cursor: auto;">
-																			<int-phone-prefix [(ngModel)]="user.mobilePhone"
-																				[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																		</div> --> {{user?.mobilePhone}}
-																		</td>
-																	</tr>
-																	<tr>
-																		<td class='pt10 pb10 bold' translate>Address:</td>
-																		<td align="center" class="hidden-xs">
-																			<h5 *ngIf="user?.address" class='mb0'>{{user.address}}</h5>
-																			<h5 class='m0' *ngIf="user?.city">
-																				{{user.city}}<span *ngIf="user.city && user.state">,&nbsp;</span>{{user.state}}
-																			</h5>
-																			<h5 *ngIf="user?.postalCode || user?.country"
-																				class='mt0'>
-																				{{user.postalCode}}<span
-																					*ngIf="user?.postalCode && user.country">,&nbsp;</span>{{user.country}}
-																			</h5>
-																		</td>
-																	</tr>
-																	<tr *ngIf="user?.website">
-																		<td class='pt10 pb10 bold' translate>Website:</td>
-																		<td class='pt10 pb10'>{{user.website}}</td>
-																	</tr>
-																</tbody>
-															</table>
-														</td>
-													</tr>
-													</ng-container>
-												</tbody>
-											</table>
-										</div>
-										<ul *ngIf="pager.pages && pager.pages.length"
-											class="pagination">
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(1)">First</a></li>
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
-											<li *ngFor="let page of pager.pages"
-												[ngClass]="{active:pager.currentPage === page}"><a
-												(click)="setPage(page)">{{page}}</a></li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.currentPage + 1)">Next</a>
-											</li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.totalPages)">Last</a>
-											</li>
-										</ul>
-										<div class="p-drop-down" style="width: max-content;">
-											<select class="form-control" style="cursor: pointer"
-												[(ngModel)]="pageNumber"
-												[ngModelOptions]="{standalone: true}"
-												(ngModelChange)="selectedPageNumber($event.value)">
-												<option
-													*ngFor="let pageNo of paginationComponent.numberPerPage"
-													[ngValue]="pageNo">{{pageNo.name}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<!-- END EXAMPLE TABLE PORTLET-->
-							</div>
-						</div>
-	
-	
-	
-						<div class="row" id="file_preview">
-							<div class="col-md-12">
-								<!-- BEGIN EXAMPLE TABLE PORTLET-->
-								<div class="portlet light">
-									<div class="portlet-title">
-										<div class="caption"
-											style="padding-top: 7px !important; font-size: 20px;"
-											translate>
-											<i class="fa fa-edit" style="font-size: 19px;"></i>File
-											Preview
-										</div>
-									</div>
-									<div class="portlet-body">
-										<app-list-loader *ngIf="isListLoader"></app-list-loader>
-										<div class="table-responsive">
-											<table class="table tgrid" id="sample_editable_2">
-												<thead>
-													<tr>
-														<th translate>FIRST NAME</th>
-														<th translate>LAST NAME</th>
-														<th translate>EMAILID</th>
-														<th translate>MORE</th>
-													</tr>
-												</thead>
-												<tbody>
-	
-													<ng-container *ngFor="let user of pagedItems;let i=index">
-													<tr>
-														<td title="{{user.firstName}}">{{user.firstName |
-															slice:0:30}} <span *ngIf="user.firstName?.length>30">...</span>
-														</td>
-														<td title="{{user.lastName}}">{{user.lastName |
-															slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span>
-														</td>
-														<td title="{{user.emailId}}">{{user.emailId |
-															slice:0:35}} <span *ngIf="user.emailId?.length>35">...</span>
-														</td>
-														<td>
-															<button id='more_less_button_{{i}}'
-																(click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails" translate>More</span> <span
-																	*ngIf="user.isShowDetails" translate>Less</span>
-															</button>
-														</td>
-													</tr>
-													<tr
-														[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
-														<td colspan="6">
-															<table cellpadding="5" cellspacing="0"class="border"
-															style="border:none !important;">
-																<tbody>
-																	<tr style="">
-																		<td class='bold' translate>Company:</td>
-																		<td class=''>{{user.contactCompany}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Job Title:</td>
-																		<td class=''>{{user.jobTitle}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Address:</td>
-																		<td class=''>{{user.address}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>City:</td>
-																		<td class=''>{{user.city}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>State:</td>
-																		<td class=''>{{user.state}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Zip Code:</td>
-																		<td class=''>{{user.zipCode}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Country:</td>
-																		<td class=''>{{user.country}}</td>
-																	</tr>
-																	<tr style="">
-																		<td class='bold' translate>Phone Number:</td>
-																		<td class=''>
-																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-																					<int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																				</div> --> <!-- {{user.mobileNumber}} --> <a
-																			href="tel:{{user.mobileNumber}}"><i
-																				class="fa fa-phone" aria-hidden="true"
-																				style="padding-right: 4px;"></i>{{user?.mobileNumber}}</a>
-																		</td>
-																	</tr>
-																	<!-- <tr style="border-bottom: 1px solid #dcdcdc">
-	
-																		<td class='pt10 pb10'>Notes:</td>
-																		<td class='pt10 pb10'>{{user.description}}</td>
-																	</tr> -->
-																</tbody>
-															</table>
-														</td>
-													</tr>
-													</ng-container>
-												</tbody>
-											</table>
-										</div>
-	
-										<ul *ngIf="pager.pages && pager.pages.length"
-											class="pagination">
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(1)">First</a></li>
-											<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-												(click)="setPage(pager.currentPage - 1)">Previous</a></li>
-											<li *ngFor="let page of pager.pages"
-												[ngClass]="{active:pager.currentPage === page}"><a
-												(click)="setPage(page)">{{page}}</a></li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.currentPage + 1)">Next</a>
-											</li>
-											<li
-												[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-												<a (click)="setPage(pager.totalPages)">Last</a>
-											</li>
-										</ul>
-	
-									</div>
-								</div>
-								<!-- END EXAMPLE TABLE PORTLET-->
-							</div>
-						</div>
-	
-						<!-- END PAGE CONTENT -->
-	
-						<div class="panel panel-success mt10">
-							<div class="panel-heading">
-								<h3 class="panel-title" translate>**Notes</h3>
-							</div>
-							<div class="panel-body">
-								<ul>
-									<li translate>
-										<!-- The maximum number of users allowed for each uploads depends on your account. -->
-										The maximum number of contacts per upload is determined by your
-										account type.
-									</li>
-									<li translate>
-										<!-- Only files with (<strong>.csv</strong>) extension are allowed to upload. -->
-										You can only upload (.csv) extension files
-									</li>
-								</ul>
-							</div>
-						</div>
-						<!-- END PAGE CONTENT-->
-	
-					</div>
+							<ul *ngIf="pager.pages && pager.pages.length"
+							   class="pagination">
+							   <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+								  (click)="setPage(1)">First</a></li>
+							   <li [ngClass]="{disabled:pager.currentPage === 1}"><a
+								  (click)="setPage(pager.currentPage - 1)">Previous</a></li>
+							   <li *ngFor="let page of pager.pages"
+							   [ngClass]="{active:pager.currentPage === page}"><a
+								  (click)="setPage(page)">{{page}}</a></li>
+							   <li
+								  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+							   </li>
+							   <li
+								  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+								  <a (click)="setPage(pager.totalPages)">Last</a>
+							   </li>
+							</ul>
+						 </div>
+					  </div>
+					  <!-- END EXAMPLE TABLE PORTLET-->
+				   </div>
 				</div>
-			</form>
-		</div>
-	
-		<!-- END PAGE CONTENT-->
-		<app-scroll-top></app-scroll-top>
-	</div>
-	
-	<!-- MODALS -->
-	<div *ngIf="contactService.isContactModalPopup">
-		<app-add-contact-modal [gdprInput]="parentInput"
-			(notifyParent)="addRow($event)"></app-add-contact-modal>
-	</div>
-	<div id="zohoId">
-		<div class="modal right" id="zohoShowLoginPopup" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
-			data-backdrop="static">
-			<div class="modal-dialog modal-css" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<!-- <button type="button" class="close"  (click)="hideZohoModal()"
-							data-dismiss="modal">&times;</button> -->
-						<a class="close-circle" data-dismiss="modal"
-							(click)="hideZohoModal()"><i class="fa fa-times"></i></a>
-						<div>
-							<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
-								style="height: 65px" width="90px" />
-							<h4 class="modal-title" id="myModalLabel" align="center">
-								<b translate>Sign in</b>
-							</h4>
-						</div>
-					</div>
-					<div class="modal-body">
-						<form class="form-horizontal">
-							<div *ngIf="zohoCredentialError" class="alert alert-danger">
-								<span>{{zohoCredentialError}}</span>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="email" translate>Email:</label>
-								<div class="col-sm-8">
-									<input type="email" style="width: 75%" class="form-control"
-										id="email" placeholder="email" [(ngModel)]="userName"
-										[ngModelOptions]="{standalone: true}">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="pwd" translate>Password:</label>
-								<div class="col-sm-8">
-									<input type="password" style="width: 75%" class="form-control"
-										id="pwd" placeholder="password" [(ngModel)]="password"
-										[ngModelOptions]="{standalone: true}">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="pwd" translate>Import
-									From: </label>
-								<div class="col-sm-8">
-									<select class="opts form-control" style="width: 75%">
-										<option selected value="DEFAULT" translate>Select</option>
-										<option value="contact" translate>Contacts</option>
-										<option value="lead" translate>Leads</option>
-									</select>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal"
-							(click)="hideZohoModal()" translate>Close</button>
-						<button type="button" class="btn btn-primary"
-							(click)="zohoContacts()" translate>Authorize</button>
-					</div>
+				<!-- END PAGE CONTENT -->
+				<div class="panel panel-success mt10">
+				   <div class="panel-heading">
+					  <h3 class="panel-title" translate>**Notes</h3>
+				   </div>
+				   <div class="panel-body">
+					  <ul>
+						 <li translate>
+							<!-- The maximum number of users allowed for each uploads depends on your account. -->
+							The maximum number of contacts per upload is determined by your
+							account type.
+						 </li>
+						 <li translate>
+							<!-- Only files with (<strong>.csv</strong>) extension are allowed to upload. -->
+							You can only upload (.csv) extension files
+						 </li>
+					  </ul>
+				   </div>
 				</div>
-			</div>
-		</div>
+				<!-- END PAGE CONTENT-->
+			 </div>
+		  </div>
+	   </form>
 	</div>
-	
-	<div class="modal right" id="zohoShowAuthorisedPopup" tabindex="-1"
-		role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
-		data-backdrop="static">
-		<div class="modal-dialog modal-css" role="document">
-			<ngx-loading [show]="zohoPopupLoader"
+	<!-- END PAGE CONTENT-->
+	<app-scroll-top></app-scroll-top>
+ </div>
+ <!-- MODALS -->
+ <div *ngIf="contactService.isContactModalPopup">
+	<app-add-contact-modal [gdprInput]="parentInput"
+	(notifyParent)="addRow($event)"></app-add-contact-modal>
+ </div>
+ <div id="zohoId">
+	<div class="modal right" id="zohoShowLoginPopup" tabindex="-1"
+	   role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+	   data-backdrop="static">
+	   <div class="modal-dialog modal-css" role="document">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<a class="close-circle" data-dismiss="modal"
+				   (click)="hideZohoModal()"><i class="fa fa-times"></i></a>
+				<div>
+				   <img src="assets/images/zoho.png" alt="Picture of a happy monkey"
+					  style="height: 65px" width="90px" />
+				   <h4 class="modal-title" id="myModalLabel" align="center">
+					  <b translate>Sign in</b>
+				   </h4>
+				</div>
+			 </div>
+			 <div class="modal-body">
+				<form class="form-horizontal">
+				   <div *ngIf="zohoCredentialError" class="alert alert-danger">
+					  <span>{{zohoCredentialError}}</span>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="email" translate>Email:</label>
+					  <div class="col-sm-8">
+						 <input type="email" style="width: 75%" class="form-control"
+						 id="email" placeholder="email" [(ngModel)]="userName"
+						 [ngModelOptions]="{standalone: true}">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="pwd" translate>Password:</label>
+					  <div class="col-sm-8">
+						 <input type="password" style="width: 75%" class="form-control"
+						 id="pwd" placeholder="password" [(ngModel)]="password"
+						 [ngModelOptions]="{standalone: true}">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="pwd" translate>Import
+					  From: </label>
+					  <div class="col-sm-8">
+						 <select class="opts form-control" style="width: 75%">
+							<option selected value="DEFAULT" translate>Select</option>
+							<option value="contact" translate>Contacts</option>
+							<option value="lead" translate>Leads</option>
+						 </select>
+					  </div>
+				   </div>
+				</form>
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+				   (click)="hideZohoModal()" translate>Close</button>
+				<button type="button" class="btn btn-primary"
+				   (click)="zohoContacts()" translate>Authorize</button>
+			 </div>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <div class="modal right" id="zohoShowAuthorisedPopup" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog modal-css" role="document">
+	   <ngx-loading [show]="zohoPopupLoader"
+	   [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	   <div class="modal-content">
+		  <div class="modal-header">
+			 <a class="close-circle" data-dismiss="modal"
+				(click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
+			 <div>
+				<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
+				   style="height: 65px" width="90px" />
+				<h4 class="modal-title" id="myModalLabel" align="center"
+				   style="margin-top: -20px;" translate>Import From Zoho</h4>
+			 </div>
+		  </div>
+		  <div class="modal-body">
+			 <app-response-message class="pg8"
+			 [customResponse]="zohoErrorResponse"
+			 *ngIf="zohoErrorResponse.isVisible"> </app-response-message>
+			 <form class="form-horizontal">
+				<div class="form-group">
+				   <label class="control-label col-sm-3" for="pwd" translate>Import
+				   From: </label>
+				   <div class="col-sm-8">
+					  <select class="opts form-control" style="width: 75%"
+						 (change)="onChangeZohoDropdown($event)">
+						 <option selected value="DEFAULT" translate>Select</option>
+						 <option value="contact" translate>Contacts</option>
+						 <option value="lead" translate>Leads</option>
+					  </select>
+				   </div>
+				</div>
+			 </form>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				(click)="hideZohoAuthorisedPopup()" translate>Close</button>
+			 <button type="button" class="btn btn-primary"
+				(click)="checkingZohoPopupValues()" translate>Submit</button>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <div class="modal right" id="myModal2" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-css" role="document">
+	   <div class="modal-content">
+		  <div class="modal-header">
+			 <button type="button" class="close" data-dismiss="modal">&times;</button>					
+			 <h4 class="modal-title" id="myModalLabel" translate>Select
+				contacts import from:
+			 </h4>
+		  </div>
+		  <div class="modal-body">
+			 <select class="opts">
+				<option selected value="DEFAULT" translate>Select Import
+				   from
+				</option>
+				<option value="contact" translate>Contacts</option>
+				<option value="lead" translate>Leads</option>
+				<option value="contact_listviews" translate>Contacts_listViews</option>
+				<option value="lead_listviews" translate>Leads_listViews</option>
+			 </select>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				translate>Close</button>
+			 <button type="button" class="btn btn-primary"
+				(click)="salesforceContacts()" translate>Submit</button>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <div class="modal right" id="settingSocialNetwork" tabindex="-1"
+	role="dialog" aria-labelledby="settingSocialNetworkModalLabel"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-css" role="document">
+	   <div class="modal-content">
+		  <div class="modal-header">
+			 <a class="close-circle" data-dismiss="modal"><i
+				class="fa fa-times"></i></a>
+			 <div>
+				<h4 class="modal-title" id="settingSocialNetworkModalLabel"
+				   translate>{{settingSocialNetwork}} Account Settings</h4>
+			 </div>
+		  </div>
+		  <div class="modal-body">
+			 <form class="form-horizontal">
+				<div class="form-group">
+				   <h4 style="margin-left: 20px;">
+					  <span class="glyphicon glyphicon-triangle-right"></span>You are
+					  about to unlink your {{settingSocialNetwork}} account from
+					  xAmplify.
+				   </h4>
+				   <h4 style="margin-left: 20px;" translate>
+					  <span class="glyphicon glyphicon-triangle-right"></span>If you
+					  decide to relink your account, you will need to reenter your
+					  credentials.
+				   </h4>
+				   <h4 style="margin-left: 20px;" translate *ngIf="!assignLeads">
+					  <span class="glyphicon glyphicon-triangle-right"></span>Would you
+					  like to delete associated contact lists?<input type="checkbox"
+					  [(ngModel)]="isUnLinkSocialNetwork"
+					  [ngModelOptions]="{standalone: true}">
+				   </h4>
+				   <button type="button" class="btn btn-primary"
+					  style="margin-left: 38%; margin-top: 2%"
+					  (click)="unlinkSocailAccount()" translate>Unlink Account
+				   </button>
+				</div>
+			 </form>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				translate>Close</button>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <div class="modal right" id="da" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog modal-css" role="document">
+	   <div class="modal-content">
+		  <div class="modal-header" style="border-bottom: none;">
+			 <a class="close-circle" data-dismiss="modal"><i
+				class="fa fa-times"></i></a>
+			 <div class="col-sm-3" style="margin-top: 10px">
+				<img src="assets/images/Salesforce-01.png"
+				   alt="Picture of a happy monkey" style="height: 65px" width="100px" />
+			 </div>
+			 <div class="col-sm-12" style="margin-left: 136px; margin-top: -44px">
+				<h4 class="modal-title" translate>import from salesforce:</h4>
+			 </div>
+		  </div>
+		  <div class="modal-body">
+			 <form class="form-horizontal">
+				<div class="form-group">
+				   <label class="control-label col-sm-3" for="email" translate>Select
+				   Option: </label>
+				   <div class="col-sm-8">
+					  <select class="opts form-control"
+						 (change)="onChangeSalesforceDropdown($event)">
+						 <option selected value="DEFAULT" translate>Select</option>
+						 <option value="contact" translate>Contacts</option>
+						 <option value="lead" translate>Leads</option>
+						 <option value="contact_listviews" translate>Contacts_listViews</option>
+						 <option value="lead_listviews" translate>Leads_listViews</option>
+					  </select>
+				   </div>
+				</div>
+				<div class="form-group" *ngIf="salesforceListViewsData?.length > 0">
+				   <label class="control-label col-sm-3" for="salesforce-dropdown-2"
+					  translate>Select Option: </label>
+				   <div class="col-sm-8">
+					  <select class="form-control" id="salesforce-dropdown-2"
+						 (change)="onChange($event.target.value)">
+						 <option selected value="DEFAULT" translate>Select</option>
+						 <option *ngFor="let item of salesforceListViewsData"
+							value='{{item.listViewId}}'>{{item.listViewName}}</option>
+					  </select>
+				   </div>
+				</div>
+			 </form>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				translate>Close</button>
+			 <button type="button" id="salesforce_save_button"
+				class="btn btn-primary" (click)="checkingPopupValues()" translate>Submit</button>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <div class="modal right fade" id="ContactSalesForceModal" tabindex="-1"
+	role="dialog" aria-labelledby="TestSalesForceModal">
+	<div class="modal-dialog modal-css" role="document">
+	   <div class="modal-content rounded-0">
+		  <div class="modal-header">
+			 <a class="close-circle" data-dismiss="modal"
+				style="position: relative;"><i class="fa fa-times"></i></a>
+			 <div class="col-sm-3" style="margin-top: 10px">
+				<img src="assets/images/Salesforce-01.png"
+				   alt="Picture of a happy monkey" style="height: 65px" width="100px" />
+			 </div>
+			 <div class="col-sm-12 salesforce">
+				<h4 class="modal-title" translate>Import from salesforce:</h4>
+			 </div>
+		  </div>
+		  <div class="modal-body">
+			 <div class="clearfix">
+				<form class="form-horizontal">
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="email" translate>Select
+					  Option:</label>
+					  <div class="col-sm-8">
+						 <select class="opts form-control" id="salesforce-dropdown-1"
+							(change)="onChangeSalesforceDropdown($event)">
+							<option selected value="DEFAULT" translate>Select</option>
+							<option value="contact" translate>Contacts</option>
+							<option value="lead" translate>Leads</option>
+							<option value="contact_listviews" translate>Contacts_listViews</option>
+							<option value="lead_listviews" translate>Leads_listViews</option>
+						 </select>
+					  </div>
+				   </div>
+				   <div class="form-group"
+					  *ngIf="salesforceListViewsData?.length > 0">
+					  <label class="control-label col-sm-3" for="salesforce-dropdown-2"
+						 translate>Select Option:</label>
+					  <div class="col-sm-8">
+						 <select class="form-control" id="salesforce-dropdown-2"
+							(change)="onChange($event.target.value)">
+							<option selected value="DEFAULT" translate>Select</option>
+							<option *ngFor="let item of salesforceListViewsData"
+							   value='{{item.listViewId}}'>{{item.listViewName}}</option>
+						 </select>
+					  </div>
+				   </div>
+				</form>
+			 </div>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				translate>Close</button>
+			 <button type="button" id="salesforce_save_button"
+				class="btn btn-primary" (click)="checkingPopupValues()"
+				data-dismiss="modal" translate>Submit</button>
+		  </div>
+	   </div>
+	</div>
+ </div>
+ <!-- MARKETO -->
+ <div id="marketoId">
+	<div class="modal right" id="marketoShowLoginPopup" tabindex="-1"
+	   role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
+	   data-backdrop="static">
+	   <div class="modal-dialog modal-css" role="document">
+		  <div class="modal-content">
+			 <div class="modal-header">
+				<a class="close-circle" data-dismiss="modal"
+				   (click)="hideMarketoModal()"><i class="fa fa-times"></i></a>
+				<h4 class="modal-title" id="templateRetrieve" translate>Marketo
+				   integration with xAmplify
+				</h4>
+				<div>
+				   <div>
+					  <img src="assets/images/crm/Mark-amplify.png"
+						 style="margin: 30px 30% 0; width: 50%; text-align: center;">
+				   </div>
+				</div>
+			 </div>
+			 <div class="modal-body">
+				<ngx-loading [show]="loadingMarketo"
 				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-			<div class="modal-content">
-				<div class="modal-header">
-					<!-- <button type="button" class="close"  (click)="hideZohoAuthorisedPopup()"
-							data-dismiss="modal">&times;</button> -->
-					<a class="close-circle" data-dismiss="modal"
-						(click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
-					<div>
-						<img src="assets/images/zoho.png" alt="Picture of a happy monkey"
-							style="height: 65px" width="90px" />
-						<h4 class="modal-title" id="myModalLabel" align="center"
-							style="margin-top: -20px;" translate>Import From Zoho</h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<app-response-message class="pg8"
-						[customResponse]="zohoErrorResponse"
-						*ngIf="zohoErrorResponse.isVisible"> </app-response-message>
-					<form class="form-horizontal">
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="pwd" translate>Import
-								From: </label>
-							<div class="col-sm-8">
-								<select class="opts form-control" style="width: 75%"
-									(change)="onChangeZohoDropdown($event)">
-									<option selected value="DEFAULT" translate>Select</option>
-									<option value="contact" translate>Contacts</option>
-									<option value="lead" translate>Leads</option>
-								</select>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						(click)="hideZohoAuthorisedPopup()" translate>Close</button>
-					<button type="button" class="btn btn-primary"
-						(click)="checkingZohoPopupValues()" translate>Submit</button>
-	
-				</div>
-			</div>
-		</div>
+				<form class="form-horizontal">
+				   <div *ngIf="marketoContactError" class="alert alert-danger">
+					  <span>{{marketoContactError}}</span>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="client" translate>Client
+					  Id:</label>
+					  <div class="col-sm-8">
+						 <input type="text" style="width: 75%" class="form-control"
+						 id="client" placeholder="Client Id"
+						 [(ngModel)]="marketoClientId"
+						 [ngModelOptions]="{standalone: true}"
+						 (input)="validateModelForm('client')">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="secret" translate>Client
+					  Secret:</label>
+					  <div class="col-sm-8">
+						 <input type="password" style="width: 75%" class="form-control"
+						 id="secret" placeholder="Secret Id"
+						 [(ngModel)]="marketoSecretId"
+						 [ngModelOptions]="{standalone: true}"
+						 (input)="validateModelForm('secret')">
+					  </div>
+				   </div>
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="instance" translate>Marketo
+					  Instance:</label>
+					  <div class="col-sm-8">
+						 <input type="password" style="width: 75%" class="form-control"
+						 id="instance" placeholder="Marketo Instance"
+						 [(ngModel)]="marketoInstance"
+						 [ngModelOptions]="{standalone: true}"
+						 (input)="validateModelForm('instance')">
+					  </div>
+				   </div>
+				</form>
+			 </div>
+			 <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+				   (click)="hideMarketoModal()" translate>Close</button>
+				<button type="button" class="btn btn-primary"
+				[class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
+				(click)="getMarketoContacts()" translate>Authorize</button>
+			 </div>
+		  </div>
+	   </div>
 	</div>
-	
-	
-	
-	
-	<div class="modal right" id="myModal2" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
-		<div class="modal-dialog modal-css" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<!-- <a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a> -->
-					<h4 class="modal-title" id="myModalLabel" translate>Select
-						contacts import from:</h4>
-				</div>
-				<div class="modal-body">
-					<select class="opts">
-						<option selected value="DEFAULT" translate>Select Import
-							from</option>
-						<option value="contact" translate>Contacts</option>
-						<option value="lead" translate>Leads</option>
-						<option value="contact_listviews" translate>Contacts_listViews</option>
-						<option value="lead_listviews" translate>Leads_listViews</option>
-					</select>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						translate>Close</button>
-					<button type="button" class="btn btn-primary"
-						(click)="salesforceContacts()" translate>Submit</button>
-				</div>
-			</div>
-		</div>
+ </div>
+ <div *ngIf="showMicrosoftAuthenticationForm">
+	<app-microsoft-authentication-popup
+	   (closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
+ </div>
+ <!-- XNFR-230 -->
+ <div *ngIf="showPipedriveAuthenticationForm">
+	<app-pipedrive-authentication-popup
+	   (closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
+ </div>
+ <!-- T&C Modal -->
+ <div class="modal fade" id="tcModal" tabindex="-1"
+	data-backdrop="static" data-keyboard="false" role="dialog"
+	aria-labelledby="tcModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+	   <div class="modal-content" style="width: 80%; top: 100px; left: 60px">
+		  <div class="modal-header">
+			 <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate>
+				Are you sure?
+			 </h4>
+		  </div>
+		  <div class="modal-body">
+			 <div>
+				<h4 class="modal-title f-w-600" translate>You are agreeing to
+				   xAmplify's Terms and Conditions.
+				</h4>
+			 </div>
+			 <div class="form-group" style="margin-top: 15px;">
+				<input type="checkbox" [(ngModel)]="isCheckTC"
+				[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
+				checked translate>
+				<!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+				By adding a contact you confirm that you have read and agree to the
+				<a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of
+				Use</a> and agree to the processing of your personal data by xAmplify
+				as described in the <a (click)="navigateToPrivacy()" translate>Privacy
+				Policy</a>. Furthermore, you agree to use xAmplify in compliance with
+				<a (click)="navigateToGDPR()">GDPR</a> and <a
+				   (click)="navigateToCCPA()">CCPA</a>. <br>
+			 </div>
+			 <div *ngIf="!isCheckTC" style="color: red" translate>You must
+				agree
+			 </div>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal"
+				(click)="cancelContacts()" translate>Decline</button>
+			 <button type="button" [disabled]="!isCheckTC"
+			 class="btn btn-primary" (click)="saveContactsWithPermission()"
+			 translate>Accept</button>
+		  </div>
+	   </div>
 	</div>
-	
-	<div class="modal right" id="settingSocialNetwork" tabindex="-1"
-		role="dialog" aria-labelledby="settingSocialNetworkModalLabel"
-		data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog modal-css" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<!-- <button type="button" class="close"
-							data-dismiss="modal">&times;</button> -->
-					<a class="close-circle" data-dismiss="modal"><i
-						class="fa fa-times"></i></a>
-					<div>
-						<h4 class="modal-title" id="settingSocialNetworkModalLabel"
-							translate>{{settingSocialNetwork}} Account Settings</h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<form class="form-horizontal">
-						<div class="form-group">
-							<h4 style="margin-left: 20px;">
-								<span class="glyphicon glyphicon-triangle-right"></span>You are
-								about to unlink your {{settingSocialNetwork}} account from
-								xAmplify.
-							</h4>
-	
-							<h4 style="margin-left: 20px;" translate>
-								<span class="glyphicon glyphicon-triangle-right"></span>If you
-								decide to relink your account, you will need to reenter your
-								credentials.
-							</h4>
-	
-							<h4 style="margin-left: 20px;" translate *ngIf="!assignLeads">
-								<span class="glyphicon glyphicon-triangle-right"></span>Would you
-								like to delete associated contact lists?<input type="checkbox"
-									[(ngModel)]="isUnLinkSocialNetwork"
-									[ngModelOptions]="{standalone: true}">
-							</h4>
-	
-							<button type="button" class="btn btn-primary"
-								style="margin-left: 38%; margin-top: 2%"
-								(click)="unlinkSocailAccount()" translate>Unlink Account
-							</button>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						translate>Close</button>
-				</div>
-			</div>
-		</div>
+ </div>
+ <!-- HubSpot Modal -->
+ <div class="modal right fade" id="ContactHubSpotModal" tabindex="-1"
+	role="dialog" aria-labelledby="TestHubSpotModal">
+	<div class="modal-dialog modal-css" role="document">
+	   <div class="modal-content rounded-0">
+		  <div class="modal-header">
+			 <a class="close-circle" data-dismiss="modal"
+				style="position: relative;"><i class="fa fa-times"></i></a>
+			 <div class="col-sm-3" style="margin-top: 25px">
+				<img src="assets/images/crm/hubspot-logo.png"
+				   alt="Picture of a happy monkey" style="height: 60px" width="150px" />
+			 </div>
+			 <div class="col-sm-12 salesforce">
+				<h4 class="modal-title" translate>Import from HubSpot:</h4>
+			 </div>
+		  </div>
+		  <div class="modal-body">
+			 <div class="clearfix">
+				<form class="form-horizontal">
+				   <div class="form-group">
+					  <label class="control-label col-sm-3" for="email" translate>Select
+					  Option:</label>
+					  <div class="col-sm-8">
+						 <select class="opts form-control" id="hubspot-dropdown-1"
+							(change)="onChangeHubSpotDropdown($event)">
+							<option selected value="DEFAULT" translate>Select</option>
+							<option value="contacts" translate>Contacts</option>
+							<option value="lists" translate>Lists</option>
+						 </select>
+					  </div>
+				   </div>
+				   <div class="form-group"
+					  *ngIf="hubSpotContactListsData?.length > 0">
+					  <label class="control-label col-sm-3" for="hubspot-dropdown-2"
+						 translate>Select Option:</label>
+					  <div class="col-sm-8">
+						 <select class="form-control" id="hubspot-dropdown-2"
+							(change)="onChangeHubSpotListsDropdown($event.target.value)">
+							<option selected value="DEFAULT" translate>Select</option>
+							<option *ngFor="let item of hubSpotContactListsData"
+							   value='{{item.id}}'>{{item.name}}</option>
+						 </select>
+					  </div>
+				   </div>
+				</form>
+			 </div>
+		  </div>
+		  <div class="modal-footer">
+			 <button type="button" class="btn btn-default" data-dismiss="modal"
+				translate>Close</button>
+			 <button type="button" id="hubspot_save_button"
+				class="btn btn-primary" (click)="getHubSpotData()"
+				data-dismiss="modal" translate>Submit</button>
+		  </div>
+	   </div>
 	</div>
-	<div class="modal right" id="da" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" data-keyboard="false"
-		data-backdrop="static">
-		<div class="modal-dialog modal-css" role="document">
-			<div class="modal-content">
-				<div class="modal-header" style="border-bottom: none;">
-					<!-- <button type="button" class="close"
-							data-dismiss="modal">&times;</button> -->
-					<a class="close-circle" data-dismiss="modal"><i
-						class="fa fa-times"></i></a>
-					<div class="col-sm-3" style="margin-top: 10px">
-						<img src="assets/images/Salesforce-01.png"
-							alt="Picture of a happy monkey" style="height: 65px" width="100px" />
-					</div>
-					<div class="col-sm-12" style="margin-left: 136px; margin-top: -44px">
-						<h4 class="modal-title" translate>import from salesforce:</h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<form class="form-horizontal">
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="email" translate>Select
-								Option: </label>
-							<div class="col-sm-8">
-								<select class="opts form-control"
-									(change)="onChangeSalesforceDropdown($event)">
-									<option selected value="DEFAULT" translate>Select</option>
-									<option value="contact" translate>Contacts</option>
-									<option value="lead" translate>Leads</option>
-									<option value="contact_listviews" translate>Contacts_listViews</option>
-									<option value="lead_listviews" translate>Leads_listViews</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group" *ngIf="salesforceListViewsData?.length > 0">
-							<label class="control-label col-sm-3" for="salesforce-dropdown-2"
-								translate>Select Option: </label>
-							<div class="col-sm-8">
-								<select class="form-control" id="salesforce-dropdown-2"
-									(change)="onChange($event.target.value)">
-									<option selected value="DEFAULT" translate>Select</option>
-									<option *ngFor="let item of salesforceListViewsData"
-										value='{{item.listViewId}}'>{{item.listViewName}}</option>
-								</select>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						translate>Close</button>
-					<button type="button" id="salesforce_save_button"
-						class="btn btn-primary" (click)="checkingPopupValues()" translate>Submit</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="modal right fade" id="ContactSalesForceModal" tabindex="-1"
-		role="dialog" aria-labelledby="TestSalesForceModal">
-		<div class="modal-dialog modal-css" role="document">
-			<div class="modal-content rounded-0">
-				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal"
-						style="position: relative;"><i class="fa fa-times"></i></a>
-					<div class="col-sm-3" style="margin-top: 10px">
-						<img src="assets/images/Salesforce-01.png"
-							alt="Picture of a happy monkey" style="height: 65px" width="100px" />
-					</div>
-					<div class="col-sm-12 salesforce">
-						<h4 class="modal-title" translate>Import from salesforce:</h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="clearfix">
-						<form class="form-horizontal">
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="email" translate>Select
-									Option:</label>
-								<div class="col-sm-8">
-									<select class="opts form-control" id="salesforce-dropdown-1"
-										(change)="onChangeSalesforceDropdown($event)">
-										<option selected value="DEFAULT" translate>Select</option>
-										<option value="contact" translate>Contacts</option>
-										<option value="lead" translate>Leads</option>
-										<option value="contact_listviews" translate>Contacts_listViews</option>
-										<option value="lead_listviews" translate>Leads_listViews</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group"
-								*ngIf="salesforceListViewsData?.length > 0">
-								<label class="control-label col-sm-3" for="salesforce-dropdown-2"
-									translate>Select Option:</label>
-								<div class="col-sm-8">
-									<select class="form-control" id="salesforce-dropdown-2"
-										(change)="onChange($event.target.value)">
-										<option selected value="DEFAULT" translate>Select</option>
-										<option *ngFor="let item of salesforceListViewsData"
-											value='{{item.listViewId}}'>{{item.listViewName}}</option>
-									</select>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						translate>Close</button>
-					<button type="button" id="salesforce_save_button"
-						class="btn btn-primary" (click)="checkingPopupValues()"
-						data-dismiss="modal" translate>Submit</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- MARKETO -->
-	<div id="marketoId">
-		<div class="modal right" id="marketoShowLoginPopup" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
-			data-backdrop="static">
-			<div class="modal-dialog modal-css" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<!-- <button type="button" class="close"  (click)="hideZohoModal()"
-							data-dismiss="modal">&times;</button> -->
-						<a class="close-circle" data-dismiss="modal"
-							(click)="hideMarketoModal()"><i class="fa fa-times"></i></a>
-						<h4 class="modal-title" id="templateRetrieve" translate>Marketo
-							integration with xAmplify</h4>
-						<div>
-							<div>
-								<img src="assets/images/crm/Mark-amplify.png"
-									style="margin: 30px 30% 0; width: 50%; text-align: center;">
-							</div>
-	
-						</div>
-					</div>
-					<div class="modal-body">
-						<ngx-loading [show]="loadingMarketo"
-				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-						<form class="form-horizontal">
-							<div *ngIf="marketoContactError" class="alert alert-danger">
-								<span>{{marketoContactError}}</span>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="client" translate>Client
-									Id:</label>
-								<div class="col-sm-8">
-									<input type="text" style="width: 75%" class="form-control"
-										id="client" placeholder="Client Id"
-										[(ngModel)]="marketoClientId"
-										[ngModelOptions]="{standalone: true}"
-										(input)="validateModelForm('client')">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="secret" translate>Client
-									Secret:</label>
-								<div class="col-sm-8">
-									<input type="password" style="width: 75%" class="form-control"
-										id="secret" placeholder="Secret Id"
-										[(ngModel)]="marketoSecretId"
-										[ngModelOptions]="{standalone: true}"
-										(input)="validateModelForm('secret')">
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="instance" translate>Marketo
-									Instance:</label>
-								<div class="col-sm-8">
-									<input type="password" style="width: 75%" class="form-control"
-										id="instance" placeholder="Marketo Instance"
-										[(ngModel)]="marketoInstance"
-										[ngModelOptions]="{standalone: true}"
-										(input)="validateModelForm('instance')">
-								</div>
-							</div>
-	
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal"
-							(click)="hideMarketoModal()" translate>Close</button>
-						<button type="button" class="btn btn-primary"
-							[class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
-							(click)="getMarketoContacts()" translate>Authorize</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div *ngIf="showMicrosoftAuthenticationForm">
-		<app-microsoft-authentication-popup
-			(closeEvent)="closeMicrosoftForm($event)"></app-microsoft-authentication-popup>
-	</div>
-	<!-- XNFR-230 -->
-	<div *ngIf="showPipedriveAuthenticationForm">
-		<app-pipedrive-authentication-popup
-			(closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
-	</div>
-	
-	
-	
-	<!-- T&C Modal -->
-	<div class="modal fade" id="tcModal" tabindex="-1"
-		data-backdrop="static" data-keyboard="false" role="dialog"
-		aria-labelledby="tcModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-copy" role="document">
-			<div class="modal-content" style="width: 80%; top: 100px; left: 60px">
-				<div class="modal-header">
-					<h4 class="modal-title f-w-600" id="saveAsModalLabel" translate>
-						Are you sure?</h4>
-				</div>
-				<div class="modal-body">
-					<div>
-						<h4 class="modal-title f-w-600" translate>You are agreeing to
-							xAmplify's Terms and Conditions.</h4>
-					</div>
-					<div class="form-group" style="margin-top: 15px;">
-						<input type="checkbox" [(ngModel)]="isCheckTC"
-							[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
-							checked translate>
-						<!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-						By adding a contact you confirm that you have read and agree to the
-						<a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of
-							Use</a> and agree to the processing of your personal data by xAmplify
-						as described in the <a (click)="navigateToPrivacy()" translate>Privacy
-							Policy</a>. Furthermore, you agree to use xAmplify in compliance with
-						<a (click)="navigateToGDPR()">GDPR</a> and <a
-							(click)="navigateToCCPA()">CCPA</a>. <br>
-					</div>
-					<div *ngIf="!isCheckTC" style="color: red" translate>You must
-						agree</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
-						(click)="cancelContacts()" translate>Decline</button>
-					<button type="button" [disabled]="!isCheckTC"
-						class="btn btn-primary" (click)="saveContactsWithPermission()"
-						translate>Accept</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- HubSpot Modal -->
-	<div class="modal right fade" id="ContactHubSpotModal" tabindex="-1"
-		role="dialog" aria-labelledby="TestHubSpotModal">
-		<div class="modal-dialog modal-css" role="document">
-			<div class="modal-content rounded-0">
-				<div class="modal-header">
-					<a class="close-circle" data-dismiss="modal"
-						style="position: relative;"><i class="fa fa-times"></i></a>
-					<div class="col-sm-3" style="margin-top: 25px">
-						<img src="assets/images/crm/hubspot-logo.png"
-							alt="Picture of a happy monkey" style="height: 60px" width="150px" />
-					</div>
-					<div class="col-sm-12 salesforce">
-						<h4 class="modal-title" translate>Import from HubSpot:</h4>
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="clearfix">
-						<form class="form-horizontal">
-							<div class="form-group">
-								<label class="control-label col-sm-3" for="email" translate>Select
-									Option:</label>
-								<div class="col-sm-8">
-									<select class="opts form-control" id="hubspot-dropdown-1"
-										(change)="onChangeHubSpotDropdown($event)">
-										<option selected value="DEFAULT" translate>Select</option>
-										<option value="contacts" translate>Contacts</option>
-										<option value="lists" translate>Lists</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group"
-								*ngIf="hubSpotContactListsData?.length > 0">
-								<label class="control-label col-sm-3" for="hubspot-dropdown-2"
-									translate>Select Option:</label>
-								<div class="col-sm-8">
-									<select class="form-control" id="hubspot-dropdown-2"
-										(change)="onChangeHubSpotListsDropdown($event.target.value)">
-										<option selected value="DEFAULT" translate>Select</option>
-										<option *ngFor="let item of hubSpotContactListsData"
-											value='{{item.id}}'>{{item.name}}</option>
-									</select>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"
-						translate>Close</button>
-					<button type="button" id="hubspot_save_button"
-						class="btn btn-primary" (click)="getHubSpotData()"
-						data-dismiss="modal" translate>Submit</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<app-share-leads *ngIf="authenticationService.isSharePartnerModal"
-		(notifyParent)="selectedSharePartner($event)"></app-share-leads>
-	
+ </div>
+ <app-share-leads *ngIf="authenticationService.isSharePartnerModal"
+ (notifyParent)="selectedSharePartner($event)"></app-share-leads>

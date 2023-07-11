@@ -51,6 +51,10 @@ export class BarChartComponent implements OnInit {
         formatter: function () {
           return '<b>' + this.x + '</b><br/>' +
             this.series.name + ': ' + this.y;
+        },
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
         }
       },
 

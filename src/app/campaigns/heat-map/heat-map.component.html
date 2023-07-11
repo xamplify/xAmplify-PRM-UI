@@ -1,40 +1,36 @@
 <div class="wrapper">
 	<div class="heatmap">
-		<svg [ngStyle]="{'width': 100+'%', 'height':'35px', 'border': '1px solid #ccc'}"
-			*ngIf="heatMapData !== undefined">
-		  	<rect *ngFor="let log of heatMapData.logs;" 
-			  	[attr.width]="(log.stopDuration - log.startDuration)/heatMapData.videoLength*100+'%'"
-				[attr.height]="35"
-				[attr.x]="log.startDuration/heatMapData.videoLength*100+'%'"
-				[attr.y]="0"  
-				[ngClass]="{'play-rect': log.actionId === 1, 'pause-rect': log.actionId === 2, 'skip-rect': log.actionId === 8}">
-				<title *ngIf="log.actionId === 1">Played from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>
-				<title *ngIf="log.actionId === 2">Paused at {{log.startDurationHHMMSS}}</title>	
-				<title *ngIf="log.actionId === 8">Skipped from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>	
-	  		</rect>
-		</svg>
+	   <svg [ngStyle]="{'width': 100+'%', 'height':'35px', 'border': '1px solid #ccc'}"
+	   *ngIf="heatMapData !== undefined">
+	   <rect *ngFor="let log of heatMapData.logs;" 
+	   [attr.width]="(log.stopDuration - log.startDuration)/heatMapData.videoLength*100+'%'"
+	   [attr.height]="35"
+	   [attr.x]="log.startDuration/heatMapData.videoLength*100+'%'"
+	   [attr.y]="0"  
+	   [ngClass]="{'play-rect': log.actionId === 1, 'pause-rect': log.actionId === 2, 'skip-rect': log.actionId === 8}">
+	   <title *ngIf="log.actionId === 1">Played from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>
+	   <title *ngIf="log.actionId === 2">Paused at {{log.startDurationHHMMSS}}</title>
+	   <title *ngIf="log.actionId === 8">Skipped from {{log.startDurationHHMMSS}} - {{log.stopDurationHHMMSS}}</title>
+	   </rect>
+	   </svg>
 	</div>
-
 	<div class="heatmap-timeline flex">
-		<div *ngFor="let number of numbers; let i = index">
-			<div *ngIf="i%25 == 0">{{number}}</div>
-		</div>
+	   <div *ngFor="let number of numbers; let i = index">
+		  <div *ngIf="i%25 == 0">{{number}}</div>
+	   </div>
 	</div>
-
 	<div class="row flex">
-		<div class="col-xs-4 flex">
-			<span class="small-box play-box"></span>
-			<h6>play</h6>
-		</div>
-
-		<div class="col-xs-4 p0 flex">
-			<span class="small-box pause-box"></span>
-			<h6>pause</h6>
-		</div>
-
-		<div class="col-xs-4 p0 flex">
-			<span class="small-box skip-box"></span>
-			<h6>skip</h6>
-		</div>
+	   <div class="col-xs-4 flex">
+		  <span class="small-box play-box"></span>
+		  <h6>play</h6>
+	   </div>
+	   <div class="col-xs-4 p0 flex">
+		  <span class="small-box pause-box"></span>
+		  <h6>pause</h6>
+	   </div>
+	   <div class="col-xs-4 p0 flex">
+		  <span class="small-box skip-box"></span>
+		  <h6>skip</h6>
+	   </div>
 	</div>
-</div>
+ </div>

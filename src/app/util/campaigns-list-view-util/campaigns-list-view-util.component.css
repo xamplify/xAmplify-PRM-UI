@@ -46,3 +46,9 @@
 .mltpx{
 	margin-left:-30px !important;
 }
+
+/* 06-07-2023 */
+.active-campaigns-all-btns-oneinline span {
+	white-space: break-spaces;
+	line-height: 2.5;
+  }

@@ -1,211 +1,155 @@
-label {
-	font-weight: 600;
-}
-
-.thumb-vid, .thumb-bg {
-	height: 100px
-}
-
-.fa.fa-users.disabled {
-	background: gray;
-}
-
 .view-banner {
-	background-color: #00a6e8;
-	color: white;
-	padding: 4px;
-	text-align: center;
-	width: 125px;
-	margin: 0 auto;
-	font-size: 11px;
-	font-weight: 600;
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  width: 125px;
+  margin: 0 auto;
+  font-size: 11px;
+  font-weight: 600;
 }
-
 .cancel-ribbon {
-	background-color: red;
+  background-color: red;
 }
-
 .ribbon div {
-	font-size: 10px;
-	font-weight: bold;
-	color: #FFF;
-	text-transform: uppercase;
-	text-align: center;
-	line-height: 20px;
-	transform: rotate(-45deg);
-	-webkit-transform: rotate(-45deg);
-	width: 100px;
-	display: block;
-	background: red;
-	box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-	position: absolute;
-	top: 19px;
-	left: -21px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
 }
-
 .ribbon div::before {
-	content: "";
-	position: absolute;
-	left: 0px;
-	top: 100%;
-	z-index: -1;
-	border-left: 3px solid #5cb85c !important;
-	border-right: 3px solid transparent;
-	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5cb85c !important;
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid #5cb85c !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #5cb85c !important;
 }
-
 .ribbon div::after {
-	content: "";
-	position: absolute;
-	right: 0px;
-	top: 100%;
-	z-index: -1;
-	border-left: 3px solid transparent;
-	border-right: 3px solid #5cb85c !important;
-	border-bottom: 3px solid transparent;
-	border-top: 3px solid #5cb85c !important;
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid #5cb85c !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #5cb85c !important;
 }
-
-.fa.fa-users {
-	padding: 1em;
-	font-size: 1.8em;
-	line-height: 1em;
-	background: #00a6e8;
-	color: white;
-	border-radius: 100%;
-	margin-left: 1em;
-}
-
-fieldset {
-	padding: 10px 20px;
-}
-
-.dashboard-stat.yellow-gold {
-	text-align: center;
-	padding: 15px;
-	color: #fff;
-	font-size: 14px;
-}
-
-.portlet.light.dashboard-stat2.border-error {
-	border-color: red
-}
-
-/* .table tr.contact-list-selected td {
-	background-color: #00a6e8 !important;
-	color: white;
-} */
-
 .cancelled-event {
-	border: 1px solid #bdbdbd !important;
-	background: #bdbdbd !important;
-	color: white !important;
-	cursor: not-allowed !important;
+  border: 1px solid #bdbdbd !important;
+  background: #bdbdbd !important;
+  color: white !important;
+  cursor: not-allowed !important;
 }
-
 .mobile-left {
-	float: none;
+  float: none;
 }
-
-@media only screen and (max-width:768px) {
-	.modal-template {
-		width: 95% !important;
-	}
+@media only screen and (max-width: 768px) {
+  .modal-template {
+    width: 95% !important;
+  }
 }
-
-@media only screen and (min-width:768px) {
-	.modal-template {
-		width: 65% !important;
-	}
+@media only screen and (min-width: 768px) {
+  .modal-template {
+    width: 65% !important;
+  }
 }
-
-@media only screen and (max-width:600px) {
-	.mobile-left {
-		float: left;
-		margin: 1px;
-	}
+@media only screen and (max-width: 600px) {
+  .mobile-left {
+    float: left;
+    margin: 1px;
+  }
 }
-
 .override-actions {
-	margin: 0 auto;
-	display: table;
-	float: none !important;
+  margin: 0 auto;
+  display: table;
+  float: none !important;
 }
-
 .imageClass {
-	background: #f2f4f9;
-	border: solid 1px #008fd5;
-	border-radius: 5px;
+  background: #f2f4f9;
+  border: solid 1px #008fd5;
+  border-radius: 5px;
 }
-
 .gearDropdownMenu {
-	top: 7px;
-	color: #00a6e8;
-	cursor: pointer;
+  top: 4px;
+  color: #00a6e8;
+  cursor: pointer;
 }
-
-.caretDropdownMenu {
-	top: 4px;
-	position: relative;
-	color: #00a6e8;
-}
-
 #download-template {
-	border: 1px solid #5ab2f5;
-	width: 32px;
-	height: 32px;
-	border-radius: 30px;
+  border: 1px solid #5ab2f5;
+  width: 28px;
+  height: 29px;
+  border-radius: 30px;
 }
-
 #download-template-grid {
-	border: 1px solid #fff;
-	width: 32px;
-	height: 32px;
-	border-radius: 30px;
+  border: 1px solid #fff;
+  width: 28px;
+  height: 29px;
+  border-radius: 30px;
 }
-
-
-#download-drop{
-	box-shadow: none;
-	font-size: 12px;
+#download-drop {
+  box-shadow: none;
+  font-size: 12px;
 }
-
 /* sudha sri */
-@media (min-width:1104px){
-	.r10{
-		right: 30px !important;
-	}
+@media (max-width: 375px) {
+  .right {
+    right: -74px !important;
+  }
 }
-@media (max-width:425px){
-	.r10{
-		right: 10px !important;
-	}
-}
-@media (max-width:375px){
-	.right{
-		right: -74px !important;
-	}
-	.r10{
-		right: -62px !important;
-	}
-}
-@media (max-width:320px){
-	.right{
-		right: -108px !important;
-	}
-	.r10{
-		right: -95px !important;
-    	width: 89%;
-	}
+@media (max-width: 320px) {
+  .right {
+    right: -108px !important;
+  }
 }
 .mix-filter {
-	margin: 0px !important;
+  margin: 0px !important;
 }
 .input-icon > .form-control {
-	padding-left: 10px;
+  padding-left: 10px;
+}
+.bar a {
+  width: 30px !important;
 }
 
-.bar a {
-	width: 30px !important;
+/* 05-07-2023 */
+ul.custome-dropdown-changs {
+  width: 170px;
+}
+.custome-dropdown-changs a {
+  border: 1px solid #54a7e9;
+  width: 28px;
+  height: 29px;
+  border-radius: 50% !important;
+}
+.custome-dropdown-changs a i {
+  position: relative;
+  left: -8px;
+  margin: -6px !important;
+  bottom: 4px;
+  color: #54a7e9 !important;
+}
+ul.custome-dropdown-changs {
+  width: 161px;
+  padding: 0px 10px;
+}
+.custome-dropdown-changs li > a:hover, .custome-dropdown-changs .active > a, .custome-dropdown-changs .active > a:hover {
+  text-decoration: none;
+  background-image: none;
+  background-color: #f6f6f6;
 }

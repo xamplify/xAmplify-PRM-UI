@@ -2,7 +2,6 @@
     <div class="col-xs-12">
         <div  style="margin-right: -2px;">
             <div class="portlet-body">
-                <!-- <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader> -->
                 <ng-container *ngIf="!loader && statusCode!=200">
                     <div class="alert alert-danger">
                       <strong>{{properties?.serverErrorMessage}}</strong>
@@ -13,22 +12,8 @@
                     <button class="filter btn-hvr-text"  (click)="leads();one.leads(1)" [class.emailtemplate-selected]="1 === selectedTemplateTypeIndex" translate>Leads #{{leadCount}}</button>
                   
                   </div>
-                  <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
-
-                  <!-- <div  *ngIf="pieChartData?.length < 1  && sum == 0" style="max-width: 100%;text-align: center;">
-                    <div class="alert alert-info" >
-                         <strong>No Data Found</strong>
-                     </div>
-                </div> -->
-          <!-- <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader> -->
-
-               <div>
-                    <!-- <figure [hidden]="loader" class="highcharts-figure-pie" *ngIf="show">
-                      <div  id="container">   
-                      </div>
-                  </figure> -->
-          
-                  <!-- <app-modal-popup-loader *ngIf="statisticsLoader" [height]="75"  ></app-modal-popup-loader> -->
+                  <app-modal-popup-loader  [height]=220 [hidden]="!loader"></app-modal-popup-loader>                
+               <div>      
                   <app-box-loader [countLoader]=3 *ngIf="statisticsLoader"></app-box-loader>
 
                   <div *ngIf="!statisticsLoader"  class="row" style="display: flex">
@@ -78,8 +63,7 @@
                                aria-hidden="true"></i>
                       </span>
                      </div>
-                </div>
-                 <!-- <app-pie-chart-statistics-bar-graph #one [applyFilter]="applyFilter"></app-pie-chart-statistics-bar-graph>  -->
+                </div>               
             </div>
         </div>
     </div>

@@ -18,8 +18,7 @@
                     <div class="colxs-12 col-sm-12 col-md-5">
                         <div>
                             <ul class="mix-filter">
-                                <li class="filter" (click)="filterCampaigns('NONE',0)"
-                                    [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
+                                
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                                     [class.campaign-type-selected]="1 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.emailCampaign  || authenticationService?.module?.deletedPartner">
@@ -47,6 +46,8 @@
                                 <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                                     [class.campaign-type-selected]="7 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.survey  || authenticationService?.module?.deletedPartner">Survey</li>
+                                <li class="filter" (click)="filterCampaigns('NONE',0)"
+                                    [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
                         </div>
@@ -249,9 +250,8 @@
                                             <span *ngIf="!campaign.vendorCampaignDeleted" translate>Cancelled</span>
                                             <span *ngIf="campaign.vendorCampaignDeleted" translate>Deleted</span>
                                         </h6>
-                                        <h5 class="view-banner"
-                                            *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
-                                            style="background-color: #f76c1a !important">Draft</h5>
+                                        <h5 class="view-banner orange-lable-cu1"
+                                            *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Draft</h5>
                                         <h5 class="view-banner"
                                             *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" translate>
                                             Scheduled
@@ -267,7 +267,7 @@
                                             <span style="display:inline-flex" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
                                         </h6>  
                                         <!---XNFR-255-->
-                                            <h6 class="view-banner banner-top bgc-green" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
+                                            <h6 class="view-banner banner-top white-labeled-cu1" *ngIf="campaign?.whiteLabeled">White-Labeled</h6>
                                         <!---XNFR-255--> 
                                     </td>
                                     <td>
@@ -668,14 +668,15 @@
                                                 </a>
                                             </ng-container>
                                             <ng-container class="pull-right">
-                                                <div class="btn-group pull-right">
+                                                <div class="btn-group pull-right setting-icon-cu">
                                                     <span [class.disablednew]="!campaign.hasAccess"
-                                                        class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu"
+                                                        class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
                                                         data-toggle="dropdown"
-                                                        (click)="checkLastElement(i)"></span><span
+                                                        (click)="checkLastElement(i)"></span>
+                                                        <!-- <span
                                                         [class.disablednew]="!campaign.hasAccess"
                                                         class="caret dropdown-toggle caretDropdownMenu"
-                                                        data-toggle="dropdown"></span>
+                                                        data-toggle="dropdown"></span> -->
 
                                                     <ul class="dropdown-menu pull-right"
                                                         [ngClass]="{'mobile-css': isLastElement}">
@@ -1032,7 +1033,7 @@
                             <ng-container *ngIf="campaign?.campaignProcessing">
                                 <img   src="assets/images/processing.gif" alt="Processing">
                               </ng-container>
-                            <h4 class="ellipsis" title="{{campaign.campaignName}}">
+                            <h4 class="ellipsis active-campaigns-all-btns-oneinline" title="{{campaign.campaignName}}">
                                 {{campaign.campaignName | slice:0:22}}
                                 <span *ngIf="campaign.campaignName?.length>22">...</span>
                                 <br><br>
@@ -1041,20 +1042,20 @@
                                     style="position: relative;top: -3px;">Through Campaign</span>
                                     <span class="view-banner"
                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                        style="position: relative;top: -3px;">To Campaign</span>
+                                        style="position: relative;top: -3px;">To Campaign</span><br>
                                 </ng-container>
                                 <!--XNFR-125--->
                                 <ng-container *ngIf="campaign?.oneClickLaunch">
-                                    <br><br>
+                                    <!-- <br><br> -->
                                     <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
                                 </ng-container>
                                 <!--XNFR-125--->
                                 <!---XNFR-255-->
                                     <span class="green-banner prt3px" *ngIf="campaign?.whiteLabeled">White-Labeled</span>
                                 <!---XNFR-255-->
-                                <span class="view-banner"
+                                <span class="view-banner orange-lable-cu1"
                                     *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
-                                    style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
+                                    style="position: relative;top: -3px;">Draft</span>
                                 <span class="view-banner"
                                     *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'"
                                     style="position: relative;top: -3px;">Scheduled</span>

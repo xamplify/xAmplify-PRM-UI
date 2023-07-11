@@ -49,8 +49,7 @@
 			<div class="col-xs-12 col-sm-8">
 				<table class='table tgrid' id="tabletest">
 					<thead>
-						<tr>
-							<!-- <th class="headerCss center">Name</th> -->
+						<tr>						
 							<th class="headerCss center">Title</th>
 							<th class="headerCss center">{{reportName}}</th>
 							<th class="headerCss center">Date</th>
@@ -81,16 +80,13 @@
 				<i class="fa fa-bar-chart"></i>
 				<span class="caption-subject font-red-sunglo uppercase">video statistics</span>
 			</div>
-			<div class="btn-group pull-right" [class.disabled]="videoViewsLevelSecond.length == 0" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
-				<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 5px;margin-right: 6px; float:right;padding-left: 10px;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
-					<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+			<div class="btn-group pull-right setting-icon-cu" data-toggle="tooltip" data-placement="top" title="Click here to export excel"
+			 [class.disabled]="videoViewsLevelSecond.length == 0" style="margin-top: 4px; cursor:pointer" >
+				<span>
+					<a id="delete_button" (click)="downloadLogs()">  
+					<i  class="fas fa-file-export" style="font-size:15px;margin-right: -4px;"></i>
+				</a>
 				</span>
-				<ul class="dropdown-menu pull-right">
-					<li>
-						<a id="delete_button" (click)="downloadLogs()"> Export To Excel </a>
-					</li>
-				</ul>
 			</div>
 		</div>
 		<div class="portlet-body clearfix" style="max-width: 100%;">

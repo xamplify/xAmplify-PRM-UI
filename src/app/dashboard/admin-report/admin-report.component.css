@@ -1,31 +1,13 @@
-.highletedRow{
-	cursor:pointer
+.highletedRow {
+  cursor: pointer;
 }
-
 .highletedRow:hover {
-	background-color:#a6d9f5;
+  background-color: #a6d9f5;
 }
-
-.selectedRow {
-	background-color:#a6d9f5;
+.inline-custom-width {
+  display: inline-block;
+  width: 200px;
 }
-
-.inline-custom-width{
-	display: inline-block;
-	width: 200px;
+.full-width {
+  width: 100% !important;
 }
-.full-width{
-    width: 100% !important;
-}
-.w-fhpx{
-	width: 500px !important;
-}
-
-.custom-dropdown-css{
-	padding: 10px 20px;
-	border-radius:5px;
-  }
-  
-  select .custom-dropdown-css:focus{
-	outline:none;
-  }

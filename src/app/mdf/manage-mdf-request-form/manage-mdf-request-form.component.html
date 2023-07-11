@@ -52,27 +52,27 @@
                                                       <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
                                                    </div>
                                                    <div class="col-md-10 col-lg-10">
-                                                      <label title="{{columnValue?.values[1]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[1]}}">
                                                       {{columnValue?.values[1] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
                                                       <ng-container *ngIf="columnValue?.values[6].length>0">
-                                                         <label title="{{columnValue?.values[6]}}">
+                                                         <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[6]}}">
                                                             {{columnValue?.values[6] | slice:0:30}}
                                                             <span *ngIf="columnValue?.values[6].length>30">..</span>
                                                          </label><br>
                                                       </ng-container>
-                                                      <label title="{{columnValue?.values[2]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[2]}}">
                                                       {{columnValue?.values[2] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[2].length>30">..</span>
                                                       </label><br>
                                                       <label><strong>Request Created On:</strong></label>
-                                                      <label title="{{columnValue?.values[3]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[3]}}">
                                                       {{columnValue?.values[3]}}
                                                       </label>
                                                       <br>
                                                       <label><strong>Status:</strong></label>
-                                                      <label title="{{columnValue?.values[4]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[4]}}">
                                                       <span class="label label-warning">{{columnValue?.values[4]}}</span>
                                                       </label><br>
                                                    </div>
@@ -93,20 +93,20 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a (click)="expandColumns(formDataRow,rowIndex)" title="View More Columns" *ngIf="columns.length>4">
-                                             <i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn"aria-hidden="true"></i>
-                                             <i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn"aria-hidden="true"></i>
+                                             <a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" data-placement="bottom" title="View More Columns" *ngIf="columns.length>4">
+                                             <i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn fa-fa-consistency"aria-hidden="true"></i>
+                                             <i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn fa-fa-consistency"aria-hidden="true"></i>
                                              </a>
                                              <!---Change Request-->
-                                             <a title="Change Request" *ngIf="!partnerView">
-                                             <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Change Request" *ngIf="!partnerView">
+                                             <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
                                              <!----Timeline History-->
-                                             <a  title="View History" (click)="goToTimeLine(formDataRow.values[0])">
-                                             <i class="fa fa-history action-btn" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="View History" (click)="goToTimeLine(formDataRow.values[0])">
+                                             <i class="fa fa-history action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
-                                             <a  title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
-                                             <i class="fa fa-comment action-btn" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
+                                             <i class="fa fa-comment action-btn fa-fa-consistency" aria-hidden="true"></i>
                                              </a>
                                           </div>
                                        </td>

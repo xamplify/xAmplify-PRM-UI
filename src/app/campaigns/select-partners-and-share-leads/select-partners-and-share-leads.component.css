@@ -5,62 +5,7 @@
   margin-bottom: 10px;
   color: #00a8e7;
 }
-
-.list-icons-sm{
+.list-icons-sm {
   height: 50px;
   width: 50px;
-}
-
-@media screen and (max-width: 600px) {
-  .mTopSort {
-    top: 14px;
-    left: -17px;
-  }
-  .mAlign {
-    top: -20px !important;
-    left: 152px !important;
-    width: 55%;
-  }
-  .list__item {
-    width: 100% !important;
-  }
-
-  .mTop {
-    top: 10px;
-  }
-  .mBtnAlign {
-    margin: 5px;
-  }
-  .mName {
-    display: inline-flex;
-  }
-  .mNameSave {
-    padding-left: 8px;
-    margin-top: 2px;
-  }
-  .mThroughLabel {
-    top: 14px;
-  }
-  .mToPartner {
-    padding: 0;
-    margin-left: 59px !important;
-    margin-top: 13px !important;
-  }
-  .mSwitch {
-    margin-left: -23px;
-  }
-  .mPag {
-    margin-left: -30px;
-    width: 116%;
-  }
-
-  .mHeight {
-    height: 185px;
-  }
-  .mLabelAlign {
-    font-size: 0px;
-  }
-  .mSpamCheckWid {
-    width: 100% !important;
-  }
 }

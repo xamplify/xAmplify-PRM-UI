@@ -1,39 +1,14 @@
-#disabled-icon {
-  border: none;
-  margin: 0px 15px 0 0;
-  cursor: default;
-}
-
-.blur {
-  -webkit-filter: blur(1px);
-  -moz-filter: blur(1px);
-  -o-filter: blur(1px);
-  -ms-filter: blur(1px);
-  filter: blur(1px);
-}
-
-#left-float {
-  float: left;
-}
-
 #search-margin {
   margin-right: 15px;
 }
-
 #icon-right {
   position: relative;
   right: -11px;
 }
-
 #search-text {
   height: 34px;
 }
-
-.fa.fa-refresh.margin {
-  line-height: 15px;
-}
-
-#lg-template{
-    width: 75%;
-    right:0;
+#lg-template {
+  width: 75%;
+  right: 0;
 }

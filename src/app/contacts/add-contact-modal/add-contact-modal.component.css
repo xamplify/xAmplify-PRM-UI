@@ -1,64 +1,92 @@
 .textCss {
-	background-color: rgba(0, 0, 0, 0.12);
-	bottom: -2px;
-	height: 1px;
-	left: 13;
-	margin: 0;
-	padding: 0;
-	width: 91%;
+  background-color: rgba(0, 0, 0, 0.12);
+  bottom: -2px;
+  height: 1px;
+  left: 13;
+  margin: 0;
+  padding: 0;
+  width: 91%;
 }
 
-.disabled {
-   pointer-events: none;
-   cursor: default;
-}
 #addContactModal {
-padding-right: 0 !important;
-display: block;
+  padding-right: 0 !important;
+  display: block;
 }
 
-@media only screen and (max-width:600px){ .email-xs{ left: 4px}}
-@media only screen and (min-width:601px){.email-xs{ left: 6px}}
-
-@media only screen and (max-width:600px){ .padding-mobile{ padding:0}}
-@media only screen and (min-width:601px){.padding-mobile{ padding:non;}}
-
-@media screen and (max-width:600px){.accounts-modal { width:100% !important; position: relative !important; } .px0{padding: 0 !important;} .pxl0{ padding-left: 0 !important;}
-.star { position: relative;  left: 42px !important;top: 9px !important;}
-.email-css { border: none;font-size: 15px; cursor: not-allowed;position: relative;}
+@media only screen and (max-width: 600px) {
+  .padding-mobile {
+    padding: 0;
+  }
 }
-@media screen and (min-width:601px){.accounts-modal { width:45% !important;float: right; position: relative !important; }
-.email-css { border: none;font-size: 15px; cursor: not-allowed;right: -8px;position: relative; } }
-.danger{ color:red !important;}
-.star { color:red !important; margin-right: -25px;}
-.size-font { font-weight: 600;}
-#multiselect-sample{
-	margin-left:74px;
-}
-#custom-width{
-	width:84.333333%
-}
-.right-twelevepx{
-	right: -12px;
+@media only screen and (min-width: 601px) {
+  .padding-mobile {
+    padding: non;
+  }
 }
 
-.disable-dropdown{
-	pointer-events: none;
-	cursor: default;
-	background: lightgray;
+@media screen and (max-width: 600px) {
+  .accounts-modal {
+    width: 100% !important;
+    position: relative !important;
+  }
+  .px0 {
+    padding: 0 !important;
+  }
+  .pxl0 {
+    padding-left: 0 !important;
+  }
+  .star {
+    position: relative;
+    left: 42px !important;
+    top: 9px !important;
+  }
+  .email-css {
+    border: none;
+    font-size: 15px;
+    cursor: not-allowed;
+    position: relative;
+  }
+}
+@media screen and (min-width: 601px) {
+  .accounts-modal {
+    width: 55% !important;
+    float: right;
+    position: relative !important;
+  }
+  .email-css {
+    border: none;
+    font-size: 15px;
+    cursor: not-allowed;
+    right: -8px;
+    position: relative;
+  }
+}
+.danger {
+  color: red !important;
+}
+.star {
+  color: red !important;
+  margin-right: -25px;
+}
+.size-font {
+  font-weight: 600;
+}
+#multiselect-sample {
+  margin-left: 74px;
+}
+#custom-width {
+  width: 84.333333%;
+}
+.right-twelevepx {
+  right: -12px;
 }
 
-/* May 19 sudha*/
-/* .form-horizontal .form-group {
-    margin-right: 0px;
-    margin-left: 0px; 
-} */
-.modal-header{
-	padding: 10px !important;
+.modal-header {
+  padding: 10px !important;
 }
-.blue-buttons-radius{
-	border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+.blue-buttons-radius {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }

@@ -45,16 +45,6 @@
           </h3>
         </div>
       </div>
-      <!-- <div class="col-md-6 user-search">
-        <div class="portlet-input input-inline">
-          <div class="input-icon right">
-            <input class="form-control" placeholder="Search" type="text">
-            <button class="search-box-item-click" type="submit">
-              <i aria-hidden="true" class="fa fa-search" style="color:black !important"></i>
-            </button>
-          </div>
-        </div>
-      </div> -->
     </div>
     <form class="form-horizontal" autocomplete="off">
       <table class='table tgrid'>
@@ -69,15 +59,13 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
-            <tr>
-              <!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                    id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+            <tr>    
               <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                  (click)="selectCf(sfCustomField.name)" id="{{sfCustomField.name}}" name="sfcf[]"
-                  [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
-                  [disabled]="sfCustomField.required" /></td>
-              <td><span>{{sfCustomField.label}}</span></td>
-              <td><span>{{sfCustomField.type}}</span></td>
+                (click)="selectCf(sfCustomField.name)" id="{{sfCustomField.name}}" name="sfcf[]"
+                [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
+                [disabled]="sfCustomField.required" /></td>
+            <td><span>{{sfCustomField.label}}</span></td>
+            <td><span>{{sfCustomField.type}}</span></td>
             </tr>
           </ng-container>
         </tbody>

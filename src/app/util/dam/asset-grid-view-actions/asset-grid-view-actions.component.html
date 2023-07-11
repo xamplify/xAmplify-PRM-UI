@@ -1,46 +1,38 @@
-<div class="bar auto-height">
-	<ng-container *ngIf="asset?.status=='COMPLETED'"> <a
+<div class="bar auto-height" *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
+	<a
 		*ngIf="asset?.history && !isPartnerView && asset?.edit "
+		data-toggle="tooltip" data-placement="top"
 		title="History" (click)="viewGirdHistory(asset)"> <i class="fa"
 		[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
 		aria-hidden="true"></i>
 	</a> <a class="mMobileDisable mDisableColor"
 		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
+		data-toggle="tooltip" data-placement="top"
 		title="Design" (click)="addOrEdit(asset.id)"> <i
 		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
 	</a> <a class="mMobileDisable mDisableColor"
-		*ngIf="asset?.beeTemplate && isPartnerView" title="Edit"
+		*ngIf="asset?.beeTemplate && isPartnerView"  data-toggle="tooltip" data-placement="top" title="Edit"
 		(click)="addOrEdit(asset.id)"> <i class="fa fa-edit mDisableColor"
 		aria-hidden="true"></i>
 	</a> <a class="mMobileDisable mDisableColor"
-		*ngIf="!isPartnerView && asset?.edit" title="Edit"
+		*ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"  title="Edit"
 		(click)="editDetails(asset)"> <i
 		class="fa fa-edit mDisableColor" aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon" title="Preview"
+	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top" title="Preview"
 		(click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 	</a>
-	 <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
-		(click)="openPublishPopup(asset)"> <i class="fa fa-share"
-		aria-hidden="true"></i>
-	</a>
-	<!---XNFR-255-->
-	<!-- <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService?.module?.isMarketingCompany && asset?.whiteLabeledAssetSharedWithPartners" 
-	title="Share As White-Labeled" (click)="openWhiteLabeledPopup(asset)">
-	<i class="fa fa-clone" aria-hidden="true"></i>
-	</a>  -->
-	<!---XNFR-255-->
-	 <a *ngIf="!isPartnerView" title="Download"
+	 <a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Download"
 		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
 		aria-hidden="true"></i>
-	</a> <a *ngIf="!authenticationService.module.isMarketingCompany" title="View Analytics" (click)="viewAnalytics(asset)"> <i
+	</a> <a *ngIf="!authenticationService.module.isMarketingCompany"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 		class="fa fa-line-chart" aria-hidden="true"></i>
-	</a> <a *ngIf="isPartnerView" title="View Details"
+	</a> <a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
 		(click)="viewDetails(asset)"> <i class="fa fa-eye"
 		aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView && asset?.delete" title="Delete"
-		class="delete" (click)="confirmDelete(asset)"> <i
+	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete"  data-toggle="tooltip" data-placement="top" title="Delete"
+		 (click)="confirmDelete(asset)"> <i
 		class="fa fa-trash-o" aria-hidden="true"></i>
-	</a> </ng-container>
+	</a>
 	<ng-container
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 	<a

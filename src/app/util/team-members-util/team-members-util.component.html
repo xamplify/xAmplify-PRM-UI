@@ -52,18 +52,18 @@
  <!--List Of Team members---->
  <div class="portlet light">
   <div class="portlet-title" style="border-bottom: none;">
-    <div class="row">
+    <div class="row" style="display:flex;align-items: center;">
       <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
     <div class="caption" translate>Team Members
     </div>
     </div>
-    <div class="col-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
+    <div class="col-lg-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
       <div class="row">
         <div class="clearfix" *ngIf="isTeamMemberModule">
           <section class="clearfix">
             <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
               <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
-                <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;">
+                <div class="btn-xs btn-padding Btn-Green fileinput-button btn-block rounded-0" style="position: relative;">
                     <h6 style="text-align: center; font-size:14px;color: #fff !important;" translate>Upload a CSV</h6>
                     <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                 </div>
@@ -79,7 +79,7 @@
       </div>
       <!-- close inner row-->
     </div>
-    <div class="col-4 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
+    <div class="col-lg-5 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
     <div class="tools zero-padding-margin">
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <span data-placement="bottom" class="btn btn-xs  l-g-view" data-toggle="tooltip" style="margin-left: -10px !important;"
+        <span data-placement="bottom" class="btn btn-xs  l-g-view" data-toggle="tooltip" style="margin-left: -10px !important"
         title="Refresh" (click)="refreshList()">
         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-refresh p10"></i>
       </span>
@@ -146,7 +146,7 @@
               <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
               && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin" 
               [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
-                 [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
+              data-toggle="tooltip" data-placement="bottom"  [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
                 <a [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'" (click)="teamMember?.partnersCount>0 && !isLoggedInAsTeamMember && showPartners(teamMember)">
                 <strong>Total {{authenticationService?.partnerModule?.customName}} : {{teamMember?.partnersCount}}</strong>
                </a>
@@ -156,12 +156,13 @@
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
-                  <button class="group-name-cclass" translate title="{{teamMember?.teamMemberGroupName}}">
-                    <span>{{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <button class="group-name-cclass btn-primary" >
+                    <span translate data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
+                      {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)">
-                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <button class="tm-group-preview-css btn-primary">
+                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)" class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
             <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
@@ -199,38 +200,38 @@
               <div class="actions-block override-actions custom-width-icon">
                 <!--Login As-->
                 <ng-container *ngIf="teamMember?.loginAs && !isLoggedInAsTeamMember">
-                  <a *ngIf="teamMember?.enabled"  title="Login As"  (click)="loginAs(teamMember)" translate>
+                  <a *ngIf="teamMember?.enabled"  data-toggle="tooltip" data-placement="bottom" title="Login As"  (click)="loginAs(teamMember)" translate>
                       <i class="fa fa-sign-in" aria-hidden="true"></i>
                   </a>
-                  <a *ngIf="!teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" title="{{teamMember.loginAsToolTipMessage}}" translate>
+                  <a *ngIf="!teamMember?.enabled" [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" data-toggle="tooltip" data-placement="bottom" title="{{teamMember.loginAsToolTipMessage}}" translate>
                       <i class="fa fa-sign-in gray" aria-hidden="true"></i>
                   </a>
                 </ng-container>
                 <!--XNFR-139-Primary Admin--->
-                <a [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="setPrimaryAdminOptions(teamMember)"
+                <a data-toggle="tooltip" data-placement="bottom" [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'" (click)="setPrimaryAdminOptions(teamMember)"
                      [className]="(teamMember.status!='APPROVE' || isLoggedInAsTeamMember) && !authenticationService?.module?.isAdmin ? 'inactive':''" >
                   <i [className]="teamMember.status=='APPROVE' && authenticationService?.module?.isAdmin ? 'fa fa-user-o':'fa fa-user-o gray'" aria-hidden="true"></i>
                </a>
                 <!--Edit--->
-                <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
+                <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" data-toggle="tooltip" data-placement="bottom"  title="Edit" (click)="edit(teamMember.teamMemberId)" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''" >
                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </a>
                 <!---Analytics--->
-                <a [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="teamMember.status=='UNAPPROVED'? 'inactive':''" 
+                <a data-toggle="tooltip" data-placement="bottom"  [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'" [className]="teamMember.status=='UNAPPROVED'? 'inactive':''" 
                   *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService?.module?.deletedPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner"  (click)="goToCampaignAnalytics(teamMember)">
-                  <i class="fa fa-line-chart" aria-hidden="true"></i>
+                  <i class="fa fa-line-chart" [ngClass]="teamMember.status=='UNAPPROVED'? 'disabled gray': 'active'" aria-hidden="true"></i>
                 </a>
                 <!--Resend Invitation-->
                 <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                  <a *ngIf="teamMember.status=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="resendEmailInvitation(teamMember.emailId)">
+                  <a *ngIf="teamMember.status=='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="resendEmailInvitation(teamMember.emailId)">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                   </a>
-                  <a  *ngIf="teamMember.status!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                  <a  *ngIf="teamMember.status!='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom" title="Invitation cannot be sent as the account is created successfully" class="inactive">
                     <i class="fa fa-envelope gray" aria-hidden="true"></i>
                   </a>
                 </ng-container>
                 <!---Delete-->
-                <a title="Delete" *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
+                <a data-toggle="tooltip" data-placement="bottom" title="Delete" *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"  (click)="showPopup(teamMember)">
                   <i class="fa fa-trash red" aria-hidden="true"></i>
                 </a>
               </div>
@@ -268,7 +269,7 @@
             <span *ngIf="editTeamMember">Edit Team Member</span>
           </div>
           <div>
-            <a class="close-circle"  title="Go Back" (click)="clearForm()">
+            <a class="close-circle" data-toggle="tooltip" data-placement="bottom" title="Go Back" (click)="clearForm()">
               <i class="fa fa-close" aria-hidden="true"></i>
             </a>
         </div>
@@ -318,7 +319,7 @@
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label col-sm-3">Team Member Group<span class="required">*</span></label>
-                    <button class="btn btn-info margin-left-negative-fifteen-px" [disabled]="team?.teamMemberGroupId==0" (click)="previewModules(team.teamMemberGroupId)">
+                    <button class="btn btn-info margin-left-negative-fifteen-px" [disabled]="team?.teamMemberGroupId==0" data-toggle="tooltip" data-placement="bottom" title="click to view available modules " (click)="previewModules(team.teamMemberGroupId)">
                       <i class="fa fa-eye white" aria-hidden="true"></i>
                     </button>
                     <div class="col-sm-8">
@@ -389,7 +390,7 @@
   <div class="portlet-title">
     <div class="caption" translate>Uploaded Team Members</div>
     <div [hidden]="addTeamMemberLoader.isLoading">
-      <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
+      <a class="close-circle" data-toggle="tooltip" data-placement="bottom"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
         <i class="fa fa-close" aria-hidden="true"></i>
       </a>
   </div>
@@ -492,7 +493,7 @@
                   </form>
               </div>
               <div class="modal-footer" *ngIf="!deletePopupLoader">
-                  <button type="button" class="btn btn-default" (click)="hidePopup()" translate>Cancel</button>
+                  <button type="button" class="btn Btn-Gray" (click)="hidePopup()" translate>Cancel</button>
                   <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" translate>Go</button>
                   <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled" translate>Go</button>
               </div>
@@ -540,7 +541,7 @@
                 </div>
             </div>
             <div class="modal-footer" *ngIf="!adminsLoader.isLoading">
-                <button type="submit" class="btn btn-default"  data-dismiss="modal" translate>Close</button>
+                <button type="submit" class="btn Btn-Gray"  data-dismiss="modal" translate>Close</button>
               </div>
       </div>
   </div>

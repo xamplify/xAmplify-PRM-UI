@@ -13,11 +13,13 @@ import { Router } from '@angular/router';
 export class VideoThumbnailComponent implements OnInit {
   @Input() videoFile: SaveVideoFile;
   @Input() published: boolean ;
+  @Input() processing:boolean;
   @Input() damId : number;
   @Output() notifyParent: EventEmitter<any>;
   @Input() categoryName:string;
   @Input() asset:any;
-  isCreate: boolean;
+  @Input() assetStatus:any;
+   isCreate: boolean;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
     this.notifyParent = new EventEmitter<any>();
     this.isCreate = (this.router.url.includes('/home/campaigns/create') || this.router.url.includes('/home/campaigns/edit')) ? true: false;

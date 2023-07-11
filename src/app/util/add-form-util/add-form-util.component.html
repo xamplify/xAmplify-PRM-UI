@@ -77,12 +77,12 @@
                                                     <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                         <div id="form-div" (click)="highLightSelectedColumn(columnInfo)">
                                                             <div id="{{columnInfo.divId}}">
-                                                                <div class="form-group label-box" [style.background]="form.backgroundColor" [class.selected]="columnInfo.divId==selectedColumn.divId">
+                                                                <div class="form-group form-custom label-box" [style.background]="form.backgroundColor" [style.borderColor]="form.borderColor" [class.selected]="columnInfo.divId==selectedColumn.divId">
                                                                     <a id="drag-div">
                                                                         <h4 class="dflex">
                                                                             <span class="label-text">
                                                                                 <label class="control-label">
-                                                                                    <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                                                                                    <span class="label-name">{{columnInfo.labelName}}</span>
                                                                                     <span class="required" *ngIf="columnInfo.required">*</span>
                                                                                 </label>
                                                                             </span>
@@ -103,35 +103,35 @@
                                                                         </h4>
                                                                         <!-- ---------------------------Text/Email----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
-                                                                            <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="1000" id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" />
+                                                                            <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="1000" id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}" class="form-control form-placeholder disabled" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor"/>
                                                                         </ng-container>
                                                                         <!-- ---------------------------TextArea----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                                                            <textarea rows="4" cols="4" autoComplete="off" maxlength="1000" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}"></textarea>
+                                                                            <textarea rows="4" cols="4" autoComplete="off" maxlength="1000" placeholder="{{columnInfo.placeHolder}}" class="form-control form-placeholder disabled" id="{{columnInfo.labelId}}" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor"></textarea>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Date----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                                                            <app-date-picker [isFromForm]='true'>
+                                                                            <app-date-picker class="form-placeholder" [isFromForm]='true' [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor">
                                                                             </app-date-picker>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Price----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                                                             <div class="input-group">
-                                                                                <span class="edit-field-prefix">
+                                                                                <span class="edit-field-prefix form-placeholder" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor">
                                                                                     {{columnInfo.priceSymbol}}
                                                                                 </span>
-                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
+                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control form-placeholder disabled" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor" id="{{columnInfo.labelId}}" />
                                                                             </div>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Number----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='number'">
                                                                             <div class="input-group">
-                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled form-padding-left" id="{{columnInfo.labelId}}" />
+                                                                                <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control form-placeholder disabled form-padding-left" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor" id="{{columnInfo.labelId}}" />
                                                                             </div>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Upload----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                                                            <input type="file" class="form-control disabled" id="{{columnInfo.labelId}}" />
+                                                                            <input type="file" class="form-control form-placeholder disabled" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor" id="{{columnInfo.labelId}}" />
                                                                         </ng-container>
                                                                         <!-- ---------------------------Radio Button----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -168,7 +168,7 @@
                                                                         </ng-container>
                                                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='select'">
-                                                                            <select class="form-control">
+                                                                            <select class="form-control form-placeholder" [style.backgroundColor]="pageBackgroundColor" [style.borderColor]="form.borderColor" [style.color]="form.labelColor">
                                                                                 <option
                                                                                     *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                                                                                     {{dropDownValue.name}}
@@ -431,9 +431,9 @@
                         </div>
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
-                            <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn green-haze" (click)="addOrUpdate()">{{buttonName}}</button>
-                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn btn-primay btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn Btn-Green" (click)="addOrUpdate()">{{buttonName}}</button>
+                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn Btn-Green" (click)="saveAs()">Save As</button>
+                            <button type="button" class="btn Btn-Gray btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -450,9 +450,10 @@
         <div class="modal-content mPad col-lg-12 col-md-12">
             <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" class="btn grey  col-lg-2 col-md-2 width-btn"   (click)="closeModal()">Back to Form</button>
-                <button type="submit" [disabled]="!form.isValid"  class="btn green-haze col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
-                <h4 class="modal-title text-center col-lg-8 col-md-8 title-pd">{{formTitle}}</h4>
+                <button type="button" class="close-circle"   (click)="closeModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>               
+                <h4 class="modal-title text-center  col-md-8">{{formTitle}}</h4>
             </div>
             <div class="modal-body">
                 <div class="col-lg-12 col-md-12" style="margin-top: 10px;">
@@ -493,7 +494,7 @@
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                
+                <button type="submit" [disabled]="!form.isValid"  class="btn Btn-Green col-lg-1 col-md-1" (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>
@@ -519,14 +520,14 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Title Color</label>
-                                        <input class="form-control" [value]="titleColor" [(ngModel)]="titleColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(titleColor,'titleColor')" maxlength="7" />
+                                        <input class="form-control" [value]="titleColor" [(ngModel)]="titleColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(titleColor,'titleColor',form.customSkinTextColor)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.titleColor" [style.background]="form.titleColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'titleColor')" [cpPosition]="'bottom'" readonly></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Border Color</label>
-                                        <input class="form-control" [value]="borderColor" [(ngModel)]="borderColor" style="padding-left: 40px;" (input)="checkValidColorCode(borderColor,'borderColor')" maxlength="7" />
+                                        <input class="form-control" [value]="borderColor" [(ngModel)]="borderColor" style="padding-left: 40px;" (input)="checkValidColorCode(borderColor,'borderColor',form.customSkinButtonBorderColor)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.borderColor" [style.background]="form.borderColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'borderColor')" [cpPosition]="'bottom'"
                                             readonly></span>
                                     </div>
@@ -547,7 +548,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Background Color(Form)</label>
-                                        <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor')" maxlength="7" />
+                                        <input class="form-control" [value]="backgroundColor" [(ngModel)]="backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(backgroundColor,'backgroundColor',form.customSkinDivBackgroundColor)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.backgroundColor" [style.background]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'bottom'"
                                             readonly></span>
                                     </div>
@@ -555,7 +556,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Label Color</label>
-                                        <input class="form-control" [value]="labelColor" [(ngModel)]="labelColor" style="padding-left: 40px;" (input)="checkValidColorCode(labelColor,'labelColor')" maxlength="7" />
+                                        <input class="form-control" [value]="labelColor" [(ngModel)]="labelColor" style="padding-left: 40px;" (input)="checkValidColorCode(labelColor,'labelColor', form.customSkinTextColor)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.labelColor" [style.background]="form.labelColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'labelColor')" [cpPosition]="'bottom'" readonly></span>
                                     </div>
                                 </div>
@@ -574,7 +575,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Button Background Color</label>
-                                        <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonBackgroundColor,'buttonColor')" maxlength="7" />
+                                        <input class="form-control" [value]="buttonBackgroundColor" [(ngModel)]="buttonBackgroundColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonBackgroundColor,'buttonColor',null)" maxlength="7" />
                                         <span class="input-group-addon color-pick-1" [(colorPicker)]="form.buttonColor" [style.background]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')" [cpPosition]="'bottom'"
                                             readonly></span>
                                     </div>
@@ -582,7 +583,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Button Value Color</label>
-                                        <input class="form-control" [value]="buttonValueColor" [(ngModel)]="buttonValueColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonValueColor,'buttonValueColor')" maxlength="7" />
+                                        <input class="form-control" [value]="buttonValueColor" [(ngModel)]="buttonValueColor" style="padding-left: 40px;" (input)="checkValidColorCode(buttonValueColor,'buttonValueColor',null)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.buttonValueColor" [style.background]="form.buttonValueColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')" [cpPosition]="'bottom'"
                                             readonly></span>
                                     </div>
@@ -622,7 +623,7 @@
                                     <div class="form-group">
                                         <label>Description Color</label>
                                         <input class="form-control" [value]="descriptionColor" [(ngModel)]="descriptionColor"
-                                            style="padding-left: 40px;" (input)="checkValidColorCode(descriptionColor,'descriptionColor')"
+                                            style="padding-left: 40px;" (input)="checkValidColorCode(descriptionColor,'descriptionColor',form.customSkinTextColor)"
                                             maxlength="7" />
                                         <span class="input-group-addon color-pick-1" [(colorPicker)]="form.descriptionColor"
                                             [style.background]="form.descriptionColor" [cpWidth]="'200px'" [cpHeight]="'265px'"
@@ -714,7 +715,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label>Background Color</label>
-                                        <input class="form-control" [value]="pageBgColor" [(ngModel)]="pageBgColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(pageBgColor,'pageBackgroundColor')" maxlength="7" />
+                                        <input class="form-control" [value]="pageBgColor" [(ngModel)]="pageBgColor" style="margin-bottom: 10px;padding-left: 40px;" (input)="checkValidColorCode(pageBgColor,'pageBackgroundColor',form.customSkinBackgroundColor)" maxlength="7" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="form.pageBackgroundColor" [style.background]="form.pageBackgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'pageBackgroundColor')"
                                             [cpPosition]="'top'" readonly></span>
                                     </div>
@@ -850,7 +851,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <button type="submit" [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode" class="btn Btn-Green" (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>

@@ -12,6 +12,9 @@ export class LandingPageLoaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if(this.maxBoxLength==undefined){
+      this.maxBoxLength = 4;
+    }
     
   }
 

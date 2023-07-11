@@ -1,115 +1,120 @@
 <div class="modal fade right" id="sendCampaignsPopup" tabindex="-1" role="dialog" aria-labelledby="sendCampaignsPopup" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" (click)="closePopup()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title text-center">This list is associated with the following campaigns</h4>
-            </div>
-            <div class="modal-body">
-                <div class="thank-you-pop" *ngIf="sendSuccess">
-                    <ng-container *ngIf="statusCode==200">
-                        <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-                        <h4 class="event-success">{{responseMessage}}</h4>
-                    </ng-container>
-                    <ng-container *ngIf="statusCode!=200">
-                        <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
-                        <h4 class="event-error">{{responseMessage}}</h4>
-                    </ng-container>
-
-
-                </div>
-                <ng-container *ngIf="!sendSuccess">
-                    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                    </app-response-message>
-                    <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
-                        <div class="row">
-                            <div>
-                                <div class="col-xs-12">
-                                    <div class="page-toolbar">
-                                        <div class="btn-group pull-right">
-                                            <div class="inputs float-right" style="display: inline-flex;">
-                                                <div>
-                                                    <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                    <option
-                                                        *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
-                                                        [ngValue]="option">
-                                                        {{option.name}}</option>
-                                                </select>
-                                                </div>
-                                                <div class="portlet-input input-inline" id="search-div">
-                                                    <div class="input-icon right" id="icon">
-                                                        <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                                                        <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-                    <ng-container *ngIf="!httpRequestLoader.isLoading">
-                        <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="campaign-list-table">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">
-                                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
-                                        </th>
-                                        <th class="text-center">Campaign Name</th>
-                                        <th class="text-center">Type</th>
-                                        <th class="text-center">Created By</th>
-                                        <th class="text-center">Launched On</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
-                                        <td class="text-center">
-                                            <input type="checkbox" class="chk" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
-                                        </td>
-                                        <td class="text-center" title="{{campaign.campaign}}">
-                                            {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span>{{campaign.campaignTypeInString}}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span>{{campaign.createdBy}}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-                                            </app-timestamp>
-                                            <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- End of 24 -->
-                        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                            <strong>No Campaigns Found.</strong>
-                        </div>
-                    </ng-container>
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close-circle" (click)="closePopup()">
+             <i class="fa fa-times" aria-hidden="true"></i>
+             </button>
+             <h4 class="modal-title text-center">Please select campaigns</h4>
+          </div>
+          <div class="modal-body">
+             <div class="thank-you-pop" *ngIf="sendSuccess">
+                <ng-container *ngIf="statusCode==200">
+                   <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+                   <h4 class="event-success">{{responseMessage}}</h4>
                 </ng-container>
-                <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
-                    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
-                    </app-pagination>
+                <ng-container *ngIf="statusCode!=200">
+                   <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+                   <h4 class="event-error">{{responseMessage}}</h4>
+                </ng-container>
+             </div>
+             <ng-container *ngIf="!sendSuccess">
+                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                </app-response-message>
+                <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+                   <div class="row">
+                      <div>
+                         <div class="col-xs-12">
+                            <div class="page-toolbar">
+                               <div class="btn-group pull-right">
+                                  <div class="inputs float-right" style="display: inline-flex;">
+                                     <div>
+                                        <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                        <option
+                                        *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
+                                        [ngValue]="option">
+                                        {{option.name}}</option>
+                                        </select>
+                                     </div>
+                                     <div class="portlet-input input-inline" id="search-div">
+                                        <div class="input-icon right" id="icon">
+                                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+                                           <i class="fa fa-search" aria-hidden="true"></i>
+                                           </button>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
-            <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-            <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-                <button type="submit" class="btn green-haze" [disabled]="selectedCampaignIds?.length==0" *ngIf="!sendSuccess" (click)="sendCampaigns()">Share</button>
-                <button type="submit" class="btn btn-default" (click)="closePopup()">Close</button>
-            </div>
-        </div>
+                <br>
+                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                <ng-container *ngIf="!httpRequestLoader.isLoading">
+                  <div class="alert alert-info">
+                     <strong>
+                         **Please be noted that you will only see a list of unshared campaigns. <br/>
+                         **Campaigns that have been chosen will be shared with the
+                         <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span> <span *ngIf="!isPartnersRouter">contact</span>. 
+                         It will take some time to process everything. There is no need to reshare it.
+                     </strong>
+                 </div>
+                   <div class="table-responsive">
+                      <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="campaign-list-table">
+                         <thead>
+                            <tr>
+                               <th class="text-center">
+                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
+                               </th>
+                               <th class="text-center">Campaign Name</th>
+                               <th class="text-center">Type</th>
+                               <th class="text-center">Created By</th>
+                               <th class="text-center">Launched On</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            <tr *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
+                            <td class="text-center">
+                               <input type="checkbox" class="chk" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
+                            </td>
+                            <td class="text-center" title="{{campaign.campaign}}">
+                               {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
+                            </td>
+                            <td class="text-center">
+                               <span>{{campaign.campaignTypeInString}}</span>
+                            </td>
+                            <td class="text-center">
+                               <span>{{campaign.createdBy}}</span>
+                            </td>
+                            <td class="text-center">
+                               <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+                               </app-timestamp>
+                               <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                            </td>
+                            </tr>
+                         </tbody>
+                      </table>
+                   </div>
+                   <!-- End of 24 -->
+                   <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                      <strong>No Campaigns Found.</strong>
+                   </div>
+                </ng-container>
+             </ng-container>
+             <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
+             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
+             </app-pagination>
+          </div>
+       </div>
+       <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+       <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
+          <button type="submit" class="btn Btn-Green" [disabled]="selectedCampaignIds?.length==0" *ngIf="!sendSuccess" (click)="sendCampaigns()">Share</button>
+          <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+       </div>
     </div>
-</div>
+ </div>
+ </div>

@@ -1,204 +1,221 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
-      <div class="row">
-          <div class="col-xs-12">
-              <div class="tile" style="border-radius: 5px;">
-                  <div class="page-bar" style="border:none !important">
-                      <ul class="page-breadcrumb">
-                          <li>
-                              <i class="fa fa-home" aria-hidden="true"></i>
-                              <a [routerLink]="referenceService.homeRouter">Home</a>
-                              <i class="fa fa-angle-right" aria-hidden="true"></i>
-                          </li>
-                          <li>
-				              <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-								<i class="fa fa-angle-right" aria-hidden="true"></i>
-            			</li>
-            			<li>
-			              <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
-			              <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
-			              <i class="fa fa-angle-right" aria-hidden="true"></i>
-            			</li>
-                          <li>
-                              <a>Design Template</a>
-                          </li>
-                      </ul>
-                      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-      						<i class="fa fa-times" aria-hidden="true"></i>
-      					</a>
-                  </div>
-                  <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
-                    <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
-                  </ng-container>
-              </div>
-          </div>
+<div class="row">
+   <div class="col-xs-12">
+      <div class="tile" style="border-radius: 5px;">
+         <div class="page-bar" style="border:none !important">
+            <ul class="page-breadcrumb">
+               <li>
+                  <i class="fa fa-home" aria-hidden="true"></i>
+                  <a [routerLink]="referenceService.homeRouter">Home</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+               </li>
+               <li>
+                  <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+               </li>
+               <li>
+                  <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
+                  <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+               </li>
+               <li>
+                  <a>Design Template</a>
+               </li>
+            </ul>
+            <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+            <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+         </div>
+         <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+         </ng-container>
       </div>
-  <app-scroll-top></app-scroll-top>
-
+   </div>
+</div>
+<app-scroll-top></app-scroll-top>
 <!--Add Asset Details------->
 <div id="addAssetDetailsPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-css" role="document">
+   <div class="modal-dialog modal-css" role="document">
       <!-- Modal content-->
       <div class="modal-content">
-        <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-          <div class="modal-header">
-                <div class="cf-padding-dam">
-                  <a class="close-circle" (click)="hidePopup()">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                  </a>
-                  <button class="add-button-xamplify mr5" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-              </div>
-              <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
-          </div>
-          <div class="modal-body">
+         <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+            <div class="cf-padding-dam">
+               <a class="close-circle" (click)="hidePopup()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+               <button class="btn-primary mr5" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+            </div>
+            <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
+         </div>
+         <div class="modal-body">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-             <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
-                <div class="portlet box">
-                    <div class="">
-                      <div class="col-md-12 col-lg-12 ">
-                         <div class="form-group">
-                             <label class="control-label col-sm-3" translate>Name
-                                 <span class="required">*</span></label>
-                             <div class="col-sm-8">
-                               <input class="form-control"  type="text" placeholder="Name" (input)="validateForm('name')" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
-                                <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
-                              </div>
-                         </div>
+            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+               <div class="portlet box">
+                  <div class="">
+                     <div class="col-md-12 col-lg-12 ">
+                        <div class="form-group">
+                           <label class="control-label col-sm-3" translate>Name
+                           <span class="required">*</span></label>
+                           <div class="col-sm-8">
+                              <input class="form-control"  type="text" placeholder="Name" (input)="validateForm('name')" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
+                              <span class="required" *ngIf="nameErrorMessage?.length>0">{{nameErrorMessage}}</span>
+                           </div>
+                        </div>
                      </div>
                      <!---XNFR-169-->
                      <div class="col-md-12 col-lg-12 ">
-                      <div class="form-group">
-                          <label class="control-label col-sm-3" translate>Folder
-                              <span class="required">*</span>
-                          </label>
-                          <div class="col-sm-8" *ngIf="showFolderDropDown">
-                            <app-select-dropdown  [categoryId]="damPostDto.categoryId" [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3" translate>Folder
+                           <span class="required">*</span>
+                           </label>
+                           <div class="col-sm-8" *ngIf="showFolderDropDown">
+                              <app-select-dropdown  [categoryId]="damPostDto.categoryId" [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
                            </div>
-                      </div>
-                    </div>
-
-
-                    <!---White Labeled-- XNFR-255-->
-                    <!-- <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
-                      <div class="form-group">
-                        <label class="control-label col-sm-3" translate>White Labeled</label>
-                        <div class="col-sm-8">
-                          <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                          (statusChange)="setWhiteLabeled($event)">
-                          </switch>
                         </div>
-                      </div>
-                    </div> -->
-                    <!---White Labeled-- XNFR-255-->
-
-
+                     </div>
+                      <!---White Labeled-- XNFR-255-->
+                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
+                        <div class="form-group">
+                          <label class="control-label col-sm-3" translate>White Labeled</label>
+                          <div class="col-sm-8">
+                            <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                            (statusChange)="setWhiteLabeled($event)">
+                            </switch>
+                            <span class="info-color-xampc">
+                              <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                                  data-placement="top" aria-hidden="true"
+                                  title="Share As White Labeled Content"></i>
+                          </span>
+                          </div>
+                        </div>
+                      </div> 
+                      <!---White Labeled-- XNFR-255-->
                      <div class="col-md-12 col-lg-12 ">
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
-                          style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
+                           style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
                         <div class="form-group" style="padding-top: 20px;">
-                          <label class="control-label col-sm-3" translate>Description<span class="required">*</span></label>
-                          <div class="col-sm-8" *ngIf="isAddAssetDetailsPopupLoaded">
-                            <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
+                           <label class="control-label col-sm-3" translate>Description<span class="required">*</span></label>
+                           <div class="col-sm-8" *ngIf="isAddAssetDetailsPopupLoaded">
+                              <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
                               (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="validateForm('description')"
                               (input)="getCkEditorData();validateForm('description')">
-                            </ckeditor>
-                          </div>
+                              </ckeditor>
+                           </div>
                         </div>
-                    </div>
+                     </div>
+                     
+                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                        <div class="form-group">
+                           <label class="control-label col-sm-3" translate>Tags
+                           </label>
+                           <div class="col-sm-8 inline" style="padding: 5px 8px 0px 16px;">
+                              <ngx-loading [show]="tagsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+                              <div class="portlet light" style="width: 100%;padding: 5px !important;">
+                                 <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
+                                    <div class="inline" style="float: right;">
+                                       <div class="input-icon left" style="padding-bottom: 5px;">
+                                          <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
+                                          placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
+                                          style="padding: 6px 12px;">
+                                          <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                          (click)="tagSearchKey='';searchTags();"></button>
+                                          <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
+                                          <i class="fa fa-search cesf-xamp"></i></button>
+                                       </div>
+                                       <div style="padding-left: 10px;">
+                                          <button type="button" data-toggle="tooltip" data-placement="top" title="Add a Tag" class="btn btn-primary add-btn" (click)="addTag()">
+                                          <i class="fa fa-plus"  aria-hidden="true"></i></button>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="scroller">
+                                    <table class="table table-bordered no-footer tags-table" id="tags_list">
+                                       <tbody>
+                                          <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
+                                             style="vertical-align: middle;padding: 0px;">
+                                             <td style="padding: 5px;vertical-align: middle; width: 50%;"
+                                                (click)="updateSelectedTags(tag,$event.target.checked)">
+                                                <div class="col-sm-2 col-sm-offset-2">
+                                                   <label class="form-check-label inline">
+                                                   <input type="checkbox" class="form-check-input "
+                                                      [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tag.id)>-1">
+                                                   </label>
+                                                </div>
+                                                <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;" title="{{tag?.tagName}}">
+                                                   <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
+                                                      {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                             <td style="padding: 5px;vertical-align: middle; width: 50%;"
+                                                (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
+                                                <div class="col-sm-2 col-sm-offset-2">
+                                                   <label class="form-check-label inline">
+                                                   <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" type="checkbox"
+                                                   class="form-check-input "
+                                                   [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
+                                                   </label>
+                                                </div>
+                                                <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;" title="{{tagsListSecondColumn[i]?.tagName}}">
+                                                   <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" class="btn text-wrap btn-primary-dark btn-primary-light" 
+                                                      style="padding: 4px 10px;border-radius: 2px !important;">
+                                                      {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                    <div
+                                       *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
+                                       class="alert alert-info">
+                                       <strong>No Tags Found.</strong>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!---XNFR-255-->
                     <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                      <div class="form-group">
-                        <label class="control-label col-sm-3" translate>Tags
-                        </label>
-                        <div class="col-sm-8 inline" style="padding: 5px 8px 0px 16px;">
-                          <ngx-loading [show]="tagsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                          <div class="portlet light" style="width: 100%;padding: 5px !important;">
-                            <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
-                              <div class="inline" style="float: right;">
-                                <div class="input-icon left" style="padding-bottom: 5px;">
-                                  <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
-                                    placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
-                                    style="padding: 6px 12px;">
-                                  <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
-                                    (click)="tagSearchKey='';searchTags();"></button>
-                                  <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
-                                    <i class="fa fa-search cesf-xamp"></i></button>
-                                </div>
-                                <div style="padding-left: 10px;">
-                                  <button type="button" class="btn btn-primary add-btn" (click)="addTag()">
-                                    <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="scroller">
-                              <table class="table table-bordered no-footer tags-table" id="tags_list">
-                                <tbody>
-                                  <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
-                                    style="vertical-align: middle;padding: 0px;">
-                                    <td style="padding: 5px;vertical-align: middle; width: 50%;"
-                                      (click)="updateSelectedTags(tag,$event.target.checked)">
-                                      <div class="col-sm-2 col-sm-offset-2">
-                                        <label class="form-check-label inline">
-                                          <input type="checkbox" class="form-check-input "
-                                            [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tag.id)>-1">
-                                        </label>
-                                      </div>
-                                      <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;" title="{{tag?.tagName}}">
-                                        <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
-                                          {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
-
-                                      </div>
-                                    </td>
-                                    <td style="padding: 5px;vertical-align: middle; width: 50%;"
-                                      (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
-                                      <div class="col-sm-2 col-sm-offset-2">
-                                        <label class="form-check-label inline">
-                                          <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" type="checkbox"
-                                            class="form-check-input "
-                                            [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
-                                        </label>
-                                      </div>
-                                      <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;" title="{{tagsListSecondColumn[i]?.tagName}}">
-
-                                        <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" class="btn text-wrap btn-primary-dark btn-primary-light" 
-
-                                          style="padding: 4px 10px;border-radius: 2px !important;">
-                                          {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <div
-                                *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
-                                class="alert alert-info">
-                                <strong>No Tags Found.</strong>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                     <table class="table">
+                       <tbody>
+                         <tr>
+                           <td class="desc" style="width: 11%;">
+                             <label class="control-label" translate>
+                             </label>
+                           </td>
+                           <td class="desc">
+                             <div class="mDesc">
+                               <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="assetId" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                             </div>
+                           </td>
+                         </tr>
+                       </tbody>
+                     </table>
                     </div>
-              </div>
-                </div>
+                   <!---XNFR-255-->
+
+                  </div>
+               </div>
             </form>
-          </div>
-          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
-              <button class="btn btn-default" type="reset" (click)="hidePopup();" translate>Cancel</button>
-              <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
-              <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
-
-          </div>
+         </div>
+         <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
+            <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>
+            <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
+            <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
+         </div>
       </div>
-  </div>
- </div>
- 
- <!-- ADD TAG POPUP -->
-<div *ngIf="openAddTagPopup">
-  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
-  </app-add-tags-util>
+   </div>
 </div>
-
+<!-- ADD TAG POPUP -->
+<div *ngIf="openAddTagPopup">
+   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+   </app-add-tags-util>
+</div>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
- 

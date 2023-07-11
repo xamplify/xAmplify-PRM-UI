@@ -27,6 +27,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+ 
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -339,6 +340,11 @@ export class ReferenceService {
   }
   validateEmailId(emailId: string) {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+  }
+
+  validateEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
   }
 
   validateWebsiteURL(url: string) {
@@ -2475,6 +2481,10 @@ export class ReferenceService {
     $("#" + modalId).modal("hide");
   }
 
+  openModalPopup(modalId:string) {
+    $("#" + modalId).modal("show");
+  }
+
   deleteAndEditAccess() {
     return (
       this.hasAllAccess() ||
@@ -3038,6 +3048,8 @@ export class ReferenceService {
       categoryType="LEARNING_TRACK";
     }else if(this.roles.playbookId==moduleId){
       categoryType = "PLAY_BOOK";
+    }else if(this.roles.campaignId==moduleId){
+      categoryType = "CAMPAIGN";
     }
     return categoryType;
   }
@@ -3151,6 +3163,27 @@ export class ReferenceService {
     return description;
   }
 
+  closeSweetAlertWithDelay() {
+    setTimeout(() => {
+      swal.close();
+    }, 1000);
+  }
 
+  goToManageCampaigns(viewType: string) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToManageCampaignsByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageCampaignsByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageCampaigns(viewType);
+    }
+  }
+  goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+  
+   
   
 }

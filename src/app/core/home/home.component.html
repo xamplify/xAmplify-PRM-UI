@@ -1,9 +1,8 @@
 <app-topnavbar [model]="referenceService.topNavBarUserDetails"></app-topnavbar>
 <div class="page-container">
-  <app-leftsidebar></app-leftsidebar>
-  <div class="page-content-wrapper">
-    <router-outlet></router-outlet>
-    <!-- <app-bottomnavbar></app-bottomnavbar> -->
-  </div>
+   <app-leftsidebar></app-leftsidebar>
+   <div class="page-content-wrapper">
+      <router-outlet></router-outlet>
+   </div>
 </div>
-  <app-custom-copyright [activeThemeDetails]="activeThemeDetails"  *ngIf="footerSkin.showFooter && footerSkin.textContent"></app-custom-copyright>
+<app-custom-copyright [activeThemeDetails]="activeThemeDetails"  *ngIf="footerSkin.showFooter && footerSkin.textContent"></app-custom-copyright>

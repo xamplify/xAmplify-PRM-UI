@@ -1,11 +1,10 @@
-
 <div class="copyright-css" [ngClass]="!skin?.defaultSkin?'customskin-copyright-css':''"
-	style="width: 100%; word-break: break-word; display: inline-block;position: absolute;">
-	<footer>
-		<div [style.color]="skin?.textColor" style="text-align: center;"
-			[innerHTML]="footerContent"
-			*ngIf="skin?.showFooter && skin?.textContent"
-			[ngStyle]="{'color':skin?.textColor}"></div>
-	</footer>
+   style="width: 100%; word-break: break-word; display: inline-block;position: absolute;">
+   <footer>
+      <div [style.color]="skin?.textColor" style="text-align: center;"
+      [innerHTML]="footerContent"
+      *ngIf="skin?.showFooter && skin?.textContent"
+      [ngStyle]="{'color':skin?.textColor}">
 </div>
-
+</footer>
+</div>

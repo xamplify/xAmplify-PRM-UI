@@ -1,77 +1,70 @@
-
-
-.col-block-active{
-    color: #fff!important;
-    vertical-align: central!important;
-    border: 1px solid #0c84ae!important;
-    background-color: #0c84ae!important;
+.col-block-active {
+  color: #fff !important;
+  vertical-align: central !important;
+  border: 1px solid #0c84ae !important;
+  background-color: #0c84ae !important;
 }
-
 .col-block {
-    background: #fff;
-    margin: 0 1px;
-    cursor: pointer;
-    border: 1px solid silver;
+  background: #fff;
+  margin: 0 1px;
+  cursor: pointer;
+  border: 1px solid silver;
 }
-
-.cenetered-block{
-    margin: 0 auto;
-    text-align: center;
-    padding: 1em;
-    cursor: pointer;
+.cenetered-block {
+  margin: 0 auto;
+  text-align: center;
+  padding: 1em;
+  cursor: pointer;
 }
-
-.col-block-active .cenetered-block span{
-    background: #fff!important;
+.col-block-active .cenetered-block span {
+  background: #fff !important;
 }
-
-.cenetered-block span{
-    background: #999;
-    border-radius: 50%;
-	padding: 5px;
-    width: 42px;
-    height: 42px;
-    display: block;
-    margin: auto;
-    
+.cenetered-block span {
+  background: #999;
+  border-radius: 50%;
+  padding: 5px;
+  width: 42px;
+  height: 42px;
+  display: block;
+  margin: auto;
 }
-
 .cenetered-block h5 {
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 10px;
-	display: block;
-	color: #313030;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  display: block;
+  color: #313030;
 }
-
 .cenetered-block span i {
-    color: #fff;
-    margin-top: 10px;
-    display: block;
+  color: #fff;
+  margin-top: 10px;
+  display: block;
 }
-
 .col-block-active .cenetered-block span i {
-    color: #0c84ae!important;
+  color: #0c84ae !important;
 }
-
 .col-block-active .cenetered-block h5 {
-   
-	color:#fff!important;
+  color: #fff !important;
 }
 .portlet.box {
-    border: 1px solid #c4c1bb;
-    overflow: hidden;
-	min-height: auto;
-	border-radius: 3px;
+  border: 1px solid #c4c1bb;
+  overflow: hidden;
+  min-height: auto;
+  border-radius: 3px;
 }
-
-.portlet-border{
-	display: block;padding: 0px 13px 13px 13px;
+.portlet-border {
+  display: block;
+  padding: 0px 13px 13px 13px;
 }
-input[type="file"] { display: none; }
-.custom-file-upload { border: 1px solid #ccc; display: inline-block; padding: 6px 12px; cursor: pointer; }
-
-.color-black{
-    color: black;
+input[type="file"] {
+  display: none;
 }
-
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.color-black {
+  color: black;
+}

@@ -61,8 +61,8 @@
             </ul>
             <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
                 <a (click)="downloadEmptyCsv()">
-                    <button type="button" class="btn green" download
-                        style="color: #ffffff;"
+                    <button type="button" class="btn Btn-Green " download
+                       
                         [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                         translate>
                         Download CSV Template<i class="fa fa-download" aria-hidden="true"
@@ -408,14 +408,14 @@
                 </select>
                 </span>
                     <ng-template #actionsButton>
-                        <button class="btn dropdown-toggle" id="save&delete_button"
+                        <button class="btn dropdown-toggle mb-btn" id="save&delete_button"
                             style="color: white; float: right; margin-left: 10px;"
-                            [ngStyle]="{'background-color': !referenceService.isMobileScreenSize() ? '#26a69a': '#fff' }"
+                            [ngClass]="{'Btn-Green': !referenceService.isMobileScreenSize()}"
                             data-toggle="dropdown">
                             <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
                                 <i class="fa fa-angle-down"></i>
                             </span> <span *ngIf="referenceService.isMobileScreenSize()"><i
-                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
+                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog mb-gear"></i></span>
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5"
@@ -489,7 +489,7 @@
                 <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal"
                     (click)="cancelPartners()"><i class="fa fa-times"></i></a>
                 <div class="form-group">
-                    <label for="name" class="col-xs-12 col-sm-2 control-label" translate>Legal
+                    <label for="name" class="col-xs-12 col-sm-3 control-label" translate>Legal
                         Basis Options <span class="danger">*</span>
                     </label>
                     <div id="multiselect-sample" class="control-section">
@@ -512,18 +512,18 @@
             </div>
             <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="btn btn-default" id="save_button"
-                    style="background-color: #26a69a; color: white"
+                <button class="btn Btn-Green" id="save_button"    
+                          
                     *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
                     translate>Save</button>
-                <button class="btn btn-default" id="cancel_button"
-                    style="background-color: #26a69a; color: white"
+                <button class="btn Btn-Green" id="cancel_button" 
+                          
                     *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
             </ng-template>
             <div class="row" id="Gfile_preview">
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light">
                         <div class="portlet-title">
@@ -580,7 +580,7 @@
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
                                                 *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11">
-                                                <button id='more_less_button_{{i}}'
+                                                <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
                                                         *ngIf="user.isShowDetails" translate>Less</span>
@@ -684,13 +684,15 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="btn btn-default" type="button"
-                                    style="background-color: #26a69a; color: white"
+                                <button class="btn Btn-Green" type="button"  
+                                                           
                                     (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber"
+                                          title="Calendar View" 
                                     [(ngModel)]="clipboardTextareaText"
+                                         title="please fill out this field"
                                     placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
@@ -912,9 +914,8 @@
                             <div class="clearfix">
                                 <div class="col-xs-12" style="padding: 0px 0;">
                                     <div class="alert alert-info flex" *ngIf="isLoadingList">
-                                        <div class="loader"
-                                            style="position: relative; top: -3px; left: -5px; width: 25px; height: 27px;"></div>
-                                        <h4 translate>Please wait while we process your request</h4>
+                                        <div class="loader processing-loader-style"></div>
+                                        <strong translate style="padding-left:10px;">Please wait while we process your request</strong>
                                     </div>
                                     <div
                                         *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
@@ -988,7 +989,7 @@
                                                     </td>
                         
                                                     <td>
-                                                        <button id='more_less_button_{{i}}' class="hidden-xs" (click)="contact.isShowDetails = ! contact.isShowDetails">
+                                                        <button id='more_less_button_{{i}}' class="hidden-xs lightgray-btn" (click)="contact.isShowDetails = ! contact.isShowDetails">
                                                             <span *ngIf="!contact.isShowDetails" translate>More</span> <span
                                                                 *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
@@ -1532,7 +1533,7 @@
                         agree</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Decline</button>
                     <button type="button" [disabled]="!isCheckTC"
                         class="btn btn-primary" (click)="saveContactsWithPermission()"
@@ -1633,7 +1634,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-hvr-text" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal"
                         (click)="cancelPartners()" translate>Cancel</button>
                     <button type="button" [disabled]="!cloudPartnersModalCheckBox"
                         class="btn btn-primary" (click)="proceed()" translate>Accept</button>
@@ -1660,7 +1661,7 @@
                     </div>
                     <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                     <div class="table-responsive" *ngIf="!processingPartnersLoader">
-                        <table class="table tgrid table-hover table-sm beige"
+                        <table class="table tgrid table-hover table-sm beige dark-beige"
                             id="assignContactAndTable"
                             aria-describedby="assignContactAndTable">
                             <thead>
@@ -1669,12 +1670,14 @@
                                     <th *ngIf="authenticationService.contactsCount" scope="row"
                                         translate>#Contacts <span id="tooltip-helper"> <i
                                             class="fa fa-question-circle" aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
                                     </span>
                                     </th>
                                     <th scope="row" translate>Sign up Notification <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle"
                                             aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                     </th>
@@ -1682,6 +1685,7 @@
                                         style="text-align: center;" scope="row" translate>Team Member Group <span
                                         id="tooltip-helper"> <i class="fa fa-question-circle"
                                             aria-hidden="true"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
                                     </span>
                                     </th>
@@ -1719,18 +1723,20 @@
                                                     {{teamMemberGroup?.name}}
                                                     ({{teamMemberGroup?.teamMembersCount}})</option>
                                             </select> <span class="input-group-btn">
-                                                <button title="Preview Modules"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                                                    <i title="Preview Modules"
+                                                    data-toggle="tooltip" data-placement="top" class="fa fa-eye white" aria-hidden="true"></i>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button title="Select Team Members"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="getTeamMembers(partner,i)">
-                                                    <i class="fa"
+                                                    <i title="Select Team Members"
+                                                    data-toggle="tooltip" data-placement="top" class="fa" 
                                                         [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
                                                         aria-hidden="true"></i>
                                                 </button>
@@ -1761,9 +1767,9 @@
                 <ngx-loading [show]="processingPartnersLoader || previewLoader"
                     [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                 <div class="modal-footer">
-                    <button type="submit" class="btn green-haze"
+                    <button type="submit" class="btn Btn-Green"
                         (click)="validatePartners()" translate>Continue</button>
-                    <button type="submit" class="btn btn-default"
+                    <button type="submit" class="btn Btn-Gray"
                         (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
                 </div>
             </div>

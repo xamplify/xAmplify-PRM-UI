@@ -7,13 +7,6 @@
             <div id="overLayImage"></div>
             <div id="overlay-logo" class="video-js"
               [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
-              <!-- <a [href]="logoLink"
-                *ngIf="this.videoFileService.videoType ==='partnerVideos'"
-                target="_blank" [class.disabled]="logoLink===null"> <img
-                id="imageDivHide" *ngIf="logoImageUrlPath"
-                [src]="authenticationService.MEDIA_URL + logoImageUrlPath"
-                class="img-responsive">
-              </a>  -->
               <a [href]="selectedVideo.brandingLogoDescUri"
                 target="_blank"
                 [class.disabled]="selectedVideo.brandingLogoDescUri===null">
@@ -106,7 +99,7 @@
             [hidden]="isVideoChanged">
             <div class="col-xs-12" style="padding: 0;">
               <span class="pull-right videoViews">
-                <h4 class="viewsh4">{{selectedVideo.views}} views</h4>
+                <h4 class="viewsh4" style="padding-right:14px;">{{selectedVideo.views}} views</h4>
               </span>
             </div>
             <div class="col-xs-12" style="padding: 0;" [hidden]="true">
@@ -284,13 +277,7 @@
           </div>
         </div>
         <div class="col-md-5">
-
-
-
-
           <!-- BEGIN FILTER -->
-
-
           <div class="row">
             <div class="col-xs-6"><h4 class="mt0" translate>Related Videos:</h4></div>
             <div class="col-xs-6" *ngIf="false">

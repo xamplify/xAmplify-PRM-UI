@@ -1,186 +1,137 @@
 #right-corner {
-	float: right;
+  float: right;
 }
-
 .float-right {
-	float: right;
+  float: right;
 }
-
-#border-bottom {
-	border-bottom: 0;
-}
-
-#right-margin {
-	margin-right: 90px;
-}
-
 #search-div {
-	margin-right: 10px;
+  margin-right: 10px;
 }
-
 #icon {
-	position: relative;
-	right: -11px;
+  position: relative;
+  right: -11px;
 }
-
 #sort-text {
-	height: 34px;
+  height: 34px;
 }
-
 #left {
-	float: left;
+  float: left;
 }
-
 #select-dropdown {
-	position: relative;
-	right: -3px;
+  position: relative;
+  right: -3px;
 }
-
 .form-error .control-label {
-	color: red;
+  color: red;
 }
-
 .form-error .form-control {
-	border-color: red;
-	box-shadow: none;
+  border-color: red;
+  box-shadow: none;
 }
-
-.top-padding-5px {
-	padding-top: 5px;
-}
-
-.disabled {
-	pointer-events: none;
-	cursor: default;
-}
-
 .wtfpx {
-	width: 20px !important;
+  width: 20px !important;
 }
-
-.dodgerblue {
-	font-weight: 500 !important;
-}
-
 .grid-box-team {
-	height: 280px !important;
-	width: 100%;
-	margin: 10px 0;
-	text-align: center;
-	position: relative;
-	padding-bottom: 1em;
-	border-radius: 5px;
-	border: 1px solid #e0e0e0;
-	overflow: hidden;
+  height: 280px !important;
+  width: 100%;
+  margin: 10px 0;
+  text-align: center;
+  position: relative;
+  padding-bottom: 1em;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
 }
-
-.grid-box-team:hover>.bar {
-	visibility: visible;
-	opacity: 1;
+.grid-box-team:hover > .bar {
+  visibility: visible;
+  opacity: 1;
 }
-
 .tm-count {
-	font-weight: 600;
-	/* color: grey; */
+  font-weight: 600;
+  /* color: grey;
+    */
 }
-
 .module-text-color {
-	color: #5b9bd1;
+  color: #5b9bd1;
 }
-
 .delete {
-    background: #cb5a5e;
+  background: #cb5a5e;
 }
-
-.plfpx{
-	padding-left: 10px !important;
+.plfpx {
+  padding-left: 10px !important;
 }
-
-.left-align{
-	text-align: left;
+.left-align {
+  text-align: left;
 }
-
 .ribbon1 {
-    position: absolute;
-    top: 50px;
-    right: -0px;
+  position: absolute;
+  top: 50px;
+  right: -0px;
 }
-
 .ribbon1:after {
-    position: absolute;
-    content: "";
-    width: 0;
-    height: 0;
-    margin-left: -44px;
-    border-left: 44px solid transparent;
-    border-right: 44px solid transparent;
-    border-top: 10px solid #8dd8f8;
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  margin-left: -44px;
+  border-left: 44px solid transparent;
+  border-right: 44px solid transparent;
+  border-top: 10px solid #8dd8f8;
 }
-
 .ribbon1 span {
-    position: relative;
-    display: block;
-    text-align: center;
-    background: #8dd8f8;
-    font-size: 14px;
-    color: #ffffff;
-    line-height: 1;
-    padding: 12px 8px 10px;
-    border-top-right-radius: 8px;
-    width: 90px;
+  position: relative;
+  display: block;
+  text-align: center;
+  background: #8dd8f8;
+  font-size: 14px;
+  color: #ffffff;
+  line-height: 1;
+  padding: 12px 8px 10px;
+  border-top-right-radius: 8px;
+  width: 90px;
 }
-
 .ribbon1 span:before,
 .ribbon1 span:after {
-    position: absolute;
-    content: "";
+  position: absolute;
+  content: "";
 }
-
 .ribbon1 span:before {
-    height: 6px;
-    width: 6px;
-    left: -6px;
-    top: 0;
-    background: #8dd8f8;
+  height: 6px;
+  width: 6px;
+  left: -6px;
+  top: 0;
+  background: #8dd8f8;
 }
-
 .ribbon1 span:after {
-    height: 6px;
-    width: 8px;
-    left: -8px;
-    top: 0;
-    border-radius: 8px 8px 0 0;
-    background: #65b4d6;
+  height: 6px;
+  width: 8px;
+  left: -8px;
+  top: 0;
+  border-radius: 8px 8px 0 0;
+  background: #65b4d6;
 }
-
-.default-group-banner{
-    background-color: #00a6e8;
-    color: white;
-    padding: 4px;
-    text-align: center;
-    width: 125px;
-    margin: 0 0;
-    font-size: 11px;
-    font-weight: 600;
-    float: right;
-    margin-right: 10px;
+.default-group-banner {
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  width: 125px;
+  margin: 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  float: right;
+  margin-right: 10px;
 }
-
-.fstcw-tm{
-    width: 563px !important;
+.fstcw-tm {
+  width: 563px !important;
 }
-
-
-@media screen and (max-width:600px){
-    .grid-box-team{
-        height: 285px!important;
-    }
+@media screen and (max-width: 600px) {
+  .grid-box-team {
+    height: 285px !important;
+  }
 }
-.pd-align{
-    top: 0px !important;
-    padding-left: 16px;
-    padding-right: 13px;
-}
-.tm-count-color{
-    color:grey;
+.pd-align {
+  top: 0px !important;
+  padding-left: 16px;
+  padding-right: 13px;
 }

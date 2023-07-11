@@ -1,24 +1,50 @@
-/***************/
-.alert-dismissible .close{top: 0 !important;right: 0px !important;}
-.alert-success,.alert-danger,.alert-warning{border-radius:0}
-.alert-success{background-color:#dff0d8 !important;border-radius: 3px !important;color:#3c763d !important}
-.alert-danger{background-color:#f2dede !important;border-radius: 3px !important;color:#a94442 !important}
-.alert-warning{background-color:#f1d43b;border-radius: 3px !important;}
-.alert{padding:10px;margin: 10px 0 !important;}
-.alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
-.text{padding-top: 12px;}
-.alert-message-fw{
+.alert-dismissible .close {
+  top: 0 !important;
+  right: 0px !important;
+}
+.alert-success,
+.alert-danger,
+.alert-warning {
+  border-radius: 0;
+}
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-radius: 3px !important;
+  color: #3c763d !important;
+}
+.alert-danger {
+  background-color: #f2dede !important;
+  border-radius: 3px !important;
+  color: #a94442 !important;
+}
+.alert-warning {
+  background-color: #f1d43b;
+  border-radius: 3px !important;
+}
+.alert {
+  padding: 10px;
+  margin: 10px 0 !important;
+}
+.alert-success,
+.alert-danger,
+.alert-warning > h5 {
+  font-size: 14px;
+}
+.text {
+  padding-top: 12px;
+}
+.alert-message-fw {
   font-weight: 600 !important;
 }
-.login-error{
+.login-error {
   color: #a94442;
 }
-.login-success{
-  color:#3c763d;
+.login-success {
+  color: #3c763d;
 }
-/* .success-margin{
-  margin: 5px -2px 7px 0px;
+
+
+.msg-algn{
+  text-align: center;
+  padding-top: 6px;
 }
-.danger-margin{
-  margin: 5px -13px 7px -17px;
-} */

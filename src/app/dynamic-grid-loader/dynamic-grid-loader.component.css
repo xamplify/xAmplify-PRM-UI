@@ -1,15 +1,8 @@
-.text-input__loading {
-  height: 214px;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
-  width: 100%;
-}
 .text-input__loading--line {
-  height: 10px;    
+  height: 10px;
   margin: 10px auto;
   animation: pulse 1s infinite ease-in-out;
 }
-
 @keyframes pulse {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
@@ -21,31 +14,24 @@
     background-color: rgba(165, 165, 165, 0.1);
   }
 }
-.action-icon {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	float: left;
-}
 .rect-box {
-width: 120px;
-    height: 85px;
-    margin: 30px auto;
-    border-radius: 50%;
+  width: 120px;
+  height: 85px;
+  margin: 30px auto;
+  border-radius: 50%;
 }
-.thick{
-	height: 10px;
+.thin {
+  height: 6px;
 }
-.thin{
-	height: 6px;
+.w50 {
+  width: 50%;
 }
-.w25{width: 25%}
-.w50{width: 50%}
-.w75{width: 75%}
-.w100{width: 100%}
+.w75 {
+  width: 75%;
+}
 .grid-box {
-    position: relative;
-    height: 200px;
-    border: 1px solid #f1f1f1;
-    background-color: #fff;
+  position: relative;
+  height: 200px;
+  border: 1px solid #f1f1f1;
+  background-color: #fff;
 }

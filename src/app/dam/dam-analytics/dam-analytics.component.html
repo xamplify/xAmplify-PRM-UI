@@ -141,11 +141,6 @@
             
             <!--End Of Portlet Box-->
             <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px;">
-               <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
-                  <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
-                  <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
-                  <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
-              </ul> -->
               <app-list-loader *ngIf="analyticsLoader.isLoading"></app-list-loader>
               <div class="clearfix"  *ngIf="!analyticsLoader.isLoading">
                <div class="col-xs-12" style="padding: 0px 0;">

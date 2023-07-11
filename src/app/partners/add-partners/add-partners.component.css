@@ -1,125 +1,151 @@
-@media screen and (min-width:601px) {
-	.modal-css {
-		width: 50% !important;
-		right: 0 !important;
-	}
-	.salesforce {
-		margin-top: -44px;
-		text-align: center;
-	}
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 50% !important;
+    right: 0 !important;
+  }
+  .salesforce {
+    margin-top: -44px;
+    text-align: center;
+  }
 }
 
-@media screen and (max-width:600px) {
-	.modal-css {
-		width: 100% !important;
-		right: 0 !important;
-	}
-	.cloud-css {
-		left: 73px !important;
-	}
-	.salesforce {
-		margin-top: -25px;
-		text-align: center;
-	}
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
+  }
+  .cloud-css {
+    left: 73px !important;
+  }
+  .salesforce {
+    margin-top: -25px;
+    text-align: center;
+  }
 }
 
 @media only screen and (max-width: 992px) and (min-width: 601px) {
-	.cloud-css {
-		left: 130px !important;
-	}
+  .cloud-css {
+    left: 130px !important;
+  }
 }
 
-@media screen and (max-width:768px) {
-	.cloud-items {
-		position: relative;
-		font-size: 19px;
-		top: -82px !important;
-		left: 93px;
-	}
+@media screen and (max-width: 768px) {
+  .cloud-items {
+    position: relative;
+    font-size: 19px;
+    top: -82px !important;
+    left: 93px;
+  }
 }
 
 .cloud-items {
-	position: relative;
-	font-size: 19px;
-	top: -82px;
-	left: 100px;
+  position: relative;
+  font-size: 19px;
+  top: -82px;
+  left: 100px;
 }
 
 .white-space-transform {
-	white-space: nowrap;
+  white-space: nowrap;
 }
 
 .danger {
-	color: red;
+  color: red;
 }
 
-
 #download-partners-csv {
-	margin-top: 2px;
-	float: right;
+  margin-top: 2px;
+  float: right;
 }
 
 .cct {
-	display: block;
-	margin-top: 0px !important;
-	text-align: center;
-	font-size: 24px;
-	margin: 0 auto 10px
+  display: block;
+  margin-top: 0px !important;
+  text-align: center;
+  font-size: 24px;
+  margin: 0 auto 10px;
 }
 
-@media screen and (max-width:600px){
-	.mSweetalertWid{
-		left: 30px!important;
-	}
-	.mLegalWid{
-		width:178%;
-	}
+@media screen and (max-width: 600px) {
+  .mSweetalertWid {
+    left: 30px !important;
+  }
+  .mLegalWid {
+    width: 178%;
+  }
 }
 
-.mlm8{
-	margin-left: -3px;
-  }
-  .portlet.light>.portlet-title>.caption{
-	padding: 5px 0 !important;
-  }
+.mlm8 {
+  margin-left: -3px;
+}
+.portlet.light > .portlet-title > .caption {
+  padding: 5px 0 !important;
+}
 
-  .sbi-click-child{
-	right: 16px !important;
-  }
-  .sbi-clear-child{
-	right: 50px !important;
+.sbi-click-child {
+  right: 16px !important;
+}
+.sbi-clear-child {
+  right: 50px !important;
+}
+.portlet > .portlet-title {
+  margin-bottom: 0px;
+}
 
-  }
-  .portlet > .portlet-title {
-	margin-bottom: 0px;
-  }
-  
-.text-center{
-	text-align: center;
+.text-center {
+  text-align: center;
 }
-.text-left{
-	text-align: left;
+.text-left {
+  text-align: left;
 }
-.table{
-	margin-bottom: 13px;
+.table {
+  margin-bottom: 13px;
 }
-h5{
-	font-weight: 600;
+h5 {
+  font-weight: 600;
 }
-.height{
-	min-height: 45px;
+.height {
+  min-height: 45px;
 }
-.portlet.light > .portlet-title > .caption{
-	padding: 8px 0px !important;
+.portlet.light > .portlet-title > .caption {
+  padding: 8px 0px !important;
 }
-.border{
-	padding-left: 50px; margin-left: 55px;
+.border {
+  padding-left: 50px;
+  margin-left: 55px;
 }
 
 /* May 19 sudha*/
-.modal-header{
-padding: 10px !important;
+.modal-header {
+  padding: 10px !important;
 }
-.custom-width-modal-popup{
- width: 69%  !important;
+.custom-width-modal-popup {
+  width: 69% !important;
+}
+/* 20-06-2023 */
+button.hidden-xs {
+  border-radius: 4px;
+}
+.main-btn {
+  background-color: #26a69a;
+  color: white;
+}
+.GraY-Btn {
+  background-color: #5a6268;
+  border-color: #5a6268;
+  color: #ffffff;
+}
+
+/* 21-06-23 */
+textarea.textareaNumber {
+  background-color: black;
+    color: '#fff'    
+}
+
+.processing-loader-style{
+  position: relative; 
+  top: -3px; 
+  left: -5px; 
+  width: 25px; 
+  height: 27px;
 }

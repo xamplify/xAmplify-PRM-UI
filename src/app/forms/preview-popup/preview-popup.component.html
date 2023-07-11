@@ -1,5 +1,5 @@
 <div style="padding-top:10px;margin-bottom: -5px;">
-<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn" id="right" style="border-radius: 5px;margin-top:2px;" (click)="showForms()">
+<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn btn-primary" id="right" style="border-radius: 5px;margin-top:2px;" (click)="showForms()">
   {{buttonText}}
 </button>
 </div>
@@ -66,7 +66,7 @@
                                                     <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
                                                         <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                                     </h6>
-                                                    <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>
+                                                    <h5 class="view-banner-white-labeled mb5 white-labeled-width">White-Labeled</h5>
                                                 </ng-container>
                                              <!---XNFR-255-->
                                                 <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
@@ -137,9 +137,9 @@
 
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal" class="btn btn-default" style="float: right"><span
+                <a data-dismiss="modal"  style="float: right"><span class="btn Btn-Gray"
             *ngIf="!authenticationService.isShowForms">Close</span><span
-            *ngIf="authenticationService.isShowForms">Submit</span></a>
+            class="btn Btn-Green"  *ngIf="authenticationService.isShowForms">Submit</span></a>
             </div>
         </div>
     </div>
@@ -154,7 +154,7 @@
         </button>
                 <h4 class="modal-title text-center">Form Preview</h4>
             </div>
-            <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
+            <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" id="form-background-image" >
                 <div class="modal-body">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div *ngIf="form.showCompanyLogo">
@@ -162,43 +162,43 @@
                         <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                     </div>
                     <div class="vertical-center">
-                        <div class="panel panel-info mWid" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
-                            <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                        <div class="panel panel-info mWid" *ngIf="!formError">
+                            <div *ngIf="form.showTitleHeader" class="panel-heading">
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body d-p-bg-color-cust" *ngIf="!formError">
-                                <div class="form-name-wrap form-description" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
+                                <div class="form-name-wrap form-description" title="{{form.description}}">{{form.description}}</div>
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                                    <div class="form-group label-box d-p-bg-color-cust">
+                                    <div class="form-group form-custom form-placeholder label-box d-p-bg-color-cust">
                                         <label class="control-label"><span
                                                 *ngIf="learningTrackId !== undefined && learningTrackId > 0 && form.quizForm">{{i+1}}.
-                                            </span><span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                                            </span><span class="label-name" >{{columnInfo.labelName}}</span>
                                             <span class="required" *ngIf="columnInfo.required">*</span>
                                         </label>
 
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
+                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
                                         </ng-container>
 
                                         <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                            <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
+                                            <textarea rows="4" cols="4" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker [class.disabled]='true' [isFromForm]='true'></app-date-picker>
+                                            <app-date-picker class="form-placeholder" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
                                         </ng-container>
                                         <!-- ---------------------------Price----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                             <div class="input-group prefix">
-                                                <span class="input-group-addon" style="pointer-events: none;">
+                                                <span class="input-group-addon form-placeholder" style="pointer-events: none;">
                         								{{columnInfo.priceSymbol}}
                      							 </span>
-                                                <input type="number" min="0" class="form-control" disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
+                                                <input type="number" min="0" class="form-control form-placeholder" disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
                                             </div>
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                            <input type="file" class="form-control" disabled="disabled">
+                                            <input type="file" class="form-control form-placeholder" disabled="disabled">
                                         </ng-container>
                                         <!-- ---------------------------Radio Button----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -207,7 +207,7 @@
                                                     <label class="form-check-label" style="border: 0px !important;">
                           <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                             disabled="disabled">
-                           <span [style.color]="form.labelColor">{{radioButton.name}}</span>
+                           <span class="label-name">{{radioButton.name}}</span>
                         </label>
 
                                                     <!-- <label class="form-check-label">
@@ -228,7 +228,7 @@
                                                     <label class="form-check-label" style="border: 0px !important;">
                                                     <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                       disabled="disabled">
-                                                     <span [style.color]="form.labelColor">{{checkBox.name}}</span>
+                                                     <span class="label-name">{{checkBox.name}}</span>
                                                   </label>
                                                 </div>
                                                 <!-- <br> -->
@@ -236,7 +236,7 @@
                                         </ng-container>
                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='select'">
-                                            <select class="form-control">
+                                            <select class="form-control form-placeholder">
                                           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                                             {{dropDownValue.name}}</option>
                                         </select>
@@ -248,7 +248,7 @@
                                                     <label class="form-check-label" style="border: 0px !important;">
                                                         <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
                                                             disabled="disabled">
-                                                            <span class="quiz_optionname" [style.color]="form.labelColor"> {{choice.name}}</span>
+                                                            <span class="quiz_optionname label-name" > {{choice.name}}</span>
 
                                                     </label>
                                                 </div>
@@ -281,7 +281,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+                <a data-dismiss="modal" class="btn Btn-Gray" id="bottom-right">Close</a>
             </div>
         </div>
     </div>

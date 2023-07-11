@@ -28,6 +28,7 @@ import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -149,7 +150,7 @@ export class AuthenticationService {
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
     if(this.SERVER_URL.indexOf('localhost')>-1){
-      this.MEDIA_URL = 'http://127.0.0.1:8887/';
+      this.MEDIA_URL = 'http://localhost:8000/';
     }else{
       this.MEDIA_URL = this.SERVER_URL + 'vod/';
     }
@@ -1042,10 +1043,23 @@ copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
   copyGroupUsersDto.loggedInUserId = this.getUserId();
   return this.callPostMethod(url,copyGroupUsersDto);
 }
-
-
 /*****XNFR-278****/
 
+/****XNFR-317****/
+getTemplateHtmlBodyAndMergeTagsInfo(id:number) {
+  let url = this.REST_URL +"email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
+  let map = {};
+  map['id'] = id;
+  map['emailId'] = this.user.emailId;
+  return this.callPostMethod(url,map);
+}
+
+sendTestEmail(sendTestEmailDto:SendTestEmailDto){
+  sendTestEmailDto.fromEmail = this.user.emailId;
+  let url = this.REST_URL +"email-template/sendTestEmail?access_token=" + this.access_token;
+  return this.callPostMethod(url,sendTestEmailDto);
+}
+/****XNFR-317****/
 
 private callGetMethod(url: string) {
   return this.http.get(url)

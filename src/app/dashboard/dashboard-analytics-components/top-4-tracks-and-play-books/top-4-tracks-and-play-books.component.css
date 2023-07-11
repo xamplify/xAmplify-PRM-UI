@@ -1,77 +1,70 @@
-
 .img-grid-track {
-    height: 80px;
-    width: 145px;
-    background: #f2f4f9;
-    border: solid 1px #008fd5;
-    border-radius: 1px;
+  height: 80px;
+  width: 145px;
+  background: #f2f4f9;
+  border: solid 1px #008fd5;
+  border-radius: 1px;
 }
-.view-banner {
-    background-color: #00a6e8;
-    color: white;
-    padding: 4px;
-    text-align: center;
-    width: 125px;
-    margin: 0 0;
-    font-size: 11px;
-    font-weight: 600;
-}
-
 .ribbon div {
-    font-size: 10px;
-    font-weight: bold;
-    color: #FFF;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 20px;
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    width: 100px;
-    display: block;
-    background: red;
-    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-    position: absolute;
-    top: 19px;
-    left: -21px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  width: 100px;
+  display: block;
+  background: red;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  left: -21px;
 }
-
-.ribbon div::before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 3px solid red !important;
-    border-right: 3px solid transparent;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid red !important;
+/* .ribbon div::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid red !important;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
 }
-
 .ribbon div::after {
-    content: "";
-    position: absolute;
-    right: 0px;
-    top: 100%;
-    z-index: -1;
-    border-left: 3px solid transparent;
-    border-right: 3px solid red !important;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid red !important;
-}
-
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid red !important;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid red !important;
+} */
 .progress {
-    height: 6px!important;
-    background-color: #d0cfcf;
-    background-image: none;
-    box-shadow: none;
-    border-radius: 6px!important;
-    margin-bottom: 0px;
+  height: 6px !important;
+  background-color: #d0cfcf;
+  background-image: none;
+  box-shadow: none;
+  border-radius: 6px !important;
+  margin-bottom: 0px;
 }
-
 .progress-bar {
-    background-color: #29d836!important;
+  background-color: #29d836 !important;
+}
+.fstpx {
+  font-size: 13px !important;
 }
 
-.fstpx{
-    font-size: 13px !important;
+.ribbon span::before {
+	border-left: 3px solid #5cb85c;
+	border-top: 3px solid #5cb85c;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5cb85c ;
+	border-top: 3px solid #5cb85c;
 }

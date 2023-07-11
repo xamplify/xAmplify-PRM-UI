@@ -16,7 +16,6 @@
 			<p class="danger" translate>{{invalidContactNameError}}</p>
 		</div>
 		<div *ngIf="!isValidContactName">
-			<!-- <p class="danger" translate>{{invalidContactNameError}}</p> -->
 		</div>
 		<div class="textCss"></div>
 	 </div>
@@ -192,12 +191,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- <div class="col-md-6 col-lg-6" style="padding: 10px 10px">
-					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveHeader(form)">Save</button>
-					<button type="button" class="btn btn-secondary"
-						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div> -->
 			</div>
 		</div>
 		<div class="tab-pane"
@@ -289,28 +282,8 @@
 								(colorPickerChange)="changeControllerColor($event,mainContentForm,'mainTextColor')"
 								[cpPosition]="'top'" readonly> </span>
 						</div>
-					</div>
-					<!-- <div class="col-md-6 col-lg-6">
-						<div class="form-group">
-							<label>Text Color</label> <input class="form-control"
-								[value]="textColor" [(ngModel)]="form.textColor"
-								style="margin-bottom: 10px; padding-left: 40px;"
-								(input)="checkValidColorCode(textColor,'textColor')"
-								maxlength="7" /> <span class="input-group-addon color-pick"
-								[(colorPicker)]="form.textColor"
-								[style.background]="form.textColor" [cpWidth]="'200px'"
-								[cpHeight]="'265px'"
-								(colorPickerChange)="changeControllerColor($event,form,'textColor')"
-								[cpPosition]="'top'" readonly> </span>
-						</div>
-					</div> -->
+					</div>					
 				</div>
-				<!-- <div class="col-md-6 col-lg-6" style="margin-left: -4px;">
-					<button type="button" class="btn btn-primary"
-						(click)="saveMainForm(form)">Save</button>
-					<button type="button" class="btn btn-secondary"
-						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div> -->
 			</div>
 		</div>
 		<div class="tab-pane"
@@ -405,29 +378,10 @@
 							</div>
 						</div>
 						<div class="col-md-12 col-lg-12">
-							<!-- <div class="form-group">
-								<label>Border Color</label> <input class="form-control"
-									[value]="buttonBorderColor"
-									[(ngModel)]="form.buttonBorderColor"
-									style="margin-bottom: 10px; padding-left: 40px;"
-									(input)="checkValidColorCode(buttonBorderColor,'buttonBorderColor')"
-									maxlength="7" /> <span class="input-group-addon color-pick"
-									[(colorPicker)]="form.buttonBorderColor"
-									[style.background]="form.buttonBorderColor" [cpWidth]="'200px'"
-									[cpHeight]="'265px'"
-									(colorPickerChange)="changeControllerColor($event,form,'buttonBorderColor')"
-									[cpPosition]="'top'" readonly> </span>
-							</div> -->
 						</div>
 					</div>
 
 				</div>
-				<!-- <div class="col-md-12 col-lg-12"  style="margin-left: -4px;">
-					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveLeftForm(form)">Save</button>
-					<button type="button" class="btn btn-secondary"
-						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div> -->
 			</div>
 		</div>
 
@@ -505,8 +459,7 @@
 				</div>
 				<div class="col-md-6 col-lg-12" *ngIf="footerForm.showFooter">
 					<label>Footer Content</label>
-					<p class="text-area-css">Max characters 225</p>
-					<!-- <p class="text-area-css" *ngIf="minLength<2">Please Enter At Least two characters</p> -->
+					<p class="text-area-css">Max characters 225</p>				
 				</div>
 				<div class="col-xs-12">
 					<div *ngIf="footerForm.showFooter"
@@ -516,20 +469,6 @@
 							[config]="ckeConfig" debounce="500"> </ckeditor>
 					</div>
 				</div>
-
-				<!-- <div class="col-md-12" style="padding: 15px;margin-left: -3px;">
-					<button type="button" [disabled]="isValid" class="btn btn-primary"
-						(click)="saveFooter(form)">Save</button>
-					<button type="button" class="btn btn-secondary"
-						(click)="saveDefaultSkin(form)">User Default Settings</button>
-				</div> -->
-				<!-- <span *ngIf="isValid" style="color:red ;">please check two colors are same make you sure change any one color. </span> -->
-				<!-- <div *ngIf="isValid" class="alert alert-danger">
-              please check two colors are same,please change any one color.
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button> 
-            </div> -->
 			</div>
 		</div>
 

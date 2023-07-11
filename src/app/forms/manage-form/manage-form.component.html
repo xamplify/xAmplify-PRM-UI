@@ -127,7 +127,9 @@
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true">
+                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true"
+                                        data-toggle="tooltip" data-placement="top" title="Refresh"
+                                        >
                                             <i class="fa fa-refresh" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -171,18 +173,18 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                                <span><b>{{form.name}}</b></span>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600">
+                                                <span  data-toggle="tooltip" data-placement="bottom" title="{{form.name}}"><b>{{form.name}}</b></span>
                                             </h4>
-                                            <h6 class="moreipsis" title="{{form.categoryName}}">
-                                                <span translate> Folder <b>{{form.categoryName}}</b></span>
+                                            <h6 class="moreipsis">
+                                                <span translate  data-toggle="tooltip" data-placement="bottom" title="{{form.categoryName}}" > Folder <b>{{form.categoryName}}</b></span>
                                             </h6>
-                                            <h6 class="moreipsis" title="{{form.createdName}}">
+                                            <h6 class="moreipsis" >
                                                 <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
                                             <!---XNFR-255-->
                                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                                <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                <h6 class="moreipsis" >
                                                     <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                                 </h6>
                                                 <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>
@@ -269,10 +271,10 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
+                <div class="row tab_mt_grid" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="col-md-3 col-sm-4 col-xs-12 tab_grid" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box" style="height: 250px !important;">
-                            <div class="img-class">
+                            <div class="img-class tab_view_img">
                                 <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
@@ -301,7 +303,7 @@
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
-                            <div class="ribbon">
+                            <div class="ribbon tab-ribbon">
                                 <span *ngIf="form.formSubType === 'REGULAR'" translate>Regular</span>
                                 <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
@@ -398,7 +400,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-default" id="right" translate>Close</a>
+                    <a data-dismiss="modal" class="btn Btn-Gray" id="right" translate>Close</a>
                 </div>
             </div>
         </div>

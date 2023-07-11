@@ -350,12 +350,21 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         this.characterSize();
         this.highlightByLength(1);
         this.setShowQuizField();
+        this.setCustomCssValues();
     }
 
     getById(id: number) {
         this.listFormNames();
         this.ngxloading = true;
-        this.formService.getById(id)
+        let formInput:Form = new Form();
+    	formInput.id = id;
+    	formInput.userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        if (companyProfileName !== undefined && companyProfileName !== "") {
+            formInput.vendorCompanyProfileName = companyProfileName;
+            formInput.vanityUrlFilter = true;
+        }
+        this.formService.getById(formInput)
             .subscribe(
                 (data: any) => {
                     if (data.statusCode === 200) {
@@ -1245,6 +1254,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             form.descriptionColor = event;
             this.isValidDescriptionColor = true;
           }
+          this.setCustomCssValues();
       } catch (error) { console.log(error); }
       this.checkValideColorCodes();
   }
@@ -1694,15 +1704,15 @@ checkValidForm(){
     this.form.isValid = this.form.isValidFormSubmissionUrl && this.form.isFormButtonValueValid;
 }
 
-checkValidColorCode(colorCode: string, type: string) {
+checkValidColorCode(colorCode: string, type: string, customSkinColor: string) {
     if ($.trim(colorCode).length > 0) {
         if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
             this.addColorCodeErrorMessage(type);
         } else {
-            this.removeColorCodeErrorMessage(colorCode, type);
+            this.removeColorCodeErrorMessage(colorCode, type, customSkinColor);
         }
     } else {
-        this.removeColorCodeErrorMessage(colorCode, type);
+        this.removeColorCodeErrorMessage(colorCode, type, customSkinColor);
     }
 }
 
@@ -1736,34 +1746,46 @@ private addColorCodeErrorMessage(type: string) {
     }
 }
 
-removeColorCodeErrorMessage(colorCode: string, type: string) {
+removeColorCodeErrorMessage(colorCode: string, type: string, customSkinColor: string) {
+    if(colorCode === undefined || colorCode === null || colorCode.length <= 0){
+        colorCode = customSkinColor;
+    }
     if (type === "backgroundColor") {
+        this.backgroundColor = colorCode;
         this.form.backgroundColor = colorCode;
         this.isValidBackgroundColor = true;
     } else if (type === "labelColor") {
+        this.labelColor = colorCode;
         this.form.labelColor = colorCode;
         this.isValidLabelColor = true;
     } else if (type === "buttonColor") {
+        this.buttonBackgroundColor = colorCode;
         this.form.buttonColor = colorCode;
         this.isValidButtonBackgroundColor = true;
     } else if (type === "buttonValueColor") {
+        this.buttonValueColor = colorCode;
         this.form.buttonValueColor = colorCode;
         this.isValidButtonValueColor = true;
     } else if (type === "titleColor") {
+        this.titleColor = colorCode;
         this.form.titleColor = colorCode;
         this.isValidTitleColor = true;
     } else if (type === "borderColor") {
+        this.borderColor = colorCode;
         this.form.borderColor = colorCode;
         this.isValidBorderColor = true;
     } else if (type === "pageBackgroundColor") {
+        this.pageBgColor = colorCode;
         this.form.pageBackgroundColor = colorCode;
         this.pageBackgroundColor = colorCode;
         this.isValidPageBackgroundColor = true;
     } else if (type === "descriptionColor") {
+        this.descriptionColor = colorCode;
         this.form.descriptionColor = colorCode;
         this.descriptionColor = colorCode;
         this.isValidDescriptionColor = true;
     }
+    this.setCustomCssValues();
     this.checkValideColorCodes();
 }
 
@@ -1807,4 +1829,13 @@ descriptionCharacterSize(column: ColumnInfo){
         }
     }
 
+    setCustomCssValues() {
+        document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+        document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+        document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+        document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+        document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+        document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+        require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
+      }
 }

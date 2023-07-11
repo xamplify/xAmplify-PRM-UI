@@ -1,21 +1,21 @@
-  <div class="modal right fade" id="show_preview" data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog modal-css"  style="right:0 !important">
-			<div class="modal-content" style="border-radius: 0">
-				<div class="modal-header">
-          <a class="close-circle" data-dismiss="modal" (click)="destroyPreviewModal()"><i class="fa fa-times"></i></a>
-          <h4 *ngIf="welcomeVideoFile" style="font-weight: 600; font-size: 20px;"> {{welcomeVideoFile.title}} </h4>
-          <h4 style="font-weight: 600; font-size: 20px;" *ngIf="videoFile?.title && !welcomeVideoFile" class="modal-title" title={{videoFile?.title}}>
-            <span  *ngIf="videoFile?.title?.length < 50">{{videoFile?.title | slice: 0:50}}</span>
-            <span  *ngIf="videoFile?.title?.length > 50">{{videoFile?.title | slice: 0:50}}...</span>
-          </h4>
+<div class="modal right fade" id="show_preview" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-css"  style="right:0 !important">
+     <div class="modal-content" style="border-radius: 0">
+        <div class="modal-header">
+           <a class="close-circle" data-dismiss="modal" (click)="destroyPreviewModal()"><i class="fa fa-times"></i></a>
+           <h4 *ngIf="welcomeVideoFile" style="font-weight: 600; font-size: 20px;"> {{welcomeVideoFile.title}} </h4>
+           <h4 style="font-weight: 600; font-size: 20px;" *ngIf="videoFile?.title && !welcomeVideoFile" class="modal-title" title={{videoFile?.title}}>
+              <span  *ngIf="videoFile?.title?.length < 50">{{videoFile?.title | slice: 0:50}}</span>
+              <span  *ngIf="videoFile?.title?.length > 50">{{videoFile?.title | slice: 0:50}}...</span>
+           </h4>
         </div>
-				<div class="modal-body">
-         <div class="text-css" style="margin-top: 0 !important" *ngIf="welcomeVideoFile">{{welcomeVideoFile.videoInfo}}</div>
-          <app-video-play *ngIf="videoFile" [videoFile]="videoFile" [videoWidth]="'650px'" [videoHeight]="'380px'"></app-video-play>
-          <div class="text-new"><span style="font-weight: 400">Description:</span> {{videoFile.description}}</div>
-				</div>
-				<div class="modal-footer" style="border:none"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="modal-body">
+           <div class="text-css" style="margin-top: 0 !important" *ngIf="welcomeVideoFile">{{welcomeVideoFile.videoInfo}}</div>
+           <app-video-play *ngIf="videoFile" [videoFile]="videoFile" [videoWidth]="'650px'" [videoHeight]="'380px'"></app-video-play>
+           <div class="text-new"><span style="font-weight: 400">Description:</span> {{videoFile.description}}</div>
+        </div>
+        <div class="modal-footer" style="border:none"> <a href="javascript:void(0)" (click)="destroyPreviewModal()" data-dismiss="modal" class="btn btn-default">Close</a>
+        </div>
+     </div>
+  </div>
+</div>

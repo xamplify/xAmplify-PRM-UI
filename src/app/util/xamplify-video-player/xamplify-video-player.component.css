@@ -1,0 +1,187 @@
+.popup-align {
+  position: relative !important;
+  float: right;
+}
+.modal-dialog {
+  width: 85% !important;
+}
+.modal-content {
+  box-shadow: 0 0 0 rgb(255 255 255 / 0%) !important;
+  border-radius: 0px !important;
+}
+
+#xamplify-video-player-modal-popup {
+  padding-right: 0px !important;
+}
+
+.rmv-overflow {
+  overflow-y: hidden !important;
+  background: #00000085;
+}
+.modal-content {
+  overflow-y: hidden !important;
+  border: 1px solid #dddddd;
+}
+.width-btn {
+  width: 112px;
+  margin-left: 18px;
+}
+.upperText {
+  font-size: 17px;
+  color: white;
+  word-break: break-all;
+  line-height: 1.3em;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  top: -13px;
+}
+
+.lowerText {
+  color: white;
+  word-break: break-all;
+  font-size: 15px;
+  line-height: 1em;
+  position: relative;
+  text-align: center;
+  top: 9px;
+}
+
+#overlay-modal {
+  width: auto;
+}
+:host /deep/ .video-js .vjs-big-play-button {
+  top: 127px;
+  left: 264px;
+}
+
+.notFoundVideo {
+  text-align: center;
+  color: #00a6e8;
+  position: relative;
+  top: 15px;
+  left: 4px;
+}
+.fa {
+  margin-right: 5px;
+}
+.shareVideoButton {
+  color: #fff;
+  background-color: #00a6e8;
+  border: 1px solid #00a6e8;
+  border-radius: 2;
+  padding: 5px 25px;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+}
+.embedVideoButton {
+  color: #fff !important;
+  background-color: #fff;
+  border: 1px solid #00a6e8;
+  border-radius: 2;
+  padding: 5px 25px;
+  text-transform: lowercase;
+  letter-spacing: 1px;
+}
+.videoViews {
+  border: 1px solid #c3c0c0;
+  margin-bottom: 10px;
+  width: 50%;
+  text-align: right;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+.viewsh4 {
+  color: #777;
+  font-weight: 500;
+  margin: 5px;
+}
+.bottomCss {
+  bottom: -183px;
+}
+
+.imagePath {
+  height: 111px;
+  width: 100%;
+}
+.is360video {
+  z-index: 900;
+}
+textarea {
+  resize: none;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  padding: 10px;
+}
+.logoCssplay {
+  position: absolute;
+  width: 91px;
+  height: 1px;
+  right: 20px;
+  top: 12px;
+  background: transparent;
+  z-index: 99;
+}
+.logoFullscreen {
+  position: absolute;
+  top: 15px;
+  width: 91px;
+  height: 58px;
+  right: 17px;
+  background: transparent;
+  z-index: 99;
+}
+.video-title {
+  word-break: break-all;
+  color: #5d5d5d;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.overlaySet {
+  margin-top: -372px;
+  height: 360px !important;
+}
+@media only screen and (max-width: 600px) {
+  .overlaySet {
+    margin-top: -272px;
+    height: 260px !important;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .overlaySet {
+    margin-top: -272px;
+    height: 260px !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .overlaySet {
+    margin-top: -272px;
+    height: 260px !important;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .overlaySet {
+    margin-top: -372px;
+    height: 360px !important;
+  }
+}
+a.disabled {
+  pointer-events: none;
+}
+.custom-overlay {
+  width: 100% !important;
+  color: white !important;
+  background-color: rgba(29, 25, 25, 0.72);
+}
+.mt0 {
+  margin-top: 0;
+}
+.pt0 {
+  padding-top: 0px;
+}
+.portlet {
+  border-radius: 5px !important;
+}
