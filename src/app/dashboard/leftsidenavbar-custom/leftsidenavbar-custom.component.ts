@@ -56,17 +56,17 @@ export class LeftsidenavbarCustomComponent implements OnInit {
         () => console.log('finished'));
   }
 
-  updateLeftMenuItems(upadte: string){
+  updateLeftMenuItems(Update: any){
 		let self = this;
 		swal({
 			title: 'Are you sure?',
-			text: 'Clicking "Update" will change the Leftside menu and reload the entire application.',
+			text: 'Clicking "Confirm" will change the Leftside menu and reload the entire application.',
 			type: 'success',
 			icon: "success",
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
 			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Update'
+			confirmButtonText: 'Confirm'
 
 		}).then(function () {
 			self.updateMenuItems();
@@ -85,9 +85,9 @@ export class LeftsidenavbarCustomComponent implements OnInit {
         data => {
           if (data.statusCode == 200) {
             this.ngxloading = false;
-            this.leftMenuCustomResponse = new CustomResponse('SUCCESS', data.message, true);
             this.menuItems1 = data;
             window.location.reload();
+            this.leftMenuCustomResponse = new CustomResponse('SUCCESS', data.message, true);
           }
         },
         error => console.log(error),

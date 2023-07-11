@@ -102,7 +102,7 @@
                                     {{properties.tags | translate}} </a>
                             </li>
                             <!-- Customize left menu -->
-                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()">
+                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('customizeleftmenu');clearCustomResponse();getCustomizedMenuItems()" translate>{{properties.customizeleftmenu | translate}}</a>
                             </li>
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">

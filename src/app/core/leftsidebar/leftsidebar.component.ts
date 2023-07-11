@@ -422,6 +422,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	getMergeTagByPath(){
 		if(this.router.url.includes('dashboard')){
             this.mergeTag = "dashboard";
+			if(this.router.url.includes('myprofile')){
+				this.mergeTag = "configuration";
+			}	
 		}
 		else if(this.router.url.includes('partners')){
 			this.mergeTag = "partners";
@@ -458,10 +461,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		else if(this.router.url.includes('team')){
 			this.mergeTag = "team";
-		}
-		else if(this.router.url.includes('myprofile')){
-			this.mergeTag = "configuration";
-		}		
+		}	
 	}
 	
 	

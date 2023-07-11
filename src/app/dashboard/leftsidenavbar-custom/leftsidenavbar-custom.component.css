@@ -1,5 +1,5 @@
 
-ul li:hover {
-    background-color: rgb(124, 239, 252);
-    cursor: pointer;
-  }
+ul.drag-menu-cu li:hover { background-color: #ddd;cursor: pointer;}
+.custome-portlet {border-radius: 0px !important;border: none !important;padding: 0px !important;margin: 0px !important}
+.drag-menu-cu li {margin-bottom: 2px;}
+.dragdrop-graph-bg {padding: 0px 35px;}
