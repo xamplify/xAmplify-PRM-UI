@@ -6,11 +6,11 @@ td.pad> div {
   font-family: 'Gantari', Arial, Helvetica, sans-serif !important;
 }
 .bg-img{
-    background-image: url(/assets/images/user-guide.png);
-	background-repeat: no-repeat;
+    background-image: url(/assets/images/user-guide3.png);
     background-size: cover;
-    height: 180px;
-    padding: 0px 20px;
+    height: 204px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
 }
 .guide-title {
   padding-top: 0px;
@@ -21,11 +21,7 @@ td.pad> div {
 .side-border-differentiation {
   border-left: 1px dashed #ddd;
 }
-/* .bg-result-color  {
-  background-color: #f1f3fa4f !important;
-  border: 1px solid #dddddd42;
-  padding: 0px 20px 20px 20px !important;
-} */
+
 li.title-active> a  {
   color: #000;
   background-color: #ddd;
@@ -248,6 +244,7 @@ nav a {
   padding-left: 10px;
   padding-top: 10px;
 }
+
 
 @media (min-width: 769px) and (max-width: 1119px)  {
   .pad-row{padding: 20px 5px;}

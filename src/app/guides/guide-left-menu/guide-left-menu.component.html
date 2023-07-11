@@ -1,3 +1,5 @@
+
+
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="pagebody">
 <section class="bg-img">
@@ -45,7 +47,7 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i>
-        <a>Home</a>
+        <a (click)="gotoHome()">Home</a>
       </li>
       <li *ngIf="!isSearch">
         <i class="fa fa-angle-right" aria-hidden="true"></i>

@@ -4,11 +4,15 @@
     display: block;
     margin: 0 auto !important;
 }
+.section-height {height: 205px;}
 .bg-img{
-    background-image: url(/assets/images/user-guide.png);
-	background-repeat: no-repeat;
+    background-image: url(/assets/images/user-guide3.png);
     background-size: cover;
-    height: 160px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
 }
 .search-guide{
     transform: translate(0px, 50px); 
@@ -90,3 +94,6 @@ td.text-center {
   .p_20{
     padding:30px 30px 30px 30px;
   }
+    /* @media (min-width: 300px) and (max-width: 1920px)  {
+        .bg-img {height: 309px;}
+    } */
