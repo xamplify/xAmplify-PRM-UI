@@ -591,12 +591,12 @@
                   </h4>
                   <span class="view-banner Assigned-lable" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
                   <span class="view-banner orange-lable-cu" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
-                  <h6 class="mt10 mb0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.uploadedBy}}">
-                     By {{contactList.uploadedBy | slice:0:30}} <span
+                  <h6 class="mt10 mb0" >
+                     <span data-toggle="tooltip" data-placement="bottom" title="{{contactList.uploadedBy}}">By {{contactList.uploadedBy | slice:0:30}}</span> <span
                         *ngIf="contactList.uploadedBy?.length>30">...</span>
                   </h6>
-                  <h6 class="mt0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.companyName}}">
-                     <b>{{contactList.companyName | slice:0:30}}</b> <span
+                  <h6 class="mt0">
+                     <span data-toggle="tooltip" data-placement="bottom" title="{{contactList.companyName}}">{{contactList.companyName | slice:0:30}}</span> <span
                         *ngIf="contactList.companyName?.length>30">...</span>
                   </h6>
                   <h6 class="mt10 mb0"
