@@ -52,7 +52,7 @@
  <!--List Of Team members---->
  <div class="portlet light">
   <div class="portlet-title" style="border-bottom: none;">
-    <div class="row">
+    <div class="row" style="display:flex;align-items: center;">
       <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
     <div class="caption" translate>Team Members
     </div>
@@ -63,7 +63,7 @@
           <section class="clearfix">
             <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
               <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
-                <div class="btn-xs Btn-Green fileinput-button btn-block rounded-0" style="position: relative;">
+                <div class="btn-xs btn-padding Btn-Green fileinput-button btn-block rounded-0" style="position: relative;">
                     <h6 style="text-align: center; font-size:14px;color: #fff !important;" translate>Upload a CSV</h6>
                     <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                 </div>
