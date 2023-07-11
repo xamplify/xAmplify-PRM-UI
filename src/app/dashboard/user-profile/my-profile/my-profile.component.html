@@ -106,10 +106,8 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('customizeleftmenu');clearCustomResponse();getCustomizedMenuItems()" translate>{{properties.customizeleftmenu | translate}}</a>
                             </li>
-                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
-                                <a (click)="activateTab('customskin');clearCustomResponse()" translate>
 
-                             <!---Themes-->
+                            <!---Themes-->
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
 
@@ -207,7 +205,7 @@
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             
-                        </ng-container>
+                             </ng-container>
                         </ul>
                     </div>
                     <!-- END MENU -->
