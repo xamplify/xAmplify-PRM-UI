@@ -180,9 +180,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   showQuizField= true;
   descriptionColor: string;
   isValidDescriptionColor = true;
-
+  desigPopup = false ;
   isHideFormInfo: boolean = false;
-
+  editShowform = false ;
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
 
@@ -460,10 +460,14 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-      if (this.form.isValid) {
+      if (this.form.isValid && this.editShowform ==false) {
           this.removeBlurClass();
             this.navigateBack();
-      } else {
+      } 
+      else if(this.editShowform ==true ){
+        this.removeBlurClass();
+      }
+      else {
           this.addBlurClass();
           this.navigateBack();
       }
@@ -485,6 +489,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
   showAddForm() {
       $('#add-form-name-modal').modal('show');
+      this.editShowform = true;
       //this.addBlurClass();
   }
 
@@ -1515,6 +1520,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   openFormDesignModal() {
+    this.desigPopup = true ;
       $('#add-form-designs').modal('show');
       this.addBlurClass();
   }

@@ -149,3 +149,8 @@ textarea.textareaNumber {
   width: 25px; 
   height: 27px;
 }
+
+.alert-rd{
+  margin-top: 0;
+  color: inherit !important;
+}

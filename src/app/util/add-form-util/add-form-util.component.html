@@ -503,7 +503,7 @@
 
 <!--Modal Popup For Form Designs-->
 <div class="modal right fade" id="add-form-designs" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-lg" [ngClass]="desigPopup ? 'custom-design-Popup' : 'modal-dialog' ">
         <div class="modal-content mPad">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
@@ -967,7 +967,7 @@
 <div class="modal fade" id="yourImages" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-lg full">
-            <div class="modal-content">
+            <div class="modal-content cust-modal">
                 <div class="modal-header">
                     <a class="close-circle" data-dismiss="modal" (click)="closeYourImagesModal()">
                         <i class="fa fa-times" aria-hidden="true"></i>
@@ -1017,18 +1017,19 @@
                                             <div class="item__type">
                                                 <span>{{file.type}}</span>
                                             </div>
-                                            <div class="item__actions">
+                                            <div class="item__algn">
                                                 <span> <a class="fm external-link" target="_BLANK" data-toggle="tooltip"
                                                         data-placement="top" [title]="actionsDescription.preview_item"
                                                         (click)="$event.stopPropagation();" href="{{file.filePath}}"
                                                         target="_blank">
-                                                        <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
-                                                            style="font-size: 20px;"></i>
-                                                    </a> <a class="fm delete" data-toggle="tooltip" data-placement="top"
+                                                        <i class="fa fa-external-link preview-edit-color ft-size" aria-hidden="true"
+                                                            ></i>
+                                                    </a> 
+                                                    <a class="fm delete icon-algn" data-toggle="tooltip" data-placement="top"
                                                         [title]="actionsDescription.delete_item"
                                                         (click)="$event.stopPropagation();delete(file,file.id)">
-                                                        <i class="fa fa-trash-o preview-edit-color" aria-hidden="true"
-                                                            style="font-size: 20px;"></i>
+                                                        <i class="fa fa-trash-o preview-edit-color ft-size" aria-hidden="true"
+                                                           ></i>
                                                     </a>
                                                 </span>
                                             </div>
