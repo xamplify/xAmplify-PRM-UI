@@ -1053,7 +1053,7 @@
                                                             </th>
                                                             <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
-                                                                <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
+                                                                <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
                                                             </th>
                                                             <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>

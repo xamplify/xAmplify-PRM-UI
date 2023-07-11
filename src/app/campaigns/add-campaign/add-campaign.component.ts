@@ -80,7 +80,6 @@ export class AddCampaignComponent implements OnInit {
   pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
   isGdprEnabled = false;
   oneClickLaunchToolTip = "";
-  contactsPagination: Pagination = new Pagination();
   emailTemplatesPagination:Pagination = new Pagination();
   selectedContactListIds = [];
   userListDTOObj = [];
@@ -137,6 +136,10 @@ export class AddCampaignComponent implements OnInit {
 
   /***Launch Tab****/
   contactsOrPartnersSelectionText = "";
+  campaignRecipientsLoader = false;
+  campaignRecipientsPagination:Pagination = new Pagination();
+  recipientsSortOption: SortOption = new SortOption();
+  showRecipientsSearchResultExpandButton = false;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -436,8 +439,8 @@ export class AddCampaignComponent implements OnInit {
 
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
-        this.contactsPagination.pageIndex = 1;
-        this.contactsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.pageIndex = 1;
+        this.campaignRecipientsPagination.maxResults = 12;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -549,8 +552,8 @@ export class AddCampaignComponent implements OnInit {
     /***XNFR-125****/
     setOneClickLaunch(event:any){
     this.campaign.oneClickLaunch = event;
-    this.contactsPagination.pageIndex = 1;
-    this.contactsPagination.maxResults = 12;
+    this.campaignRecipientsPagination.pageIndex = 1;
+    this.campaignRecipientsPagination.maxResults = 12;
     this.selectedContactListIds = [];
     this.userListDTOObj = [];
     this.isContactList = false;
@@ -871,5 +874,26 @@ export class AddCampaignComponent implements OnInit {
        // throw new Error('Method not implemented.');
     }
   
+    /***********Contacts/Partners************/
+    sortRecipientsList(text:any){
+        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
+        this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
+    }
+    setSearchAndSortOptionsForRecipients(campaignRecipientsPagination: Pagination, recipientsSortOption: SortOption){
+		campaignRecipientsPagination.pageIndex = 1;
+        campaignRecipientsPagination.searchKey = this.recipientsSortOption.searchKey.trim();
+        if (campaignRecipientsPagination.searchKey != undefined && campaignRecipientsPagination.searchKey != null 
+            && campaignRecipientsPagination.searchKey.trim() != "") {
+            this.showRecipientsSearchResultExpandButton = true;
+        } else {
+            this.showRecipientsSearchResultExpandButton = false;
+        }
+        this.campaignRecipientsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.campaignRecipientsPagination);
+        this.findCampaignRecipients(campaignRecipientsPagination);
+    }
+
+    findCampaignRecipients(campaignRecipientsPagination: Pagination) {
+        
+    }
 
 }

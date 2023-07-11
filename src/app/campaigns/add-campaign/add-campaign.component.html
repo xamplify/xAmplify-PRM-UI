@@ -500,46 +500,98 @@
 
         <!---Tab-2--->
         <div id="launch-tab">
-            <!---Contacts/Partners---->
+            <!---Select Campaign Recipients---->
             <div class="portlet light shadow">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                     <form class="form-horizontal form-bordered form-label-stripped">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">{{contactsOrPartnersSelectionText}}</legend>
+                            <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
+                            <div class="col-xs-12 portlet light border-none" *ngIf="!campaignRecipientsLoader">
+                                <!--Search Key Icon-->
+                                <div class="input-icon right pull-right pr-epx">
+                                    <input type="text" [(ngModel)]="emailTemplatesSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findEmailTemplatesOnEnterKeyPress($event.keyCode)">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px 10px 0px 0px;" *ngIf="emailTemplatesSortOption.searchKey" (click)="emailTemplatesSortOption.searchKey='';searchEmailTemplates()"></button>
+                                    <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplates()" style="right: 9px !important;">
+                                        <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                                </div>
+                                <!--Sort DropDown-->
+                                <div class="input-icon right pull-right pr-epx">
+                                    <select class="form-control cc mTopSort" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                    (ngModelChange)="sortRecipientsList($event)">                                                    
+                                    <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
+                                        [ngValue]="option">{{option.name}}</option>
+                                </select> 
+                                </div>
+                                <!--List Of Contacts/Partners-->
+                                <div class="table-responsive">
+                                    <table class="table tgrid table-hover table-sm" id="campaignRecipientsTable" role="grid" aria-describedby="" *ngIf="campaignRecipientsPagination?.totalRecords > 0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="row" class="text-center">
+                                                    <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                </th>
+                                                <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
+                                                <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
+                                                    <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',2)"></span>
+                                                    <span class="gridHeader" translate>List Name</span>
+                                                </th>
+                                                <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                                                    List Info
+                                                </th>
+                                                <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
+                                                </th>
+                                                <th scope="row" style="text-align: center;" translate>Created On</th>
+                                                <th scope="row" style="text-align: center;" translate>Count</th>
+                                                <th scope="row" style="text-align: center;" translate>Preview </th>
+                                            </tr>
+                                        </thead>
+                                        </table>
+
+                                </div>       
+                            </div>
+                            <!--Pagination-->
+                            <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0" class="" [hidden]="campaignRecipientsLoader">
+                                <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)">
+                                </app-pagination>
+                            </div>
                         </fieldset>
                     </form>
                     </div>
                 </div>
             </div>
+
         </div>
+
+
     </div>
 
-    <!---Edit Template---->
-    <div id="edit-campaign-template" style="display: none;">
-    <div class="portlet light shadow">
-        <div *ngIf="!isEditTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
-            {{beeContainerInput?.emailTemplateName}}
-            <div>
-            <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
-                [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page'? '10px':''}">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-            <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
-            <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
-            <button  class="new-tab-button" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
-                Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
-                </button>
+       <!---Edit Template---->
+       <div id="edit-campaign-template" style="display: none;">
+        <div class="portlet light shadow">
+            <div *ngIf="!isEditTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
+                {{beeContainerInput?.emailTemplateName}}
+                <div>
+                <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
+                 [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page'? '10px':''}">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+                <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
+                <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                <button  class="new-tab-button" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
+                    Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                  </button>
+                </div>
             </div>
+          <div class="portlet-body clearfix">
+              <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
+                    <strong>{{templateUpdateMessage}}</strong>
+              </div>
+              <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
+              <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
         </div>
-        <div class="portlet-body clearfix">
-            <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
-                <strong>{{templateUpdateMessage}}</strong>
-            </div>
-            <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
-            <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
-    </div>
-    </div>
+        </div>
     </div>
 
 
