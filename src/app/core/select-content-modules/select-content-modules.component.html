@@ -9,6 +9,7 @@
       </li>
       <li><a translate>Select Module</a></li>
     </ul>
+    <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
   </div>
   <div *ngIf="authenticationService?.module?.contentLoader">
     <app-modal-popup-loader></app-modal-popup-loader>

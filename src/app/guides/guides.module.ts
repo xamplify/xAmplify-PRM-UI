@@ -11,6 +11,7 @@ import { SharedLibraryModule } from 'app/shared/shared-library.module';
 import { DashboardModule } from 'app/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 import { GuideHelpIconComponent } from './guide-help-icon/guide-help-icon.component';
+import { SearchGuidesComponent } from './search-guides/search-guides.component';
 
 
 @NgModule({
@@ -24,8 +25,8 @@ import { GuideHelpIconComponent } from './guide-help-icon/guide-help-icon.compon
     RouterModule,
   ],
   providers:[],
-  declarations: [HomeGuideComponent, GuideHelpIconComponent],
-  exports:[GuideHelpIconComponent],
+  declarations: [HomeGuideComponent],
+  exports:[],
 
 })
 export class GuidesModule { }

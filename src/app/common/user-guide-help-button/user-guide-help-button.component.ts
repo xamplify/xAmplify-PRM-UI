@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,OnChanges,SimpleChanges } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { UserService } from 'app/core/services/user.service';
@@ -9,8 +9,9 @@ import { UserGuide } from 'app/guides/models/user-guide';
   templateUrl: './user-guide-help-button.component.html',
   styleUrls: ['./user-guide-help-button.component.css']
 })
-export class UserGuideHelpButtonComponent implements OnInit {
+export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
   @Input() mergeTag:any;
+  @Input() searchForGuides:any;
  loading:boolean = false;
     constructor(public userService:UserService,public authenticationService:AuthenticationService,public referanceService:ReferenceService) {
 
@@ -18,7 +19,18 @@ export class UserGuideHelpButtonComponent implements OnInit {
   
     urllink:any
     ngOnInit() {
+      if(this.searchForGuides != null) {
+
+      } else {
       this.getGuideUrl()
+      }
+    }
+    ngOnChanges(changes:SimpleChanges){
+      if(this.searchForGuides != null) {
+         this.urllink = this.authenticationService.APP_URL+ 'home/help/search/'+this.searchForGuides ;
+      } else {
+      this.getGuideUrl()
+      }
     }
     userGuide: UserGuide = new UserGuide();
     getGuideUrl(){

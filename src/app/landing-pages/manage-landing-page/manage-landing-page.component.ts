@@ -294,7 +294,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.isPartnerLandingPage = false;
         }
         /******** user guides ************/
-        this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing _shared_assets':'manage_pages';
+        this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
         
         if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
             this.setViewType('Folder-Grid');

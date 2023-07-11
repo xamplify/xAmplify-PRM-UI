@@ -73,7 +73,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     this.goToAccessDenied(url);
                }
             }
-            else if(url.includes("/home/select-modules")){
+            else if(url.includes("/home/select-modules") || url.includes("/home/help")){
                 return true;
             }else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);

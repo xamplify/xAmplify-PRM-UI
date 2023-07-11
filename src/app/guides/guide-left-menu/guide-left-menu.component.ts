@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Pagination } from 'app/core/models/pagination';
 import { Roles } from 'app/core/models/roles';
@@ -26,7 +26,7 @@ var $: any;
 	templateUrl: './guide-left-menu.component.html',
 	styleUrls: ['./guide-left-menu.component.css']
 })
-export class GuideLeftMenuComponent implements OnInit {
+export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	@Input() guideMergeTag: any;
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	pagination: Pagination = new Pagination();
@@ -49,7 +49,7 @@ export class GuideLeftMenuComponent implements OnInit {
 	guideLink: any;
 	guideLinkIframe: any;
 	userGuides: UserGuide[];
-	mergeTag: any;
+	//mergeTag: any;
 	slug: any;
 	userGuideLink: any;
 	userGudeTitles: UserGuide[] = [];
@@ -130,52 +130,72 @@ export class GuideLeftMenuComponent implements OnInit {
 		}
 		this.getUserGuidesByModuleName(this.expansionModuleName);
 	}
-	getSearchResultsOfUserGuides(pagination: Pagination) {
-		this.loading = true;
-		this.showListId = "";
-		this.refService.loading(this.httpRequestLoader, true);
-		this.httpRequestLoader.isHorizontalCss = true;
-		this.dashboardService.getSearchResultsOfUserGuides(pagination).subscribe(
-			(response) => {
-				if (response.statusCode === 200) {
-					let userGuide = response.data;
-					this.userGuides = userGuide.list;
-					console.log(userGuide.totalRecords);
-					console.log(userGuide.list)
-					this.loading = false;
-					pagination.totalRecords = userGuide.totalRecords;
-					pagination = this.pagerService.getPagedItems(pagination, userGuide.list);
-					this.pager = this.socialPagerService.getPager(userGuide.totalRecords, this.pagination.pageIndex, this.pagination.maxResults);
-					this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
-					this.refService.loading(this.httpRequestLoader, false);
-				}
-			}, (error: any) => {
-				this.loading = false;
-				this.refService.loading(this.httpRequestLoader, false);
-				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
-			})
-	}
+	// getSearchResultsOfUserGuides(pagination: Pagination) {
+	// 	this.loading = true;
+	// 	this.showListId = "";
+	// 	this.refService.loading(this.httpRequestLoader, true);
+	// 	this.httpRequestLoader.isHorizontalCss = true;
+	// 	this.dashboardService.getSearchResultsOfUserGuides(pagination).subscribe(
+	// 		(response) => {
+	// 			if (response.statusCode === 200) {
+	// 				let userGuide = response.data;
+	// 				this.userGuides = userGuide.list;
+	// 				console.log(userGuide.totalRecords);
+	// 				console.log(userGuide.list)
+	// 				this.loading = false;
+	// 				pagination.totalRecords = userGuide.totalRecords;
+	// 				pagination = this.pagerService.getPagedItems(pagination, userGuide.list);
+	// 				this.pager = this.socialPagerService.getPager(userGuide.totalRecords, this.pagination.pageIndex, this.pagination.maxResults);
+	// 				this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
+	// 				this.refService.loading(this.httpRequestLoader, false);
+	// 				this.location.replaceState('home/help/search');
+
+	// 			}
+	// 		}, (error: any) => {
+	// 			this.loading = false;
+	// 			this.refService.loading(this.httpRequestLoader, false);
+	// 			// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
+	// 		})
+	// }
 	resetResponse() {
 		//this.customResponse = new CustomResponse();
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 	search() {
+		this.loading = false;
 		this.resetResponse();
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.pageIndex = 1;
 		this.isSearch = true;
-		this.getSearchResultsOfUserGuides(this.pagination);
+		this.getUserGuidesByModuleName("");
+		//this.getSearchResultsOfUserGuides(this.pagination);
 	}
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
-		this.getSearchResultsOfUserGuides(this.pagination);
+		//this.getSearchResultsOfUserGuides(this.pagination);
 	}
 
 	ngOnInit() {
+		let currentUrl = this.router.url;
+		if (currentUrl.includes('/home/help/search')) {
+			this.pagination.searchWithModuleName = true;
+			this.searchKey = this.route.snapshot.params['moduleName'];
+			if (this.searchKey != undefined) {
+				this.search()
+				this.getUserGuidesByModuleName("");
+			} else {
+				// this.getUserGuidesByModuleName(this.searchKey);
+			}
+		} else {
+			this.slug = this.route.snapshot.params['slug'];
+			this.getUserGuideBySlug(this.pagination);
+		}
 		this.findMenuItems();
-		this.slug = this.route.snapshot.params['slug'];
-		this.getUserGuideBySlug(this.pagination);
-		this.mergeTag = this.guideMergeTag;
+	}
+	ngOnChanges() {
+		if (this.searchKey === "" && this.searchKey === undefined) {
+			this.getUserGuidesByModuleName(this.searchKey);
+		}
 	}
 	findMenuItems() {
 		this.loading = true;
@@ -390,18 +410,13 @@ export class GuideLeftMenuComponent implements OnInit {
 	}
 
 	getUserGuidesByModuleName(moduleName: any) {
-		// this.pagination.moduleName = "";
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
 		this.loading = true;
 		this.showListId = "";
 		this.userGudeTitles = [];
-		//this.expansionModuleName = moduleName;
-		// this.refService.loading(this.httpRequestLoader, true);
-		// this.httpRequestLoader.isHorizontalCss = true;
 		this.showListId = moduleName;
 		this.pagination.moduleName = moduleName;
-		// alert(this.pagination.moduleName)
 		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
@@ -411,6 +426,7 @@ export class GuideLeftMenuComponent implements OnInit {
 					this.loading = false;
 				} else {
 					this.statusCode = 200;
+					this.loading = false;
 				}
 			}, (error: any) => {
 				this.loading = false;
@@ -430,6 +446,7 @@ export class GuideLeftMenuComponent implements OnInit {
 			(response) => {
 				this.loading = false;
 				this.isSearch = false;
+				this.searchKey = "";
 				if (response.statusCode === 200) {
 					this.statusCode = 200;
 					let map = response.map;

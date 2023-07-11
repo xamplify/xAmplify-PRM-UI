@@ -36,6 +36,7 @@ export class SelectCampaignTypeComponent implements OnInit{
     loggedInUserCompanyId: number = 0;
     showSpf = false;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    searchWithModuleName:any;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
       public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess){
        
@@ -109,6 +110,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         try{
           this.campaignService.campaign = undefined;
  		      this.getCompanyIdByUserId(); 
+          this.searchWithModuleName = "Campaign";
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
         }

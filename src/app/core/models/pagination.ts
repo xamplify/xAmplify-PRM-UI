@@ -101,4 +101,6 @@ export class Pagination {
 	/** user guides ***/
 	moduleName:string = "";
 	slug:string = "";
+    searchWithModuleName: boolean = false;
+
 }

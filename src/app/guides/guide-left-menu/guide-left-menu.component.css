@@ -2,6 +2,9 @@
   overflow-x: hidden;
   overflow-y: scroll;
 }
+td.pad> div {
+  font-family: 'Gantari', Arial, Helvetica, sans-serif !important;
+}
 .bg-img{
     background-image: url(/assets/images/user-guide.png);
 	background-repeat: no-repeat;
@@ -18,11 +21,11 @@
 .side-border-differentiation {
   border-left: 1px dashed #ddd;
 }
-.bg-result-color  {
+/* .bg-result-color  {
   background-color: #f1f3fa4f !important;
   border: 1px solid #dddddd42;
   padding: 0px 20px 20px 20px !important;
-}
+} */
 li.title-active> a  {
   color: #000;
   background-color: #ddd;
