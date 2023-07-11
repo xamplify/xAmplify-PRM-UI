@@ -3,11 +3,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { TagInputComponent as SourceTagInput } from 'ngx-chips';
-import "rxjs/add/observable/of";
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
 declare var swal:any, $: any;
 @Component({
