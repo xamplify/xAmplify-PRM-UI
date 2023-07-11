@@ -94,16 +94,25 @@
                             </li>
                             <!---View Type-->
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType | translate}}</a>
                             </li>
                             <!---Tags-->
                             <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active-tab': activeTabName == 'tags'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"  (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
+
+                            <!-- Customize left menu -->
+                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('customizeleftmenu');clearCustomResponse();getCustomizedMenuItems()" translate>{{properties.customizeleftmenu | translate}}</a>
+                            </li>
+                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
+                                <a (click)="activateTab('customskin');clearCustomResponse()" translate>
+
                              <!---Themes-->
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
+
                                     {{properties.customskin | translate}} </a>
                             </li>
                              <!--------------Lead/Deal Configuration----------------------->
@@ -1107,13 +1116,9 @@
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-
                                     <!-- Customize Left Menu -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
-
-                                                        
-                                        </div>
-
+                                      </div>
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
@@ -1166,7 +1171,12 @@
                                      <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">                                        
                                         <app-dashboard-buttons> </app-dashboard-buttons>
                                     </div>
-                                    
+
+                                    <!-- Customize Left Menu -->
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
+                                        <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
+                                    </div>
+
                                     <!-- Saml SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
                                         <app-samlsecurity> </app-samlsecurity>

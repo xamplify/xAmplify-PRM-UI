@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start":"node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng serve  --live-reload false --open",
+    "start": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng serve  --live-reload false --open",
     "ssl": "ng serve  --live-reload false --open --ssl --ssl-key ./localhost.key  --ssl-cert ./localhost.crt",
     "vanity": "ng serve --host 0.0.0.0 --disable-host-check --live-reload false --open",
     "build": "ng build",
