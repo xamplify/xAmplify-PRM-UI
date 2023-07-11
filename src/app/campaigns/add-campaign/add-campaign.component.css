@@ -577,3 +577,7 @@ table.table-bordered.dataTable {
 .padding-zero{
   padding: 0;
 }
+
+.border-none{
+  border: none !important;
+}

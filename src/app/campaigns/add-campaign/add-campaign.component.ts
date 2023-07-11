@@ -46,6 +46,7 @@ export class AddCampaignComponent implements OnInit {
   completedTabClass = "col-block col-block-complete";
   disableTabClass = "col-block col-block-disable";
   campaignDetailsTabClass = this.activeTabClass;
+  launchTabClass = this.activeTabClass;
 
 
   /************Campaign Details******************/
@@ -134,6 +135,9 @@ export class AddCampaignComponent implements OnInit {
   isShowFilterDiv = false;
   /***Filter Popup****/
 
+  /***Launch Tab****/
+  contactsOrPartnersSelectionText = "";
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -153,8 +157,22 @@ export class AddCampaignComponent implements OnInit {
    }
 
     ngOnInit() {
+        if(this.isAdd){
+            this.showCampaignDetailsTab();
+        }
         this.loadCampaignDetailsSection();
         this.findEmailTemplates(this.emailTemplatesPagination);
+    }
+
+    showCampaignDetailsTab(){
+        $('#launch-tab').hide(600);
+        $('#campaign-details').show(600);
+       
+    }
+
+    showLaunchTab(){
+        $('#campaign-details').hide(600);
+        $('#launch-tab').show(600);
     }
 
     loadCampaignDetailsSection(){
@@ -207,7 +225,16 @@ export class AddCampaignComponent implements OnInit {
                 this.activeCRMDetails = data['activeCRMDetails'];
                 this.isGdprEnabled = data['isGdprEnabled'];
                 this.isOrgAdminCompany  = data['isOrgAdminCompany'];
+                let isMarketingCompany  = data['isMarketingCompany'];
+                let isVendorCompany = data['isVendorCompany'];
                 this.showMarketingAutomationOption = this.isOrgAdminCompany;
+                if(this.isOrgAdminCompany){
+                    this.contactsOrPartnersSelectionText = "  Select List of "+this.partnerModuleCustomName+" / Recipients  to be used in this campaign";
+                }else if(isMarketingCompany){
+                    this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
+                }else if(isVendorCompany){
+                    this.contactsOrPartnersSelectionText = "Select List of "+this.partnerModuleCustomName+" to be used in this campaign";
+                }
                 this.setFromEmailAndFromName(data);
             },error=>{
                 this.xtremandLogger.errorPage(error);
