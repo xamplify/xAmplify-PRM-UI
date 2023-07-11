@@ -383,6 +383,7 @@ table#folder-list-view,
 tr {
   background: transparent !important;
 }
+/***End Of 04-07-2023 Templates privew background  */
 
 .table-hover > tbody > tr:hover,
 .page-header.navbar
