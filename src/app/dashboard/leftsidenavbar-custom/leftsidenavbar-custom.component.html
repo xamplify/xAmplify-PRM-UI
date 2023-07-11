@@ -6,7 +6,7 @@
 <div class="row dragdrop-graph-bg">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="padding: 0">
         <div class="portlet light border-radius-0 custome-portlet">
-            <ul class="list-group drag-menu-cu" [dragula]="leftSideMenuDragula" [dragulaModel]="menuItems">
+            <ul class="list-group drag-menu-cu" [dragula]="'leftSideMenuDragula'" [dragulaModel]="menuItems">
                 <li class="list-group-item" *ngFor="let menu of menuItems"><i [className]="menu.angularIcon"
                         aria-hidden="true"></i><span style="margin-left: 10px;">{{menu.customName}}</span></li>
             </ul>

@@ -56,7 +56,7 @@ export class LeftsidenavbarCustomComponent implements OnInit {
         () => console.log('finished'));
   }
 
-  updateLeftMenuItems(Update: any){
+  updateLeftMenuItems(){
 		let self = this;
 		swal({
 			title: 'Are you sure?',
