@@ -18,24 +18,28 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { PagerService } from 'app/core/services/pager.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
+import { EmailTemplateService } from 'app/email-template/services/email-template.service';
+import { EmailTemplate } from 'app/email-template/models/email-template';
+import { Properties } from 'app/common/models/properties';
+
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 @Component({
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.css'],
-  providers:[CallActionSwitch,SortOption]
+  providers:[CallActionSwitch,SortOption,Properties]
 })
 export class AddCampaignComponent implements OnInit {
 
   loggedInUserId = 0;
   campaign: Campaign = new Campaign();
-  loading = false;
   isAdd = false;
   isEmailCampaign = false;
   isVideoCampaign = false;
   isPageCampaign = false;
   isSurveyCampaign = false;
+  ngxLoading = false;
 
   defaultTabClass = "col-block";
   activeTabClass = "col-block col-block-active width";
@@ -100,9 +104,24 @@ export class AddCampaignComponent implements OnInit {
   emailTemplatesOrLandingPagesLoader = false;
   campaignEmailTemplates:Array<any> = Array<any>();
   selectedEmailTemplateRow: number;
-  isEmailTemplate: boolean;
+  isEmailTemplateOrPageSelected: boolean;
   isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
+  isSendTestEmailIconClicked = false;
+  isPreviewEmailTemplateButtonClicked = false;
+  selectedEmailTemplateIdForPreview = 0;
+  emailTemplateHrefLinks = [];
+  isSendTestEmailOptionClicked = false;
+  selectedEmailTemplateNameForPreview = "";
+  /******Edit Template******/
+  isEditTemplateLoader = false;
+  beeContainerInput = {};
+  isShowEditTemplatePopup = false;
+  isShowEditTemplateMessageDiv = false;
+  templateUpdateMessage = "";
+  editTemplateMergeTagsInput:any = {};
+  jsonBody: any;
+  templateMessageClass = "";
  /***Filter Popup****/
   public selectedFolderIds = [];
   public emailTemplateFolders: Array<any>;
@@ -113,11 +132,12 @@ export class AddCampaignComponent implements OnInit {
   folderCustomResponse: CustomResponse = new CustomResponse();
   filterCategoryLoader = false;
   isShowFilterDiv = false;
-  
+  /***Filter Popup****/
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
-    private utilService:UtilService) {
+    private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     let currentUrl = this.referenceService.getCurrentRouteUrl();
@@ -453,7 +473,7 @@ export class AddCampaignComponent implements OnInit {
     removeTemplateAndAutoResponse() {
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
-        this.isEmailTemplate = false;
+        this.isEmailTemplateOrPageSelected = false;
         this.selectedLandingPageRow = 0;
         this.isLandingPage = false;
     }
@@ -698,5 +718,131 @@ export class AddCampaignComponent implements OnInit {
         this.findEmailTemplates(this.emailTemplatesPagination);
     }
 
+    selectEmailTemplate(emailTemplate:any){
+        this.ngxLoading = true;
+        this.emailTemplateHrefLinks = [];
+        this.emailTemplateService.getById(emailTemplate.id)
+            .subscribe(
+                (data: any) => {
+                    this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(data.body, this.emailTemplateHrefLinks);
+                    this.urls = this.emailTemplateHrefLinks;this.selectedEmailTemplateRow = emailTemplate.id;
+                    this.isEmailTemplateOrPageSelected = true;
+                    this.ngxLoading = false;
+                },
+                error => {
+                    this.emailTemplateHrefLinks = [];
+                    this.urls = this.emailTemplateHrefLinks;
+                    this.isEmailTemplateOrPageSelected = true;
+                    this.ngxLoading = false;
+                });
+    }
+
+    previewEmailTemplate(emailTemplate:any){
+        this.selectedEmailTemplateIdForPreview = emailTemplate.id;
+        this.selectedEmailTemplateNameForPreview = emailTemplate.name;
+        this.isPreviewEmailTemplateButtonClicked = true;
+
+    }
+
+    sendTestEmailModalPopupEventReceiver(){
+        this.selectedEmailTemplateIdForPreview = 0;
+        this.selectedEmailTemplateNameForPreview = "";
+        this.isPreviewEmailTemplateButtonClicked = false;
+        this.isSendTestEmailOptionClicked = false;
+    }
+
+    editTemplate(emailTemplate:any){
+        this.isShowEditTemplateMessageDiv = false;
+        if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+            this.isEditTemplateLoader = true;
+           this.referenceService.goToTop();
+           $('#campaign-details-and-launch-tabs').hide(600);
+           $('#edit-campaign-template').show(600);
+           this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
+           this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
+                response => {
+                    this.beeContainerInput['module'] = "emailTemplates";
+                    this.beeContainerInput['jsonBody'] = response;
+                    this.beeContainerInput['id'] = emailTemplate.id;
+                    this.isShowEditTemplatePopup = true;
+                    this.isEditTemplateLoader = false;
+                }, error => {
+                    this.hideEditTemplateDiv();
+                    this.referenceService.showSweetAlertServerErrorMessage();
+                }
+            );
+        } else {
+            this.referenceService.showSweetAlertErrorMessage('Uploaded Templates Cannot Be Edited');
+        }
+    }
+
+    hideEditTemplateDiv() {
+        $('#edit-campaign-template').hide(600);
+        this.isShowEditTemplatePopup = false;
+        this.isEditTemplateLoader = false;
+        this.beeContainerInput = {};
+        this.editTemplateMergeTagsInput = {};
+        $('#campaign-details-and-launch-tabs').show(600);
+    }
+
+    updateTemplate(event:any){
+        this.ngxLoading =true;
+        let module = event['module'];
+        if("pages"==module){
+            this.updatePage(event);
+        }else{
+            this.updateEmailTemplate(event);
+        }
+    }
+    updateEmailTemplate(event: any) {
+       let emailTemplate = new EmailTemplate();
+       emailTemplate.id = event.id;
+       emailTemplate.jsonBody = event.jsonContent;
+       emailTemplate.body = event.htmlContent;
+       emailTemplate.userId = this.loggedInUserId;
+       this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
+           response => {
+               if (response.statusCode == 200) {
+                   this.showTemplateUpdatedSuccessMessage();
+               } else if (response.statusCode == 500) {
+                   this.showUpdateTemplateErrorMessage(response.message);
+               }                
+           }, error => {
+               this.showTemplateUpdateErrorMessage();
+           }
+       )
+    }
+
+    
+    showTemplateUpdatedSuccessMessage(){
+        this.ngxLoading =false;
+        this.isShowEditTemplateMessageDiv = true;
+        this.templateMessageClass = "alert alert-success";
+        this.templateUpdateMessage = "Template Updated Successfully";
+        this.referenceService.goToTop();
+    }
+
+    showTemplateUpdateErrorMessage(){
+        this.ngxLoading =false;
+        this.templateMessageClass = "alert alert-danger";
+        this.templateUpdateMessage = this.properties.serverErrorMessage;
+        this.isShowEditTemplateMessageDiv = true;
+    }
+
+    showUpdateTemplateErrorMessage(message: string){
+        this.ngxLoading =false;
+        this.templateMessageClass = "alert alert-danger";
+        if (message != undefined && message != null && message.trim().length > 0) {
+            this.templateUpdateMessage = message;
+        } else {
+            this.templateUpdateMessage = this.properties.serverErrorMessage;
+        }
+        
+        this.isShowEditTemplateMessageDiv = true;
+    }
+    updatePage(event: any) {
+       // throw new Error('Method not implemented.');
+    }
+  
 
 }
