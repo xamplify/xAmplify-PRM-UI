@@ -7,10 +7,12 @@
 .help-iconbgadd {
     float: right;
     margin: 4px 12px;
-    background: #E8EAED;
     padding: 6px 6px;
     border-radius: 50%;
     height: 32px;
     width: 32px;
+}
+.help-iconbgadd:hover {
+    background: #E8EAED;
     border: 1px solid #ddd;
 }
