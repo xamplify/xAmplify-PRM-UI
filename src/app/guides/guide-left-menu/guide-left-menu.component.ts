@@ -80,7 +80,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.guideLink = this.userGuide.link;
 					this.showListId = this.userGuide.customName
 					this.expansionOfDIvByModuleId(this.userGuide.moduleId)
-					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="6150" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
+					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
 				} else {
 					this.statusCode = 500;
 				}
