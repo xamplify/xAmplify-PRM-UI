@@ -21,6 +21,7 @@
             <li class="breadcrumb-font-color" style="color: #808080" *ngIf="!authenticationService.isOnlyPartner()" translate>Manage Templates</li>
             <li class="breadcrumb-font-color" style="color: #808080" *ngIf="authenticationService.isOnlyPartner()" translate>View Templates</li>
         </ul>
+        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <div class="mTopAlert" style="position: relative; top: -10px">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>

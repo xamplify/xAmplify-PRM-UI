@@ -1,5 +1,27 @@
-<div style="float: right;margin: 10px;">
-  <a href="{{urllink}}"  target="_blank">
-      <i class="fa fa-question-circle" title="User Guide"></i>
-  </a>
-</div>
+<section class="bg-img">
+  <div class="row justify-content-center d-flex" style="padding-top: 20px;">
+    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 text-center search-guide">
+      <div class="col-xs-12 p0" *ngIf="refService.isMobileScreenSize()">
+        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+          placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+          (click)="searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <!-- Removed style="color: black !important"-->
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="input-icon right">
+        <input type="text" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+          class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+          (click)="searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <!-- REmoved style="color: black !important"-->
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>

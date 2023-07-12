@@ -1,0 +1,30 @@
+.bg-img{
+    background-image: url(/assets/images/user-guide3.png);
+    background-size: cover;
+    height: 204px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    border-bottom: 1px solid #ccc;
+}
+
+.search-guide{
+    transform: translate(0px, 50px); 
+}
+.user-search{
+    padding: 0px 7px;
+}
+
+/* add user guide css */
+.d-flex{
+    display: flex;
+}
+.justify-content-center{
+    justify-content: center;
+}
+.col-form-label {
+    padding-top: calc(0.375rem + 1px);
+    padding-bottom: calc(0.375rem + 1px);
+    margin-bottom: 0;
+    font-size: inherit;
+    line-height: 1.5;
+}

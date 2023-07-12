@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { UserGuide } from '../models/user-guide';
 import { UserService } from 'app/core/services/user.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -10,26 +10,22 @@ import { ReferenceService } from 'app/core/services/reference.service';
   styleUrls: ['./guide-help-icon.component.css']
 })
 export class GuideHelpIconComponent implements OnInit {
-@Input() GuideUrl:any;
-guideUrl:any;
-  constructor(public userService:UserService,public authenticationService:AuthenticationService,public referanceService:ReferenceService) { }
+  loading:boolean = false;
+  @Input() searchKey : any;
+  
+  @Output() searchEvent = new EventEmitter<any>();
 
-  urllink:any
+  constructor(public userService:UserService,public authenticationService:AuthenticationService,public refService:ReferenceService) { }
+
   ngOnInit() {
-    this.getGuideUrl()
   }
-  userGuide: UserGuide = new UserGuide();
-  getGuideUrl(){
-    this.userService.showUserGuide(this.GuideUrl).subscribe(
-      response => {
-        if (response.statusCode === 200) {
-          this.userGuide = response.data;
-          this.urllink =this.authenticationService.APP_URL+ 'home/help/' + this.userGuide.slug;
-        }
-      }, (error: any) => {
-        //this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-      }
-    )
-  }
+  resetResponse() {
+		//this.customResponse = new CustomResponse();
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+	search() {
+		this.searchEvent.emit(this.searchKey);
+	
+	}
 
 }

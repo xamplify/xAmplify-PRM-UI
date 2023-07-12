@@ -2,45 +2,8 @@
 
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="pagebody">
-<section class="bg-img">
-  <div class="row justify-content-center d-flex" style="padding-top: 20px;">
-    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 text-center search-guide">
-      <!-- <form role="search" class="user-search">
-        <div class="input-group">
-          <input type="serach" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-            placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-          <button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';search()"></button>
-          <div class="input-group-btn">
-            <button type="submit" class="btn search_btn" (click)="search()">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form> -->
-      <div class="col-xs-12 p0" *ngIf="refService.isMobileScreenSize()">
-        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
-          placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-          (click)="searchKey='';search()"></button>
-        <button type="submit" class="search-box-item-click" (click)="search()">
-          <!-- Removed style="color: black !important"-->
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="input-icon right">
-        <input type="text" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-          class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-          (click)="searchKey='';search()"></button>
-        <button type="submit" class="search-box-item-click" (click)="search()">
-          <!-- REmoved style="color: black !important"-->
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </button>
-      </div>
+  <app-guide-help-icon [searchKey]="searchKey" (searchEvent)="getSearchKey($event)"></app-guide-help-icon>
 
-    </div>
-  </div>
-</section>
 <div class="m10 guide-width container pad-row">
 
   <div class="page-bar">

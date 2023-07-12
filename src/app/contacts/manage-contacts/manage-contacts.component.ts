@@ -2708,7 +2708,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			  this.mergeTagForGuide = "using_shared_leads";
               this.showHelpGuideIcon = true;
 			} else if (this.module === 'leads'){
-				this.showHelpGuideIcon = false;
+				this.mergeTagForGuide = "manage_share_lead_lists";
+				this.showHelpGuideIcon = true;
 			} else if (this.module === 'contacts') {
 				this.mergeTagForGuide = "manage_contact_lists";
 				this.showHelpGuideIcon = true;

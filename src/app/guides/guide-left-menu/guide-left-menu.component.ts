@@ -80,7 +80,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.guideLink = this.userGuide.link;
 					this.showListId = this.userGuide.customName
 					this.expansionOfDIvByModuleId(this.userGuide.moduleId)
-					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
+					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="6150" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
 				} else {
 					this.statusCode = 500;
 				}
@@ -160,16 +160,25 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	resetResponse() {
 		//this.customResponse = new CustomResponse();
 	}
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
-	search() {
+	getSearchKey(event:any){
+		this.searchKey = event;
 		this.loading = false;
 		this.resetResponse();
 		this.pagination.searchKey = this.searchKey;
 		this.pagination.pageIndex = 1;
 		this.isSearch = true;
 		this.getUserGuidesByModuleName("");
-		//this.getSearchResultsOfUserGuides(this.pagination);
 	}
+	// eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+	// search() {
+	// 	this.loading = false;
+	// 	this.resetResponse();
+	// 	this.pagination.searchKey = this.searchKey;
+	// 	this.pagination.pageIndex = 1;
+	// 	this.isSearch = true;
+	// 	this.getUserGuidesByModuleName("");
+	// 	//this.getSearchResultsOfUserGuides(this.pagination);
+	// }
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
 		//this.getSearchResultsOfUserGuides(this.pagination);
@@ -181,7 +190,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			this.pagination.searchWithModuleName = true;
 			this.searchKey = this.route.snapshot.params['moduleName'];
 			if (this.searchKey != undefined) {
-				this.search()
+				this.getSearchKey(this.searchKey)
 				this.getUserGuidesByModuleName("");
 			} else {
 				// this.getUserGuidesByModuleName(this.searchKey);

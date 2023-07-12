@@ -72,7 +72,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
-           // this.getUserGuideMergeTags();
+           this.mergeTagForGuide = 'design_email_template'
             this.listDefaultTemplates();
         }
         catch (error) {
@@ -115,6 +115,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         this.filteredEmailTemplates = new Array<EmailTemplate>();
         this.filteredEmailTemplates = this.allEmailTemplates;
         this.selectedTemplateTypeIndex = index;
+        this.mergeTagForGuide = 'design_email_template';
     }
 
 
@@ -155,6 +156,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     showEventCoBrandingTemplates(index: number) {
         try {
             this.selectedTemplateTypeIndex = index;
+            this.mergeTagForGuide = 'design_event_template';
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var beeEventCoBrandingTemplate = this.allEmailTemplates[i].beeEventCoBrandingTemplate;
@@ -287,6 +289,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
+            this.mergeTagForGuide = 'design_email_template'
             console.log(this.allEmailTemplates);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isRegularCoBrandingTemplate = this.allEmailTemplates[i].regularCoBrandingTemplate;
@@ -305,6 +308,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         try {
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
+            this.mergeTagForGuide = 'design_video_template';
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isVideoCoBrandingTemplate = this.allEmailTemplates[i].videoCoBrandingTemplate;
                 if (isVideoCoBrandingTemplate) {
@@ -868,7 +872,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
           
             this.filteredEmailTemplates = new Array<EmailTemplate>();
             this.selectedTemplateTypeIndex = index;
-            /******** user guide ******/
             this.mergeTagForGuide = 'design_survey_template';
             console.log(this.allEmailTemplates);
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
@@ -887,18 +890,5 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             var cause = "Error in showSurveyTemplates() in selectTemplatesComponent";
             this.logger.error(cause + ":" + error);
         }
-    }
-  getUserGuideMergeTags(selectedTemplateTypeIndex){
-    if (selectedTemplateTypeIndex == 2) {
-        this.mergeTagForGuide = "design_email_template";
-    } else if (selectedTemplateTypeIndex == 4) {
-        this.mergeTagForGuide = "design_video_template";
-    } else if (selectedTemplateTypeIndex == 9) {
-        this.mergeTagForGuide = "design_event_template";
-    } else if (selectedTemplateTypeIndex == 13) {
-        this.mergeTagForGuide = "design_survey_template";
-    }
-  }
-
-    
+    }   
 }
