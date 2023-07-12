@@ -577,3 +577,14 @@ table.table-bordered.dataTable {
 .padding-zero{
   padding: 0;
 }
+
+.border-none{
+  border: none !important;
+}
+
+.search-button-padding{
+  padding:8px 10px 0px 0px;
+}
+.search-icon-rp{
+  right: 9px !important;
+}

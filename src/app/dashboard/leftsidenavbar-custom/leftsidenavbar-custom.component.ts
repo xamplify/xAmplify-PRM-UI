@@ -19,7 +19,12 @@ export class LeftsidenavbarCustomComponent implements OnInit {
   leftMenuCustomResponse: CustomResponse = new CustomResponse();
   constructor(public authenticationService: AuthenticationService, public utilService: UtilService, private dashBoardService: DashboardService, public referenceService: ReferenceService
     , private dragulaService: DragulaService) {
-    dragulaService.setOptions('leftSideMenuDragula', { removeOnSpill: true })
+      dragulaService.setOptions('leftSideMenuDragula', {})
+    dragulaService.dropModel.subscribe((value) => {
+      this.onDropModel(value);
+    });
+  }
+  private onDropModel(args) {
   }
 
 

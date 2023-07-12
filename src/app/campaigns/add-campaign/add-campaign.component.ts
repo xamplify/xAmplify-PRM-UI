@@ -21,6 +21,9 @@ import { UtilService } from 'app/core/services/util.service';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Properties } from 'app/common/models/properties';
+import { ContactService } from 'app/contacts/services/contact.service';
+
+
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -46,6 +49,7 @@ export class AddCampaignComponent implements OnInit {
   completedTabClass = "col-block col-block-complete";
   disableTabClass = "col-block col-block-disable";
   campaignDetailsTabClass = this.activeTabClass;
+  launchTabClass = this.activeTabClass;
 
 
   /************Campaign Details******************/
@@ -79,7 +83,6 @@ export class AddCampaignComponent implements OnInit {
   pipelineLoader: HttpRequestLoader = new HttpRequestLoader();
   isGdprEnabled = false;
   oneClickLaunchToolTip = "";
-  contactsPagination: Pagination = new Pagination();
   emailTemplatesPagination:Pagination = new Pagination();
   selectedContactListIds = [];
   userListDTOObj = [];
@@ -134,10 +137,21 @@ export class AddCampaignComponent implements OnInit {
   isShowFilterDiv = false;
   /***Filter Popup****/
 
+  /***Launch Tab****/
+  contactsOrPartnersSelectionText = "";
+  campaignRecipientsLoader = false;
+  campaignRecipientsPagination:Pagination = new Pagination();
+  recipientsSortOption: SortOption = new SortOption();
+  showRecipientsSearchResultExpandButton = false;
+  campaignRecipientsList: Array<any>;
+  isHeaderCheckBoxChecked: boolean;
+  showContactType = false;
+
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
-    private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties) {
+    private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
+    private contactService:ContactService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     let currentUrl = this.referenceService.getCurrentRouteUrl();
@@ -153,8 +167,23 @@ export class AddCampaignComponent implements OnInit {
    }
 
     ngOnInit() {
+        if(this.isAdd){
+            this.showCampaignDetailsTab();
+        }
         this.loadCampaignDetailsSection();
         this.findEmailTemplates(this.emailTemplatesPagination);
+        this.findCampaignRecipients(this.campaignRecipientsPagination);
+    }
+
+    showCampaignDetailsTab(){
+        $('#launch-tab').hide(600);
+        $('#campaign-details').show(600);
+       
+    }
+
+    showLaunchTab(){
+        $('#campaign-details').hide(600);
+        $('#launch-tab').show(600);
     }
 
     loadCampaignDetailsSection(){
@@ -207,7 +236,16 @@ export class AddCampaignComponent implements OnInit {
                 this.activeCRMDetails = data['activeCRMDetails'];
                 this.isGdprEnabled = data['isGdprEnabled'];
                 this.isOrgAdminCompany  = data['isOrgAdminCompany'];
+                let isMarketingCompany  = data['isMarketingCompany'];
+                let isVendorCompany = data['isVendorCompany'];
                 this.showMarketingAutomationOption = this.isOrgAdminCompany;
+                if(this.isOrgAdminCompany){
+                    this.contactsOrPartnersSelectionText = "  Select List of "+this.partnerModuleCustomName+" / Recipients  to be used in this campaign";
+                }else if(isMarketingCompany){
+                    this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
+                }else if(isVendorCompany){
+                    this.contactsOrPartnersSelectionText = "Select List of "+this.partnerModuleCustomName+" to be used in this campaign";
+                }
                 this.setFromEmailAndFromName(data);
             },error=>{
                 this.xtremandLogger.errorPage(error);
@@ -409,8 +447,8 @@ export class AddCampaignComponent implements OnInit {
 
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
-        this.contactsPagination.pageIndex = 1;
-        this.contactsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.pageIndex = 1;
+        this.campaignRecipientsPagination.maxResults = 12;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -522,8 +560,8 @@ export class AddCampaignComponent implements OnInit {
     /***XNFR-125****/
     setOneClickLaunch(event:any){
     this.campaign.oneClickLaunch = event;
-    this.contactsPagination.pageIndex = 1;
-    this.contactsPagination.maxResults = 12;
+    this.campaignRecipientsPagination.pageIndex = 1;
+    this.campaignRecipientsPagination.maxResults = 12;
     this.selectedContactListIds = [];
     this.userListDTOObj = [];
     this.isContactList = false;
@@ -844,5 +882,51 @@ export class AddCampaignComponent implements OnInit {
        // throw new Error('Method not implemented.');
     }
   
+    /***********Contacts/Partners************/
+    sortRecipientsList(text:any){
+        this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
+        this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
+    }
+    setSearchAndSortOptionsForRecipients(campaignRecipientsPagination: Pagination, recipientsSortOption: SortOption){
+		campaignRecipientsPagination.pageIndex = 1;
+        campaignRecipientsPagination.searchKey = this.recipientsSortOption.searchKey.trim();
+        if (campaignRecipientsPagination.searchKey != undefined && campaignRecipientsPagination.searchKey != null 
+            && campaignRecipientsPagination.searchKey.trim() != "") {
+            this.showRecipientsSearchResultExpandButton = true;
+        } else {
+            this.showRecipientsSearchResultExpandButton = false;
+        }
+        this.campaignRecipientsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.campaignRecipientsPagination);
+        this.findCampaignRecipients(campaignRecipientsPagination);
+    }
+
+    findCampaignRecipients(campaignRecipientsPagination: Pagination) {
+        this.campaignRecipientsLoader = true;
+        if (!this.isAdd) {
+            campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+        }
+        this.contactService.findContactsAndPartnersForCampaign(campaignRecipientsPagination)
+            .subscribe(
+                (response: any) => {
+                    let data = response.data;
+                    this.campaignRecipientsList = data.list;
+                    campaignRecipientsPagination.totalRecords = data.totalRecords;
+                    this.recipientsSortOption.totalRecords = data.totalRecords;
+                    campaignRecipientsPagination = this.pagerService.getPagedItems(campaignRecipientsPagination, this.campaignRecipientsList);
+                    var contactIds = campaignRecipientsPagination.pagedItems.map(function (a) { return a.id; });
+                    var items = $.grep(this.selectedContactListIds, function (element) {
+                        return $.inArray(element, contactIds) !== -1;
+                    });
+                    if (items.length == contactIds.length) {
+                        this.isHeaderCheckBoxChecked = true;
+                    } else {
+                        this.isHeaderCheckBoxChecked = false;
+                    }
+                    this.campaignRecipientsLoader = false;
+                },
+                (error: string) => {
+                    this.xtremandLogger.errorPage(error);
+                })
+    }
 
 }

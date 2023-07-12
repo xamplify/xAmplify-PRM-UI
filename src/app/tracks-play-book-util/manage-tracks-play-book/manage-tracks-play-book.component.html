@@ -214,8 +214,8 @@
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box" id="box-dark-defalut-clr">
                             <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
-                            <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
-                                {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
+                            <h4 class="mt5 mb5 f-w-600 grid-title"  style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
+                               <span data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.title}}"> {{learningTrack.title | slice:0:25}}</span> <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
                             </h4>
                             <div class="CardDetailstext"> 
                                 <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 0px 15px 0px 15px;">
@@ -227,17 +227,18 @@
                                     <span *ngIf="learningTrack.progress == undefined">0%</span>
                                     <br>
                                 </div>
-                                <h6 class="track-info-grid" title="{{learningTrack?.category?.name}}" translate>
+                                <h6 class="track-info-grid" data-toggle="tooltip" data-placement="bottom"
+                                title="{{learningTrack?.category?.name}}" translate>
                                     Folder <strong>{{learningTrack?.category?.name | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                                 </h6>
                                 <h6 class="track-info-grid" translate>
-                                    Created On <strong>
+                                    Created On <strong> 
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                         </app-timestamp>
                                     </strong>
                                 </h6>
-                                <h6 class="track-info-grid" title="{{learningTrack.createdByName}}" translate>
+                                <h6 class="track-info-grid" data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.createdByName}}" translate>
                                     By <strong>{{learningTrack.createdByName | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack.createdByName?.length>17">..</span>
                                 </h6>

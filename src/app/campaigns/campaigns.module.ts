@@ -45,6 +45,7 @@ import { DetailedCampaignAnalyticsComponent } from './analytics/detailed-campaig
 import { AddCampaignComponent } from './add-campaign/add-campaign.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 import { ManageCampaignsComponent } from './manage-campaigns/manage-campaigns.component';
+import { SelectCampaignRecipientListComponent } from './select-campaign-recipient-list/select-campaign-recipient-list.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,8 @@ import { ManageCampaignsComponent } from './manage-campaigns/manage-campaigns.co
     DetailedCampaignAnalyticsComponent,
     AddCampaignComponent,
     CampaignDetailsComponent,
-    ManageCampaignsComponent  ],
+    ManageCampaignsComponent,
+    SelectCampaignRecipientListComponent  ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
   providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]

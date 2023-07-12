@@ -1681,3 +1681,25 @@ div.switch5 > input.switch:focus ~ label:before {
 .form-control .form-padding-left {
   padding-left: 12px !important;
 }
+
+.custom-design-Popup{
+  width: 40% !important ;
+  float: right !important;
+}
+/* 11/07/23 */
+
+.item__algn{
+  margin-top: 12px;
+}
+.ft-size{
+  font-size: 20px
+}
+.icon-algn{
+  position: relative;
+  top: -1px;
+}
+.cust-modal{
+  position: relative;
+  top: 60px;
+  left: 66px
+}

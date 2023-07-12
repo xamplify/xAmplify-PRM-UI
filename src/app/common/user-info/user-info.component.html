@@ -61,7 +61,7 @@
 	   <h5 *ngIf="!userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}
 		  <span *ngIf="userInfo?.lastName?.length>15">..</span>
 	   </h5>
-	   <h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} {{userInfo?.lastName}}">{{userInfo?.firstName | slice:0:15}}
+	   <h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
 		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
 		  &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 	   </h5>
