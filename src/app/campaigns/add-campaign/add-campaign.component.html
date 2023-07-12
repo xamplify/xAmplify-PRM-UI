@@ -617,8 +617,7 @@
                                                                 </div>
                                                             </td>
                                                             <td class="text-center sorting_1">
-                                                                <app-timestamp  [dateAndTime]="contacts?.displayTime">
-                                                                </app-timestamp>
+                                                                <app-display-date-and-time [dateAndTimeUTCString]="contacts?.createdTimeInString"></app-display-date-and-time>
                                                             </td>
                                                             <td class="text-center">
                                                                 {{contacts?.count}}
@@ -695,4 +694,7 @@
   [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" 
   [templateName]="selectedEmailTemplateNameForPreview"
   (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+  <ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+ </ng-container>
 

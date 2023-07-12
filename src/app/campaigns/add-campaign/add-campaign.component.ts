@@ -146,6 +146,9 @@ export class AddCampaignComponent implements OnInit {
   campaignRecipientsList: Array<any>;
   isHeaderCheckBoxChecked: boolean;
   showContactType = false;
+  selectedListName: any;
+  selectedListId: any;
+  expandedUserList: any;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -883,6 +886,15 @@ export class AddCampaignComponent implements OnInit {
     }
   
     /***********Contacts/Partners************/
+
+    findCampaignRecipientsOnEnterKeyPress(eventKeyCode:number){
+        if(eventKeyCode==13){
+            this.searchCampaignRecipients();
+        }
+    }
+    searchCampaignRecipients(){
+        this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
+    }
     sortRecipientsList(text:any){
         this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
         this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
@@ -898,6 +910,11 @@ export class AddCampaignComponent implements OnInit {
         }
         this.campaignRecipientsPagination = this.utilService.sortOptionValues(this.recipientsSortOption.selectedCampaignRecipientsDropDownOption, this.campaignRecipientsPagination);
         this.findCampaignRecipients(campaignRecipientsPagination);
+    }
+
+    paginateCampaignRecipients(event:any){
+        this.campaignRecipientsPagination.pageIndex = event.page;
+		this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
 
     findCampaignRecipients(campaignRecipientsPagination: Pagination) {
@@ -929,4 +946,27 @@ export class AddCampaignComponent implements OnInit {
                 })
     }
 
+    previewUsers(contactList: any) {
+        this.showUsersPreview = true;
+        this.selectedListName = contactList.name;
+        this.selectedListId = contactList.id;
+    }
+
+    resetValues() {
+        this.showUsersPreview = false;
+        this.selectedListName = "";
+        this.selectedListId = 0;
+    }
+
+
+    viewMatchedContacts(userList: any) {
+        userList.expand = !userList.expand;
+        if (userList.expand) {
+            if ((this.expandedUserList != undefined || this.expandedUserList != null)
+                && userList != this.expandedUserList) {
+                this.expandedUserList.expand = false;
+            }
+            this.expandedUserList = userList;
+        }
+    }
 }
