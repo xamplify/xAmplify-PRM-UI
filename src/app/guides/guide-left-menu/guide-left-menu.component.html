@@ -8,10 +8,10 @@
 
   <div class="page-bar">
     <ul class="page-breadcrumb">
-      <!-- <li>
+      <li>
         <i class="fa fa-home" aria-hidden="true"></i>
-        <a (click)="gotoHome()">Home</a>
-      </li> -->
+        <!-- <a (click)="gotoHome()">Home</a> -->
+      </li>
       <li *ngIf="!isSearch">
         <i class="fa fa-angle-right" aria-hidden="true"></i>
         <a>{{userGuide.title}}</a>
@@ -37,19 +37,19 @@
           <!-- Sidebar Holder -->
           <nav id="sidebar">
             <ul class="list-unstyled components">
-              <li *ngIf="menuItem?.accountDashboard" [ngClass]="showListId === 'Account Dashboard'? 'active':''">
-                <a href="" (click)="getUserGuidesByModuleName('Account Dashboard')">
+              <li *ngIf="menuItem?.accountDashboard" [ngClass]="expansionModuleName === 'Account Dashboard'? 'active':''">
+                <a *ngIf="!menuItem?.isOnlyPartnerCompany" (click)="getUserGuidesByModuleName('Account Dashboard');getGuideLinkByType()">
                   <i class="fa fa-home" aria-hidden="true"></i>
                   <span class="title" translate>Account Dashboard</span>
                   <span class=""></span>
                 </a>
-                <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled" id="Account">
+                <!-- <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled" id="Account">
                   <li *ngFor="let name of userGudeTitles"><a
                       (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
-                </ul>
+                </ul> -->
               </li>
               <!--Partners-->
-              <li *ngIf="menuItem?.partners" [ngClass]="showListId === 'Partner'? 'active':''">
+              <li *ngIf="menuItem?.partners"  [ngClass]="showListId === 'Partner'? 'active':''">
                 <a href="#Partner" data-toggle="collapse" aria-expanded="false"
                   (click)="getUserGuidesByModuleName('Partner')" [ngClass]="expansionModuleName === 'Partner'?'show':''">
                   <i class="fa fa-handshake-o" aria-hidden="true"></i>

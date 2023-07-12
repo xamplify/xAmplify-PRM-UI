@@ -93,6 +93,8 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	expansionOfDIvByModuleId(moduleId: number) {
 		if (moduleId === 2) {
 			this.expansionModuleName = "Campaign";
+		} else if (moduleId === 1) {
+			this.expansionModuleName = "Account Dashboard";
 		} else if (moduleId === 3) {
 			this.expansionModuleName = "Contacts";
 		} else if (moduleId === 4) {
@@ -476,6 +478,13 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				this.refService.scrollSmoothToTop();
 				// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
 			})
+	}
+	getGuideLinkByType(){
+		if(this.authenticationService.module.isVendor) {
+			this.getGuideLinkByTitle('Vendor Account Dashboard')
+		} else {
+			this.getGuideLinkByTitle('Partner Account Dashboard')
+		}
 	}
 
 }  
