@@ -1,9 +1,4 @@
 /* dashboard*/
-.guide-width {
-    width: 1200px;
-    display: block;
-    margin: 0 auto !important;
-}
 .section-height {height: 205px;}
 .bg-img{
     background-image: url(/assets/images/user-guide3.png);
@@ -15,7 +10,7 @@
     border-bottom: 1px solid #ccc;
 }
 .search-guide{
-    transform: translate(0px, 50px); 
+    transform: translate(0px, 84px);
 }
 .user-search{
     padding: 0px 7px;
@@ -76,6 +71,7 @@ td.text-center {
       border-radius: 5px;
       cursor: pointer;
       margin-bottom: 20px;
+      height: 123px;
   }
   .m-auto{
      padding-top: 15px;
@@ -97,3 +93,28 @@ td.text-center {
     /* @media (min-width: 300px) and (max-width: 1920px)  {
         .bg-img {height: 309px;}
     } */
+
+ 
+.guide-width {
+    /* width: 1200px; */
+    display: block;
+    margin: 0 auto !important;
+  }
+  .pad-row {
+    padding: 20px 50px;
+  }
+.page-bar-padding-cu {
+    padding: 20px;
+    margin-bottom: 0px !important;
+  }
+  .acc_img:hover {
+    box-shadow: 0 1px 3px 0 rgba(48, 48, 48, .30), 0 4px 8px 3px rgba(48, 48, 48, .15);
+    border-radius: 5px;
+}
+  @media (min-width: 769px) and (max-width: 1119px)  {
+    .pad-row{padding: 20px 5px;}
+  }
+  @media (min-width: 300px) and (max-width: 768px)  {
+    .pad-row{padding: 20px 20px;}
+  }
+  

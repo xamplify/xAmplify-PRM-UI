@@ -1,8 +1,8 @@
-<section class="bg-img">
-  <div class="row justify-content-center d-flex" style="padding-top: 20px;">
-    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12 text-center search-guide">
+<section class="section-height"> 
+  <div class="row justify-content-center d-flex bg-img">
+    <div class="col-lg-5 col-md-6 col-sm-6 col-xs-6 text-center search-guide">
       <div class="col-xs-12 p0" *ngIf="refService.isMobileScreenSize()">
-        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
+        <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control searchbox-cu"
           placeholder="Search" (keypress)="eventHandler($event.keyCode)">
         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
           (click)="searchKey='';search()"></button>
@@ -13,7 +13,7 @@
       </div>
       <div class="input-icon right">
         <input type="text" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-          class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+          class="form-control searchbox-cu" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
           (click)="searchKey='';search()"></button>
         <button type="submit" class="search-box-item-click" (click)="search()">

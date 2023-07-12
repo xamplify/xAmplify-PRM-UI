@@ -1,12 +1,17 @@
+.section-height {height: 204px;}
 .bg-img{
     background-image: url(/assets/images/user-guide3.png);
-    background-size: cover;
-    height: 204px;
+    background-size: contain;
+    height: 100%;
     background-repeat: no-repeat;
     background-origin: content-box;
-    border-bottom: 1px solid #ccc;
+    width: 100%;
+    /* border-bottom: 1px solid #ccc; */
+    padding: 0px;
+    margin: 0px;
+    background-position: 50% 50%;
+    background-color: #fff;
 }
-
 .search-guide{
     transform: translate(0px, 50px); 
 }
@@ -26,5 +31,21 @@
     padding-bottom: calc(0.375rem + 1px);
     margin-bottom: 0;
     font-size: inherit;
-    line-height: 1.5;
+    line-height: 1.5; 
+}
+
+.searchbox-cu {
+    box-shadow: 0 1px 2px 0 rgba(48, 48, 48, .30), 0 1px 3px 1px rgba(48, 48, 48, .15);
+    border-radius: 3px;
+}
+input.form-control {
+    border: none;
+}
+
+
+@media (min-width: 300px) and (max-width: 768px)  {
+    .bg-img {
+        background-size: cover;
+        background-position: 100% 50%;
+    }
 }

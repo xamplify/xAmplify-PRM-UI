@@ -12,7 +12,7 @@ import { DashboardModule } from 'app/dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
 import { GuideHelpIconComponent } from './guide-help-icon/guide-help-icon.component';
 import { SearchGuidesComponent } from './search-guides/search-guides.component';
-import { GuideTitlesComponent } from './guide-titles/guide-titles.component';
+// import { GuideTitlesComponent } from './guide-titles/guide-titles.component';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import { GuideTitlesComponent } from './guide-titles/guide-titles.component';
     RouterModule,
   ],
   providers:[],
-  declarations: [HomeGuideComponent, GuideTitlesComponent],
+  declarations: [HomeGuideComponent],
   exports:[],
 
 })
