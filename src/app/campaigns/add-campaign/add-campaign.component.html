@@ -532,30 +532,30 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="row" class="text-center">
-                                                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                            <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                         </th>
                                                         <th class="hidden-xs" *ngIf="showRecipientsSearchResultExpandButton" scope="col"></th>
                                                         <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
-                                                            <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'campaignRecipientsTable',2)"></span>
+                                                            <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
                                                             <span class="gridHeader" translate>List Name</span>
                                                         </th>
                                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                                             List Info
                                                         </th>
-                                                        <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
+                                                        <th scope="row" class="text-center" *ngIf="showContactType" translate>Type
                                                         </th>
-                                                        <th scope="row" style="text-align: center;" translate>Created On</th>
-                                                        <th scope="row" style="text-align: center;" translate>Count</th>
-                                                        <th scope="row" style="text-align: center;" translate>Preview </th>
+                                                        <th scope="row" class="text-center" translate>Created On</th>
+                                                        <th scope="row" class="text-center" translate>Count</th>
+                                                        <th scope="row" class="text-center" translate>Preview </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="pointer">   
                                                     <ng-container *ngFor="let contacts of campaignRecipientsPagination?.pagedItems;let i = index">
-                                                        <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
-                                                            >
-                                                            <td class="text-center">
+                                                        <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" 
+                                                            [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)" >
+                                                            <td class="text-center pointer">
                                                                 <div class="form-group">
-                                                                    <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
+                                                                    <input type="checkbox" class="chk pointer" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
                                                                     name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
                                                                      [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
                                                                 </div>
@@ -650,10 +650,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
 
        <!---Edit Template---->
