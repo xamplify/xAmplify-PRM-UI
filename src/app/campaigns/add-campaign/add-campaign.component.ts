@@ -21,6 +21,9 @@ import { UtilService } from 'app/core/services/util.service';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Properties } from 'app/common/models/properties';
+import { ContactService } from 'app/contacts/services/contact.service';
+
+
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -140,11 +143,15 @@ export class AddCampaignComponent implements OnInit {
   campaignRecipientsPagination:Pagination = new Pagination();
   recipientsSortOption: SortOption = new SortOption();
   showRecipientsSearchResultExpandButton = false;
+  campaignRecipientsList: Array<any>;
+  isHeaderCheckBoxChecked: boolean;
+  showContactType = false;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
-    private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties) {
+    private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
+    private contactService:ContactService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     let currentUrl = this.referenceService.getCurrentRouteUrl();
@@ -165,6 +172,7 @@ export class AddCampaignComponent implements OnInit {
         }
         this.loadCampaignDetailsSection();
         this.findEmailTemplates(this.emailTemplatesPagination);
+        this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
 
     showCampaignDetailsTab(){
@@ -893,7 +901,32 @@ export class AddCampaignComponent implements OnInit {
     }
 
     findCampaignRecipients(campaignRecipientsPagination: Pagination) {
-        
+        this.campaignRecipientsLoader = true;
+        if (!this.isAdd) {
+            campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+        }
+        this.contactService.findContactsAndPartnersForCampaign(campaignRecipientsPagination)
+            .subscribe(
+                (response: any) => {
+                    let data = response.data;
+                    this.campaignRecipientsList = data.list;
+                    campaignRecipientsPagination.totalRecords = data.totalRecords;
+                    this.recipientsSortOption.totalRecords = data.totalRecords;
+                    campaignRecipientsPagination = this.pagerService.getPagedItems(campaignRecipientsPagination, this.campaignRecipientsList);
+                    var contactIds = campaignRecipientsPagination.pagedItems.map(function (a) { return a.id; });
+                    var items = $.grep(this.selectedContactListIds, function (element) {
+                        return $.inArray(element, contactIds) !== -1;
+                    });
+                    if (items.length == contactIds.length) {
+                        this.isHeaderCheckBoxChecked = true;
+                    } else {
+                        this.isHeaderCheckBoxChecked = false;
+                    }
+                    this.campaignRecipientsLoader = false;
+                },
+                (error: string) => {
+                    this.xtremandLogger.errorPage(error);
+                })
     }
 
 }
