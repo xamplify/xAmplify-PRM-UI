@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild,Renderer } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CampaignService } from '../services/campaign.service';
@@ -146,19 +146,25 @@ export class AddCampaignComponent implements OnInit {
   campaignRecipientsList: Array<any>;
   isHeaderCheckBoxChecked: boolean;
   showContactType = false;
+  selectedListName: any;
+  selectedListId: any;
+  expandedUserList: any;
+  emptyContactsMessage: string;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
-    private contactService:ContactService) {
-    this.loggedInUserId = this.authenticationService.getUserId();
+    private contactService:ContactService,private render: Renderer,) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
-    let currentUrl = this.referenceService.getCurrentRouteUrl();
-    this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
     if("email"!=this.campaignType){
         this.referenceService.goToPageNotFound();
     }
+    $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
+    this.loggedInUserId = this.authenticationService.getUserId();
+    let currentUrl = this.referenceService.getCurrentRouteUrl();
+    this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
+    this.referenceService.renderer = this.render;
     this.isEmailCampaign = "email"==this.campaignType;
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
@@ -172,7 +178,6 @@ export class AddCampaignComponent implements OnInit {
         }
         this.loadCampaignDetailsSection();
         this.findEmailTemplates(this.emailTemplatesPagination);
-        this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
 
     showCampaignDetailsTab(){
@@ -268,7 +273,10 @@ export class AddCampaignComponent implements OnInit {
             }else{
                 this.listCampaignPipelines();
             }
+
+            /***Load Partners /Contacts***/
             this.campaignDetailsLoader = false;
+            this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
     }
 
@@ -462,11 +470,11 @@ export class AddCampaignComponent implements OnInit {
             if (this.campaignType != 'page') {
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
-          //  this.loadContacts();
+           this.findCampaignRecipients(this.campaignRecipientsPagination);
         } else {
             this.campaign.oneClickLaunch = false;
             this.campaign.configurePipelines = false;
-            this.loadContacts();
+            this.findCampaignRecipients(this.campaignRecipientsPagination);
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
 
@@ -504,9 +512,7 @@ export class AddCampaignComponent implements OnInit {
         return arr;
     }
 
-    loadContacts() {
-      //  throw new Error('Method not implemented.');
-    }
+    
     
     removeTemplateAndAutoResponse() {
         this.urls = [];//Removing Auto-Response WebSites
@@ -567,7 +573,7 @@ export class AddCampaignComponent implements OnInit {
     this.isContactList = false;
     this.selectedPartnershipId = 0;
     if(!event){
-        this.loadContacts();
+        this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
     }
 
@@ -883,6 +889,15 @@ export class AddCampaignComponent implements OnInit {
     }
   
     /***********Contacts/Partners************/
+
+    findCampaignRecipientsOnEnterKeyPress(eventKeyCode:number){
+        if(eventKeyCode==13){
+            this.searchCampaignRecipients();
+        }
+    }
+    searchCampaignRecipients(){
+        this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
+    }
     sortRecipientsList(text:any){
         this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = text;
         this.setSearchAndSortOptionsForRecipients(this.campaignRecipientsPagination,this.recipientsSortOption);
@@ -900,8 +915,15 @@ export class AddCampaignComponent implements OnInit {
         this.findCampaignRecipients(campaignRecipientsPagination);
     }
 
+    paginateCampaignRecipients(event:any){
+        this.campaignRecipientsPagination.pageIndex = event.page;
+		this.findCampaignRecipients(this.campaignRecipientsPagination);
+    }
+
     findCampaignRecipients(campaignRecipientsPagination: Pagination) {
         this.campaignRecipientsLoader = true;
+        campaignRecipientsPagination.channelCampaign = this.campaign.channelCampaign;
+        this.showContactType = this.isOrgAdminCompany && !this.campaign.channelCampaign;
         if (!this.isAdd) {
             campaignRecipientsPagination.campaignId = this.campaign.campaignId;
         }
@@ -929,4 +951,123 @@ export class AddCampaignComponent implements OnInit {
                 })
     }
 
+    previewUsers(contactList: any) {
+        this.showUsersPreview = true;
+        this.selectedListName = contactList.name;
+        this.selectedListId = contactList.id;
+    }
+
+    resetValues() {
+        this.showUsersPreview = false;
+        this.selectedListName = "";
+        this.selectedListId = 0;
+    }
+
+
+    viewMatchedContacts(userList: any) {
+        userList.expand = !userList.expand;
+        if (userList.expand) {
+            if ((this.expandedUserList != undefined || this.expandedUserList != null)
+                && userList != this.expandedUserList) {
+                this.expandedUserList.expand = false;
+            }
+            this.expandedUserList = userList;
+        }
+    }
+
+    highlightRow(contactList: any, event: any) {
+        let contactId = contactList.id;
+        let isChecked = $('#' + contactId).is(':checked');
+        if (isChecked) {
+            $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
+            this.selectedContactListIds.push(contactId);
+            this.userListDTOObj.push(contactList);
+        } else {
+            $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+            this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
+            this.userListDTOObj = this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+        }
+        this.contactsUtility();
+        event.stopPropagation();
+        
+        
+    }
+    highlightContactRow(contactList: any, event: any, count: number, isValid: boolean) {
+        let contactId = contactList.id;
+        if (isValid) {
+            this.emptyContactsMessage = "";
+             if (count > 0) {
+                let isChecked = $('#' + contactId).is(':checked');
+                if (isChecked) {
+                    //Removing Highlighted Row
+                    $('#' + contactId).prop("checked", false);
+                    $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
+                    this.selectedContactListIds.splice($.inArray(contactId, this.selectedContactListIds), 1);
+                    this.userListDTOObj = this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
+                } else {
+                    //Highlighting Row
+                    $('#' + contactId).prop("checked", true);
+                    $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
+                    this.selectedContactListIds.push(contactId);
+                    this.userListDTOObj.push(contactList);
+                }
+                this.contactsUtility();
+                event.stopPropagation();
+            } else {
+                this.emptyContactsMessage = "Users are in progress";
+            }
+
+        }
+
+    }
+    contactsUtility() {
+        var trLength = $('#campaignRecipientsTable tbody tr').length;
+        var selectedRowsLength = $('[name="campaignContact[]"]:checked').length;
+        if (selectedRowsLength > 0 || this.selectedContactListIds.length > 0) {
+            this.isContactList = true;
+        } else {
+            this.isContactList = false;
+        }
+        if (trLength != selectedRowsLength) {
+            $('#checkAllExistingContacts').prop("checked", false)
+        } else if (trLength == selectedRowsLength) {
+            $('#checkAllExistingContacts').prop("checked", true);
+        }
+    }
+
+    checkAll(ev: any) {
+        if (ev.target.checked) {
+            $('[name="campaignContact[]"]').prop('checked', true);
+            this.isContactList = true;
+            let self = this;
+            $('[name="campaignContact[]"]:checked').each(function (index) {
+                var id = $(this).val();
+                self.selectedContactListIds.push(parseInt(id));
+                self.userListDTOObj.push(self.campaignRecipientsPagination.pagedItems[index]);
+                $('#campaignContactListTable_' + id).addClass('contact-list-selected');
+            });
+            this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+            if (this.selectedContactListIds.length == 0) { this.isContactList = false; }
+            this.userListDTOObj = this.referenceService.removeDuplicates(this.userListDTOObj);
+        } else {
+            $('[name="campaignContact[]"]').prop('checked', false);
+            $('#campaignRecipientsTable tr').removeClass("contact-list-selected");
+            if (this.campaignRecipientsPagination.maxResults > 30 || (this.campaignRecipientsPagination.maxResults == this.campaignRecipientsPagination.totalRecords)) {
+                this.isContactList = false;
+                this.selectedContactListIds = [];
+            } else {
+                this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+                let currentPageContactIds = this.campaignRecipientsPagination.pagedItems.map(function (a) { return a.id; });
+                this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
+                this.userListDTOObj = this.referenceService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.campaignRecipientsPagination.pagedItems);
+                if (this.selectedContactListIds.length == 0) {
+                    this.isContactList = false;
+                    this.userListDTOObj = [];
+                }
+            }
+
+        }
+        ev.stopPropagation();
+    }
+    
 }

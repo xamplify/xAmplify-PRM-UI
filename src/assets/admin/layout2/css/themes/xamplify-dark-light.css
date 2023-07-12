@@ -1577,3 +1577,28 @@ input.ng-valid.ng-dirty.ng-touched {
   background: #b8def1;
   color:#333;
 }
+
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-radius: 3px !important;
+  color: #3c763d !important;
+}
+.alert-danger {
+  background-color: #f2dede !important;
+  border-radius: 3px !important;
+  color: #a94442 !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f  !important;
+}
+
+
+.login-error {
+  color: #a94442;
+}
+.login-success {
+  color: #3c763d;
+}

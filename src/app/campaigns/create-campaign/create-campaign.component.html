@@ -2722,7 +2722,8 @@
     </div>
  </div>
  <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+ <app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
+ <!---User List Preview-->
  <ng-container *ngIf="showUsersPreview">
     <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
  </ng-container>
- <app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>

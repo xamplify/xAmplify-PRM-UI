@@ -391,7 +391,7 @@
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Select An Email Template</legend>
                             <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
-                            <div class="col-xs-12 portlet light border-none" *ngIf="!emailTemplatesOrLandingPagesLoader">
+                            <div *ngIf="!emailTemplatesOrLandingPagesLoader">
                                 <!--Filter Icon-->
                                 <button type="submit"  class="float-right fontsize-16px" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
@@ -426,7 +426,7 @@
                                     </div>
                                 </div>
                                 <!--List Of Email Templates-->
-                                <div class="portlet-body">
+                                <div class="portlet-body padding-top-45px">
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
                                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
@@ -479,7 +479,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader" class="alert alert-info">
+                                            <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader" class="alert alert-info text-center">
                                                 <strong>No Data Found.</strong>
                                             </div>
                                         </form>      
@@ -502,13 +502,13 @@
         <div id="launch-tab">
             <!---Select Campaign Recipients---->
             <div class="portlet light shadow">
-                <div class="portlet-body clearfix">
+                <div class="row">
                     <div class="col-xs-12">
                     <form class="form-horizontal form-bordered form-label-stripped">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">{{contactsOrPartnersSelectionText}}</legend>
                             <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
-                            <div class="col-xs-12 portlet light border-none" *ngIf="!campaignRecipientsLoader">
+                            <div  *ngIf="!campaignRecipientsLoader">
                                 <!--Search Key Icon-->
                                 <div class="input-icon right pull-right pr-epx">
                                     <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
@@ -525,37 +525,49 @@
                                 </select> 
                                 </div>
                                 <!--List Of Contacts/Partners-->
-                                <div class="portlet-body">
+                                <div class="portlet-body padding-top-45px">
                                     <div class="row">
+                                        <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                            <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
+                                        </div>
+                                        <table class="table table-filter" *ngIf="campaignRecipientsPagination?.totalRecords==0" aria-describedby="">
+                                            <tr>
+                                                <th colspan="5" scope="row">
+                                                    <div class="alert alert-info text-center">
+                                                        <strong>No Data Found.</strong>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </table>
                                         <div class="table-responsive">
                                             <table class="table tgrid table-hover table-sm" id="campaignRecipientsTable" role="grid" aria-describedby="" *ngIf="campaignRecipientsPagination?.totalRecords > 0">
                                                 <thead>
                                                     <tr>
                                                         <th scope="row" class="text-center">
-                                                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                            <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                         </th>
                                                         <th class="hidden-xs" *ngIf="showRecipientsSearchResultExpandButton" scope="col"></th>
                                                         <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
-                                                            <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'campaignRecipientsTable',2)"></span>
+                                                            <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'campaignRecipientsTable',2)"></span>
                                                             <span class="gridHeader" translate>List Name</span>
                                                         </th>
                                                         <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
                                                             List Info
                                                         </th>
-                                                        <th scope="row" style="text-align: center;" *ngIf="showContactType" translate>Type
+                                                        <th scope="row" class="text-center" *ngIf="showContactType" translate>Type
                                                         </th>
-                                                        <th scope="row" style="text-align: center;" translate>Created On</th>
-                                                        <th scope="row" style="text-align: center;" translate>Count</th>
-                                                        <th scope="row" style="text-align: center;" translate>Preview </th>
+                                                        <th scope="row" class="text-center" translate>Created On</th>
+                                                        <th scope="row" class="text-center" translate>Count</th>
+                                                        <th scope="row" class="text-center" translate>Preview </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="pointer">   
                                                     <ng-container *ngFor="let contacts of campaignRecipientsPagination?.pagedItems;let i = index">
-                                                        <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
-                                                            >
-                                                            <td class="text-center">
+                                                        <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" 
+                                                            [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)" >
+                                                            <td class="text-center pointer">
                                                                 <div class="form-group">
-                                                                    <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
+                                                                    <input type="checkbox" class="chk pointer" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
                                                                     name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
                                                                      [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
                                                                 </div>
@@ -617,8 +629,7 @@
                                                                 </div>
                                                             </td>
                                                             <td class="text-center sorting_1">
-                                                                <app-timestamp  [dateAndTime]="contacts?.displayTime">
-                                                                </app-timestamp>
+                                                                <app-display-date-and-time [dateAndTimeUTCString]="contacts?.createdTimeInString"></app-display-date-and-time>
                                                             </td>
                                                             <td class="text-center">
                                                                 {{contacts?.count}}
@@ -636,7 +647,7 @@
                                                         </tr>
                                                     </ng-container>                                                     
                                                 </tbody>
-                                                </table>
+                                            </table>
                                         </div>  
                                     </div>   
                                  </div>    
@@ -651,10 +662,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
 
        <!---Edit Template---->
@@ -695,4 +703,7 @@
   [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" 
   [templateName]="selectedEmailTemplateNameForPreview"
   (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+  <ng-container *ngIf="showUsersPreview">
+    <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+ </ng-container>
 

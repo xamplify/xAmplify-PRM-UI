@@ -151,7 +151,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	errorUploadCropper = false;
 	integrationTabIndex = 0;
 	@ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
-	@ViewChild(LeftsidenavbarCustomComponent) leftMenuCustomize: LeftsidenavbarCustomComponent;
 	integrateRibbonText: string;
 
 	hubSpotRibbonText: string;
@@ -4142,8 +4141,6 @@ configSalesforce() {
 		this.themeResponse.isVisible = false;
 		this.referenceService.goToTop();
 	}
-	getCustomizedMenuItems(){
-		this.leftMenuCustomize.getMenuItems();
-	}
+
  /************* XNFR-238 *********************/	
 }
