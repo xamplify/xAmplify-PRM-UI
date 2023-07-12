@@ -55,37 +55,37 @@ td.text-center {
 }
 
 .user_card{
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  height: 153px;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  }
+  img.m-auto {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    padding: 13px 11px;
     position: relative;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      min-width: 0;
-      word-wrap: break-word;
-      background-color: #FAFCFD;
-      background-clip: border-box;
-      border: 1px solid rgba(0,0,0,.125);
-      border-radius: 5px;
-      cursor: pointer;
-      margin-bottom: 20px;
-      height: 123px;
-  }
-  .m-auto{
-     padding-top: 15px;
-      display: block;
-      width: 64px;
-      height: auto;
-      margin: 0 auto;
-  }
-  .acc_img{
-    text-align: center;
-  }
+    top: 4px;
+}
   .user_txt{
     font-size: 15px;
-    margin-bottom: 16px;
+    padding-top: 17px;
+    text-align: center;
+    margin: 0;
   }
   .p_20{
     padding:30px 30px 30px 30px;
@@ -103,14 +103,14 @@ td.text-center {
   .pad-row {
     padding: 20px 50px;
   }
-.page-bar-padding-cu {
-    padding: 20px;
+.page-bar-padding-cu-thispageonly {
+    padding: 30px 40px;
     margin-bottom: 0px !important;
   }
-  .acc_img:hover {
+.user_card:hover {
     box-shadow: 0 1px 3px 0 rgba(48, 48, 48, .30), 0 4px 8px 3px rgba(48, 48, 48, .15);
-    border-radius: 5px;
-}
+    border-radius: 8px;
+} 
   @media (min-width: 769px) and (max-width: 1119px)  {
     .pad-row{padding: 20px 5px;}
   }
@@ -118,3 +118,34 @@ td.text-center {
     .pad-row{padding: 20px 20px;}
   }
   
+/* 12-07-2023 */
+.acc_img {
+  background: #fff;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+  display: block;
+}
+.card-paddings-cu{
+  margin: 0px;
+  padding: 0px 5px;
+}
+
+
+
+/* iconsbg */
+.icon-bg1 {background: #FFF2EF;}
+.icon-bg2 {background: #E8F9FF;}
+.icon-bg3 {background: #ECFFEC;}
+.icon-bg4 {background: #F7F3FE;}
+.icon-bg5 {background: #FEF8E1;}
+.icon-bg6 {background: #FFF2EF;}
+.icon-bg7 {background: #FFF9E2;}
+.icon-bg8 {background: #E8F9FF;}
+.icon-bg9 {background: #FDF0ED;}
+.icon-bg10 {background: #E8F9FF;}
+.icon-bg11 {background: #ECFFEC;}
+.icon-bg12 {background: #FFF9E2;}
+.icon-bg13 {background: #FFF9E2;}
+.icon-bg14 {background: #FFF2EF;}

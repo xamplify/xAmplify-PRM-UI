@@ -1,0 +1,16 @@
+.helpcircle-cu {
+    font-size: 22px !important;
+    position: relative;
+    top: 2px;
+    left: 0px;
+}
+.help-iconbgadd {
+    float: right;
+    margin: 4px 12px;
+    background: #E8EAED;
+    padding: 6px 6px;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    border: 1px solid #ddd;
+}
