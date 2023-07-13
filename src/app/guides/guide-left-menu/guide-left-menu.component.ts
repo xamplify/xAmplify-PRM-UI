@@ -164,12 +164,12 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	}
 	getSearchKey(event:any){
 		this.searchKey = event;
-		this.loading = false;
-		this.resetResponse();
-		this.pagination.searchKey = this.searchKey;
-		this.pagination.pageIndex = 1;
-		this.isSearch = true;
-		this.getUserGuidesByModuleName("");
+		// this.loading = false;
+		// this.resetResponse();
+		// this.pagination.searchKey = this.searchKey;
+		// this.pagination.pageIndex = 1;
+		 this.isSearch = true;
+		// this.getUserGuidesByModuleName("");
 	}
 	// eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 	// search() {
@@ -181,24 +181,28 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	// 	this.getUserGuidesByModuleName("");
 	// 	//this.getSearchResultsOfUserGuides(this.pagination);
 	// }
-	setPage(event: any) {
-		this.pagination.pageIndex = event.page;
-		//this.getSearchResultsOfUserGuides(this.pagination);
-	}
+	// setPage(event: any) {
+	// 	this.pagination.pageIndex = event.page;
+	// 	//this.getSearchResultsOfUserGuides(this.pagination);
+	// }
 
 	ngOnInit() {
 		let currentUrl = this.router.url;
 		if (currentUrl.includes('/home/help/search')) {
 			this.pagination.searchWithModuleName = true;
 			this.searchKey = this.route.snapshot.params['moduleName'];
-			if (this.searchKey != undefined) {
-				this.getSearchKey(this.searchKey)
-				this.getUserGuidesByModuleName("");
-			} else {
-				// this.getUserGuidesByModuleName(this.searchKey);
-			}
+		// 	 if (this.searchKey != undefined) {
+		// 		this.location.replaceState('home/help')
+		// }
+		    
+			// 	this.getSearchKey(this.searchKey)
+			 	this.getUserGuidesByModuleName("");
+			// } else {
+			// 	// this.getUserGuidesByModuleName(this.searchKey);
+			// }
 		} else {
 			this.slug = this.route.snapshot.params['slug'];
+			this.pagination.slug = this.slug;
 			this.getUserGuideBySlug(this.pagination);
 		}
 		this.findMenuItems();
@@ -483,7 +487,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		if(this.authenticationService.module.isVendor) {
 			this.getGuideLinkByTitle('Vendor Account Dashboard')
 		} else {
-			this.getGuideLinkByTitle('Partner Account Dashboard')
+			this.getGuideLinkByTitle('Vendor Account Dashboard')
 		}
 	}
 

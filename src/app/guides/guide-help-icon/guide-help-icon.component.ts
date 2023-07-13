@@ -12,12 +12,11 @@ import { ReferenceService } from 'app/core/services/reference.service';
 export class GuideHelpIconComponent implements OnInit {
   loading:boolean = false;
   @Input() searchKey : any;
-  
   @Output() searchEvent = new EventEmitter<any>();
-
   constructor(public userService:UserService,public authenticationService:AuthenticationService,public refService:ReferenceService) { }
 
   ngOnInit() {
+    this.search();
   }
   resetResponse() {
 		//this.customResponse = new CustomResponse();

@@ -30,8 +30,10 @@ export class SearchGuidesComponent implements OnInit, OnChanges {
     this.getSearchResultsOfUserGuides(this.pagination)
   }
   ngOnChanges(){
-    this.pagination.searchKey = this.searchKey
-    this.getSearchResultsOfUserGuides(this.pagination)
+    this.loading = true;
+    this.pagination.searchKey = this.searchKey;
+    this.loading = false;
+    this.getSearchResultsOfUserGuides(this.pagination);
   }
   getSearchResultsOfUserGuides(pagination: Pagination) {
     this.loading = true;
@@ -51,7 +53,7 @@ export class SearchGuidesComponent implements OnInit, OnChanges {
           this.pager = this.socialPagerService.getPager(userGuide.totalRecords, this.pagination.pageIndex, this.pagination.maxResults);
           this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
           this.refService.loading(this.httpRequestLoader, false);
-          this.location.replaceState('home/help/search/'+ this.searchKey);
+          this.location.replaceState('home/help/search');
 
         }
       }, (error: any) => {
@@ -63,19 +65,19 @@ export class SearchGuidesComponent implements OnInit, OnChanges {
   getGuideLinkByTitle(value:String){
     this.changeEvent.emit(value);
   }
-  resetResponse() {
-		//this.customResponse = new CustomResponse();
-	}
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
-	search() {
-		this.resetResponse();
-		this.pagination.searchKey = this.searchKey;
-		this.pagination.pageIndex = 1;
-		//this.isSearch = true;
-		//this.getSearchResultsOfUserGuides(this.pagination);
-	}
+  // resetResponse() {
+	// 	//this.customResponse = new CustomResponse();
+	// }
+	// eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
+	// search() {
+	// 	this.resetResponse();
+	// 	this.pagination.searchKey = this.searchKey;
+	// 	this.pagination.pageIndex = 1;
+	// 	//this.isSearch = true;
+	// 	this.getSearchResultsOfUserGuides(this.pagination);
+	// }
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
-		//this.getSearchResultsOfUserGuides(this.pagination);
+		this.getSearchResultsOfUserGuides(this.pagination);
 	}
 }
