@@ -643,4 +643,16 @@ table.table-bordered.dataTable {
   top: 5px;
 }
 
+.padding-left-0{
+  padding-left: 0;
+}
+.height-66px{
+  height: 66px;
+}
+
+.npcfs {
+  padding-top: 0px !important;
+  font-size: 15px !important;
+}
+
 
