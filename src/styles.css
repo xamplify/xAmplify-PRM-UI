@@ -1970,8 +1970,8 @@ input#copy-link {
 .published {
   background-color: green !important;
   width: 75px !important;
-    padding: 5px 10px !important;
-    font-size: 10px !important;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
 }
 
 .toggle-info-white-label {
@@ -2113,12 +2113,13 @@ fieldset[disabled] .btn-danger.active {
 .Btn-Green.btn:hover {
   color: #fff;
 }
-.Btn-Green.btn.active, .Btn-Green.btn:active, .Btn-Green.btn:focus, .Btn-Green.btn:hover, .open .Btn-Green.btn.dropdown-toggle {
+.Btn-Green.btn.active,
+.Btn-Green.btn:active,
+.Btn-Green.btn:focus,
+.Btn-Green.btn:hover,
+.open .Btn-Green.btn.dropdown-toggle {
   color: #fff;
 }
-
-
-
 
 /* Site gray button */
 .Btn-Gray {
@@ -2135,11 +2136,13 @@ fieldset[disabled] .btn-danger.active {
 .Btn-Gray.btn:hover {
   color: #fff;
 }
-.Btn-Gray.btn.active, .Btn-Green.btn:active, .Btn-Green.btn:focus, .Btn-Green.btn:hover, .open .Btn-Green.btn.dropdown-toggle {
+.Btn-Gray.btn.active,
+.Btn-Green.btn:active,
+.Btn-Green.btn:focus,
+.Btn-Green.btn:hover,
+.open .Btn-Green.btn.dropdown-toggle {
   color: #fff;
 }
-
-
 
 /* Site black button */
 .Btn-Black {
@@ -2189,7 +2192,7 @@ h5.view-banner {
   margin-left: 5px;
 }
 
- /* 28-6-2023 table btns,lables and tags*/
+/* 28-6-2023 table btns,lables and tags*/
 .lightgray-btn {
   background: #f1f3fa;
   border: 1px solid #ddd;
@@ -2200,7 +2203,7 @@ h5.view-banner {
   background: #ececee;
 }
 .view-banner-white-labeled {
-  background-color: #68B4F1;
+  background-color: #68b4f1;
   color: white !important;
   padding: 5px 10px;
   text-align: center;
@@ -2250,7 +2253,7 @@ h5.view-banner {
   font-size: 10px !important;
 }
 .white-labeled-cu {
-  background-color: #68B4F1;
+  background-color: #68b4f1;
   color: white !important;
   padding: 5px 10px;
   text-align: center;
@@ -2268,7 +2271,7 @@ h5.view-banner {
   width: 85px !important;
 }
 .white-labeled-cu1 {
-  background-color: #68B4F1;
+  background-color: #68b4f1;
   color: white !important;
   padding: 5px 10px;
   text-align: center;
@@ -2297,7 +2300,9 @@ button.table-scbscribe-btn:hover {
   border-color: #1f897f;
   color: #fff;
 }
-.white-labeled-width {width: 125px;}
+.white-labeled-width {
+  width: 125px;
+}
 
 /* 04-07-2023 */
 .panel-body {
@@ -2307,6 +2312,10 @@ button.table-scbscribe-btn:hover {
 .cursor-pointer {
   cursor: pointer;
 }
-.cursor-move{
+.cursor-move {
   cursor: move !important;
+}
+.actions-block .fa-trash-o:hover {
+  background: #cb5a5e;
+  color: #fff !important;
 }

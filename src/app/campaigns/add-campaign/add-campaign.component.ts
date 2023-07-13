@@ -1067,6 +1067,29 @@ export class AddCampaignComponent implements OnInit {
         if (n % 2 === 0) { return true; }
         return false;
     }
+
+    remove(divId: string, type: string) {
+        if (type == "replies") {
+            this.replies = this.spliceArray(this.replies, divId);
+        } else {
+            this.urls = this.spliceArray(this.urls, divId);
+        }
+        $('#' + divId).remove();
+        let index = divId.split('-')[1];
+        let editorName = 'editor' + index;
+        let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if (errorLength == 0) {
+            this.dataError = false;
+        }
+    }
+
+    spliceArray(arr: any, id: string) {
+        arr = $.grep(arr, function (data:any, index:number) {
+            return data.divId !== id
+        });
+        return arr;
+    }
+
     addReplyRows() {
         this.reply = new Reply();
         let length = this.allItems.length;
@@ -1112,11 +1135,16 @@ export class AddCampaignComponent implements OnInit {
         reply.emailTemplatesPagination.pageIndex = event.page;
         this.findEmailTemplatesForAutoResponseWorkFlow(reply);
     }
-
     
-
-
-
+    setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
+        if (!isDraft) {
+            reply.selectedEmailTemplateId = emailTemplateId;
+            $('#reply-' + index + emailTemplateId).prop("checked", true);
+        }
+    }
+    selectEmailTemplateForEmailAutoResponseWorkflow(event: any, index: number, reply: Reply) {
+        reply.defaultTemplate = event;
+    }
     /********Website Workflows****/
     addClickRows() {
         this.url = new Url();
@@ -1130,37 +1158,51 @@ export class AddCampaignComponent implements OnInit {
         this.url.url = this.emailTemplateHrefLinks[0];
         this.urls.push(this.url);
         this.allItems.push(id);
+        this.url.emailTemplatesPagination.maxResults = 12;
         this.findEmailTemplatesForWebSiteWorkFlow(this.url);
     }
     findEmailTemplatesForWebSiteWorkFlow(url: Url) {
-        //throw new Error('Method not implemented.');
+        url.loader = true;
+        url.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+        this.campaignService.findCampaignEmailTemplates(url.emailTemplatesPagination).subscribe(
+            response=>{
+                const data = response.data;
+                url.emailTemplatesPagination.totalRecords = data.totalRecords;
+                this.emailTemplatesSortOption.totalRecords = data.totalRecords;
+                url.emailTemplatesPagination = this.pagerService.getPagedItems(url.emailTemplatesPagination, data.list);
+                url.loader = false;
+            },error=>{
+                url.loader = false;
+                this.xtremandLogger.errorPage(error);
+            });
     }
-    remove(divId: string, type: string) {
-        if (type == "replies") {
-            this.replies = this.spliceArray(this.replies, divId);
-        } else {
-            this.urls = this.spliceArray(this.urls, divId);
-        }
-        $('#' + divId).remove();
-        let index = divId.split('-')[1];
-        let editorName = 'editor' + index;
-        let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if (errorLength == 0) {
-            this.dataError = false;
+
+
+    findAutoWebsiteLikAutoResponseEmailTemplatesOnEnterKeyPress(eventKeyCode:number,reply:Reply){
+        if (eventKeyCode === 13) {
+            this.searchAutoResponseEmailTemplates(reply);
         }
     }
 
-    spliceArray(arr: any, id: string) {
-        arr = $.grep(arr, function (data:any, index:number) {
-            return data.divId !== id
-        });
-        return arr;
+    searchWebsiteLinkAutoResponseEmailTemplates(url:Url){
+        url.emailTemplatesPagination.pageIndex = 1;
+        url.emailTemplatesPagination.searchKey = url.emailTemplateSearchInput;
+        this.findEmailTemplatesForWebSiteWorkFlow(url);
     }
-    
-    selectReplyEmailBody(event: any, index: number, reply: Reply) {
-        reply.defaultTemplate = event;
+
+    paginateWebsiteLinkAutoResponseEmailTempaltes(event: any, url: Url){
+        url.emailTemplatesPagination.pageIndex = event.page;
+        this.findEmailTemplatesForWebSiteWorkFlow(url);
     }
-    selectClickEmailBody(event: any, index: number, url: Url) {
+   
+    selectEmailTemplateForWebsiteLinkWorkflow(event: any, index: number, url: Url) {
         url.defaultTemplate = event;
+    }
+
+    setWebsiteLinkEmailTemplate(emailTemplateId: number, url: Url, index: number, isDraft: boolean) {
+        if (!isDraft) {
+            url.selectedEmailTemplateId = emailTemplateId;
+            $('#url-' + index + emailTemplateId).prop("checked", true);
+        }
     }
 }

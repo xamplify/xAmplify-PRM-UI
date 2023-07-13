@@ -313,7 +313,7 @@
                                                 <!-- ----------------Radio Buttons/Check Boxes-------------- -->
                                                 <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select' || selectedColumn.labelType.split('_')[0]=='quiz'">
                                                     <form class="form-inline">
-                                                        <legend>
+                                                        <legend style="border:none !important ">
                                                             <div class="form-group">
                                                                 <label class="control-label" *ngIf="selectedColumn.labelType=='radio'">Radio
                                                                     Button

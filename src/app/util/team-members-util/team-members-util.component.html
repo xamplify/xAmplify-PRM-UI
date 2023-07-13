@@ -61,7 +61,7 @@
     <div class="col-lg-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
       <div class="row">
         <div class="clearfix" *ngIf="isTeamMemberModule">
-          <section class="clearfix">
+          <section class="clearfix" style="margin-top:-4px;">
             <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
               <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
                 <div class="btn-xs btn-padding Btn-Green fileinput-button btn-block rounded-0" style="position: relative;">
@@ -70,7 +70,7 @@
                 </div>
             </div>
               <div class="col-xs-12 col-sm-4 pull-right">
-                  <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddTeamMemberDiv()">
+                  <button class="btn-xs btn-primary btn-block rounded-0" style="padding:1px;" (click)="goToAddTeamMemberDiv()">
                       <h6 style="font-size:14px;color: #fff !important;" translate>Add</h6>
                   </button>
               </div>
