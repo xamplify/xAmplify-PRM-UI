@@ -1630,3 +1630,6 @@ ul.drag-menu-cu li:hover {
 h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
+.portlet-light-fields {
+  border: 1px solid #2f4857 !important;
+}

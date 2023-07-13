@@ -14,6 +14,7 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { Validator } from '@angular/forms';
 
 declare var $: any, CKEDITOR: any, swal: any;
 @Component({
@@ -62,6 +63,13 @@ export class CustomSkinComponent implements OnInit {
   mainDivColor: string;
   mainBorderColor: string;
   mainTextColor: string;
+  mainButtonBgColor: string;
+  mainButtonBorderColor: string;
+  mainButtonValueColor: string;
+  mainButtonIconColor: string;
+  secondaryButtonBgColor: string;
+  secondaryButtonBorderColor: string;
+  secondaryButtonTextColor: string;
   /*******Main_Content******** */
   /*******Left Menu***** */
   leftBgColor: string;
@@ -94,6 +102,8 @@ export class CustomSkinComponent implements OnInit {
   minLength: number;
   statusCode: any;
   isValid = false;
+  headerBg = false;
+  btnBorderColor = false;
   customResponse: CustomResponse = new CustomResponse();
   ngxloading = false;
   saveAlert: boolean = false;
@@ -256,12 +266,14 @@ export class CustomSkinComponent implements OnInit {
     } else {
       this.removeColorCodeErrorMessage(colorCode, type);
     }
+
   }
   removeColorCodeErrorMessage(colorCode: string, type: string) {
 
     /********Top_Navigation_Bar***************/
     if (type === "headerBgColor") {
-      this.headerForm.backgroundColor = colorCode; this.isValidBackgroundColor = true;
+      this.headerForm.backgroundColor = colorCode; 
+      this.isValidBackgroundColor = true;
     } else if (type === "headerBBorderColor") {
       this.headerForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
     } else if (type === "headerBVColor") {
@@ -281,6 +293,20 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
     } else if (type === "mainTextColor") {
       this.mainContentForm.textColor = colorCode; this.isValidTextColor = true;
+    } else if(type === "mainButtonBgColor"){
+      this.mainContentForm.buttonColor = colorCode; this.isValidTextColor = true;
+    } else if(type === "mainButtonBorderColor"){
+      this.mainContentForm.buttonPrimaryBorderColor = colorCode; this.isValidTextColor = true;
+    } else if(type ==="mainButtonValueColor"){
+      this.mainContentForm.buttonValueColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "mainButtonIconColor"){
+      this.mainContentForm.iconColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBgColor"){
+      this.mainContentForm.buttonSecondaryColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBorderColor"){
+      this.mainContentForm.buttonSecondaryBorderColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonTextColor"){
+      this.mainContentForm.buttonSecondaryTextColor= colorCode; this.isValidTextColor = true;
     }
     /*********Main_content********************/
     /*******Left Menu************ */
@@ -407,6 +433,20 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
     } else if (type === "mainTextColor") {
       this.mainContentForm.textColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonBgColor"){
+      this.mainContentForm.buttonColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonBorderColor"){
+      this.mainContentForm.buttonPrimaryBorderColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonValueColor"){
+      this.mainContentForm.buttonValueColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonIconColor"){
+      this.mainContentForm.iconColor = ""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBgColor"){
+      this.mainContentForm.buttonSecondaryColor=""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBorderColor"){
+      this.mainContentForm.buttonSecondaryBorderColor=""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonTextColor"){
+      this.mainContentForm.buttonSecondaryTextColor=""; this.isValidTextColor = true;
     }
     /*********Main_content********************/
     /*******Left Menu************ */
@@ -480,6 +520,33 @@ export class CustomSkinComponent implements OnInit {
       } else if (type === "mainTextColor") {
         this.mainTextColor = event;
         this.mainContentForm.textColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonBgColor"){
+        this.mainButtonBgColor = event;
+        document.documentElement.style.setProperty('--button-primary-bg-color', this.mainContentForm.buttonColor);
+        this.mainContentForm.buttonColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonBorderColor"){
+        this.mainButtonBorderColor = event;
+        document.documentElement.style.setProperty('--button-primary-border-color', this.mainContentForm.buttonPrimaryBorderColor);
+        this.mainContentForm.buttonPrimaryBorderColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonValueColor"){
+        this.mainButtonValueColor = event;
+        document.documentElement.style.setProperty('--button-primary-text-color', this.mainContentForm.buttonValueColor);
+        this.mainContentForm.buttonValueColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonIconColor"){
+        this.mainButtonIconColor =  event;
+        this.mainContentForm.iconColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonBgColor"){
+        this.secondaryButtonBgColor= event;
+        document.documentElement.style.setProperty('--button-secondary-bg-color', this.mainContentForm.buttonSecondaryColor);
+        this.mainContentForm.buttonSecondaryColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonBorderColor"){
+        this.secondaryButtonBorderColor = event;
+        document.documentElement.style.setProperty('--button-secondary-border-color', this.mainContentForm.buttonSecondaryBorderColor);
+        this.mainContentForm.buttonSecondaryBorderColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonTextColor"){
+        this.secondaryButtonTextColor = event;
+        document.documentElement.style.setProperty('--button-secondary-text-color', this.mainContentForm.buttonSecondaryTextColor);
+        this.mainContentForm.buttonSecondaryTextColor = event; this.isValidTextColor = true;
       }
       /*********Main_content********************/
       /*******Left Menu************ */
@@ -591,6 +658,13 @@ export class CustomSkinComponent implements OnInit {
           this.mainDivColor = this.mainContentForm.divBgColor;
           this.mainBorderColor = this.mainContentForm.buttonBorderColor;
           this.mainTextColor = this.mainContentForm.textColor;
+          this.mainButtonBgColor = this.mainContentForm.buttonColor;
+          this.mainButtonBorderColor = this.mainContentForm.buttonPrimaryBorderColor;
+          this.mainButtonValueColor = this.mainContentForm.buttonValueColor;
+          this.mainButtonIconColor = this.mainContentForm.iconColor;
+          this.secondaryButtonBgColor = this.mainContentForm.buttonSecondaryColor;
+          this.secondaryButtonBorderColor = this.mainContentForm.buttonSecondaryBorderColor;
+          this.secondaryButtonTextColor = this.mainContentForm.buttonSecondaryTextColor;
           this.ngxloading = false;
         }, error => {
           this.ngxloading = false;
@@ -809,4 +883,6 @@ export class CustomSkinComponent implements OnInit {
       this.UpdateThemeDto();
     }
   }
+
+  
 }
