@@ -72,5 +72,6 @@
     margin-left: -40px;
   }
 }
-
-
+.new-tab-button {
+  height: 34px !important;
+}

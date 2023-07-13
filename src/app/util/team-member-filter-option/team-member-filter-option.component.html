@@ -6,7 +6,8 @@
     <li class="filter" (click)="applyFilter(1)" [class.filter-box-selected]="1 == selectedFilterIndex" style="margin-top:3px;" translate>My
       {{authenticationService?.partnerModule?.customName}}</li>
   </ul>
-  <a *ngIf="filterIcon" class="close-circle ref-mar mrfpximp" (click)="openFilterPopup()" title="Apply Filter">
+  <a *ngIf="filterIcon" class="close-circle ref-mar mrfpximp" (click)="openFilterPopup()" data-toggle="tooltip"
+   data-placement="bottom" title="Apply Filter">
     <i class="fa fa-filter" aria-hidden="true"></i>
   </a>
 </div>

@@ -12,7 +12,6 @@
     <div class="caption" *ngIf="submitButtonText == 'REGISTER DEAL'">Deal Registration</div>
     <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'">Deal Details</div>
   </div>
-  <!-- <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message> -->
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
     <a class="close" aria-label="close">x</a>
     <strong>Please complete the required (*) fields. </strong>
@@ -20,33 +19,6 @@
   <div class="portlet-body clearfix">
     <div>
       <form role="form" id="deal-registration-form">
-      
-        <!-- <div class="row" style="margin: 20px;" *ngIf="!dealRegistration.pushToMarketo && !isVendor" >
-                    <div class="col-xs-12 col-md-10" >
-                      <h4 style="float:right;">Push Opportunity to Marketo :</h4>
-      
-                    </div>
-                    <div class="col-xs-12 col-md-2">
-                        <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="falseAction" *ngIf="!pushToMarketo">
-                         </switch>
-                         <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="trueAction" *ngIf="pushToMarketo">
-                         </switch>
-                    </div>
-                </div>
-                <div class="row" style="margin: 20px;pointer-events:none" *ngIf="dealRegistration.pushToMarketo" >
-                    <div class="col-xs-12 col-md-10" >
-                      <h4 style="float:right;">Push Opportunity to Marketo :</h4>
-      
-                    </div>
-                    <div class="col-xs-12 col-md-2" style="opacity: 0.5;">
-                        <switch [status]="dealRegistration.pushToMarketo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" >
-                         </switch>
-      
-                    </div>
-                </div> -->
         <div class="row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
       
           <!-- left page -->
@@ -120,11 +92,6 @@
                   <b>*</b>
                 </font>
               </label>
-              <!--   <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
-                      <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
-                        [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview"
-                        class="phone-input"></int-phone-prefix>
-                    </fieldset> -->
               <input type="text" maxlength="20" class="form-control" [(ngModel)]=" dealRegistration.phone"
                 [ngModelOptions]="{standalone: true}" (input)="validateField('phone',false)"
                 (blur)="validateField('phone',false)" [disabled]="isVendor || isPreview" />
@@ -369,23 +336,21 @@
         </div>
         <div class="pull-right" *ngIf="!isVendor && !isPreview && !showSfDealFields">
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
-          <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
+            class="btn Btn-Green" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
         </div>
         <div class="pull-right" *ngIf="!isVendor && !isPreview && showSfDealFields">
           <button type="submit" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
-            class="btn green-haze" *ngIf="!dealRegistration.isDeal && !showLoadingButton">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!dealRegistration.isDeal && !showLoadingButton">REGISTER DEAL</button>
           <button type="submit" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
-            class="btn green-haze" *ngIf="dealRegistration.isDeal && !showLoadingButton">UPDATE DEAL</button>
+            class="btn Btn-Green" *ngIf="dealRegistration.isDeal && !showLoadingButton">UPDATE DEAL</button>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Loading.....
           </button>
-          <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>
 
@@ -393,59 +358,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-<!-- END CONTENT -->
-
-
-<!-- Marketo Authentication -->
-<!-- <div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
-  data-backdrop="static">
-   <div class="modal-dialog template-modal" role="document" style="width: 50%">
-     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-     <div class="modal-content rounded-0">
-       <div class="modal-header">
-         <a class="close-circle" data-dismiss="modal" (click)="closeModal()" id="closeButton"><i class="fa fa-times"></i></a>
-         <h4 class="modal-title" id="templateRetrieve">Push Lead</h4>
-       </div>
-       <div class="modal-body" style="padding: 39px;">
-         <form class="form-horizontal">
-           <div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
-           <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span></div>
-           <div [attr.class]="clientIdClass" class="form-group">
-             <label class="control-label col-sm-3" for="email">Client Id:</label>
-             <div class="col-sm-8">
-               <input type="email" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
-                (input)="validateModelForm('email')">
-             </div>
-           </div>
-           <div [attr.class]="secretIdClass" class="form-group">
-             <label class="control-label col-sm-3" for="pwd">Secret Id:</label>
-             <div class="col-sm-8">
-               <input type="password" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
-                (input)="validateModelForm('pwd')">
-             </div>
-           </div>
-
-           <div [attr.class]="marketoInstanceClass" class="form-group">
-             <label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
-             <div class="col-sm-8">
-               <input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
-                (input)="validateModelForm('instance')">
-             </div>
-           </div>
-         </form>
-
-       </div>
-       <div class="modal-footer">
-         <div style="text-align: right;">
-           <button class="btn btn-default" (click)="clearValues()">Clear</button>
-           <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-         </div>
-       </div>
-     </div>
-   </div>
-  </div>
-   -->

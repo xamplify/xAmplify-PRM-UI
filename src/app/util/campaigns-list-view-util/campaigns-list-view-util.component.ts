@@ -40,7 +40,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
-    selectedCampaignTypeIndex = 0;
+    selectedCampaignTypeIndex = 1;
     pager: any = {};
     pagedItems: any[];
     totalRecords = 1;
@@ -312,6 +312,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     this.pagination.categoryId = this.categoryId;
                     this.pagination.categoryType = 'c';
                 }
+                this.pagination.campaignType = 'REGULAR';
                 this.listCampaign(this.pagination);
             }
         );

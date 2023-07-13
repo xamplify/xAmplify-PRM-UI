@@ -1,195 +1,164 @@
 <div class="modal fade right" id="updateEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <a class="close-circle" data-dismiss="modal" (click)="closeReminder()">
-          <i class="fa fa-times"></i>
-        </a>
-        <h4 class="modal-title" id="myModalLabel">Send reminder email</h4>
-      </div>
-      <div class="modal-body">
-        <div style="font-size: 15px;">
-        </div>
-        <section>
+	<div class="modal-dialog" role="document">
+	   <div class="modal-content">
+		  <div class="modal-header">
+			 <a class="close-circle" data-dismiss="modal" (click)="closeReminder()">
+			 <i class="fa fa-times"></i>
+			 </a>
+			 <h4 class="modal-title" id="myModalLabel">Send reminder email</h4>
+		  </div>
+		  <div class="modal-body">
+			 <div style="font-size: 15px;">
+			 </div>
+			 <section>
 				<div class="col-xs-12 col-sm-12">
-					<form class="form-horizontal">
-						<div class="form-group">
-							<label for="eventTitle" class="col-sm-3 labal-css color-css">Event
-								Title <span class=text-danger>*</span>
+				   <form class="form-horizontal">
+					  <div class="form-group">
+						 <label for="eventTitle" class="col-sm-3 labal-css color-css">Event
+						 Title <span class=text-danger>*</span>
+						 </label>
+						 <div class="col-sm-9">
+							<input type="text" [attr.disabled]="true" class="form-control" id="eventTitle"
+							placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
+							[ngModelOptions]="{standalone: true}">
+						 </div>
+					  </div>
+					  <div class="form-group">
+						 <label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
+						 By <span class=text-danger>*</span>
+						 </label>
+						 <div class="col-sm-9">
+							<input type="text"
+							[attr.disabled]="true"
+							class="form-control pull-left" placeholder="Hosted By"
+							[(ngModel)]="eventCampaign.fromName"
+							[ngModelOptions]="{standalone: true}">
+						 </div>
+					  </div>
+					  <div class="form-group">
+						 <label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
+						 Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
+						 </label>
+						 <div class="col-sm-9 p0">
+							<div class="col-sm-6">
+							   <input
+							   [attr.disabled]="true"
+							   type="text" id="startDatePicker"
+							   class="form-control flatpickr" placeholder="Start"
+							   [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
+							   [ngModelOptions]="{standalone: true}">
+							</div>
+							<div class="col-sm-6">
+							   <input type="text" id="enDatePicker"
+							   [attr.disabled]="true"
+							   [disabled]="true"
+							   class="form-control flatpickr" placeholder="End"
+							   [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
+							   [ngModelOptions]="{standalone: true}">
+							</div>
+							<div class="col-sm-12">
+							   <input type="checkbox" id="allDay" class="form-check-input mt10"
+							   [attr.disabled]="true"
+							   [checked]="eventCampaign.campaignEventTimes[0].allDay">
+							   <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
+							</div>
+						 </div>
+					  </div>
+					  <section *ngIf="!eventCampaign.onlineMeeting">
+						 <div class="form-group">
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
+							Name <span class="text-danger" style="position: absolute;">*</span>
 							</label>
 							<div class="col-sm-9">
-								<input type="text" [attr.disabled]="true" class="form-control" id="eventTitle"
-									placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
-									[ngModelOptions]="{standalone: true}">
+							   <input type="text"
+							   [attr.disabled]="true"
+							   class="form-control" id="eventDateTime"
+							   placeholder="Corporate headquarters, local restaurant, etc."
+							   [(ngModel)]="eventCampaign.campaignLocation.location"
+							   [ngModelOptions]="{standalone: true}">
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
-								By <span class=text-danger>*</span>
-							</label>
+						 </div>
+						 <div class="form-group">
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
 							<div class="col-sm-9">
-								<input type="text"
-									[attr.disabled]="true"
-									class="form-control pull-left" placeholder="Hosted By"
-									[(ngModel)]="eventCampaign.fromName"
-									[ngModelOptions]="{standalone: true}">
+							   <input type="text"
+							   [attr.disabled]="true"
+							   class="form-control" id="address1"
+							   placeholder="Street Address"
+							   maxlength="25"
+							   [(ngModel)]="eventCampaign.campaignLocation.street"
+							   [ngModelOptions]="{standalone: true}">
 							</div>
-						</div>
-						<!-- <div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
-								Email</label>
-							<div class="col-sm-9">
-								
-								<input [attr.disabled]="true" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
-									[ngModelOptions]="{standalone: true}">
+							<div class="col-sm-offset-3 col-sm-9 pt10">
+							   <input type="text"
+							   [attr.disabled]="true"
+							   class="form-control" id="address2"
+							   placeholder="Address2"
+							   maxlength="25"
+							   [(ngModel)]="eventCampaign.campaignLocation.address2"
+							   [ngModelOptions]="{standalone: true}">
 							</div>
-						</div> -->
-						<!-- <div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Subject Line <font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Subject Line"
-									class="form-control" [(ngModel)]="eventCampaign.subjectLine"
-									[attr.disabled]="true"
-									name="subjectLine"
-									maxlength="200" />
+							<div class="col-sm-offset-3 col-sm-9 pt10">
+							   <div class="col-sm-6" style="padding-left: 0px">
+								  <input type="text"
+								  [attr.disabled]="true"
+								  class="form-control" id="city" placeholder="City"
+								  [(ngModel)]="eventCampaign.campaignLocation.city"
+								  [ngModelOptions]="{standalone: true}">
+							   </div>
+							   <div class="col-sm-6" style="padding-right: 0px">
+								  <input type="text"
+								  [attr.disabled]="true"
+								  class="form-control" id="state" placeholder="State"
+								  [(ngModel)]="eventCampaign.campaignLocation.state"
+								  [ngModelOptions]="{standalone: true}">
+							   </div>
 							</div>
-						</div> -->
-						
-						<div class="form-group">
-							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
-								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
-							</label>
-							<div class="col-sm-9 p0">
-								<div class="col-sm-6">
-									<input
-										[attr.disabled]="true"
-										type="text" id="startDatePicker"
-										class="form-control flatpickr" placeholder="Start"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString"
-										[ngModelOptions]="{standalone: true}">
-								</div>
-								<div class="col-sm-6">
-									<input type="text" id="enDatePicker"
-										[attr.disabled]="true"
-										[disabled]="true"
-										class="form-control flatpickr" placeholder="End"
-										[(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString"
-										[ngModelOptions]="{standalone: true}">
-									
-								</div>
-
-                  <div class="col-sm-12">
-                    <input type="checkbox" id="allDay" class="form-check-input mt10"
-                        [attr.disabled]="true"
-                        [checked]="eventCampaign.campaignEventTimes[0].allDay">
-                        <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
-                  </div>
+							<div class="col-sm-offset-3 col-sm-9 pt10">
+							   <div class="col-sm-6" style="padding-left: 0px">
+								  <input type="text" 	class="form-control"  [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
+							   </div>
+							   <div class="col-sm-6" style="padding-right: 0px">
+								  <input type="text"
+								  [attr.disabled]="true"
+								  class="form-control" id="zip" placeholder="Zip" maxlength="10"
+								  [(ngModel)]="eventCampaign.campaignLocation.zip"
+								  [ngModelOptions]="{standalone: true}">
+							   </div>
 							</div>
-						</div>
-						<section *ngIf="!eventCampaign.onlineMeeting">
-							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
-									Name <span class="text-danger" style="position: absolute;">*</span>
-								</label>
-								<div class="col-sm-9">
-									<input type="text"
-										[attr.disabled]="true"
-										class="form-control" id="eventDateTime"
-										placeholder="Corporate headquarters, local restaurant, etc."
-										[(ngModel)]="eventCampaign.campaignLocation.location"
-										[ngModelOptions]="{standalone: true}">
-									
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
-								<div class="col-sm-9">
-									<input type="text"
-										[attr.disabled]="true"
-										class="form-control" id="address1"
-										placeholder="Street Address"
-										maxlength="25"
-										[(ngModel)]="eventCampaign.campaignLocation.street"
-										[ngModelOptions]="{standalone: true}">
-								</div>
-								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<input type="text"
-										[attr.disabled]="true"
-										class="form-control" id="address2"
-										placeholder="Address2"
-										maxlength="25"
-										[(ngModel)]="eventCampaign.campaignLocation.address2"
-										[ngModelOptions]="{standalone: true}">
-								</div>
-								
-								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<div class="col-sm-6" style="padding-left: 0px">
-										<input type="text"
-											[attr.disabled]="true"
-											class="form-control" id="city" placeholder="City"
-											[(ngModel)]="eventCampaign.campaignLocation.city"
-											[ngModelOptions]="{standalone: true}">
-									</div>
-									<div class="col-sm-6" style="padding-right: 0px">
-										<input type="text"
-											[attr.disabled]="true"
-											class="form-control" id="state" placeholder="State"
-											[(ngModel)]="eventCampaign.campaignLocation.state"
-											[ngModelOptions]="{standalone: true}">
-									</div>
-								</div>
-								<div class="col-sm-offset-3 col-sm-9 pt10">
-									<div class="col-sm-6" style="padding-left: 0px">
-										<input type="text" 	class="form-control"  [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
-									</div>
-									<div class="col-sm-6" style="padding-right: 0px">
-										<input type="text"
-											[attr.disabled]="true"
-											class="form-control" id="zip" placeholder="Zip" maxlength="10"
-											[(ngModel)]="eventCampaign.campaignLocation.zip"
-											[ngModelOptions]="{standalone: true}">
-									</div>
-								</div>
-							</div>
-						</section>
-					</form>
+						 </div>
+					  </section>
+				   </form>
 				</div>
-				
-				
 				<div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Email subject<font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9">
-								<input type="text" id="subjectLine" placeholder="Reminder Subject Line"
-									class="form-control" [(ngModel)]="reminderEventSubject" (input)="validateReminderButton()"
-									name="subjectLine"
-									maxlength="200" />
-							</div>
-						</div>
-			<div class="form-group">
-							<label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
-								style="color: red"> <b>*</b>
-							</font>
-							</label>
-							<div class="col-sm-9" style="padding-top: 10px;">
-								<textarea [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateReminderButton()" placeholder="Add a comment..."></textarea>
-							</div>
-						</div>
-
-        </section>
-      
-    </div>
-    <div class="pull-right" style="margin: 0px 29px 0px 0px;">
-        <div class="right-css">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeReminder()">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="!isDisableReminderButton"(click)="sendEmailNotOpenReminder()">Send Reminder</button>
-        </div>
-      </div>
-  </div>
-</div>
-</div>
+				   <label class="col-sm-3 labal-css color-css">Email subject<font
+					  style="color: red"> <b>*</b>
+				   </font>
+				   </label>
+				   <div class="col-sm-9">
+					  <input type="text" id="subjectLine" placeholder="Reminder Subject Line"
+					  class="form-control" [(ngModel)]="reminderEventSubject" (input)="validateReminderButton()"
+					  name="subjectLine"
+					  maxlength="200" />
+				   </div>
+				</div>
+				<div class="form-group">
+				   <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Message<font
+					  style="color: red"> <b>*</b>
+				   </font>
+				   </label>
+				   <div class="col-sm-9" style="padding-top: 10px;">
+					  <textarea [(ngModel)]="reminderEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateReminderButton()" placeholder="Add a comment..."></textarea>
+				   </div>
+				</div>
+			 </section>
+		  </div>
+		  <div class="pull-right" style="margin: 0px 29px 0px 0px;">
+			 <div class="right-css">
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeReminder()">Close</button>
+				<button type="button" class="btn btn-primary" [disabled]="!isDisableReminderButton"(click)="sendEmailNotOpenReminder()">Send Reminder</button>
+			 </div>
+		  </div>
+	   </div>
+	</div>
+ </div>

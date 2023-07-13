@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
-
 /*****Common Imports**********************/
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -85,6 +84,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	selectedFileType = "";
 	/****XNFR-255*****/
 	showWhiteLabeledPopup: boolean;
+	showRefreshNotification = false;
+	showRefreshNotificationForHistoryAssets = false;
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -246,6 +247,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
 				this.assets = data.assets;
+				let publishingAssets = [];
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
 					let toolTipTagNames: string = "";
@@ -266,7 +268,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
 						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
 					}
+					if(asset.publishingOrWhiteLabelingInProgress){
+						publishingAssets.push(asset);
+					}
 				});
+				this.showRefreshNotification = publishingAssets.length>0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.stopLoaders();
@@ -379,9 +385,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			if (result.statusCode === 200) {
 				let data = result.data;
 				pagination.totalRecords = data.totalRecords;
+				let publishingAssets = [];
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
+					if(asset.publishingOrWhiteLabelingInProgress){
+						publishingAssets.push(asset);
+					}
 				});
+				this.showRefreshNotificationForHistoryAssets = publishingAssets.length>0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.loading = false;
@@ -657,7 +668,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
     
     campaignRouter(alias:string, viewBy:string) {
         try{
-         this.xtremandLogger.log('ManageVideoComponent campaign router:');
+		this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
          this.videoFileService.getVideo(alias, viewBy)
              .subscribe((videoFile: SaveVideoFile) => {
                  if(videoFile.access){
@@ -665,11 +676,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
                  this.router.navigateByUrl('/home/campaigns/create');
+				 this.referenceService.closeSweetAlertWithDelay();
                  }else{
+					this.referenceService.closeSweetAlert();
                      this.authenticationService.forceToLogout();
                  }
              },
              (error: string) => {
+				this.referenceService.closeSweetAlert();
                  this.xtremandLogger.error('Error In: show campaign videos ():' + error);
                  this.xtremandLogger.errorPage(error);
              });

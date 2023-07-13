@@ -470,7 +470,9 @@ export class PartnerCompanyAndGroupsModalPopupComponent implements OnInit, OnDes
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
 			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes, delete it!'
+			confirmButtonText: 'Yes, delete it!',
+			allowOutsideClick: false,
+      		allowEscapeKey: false
 		}).then(function () {
 			self.setValuesAndPublish();
 		}, function (dismiss: any) {

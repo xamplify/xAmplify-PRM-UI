@@ -1,431 +1,437 @@
 <!--hero section-->
 <div class="loader-container" [hidden]="!mainLoader">
-  <div class="loader"></div>
-</div>
-<div [hidden]="mainLoader">
-<header class="hero-section">
-
-  <!--HTML5 Video-->
-<video autoplay poster="../../../assets/images/stratapps.jpeg" id="bgvid" loop>
-  <source src="https://xamp.io/vod/videos/16700/26092018/xAmplifwebsitevideo1538008387493.mp4" type="video/mp4">
-</video>
-  <!--HTML5 Video end-->
-
-  <div class="overlay"></div>
-
-<nav class="navbar navbar-default" id="navbar" (window:scroll)="onScroll()">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" [href]="properties.xamplify_router" style="background: none;">
-        <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
-        <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo-new.png">
-      </a>
-    </div>
-    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
-      <ul class="nav navbar-nav nav-left">
-        <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>
-        <li><a (click)="goToContactTab()" lang="en">Contact</a></li>
-        <li><a [routerLink]="['./terms-conditions']" lang="en">Terms & conditions</a></li>
-        <li><a [routerLink]="['./privacy-policy']" lang="en">Privacy policy</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-          <li ><a class="loginTF" routerLink="/login" lang="en" style="background: none;"><i class="fa fa-sign-in"></i> Login</a></li>
-          <li ><a routerLink="/v-signup" lang="en" class="btn signUpTF">REGISTER</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  <!--navigation end-->
-
-  <!--welcome message-->
-
-  <section class="container text-center welcome-message">
-    <div class="row">
-      <div class="col-md-12">
-        <br>
-        <h1 class="size" lang="en">Experience the new way of ecosystem marketing</h1>
-        <br>
-        <p  class="size-p" style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
-        <div class="play-btn"  style="padding: 1em;">
-          <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
-         </div>
+   <div class="loader"></div>
+ </div>
+ <div [hidden]="mainLoader">
+ <header class="hero-section">
+ 
+   <!--HTML5 Video-->
+ <video autoplay poster="../../../assets/images/stratapps.jpeg" id="bgvid" loop>
+   <source src="https://xamp.io/vod/videos/16700/26092018/xAmplifwebsitevideo1538008387493.mp4" type="video/mp4">
+ </video>
+   <!--HTML5 Video end-->
+ 
+   <div class="overlay"></div>
+ 
+ <nav class="navbar navbar-default" id="navbar" (window:scroll)="onScroll()">
+   <div class="container">
+     <div class="navbar-header">
+       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+       <a class="navbar-brand" [href]="properties.xamplify_router" style="background: none;">
+         <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
+         <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo-new.png">
+       </a>
+     </div>
+     <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+       <ul class="nav navbar-nav nav-left">
+         <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>      
+         <li><a (click)="goToContactTab()" lang="en">Contact</a></li>
+         <li><a [routerLink]="['./terms-conditions']" lang="en">Terms & conditions</a></li>
+         <li><a [routerLink]="['./privacy-policy']" lang="en">Privacy policy</a></li>
+       </ul>
+       <ul class="nav navbar-nav navbar-right">
+           <li ><a class="loginTF" routerLink="/login" lang="en" style="background: none;"><i class="fa fa-sign-in"></i> Login</a></li>
+           <li ><a routerLink="/v-signup" lang="en" class="btn signUpTF">REGISTER</a></li>
+       </ul>
+     </div>
+   </div>
+ </nav>
+ 
+   <!--navigation end-->
+ 
+   <!--welcome message-->
+ 
+   <section class="container text-center welcome-message">
+     <div class="row">
+       <div class="col-md-12">
          <br>
-        <div class="cta-btn"> <a class="btn" style="text-transform: none !important;" lang="en" href="https://form.jotform.me/83025855234456" target="_blank" >Request a Demo</a>
+         <h1 class="size" lang="en">Experience the new way of ecosystem marketing</h1>
+         <br>
+         <p  class="size-p" style="color: #fff;" lang="en">Whether you've spent years cultivating your network or are just testing the waters, {{properties.APP_WEBSITE}} provides you with a digital platform that allows you to engage and equip your partners, solidifying relationships and driving sales like never before.</p>
+         <div class="play-btn"  style="padding: 1em;">
+           <a *ngIf="false" href="/embed/sb63hg" class="play litebox-hero"><img src="/assets/images/play-btn.png" alt="play"></a>
+          </div>
+          <br>       
+         <div class="cta-btn"> <a class="btn" style="text-transform: none !important;" lang="en" href="https://form.jotform.me/83025855234456" target="_blank" >Request a Demo</a>
+          </div>
+       </div>
+     </div>
+   </section>
+ 
+   <!--welcome message end-->
+ 
+ </header>
+ 
+ <!--benefits end-->
+ 
+ <!--Features-->
+ 
+ <section class="benefits section-spacing text-center" #features id="features" style="background: #f7f7f7 !important;padding-bottom: 0;">
+   <div class="container">
+     <header class="section-header">
+       <h2 lang="en">Strengthen Your Channel Strategy</h2>
+       <h3 lang="en">Give your Partners real ready-to-go content. </h3>
+     </header>
+     <div class="row">
+       <div class="col-sm-4"> <img src="/assets/images/benefits-1.png" alt="benefits of product">
+         <h4 lang="en">Empower Your Network</h4>
+         <p lang="en">{{properties.APP_WEBSITE}} provides a platform for your partners to access digital and social media content, allowing them to easily create multi-touch, co-branded campaigns for their unique audience.</p>
+       </div>
+       <div class="col-sm-4"> <img src="/assets/images/benefits-2.png" alt="benefits of product">
+         <h4 lang="en">Customizable Content Access and Sharing</h4>
+         <p>Easily communicate and share targeted collateral with your Partners. {{properties.APP_WEBSITE}} gives you a simple, straightforward platform to develop email campaigns that convey your message and provide up-to-date content.</p>
+       </div>
+       <div class="col-sm-4"> <img src="/assets/images/benefits-3.png" alt="benefits of product">
+         <h4 lang="en">Complete Insight on Partner Engagement</h4>
+         <p lang="en">With both top-level and partner-level analytics, you have access to data that allows you to learn more about your Channel . Partners also receive their own host of analytics so they can learn more about their audience. </p>
+       </div>
+     </div>
+   </div>
+ </section>
+ 
+
+ 
+     <div class="features section-spacing">
+     <div class="container">
+     <!--feature 2-->
+     <div class="row">
+       <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
+       <div class="col-md-5 col-md-pull-7">
+         <article style="margin-top: 0 !important;">
+           <h2 lang="en">A Powerful Channel Marketing Platform</h2>
+           <p lang="en">{{properties.APP_WEBSITE}} allows you to nurture and grow your channel with outreach campaigns that are easy to develop, manage, and redistribute. Real-time analytics let you and your partners track level of engagement and activity.
+             Provide your Partners with a digital platform that helps both of you succeed.
+             </p>
+           <ul>
+             <li lang="en">Equip your Partners with content and marketing tools to help them grow their business and drive mutual lead-gen and revenue</li>
+             <li lang="en">Increase Partner engagement with easy-to-use campaigns and social media tools</li>
+             <li lang="en">Unify your message across a broader audience</li>
+             <li lang="en">Create a more effective and successful Partner Channel</li>
+           </ul>
+         </article>
+       </div>
+     </div>
+ 
+     <div class="row">
+       <div class="col-md-7 text-center"> <img src="/assets/images/feature-2.png" alt="feature"> </div>
+       <div class="col-md-5">
+         <article style="margin-top: 0 !important;">
+           <h2 lang="en">Intuitive Campaign Creation and Management</h2>
+           <p lang="en">{{properties.APP_WEBSITE}} is designed to let you get your branded message out to your network with just a few simple steps. Your Partners benefit from a similar interface that allows them to quickly and easily forward your content with as few as 5 clicks.</p>
+           <ul>
+             <li lang="en">Add your Partners via CSV file or CRM integration</li>
+             <li lang="en">Upload a video if desired</li>
+             <li lang="en">Create an eye-catching email template with our easy-to-use design engine </li>
+             <li lang="en">Set your parameters and launch your campaign</li>
+             <li lang="en">Partners receive the campaign and can redistribute it in minutes.</li>
+           </ul>
+         </article>
+       </div>
+     </div>
+     <!--feature 2 end-->
+ 
+     <!--feature 3-->
+     <div class="row" style="margin: 0 !important;">
+       <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-3.png" alt="feature"> </div>
+       <div class="col-md-5 col-md-pull-7">
+         <article style="margin-top: 0 !important;">
+           <h2 lang="en">In-depth Analytics</h2>
+           <p lang="en">Use the Analytics to garner new insights and understanding about your Channel and their audience. Your Partners can use the data to gauge response to the content, develop their pipeline and close more deals.</p>
+           <ul>
+             <li lang="en">Cultivate and evaluate your Partner Network by providing more bandwidth to support your engaged Partners</li>
+             <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
+             <li lang="en">Discover ways to fine-tune your message with details on video view-time and opened emails</li>
+           </ul>
+         </article>
+       </div>
+     </div>
+     <!--feature 3 end-->
+   </div>
+ </div>
+ 
+ <!--Features end-->
+ 
+ <!--Video section-->
+ 
+ <section class="video-tour text-center" id="preview" [hidden]="true">
+   <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img  src="/assets/images/play-btn-vs.png" alt="play"></a>
+     <h2 lang="en">Video Preview Of Product</h2>
+   </div>
+ 
+   <!--HTML5 Video-->
+   <video autoplay loop muted id="bgvid" poster="/assets/images/poster.jpg">
+     <source src="https://xamp.io/vod/vb.mp4" type="video/mp4">
+     <source src="https://xamp.io/vod/vb.webm" type="video/webm">
+   </video>
+   <!--HTML5 Video end-->
+ 
+ </section>
+ 
+ <!--Video section end-->
+ 
+ <!--Tour-->
+ 
+ <section class="tour section-spacing text-center" #tour id="tour" *ngIf="false">
+   <div class="container">
+     <div class="row">
+       <div class="col-md-8 center-block">
+         <h2 lang="en">Learn More About The Application <a href="" class="btn" lang="en">TAKE A TOUR <i class="fa fa-arrow-right"></i></a></h2>
+       </div>
+     </div>
+   </div>
+ </section>
+ 
+ <!--Tour end-->
+ 
+ 
+ 
+ <!--Pricing-->
+ 
+ <section class="pricing section-spacing text-center hidden" #pricing id="pricing">
+   <div class="container">
+     <header class="section-header">
+       <h2 lang="en">We Provide Flexible Plans</h2>
+       <h3 lang="en">Free signup. 14 days free trial. No credit card required.</h3>
+     </header>
+     <div class="row">
+       <div class="col-md-12">
+ 
+         <!--PRICE TABLE-->
+         <div class="plan">
+           <div class="plan-details">
+             <div class="header">
+               <h4 lang="en">Free</h4>
+               <h5 lang="en">For beginners and pioneers</h5>
+                <h6>Free forever!</h6>
+             </div>
+             <div class="price"> <span class="currency">$</span><span class="price-amount">0</span><span class="period" lang="en">/ mo</span> </div>
+             <ul class="plan-features">
+               <li lang="en"><span lang="en">All our </span> standard features<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">100</span> Contacts<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">5</span> Templates<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">5 Free</span> Videos<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">10</span> Campaigns<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">1</span> Team members<i class="fa fa-check"></i></li>
+             </ul>
+           </div>
+           <div class="buy-button"><a class="btn" routerLink="/login" lang="en">Get Started</a>
+             <p lang="en">**Limited time offer.</p>
+           </div>
          </div>
-      </div>
-    </div>
-  </section>
-
-  <!--welcome message end-->
-
-</header>
-
-<!--benefits end-->
-
-<!--Features-->
-
-<section class="benefits section-spacing text-center" #features id="features" style="background: #f7f7f7 !important;padding-bottom: 0;">
-  <div class="container">
-    <header class="section-header">
-      <h2 lang="en">Strengthen Your Channel Strategy</h2>
-      <h3 lang="en">Give your Partners real ready-to-go content. </h3>
-    </header>
-    <div class="row">
-      <div class="col-sm-4"> <img src="/assets/images/benefits-1.png" alt="benefits of product">
-        <h4 lang="en">Empower Your Network</h4>
-        <p lang="en">{{properties.APP_WEBSITE}} provides a platform for your partners to access digital and social media content, allowing them to easily create multi-touch, co-branded campaigns for their unique audience.</p>
-      </div>
-      <div class="col-sm-4"> <img src="/assets/images/benefits-2.png" alt="benefits of product">
-        <h4 lang="en">Customizable Content Access and Sharing</h4>
-        <p>Easily communicate and share targeted collateral with your Partners. {{properties.APP_WEBSITE}} gives you a simple, straightforward platform to develop email campaigns that convey your message and provide up-to-date content.</p>
-      </div>
-      <div class="col-sm-4"> <img src="/assets/images/benefits-3.png" alt="benefits of product">
-        <h4 lang="en">Complete Insight on Partner Engagement</h4>
-        <p lang="en">With both top-level and partner-level analytics, you have access to data that allows you to learn more about your Channel . Partners also receive their own host of analytics so they can learn more about their audience. </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-    <div class="features section-spacing">
-    <div class="container">
-    <!--feature 2-->
-    <div class="row">
-      <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
-      <div class="col-md-5 col-md-pull-7">
-        <article style="margin-top: 0 !important;">
-          <h2 lang="en">A Powerful Channel Marketing Platform</h2>
-          <p lang="en">{{properties.APP_WEBSITE}} allows you to nurture and grow your channel with outreach campaigns that are easy to develop, manage, and redistribute. Real-time analytics let you and your partners track level of engagement and activity.
-            Provide your Partners with a digital platform that helps both of you succeed.
-            </p>
-          <ul>
-            <li lang="en">Equip your Partners with content and marketing tools to help them grow their business and drive mutual lead-gen and revenue</li>
-            <li lang="en">Increase Partner engagement with easy-to-use campaigns and social media tools</li>
-            <li lang="en">Unify your message across a broader audience</li>
-            <li lang="en">Create a more effective and successful Partner Channel</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-7 text-center"> <img src="/assets/images/feature-2.png" alt="feature"> </div>
-      <div class="col-md-5">
-        <article style="margin-top: 0 !important;">
-          <h2 lang="en">Intuitive Campaign Creation and Management</h2>
-          <p lang="en">{{properties.APP_WEBSITE}} is designed to let you get your branded message out to your network with just a few simple steps. Your Partners benefit from a similar interface that allows them to quickly and easily forward your content with as few as 5 clicks.</p>
-          <ul>
-            <li lang="en">Add your Partners via CSV file or CRM integration</li>
-            <li lang="en">Upload a video if desired</li>
-            <li lang="en">Create an eye-catching email template with our easy-to-use design engine </li>
-            <li lang="en">Set your parameters and launch your campaign</li>
-            <li lang="en">Partners receive the campaign and can redistribute it in minutes.</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-    <!--feature 2 end-->
-
-    <!--feature 3-->
-    <div class="row" style="margin: 0 !important;">
-      <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-3.png" alt="feature"> </div>
-      <div class="col-md-5 col-md-pull-7">
-        <article style="margin-top: 0 !important;">
-          <h2 lang="en">In-depth Analytics</h2>
-          <p lang="en">Use the Analytics to garner new insights and understanding about your Channel and their audience. Your Partners can use the data to gauge response to the content, develop their pipeline and close more deals.</p>
-          <ul>
-            <li lang="en">Cultivate and evaluate your Partner Network by providing more bandwidth to support your engaged Partners</li>
-            <li lang="en">Analyze the effectiveness of certain campaigns based on downstream activity</li>
-            <li lang="en">Discover ways to fine-tune your message with details on video view-time and opened emails</li>
-          </ul>
-        </article>
-      </div>
-    </div>
-    <!--feature 3 end-->
-  </div>
-</div>
-
-<!--Features end-->
-
-<!--Video section-->
-
-<section class="video-tour text-center" id="preview" [hidden]="true">
-  <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img  src="/assets/images/play-btn-vs.png" alt="play"></a>
-    <h2 lang="en">Video Preview Of Product</h2>
-  </div>
-
-  <!--HTML5 Video-->
-  <video autoplay loop muted id="bgvid" poster="/assets/images/poster.jpg">
-    <source src="https://xamp.io/vod/vb.mp4" type="video/mp4">
-    <source src="https://xamp.io/vod/vb.webm" type="video/webm">
-  </video>
-  <!--HTML5 Video end-->
-
-</section>
-
-<!--Video section end-->
-
-<!--Tour-->
-
-<section class="tour section-spacing text-center" #tour id="tour" *ngIf="false">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 center-block">
-        <h2 lang="en">Learn More About The Application <a href="" class="btn" lang="en">TAKE A TOUR <i class="fa fa-arrow-right"></i></a></h2>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--Tour end-->
-
-
-
-<!--Pricing-->
-
-<section class="pricing section-spacing text-center hidden" #pricing id="pricing">
-  <div class="container">
-    <header class="section-header">
-      <h2 lang="en">We Provide Flexible Plans</h2>
-      <h3 lang="en">Free signup. 14 days free trial. No credit card required.</h3>
-    </header>
-    <div class="row">
-      <div class="col-md-12">
-
-        <!--PRICE TABLE-->
-        <div class="plan">
-          <div class="plan-details">
-            <div class="header">
-              <h4 lang="en">Free</h4>
-              <h5 lang="en">For beginners and pioneers</h5>
-               <h6>Free forever!</h6>
-            </div>
-            <div class="price"> <span class="currency">$</span><span class="price-amount">0</span><span class="period" lang="en">/ mo</span> </div>
-            <ul class="plan-features">
-              <li lang="en"><span lang="en">All our </span> standard features<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">100</span> Contacts<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">5</span> Templates<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">5 Free</span> Videos<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">10</span> Campaigns<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">1</span> Team members<i class="fa fa-check"></i></li>
-            </ul>
-          </div>
-          <div class="buy-button"><a class="btn" routerLink="/login" lang="en">Get Started</a>
-            <p lang="en">**Limited time offer.</p>
-          </div>
-        </div>
-        <!--PRICE TABLE END-->
-        <!--PRICE TABLE-->
-        <div class="plan">
-          <div class="plan-details">
-            <div class="header">
-              <h4 lang="en">BASIC</h4>
-              <h5 lang="en">For  individual marketing professionals and pioneers</h5>
-
-            </div>
-            <div class="price"> <span class="currency">$</span><span class="price-amount">199</span><span class="period" lang="en">/ mo</span> </div>
-            <ul class="plan-features">
-              <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">1000</span> Contacts<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">10</span> Templates<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">20</span> Videos<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">100</span> Campaigns<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">5</span> Team members<i class="fa fa-check"></i></li>
-            </ul>
-          </div>
-          <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
-            <p lang="en">5% OFF. Limited time offer.</p>
-          </div>
-        </div>
-        <!--PRICE TABLE END-->
-
-
-
-        <!--PRICE TABLE-->
-        <div class="plan">
-          <div class="plan-details">
-            <div class="header">
-              <h4 lang="en">PREMIUM</h4>
-              <h5 lang="en">For business who has marketing wing and marketing agencies</h5>
-
-            </div>
-            <div class="price"> <span class="currency">$</span><span class="price-amount">499</span><span class="period" lang="en">/ mo</span> </div>
-            <ul class="plan-features">
-              <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">Unlimited</span> Contacts<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">50</span> Templates<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">50</span> Videos<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">Unlimited</span> Campaigns<i class="fa fa-check"></i></li>
-            <li lang="en"><span lang="en">Unlimited</span> Team members<i class="fa fa-check"></i></li>
-            </ul>
-          </div>
-          <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
-            <p lang="en">10% OFF. Limited time offer.</p>
-          </div>
-        </div>
-        <!--PRICE TABLE END-->
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--Pricing end-->
-
-<!--cta section-->
-
-<section class="cta-section section-spacing text-center">
-  <div class="container">
-    <header class="section-header">
-      <h2 lang="en" class="size">Try {{properties.APP_WEBSITE}} Today!</h2>
-      <h3 lang="en" class="size-try-xamplify">Register for your free 30-day trial.</h3>
-    </header>
-    <div class="row">
-      <div class="col-md-12">
-         <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
-        </div>
-        <p lang="en">Have a question? Email us at <a style="color: white;">support@xamplify.com</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--cta section end-->
-
-<!--contact us-->
-
-<section class="contact section-spacing text-center" #contact id="contact">
-  <div class="container">
-    <header class="section-header">
-      <h2 lang="en">Contact Us</h2>
-      <h3 lang="en">Have any questions? <a style="color: #0396da;">support@xamplify.com</a></h3>
-    </header>
-  </div>
-  <!--map-->
-  <div class="map">
-  <agm-map
-  [latitude]="lat"
-  [longitude]="lng"
-  [zoom]="zoom"
-  [disableDefaultUI]="false"
-  [scrollwheel]="false"
-  (mapClick)="mapClicked($event)">
-  <agm-marker
-      *ngFor="let m of markers; let i = index"
-      (markerClick)="clickedMarker(m.label, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lng"
-      [label]="m.label"
-      [markerDraggable]="m.draggable"
-      (dragEnd)="markerDragEnd(m, $event)">
-    <agm-info-window>
-      <strong>42840 Christy St,</strong><br>
-      <strong>Fremont,CA 94538</strong><br>
-      <strong>Phone: 5107701222</strong>
-    </agm-info-window>
-  </agm-marker>
-  <agm-circle [latitude]="lat" [longitude]="lng"
-      [radius]="5000"
-      [fillColor]="'red'"
-      [circleDraggable]="true"
-      [editable]="true">
-  </agm-circle>
-</agm-map>
-  </div>
-</section>
-<!--contact us end-->
-
-<!--sub-form-->
-<section class="sub-form section-spacing text-center">
-  <div class="container">
-    <header class="section-header">
-      <h2 lang="en">Subscribe To Our Newsletter</h2>
-      <h3 lang="en">Subscribe to get monthly application updates and exclusive offers </h3>
-    </header>
-    <div class="row">
-      <div class="col-md-6 center-block col-sm-11">
-        <form id="mc-form">
-          <div class="input-group">
-            <input type="email" class="form-control" placeholder="Email Address" required id="mc-email" lang="en" style="border: 1px solid #f56363 !important;">
-            <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" lang="en">SUBSCRIBE <i class="fa fa-envelope text-white"></i> </button>
-            </span> </div>
-          <label for="mc-email" id="mc-notification" lang="en"></label>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-<!--sub-form end-->
-
-<!--site-footer-->
-<footer class="site-footer section-spacing text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <p class="footer-links"><a [routerLink]="['./terms-conditions']" lang="en">Terms of Use</a> <a [routerLink]="['./privacy-policy']" lang="en">Privacy Policy</a></p>
-      </div>
-      <div class="col-md-4"> <small lang="en">&copy; 2018 {{properties.APP_WEBSITE}}. All rights reserved.</small></div>
-      <div class="col-md-4">
-        <!--social-->
-
-        <ul class="social">
-          <li><a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a></li>
-          <li><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-          <li><a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
-        </ul>
-
-        <!--social end-->
-
-      </div>
-    </div>
-    <!--chat-btn-->
-    <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
-    <!--chat-btn end-->
-
-  </div>
-</footer>
-<!--site-footer end-->
-
-<!--contact form modal-->
-
-<div class="modal fade" id="modal-contact-form" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <div class="modal-body">
-
-        <!--contact form-->
-
-        <div class="contact-form text-center">
-          <header class="section-header"> <img src="/assets/images/support-icon.svg" alt="support icon">
-            <h2>Contact us</h2>
-            <h3>Have any questions? Send us a message.</h3>
-          </header>
-          <form class="cta-form" action="php/contact.php" method="post">
-            <div class="form-group">
-              <input  type="text" name="name" class="contact-name form-control input-lg" placeholder="Name *" id="contact-name">
-            </div>
-            <div class="form-group">
-              <input  type="text"  name="email" class="contact-email form-control input-lg" placeholder="Email address *" id="contact-email">
-            </div>
-            <div class="form-group">
-              <textarea name="message" class="contact-message form-control input-lg" rows="4" placeholder="Message *" id="contact-message"></textarea>
-            </div>
-            <div class="form-group">
-              <input type="text" name="antispam" placeholder="Antispam question: 7 + 5 = ?" class="contact-antispam form-control input-lg" id="contact-antispam">
-            </div>
-            <button type="submit" class="btn">SEND MESSAGE</button>
-          </form>
-        </div>
-
-        <!--contact form end-->
-
-        <p class="contact-form-success"><i class="fa fa-check"></i><span>Thanks for contacting us!</span> We will get back to you very soon.</p>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+         <!--PRICE TABLE END-->
+         <!--PRICE TABLE-->
+         <div class="plan">
+           <div class="plan-details">
+             <div class="header">
+               <h4 lang="en">BASIC</h4>
+               <h5 lang="en">For  individual marketing professionals and pioneers</h5>
+ 
+             </div>
+             <div class="price"> <span class="currency">$</span><span class="price-amount">199</span><span class="period" lang="en">/ mo</span> </div>
+             <ul class="plan-features">
+               <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">1000</span> Contacts<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">10</span> Templates<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">20</span> Videos<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">100</span> Campaigns<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">5</span> Team members<i class="fa fa-check"></i></li>
+             </ul>
+           </div>
+           <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
+             <p lang="en">5% OFF. Limited time offer.</p>
+           </div>
+         </div>
+         <!--PRICE TABLE END-->
+ 
+ 
+ 
+         <!--PRICE TABLE-->
+         <div class="plan">
+           <div class="plan-details">
+             <div class="header">
+               <h4 lang="en">PREMIUM</h4>
+               <h5 lang="en">For business who has marketing wing and marketing agencies</h5>
+ 
+             </div>
+             <div class="price"> <span class="currency">$</span><span class="price-amount">499</span><span class="period" lang="en">/ mo</span> </div>
+             <ul class="plan-features">
+               <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">Unlimited</span> Contacts<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">50</span> Templates<i class="fa fa-check"></i></li>
+               <li lang="en"><span lang="en">50</span> Videos<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">Unlimited</span> Campaigns<i class="fa fa-check"></i></li>
+             <li lang="en"><span lang="en">Unlimited</span> Team members<i class="fa fa-check"></i></li>
+             </ul>
+           </div>
+           <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
+             <p lang="en">10% OFF. Limited time offer.</p>
+           </div>
+         </div>
+         <!--PRICE TABLE END-->
+ 
+       </div>
+     </div>
+   </div>
+ </section>
+ 
+ <!--Pricing end-->
+ 
+ <!--cta section-->
+ 
+ <section class="cta-section section-spacing text-center">
+   <div class="container">
+     <header class="section-header">
+       <h2 lang="en" class="size">Try {{properties.APP_WEBSITE}} Today!</h2>
+       <h3 lang="en" class="size-try-xamplify">Register for your free 30-day trial.</h3>
+     </header>
+     <div class="row">
+       <div class="col-md-12">
+        
+          <div class="cta-btn"> <a routerLink="/v-signup" class="btn" lang="en">REGISTER <span style="font-size: 14px; color: #333; font-weight: 500;">(free trial)</span></a>
+          
+         </div>
+       
+         <p lang="en">Have a question? Email us at <a style="color: white;">support@xamplify.com</a></p>
+       </div>
+     </div>
+   </div>
+ </section>
+ 
+ <!--cta section end-->
+ 
+ <!--contact us-->
+ 
+ <section class="contact section-spacing text-center" #contact id="contact">
+   <div class="container">
+     <header class="section-header">
+       <h2 lang="en">Contact Us</h2>
+       <h3 lang="en">Have any questions? <a style="color: #0396da;">support@xamplify.com</a></h3>
+     </header>
+   </div>
+   <!--map-->
+   <div class="map">
+   
+   <agm-map
+   [latitude]="lat"
+   [longitude]="lng"
+   [zoom]="zoom"
+   [disableDefaultUI]="false"
+   [scrollwheel]="false"
+   (mapClick)="mapClicked($event)">
+   <agm-marker
+       *ngFor="let m of markers; let i = index"
+       (markerClick)="clickedMarker(m.label, i)"
+       [latitude]="m.lat"
+       [longitude]="m.lng"
+       [label]="m.label"
+       [markerDraggable]="m.draggable"
+       (dragEnd)="markerDragEnd(m, $event)">
+     <agm-info-window>
+       <strong>42840 Christy St,</strong><br>
+       <strong>Fremont,CA 94538</strong><br>
+       <strong>Phone: 5107701222</strong>
+     </agm-info-window>
+   </agm-marker>
+   <agm-circle [latitude]="lat" [longitude]="lng"
+       [radius]="5000"
+       [fillColor]="'red'"
+       [circleDraggable]="true"
+       [editable]="true">
+   </agm-circle>
+ </agm-map>
+   </div>
+ </section>
+ <!--contact us end-->
+ 
+ <!--sub-form-->
+ <section class="sub-form section-spacing text-center">
+   <div class="container">
+     <header class="section-header">
+       <h2 lang="en">Subscribe To Our Newsletter</h2>
+       <h3 lang="en">Subscribe to get monthly application updates and exclusive offers </h3>
+     </header>
+     <div class="row">
+       <div class="col-md-6 center-block col-sm-11">
+         <form id="mc-form">
+           <div class="input-group">
+             <input type="email" class="form-control" placeholder="Email Address" required id="mc-email" lang="en" style="border: 1px solid #f56363 !important;">
+             <span class="input-group-btn">
+             <button type="submit" class="btn btn-default" lang="en">SUBSCRIBE <i class="fa fa-envelope text-white"></i> </button>
+             </span> </div>
+           <label for="mc-email" id="mc-notification" lang="en"></label>
+         </form>
+       </div>
+     </div>
+   </div>
+ </section>
+ <!--sub-form end-->
+ 
+ <!--site-footer-->
+ <footer class="site-footer section-spacing text-center">
+   <div class="container">
+     <div class="row">
+       <div class="col-md-4">
+         <p class="footer-links"><a [routerLink]="['./terms-conditions']" lang="en">Terms of Use</a> <a [routerLink]="['./privacy-policy']" lang="en">Privacy Policy</a></p>
+       </div>
+       <div class="col-md-4"> <small lang="en">&copy; 2018 {{properties.APP_WEBSITE}}. All rights reserved.</small></div>
+       <div class="col-md-4">
+         <!--social-->
+ 
+         <ul class="social">
+           <li><a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter"></i></a></li>
+           <li><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+           <li><a href="https://www.youtube.com/" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+         </ul>
+ 
+         <!--social end-->
+ 
+       </div>
+     </div>
+     <!--chat-btn-->
+     <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
+     <!--chat-btn end-->
+ 
+   </div>
+ </footer>
+ <!--site-footer end-->
+ 
+ <!--contact form modal-->
+ 
+ <div class="modal fade" id="modal-contact-form" tabindex="-1" role="dialog">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+       <div class="modal-body">
+ 
+         <!--contact form-->
+ 
+         <div class="contact-form text-center">
+           <header class="section-header"> <img src="/assets/images/support-icon.svg" alt="support icon">
+             <h2>Contact us</h2>
+             <h3>Have any questions? Send us a message.</h3>
+           </header>
+           <form class="cta-form" action="php/contact.php" method="post">
+             <div class="form-group">
+               <input  type="text" name="name" class="contact-name form-control input-lg" placeholder="Name *" id="contact-name">
+             </div>
+             <div class="form-group">
+               <input  type="text"  name="email" class="contact-email form-control input-lg" placeholder="Email address *" id="contact-email">
+             </div>
+             <div class="form-group">
+               <textarea name="message" class="contact-message form-control input-lg" rows="4" placeholder="Message *" id="contact-message"></textarea>
+             </div>
+             <div class="form-group">
+               <input type="text" name="antispam" placeholder="Antispam question: 7 + 5 = ?" class="contact-antispam form-control input-lg" id="contact-antispam">
+             </div>
+             <button type="submit" class="btn">SEND MESSAGE</button>
+           </form>
+         </div>
+ 
+         <!--contact form end-->
+ 
+         <p class="contact-form-success"><i class="fa fa-check"></i><span>Thanks for contacting us!</span> We will get back to you very soon.</p>
+       </div>
+     </div>
+   </div>
+ </div>
+ </div>

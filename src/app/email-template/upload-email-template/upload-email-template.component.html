@@ -25,12 +25,6 @@
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <div>
-                        <!-- <div (fileOver)="fileOverBase($event)" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                (onFileDrop)="fileDropPreview($event)" [uploader]="emailTemplateUploader">
-              <h4 style="font-weight: 500">Upload Your File </h4>
-              <input type="file" id="upload-file"   ng2FileSelect [uploader]="emailTemplateUploader" accept=".zip"
-              *ngIf="emailTemplateUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/>
-            </div> -->
 
                         <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" (onFileDrop)="fileDropPreview($event)" [uploader]="emailTemplateUploader" class="well my-drop-zone" style="position: relative; cursor:pointer; margin-bottom:0"
                             (click)="dropClick()">
@@ -76,11 +70,6 @@
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
                     </div>
-
-                    <!-- 	<div>
-					 		<br><label for="info"><font style="color: red;">Use the tags below for mail merge.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
-					</div> -->
                 </div>
                 <div class="col-xs-12" *ngIf="isUploaded">
                     <!--  -->

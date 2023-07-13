@@ -527,7 +527,7 @@ export class DashboardService {
     }
     
     getLeftSideNavBarItems(vanityUrlPostDto: any){
-        const url = this.moduleUrl + 'customizeLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vanityUrlPostDto)
         .map(this.extractData)
         .catch(this.handleError);

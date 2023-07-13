@@ -1,68 +1,63 @@
 <div class="page-content">
-
     <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li *ngIf="!authenticationService.isSuperAdmin()">
-                <i class="fa fa-home" aria-hidden="true"></i>
-                <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
-            <li>
-                <a (click)="goToManageCampaigns()">Manage Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li>
-                <a>Calender View</a>
-            </li>
-        </ul>
+       <ul class="page-breadcrumb">
+          <li *ngIf="!authenticationService.isSuperAdmin()">
+             <i class="fa fa-home" aria-hidden="true"></i>
+             <a [routerLink]="referenceService.homeRouter">Home</a>
+             <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+          <li>
+             <a (click)="goToManageCampaigns()">Manage Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li>
+             <a>Calender View</a>
+          </li>
+       </ul>
     </div>
-
     <div class="pg8">
-        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
     </div>
     <div class="page-bar">
-        <div id="calendar" class="calendar-border">
-            <ngx-loading [show]="loading || referenceService.loadingPreview"></ngx-loading>
-        </div>
+       <div id="calendar" class="calendar-border">
+          <ngx-loading [show]="loading || referenceService.loadingPreview"></ngx-loading>
+       </div>
     </div>
-</div>
-
-<div id="ca-{{campaign.id}}" *ngFor="let campaign of campaigns" class='clearfix m10 hidden' style="min-width: 1500px">
+ </div>
+ <div id="ca-{{campaign.id}}" *ngFor="let campaign of campaigns" class='clearfix m10 hidden' style="min-width: 1500px">
     <h6>
-        <span class="campaign-label" *ngIf="campaign.type=='LANDINGPAGE'">PAGE campaign</span>
-        <span class="campaign-label" *ngIf="campaign.type!='LANDINGPAGE'">{{campaign.type}} campaign</span>
-        <span class="campaign-label {{campaign.status | lowercase}}">
-    <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
-    <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
-    </span>
+       <span class="campaign-label" *ngIf="campaign.type=='LANDINGPAGE'">PAGE campaign</span>
+       <span class="campaign-label" *ngIf="campaign.type!='LANDINGPAGE'">{{campaign.type}} campaign</span>
+       <span class="campaign-label {{campaign.status | lowercase}}">
+          <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
+          <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+       </span>
     </h6>
     <div class="media">
-        <h5>{{campaign.campaign}}</h5>
-        <ng-container *ngIf="campaign.status === 'NOW'">
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': campaign.percentage +'%' }">
-                    <span class="sr-only"></span>
-                </div>
-            </div>
-            <h6>{{campaign.percentage}}% interaction</h6>
-        </ng-container>
-        <h6>
-            <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
-            <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
-
-            <ng-container *ngIf="campaign.status !== 'SCHEDULE'; else schedule">on </ng-container>
-            <ng-template #schedule>for </ng-template>
-            <ng-container *ngIf="campaign.status!=='SCHEDULE'">
-                <span *ngIf="!referenceService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
-                <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
-            </ng-container> 
-            <ng-container *ngIf="campaign.status==='SCHEDULE'">
-                <span>{{campaign.campaignScheduleDateInString}}</span>
-                <br>
-                <span>{{campaign.campaignScheduleTimeInString}}</span>
-               </ng-container>
-            
-        </h6>
+       <h5>{{campaign.campaign}}</h5>
+       <ng-container *ngIf="campaign.status === 'NOW'">
+          <div class="progress">
+             <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ 'width': campaign.percentage +'%' }">
+                <span class="sr-only"></span>
+             </div>
+          </div>
+          <h6>{{campaign.percentage}}% interaction</h6>
+       </ng-container>
+       <h6>
+          <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
+          <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
+          <ng-container *ngIf="campaign.status !== 'SCHEDULE'; else schedule">on </ng-container>
+          <ng-template #schedule>for </ng-template>
+          <ng-container *ngIf="campaign.status!=='SCHEDULE'">
+             <span *ngIf="!referenceService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
+             <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
+          </ng-container>
+          <ng-container *ngIf="campaign.status==='SCHEDULE'">
+             <span>{{campaign.campaignScheduleDateInString}}</span>
+             <br>
+             <span>{{campaign.campaignScheduleTimeInString}}</span>
+          </ng-container>
+       </h6>
     </div>
-</div>
-<app-preview-campaign *ngIf="previewCampaign" [previewCampaignType]="precampaignType" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+ </div>
+ <app-preview-campaign *ngIf="previewCampaign" [previewCampaignType]="precampaignType" [previewCampaignId]="previewCampaign" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

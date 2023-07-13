@@ -75,6 +75,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   @Input() moduleName: any;
   @Input() teamMemberGroupId: number;
   isTeamMemberModule = false;
+  isModalPopupshow = false ;
   showModulesPopup: boolean;
   moveToTop: boolean;
   showPartnersPopup:boolean;
@@ -919,6 +920,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   findPrimaryAdminAndExtraAdmins(){
     this.admins = [];
     $('#adminsPreviewPopup').modal('show');
+    this.isModalPopupshow = true;
     this.referenceService.scrollToModalBodyTopByClass();
     this.referenceService.startLoader(this.adminsLoader);
     this.teamMemberService.findPrimaryAdminAndExtraAdmins().subscribe(

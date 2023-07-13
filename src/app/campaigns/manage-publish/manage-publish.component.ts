@@ -39,7 +39,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
-    selectedCampaignTypeIndex = 0;
+    selectedCampaignTypeIndex = 1;
     pager: any = {};
     pagedItems: any[];
     totalRecords = 1;
@@ -172,7 +172,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
-        // this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -342,6 +341,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.pagination.campaignType = 'REGULAR';
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');
@@ -922,12 +922,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
@@ -940,6 +942,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
            }
+           this.pagination.campaignType = 'REGULAR';
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
             if(this.teamMemberId!=undefined){
@@ -1110,8 +1113,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         
         this.pagination.maxResults = 12;
         this.itemsSize = this.numberOfItemsPerPage[0];
-        this.pagination.campaignType = 'NONE';
-        this.selectedCampaignTypeIndex = 0;
+        this.pagination.campaignType = 'REGULAR';
+        this.selectedCampaignTypeIndex = 1;
         this.modulesDisplayType.isListView = true;
         this.modulesDisplayType.isGridView = false;
         this.modulesDisplayType.isFolderGridView = false;

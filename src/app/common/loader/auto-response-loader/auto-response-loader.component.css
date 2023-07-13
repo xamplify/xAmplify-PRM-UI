@@ -7,7 +7,7 @@
 .text-input__loading--line {
   height: 10px;
   margin: 7px;
-  animation: pulse 1s infinite ease-in-out;
+  animation: auto-response-animation 1s infinite ease-in-out;
 }
 .text-input__loading div:nth-child(1) {
   width: 150px;
@@ -39,7 +39,7 @@
 .text-input__loading div:nth-child(8) {
   width: 100px;
 }
-@keyframes pulse {
+@keyframes auto-response-animation {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
   }
@@ -50,45 +50,28 @@
     background-color: rgba(165, 165, 165, 0.1);
   }
 }
-
 table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
-
-td, th {
-    padding: 5px;
-	width: 15%;
+td,
+th {
+  padding: 5px;
+  width: 15%;
 }
-tr{
-	border-bottom: 1px solid #e5e5e5;
-}
-.action-icon {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
-	float: left;
+tr {
+  border-bottom: 1px solid #e5e5e5;
 }
 .rect-box {
-	height: 75px;
+  height: 75px;
 }
-.thick{
-	height: 10px;
+td:nth-child(1) {
+  width: 10%;
 }
-.thin{
-	height: 6px;
+td:nth-child(2) {
+  width: 20%;
 }
-td:nth-child(1){
-	width: 10%;
+td:nth-child(last) {
+  text-align: right;
 }
-td:nth-child(2){
-	width: 20%;
-}
-td:nth-child(last){
-	text-align: right;
-}
-.w25{width: 25%}
-.w50{width: 50%}
-.w75{width: 75%}
-.w100{width: 100%}

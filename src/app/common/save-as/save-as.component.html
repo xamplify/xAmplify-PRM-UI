@@ -1,58 +1,50 @@
-
 <div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-css" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title f-w-600" id="saveAsModal">{{listName}} List Name</h4>
-        <button (click)="closeModal()" type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="campaignName">Name</label>
-          <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
-          <span style="color:red">{{saveAsError}}</span>
+     <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="modal-title f-w-600" id="saveAsModal">{{listName}} List Name</h4>
+           <button (click)="closeModal()" type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+           <i class="fa fa-times" aria-hidden="true"></i>
+           </button>
         </div>
-
-         <!-- ------------Legal Basis------------ -->
-        <div class="form-group" *ngIf="gdprStatus && showGDPR">
-        <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
-	    <div id="multiselect-sample" class="control-section">
-	    <div class="col-lg-14">
-	        <div class="control-styles">
-	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
-	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
-	        </div>
-	    </div>
-	    </div>
-    </div>
-
-    	<!-- start   -->
-				<div class="form-group" class="col-xs-12" *ngIf="module === 'contacts' && !isFormList">
-
-					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
-					<div class="col-xs-8">
-
-							<switch [status]="model.isPublic" [onText]="'Public'"
-								[offText]="'Private'"
-								[onColor]="callActionSwitch.onGreenColorSwitch"
-								[offColor]="callActionSwitch.offPrivateColor"
-								[size]="large"
-								(statusChange)="changeStatus($event)"> </switch>
-
-					</div>
-				</div>
-				<!-- end  -->
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()" *ngIf="showGDPR">Save changes</button>
-        <button type="button" class="btn btn-primary"  (click)="updateListType()" *ngIf="!showGDPR">Update</button>
-      </div>
-    </div>
+        <div class="modal-body">
+           <div class="form-group">
+              <label for="campaignName">Name</label>
+              <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
+              <span style="color:red">{{saveAsError}}</span>
+           </div>
+           <!-- ------------Legal Basis------------ -->
+           <div class="form-group" *ngIf="gdprStatus && showGDPR">
+              <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
+              <div id="multiselect-sample" class="control-section">
+                 <div class="col-lg-14">
+                    <div class="control-styles">
+                       <ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                       [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
+                       <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <!-- start   -->
+           <div class="form-group" class="col-xs-12" *ngIf="module === 'contacts' && !isFormList">
+              <label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
+              <div class="col-xs-8">
+                 <switch [status]="model.isPublic" [onText]="'Public'"
+                 [offText]="'Private'"
+                 [onColor]="callActionSwitch.onGreenColorSwitch"
+                 [offColor]="callActionSwitch.offPrivateColor"
+                 [size]="large"
+                 (statusChange)="changeStatus($event)"> </switch>
+              </div>
+           </div>
+           <!-- end  -->
+        </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
+           <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()" *ngIf="showGDPR">Save changes</button>
+           <button type="button" class="btn btn-primary"  (click)="updateListType()" *ngIf="!showGDPR">Update</button>
+        </div>
+     </div>
   </div>
 </div>

@@ -4,17 +4,15 @@
 		<div class="row" style="padding-right: 5px;">
 			<div class="col-xs-6">
 				<h4 class="pull-left m10 text-primary">
-					<!-- <span *ngIf="!this.pagination.categoryType == 'DAM'">{{suffixHeader}} </span> -->
 					{{titleHeader}}</h4>
 			</div>
-			<div class="page-toolbar col-xs-6">
+			<div class="page-toolbar col-xs-6" *ngIf="!httpRequestLoader.isLoading">
 				<div class="btn-group pull-right">
 					<div class="group-dropdown" style="padding-right: 4px;">
 						<button
 							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                    folderViewType == 'fl' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                    			folderViewType == 'fl' ? 'fa fa-th btn-xs hidden-xs l-g-view': folderViewType == 'fg' ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
 							style="padding: 10px !important"></button>
-							<!-- <button class="hidden-xs l-g-view {{viewClass}}" style="float:right;padding: 10px !important"></button> -->
 						<div class="group-dd-content"
 							style="padding: 10px !important; min-width: max-content;">
 							<ng-container class='m10'> <span
@@ -93,20 +91,9 @@
 						{{category.name | slice:0:22}} <span
 							*ngIf="category.name?.length>22">...</span>
 					</h4>
-
-					<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'DAM'">
-					 Digital Assets {{category.count}}
-						</span>
-						<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'LEARNING_TRACK'">
-					     Tracks  {{category.count}}
-						</span>
-						<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'PLAY_BOOK'">
-					    Play Books {{category.count}}
-						</span>
-
+					<span class="Track-countbg">
+						{{titleHeader}} {{category.count}}
+					</span>
 
 					<h6 [title]="category.createdBy" translate>
 						By <strong>{{category.createdBy | slice:0:15}}<span
@@ -165,6 +152,7 @@
 				<tr id="folder-row-{{i}}" class="child-row-list-view border-cls" >
 					<td class="custom-icon-width"><a
 						(click)="$event.stopPropagation();viewFolderItems(category,i)"
+						data-toggle="tooltip" data-placement="bottom"
 						title="View Items"> <i class="fa" id="fa-folder-custom-size"
 							[ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}"
 							aria-hidden="true"> </i> <i class="fa" id="fa-folder-custom-size"
@@ -172,8 +160,9 @@
 							aria-hidden="true"> </i>
 					</a></td>
 					<td>
-						<h4 class="moreipsis" title="{{category.name}}">
-							<span>{{category.name}}</span>
+						<h4 class="">
+							<span data-toggle="tooltip" data-placement="bottom" title="{{category.name}}"
+							>{{category.name}}</span>
 						</h4>
 						<h6 class="moreipsis">
 							<span translate> Created By <strong>{{category.createdBy}}</strong></span>
@@ -192,18 +181,33 @@
 				</tr>
 				<tr [ngClass]="{'hidden': !category.expanded}"
 					id="list-folder-items">
-					<td class="td-netbg" colspan="5"><ng-container *ngIf="category.expanded">
-						<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+					<td class="td-netbg" colspan="5">
+						<!----DAM---->
+						<ng-container *ngIf="category.expanded">
+							<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+								[folderListViewCategoryId]="category.id"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
+							</ng-container>
+						<!----TRACKS / PLAYBOOKS---->
+						 <ng-container	*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
+							<app-manage-tracks-play-book
+								[folderListViewCategoryId]="category.id" [type]="type"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
+						</ng-container> 
+
+						<!----Manage Campaigns---->
+						<ng-container *ngIf="moduleId==roles.campaignId">
+							 <app-campaign-list-and-grid-view
 							[folderListViewCategoryId]="category.id"
 							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
-						</ng-container> <ng-container
-							*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
-						<app-manage-tracks-play-book
-							[folderListViewCategoryId]="category.id" [type]="type"
-							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
-						</ng-container> </ng-container></td>
+							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-campaign-list-and-grid-view>
+						</ng-container>
+
+
+					</ng-container>
+				</td>
 				</tr>
 				</ng-container>
 			</tbody>

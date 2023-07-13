@@ -1246,7 +1246,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     /*************************************************************Select Video***************************************************************************************/
     setClickedRow = function (videoFile: any, videoType: string) {
         let videoId = videoFile.id;
-        if (videoFile.viewBy == "DRAFT") {
+        if (videoFile.viewBy == "DRAFT" || !videoFile.processed) {
             this.draftMessage = "Video is in draft mode, please update the publish options to Library or Viewers.";
         } else {
             this.selectedRow = videoId;
@@ -2798,7 +2798,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     /***************************Email Rules***********************************/
     addReplyRows() {
         this.reply = new Reply();
-        //$('.bs-timepicker-field').attr("disabled",'disabled');
         let length = this.allItems.length;
         length = length + 1;
         var id = 'reply-' + length;

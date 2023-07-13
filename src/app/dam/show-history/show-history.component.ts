@@ -46,6 +46,7 @@ export class ShowHistoryComponent implements OnInit {
 	assets: Array<any> = new Array<any>();
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	exportObject = {};
+	showRefreshNotification: boolean;
 		
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
 		public referenceService: ReferenceService, public utilService: UtilService, public pagerService: PagerService, private router: Router,
@@ -102,10 +103,15 @@ export class ShowHistoryComponent implements OnInit {
 		this.damService.listHistory(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
+				let publishingAssets = [];
 				pagination.totalRecords = data.totalRecords;
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
+					if(asset.publishingOrWhiteLabelingInProgress){
+						publishingAssets.push(asset);
+					}
 				});
+				this.showRefreshNotification = publishingAssets.length>0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.loading = false;

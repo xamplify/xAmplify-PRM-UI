@@ -1,16 +1,16 @@
-    <div class="" [ngClass]="customResponse.responseType == 'SUCCESS' ? 'success-margin' : ''"
-     *ngIf="customResponse.responseType != null">
-    <div class="col-xs-12 alert alert-dismissible m0" role="alert"
-      [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
-        'alert-danger': customResponse.responseType == 'ERROR',
-        'alert-info': customResponse.responseType == 'INFO'}">
-      <button *ngIf="showCloseIcon" type="button" class="close" data-dismiss="alert"
-        aria-label="Close" (click)="customResponse.responseType = null">
-        <span aria-hidden="true">x</span>
-      </button>
-      <h4 style="padding-top: 6px;">
-				<span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw'"  id='responseMessage'
-				[innerHTML]="customResponse.responseMessage"></span>
-		</h4>
-    </div>
-  </div>
+<div class="" [ngClass]="customResponse.responseType == 'SUCCESS' ? 'success-margin' : ''"
+*ngIf="customResponse.responseType != null">
+<div class="alert alert-dismissible m0" role="alert"
+   [ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+   'alert-danger': customResponse.responseType == 'ERROR',
+   'alert-info': customResponse.responseType == 'INFO'}">
+   <button *ngIf="showCloseIcon" type="button" class="close" data-dismiss="alert"
+   aria-label="Close" (click)="customResponse.responseType = null">
+   <span aria-hidden="true">x</span>
+   </button>
+   <h4 style="padding-top: 6px;">
+      <span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw'"  id='responseMessage'
+      [innerHTML]="customResponse.responseMessage"></span>
+   </h4>
+</div>
+</div>

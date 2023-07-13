@@ -1,171 +1,168 @@
 <div class="modal fade right" id="new-list-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg modal-template" style="right:0;width: 65%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" (click)="closeMoreInvitesPopup()" aria-hidden="true">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-                <h4 class="modal-title">{{title}}</h4>
-            </div>
-            <div class="modal-body">
-
-                <div class="thank-you-pop" *ngIf="sendSuccess">
-                    <img src="{{responseImage}}" alt="">
-                    <h4 [attr.class]="responseClass">{{responseMessage}}</h4>
-                </div>
-                <div id="new-list-modal-content" *ngIf="!sendSuccess">
-                    <div class="col-xs-12">
-                        <div style="position: relative; top: -10px">
-                            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-                        </div>
-                        <app-modal-popup-loader *ngIf="sendingRequest"></app-modal-popup-loader>
-                        <div class="col-xs-12" style="margin-top: 10px;" *ngIf="!sendingRequest">
-                            <div class="row pb10" id="user_list_table_view">
-                                <app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
-                                <ng-container *ngIf="!contactListLoader.isLoading && !contactListLoader.isServerError">
-                                    <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
-                                        <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
-                                        <div class="inputs" align="right">
-                                            <div class="portlet-input input-inline" style="position: relative;top: -6px;">
-                                                <div class="input-icon right">
-                                                    <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchContactList()"></button>
-                                                    <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row-fluid">
-                                            <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0">
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <div class="alert alert-info">
-                                                            <strong>{{emptyContactListMessage}}</strong>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
-                                                    <thead>
-                                                        <tr>
-                                                            <td align="center" id="border-bottom-padding">
-                                                                <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
-                                                            </td>
-                                                            <th class="hidden-xs" *ngIf="showExpandButton"></th>
-                                                            <th style="text-align: center;">
-                                                                <span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
-                                                                <span class="gridHeader">List Name</span>
-                                                            </th>
-                                                            <th style="text-align: center;" *ngIf="showContactType">Type</th>
-                                                            <th style="text-align: center;" >List Type</th>
-                                                            <th style="text-align: center;">Uploaded Date</th>
-                                                            <th style="text-align: center;">Preview </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
-                                                            <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
-                                                                (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
-                                                                <td class="text-center">
-                                                                    <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
-                                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
-                                                                    </div>
-                                                                    <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                                        <input type="checkbox" disabled="disabled" title="Contacts are in progress">
-                                                                    </div>
-                                                                </td>
-                                                                <td class="cw" *ngIf="showExpandButton">
-                                                                    <div class="actions-block left-float">
-                                                                      <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
-                                                                        <i class="fa"
-                                                                          [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
-                                                                          aria-hidden="true"></i>
-                                                                      </a>
-                                                                    </div>
-                                                                  </td>
-                                                                <td class="text-center moreipsis" title="{{contacts.name}}">
-                                                                    <span>{{contacts.name}}</span>
-                                                                </td>
-    
-                                                                <td *ngIf="showContactType">
-                                                                    <ng-container *ngIf="contacts.partnerUserList">
-                                                                        {{authenticationService?.partnerModule?.customName}}
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="!contacts.partnerUserList">
-                                                                        Contacts
-                                                                    </ng-container>
-                                                                </td>
-                                                                 <td class="text-center">
-                                                                    <ng-container *ngIf="contacts.publicList">
-                                                                        Public
-                                                                    </ng-container>
-                                                                    <ng-container *ngIf="!contacts.publicList">
-                                                                        Private
-                                                                    </ng-container>  
-                                                                                                                                
-                                                                    <div *ngIf="contacts?.formList">Form Contact List</div>
-                                                                </td>
-                                                                <td class="text-center sorting_1">
-                                                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                                                        <i class="fa fa-eye" aria-hidden="true" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="contacts?.expand">
-                                                                <td colspan="12">
-                                                                  <app-userlist-users [searchKey]="contactsPagination.searchKey" [userListId]="contacts.id"></app-userlist-users>
-                                                                </td>
-                                                            </tr>
-                                                        </ng-container>                                                        
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !contactListLoader.isLoading && !contactListLoader.isServerError">
-                                                <app-pagination [pagination]="contactsPagination" [type]="'contacts'" (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
-                                                <select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize" (ngModelChange)="getNumberOfContactItemsPerPage($event)">
-													<option *ngFor="let itemPerPage of numberOfContactsPerPage" [ngValue]="itemPerPage">
-														{{itemPerPage.name}}
-													</option>
-												</select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-container>
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close-circle" (click)="closeMoreInvitesPopup()" aria-hidden="true">
+             <i class="fa fa-times" aria-hidden="true"></i>
+             </button>
+             <h4 class="modal-title">{{title}}</h4>
+          </div>
+          <div class="modal-body">
+             <div class="thank-you-pop" *ngIf="sendSuccess">
+                <img src="{{responseImage}}" alt="">
+                <h4 [attr.class]="responseClass">{{responseMessage}}</h4>
+             </div>
+             <div id="new-list-modal-content" *ngIf="!sendSuccess">
+                <div class="col-xs-12">
+                   <div style="position: relative; top: -10px">
+                      <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+                   </div>
+                   <app-modal-popup-loader *ngIf="sendingRequest"></app-modal-popup-loader>
+                   <div class="col-xs-12" style="margin-top: 10px;" *ngIf="!sendingRequest">
+                      <div class="row pb10" id="user_list_table_view">
+                         <app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
+                         <ng-container *ngIf="!contactListLoader.isLoading && !contactListLoader.isServerError">
+                            <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
+                               <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
+                               <div class="inputs" align="right">
+                                  <div class="portlet-input input-inline" style="position: relative;top: -6px;">
+                                     <div class="input-icon right">
+                                        <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contact')">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchContactList()"></button>
+                                        <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+                                     </div>
+                                  </div>
+                               </div>
+                               <div class="row-fluid">
+                                  <table class="table table-filter" *ngIf="contactsPagination.totalRecords==0">
+                                     <tr>
+                                        <td colspan="5">
+                                           <div class="alert alert-info">
+                                              <strong>{{emptyContactListMessage}}</strong>
+                                           </div>
+                                        </td>
+                                     </tr>
+                                  </table>
+                                  <div class="table-responsive">
+                                     <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
+                                        <thead>
+                                           <tr>
+                                              <td align="center" id="border-bottom-padding">
+                                                 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                              </td>
+                                              <th class="hidden-xs" *ngIf="showExpandButton"></th>
+                                              <th style="text-align: center;">
+                                                 <span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
+                                                 <span class="gridHeader">List Name</span>
+                                              </th>
+                                              <th style="text-align: center;" *ngIf="showContactType">Type</th>
+                                              <th style="text-align: center;" >List Type</th>
+                                              <th style="text-align: center;">Uploaded Date</th>
+                                              <th style="text-align: center;">Preview </th>
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                           <ng-container *ngFor="let contacts of contactsPagination.pagedItems;let i = index">
+                                              <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
+                                              (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
+                                              <td class="text-center">
+                                                 <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                    <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
+                                                 </div>
+                                                 <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+                                                    <input type="checkbox" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Contacts are in progress">
+                                                 </div>
+                                              </td>
+                                              <td class="cw" *ngIf="showExpandButton">
+                                                 <div class="actions-block left-float">
+                                                    <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
+                                                    <i class="fa"
+                                                       [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
+                                                       aria-hidden="true"></i>
+                                                    </a>
+                                                 </div>
+                                              </td>
+                                              <td class="text-center moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}">
+                                                 <span>{{contacts.name}}</span>
+                                              </td>
+                                              <td *ngIf="showContactType">
+                                                 <ng-container *ngIf="contacts.partnerUserList">
+                                                    {{authenticationService?.partnerModule?.customName}}
+                                                 </ng-container>
+                                                 <ng-container *ngIf="!contacts.partnerUserList">
+                                                    Contacts
+                                                 </ng-container>
+                                              </td>
+                                              <td class="text-center">
+                                                 <ng-container *ngIf="contacts.publicList">
+                                                    Public
+                                                 </ng-container>
+                                                 <ng-container *ngIf="!contacts.publicList">
+                                                    Private
+                                                 </ng-container>
+                                                 <div *ngIf="contacts?.formList">Form Contact List</div>
+                                              </td>
+                                              <td class="text-center sorting_1">
+                                                 <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                                              </td>
+                                              <td class="text-center">
+                                                 <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
+                                                 <i class="fa fa-eye" aria-hidden="true" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                 </a>
+                                              </td>
+                                              </tr>
+                                              <tr *ngIf="contacts?.expand">
+                                                 <td colspan="12">
+                                                    <app-userlist-users [searchKey]="contactsPagination.searchKey" [userListId]="contacts.id"></app-userlist-users>
+                                                 </td>
+                                              </tr>
+                                           </ng-container>
+                                        </tbody>
+                                     </table>
+                                  </div>
+                                  <div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !contactListLoader.isLoading && !contactListLoader.isServerError">
+                                     <app-pagination [pagination]="contactsPagination" [type]="'contacts'" (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
+                                     <select class="btn btn-default" style="float: right;" [(ngModel)]="contactItemsSize" (ngModelChange)="getNumberOfContactItemsPerPage($event)">
+                                     <option *ngFor="let itemPerPage of numberOfContactsPerPage" [ngValue]="itemPerPage">
+                                     {{itemPerPage.name}}
+                                     </option>
+                                     </select>
+                                  </div>
+                               </div>
                             </div>
-                        </div>
-                    </div>
+                         </ng-container>
+                      </div>
+                   </div>
                 </div>
-            </div>
-            <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
-                <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
-                <a (click)="closeMoreInvitesPopup()" class="btn btn-default" style="float: right">Close</a>
-            </div>
-        </div>
+             </div>
+          </div>
+          <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
+             <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
+             <a (click)="closeMoreInvitesPopup()" class="btn btn-default" style="float: right">Close</a>
+          </div>
+       </div>
     </div>
-</div>
-<!-- ----------------------------------Contact Lists--------------------------------- -->
-<div class="modal right" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+ </div>
+ <!-- ----------------------------------Contact Lists--------------------------------- -->
+ <div class="modal right" id="usersModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-css" role="document" style="right:0">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" (click)="closeModelPopup()" aria-label="Close">
-					<i class="fa fa-times" aria-hidden="true"></i>
-						</button>
-                <div>
-                    <h4 class="modal-title center-align" id="user-list-name"  title="{{listName}}">
-                        <strong>{{listName|slice:0:50}}<span *ngIf="listName?.length>50">...</span></strong>
-                    </h4>
-                </div>
-            </div>
-            <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader>
-            <div class="modal-body" id="users-modal-body"></div>
-            <div class="modal-footer">
-                <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true" (notifyParent)="setPagePagination($event)"></app-pagination>
-                <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close-circle" data-dismiss="modal" (click)="closeModelPopup()" aria-label="Close">
+             <i class="fa fa-times" aria-hidden="true"></i>
+             </button>
+             <div>
+                <h4 class="modal-title center-align" id="user-list-name" data-toggle="tooltip" data-placement="bottom" title="{{listName}}">
+                   <strong>{{listName|slice:0:50}}<span *ngIf="listName?.length>50">...</span></strong>
+                </h4>
+             </div>
+          </div>
+          <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader>
+          <div class="modal-body" id="users-modal-body"></div>
+          <div class="modal-footer">
+             <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true" (notifyParent)="setPagePagination($event)"></app-pagination>
+             <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+       </div>
     </div>
-</div>
+ </div>

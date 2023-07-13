@@ -1,5 +1,32 @@
-.terms{ padding: 74px; position: relative; padding-bottom: 33px}
-@media only screen and (min-width:768px){ .terms{ padding: 74px; position: relative;padding-bottom: 33px} }
-@media only screen and (max-width:768px){ .terms{ padding: 20px; position: relative;padding-bottom: 33px}}
-@media only screen and (max-width:600px){ .termsSize{ font-size: 20px !important;}}
-.colors{  color: #965353 !important; border-color: red !important;}
+.terms {
+  padding: 74px;
+  position: relative;
+  padding-bottom: 33px;
+}
+
+@media only screen and (min-width: 768px) {
+  .terms {
+    padding: 74px;
+    position: relative;
+    padding-bottom: 33px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .terms {
+    padding: 20px;
+    position: relative;
+    padding-bottom: 33px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .termsSize {
+    font-size: 20px !important;
+  }
+}
+
+.colors {
+  color: #965353 !important;
+  border-color: red !important;
+}

@@ -244,13 +244,14 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         this.pagination.categoryType = 'c';
                     }
                     let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
-                    if(showList || this.campaignType!="all"){
+                    if(showList || this.campaignType!="regular"){
                         if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                             this.modulesDisplayType.isListView = true;
                             this.modulesDisplayType.isGridView = false;
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.pagination.campaignType = this.campaignType;
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');

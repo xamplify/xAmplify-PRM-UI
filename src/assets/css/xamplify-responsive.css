@@ -1,0 +1,229 @@
+/* 03-07-2023 - Account Dashboard */
+@media (min-width: 1025px) and (max-width: 1300px)  { 
+    /* Dashboard icons size */
+    .dashboard-stat .visual > i {font-size: 50px !important;}   
+}
+@media (min-width: 1025px) and (max-width: 1114px)  { 
+    /* Dashboard Regional Statistics height */
+    div#world-map {max-width: 100%; min-height: 327px !important;}
+ 
+}
+/* 07-07-2023 - Campaign  -- Manage Campaigns */
+
+@media (min-width: 767px) and (max-width: 1205px)  { 
+    .scroll-top-margin { margin-top: 30px;}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.pb_8{
+    padding-bottom: 8px!important;
+ }
+ .btn_add{
+    padding: 5px 10px!important;
+    border-radius: 4px;
+  }
+    /*app-detailed-campaign-analytics */
+    @media only screen and (min-width: 768px) and (max-width: 991px) { 
+        section.percentage-circle {
+            margin: 0px -22px;
+        }
+        span.dropdown-toggle {
+            float: none!important;
+        }
+        div#vendor-details-tile {
+            word-break: break-all;
+        }
+        .margin-flex{
+            padding-bottom: 12px;
+        }
+        .grid-box{
+            text-align: center;
+            /* height: 249px; */
+        }
+        .bar {
+            width: 100%;
+            width: calc(100% - 30px);
+        }
+        .mp-pt-carrdtop {
+            margin-top: 9px;
+        }
+        .grid-box:hover>.bar {
+            visibility: visible;
+            opacity: 1;
+        }
+        .table-condensed {
+            background-color:unset!important;
+        }
+        .tab_grid{
+         margin-bottom:15px;
+        }
+        /* td{
+        white-space: nowrap;
+        } */
+        .mb_6{
+            margin-bottom:6px;
+        }
+        .tb_view_temp{
+            padding-top: 0px!important;
+            padding-bottom: 6px;
+          }
+          .tb_view_10{
+           margin-top:20px;
+          }
+          .tb_view_actions{
+            white-space: nowrap;
+          }
+          .m_t_view{
+          float: none!important;
+          }
+          .grid-box h6 {
+            text-align: left;
+            margin: 5px 0 5px 20px;
+        }
+        h6 {
+            font-size: 11px;
+        }
+        .mrg_btm_23{
+         margin-bottom: 6px;
+        }
+        .tab_view_img{
+            margin-left:30px!important;
+          }
+          .tab_mt_grid{
+           margin-top:12px;
+          }
+          .intg_mb_16{
+            margin-bottom: 17px;
+          }
+          .tab_mt_20{
+            margin-top:0px!important;
+          }
+          .tab_mt_20{
+           margin-bottom: 20px;
+          }
+    
+    }
+    /* Manage Campaigns ribbon adjustment 04-07-2023 */
+    @media only screen and (min-width: 601px) and (max-width: 991px) { 
+
+        .grid-box{
+            background: #f1f1f1 !important;
+        }
+        .tab-ribbon {
+            left: 10px;
+        }
+        .tab-bookmark-ribbon{
+            right: 22px;
+        }
+        /* Manage Campaigns folder view */
+        .full-width-folder {
+            width: 100% !important;
+            width: calc(100% - 0px) !important;
+        }
+        .full-height-folder {
+            height: 100% !important;
+            max-height: 100% !important;
+        }
+        .move-position-left {
+            position: relative;
+            left: 15px!important;
+        }
+    }
+
+
+    @media only screen and (min-width: 601px) and (max-width: 767px) { 
+        .bar {
+            width: 100%;
+            width: calc(100% - 30px);
+        }
+    }
+
+    @media only screen and (min-width: 360px) and (max-width: 767px) { 
+        div#vendor-details-tile {
+            left: 12px;
+            width: 82.4%!important;
+            
+        }
+        .mb-search{
+            margin-bottom: 11px;
+        }
+        .mb-btn{
+            padding: 6px 10px;
+            border-radius: 3px!important;
+        }
+        .mb-gear{
+            top: 3px;
+            position: relative;
+            font-size: 19px!important;
+        }
+        /* Manage Campaigns 04-07-2023 */
+        .grid-box{
+            /* height: 249px!important; */
+            background: #f1f1f1 !important;
+        }
+        .table-condensed {
+            background-color:unset!important;
+        }
+        .mt_10{
+            margin-top: 10px;
+        }
+        .mb_pt{
+            padding: 8px 0px;
+        }
+        .mt_9{
+            margin-top: 9px;
+        }
+        .fa-cog {
+         left: unset !important;
+        }
+        .mb_6{
+            margin-bottom:6px;
+        }
+        .tb_view_temp{
+            padding-top: 0px!important;
+            padding-bottom: 6px;
+          }
+          .m_t_view{
+            float: none!important;
+            }
+            .mb_v_search{
+                top: 3px;
+            }
+            .mb_dwl{
+                margin-right: 9px!important;
+                margin-bottom: 9px;
+            }
+            .move-position-left {
+                position: relative;
+                left: 0px!important;
+            }
+            .mb_10{
+                margin-bottom: 10px;
+            }
+            .tab_mt_20{
+                margin-top:0px!important;
+              }
+              .intg_mb_16{
+                margin-bottom: 18px;
+              }
+              .mb_hgh_grid{
+             height: unset!important;
+              }
+    }
+    @media only screen and (max-width:1024px){
+        #bee-plugin-container{
+            overflow-x: scroll!important;
+        }
+    }

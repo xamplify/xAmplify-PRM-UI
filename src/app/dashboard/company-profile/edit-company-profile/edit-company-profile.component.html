@@ -44,36 +44,7 @@
 					<div id="process-loader"></div>
 				</div>
 			</div>
-			<!-- 				<div class="row smpl-step" [hidden]="processor.isProcessing || isFromAdminPanel">
-					<div class="col-xs-4 smpl-step-step complete">
-						<div class="progress">
-							<div class="progress-bar"></div>
-						</div>
-						<a class="smpl-step-icon" style="cursor:default"><i class="fa fa-check"></i></a>
-						<div class="smpl-step-info text-center" style="margin-top: 3px;">Sign up</div>
-					</div>
-
-					<div class="col-xs-4 smpl-step-step" [ngClass]="{'complete': !companyProfile.isAdd}">
-						<div class="progress">
-							<div class="progress-bar"></div>
-						</div>
-						<a class="smpl-step-icon" style="cursor:default"><i class="fa fa-user"></i></a>
-						<div class="smpl-step-info text-center" style="margin-top: 3px;">Complete your company profile</div>
-					</div>
-
-					<div class="col-xs-4 smpl-step-step" [ngClass]="{'disabled':!authenticationService.user.hasCompany}">
-						<div class="progress">
-							<div class="progress-bar"></div>
-						</div>
-            <a class="smpl-step-icon" *ngIf="authenticationService.user.hasCompany" [routerLink]="['/home/dashboard']"><i class="fa fa-play" style="color:white"></i></a>
-            <a class="smpl-step-icon" *ngIf="!authenticationService.user.hasCompany"><i class="fa fa-play" style="color:white"></i></a>
-						<div class="smpl-step-info text-center"  style="margin-top: 3px;">Start {{properties.APP_WEBSITE}}</div>
-					</div>
-				</div>
-      <ng-container *ngIf="!processor.isProcessing && !isFromAdminPanel">
-        <h1 class="text-center heading-text">Let's get started on your company profile.</h1>
-				<img src="/assets/images/dotted-arrow.png" alt="" class="img-responsive" style="margin-bottom: 3em;">
-      </ng-container> -->
+			
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
 					<div class="row">
@@ -108,15 +79,7 @@
 												 <a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
 												  data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
 												   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true" style="font-size:25px;padding-top:10px"></i></a>
-											<!-- <div class="profile-overlay">
-												<label class="fileContainer pointer"
-													(click)="fileChangeEvent()"> <i
-													class="fa fa-camera"></i>&nbsp;<span
-													*ngIf="!companyLogoImageUrlPath">Upload company logo</span>
-													<span *ngIf="companyLogoImageUrlPath">Change company
-														logo</span>
-												</label>
-											</div> -->
+										
 										</div>
 										<div class="col-md-12" style="text-align: center;padding-top:16px;">
                                 <p style="color:#949090;"> upload 2:1 ratio logo only</p>
@@ -149,9 +112,7 @@
 										<h5>{{authenticationService.user.emailId}}</h5>
 										</ng-container>
 										<!-- modal pop up-->
-                                       <!-- <button type="button" class="btn btn-primary" (click)="saveCustom()"  data-target="#customskin">
-	                                    Change Your Custom Skin
-                                       </button> -->
+
 										<ng-container *ngIf="isFromAdminPanel">
 										<h4 [title]="companyProfile.firstName+companyProfile.lastName"
 											class="control-label">
@@ -162,9 +123,7 @@
 										</h4>
 										<h5>{{companyProfile.userEmailId}}</h5>
 										</ng-container>
-										<!-- <hr class="divider"/>
-										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
-										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button> -->
+										
 
 
 									<!-- Fav Icon -->
@@ -463,9 +422,7 @@
 						          <div class="form-group" [attr.class]="firstNameDivClass"
 									*ngIf="isFromAdminPanel">
 									<label class="control-label">First Name</label>
-									<!-- 	<input type="text" id="firstName" name="firstName" placeholder="First Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.firstName"
-									(input)="validateEmptySpace('firstName')"	(blur)="validateNames(companyProfile.firstName)" />
-								<span *ngIf="firstNameError" style="color: #f55d7a">{{firstNameErrorMessage}}</span> -->
+									
 									<input type="text" class="form-control" id="firstName"
 										name="firstName" placeholder="First Name" maxlength="240"
 										maxlength="240" [(ngModel)]="companyProfile.firstName" />
@@ -475,9 +432,7 @@
 								<div class="form-group" [attr.class]="lastNameDivClass"
 									*ngIf="isFromAdminPanel">
 									<label class="control-label">Last Name</label>
-									<!-- <input type="text" id="lastName" name="lastName" placeholder="Last Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.lastName"
-									(input)="validateEmptySpace('lastName')"	(blur)="validateNames(companyProfile.lastName)" />
-								<span *ngIf="lastNameError" style="color: #f55d7a">{{lastNameErrorMessage}}</span> -->
+									
 									<input type="text" class="form-control" id="lastName"
 										name="lastName" placeholder="Last Name" maxlength="240"
 										maxlength="240" [(ngModel)]="companyProfile.lastName" />
@@ -545,13 +500,7 @@
 								<div class="form-group" [attr.class]="phoneDivClass">
 									<label class="control-label" translate>Phone Number <font
 										style="color: #f55d7a"><b>*</b></font></label>
-									<!-- <fieldset
-										style="padding: 0 !important; border: 1px solid #ece2e2 !important">
-										<int-phone-prefix [(ngModel)]="companyProfile.phone"
-											[maxLength]=20 (input)="validatePattern('phone')"
-											(blur)="validatePattern('phone')"
-											[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-									</fieldset> -->
+									
 									<input type="text" maxlength="20" class="form-control" [(ngModel)]="companyProfile.phone" [ngModelOptions]="{standalone: true}" (input)="validatePattern('phone')"
 									(blur)="validatePattern('phone')" >
 									<span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
@@ -632,34 +581,7 @@
 
 
 
-								<!-- <div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
-									<div class="form-group">
-										<label class="control-label" translate>Upload Favicon Logo</label>
-											<input #imageInput type="file" accept="image/ico" (change)="processFavIconFile($event)">
-											<img class="img-grid"
-												*ngIf="companyFavIconPath"
-												[src]="authenticationService.MEDIA_URL + companyFavIconPath"
-												(error)="errorHandler($event)">
-									</div>
-								</div>
-
-								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
-									<div class="form-group">
-										<label class="control-label" translate>Upload Background Image</label>
-											<input #imageInput type="file" accept="image/png" (change)="processBgImageFile($event)">
-											<img class="img-grid"
-												*ngIf="companyBgImagePath"
-												[src]="authenticationService.MEDIA_URL + companyBgImagePath"
-												(error)="errorHandler($event)">
-									</div>
-								</div> -->
-
-
-
-								<!-- <div class="form-group">
-								<label class="control-label">About Us</label>
-								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs"></textarea>
-							</div> -->
+								
 							</div>
 								<div class="panel-group">
 									<div class="panel panel-default" style="border-style: none !important;">
@@ -836,19 +758,9 @@
 				<div>
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
-					<!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
+					
 					<div [hidden]="!imageChangedEvent">
-						<!-- <image-cropper [imageChangedEvent]="imageChangedEvent"
-							[maintainAspectRatio]="true" [onlyScaleDown]="true"
-							[roundCropper]="false" format="jpg" outputType="base64"
-							(imageCropped)="imageCroppedMethod($event)" [aspectRatio]="3 / 1"
-							[resizeToWidth]="256" [cropperMinWidth]="128"
-							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
-							[style.display]="showCropper ? null : 'none'"></image-cropper> -->
-
-							<!-- [canvasRotation]="canvasRotation" -->
-							<!--  -->
+						
 							<app-img-croppr-v2
 							[imageChangedEvent]="imageChangedEvent"
 							[maintainAspectRatio]="true"
@@ -873,13 +785,13 @@
 							style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
 						</fieldset>
 					</div>
-					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
+					
 
 				</div>
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
-							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							
 							{{
 							  containWithinAspectRatio
 								? 'Fill Aspect Ratio'
@@ -951,31 +863,7 @@
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
 					<div [hidden]="!bgImageChangedEvent">
-						<!-- <image-cropper [imageChangedEvent]="bgImageChangedEvent"
-							[maintainAspectRatio]="false" [onlyScaleDown]="true"
-							[roundCropper]="false" format="jpg" outputType="base64"
-							(imageCropped)="bgImageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
-							[imageQuality]="0" (loadImageFailed)="loadImageFailed()"
-							[style.display]="showCropper ? null : 'none'"></image-cropper> -->
-							<!-- <app-img-croppr-v2
-							[imageChangedEvent]="bgImageChangedEvent"
-							[maintainAspectRatio]="true"
-							[containWithinAspectRatio]="containWithinAspectRatio"
-							[aspectRatio]="3 / 1"
-							[resizeToWidth]="800"
-							[cropperMinWidth]="500"
-							[onlyScaleDown]="true"
-							[roundCropper]="false"
-							[alignImage]="'left'"
-							[style.display]="showCropper ? null : 'none'"
-							format="png"
-							[transform]="transform"
-							(imageCropped)="bgImageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()"
-							(cropperReady)="cropperReady($event)"
-							(loadImageFailed)="loadImageFailed()">
-							</app-img-croppr-v2> -->					
+						
 					<app-img-croppr-v2
 							[imageChangedEvent]="bgImageChangedEvent"
 							[maintainAspectRatio]="true"
@@ -1000,17 +888,14 @@
 							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
 						</fieldset>
 					</div>
-					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
+					
 
 				</div>
-				<!-- <div>
-					<button class="btn btn-primary" [disabled]="!showCropper"
-						(click)="uploadBgImage()">Save Changes</button>
-				</div> -->
+
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()" [disabled]="!showCropper">
-							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							
 							{{
 							  containWithinAspectRatio
 								? 'Fill Aspect Ratio'

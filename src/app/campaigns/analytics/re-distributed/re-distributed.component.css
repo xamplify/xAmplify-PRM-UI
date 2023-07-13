@@ -1,32 +1,10 @@
-#disabled-icon{
-border: none;
-margin: 0px 15px 0 0;
-cursor: default;
-}
-
- .blur {
-	-webkit-filter: blur(1px);
-	-moz-filter: blur(1px);
-	-o-filter: blur(1px);
-	-ms-filter: blur(1px);
-	filter: blur(1px);
-}
-
-#left-float{
-	float: left;
-}#notification{
+ #notification{
 	background-color: #ed1c24;
     color: white;
     margin-bottom: 25px;
     margin-left: -25px;
     margin-top: -5px;
 }
-
-.first-th-partners{
-	float: left;
-	margin-left: 70px;
-}
-
 
 @media screen and (max-width:600px){
 	.mScroll{

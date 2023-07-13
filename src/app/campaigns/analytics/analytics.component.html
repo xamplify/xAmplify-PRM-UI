@@ -2,38 +2,36 @@
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
   <!---XNFR-125-->
   <ng-container *ngIf="!loader.isLoading && !oneClickLaunchChannelCampaign">
-    <app-detailed-campaign-analytics [campaignId]="campaignId" [hidePageContent]="false"></app-detailed-campaign-analytics>
+     <app-detailed-campaign-analytics [campaignId]="campaignId" [hidePageContent]="false"></app-detailed-campaign-analytics>
   </ng-container>
-<!---One Click Launch Campaign Analytics-->
-<ng-container *ngIf="!loader.isLoading && oneClickLaunchChannelCampaign">
-    <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
-      <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
-      </div>
-      <div>
+  <!---One Click Launch Campaign Analytics-->
+  <ng-container *ngIf="!loader.isLoading && oneClickLaunchChannelCampaign">
+     <div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
+        <ng-template [ngTemplateOutlet]="campaignAnalyticsBreadCrumb"></ng-template>
+     </div>
+     <div>
         <app-one-click-launch-redistributed [campaignId]="campaignId" [hideDiv]="true"></app-one-click-launch-redistributed>
-    </div>
-</ng-container>
+     </div>
+  </ng-container>
 </div>
-
 <ng-template #campaignAnalyticsBreadCrumb>
   <ul class="page-breadcrumb">
-    <li *ngIf="!authenticationService.isSuperAdmin()">
-      <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
-      <i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li *ngIf="authenticationService.isSuperAdmin()">
-      <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
+     <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+     </li>
+     <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
         Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-    </li>
-    <li>
-      <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
-        aria-hidden="true"></i>
-    </li>
-    <li class="breadcrumb-font-color" style="color: #888;" title="{{campaignName}}">
-      {{campaignName | slice: 0: 35}}<span *ngIf="campaignName?.length>35">...</span>
-      <strong *ngIf="!notifyPartners" style="color:#ed1d24">(Notify
+     </li>
+     <li>
+        <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
+           aria-hidden="true"></i>
+     </li>
+     <li class="breadcrumb-font-color" style="color: #888;" data-toggle="tooltip" data-placement="bottom" title="{{campaignName}}">
+        {{campaignName | slice: 0: 35}}<span *ngIf="campaignName?.length>35">...</span>
+        <strong *ngIf="!notifyPartners" style="color:#ed1d24">(Notify
         {{authenticationService?.partnerModule?.customName}} is OFF)</strong>
-    </li>
+     </li>
   </ul>
 </ng-template>
-

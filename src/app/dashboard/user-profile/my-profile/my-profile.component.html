@@ -95,19 +95,22 @@
                             </li>
                             <!---View Type-->
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType | translate}}</a>
                             </li>
                             <!---Tags-->
-                            <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active': activeTabName == 'tags'}">
-                                <a (click)="activateTab('tags');clearCustomResponse()" translate>
+                            <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active-tab': activeTabName == 'tags'}">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"  (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
+
                             <!-- Customize left menu -->
-                            <!-- <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('customizeleftmenu');clearCustomResponse()">{{properties.customizeleftmenu | translate}}</a>
-                            </li> -->
-                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active': activeTabName == 'customskin'}">
-                                <a (click)="activateTab('customskin');clearCustomResponse()" translate>
+                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'customizeleftmenu'}" (click)="activateTab('customizeleftmenu');clearCustomResponse()" translate>{{properties.customizeleftmenu | translate}}</a>
+                            </li>
+
+                            <!---Themes-->
+                            <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
                              <!--------------Lead/Deal Configuration----------------------->
@@ -202,7 +205,7 @@
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             
-                        </ng-container>
+                             </ng-container>
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -272,9 +275,7 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
-                                    <!-- <span class="caption-subject font-blue-madison bold"  *ngIf="activeTabName== 'customskin' ">
-                                        
-                                    </span> -->
+                                   
                                     <div class="btn-toolbar" style="float: right;"
                                     *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                              || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
@@ -283,20 +284,7 @@
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
-                                        <!-- <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;" *ngIf="activeTabName == 'DarkTheme'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismLight'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismDark'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button> -->
+                                        
                                     </div>
 
                                     <a class="close-circle xamp-margin-left-icon"
@@ -311,8 +299,7 @@
                                 <app-response-message class="pg8" [customResponse]="themeResponse"
                                         *ngIf="themeResponse.isVisible">
                                     </app-response-message>
-                                Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
-                                Based on selecting color in below tab.
+                                {{properties?.customThemeDescription}}
                                 <br><br>
                                 <div class="div thembgc">
                                     <div class="row">
@@ -334,30 +321,22 @@
                                                     <br>
                                                     <h5 class="card-title themefont">{{dto.name}} Theme</h5>
 
-                                                    <!-- <button type="button" class="btn  btn-size btn-selectcolor"
-                                                        (click)="viewTheme();showDto(dto)"> <i
-                                                            class="fa fa-eye" aria-hidden="true"></i>
-                                                        View </button>
-                                                    <button type="button" *ngIf="dto.defaultTheme"
-                                                        class="btn  btn-size"
-                                                        [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
-                                                        (click)="goToCustomThemes();showDto(dto);"> <i
-                                                            class="fa fa-files-o" aria-hidden="true"></i>
-                                                        Copy</button> -->
+                                                   
                                                         <!-- responsive-alignment -->
                                                         <td class="mAlignView responsive-alignment">
                                                             <div class="actions-block override-actions ActionAlign">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                                    <a class="mMobileDisable" title="View"
+                                                                    <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
                                                                             aria-hidden="true"
-                                                                            class="fa fa-eye mDisableColor"></i></a>
-                                                                    <a title="Activate"
+                                                                            class="fa fa-eye mDisableColor"></i>
+                                                                        </a>
+                                                                    <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                                         (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                         *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                             _ngcontent-c69="" aria-hidden="true"
                                                                             class="fa fa-power-off"></i></a>
-                                                                    <a class="mMobileDisable" title="Copy"
+                                                                    <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
                                                                         (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                             aria-hidden="true"
                                                                             class="fa fa-files-o mDisableColor"></i></a>
@@ -398,20 +377,20 @@
                                             <td class="mAlignView">
                                                 <div class="actions-block override-actions ActionAlign">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
-                                                        <a class="mMobileDisable" title="Edit"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-edit mDisableColor"></i></a>
-                                                        <a title="Activate"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-power-off"></i></a>
-                                                        <a class="mMobileDisable" title="Copy"
+                                                        <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Copy"
                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
                                                                 class="fa fa-files-o mDisableColor"></i></a>
-                                                        <a title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
+                                                        <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                 class="fa fa-trash-o"></i></a>
@@ -497,7 +476,7 @@
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
                                                     {{ formErrors.websiteUrl }}</div>
                                             </div>
-                                            <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn green-haze" translate>
+                                            <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn Btn-Green" translate>
                                                 Save Changes</button>
                                         </form>
                                     </div>
@@ -522,7 +501,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-12 p0">
                                                 <div *ngFor="let question of questions;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -546,10 +525,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,question)">
-                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    <button type="button" class="btn-danger button-blue btn_add" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                        <span  class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addQuestion()" *ngIf="questions.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -560,7 +539,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button [disabled]="!formSubmiteState" class="btn green-haze" (click)="saveForm()">{{submitButtonText}}</button>
+                                            <button [disabled]="!formSubmiteState" class="btn Btn-Green" (click)="saveForm()">{{submitButtonText}}</button>
 
                                         </form>
                                         <form role="form" aria-label="">
@@ -571,7 +550,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-12 p0">
                                                 <div *ngFor="let dealType of dealtypes;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -595,10 +574,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="deleteDealType(i+1,dealType)">
+                                                                    <button type="button" class="btn-danger button-blue btn_add" (click)="deleteDealType(i+1,dealType)" data-toggle="tooltip" data-placement="top" title="Delete" >
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -609,14 +588,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
+                                            <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0" class="btn Btn-Green" (click)="saveDealTypes()">{{dealButtonText}}</button>
                                         </form>
                                     </div>
                                     <!---Integrations-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                         <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
                                             <div class="col-xs-12 integration-row">
-                                                <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px">
                                                             <span *ngIf="integrateRibbonText == 'configured'" 
@@ -626,9 +605,7 @@
                                                                     style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
-                                                            </div> -->
+                                                           
 
                                                             <div class="ribbon draft config" style="left:10px"  *ngIf="integrateRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'"
@@ -642,7 +619,7 @@
                                                                     <img src="assets/images/crm/Mark-amplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-                                                                <span class="arrow" *ngIf = "isMarketoProcess"  style="position: absolute; margin-top: -40px;"> 
+                                                                <span class="arrow process-sync" *ngIf = "isMarketoProcess" > 
                                                                 <img src="assets/images/Spinner.gif" class="loaderGif" style="height: 40px;"> Synchronization in process...																
                                                                 </span> 
                                                                 <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
@@ -652,7 +629,7 @@
                                                     </div>
                                                 </div>   
 
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
@@ -670,9 +647,6 @@
                                                                 <span [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
                                                             </div>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -687,7 +661,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">                                                        
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">                                                        
                                                     <div [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'" 
@@ -698,9 +672,6 @@
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="sfRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{sfRibbonText}}</span>
@@ -713,17 +684,16 @@
                                                                     <img src="assets/images/crm/xamplify-salesforce.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-                                                            <!-- <a (click)="salesforceSettings()" style="margin:5px"><span class="fa fa-cogs" *ngIf="sfRibbonText == 'configured'"> Settings</span></a>
-                                                             -->
+                                                           
                                                              <a (click)="configSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" translate>configure</a>
                                                             <a (click)="reConfigSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" translate>re configure</a>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                            </div>
-                                            <div class="col-xs-12 integration-row">
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                           
+                                        
+                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="microsoftRibbonText == 'configured'" 
@@ -734,9 +704,6 @@
                                                                 </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Microsoft</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="microsoftRibbonText == 'configured' ? 'green':'yello'">{{microsoftRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{microsoftRibbonText}}</span>
@@ -756,7 +723,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="pipedriveRibbonText == 'configured'" 
@@ -821,14 +788,12 @@
                                         	
                                         	<div>*Note: Please pick all fields that are marked required in Salesforce.  Otherwise, leads and deals will not be pushed into Salesforce. </div>
                                         	
-                                        	<!-- <app-response-message [customResponse]="customResponse"
-														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->
+                                        	
 													<form class="form-horizontal" autocomplete="off">
 														<table class='table tgrid'>
 															<thead>
 															<tr>
-																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
-																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
+																
 																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
 																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
 																		
@@ -840,8 +805,7 @@
 																<ng-container
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
-																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	
 																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
 																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
@@ -925,8 +889,7 @@
                                                                     <ng-container
                                                                         *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                     <tr>
-                                                                        <!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                                                                            id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+                                                                       
                                                                         <td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
                                                                             id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
                                                                         <td><span>{{sfCustomField.label}}</span></td>
@@ -981,8 +944,8 @@
                                             <div class="portlet-title" style="border-bottom: none;">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-sm-12 col-lg-12">
-                                                        <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                                             <button class="btn btn custom"  (click)="addPipeline()" translate>Create Pipeline</button>
+                                                        <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
+                                                             <button class="btn btn-primary"  (click)="addPipeline()" translate>Create Pipeline</button>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                             <div class="page-toolbar">
@@ -1012,17 +975,15 @@
                                                             <table class='table tgrid' id="pipeline-list">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th ><span>Name</span></th>
-                                                                        <th>Created By</th> 
-                                                                        <th>Stages</th>                                                                        
-                                                                        <th style="text-align:right">Actions</th>
+                                                                        <th style="width:40%;"><span>Name</span></th>
+                                                                        <th style="width:20%;">Created By</th> 
+                                                                        <th style="width:20%;">Stages</th>                                                                        
+                                                                        <th style="text-align:right;width:20%;">Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index" id="pipeline_{{pipeline.id}}">
-                                                                        <!-- <td class="custom-icon-width">
-                                                                            <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
-                                                                        </td> -->
+                                                                       
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
                                                                             border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
                                                                             <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
@@ -1114,9 +1075,9 @@
                                                 <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger" style="margin-top: 5px;">Password do not match.</div>
                                             </div>
                                             <div class="margin-top-10">
-                                                <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze" translate>
+                                                <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn Btn-Green" translate>
                                                     Change Password</button>
-                                                <input type="reset" class="btn default" value="Cancel">
+                                                <input type="reset" class="btn Btn-Gray" value="Cancel">
                                             </div>
                                         </form>
                                     </div>
@@ -1148,19 +1109,14 @@
                                               </label>
                                           </div>
                                           <div class="margin-top-10">
-                                            <button type="submit" class="btn green-haze" (click)="setDefaultView()" translate>Save Changes</button>
+                                            <button type="submit" class="btn Btn-Green" (click)="setDefaultView()" translate>Save Changes</button>
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-
                                     <!-- Customize Left Menu -->
-                                    
-                                    <!-- <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">                                       
-                                         <div>
-                                            <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
-                                         </div>                                                                                                                                                             
-                                        </div> -->
 
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
+                                      </div>
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
@@ -1201,8 +1157,8 @@
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-                                                <button type="submit" class="btn green-haze" (click)="saveGdprSetting()" *ngIf="!gdprSetting.isExists" translate>Save Settings</button>
-                                                <button type="submit" class="btn green-haze" (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists" translate>Update Settings</button>
+                                                <button type="submit" class="btn Btn-Green" (click)="saveGdprSetting()" *ngIf="!gdprSetting.isExists" translate>Save Settings</button>
+                                                <button type="submit" class="btn Btn-Green" (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists" translate>Update Settings</button>
                                                     
                                             </div>
                                         </form>
@@ -1213,7 +1169,12 @@
                                      <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">                                        
                                         <app-dashboard-buttons> </app-dashboard-buttons>
                                     </div>
-                                    
+
+                                    <!-- Customize Left Menu -->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
+                                        <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
+                                    </div>
+
                                     <!-- Saml SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
                                         <app-samlsecurity> </app-samlsecurity>
@@ -1233,7 +1194,7 @@
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-lg-12">
                                                     <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                                         <button class="add-button-xamplify"  (click)="addCategory()" translate>Create a Folder</button>
+                                                         <button class="btn-primary"  (click)="addCategory()" translate>Create a Folder</button>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                         <div class="page-toolbar">
@@ -1277,7 +1238,7 @@
                                                             </th>
                                                             <th class="text-center" id="border-bottom" translate>Created On</th>
                                                             <th class="text-center" id="border-bottom" translate>Items Count</th>
-                                                            <th class="text-center float-right border-top" id="border-bottom">Actions</th>
+                                                            <th class="text-center border-top" id="border-bottom">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1373,7 +1334,7 @@
                                                             </td>
                                                             <td>
                                                                 <div  class="override-actions">
-                                                                    <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
+                                                                    <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'" data-toggle="tooltip" data-placement="bottom">
                                                                        <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
                                                                        <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
                                                                     </a>
@@ -1425,9 +1386,7 @@
                                                     Activated On:<app-display-date-and-time
                                                         [dateAndTimeUTCString]="activeThemeDetails?.updatedDate"></app-display-date-and-time>
                                                 </p>
-                                                <!-- <div class="col-md-4 col-sm-4 col-xs-12"> 
-                                                <span class="button-style float-right"> Customize </span>
-                                            </div> -->
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -1452,7 +1411,7 @@
                                                     <div class="col-xs-12" style="padding:0">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
-                                                            <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 align-itms-center" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
                                                                     <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
                                                                         {{'Player Color' | translate}}:</label>
@@ -1491,8 +1450,8 @@
                                                                         {{valueRange}}</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-12 col-sm-6 col-md-4">
-                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 custome">
+                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull custome-video" controls height="160" poster="" data-setup='{"example_option":true }'>
                                                                     <source [src]="videoUrl"
                                                                         type="application/x-mpegURL">
                                                                 </video>
@@ -1570,8 +1529,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-xs-12 button-align" style="padding-left: 10px;">
-                                                                <button type="submit" class="btn green-haze" [disabled]="hasVideoRole" translate>Save Changes</button>
-                                                                <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
+                                                                <button type="submit" class="btn Btn-Green" [disabled]="hasVideoRole" translate>Save Changes</button>
+                                                                <button type="button" class="btn Btn-Gray" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
                                                             </div>
                                                         </fieldset>
                                                     </div>
@@ -1591,7 +1550,7 @@
                                                     <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
-                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                                             Download User CSV Template
                                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                                         </button>
@@ -1600,13 +1559,13 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeUsersFilePreview"
+                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
-                                                                    style="font-size: 12px; margin-left: 5px;"></i>
+                                                                    style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
                                                                 <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
@@ -1645,9 +1604,9 @@
                                     <div class="caption" translate>
                                         <i class="fa fa-edit"></i>File Preview
                                     </div>
-                                    <button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
+                                    <button type="submit" class="btn Btn-Green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedUsers(excludedUsers)"
                                                                                 translate>Save</button>
-                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
+                                                                            <button class="btn Btn-Gray"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-users')" translate>Cancel</button>
                                 </div>
                                 <div class="portlet-body">
                                     <app-list-loader *ngIf="isListLoader"></app-list-loader>
@@ -1691,10 +1650,7 @@
                                                 *ngIf="excludeUserPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                       
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1703,7 +1659,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                       
                                                         <td>
                                                         <app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
                                                         </td>
@@ -1750,7 +1706,7 @@
                                                     <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
-                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="color: #ffffff;float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                             Download Domain CSV Template
                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                         </button>
@@ -1761,13 +1717,13 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn green" [disabled] ="csvExcludeDomainsFilePreview"
+                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
-                                                                    style="font-size: 12px; margin-left: 5px;"></i>
+                                                                    style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn green" translate>
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
                                                                 <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
@@ -1806,9 +1762,9 @@
                                     <div class="caption" translate>
                                         <i class="fa fa-edit"></i>File Preview
                                     </div>
-                                    <button type="submit" class="btn green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedDomains(excludedDomains)"
+                                    <button type="submit" class="btn Btn-Green" style="float:right;margin-top:4px;" (click)="confirmAndsaveExcludedDomains(excludedDomains)"
                                                                                 translate>Save</button>
-                                                                            <button class="btn btn-default"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
+                                                                            <button class="btn Btn-Gray"  style="float:right;margin-top:4px;" (click)="cancelCSVFilePreview('exclude-domains')" translate>Cancel</button>
                                 </div>
                                 <div class="portlet-body">
                                     <app-list-loader *ngIf="isListLoader"></app-list-loader>
@@ -1853,10 +1809,7 @@
                                                 *ngIf="excludeDomainPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                    
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1865,7 +1818,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                     
                                                         <td><h6>
                                                         {{obj.domainName}}  </h6>
                                                         </td>
@@ -1973,12 +1926,12 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <div style="position: relative;top: -5px;" class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
+                <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
                 </div>
                 <ng-template #uploadButton> 
-					<div style="position: relative;top: -5px;" class="btn green fileinput-button-css"><span>Upload
+					<div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileChangeListener($event, cropper)">
                 </div>
@@ -1986,8 +1939,8 @@
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
-                    </img-cropper> -->
+                   
+                    
                     <div [hidden]="!imageChangedEvent">
                     <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
@@ -2017,7 +1970,7 @@
                 <div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
-							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							
 							{{
 							  containWithinAspectRatio
 								? 'Fill Aspect Ratio'
@@ -2062,7 +2015,7 @@
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!category.isValid || addCategoryLoader.isLoading " class="btn green-haze" (click)="saveOrUpdateCategory()">{{categoyButtonSubmitText}}</button>
+                <button type="submit" [disabled]="!category.isValid || addCategoryLoader.isLoading " class="btn btn-primary" (click)="saveOrUpdateCategory()">{{categoyButtonSubmitText}}</button>
             </div>
         </div>
     </div>
@@ -2089,7 +2042,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
+                <button type="button" class="btn Btn-Gray" (click)="closeDeleteCategoryModal()">Cancel</button>
                 <button type="button" class="btn btn-primary" title="Move items to other foler and delete existing folder" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
             </div>
         </div>
@@ -2115,8 +2068,7 @@
                         <label>Name of the Pipeline<font class="required">*</font></label>
                         <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
                         <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
-                        <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
-                        <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
+                       
                     </div>
                     <div class="form-group">
                         <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
@@ -2152,6 +2104,7 @@
                                                     <option value="none">None</option>
                                                 </select>
                                                 <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
                                                         class="glyphicon glyphicon-trash"></span></button>
                                             </div>
@@ -2176,8 +2129,8 @@
                 </ng-container>
             </div> 
             <div class="modal-footer" *ngIf="!pipelinePreview">
-                <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button>
-                <!-- <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading " class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button> -->
+                <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn Btn-Green" (click)="saveOrUpdatePipeline()">Submit</button>
+               
             </div>
         </div>
     </div>
@@ -2222,8 +2175,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       </form>
     </div>
     <div class="modal-footer" style="border:none">
-      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
-      <button  type="button" class="btn green"  (click)="confirmAndsaveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+      <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+      <button  type="button" class="btn Btn-Green"  (click)="confirmAndsaveExcludedUser(addContactuser)"  [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
     </div>
   </div>
 </div>
@@ -2235,7 +2188,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
-    <!-- <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader> -->
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>
@@ -2267,8 +2219,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       </form>
     </div>
     <div class="modal-footer" style="border:none">
-      <button class="btn btn-default" (click)="addDomainModalClose()" translate>Cancel</button>
-      <button  type="button" class="btn green"  (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
+      <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
+      <button  type="button" class="btn Btn-Green"  (click)="confirmAndsaveExcludedDomain(domain)" [disabled]="!validDomainPattern"  translate>Add</button>
     </div>
   </div>
 </div>

@@ -1,16 +1,12 @@
-td, th {
-    border: 0px solid #dddddd !important;
+td,
+th {
+  border: 0px solid #dddddd !important;
 }
 .td-css {
-width: 20px ;
-height: 20px;
-margin: 7px 10px;
+  width: 20px;
+  height: 20px;
+  margin: 7px 10px;
 }
-
-.dmt{
-	margin-top:75px !important;
-}
-
-.ml20{
-    margin-left: -20px;
+.ml20 {
+  margin-left: -20px;
 }

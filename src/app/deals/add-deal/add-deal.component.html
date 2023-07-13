@@ -10,7 +10,6 @@
   <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="portlet-title">
     <div class="caption" style="padding: 7px 0px 10px 5px !important;">{{dealFormTitle}}</div>
-    <!-- <div class="caption" *ngIf="submitButtonText != 'REGISTER DEAL'">Deal Details</div> -->
   </div>
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   <div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
@@ -223,13 +222,13 @@
         </div>
 
         <div class="pull-right" *ngIf="!preview && !showCustomForm && showDefaultForm">
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
           
         </div>
         <div class="pull-right" *ngIf="!preview && showCustomForm">
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!edit">REGISTER DEAL</button>
-          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="edit">UPDATE DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+          <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Loading.....

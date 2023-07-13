@@ -1,31 +1,22 @@
 .dashboard-stat.yellow-gold {
-    background-color: #00a6e8;
-    height: auto;
-    text-align: center;
-    padding: 15px 0;
-    color: #fff;
-    font-size: 16px;
-    margin-bottom: 0px;
-    width: 50%;
+  background-color: #00a6e8;
+  height: auto;
+  text-align: center;
+  padding: 15px 0;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 0px;
+  width: 50%;
 }
-
-.colorBlue{
-background: #808080;
+.colorBlue {
+  background: #808080;
 }
-.colorRed{
-background: #5bb1d4;
+.colorRed {
+  background: #5bb1d4;
 }
-
-.row{
-	margin-left: 0px;
+.row {
+  margin-left: 0px;
 }
-#question-icons{
-	margin-top: 5px;
-}
-.disable-element{
-  pointer-events: none!important;
-  opacity: 0.5;
-}
-/deep/.phone-input input{
-  height: 38px!important;
+#question-icons {
+  margin-top: 5px;
 }

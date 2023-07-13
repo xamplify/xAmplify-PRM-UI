@@ -34,6 +34,7 @@ export class ViewDamComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  loadVideoPlayer = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger,public activatedRoute:ActivatedRoute,public damService:DamService,
     public utilService:UtilService,public deviceService: Ng2DeviceService, public domSanitizer: DomSanitizer) {
@@ -70,6 +71,7 @@ export class ViewDamComponent implements OnInit {
 							this.assetDetailsViewDto = response.data;
 							this.selectedAsset = this.assetDetailsViewDto;
 							this.assetDetailsViewDto.displayTime = new Date(this.assetDetailsViewDto.publishedTimeInUTCString);
+							this.loadVideoPlayer = this.selectedAsset.videoId!=null && this.selectedAsset.videoId>0;
 						} else if (response.statusCode == 404) {
 							this.referenceService.goToPageNotFound();
 						}

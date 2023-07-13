@@ -138,12 +138,12 @@
                 <!-- XNFR-148 -->
                 <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
                   <!-- <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4> -->
-                  <div class="col-xs-12 col-sm-6 col-lg-5 p0">
+                  <div class="col-xs-6 col-sm-6 col-lg-5 p0">
                     <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
                     <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
-                  <div class="page-toolbar col-xs-12 col-sm-6 col-lg-5 p0 pull-right">
+                  <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right">
                     <div class="btn-group pull-right" style="width: max-content;">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
                         <span data-placement="bottom" (click)="setListView()" class="btn btn-xs hidden-xs l-g-view"
@@ -169,7 +169,7 @@
                       </a>
 
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'PIPEDRIVE'"
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
                         (click)="syncLeadsWithActiveCRM()">                      
                         <button class="btn btn-white padding mt button salesforce-btn" style="margin-left: 3px;" data-toggle="tooltip"
                           data-placement="bottom" title="Synchronize" translate>
@@ -200,7 +200,7 @@
                               (keypress)="leadEventHandler($event.keyCode)">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
-                            <button type="submit" [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'" class="search-box-item-click top" (click)="searchLeads()">
+                            <button type="submit" [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'" class="search-box-item-click top mb_v_search" (click)="searchLeads()">
                               <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                           </div>
@@ -225,7 +225,7 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
                         </div>
                       </div>
                       <div class="portlet box">
@@ -297,7 +297,7 @@
                           <th class="center-aligned" translate>Lead Details</th>
                           <th class="center" translate>Added By</th>
                           <th class="center" translate>Status</th>
-                          <th style="width: 18%; text-align:right" translate>Actions</th>
+                          <th style="width: 18%; text-align:center" translate>Actions</th>
                         </tr>
                       </thead>
 
@@ -338,16 +338,16 @@
 
                             </td>
                             <td style="width: 20%;">
-                              <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
+                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis' title="{{lead.createdByName}}"
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
                                 style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
                               </h5>
                               <h6 class='m0' style="font-weight: 400;">
-                                <a title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
+                                <a data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="lead.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
@@ -364,27 +364,31 @@
                               </div>
 
                               <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
-                                <a style="color: #008fd5;padding-left: 6px;" (click)="showDealRegistrationForm(lead)" translate>
+                                <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
 
                             </td>
                             <td>
-                              <div class="actions-block override-actions">
-                                  <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
+                              <div class="actions-block override-actions tb_view_actions">
+                                  <a data-rel="fancybox-button" (click)="viewLead(lead)"  data-toggle="tooltip" data-placement="bottom"
+                                   title="View Lead" id="lead">
                                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
+                                    data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Lead" id="lead">
                                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                                     </a>
                                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
+                                    data-toggle="tooltip" data-placement="bottom"
                                       title="Delete Lead" id="lead">
-                                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                   </ng-container>
                                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
+                                    data-toggle="tooltip" data-placement="bottom"
                                       title="Comments" style="margin-top: 10px">
                                       <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
                                       <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"

@@ -196,10 +196,10 @@
 .swal2-icon.swal2-error .line {
     position: absolute;
     height: 4px;
-    width: 30px;
+    width: 23px;
     background-color: #f27474;
     display: block;
-    top: 12px;
+    top: 9px;
     border-radius: 2px;
     margin: 6px;
 }

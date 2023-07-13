@@ -1,28 +1,36 @@
-  textarea {
-    resize: none;
-    max-height: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    min-width: 100%;
-    padding: 10px;
-    overflow: hidden;
+textarea {
+  resize: none;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  padding: 10px;
+  overflow: hidden;
+}
+.clip-button {
+  width: 100%;
+  background: #00a6e8;
+  color: #fff;
+  border-radius: 1px;
+}
+.clipboard {
+  padding: 6px 44px;
+}
+.text-area {
+  height: 150px;
+  min-height: 140px;
+  max-height: 160px;
+  font-size: 15px;
+}
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 45% !important;
+    right: 0 !important;
   }
-  .clip-button {
-     width:100%;
-     background: #00a6e8;
-     color: #FFF;
-     border-radius: 1px;
+}
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
   }
-  .clipboard {
-    padding: 6px 44px;
-  }
-  .text-area{
-    height: 150px;  min-height: 140px; max-height:160px;font-size: 15px;
-  }
-  @media screen and (min-width:601px){
-    .modal-css{  width: 45% !important; right: 0 !important;}
-    }
-    @media screen and (max-width:600px){
-      .modal-css {width: 100% !important; right: 0 !important;}
-    }
-
+}

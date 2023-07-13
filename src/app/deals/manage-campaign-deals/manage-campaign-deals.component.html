@@ -59,14 +59,12 @@
             <div class="form-inline col-sm-12">
               <div class="form-group col-sm-4">
                 <label class="control-label">From Date  &nbsp;
-                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
               <div class="form-group col-sm-4 form-group-mr">
                 <label class="control-label">To Date  &nbsp;
-                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
@@ -85,10 +83,6 @@
 
 
               </div>
-              <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                <button class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]=""
-                  (click)="validateDateFilters()">Filter</button>
-              </div> -->
             </div>
           </div>
         </form>
@@ -143,12 +137,13 @@
               <h5 *ngIf="!isPartnerVersion">{{deal.createdByCompanyName | slice:0:30}}
                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
               </h5>
-              <h5 class='ellipsis' title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-                {{deal.createdByName | slice:0:20}}
+              <h5 class='ellipsis m_t_view'  style="margin: 7px 0 2px 0;font-weight: 400;">
+                <span data-toggle="tooltip" data-placement="bottom"
+                title="{{deal.createdByName}}"> {{deal.createdByName | slice:0:20}}</span> 
                 <span *ngIf="deal.createdByName?.length>20">...</span>
               </h5>
               <h6 class='m0' style="font-weight: 400;">
-                <a title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
+                <a data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
                 <span *ngIf="deal.createdByEmail?.length>30">...</span>
               </h6>
               <h5 style="font-weight: 600; color: #676767;">
@@ -171,19 +166,21 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
-                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" title="View Deal" id="deal">
+                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" 
+                  title="View Deal" id="deal">
                     <i class="fa fa-eye mr5" aria-hidden="true"></i>
                   </a>
                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" title="Edit Deal" id="deal">
+                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)"
+                    data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                     </a>
                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
-                      title="Delete Deal" id="deal">
-                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                    data-toggle="tooltip" data-placement="bottom"  title="Delete Deal" id="deal">
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
                 </ng-container>
-                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" title="Comments" style="margin-top: 10px">                            
+                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
                   <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"></i>
                   <span class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
                 </a>

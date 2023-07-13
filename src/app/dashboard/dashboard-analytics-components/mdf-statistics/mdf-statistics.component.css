@@ -1,28 +1,9 @@
-.dashboard-stat2 {
-  background: #fff;
-  padding: 15px 15px 1px 15px;
-  margin-bottom: 20px;
-  height: 60px;
-}
-
-.m0 {
-  margin: 0 !important;
-}
-
-.partners-count {
-  font-size: 20px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .partners-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-weight: bold;
 }
-
 .icon1 {
   background: #5c9bd1;
   padding: 12px 12px;
@@ -32,7 +13,6 @@
   width: 37px;
   margin-top: -7px;
 }
-
 .icon2 {
   background: #3faba4;
   padding: 12px 12px;
@@ -42,7 +22,6 @@
   width: 37px;
   margin-top: -7px;
 }
-
 .icon3 {
   background: #e87e04;
   padding: 12px 12px;
@@ -52,11 +31,9 @@
   width: 37px;
   margin-top: -7px;
 }
-
 .dmht {
   min-height: 663px;
 }
-
 .number {
   margin: 0px;
   text-align: right;
@@ -64,35 +41,25 @@
   font-size: 14px !important;
   color: #00000085;
 }
-
 .text {
   font-size: 11px;
   padding: 0px 0px;
   font-weight: 500;
   text-align: right;
 }
-
 .card-align {
   text-align: right;
 }
-
 .card-height {
   height: 45px;
   padding-left: 5px !important;
 }
-
 @media screen and (max-width: 1366px) and (min-width: 1024px) {
   .number {
     margin: 0px;
     text-align: right;
     font-weight: 700;
     font-size: 14px !important;
-  }
-  .text {
-    font-size: 10px;
-    padding: 0px 0px;
-    font-weight: 500;
-    text-align: right;
   }
   .card-height {
     height: 45px;
@@ -104,7 +71,6 @@
     padding-right: 8px;
   }
 }
-
 .mb0mh0 {
   margin-bottom: 0px;
   min-height: 0px;

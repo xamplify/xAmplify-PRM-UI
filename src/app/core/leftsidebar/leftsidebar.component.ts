@@ -49,12 +49,17 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	backgroundColor: any;
 	customNamePartners = "Partners";
 	userId: number;
+	subMenuMergeTag = ["partners","contacts","assignLeads","campaigns","opportunities"]; 
 	/*** XNFR-134***/
 	skin:CustomSkin = new CustomSkin();
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	showResellar = false;
 	/*** XNFR-224***/
 	isLoggedInAsPartner = false;
+	/*** XNFR-276***/
+	public menuItems:Array<any> =  [];
+	mergeTag: any;
+	clickedMergeTag: string;
 	constructor(private renderer2: Renderer2,
 		@Inject(DOCUMENT) private _document:any,public location: Location, public authenticationService: AuthenticationService, public referenceService: ReferenceService, private router: Router
 		, private dashBoardService: DashboardService, public userService: UserService, public logger: XtremandLogger, public utilService: UtilService
@@ -85,11 +90,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
 	ngOnInit() {
 		 this.findMenuItems();
+		 this.getMergeTagByPath();
 		//this.customSkinLeftMenu();
 	}
-	
 
-	findMenuItems() {
+	findMenuItems() {``
 		this.loading = true;
 		let module = this.authenticationService.module;
 		module.contentLoader = true;
@@ -100,6 +105,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}
 		vanityUrlPostDto['userId'] = this.authenticationService.getUserId();
 		vanityUrlPostDto['loginAsUserId'] = this.utilService.getLoggedInVendorAdminCompanyUserId();
+		//XNFR-276
+		this.mergeTag = this.getMergeTagByPath();
+		vanityUrlPostDto['mergeTag'] = this.mergeTag;
 		this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
 			.subscribe(
 				data => {
@@ -192,6 +200,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					}
 					this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
 					this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
+					//XNFR-276
+					this.menuItems = data.menuItems;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -259,6 +269,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     	module.isMarketingAndPartnerTeamMember = roleDisplayDto.marketingAndPartnerTeamMember;
 		module.isMarketingCompany = module.isMarketing || module.isMarketingTeamMember || module.isMarektingAndPartner || module.isMarketingAndPartnerTeamMember;
 		module.isPrmCompany = module.isPrm || module.isPrmTeamMember || module.isPrmAndPartner || module.isPrmAndPartnerTeamMember;
+		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
+
 	}
 
 	setContentMenu(data: any, module: any) {
@@ -328,6 +340,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	}
 
 	openOrCloseTabs(urlType: string) {
+		this.clickedMergeTag = urlType;
 		if (window.innerWidth < 990) {
 			if (urlType === 'emailtemplates') {
 				this.emailtemplates = this.router.url.includes('emailtemplates') ? true : (this.emailtemplates = !this.emailtemplates);
@@ -369,7 +382,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 				this.assignLeads = this.router.url.includes('assignleads') ? true : (this.assignLeads = !this.assignLeads);
 				this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, true, false, false, false, false);
 			}
-			else if (urlType === 'deal') {
+			else if (urlType === 'opportunities') {
 				this.authenticationService.module.navigatedFromMyProfileSection = false;
 				this.authenticationService.module.navigateToPartnerSection = false;
 				this.deals = this.router.url.includes('deal') ? true : (this.deals = !this.deals);
@@ -407,26 +420,52 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	startLoader(){
 		this.loading = true;
 	}
+
+	getMergeTagByPath(){
+		if(this.router.url.includes('dashboard')){
+            this.mergeTag = "dashboard";
+			if(this.router.url.includes('myprofile')){
+				this.mergeTag = "configuration";
+			}	
+		}
+		else if(this.router.url.includes('partners')){
+			this.mergeTag = "partners";
+		}
+		else if(this.router.url.includes('select-modules') || this.router.url.includes('content') || this.router.url.includes('dam') || this.router.url.includes('tracks') || this.router.url.includes('playbook')){
+			this.mergeTag = "content";
+		}
+		else if(this.router.url.includes('contacts')){
+			this.mergeTag = "contacts";
+		}
+		else if(this.router.url.includes('assignleads')){
+			this.mergeTag = "assignleads";
+		}
+		else if(this.router.url.includes('sharedleads')){
+			this.mergeTag = "sharedleads";
+		}
+		else if(this.router.url.includes('pages/partner') || this.router.url.includes('forms/partner')){
+			this.mergeTag = "pages";
+		}
+		else if(this.router.url.includes('design') || this.router.url.includes('emailtemplates') || (this.router.url.includes('forms') && !this.router.url.includes('forms/partner') && !this.router.url.includes('forms/clpf') && !this.router.url.includes('/analytics/cfa')) || (this.router.url.includes('pages') && !this.router.url.includes('pages/partner') && !this.router.url.includes('campaign'))){
+			this.mergeTag = "design";
+		}
+		else if((this.router.url.includes('campaigns') || this.router.url.includes('campaign') || this.router.url.includes('clpf') || this.router.url.includes('/analytics/cfa'))){
+			this.mergeTag = "campaigns";
+		}
+		else if((this.router.url.includes('deal') || this.router.url.includes('leads') && !this.router.url.includes('assign') && !this.router.url.includes('dashboard') || this.router.url.includes('shared'))){
+			this.mergeTag = "opportunities";
+		}
+		else if(this.router.url.includes('rss')){
+			this.mergeTag = "social_feeds";
+		}
+		else if(this.router.url.includes('mdf')){
+			this.mergeTag = "mdf";
+		}
+		else if(this.router.url.includes('team')){
+			this.mergeTag = "team";
+		}	
+	}
 	
-	// customSkinLeftMenu(){
-	// 	this.dashBoardService.getTopNavigationBarCustomSkin(this.vanityLoginDto).subscribe(
-	// 		(response) =>{
-	// 	   let cskinMap  = response.data;
-	// 	   this.skin  = cskinMap.LEFT_SIDE_MENU;
-	// 	    document.documentElement.style.setProperty('--left-bg-color', this.skin.backgroundColor);
-	// 	    document.documentElement.style.setProperty('--left-text-color', this.skin.textColor);
-	// 	    document.documentElement.style.setProperty('--left-border-color', this.skin.buttonBorderColor);
-	// 		document.documentElement.style.setProperty('--left-icon-color', this.skin.iconColor);
-	// 		this.authenticationService.isDefaultTheme = this.skin.defaultSkin;
-	// 		this.authenticationService.isDarkForCharts = this.skin.darkTheme;
-	// 		if(!this.skin.defaultSkin && !this.skin.darkTheme) {
-	// 			require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-left-side-bar.css");
-	// 		} else if(this.skin.darkTheme && this.skin.defaultSkin) {
-	// 			require("style-loader!../../../assets/admin/layout2/css/themes/tharak-dark-light.css");
-	// 		} else {
-	// 			require("style-loader!../../../assets/admin/layout2/css/layout.css");
-	// 		}
-	// 	}
-	// 	)
-	//   }
+	
+	
 }
