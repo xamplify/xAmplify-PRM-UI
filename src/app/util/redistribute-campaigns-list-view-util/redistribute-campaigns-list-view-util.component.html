@@ -121,7 +121,7 @@
                     </span>
                   </td>
                   <td>
-                    <div class="actions-block override-actions" style="text-align: center !important;">
+                    <div class="actions-block override-actions" style="text-align: center !important;width: max-content;">
                       <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                       <i class="fa fa-eye mr5"></i>
                       </a>
@@ -186,7 +186,7 @@
             <div class="row mix-grid p10">
               <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
               <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+                <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3 tab_mt_20">
                   <div class="grid-box">
                     <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
                     <!-- <br> -->
@@ -230,7 +230,7 @@
                         class="fa fa-wpforms" aria-hidden="true"></i>
                       </span>
                     </div>
-                    <div class="ribbon">
+                    <div class="ribbon tab-ribbon">
                       <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
                         Cancelled
                       </div>
