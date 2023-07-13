@@ -78,6 +78,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.statusCode = 200;
 					this.userGuide = response.data;
 					this.guideLink = this.userGuide.link;
+					this.isSearch = false;
 					this.showListId = this.userGuide.customName
 					this.expansionOfDIvByModuleId(this.userGuide.moduleId)
 					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.guideLink + ' frameborder="0" allowfullscreen></iframe>');
