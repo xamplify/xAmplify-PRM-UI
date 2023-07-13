@@ -2252,8 +2252,8 @@
                                                                             <div class="input-icon right pull-right cebp">
                                                                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                                  (keypress)="eventHandlerForUrlEmailTemplate($event, url)">
-                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
-                                                                                <button type="submit" class="search-box-item-click email-search" (click)="searchClickEmailTemplate(url)">
+                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchWebsiteLinkAutoResponseEmailTemplates(url)"></button>
+                                                                                <button type="submit" class="search-box-item-click email-search" (click)="searchWebsiteLinkAutoResponseEmailTemplates(url)">
                                                                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                             </div>
                                                                             <div class="portlet-body">
