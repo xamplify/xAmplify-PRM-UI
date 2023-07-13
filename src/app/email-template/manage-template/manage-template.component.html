@@ -279,12 +279,12 @@
                                         <span *ngIf="emailTemplate.companyName?.length>17">..</span>
                                     </h6>
                                 </ng-container>
-                                <div class="ribbon draft" *ngIf="emailTemplate.draft">
+                                <div class="ribbon tab-ribbon draft" *ngIf="emailTemplate.draft">
                                     <span  translate>DRAFT</span>
                                 </div>
                                 <!---XNFR-255-->
                                 <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
-                                    <div class="ribbon active">
+                                    <div class="ribbon tab-ribbon active">
                                         <span translate>White-Labeled</span>
                                     </div>
                                     <h6 title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" translate>

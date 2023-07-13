@@ -68,7 +68,8 @@
   }
   .mPad {
     padding: 5px 0px 5px 0px;
-    width: 100%;
+    left: 12px;
+    width: 82.4%!important;
   }
   .mPad2 {
     padding: 5px 30px 5px 30px;

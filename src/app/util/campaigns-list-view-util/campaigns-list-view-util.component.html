@@ -11,8 +11,8 @@
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ng-container *ngIf="!addWorkflows">
-    <div class="col-md-12">
-        <div class="portlet light clearfix">
+    <div class="col-md-12 tab_gridfolder">
+        <div class="portlet light clearfix tab_folderscroll">
             <div class="portlet-title" style="border-bottom: none">
                 <div class="row">
                     <div class="colxs-12 col-sm-12 col-md-5">
@@ -1026,7 +1026,7 @@
                 <ng-container
                     *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                     style="padding: 0px 3px 0px 3px;">
-                    <div class="col-md-3 col-sm-4 col-xs-12"
+                    <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20"
                         *ngFor="let campaign of pagination.pagedItems; let i= index">
                         <div class="grid-box" style="height:300px">
                             <img *ngIf="!campaign?.campaignProcessing" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
@@ -1156,7 +1156,7 @@
                                         aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
+                            <div class="ribbon tab-ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
                                 <span *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">Launched</span>
                                 <div class="cancel-ribbon"
                                     *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
