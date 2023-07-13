@@ -265,6 +265,9 @@ export class Properties {
 	/****XNFR-314****/
 	teamMemberPartnerFilter = "Default Partner Filter";
 
+	/***XNFR-318***/
+	campaignRegularEmailsFilter = "CampaignRegularEmails";
+
 
 
 

@@ -591,3 +591,23 @@ table.table-bordered.dataTable {
 .padding-top-45px{
   padding-top: 45px !important;
 }
+
+.website-work-flow{
+  background-color: #f76c1a;
+  padding: 9px 0;
+}
+.workflow-icon-style{
+  margin: 0 5px;
+}
+
+.auto-response-style{
+  background-color: #f4555c;
+  padding: 9px 0;
+}
+
+.pr-b-7px{
+  position: relative; 
+  bottom: -7px;
+}
+
+

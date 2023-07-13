@@ -2790,7 +2790,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     /***************************Email Rules***********************************/
     addReplyRows() {
         this.reply = new Reply();
-        //$('.bs-timepicker-field').attr("disabled",'disabled');
         let length = this.allItems.length;
         length = length + 1;
         var id = 'reply-' + length;

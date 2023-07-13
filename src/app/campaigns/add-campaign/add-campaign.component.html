@@ -387,7 +387,6 @@
             <div class="portlet light shadow">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
-                    <form class="form-horizontal form-bordered form-label-stripped">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Select An Email Template</legend>
                             <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
@@ -492,7 +491,6 @@
                                 </app-pagination>
                             </div>
                         </fieldset>
-                    </form>
                     </div>
                 </div>
             </div>
@@ -662,6 +660,77 @@
                     </div>
                 </div>
             </div>
+
+            <!---Campaign Workflows---->
+            <div class="portlet light shadow" *ngIf="'landingPage'!=campaignType">
+                <div class="row">
+                    <div class="col-xs-12">
+                            <fieldset class="scheduler-border">
+                                <legend class="scheduler-border">Add Workflows</legend>
+                                <div class="portlet-body padding-top-45px">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur website-work-flow" translate>
+                                                <i class="fa fa-ban p0" aria-hidden="true"></i> No website links found
+                                            </a>
+                                            <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold website-work-flow"  (click)="addClickRows()">
+                                                <i class="fa fa-plus-square p0 workflow-icon-style" aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                                            </a>
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <a class="dashboard-stat yellow-gold auto-response-style" (click)="addReplyRows()">
+                                                <i class="fa fa-plus-square p0 workflow-icon-style"  aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                                            </a>
+                                        </div>
+                                         <!-- -------------------------------------Email Auto Response----------------------------- -->
+                                         <div class="col-xs-12 pr-b-7px" id="reply-onclick-div">
+                                            <div class="alert alert-danger" *ngIf="dataError">
+                                                <strong>Please complete the required fields</strong>
+                                            </div>
+                                            <fieldset *ngIf="replies?.length>0">
+                                                <legend> {{properties?.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                                                <div *ngFor="let reply of replies;let i=index">
+                                                    <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
+                                                        <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                            <div class="col-xs-6">
+                                                                <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
+                                                            </div>
+                                                            <div class="col-xs-6">
+                                                                <div class="pull-right">
+                                                                    <label class="switch-choose" translate>Choose Template</label>
+                                                                    <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                        (statusChange)="selectReplyEmailBody($event,i,reply)">
+                                                                    </switch>
+                                                                    <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
+                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-primary button-blue" (click)="addReplyRows()">
+                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <form class="role add-reply" id="form-{{reply.divId}}">
+                                                                <div class="col-xs-12 p0">
+
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>  
+                            </fieldset>  
+                    </div>   
+                </div> 
+            </div>
+
+
+
         </div>
     </div>
 
