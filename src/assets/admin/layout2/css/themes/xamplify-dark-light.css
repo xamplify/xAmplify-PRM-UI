@@ -1571,11 +1571,11 @@ input.ng-valid.ng-dirty.ng-touched {
   background-color: #22313a54 !important;
 }
 .dark-card-body-cu {
-  background-color: #2b3c46 !important
+  background-color: #2b3c46 !important;
 }
 .number-vedor-card {
   background: #b8def1;
-  color:#333;
+  color: #333;
 }
 
 .alert-success {
@@ -1589,25 +1589,47 @@ input.ng-valid.ng-dirty.ng-touched {
   color: #a94442 !important;
 }
 
-.alert-info {background-color: #d9edf7 !important;border-color: #bce8f1 !important;color: #31708f  !important;}
-.login-error {color: #a94442;}
-.login-success {color: #3c763d;}
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f !important;
+}
+.login-error {
+  color: #a94442;
+}
+.login-success {
+  color: #3c763d;
+}
 
 /* 13-07-2023 */
-ul.drag-menu-cu li:hover { background-color: #22313a !important;}
-.portlet.light, .custome-portlet {border: none !important;}
-.dragdrop-gif-cu {border: 1px solid #2f4857 !important;} 
-.drap-arrow-cu{color: #fff !important;}
-.dropdown-menu li > a > [class^="icon-"], .dropdown-menu li > a > [class*=" icon-"] {
+ul.drag-menu-cu li:hover {
+  background-color: #22313a !important;
+}
+.custome-portlet {
+  border: none !important;
+}
+.dragdrop-gif-cu {
+  border: 1px solid #2f4857 !important;
+}
+.drap-arrow-cu {
+  color: #fff !important;
+}
+.dropdown-menu li > a > [class^="icon-"],
+.dropdown-menu li > a > [class*=" icon-"] {
   color: #fff !important;
 }
 .card-paddings-vcu {
   background: #22313a !important;
 }
-.backgroundfor-mv-title{background: #5a738e !important;}
+.backgroundfor-mv-title {
+  background: #5a738e !important;
+}
 .mv-color-text {
   color: #fff !important;
 }
 h5.designpage-dark-cu {
   padding-bottom: 12px;
+}
+.portlet-light-fields {
+  border: 1px solid #2f4857 !important;
 }
