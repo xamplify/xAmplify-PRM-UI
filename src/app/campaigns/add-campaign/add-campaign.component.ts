@@ -1063,7 +1063,7 @@ export class AddCampaignComponent implements OnInit {
 
     /********Workflows**************/
 
-    isEven(n) {
+    isEven(n:number) {
         if (n % 2 === 0) { return true; }
         return false;
     }
@@ -1077,12 +1077,12 @@ export class AddCampaignComponent implements OnInit {
         this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.replies.push(this.reply);
         this.allItems.push(id);
+        this.reply.emailTemplatesPagination.maxResults = 12;
         this.findEmailTemplatesForAutoResponseWorkFlow(this.reply);
     }
     findEmailTemplatesForAutoResponseWorkFlow(reply: Reply) {
-        reply.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
         reply.loader = true;
-        reply.emailTemplatesPagination.maxResults = 12;
+        reply.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
         this.campaignService.findCampaignEmailTemplates(reply.emailTemplatesPagination).subscribe(
             response=>{
                 const data = response.data;
@@ -1095,6 +1095,29 @@ export class AddCampaignComponent implements OnInit {
                 this.xtremandLogger.errorPage(error);
             });
     }
+
+    findAutoResponseEmailTemplatesOnEnterKeyPress(eventKeyCode:number,reply:Reply){
+        if (eventKeyCode === 13) {
+            this.searchAutoResponseEmailTemplates(reply);
+        }
+    }
+
+    searchAutoResponseEmailTemplates(reply:Reply){
+        reply.emailTemplatesPagination.pageIndex = 1;
+        reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
+        this.findEmailTemplatesForAutoResponseWorkFlow(reply);
+    }
+
+    paginateAutoResponseEmailTempaltes(event: any, reply: Reply){
+        reply.emailTemplatesPagination.pageIndex = event.page;
+        this.findEmailTemplatesForAutoResponseWorkFlow(reply);
+    }
+
+    
+
+
+
+    /********Website Workflows****/
     addClickRows() {
         this.url = new Url();
         let length = this.allItems.length;
