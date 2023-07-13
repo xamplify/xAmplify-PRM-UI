@@ -1112,7 +1112,17 @@ export class AddCampaignComponent implements OnInit {
         reply.emailTemplatesPagination.pageIndex = event.page;
         this.findEmailTemplatesForAutoResponseWorkFlow(reply);
     }
-
+    
+    setReplyEmailTemplate(emailTemplateId: number, reply: Reply, index: number, isDraft: boolean) {
+        if (!isDraft) {
+            reply.selectedEmailTemplateId = emailTemplateId;
+            $('#reply-' + index + emailTemplateId).prop("checked", true);
+        }
+    }
+    selectReplyEmailBody(event: any, index: number, reply: Reply) {
+        reply.defaultTemplate = event;
+    }
+   
     
 
 
@@ -1157,10 +1167,15 @@ export class AddCampaignComponent implements OnInit {
         return arr;
     }
     
-    selectReplyEmailBody(event: any, index: number, reply: Reply) {
-        reply.defaultTemplate = event;
-    }
+   
     selectClickEmailBody(event: any, index: number, url: Url) {
         url.defaultTemplate = event;
+    }
+
+    setClickEmailTemplate(emailTemplateId: number, url: Url, index: number, isDraft: boolean) {
+        if (!isDraft) {
+            url.selectedEmailTemplateId = emailTemplateId;
+            $('#url-' + index + emailTemplateId).prop("checked", true);
+        }
     }
 }
