@@ -1376,7 +1376,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .dark-card-body-cu {
   background-color: var(--div-bg-color) !important;
 }
-.portlet.light,
+/* .portlet.light, */
 .custome-portlet {
   border: none !important;
 }
