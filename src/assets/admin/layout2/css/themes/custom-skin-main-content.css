@@ -1360,19 +1360,14 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 /* 27-6-2023  */
 
-.option-color {
-  color: var(--title-heading--text) !important;
-}
+.option-color {color: var(--title-heading--text) !important;}
 
 /*01-07-2023*/
-.rss-title {
-  color: var(--title-heading--text) !important;
-}
-.dark-beige {
-  background: transparent;
-}
+.rss-title {color: var(--title-heading--text) !important;}
+.dark-beige {background: transparent;}
 
 /* 10-07-2023 */
-.dark-card-body-cu {
-  background-color: var(--page-content) !important;
-}
+.dark-card-body-cu {background-color: var(--page-content) !important;}
+.portlet.light, .custome-portlet {border: none !important;}
+ul.drag-menu-cu li:hover {background-color: var(--page-content) !important;}
+.dragdrop-gif-cu {border: 1px solid var(--border-color) !important;} 

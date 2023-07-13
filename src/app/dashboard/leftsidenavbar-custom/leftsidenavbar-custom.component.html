@@ -1,10 +1,12 @@
 <div class="my-container">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <app-response-message [customResponse]="leftMenuCustomResponse"></app-response-message>
+    <p class="contentwrap-dr">Custom Left Menu helps to rearrange menu modules as per your priority. By using Drag & Drop you can set your Custom Left Menu.</p>
+
 </div>
 
 <div class="row dragdrop-graph-bg">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 add-graph-bg"  style="padding: 0">
+    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 add-graph-bg">
         <div class="portlet light border-radius-0 custome-portlet">
             <ul class="list-group drag-menu-cu cursor-move" [dragula]='"leftSideMenuDragula"' [dragulaModel]='menuItems'>
                 <li class="list-group-item cursor-move" *ngFor="let menu of menuItems">
@@ -15,8 +17,9 @@
             </ul>
         </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 dragdrop-gif-cu">
-        <img src="/assets/images/cmenu.webp" alt="Customize Left Menu" class="draganddrop-image-cu">
+    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 dragdrop-gif-cu">
+        <h4 class="boltext-dr">Demo - Customize Left Menu</h4>
+        <img src="/assets/images/customize-light-menu.webp" alt="Customize Left Menu" class="draganddrop-image-cu">
     </div>
 </div>
 
