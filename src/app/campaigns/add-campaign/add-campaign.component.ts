@@ -1134,4 +1134,10 @@ export class AddCampaignComponent implements OnInit {
         return arr;
     }
     
+    selectReplyEmailBody(event: any, index: number, reply: Reply) {
+        reply.defaultTemplate = event;
+    }
+    selectClickEmailBody(event: any, index: number, url: Url) {
+        url.defaultTemplate = event;
+    }
 }

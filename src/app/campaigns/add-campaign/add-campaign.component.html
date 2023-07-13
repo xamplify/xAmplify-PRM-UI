@@ -771,6 +771,28 @@
                                                                             </span>
                                                                         </div>
                                                                     </div>
+                                                                    <!--Message & Email Templates-->
+                                                                    <div class="col-xs-12">
+                                                                        <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
+                                                                            <div style="margin-left: 1px;">
+                                                                                <label class="default" for="days" id="reply-message-{{reply.divId}}" translate>Message
+                                                                                    <strong class="required">*</strong>
+                                                                                </label>
+                                                                            </div>
+                                                                            <div>
+                                                                                <ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--Email Template-->
+                                                                        <div class="col-xs-12 text-center mt10"  id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
+                                                                            <div class="form-group" style="margin-left: 1px;">
+                                                                                <label for="days" id="email-template-{{reply.divId}}" translate>Select Email Template
+                                                                                    <strong class="required">*</strong>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
 
                                                                 </div>
                                                             </form>

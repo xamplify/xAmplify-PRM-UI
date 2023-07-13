@@ -637,11 +637,7 @@ table.table-bordered.dataTable {
 .colorRed {
   background: #5bb1d4;
 }
-.email-search {
-  padding-top: 3px !important;
-  position: absolute;
-  top: 5px;
-}
+
 
 .padding-left-0{
   padding-left: 0;
