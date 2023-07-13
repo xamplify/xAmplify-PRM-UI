@@ -13,6 +13,9 @@
             </li>
             <li><a translate>Design Templates</a></li>
         </ul>
+        <app-user-guide-help-button
+                 *ngIf="5 != selectedTemplateTypeIndex && 11 != selectedTemplateTypeIndex && 12 != selectedTemplateTypeIndex"
+                [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
