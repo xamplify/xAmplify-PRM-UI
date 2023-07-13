@@ -169,3 +169,7 @@
   text-overflow: ellipsis;
   width: 100%;
 }
+.toggle-info-white-label {
+  font-size: 20px !important;
+  margin: 9px 0px 0 15px !important;
+}

@@ -1766,3 +1766,11 @@ input:checked + .slider:before {
   > img {
   background-color: var(--page-content) !important;
 }
+.portlet-light-fields {
+  text-align: center;
+  padding: 10px !important;
+  border-radius: 5px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+

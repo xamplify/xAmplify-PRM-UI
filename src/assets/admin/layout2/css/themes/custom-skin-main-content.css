@@ -755,7 +755,7 @@ select {
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
 }
-.nav-tabs,
+/* .nav-tabs, */
 .def-player-border {
   border-bottom: 1px solid var(--border-color) !important;
 }
@@ -1360,20 +1360,35 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 /* 27-6-2023  */
 
-.option-color {color: var(--title-heading--text) !important;}
+.option-color {
+  color: var(--title-heading--text) !important;
+}
 
 /*01-07-2023*/
-.rss-title {color: var(--title-heading--text) !important;}
-.dark-beige {background: transparent;}
+.rss-title {
+  color: var(--title-heading--text) !important;
+}
+.dark-beige {
+  background: transparent;
+}
 
 /* 10-07-2023 */
-.dark-card-body-cu {background-color: var(--div-bg-color) !important;}
-.portlet.light, .custome-portlet {border: none !important;}
-ul.drag-menu-cu li:hover {background-color: var(--page-content) !important;}
-.dragdrop-gif-cu {border: 1px solid var(--border-color) !important;} 
+.dark-card-body-cu {
+  background-color: var(--div-bg-color) !important;
+}
+.portlet.light,
+.custome-portlet {
+  border: none !important;
+}
+ul.drag-menu-cu li:hover {
+  background-color: var(--page-content) !important;
+}
+.dragdrop-gif-cu {
+  border: 1px solid var(--border-color) !important;
+}
 
 .card-paddings-vcu {
-background-color: var(--page-content) !important;
+  background-color: var(--page-content) !important;
 }
 
 .backgroundfor-mv-title {
@@ -1382,4 +1397,64 @@ background-color: var(--page-content) !important;
 }
 h5.designpage-dark-cu {
   padding-bottom: 12px;
+}
+/* 11-7-2023 sudha sri */
+.btn-primary {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+.btn-primary:hover {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+.Btn-Green {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  color: var(--btn-secondary-text-color) !important;
+}
+.Btn-Green:hover {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+}
+.Btn-Green.btn:hover {
+  color: var(--btn-secondary-text-color) !important;
+}
+.Btn-Green.btn.active,
+.Btn-Green.btn:active,
+.Btn-Green.btn:focus,
+.Btn-Green.btn:hover,
+.open .Btn-Green.btn.dropdown-toggle {
+  color: var(--btn-secondary-text-color) !important;
+}
+.custom-header-img-color {
+  color: var(--top-button-value-color) !important;
+  background-color: var(--top-bg-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.custom-left-img-color {
+  color: var(--left-text-color) !important;
+  background-color: var(--left-bg-color) !important;
+  border: 1px solid var(--left-border-color) !important;
+}
+.custom-footer-img-color {
+  color: var(--footer-text-color) !important;
+  background-color: var(--footer-bg-color) !important;
+  border: 1px solid var(--footer-border-color) !important;
+}
+.custom-main-img-color {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.custom-btn-ref {
+  background-color: var(--button-primary-bg-color) !important;
+  color: var(--button-primary-text-color) !important;
+  border: 1px solid var(--button-primary-border-color) !important;
+}
+.custom-sec-btn-ref {
+  background-color: var(--button-secondary-bg-color) !important;
+  color: var(--button-secondary-text-color) !important;
+  border: 1px solid var(--button-secondary-border-color) !important;
 }

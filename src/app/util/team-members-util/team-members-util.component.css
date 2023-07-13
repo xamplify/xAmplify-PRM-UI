@@ -405,3 +405,6 @@ hr {
 .btn-padding {
   padding: 1px 5px;
 }
+.default-btn-cursor {
+  cursor: default !important;
+}
