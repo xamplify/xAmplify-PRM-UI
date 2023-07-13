@@ -26,21 +26,29 @@ export class SelectFormComponent implements OnInit {
   searchKey = "";
   selectedFormTypeIndex = 0;
   @ViewChild('previewPopupComponent') previewPopupComponent: PreviewPopupComponent;
-	loggedInAsSuperAdmin = false;
-
+  loggedInAsSuperAdmin = false;
+  mergeTagForGuide = 'designing_forms';
   constructor(public referenceService: ReferenceService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public authenticationService: AuthenticationService,
-    public router: Router, public logger: XtremandLogger, public formService: FormService,public utilService:UtilService) {
-      this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
+    public router: Router, public logger: XtremandLogger, public formService: FormService, public utilService: UtilService) {
+    this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
 
-     }
+  }
 
   ngOnInit() {
     this.selectedFormTypeIndex = 0;
     this.pagination.filterKey = "All";
     this.listDefaultForms(this.pagination);
   }
-
+  getUrlByMergeTagForUserGuide(filterKey:string) {
+    if (filterKey === 'Quiz') {
+      this.mergeTagForGuide = 'designing_quiz_form';
+    } else if (filterKey === 'Survey') {
+      this.mergeTagForGuide = 'designing_survey_form';
+    } else {
+      this.mergeTagForGuide = 'design_forms';
+    }
+  }
   showAllForms(type: string, index: number) {
     this.selectedFormTypeIndex = index;
     this.pagination.filterKey = type;
@@ -52,12 +60,13 @@ export class SelectFormComponent implements OnInit {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.formService.listDefaultForms(pagination).subscribe(
       (response: any) => {
-          let data = response.data;
-          if (response.statusCode == 200) {
-            pagination.totalRecords = data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, data.forms);
-          }
-          this.referenceService.loading(this.httpRequestLoader, false);
+        let data = response.data;
+        if (response.statusCode == 200) {
+          pagination.totalRecords = data.totalRecords;
+          pagination = this.pagerService.getPagedItems(pagination, data.forms);
+          this.getUrlByMergeTagForUserGuide(this.pagination.filterKey);
+        }
+        this.referenceService.loading(this.httpRequestLoader, false);
       },
       (error: any) => { this.logger.errorPage(error); });
   }
@@ -84,57 +93,57 @@ export class SelectFormComponent implements OnInit {
   ngOnDestroy() {
   }
 
-  previewForm(id: number){
+  previewForm(id: number) {
     this.previewPopupComponent.previewForm(id)
   }
 
-  addDefaultForm(){
+  addDefaultForm() {
     this.router.navigate(["/home/forms/add"]);
-}
+  }
 
-confirmDeleteForm(id:number){
-  let self = this;
-  swal({
-    title: 'Are you sure?',
-    text: "You won't be able to undo this action!",
-    type: 'warning',
-    showCancelButton: true,
-    swalConfirmButtonColor: '#54a7e9',
-    swalCancelButtonColor: '#999',
-    confirmButtonText: 'Yes, delete it!'
+  confirmDeleteForm(id: number) {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, delete it!'
 
-  }).then(function() {
-    self.deleteForm(id);
-  }, function(dismiss: any) {
-    console.log('you clicked on option' + dismiss);
-  });
-}
+    }).then(function () {
+      self.deleteForm(id);
+    }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  }
 
-deleteForm(id:number){
-  this.ngxloading = true;
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.formService.deleteDefaultForm(id).subscribe(
-    (response: any) => {
-      this.referenceService.goToTop();
-      this.referenceService.showSweetAlertSuccessMessage(response.message);
-      this.referenceService.loading(this.httpRequestLoader, false);
-      this.pagination.pageIndex = 1;
-      this.listDefaultForms(this.pagination);
-      this.ngxloading = false;
-    },
-    (error: any) => { 
-      this.referenceService.goToTop();
-      let statusCode = JSON.parse(error['status']);
-      if(statusCode == 409){
-       let errorResponse = JSON.parse(error['_body']);
-       let message = errorResponse['message'];
-       this.referenceService.showSweetAlertErrorMessage(message);
-     }else {
-       this.referenceService.showSweetAlertServerErrorMessage();
-     }
-     this.ngxloading = false;
-     this.referenceService.loading(this.httpRequestLoader, false);
-     });
-}
+  deleteForm(id: number) {
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.formService.deleteDefaultForm(id).subscribe(
+      (response: any) => {
+        this.referenceService.goToTop();
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.pagination.pageIndex = 1;
+        this.listDefaultForms(this.pagination);
+        this.ngxloading = false;
+      },
+      (error: any) => {
+        this.referenceService.goToTop();
+        let statusCode = JSON.parse(error['status']);
+        if (statusCode == 409) {
+          let errorResponse = JSON.parse(error['_body']);
+          let message = errorResponse['message'];
+          this.referenceService.showSweetAlertErrorMessage(message);
+        } else {
+          this.referenceService.showSweetAlertServerErrorMessage();
+        }
+        this.ngxloading = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      });
+  }
 
 }

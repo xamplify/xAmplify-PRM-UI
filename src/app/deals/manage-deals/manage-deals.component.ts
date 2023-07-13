@@ -84,7 +84,7 @@ export class ManageDealsComponent implements OnInit {
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
   titleHeading:string = "";
-
+  mergeTagForGuide:any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -106,8 +106,16 @@ export class ManageDealsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.mergeTagForUserGuide();
   }
+  mergeTagForUserGuide(){
+    if(this.isVendorVersion){
+      this.mergeTagForGuide = "manage_deals";
+    } else {
+      this.mergeTagForGuide = "manage_deals_partner";
   
+    }
+   }
   getUserRoles(url: any) {
     this.userService.getHomeRoles(url)
       .subscribe(

@@ -32,6 +32,8 @@
             <div id="folder-margin-xamp">
                 <button class="btn btn-primary  btn-bt-aln" id="right"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
+            <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div [ngClass]="folderCustomResponse.isVisible?'page-bar':'' " style="background: none !important;border: none !important" *ngIf="folderCustomResponse.isVisible">

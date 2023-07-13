@@ -22,6 +22,7 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
+import { UserGuide } from "app/guides/models/user-guide";
 
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
@@ -139,6 +140,9 @@ export class ReferenceService {
   regularExpressions = new RegularExpressions();
   loaderFromAdmin = false;
   newVersionDeployed = false;
+  /*** XNFR-user-guides */
+  mergeTagName:any;
+  hideLeftMenu : boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3163,6 +3167,19 @@ export class ReferenceService {
     return description;
   }
 
+
+  /**** user guide *****/
+  hideLeftSideMenu(){
+    if(this.router.url.includes('/help/')){
+      return  false;
+    } else {
+      return true;
+    }
+  }
+  getUserMergeTag(){
+    return this.mergeTagName;
+  }
+
   closeSweetAlertWithDelay() {
     setTimeout(() => {
       swal.close();
@@ -3185,5 +3202,6 @@ export class ReferenceService {
   }
   
    
+
   
 }

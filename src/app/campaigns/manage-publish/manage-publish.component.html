@@ -30,7 +30,11 @@
         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="archived"
         style="background-color: #5cb85c !important;" (click)="showActiveCampaigns()"><i class="fa fa-bullhorn"></i>
         Active Campaigns</button>
-     </div>
+    </div>
+    <app-user-guide-help-button   [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+
+
+
   </div>
   <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
   </ngx-loading>

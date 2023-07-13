@@ -33,6 +33,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { UserGuide } from 'app/guides/models/user-guide';
 declare var $:any, Papa:any, swal:any;
 
 @Component({
@@ -253,7 +254,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    mergeOptionClicked = false;
    selectedUserIdsForMerging: any[];
 	/****XNFR-278****/
-
+   /****** User guide ******/
+   mergeTagForGuide:any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2639,10 +2641,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
+ urlLink:any;
 	ngOnInit() {
 		try {
 			this.socialContactImage();
+			this.urlLink = "partner_onboarding";
+			this.mergeTagForGuide = "partner_onboarding";
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();

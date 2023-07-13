@@ -98,4 +98,9 @@ export class Pagination {
 	previewSelectedSharedLeads = false;
 	headerCheckBoxChecked = false;
 	loginAsUserId = 0;
+	/** user guides ***/
+	moduleName:string = "";
+	slug:string = "";
+    searchWithModuleName: boolean = false;
+
 }

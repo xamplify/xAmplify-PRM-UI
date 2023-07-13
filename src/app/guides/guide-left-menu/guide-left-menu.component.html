@@ -1,0 +1,269 @@
+
+
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="pagebody">
+  <app-guide-help-icon [searchKey]="searchKey" (searchEvent)="getSearchKey($event)"></app-guide-help-icon>
+
+<div class="m10 guide-width container pad-row">
+
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <!-- <a (click)="gotoHome()">Home</a> -->
+      </li>
+      <li *ngIf="!isSearch">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a>{{userGuide.title}}</a>
+      </li>
+      <li *ngIf="isSearch">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a>Search Results</a>
+      </li>
+    </ul>
+  </div>
+  <div class="page-bar page-bar-padding-cu">
+    <div class="row">
+      <!-- {{guideMergeTag}} -->
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <div class="wrapper">
+          <div>
+            <!-- <ng-template #showTitles>
+              <ul class="collapse list-unstyled" id="{{showListId}}">
+                <li *ngFor="let name of userGudeTitles"><a >{{name.title}}</a></li>
+              </ul>
+            </ng-template> -->
+          </div>
+          <!-- Sidebar Holder -->
+          <nav id="sidebar">
+            <ul class="list-unstyled components">
+              <li *ngIf="menuItem?.accountDashboard" [ngClass]="expansionModuleName === 'Account Dashboard'? 'active':''">
+                <a *ngIf="!menuItem?.isOnlyPartnerCompany" (click)="getUserGuidesByModuleName('Account Dashboard');getGuideLinkByType()">
+                  <i class="fa fa-home" aria-hidden="true"></i>
+                  <span class="title" translate>Account Dashboard</span>
+                  <span class=""></span>
+                </a>
+                <!-- <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled" id="Account">
+                  <li *ngFor="let name of userGudeTitles"><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul> -->
+              </li>
+              <!--Partners-->
+              <li *ngIf="menuItem?.partners"  [ngClass]="showListId === 'Partner'? 'active':''">
+                <a href="#Partner" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Partner')" [ngClass]="expansionModuleName === 'Partner'?'show':''">
+                  <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                  <span class="title" translate>{{customNamePartners}}</span>
+                </a>
+                <ul *ngIf="showListId === 'Partner' " class="collapse list-unstyled" id="Partner"
+                  [ngClass]="expansionModuleName === 'Partner'?'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!--Content-->
+              <li *ngIf="menuItem?.content" [ngClass]="showListId === 'Content'? 'active':''">
+                <a href="#Content" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Content')" [ngClass]="expansionModuleName === 'Content'?'show':''">
+                  <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                  <span class="title" translate>Content</span>
+                </a>
+                <ul *ngIf="showListId === 'Content'" class="collapse list-unstyled" id="Content"
+                  [ngClass]="expansionModuleName === 'Content'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!--Contacts-->
+              <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"
+                [ngClass]="showListId === 'Contacts'? 'active':''">
+                <a href="#Contacts" data-toggle="collapse" aria-expanded="false"
+                  [ngClass]="expansionModuleName === 'Contacts'?'show':''" (click)="getUserGuidesByModuleName('Contacts')">
+                  <i class="fa fa-id-card" aria-hidden="true"></i>
+                  <span class="title" translate>Contacts</span>
+                </a>
+                <ul *ngIf="showListId === 'Contacts'" class="collapse list-unstyled"
+                  [ngClass]="expansionModuleName === 'Contacts'?'in':''" id="Contacts">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!--Share Leads-->
+              <li *ngIf="menuItem?.shareLeads" [ngClass]="showListId === 'Share Leads'? 'active':''">
+                <a href="#shareLeads" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Share Leads')"
+                  [ngClass]="expansionModuleName === 'Share Leads'? 'show':''">
+                  <i class="fa fa-id-badge" aria-hidden="true"></i>
+                  <span class="title" translate>Share Leads</span>
+                </a>
+                <ul *ngIf="showListId === 'Share Leads'" class="collapse list-unstyled" id="shareLeads"
+                  [ngClass]="expansionModuleName === 'Share Leads'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+              <!--Shared Leads-->
+              <li *ngIf="menuItem?.sharedLeads" [ngClass]="showListId === 'Shared Leads'? 'active':''">
+                <a href="#sharedLeads" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Shared Leads')"
+                  [ngClass]="expansionModuleName === 'Shared Leads'? 'show':''">
+                  <i class="fa fa-id-badge" aria-hidden="true"></i>
+                  <span class="title" translate>Shared Leads</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Shared Leads'" class="collapse list-unstyled" id="sharedLeads"
+                  [ngClass]="expansionModuleName === 'Shared Leads'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!--Pages--->
+              <li *ngIf="menuItem?.pagesAccessAsPartner" [ngClass]="showListId === 'Pages'? 'active':''">
+                <a href="#pagesAccessAsPartner" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Pages')" [ngClass]="expansionModuleName === 'Pages'? 'show':''">
+                  <i class="fa fa-wpforms" aria-hidden="true"></i>
+                  <span class="title" translate>Pages</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Pages'" class="collapse list-unstyled" id="pagesAccessAsPartner"
+                  [ngClass]="expansionModuleName === 'Pages'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!--Design (Email Templates/ Forms Pages)-->
+              <li *ngIf="menuItem?.design" [ngClass]="showListId === 'Design'? 'active':''">
+                <a href="#design" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Design')" [ngClass]="expansionModuleName === 'Design'? 'show':''">
+                  <i class="fa fa-paint-brush" aria-hidden="true"></i>
+                  <span class="title" translate>Design</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Design'" class="collapse list-unstyled" id="design"
+                  [ngClass]="expansionModuleName === 'Design'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!---Campaigns---->
+              <li
+                *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner"
+                [ngClass]="showListId === 'Campaign'? 'active':''">
+                <a href="#Campaign" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Campaign')" [ngClass]="expansionModuleName === 'Campaign'? 'show':''">
+                  <i class="fa fa-bullhorn" aria-hidden="true"></i>
+                  <span class="title" translate>Campaign</span>
+                  <!-- <span class="arrow "></span>
+                  <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Campaign'" class="collapse list-unstyled" id="Campaign"
+                  [ngClass]="expansionModuleName === 'Campaign'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+
+              <!------Oppportunities----- -->
+             <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner"
+                [ngClass]="showListId === 'Opportunities'? 'active':''">
+                <a href="#Opportunities" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Opportunities')"
+                  [ngClass]="expansionModuleName === 'Opportunities'? 'show':''">
+                  <i class="fa fa-money" aria-hidden="true"></i>
+                  <span class="title" translate>Opportunities</span>
+                </a>
+                <ul *ngIf="showListId === 'Opportunities'" class="collapse list-unstyled" id="Opportunities"
+                  [ngClass]="expansionModuleName === 'Opportunities'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+              <!--------Team------->
+              <li *ngIf="menuItem?.team" [ngClass]="showListId === 'Team'? 'active':''">
+                <a href="#team" data-toggle="collapse" aria-expanded="false" (click)="getUserGuidesByModuleName('Team')"
+                  [ngClass]="expansionModuleName === 'Team'? 'show':''">
+                  <i class="fa fa-users" aria-hidden="true"></i>
+                  <span class="title" translate>Team</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Team'" class="collapse list-unstyled" id="team"
+                  [ngClass]="expansionModuleName === 'Team'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+              <!-------Configuration-------->
+              <li
+                *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"
+                [ngClass]="showListId === 'Configuration'? 'active':''">
+                <a href="#Configuration" data-toggle="collapse" aria-expanded="false"
+                  (click)="getUserGuidesByModuleName('Configuration')"
+                  [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                  <span class="title" translate>Configuration</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration"
+                  [ngClass]="expansionModuleName === 'Configuration'? 'in':''">
+                  <li *ngFor="let name of userGudeTitles" ><a
+                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200">
+        <!-- <button type="button" (click)="hideAndShow()" class="btn btn-primary hide-mobile-menu" >
+          <i class="glyphicon glyphicon-align-left"> Menu</i> 
+         </button> -->
+        <!-- {{mergeTag}} -->
+        <div class="side-border-differentiation" [ngClass]="isSearch?'':'guide-title'">
+          <div *ngIf="!isSearch">
+            <div style="border-bottom: 1px solid #ddd;">
+              <h4>
+                {{userGuide.title}}
+              </h4>
+            </div>
+            <div [innerHTML]="guideLinkIframe" *ngIf="statusCode === 200">
+              <!-- <iframe id="myFrame"  width="100%" height="1110" src="{{[guideLink"}}" frameborder="0" allowfullscreen></iframe> -->
+            </div>
+
+          </div>
+        </div>
+        <div *ngIf="isSearch" class="card-left-padd">
+        <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [searchKey]="searchKey" [pagination]="pagination"></app-search-guides>
+          <!-- <div class="page-bar bg-result-color" *ngFor="let guide of userGuides">
+            <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
+            <div>
+              {{guide.description}}
+            </div>
+          </div>
+          <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
+            <strong translate>No results found</strong>
+          </div>
+          <app-pagination *ngIf="pagination.totalRecords != 0" [pagination]="pagination"
+            (notifyParent)="setPage($event)"
+            (notifyParentDropDown)="getSearchResultsOfUserGuides($event)"></app-pagination> -->
+        </div>
+      </div>
+      <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 500" style="padding: 10px;">
+        <div class="">
+          <div class="text-center">
+            <h1>403</h1>
+            <h4>ACCESS DENIED</h4>
+            <h3>Your Request for this page has been denied because of Access Control</h3>
+            <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

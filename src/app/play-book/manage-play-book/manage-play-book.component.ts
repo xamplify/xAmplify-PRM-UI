@@ -12,7 +12,7 @@ export class ManagePlayBookComponent implements OnInit {
 
   isPartnerView: boolean = false;
   type:string = TracksPlayBookType[TracksPlayBookType.PLAYBOOK];
-  
+  mergeTagForGuide:any;
   constructor(public referenceService:ReferenceService, private router: Router ) { 
     if (this.router.url.indexOf('/manage') > -1) {
       this.isPartnerView = false;
@@ -22,6 +22,11 @@ export class ManagePlayBookComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(!this.isPartnerView) {
+      this.mergeTagForGuide = "manage_playbooks";
+    } else {
+      this.mergeTagForGuide = "access_shared_playbooks";
+    }
   }
   
 }

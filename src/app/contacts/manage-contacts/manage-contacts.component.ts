@@ -231,6 +231,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	isTeamMemberPartnerList: boolean;
   downloadAssociatedPagination : Pagination = new Pagination();
   /***XNFR-266***/
+  /*** user guides */
+  mergeTagForGuide:any
+  showHelpGuideIcon:boolean;
   showDownloadOptionForSharedLeads = false;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
@@ -2339,7 +2342,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		     this.loadContactsByType(moduleId)
 		}
 		this.callInitMethods();
+		/**** user guide ****/
+		this.getMergeTagsForDifferentModules();
 	}
+
+
 	
 	callInitMethods(){
 	      try {
@@ -2696,4 +2703,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	          this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.pagination,index);
 	          this.listContactsByType(this.contactsByType.selectedCategory);
 	      }
+		  getMergeTagsForDifferentModules(){
+			if(this.module === 'sharedleads' ){
+			  this.mergeTagForGuide = "using_shared_leads";
+              this.showHelpGuideIcon = true;
+			} else if (this.module === 'leads'){
+				this.mergeTagForGuide = "manage_share_lead_lists";
+				this.showHelpGuideIcon = true;
+			} else if (this.module === 'contacts') {
+				this.mergeTagForGuide = "manage_contact_lists";
+				this.showHelpGuideIcon = true;
+			} else if (this.module === 'partners') {
+				this.mergeTagForGuide = "manage_partner_lists";
+				this.showHelpGuideIcon = true;
+			}
+		  }
 }

@@ -84,9 +84,12 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	loggedInAsSuperAdmin = false;
 	saveAsDefaultTemplate = false;
 	defaultTemplateInput = {};
+	mergeTagForGuide:any;
+
 	/**XNFR-317*****/
 	selectedEmailTemplateId = 0;
 	sendTestEmailIconClicked = false;
+
 
 
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
@@ -268,6 +271,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	}
 	ngOnInit() {
 		this.selectedSortedOption = this.sortByDropDown[0];
+		this.mergeTagForGuide = 'manage_templates';
 		try {
 			if (!this.refService.companyId) {
 				this.getCompanyIdByUserId()

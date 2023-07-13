@@ -138,13 +138,14 @@
  <div class="page-content">
     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar">
-       <ul class="page-breadcrumb">
-          <li><i class="fa fa-home" aria-hidden="true"></i>
-             <a [routerLink]="refService.homeRouter" translate>Home</a> 
-             <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </li>
-          <li><a translate>Select Campaign</a></li>
-       </ul>
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+                 <a [routerLink]="refService.homeRouter" translate>Home</a> 
+                 <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+            <li><a translate>Select Campaign</a></li>
+        </ul>
+        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+  
     </div>
     <!-- End of page-bar -->
     <div  *ngIf="companyIdError">
