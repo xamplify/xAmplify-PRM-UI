@@ -32,40 +32,38 @@
 						<div class="col-12 col-sm-6 col-md-6 col-lg-4 pt10" *ngFor="let vendorReport of vendorDetails">
 							<div class="cards boxshadow-to-card">
 								<div class="card-header bg-card-header card-paddings-vcu" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" (click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
-									<div class="flex-row">
-										<div class="col-12 col-lg-auto">
-											<div class="vendor-img-cu">
+									<div class="flex-row d-flex">
+										<div class="col-7 col-sm-7 col-md-7 col-lg-7 col-lg-auto marginvczero">
+											<div class="cards clogo vendor-img-cu">
 												<img 
 													src="{{vendorReport.companyLogo}}"
 													alt="{{vendorReport.companyName}}" (error)="errorHandler($event)">
 											</div>											
 										</div>
-										<!-- <div class="col-12 col-lg-auto text-center text-lg-end pt10">
-											<h3 class="mt-0 justify-content-end d-flex">
+										  <div class="col-5 col-sm-5 col-md-5 col-lg-5 marginvczero additinal-paddings">
+											<h3 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">
 												<b>{{vendorReport.counts[0].count}}</b></h3>
-											<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[0].name}}</h5>
-										</div> -->
+											<h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">{{vendorReport.counts[0].name}}</h5>
+										</div>  
 									</div>
-									<!-- <div class="flex-row d-flex col-6 col-lg-auto  mb-lg-0 text-center text-lg-start">
-									<div class="col-6 col-lg-auto text-center text-lg-end pt10" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'">
-										<h3 class="mt-0 justify-content-end d-flex">
-											<b>{{vendorReport.counts[i].count}}</b></h3>
-										<h5 class="mt-0 justify-content-end d-flex">{{vendorReport.counts[i].name}}</h5>	
+									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace">
+									<div *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'">
+										<h5 class="mt-0 justify-content-end d-flex mv-color-text"> {{vendorReport.counts[i].count}} {{vendorReport.counts[i].name}} |</h5>	
 									</div>									
-								</div> -->
+								</div>
 								</div>
 								<div class="card-body p-0 card-bgcolor dark-card-body-cu">
-									<div class="col-12 number-vedor-card"> 
+									<!-- <div class="col-12 number-vedor-card"> 
 										<span> {{vendorReport.counts[0].count}} | {{vendorReport.counts[0].name}} </span>
 										<span *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'"> {{vendorReport.counts[i].count}} | {{vendorReport.counts[i].name}} </span>
-									</div>
-									<div class="flex-row pl10 " [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
+									</div> -->
+									<div class="flex-row pl10 backgroundfor-mv-title" [ngClass]="{'head-cursor': !vanityLoginDto.vanityUrlFilter}" >
 										<h4 *ngIf="vendorReport?.companyName!=null && vendorReport?.companyName?.length>0"
 											(click)="!vanityLoginDto.vanityUrlFilter? navigateToVendorCampaigns(vendorReport) : false">
 											<b>{{vendorReport?.companyName | slice:0:35}}</b>
 											<span *ngIf="vendorReport?.companyName?.length>35">...</span>
 										</h4>										
-									</div>
+									</div> 
 									<div class="flex-row">
 										<div class="col-12">
 											<table class="table">
