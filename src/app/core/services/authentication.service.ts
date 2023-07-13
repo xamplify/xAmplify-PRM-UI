@@ -1073,5 +1073,12 @@ private callPostMethod(url: string,requestDto:any) {
     .catch(this.handleError);
 }
 
+//  /**** user-guides ***** */
+//  showUserGuide(tagName: string) {
+//   return this.http.get(this.REST_URL + 'user/guide/get/' + tagName + '?access_token=' + this.access_token)
+//       .map(this.extractData)
+//       .catch(this.handleError);
+// }
+
   
 }

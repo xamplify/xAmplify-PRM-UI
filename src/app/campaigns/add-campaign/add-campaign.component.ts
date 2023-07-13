@@ -22,11 +22,12 @@ import { EmailTemplateService } from 'app/email-template/services/email-template
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { Properties } from 'app/common/models/properties';
 import { ContactService } from 'app/contacts/services/contact.service';
-
-
-
+import { Country } from '../../core/models/country';
+import { Timezone } from '../../core/models/timezone';
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
+var moment = require('moment-timezone');
+
 @Component({
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
@@ -150,6 +151,18 @@ export class AddCampaignComponent implements OnInit {
   selectedListId: any;
   expandedUserList: any;
   emptyContactsMessage: string;
+  /***Workflows*****/
+  reply: Reply = new Reply();
+  url: Url = new Url();
+  allItems = [];
+  emailNotOpenedReplyDaysSum: number = 0;
+  emailOpenedReplyDaysSum: number = 0;
+  onClickScheduledDaysSum: number = 0;
+  isReloaded: boolean = false;
+  invalidScheduleTime: boolean = false;
+  hasInternalError: boolean = false;
+  countries: Country[];
+  timezones: Timezone[];
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -490,29 +503,6 @@ export class AddCampaignComponent implements OnInit {
         });
     }
 
-    remove(divId: string, type: string) {
-        if (type == "replies") {
-            this.replies = this.spliceArray(this.replies, divId);
-        } else {
-            this.urls = this.spliceArray(this.urls, divId);
-        }
-        $('#' + divId).remove();
-        let index = divId.split('-')[1];
-        let editorName = 'editor' + index;
-        let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if (errorLength == 0) {
-            this.dataError = false;
-        }
-    }
-
-    spliceArray(arr: any, id: string) {
-        arr = $.grep(arr, function (data, index) {
-            return data.divId !== id
-        });
-        return arr;
-    }
-
-    
     
     removeTemplateAndAutoResponse() {
         this.urls = [];//Removing Auto-Response WebSites
@@ -679,7 +669,7 @@ export class AddCampaignComponent implements OnInit {
     findEmailTemplates(emailTemplatesPagination:Pagination){
         this.emailTemplatesOrLandingPagesLoader = true;
         if(this.isEmailCampaign){
-            emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+            emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
             if(this.campaign.enableCoBrandingLogo){
                 emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
             }else{
@@ -1069,5 +1059,108 @@ export class AddCampaignComponent implements OnInit {
         }
         ev.stopPropagation();
     }
+
+
+    /********Workflows**************/
+
+    isEven(n:number) {
+        if (n % 2 === 0) { return true; }
+        return false;
+    }
+    addReplyRows() {
+        this.reply = new Reply();
+        let length = this.allItems.length;
+        length = length + 1;
+        var id = 'reply-' + length;
+        this.reply.divId = id;
+        this.reply.actionId = 0;
+        this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
+        this.replies.push(this.reply);
+        this.allItems.push(id);
+        this.reply.emailTemplatesPagination.maxResults = 12;
+        this.findEmailTemplatesForAutoResponseWorkFlow(this.reply);
+    }
+    findEmailTemplatesForAutoResponseWorkFlow(reply: Reply) {
+        reply.loader = true;
+        reply.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+        this.campaignService.findCampaignEmailTemplates(reply.emailTemplatesPagination).subscribe(
+            response=>{
+                const data = response.data;
+                reply.emailTemplatesPagination.totalRecords = data.totalRecords;
+                this.emailTemplatesSortOption.totalRecords = data.totalRecords;
+                reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.list);
+                reply.loader = false;
+            },error=>{
+                reply.loader = false;
+                this.xtremandLogger.errorPage(error);
+            });
+    }
+
+    findAutoResponseEmailTemplatesOnEnterKeyPress(eventKeyCode:number,reply:Reply){
+        if (eventKeyCode === 13) {
+            this.searchAutoResponseEmailTemplates(reply);
+        }
+    }
+
+    searchAutoResponseEmailTemplates(reply:Reply){
+        reply.emailTemplatesPagination.pageIndex = 1;
+        reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
+        this.findEmailTemplatesForAutoResponseWorkFlow(reply);
+    }
+
+    paginateAutoResponseEmailTempaltes(event: any, reply: Reply){
+        reply.emailTemplatesPagination.pageIndex = event.page;
+        this.findEmailTemplatesForAutoResponseWorkFlow(reply);
+    }
+
     
+
+
+
+    /********Website Workflows****/
+    addClickRows() {
+        this.url = new Url();
+        let length = this.allItems.length;
+        length = length + 1
+        var id = 'click-' + length;
+        this.url.divId = id;
+        this.url.scheduled = false;
+        this.url.actionId = 19;
+        this.url.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
+        this.url.url = this.emailTemplateHrefLinks[0];
+        this.urls.push(this.url);
+        this.allItems.push(id);
+        this.findEmailTemplatesForWebSiteWorkFlow(this.url);
+    }
+    findEmailTemplatesForWebSiteWorkFlow(url: Url) {
+        //throw new Error('Method not implemented.');
+    }
+    remove(divId: string, type: string) {
+        if (type == "replies") {
+            this.replies = this.spliceArray(this.replies, divId);
+        } else {
+            this.urls = this.spliceArray(this.urls, divId);
+        }
+        $('#' + divId).remove();
+        let index = divId.split('-')[1];
+        let editorName = 'editor' + index;
+        let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+        if (errorLength == 0) {
+            this.dataError = false;
+        }
+    }
+
+    spliceArray(arr: any, id: string) {
+        arr = $.grep(arr, function (data:any, index:number) {
+            return data.divId !== id
+        });
+        return arr;
+    }
+    
+    selectReplyEmailBody(event: any, index: number, reply: Reply) {
+        reply.defaultTemplate = event;
+    }
+    selectClickEmailBody(event: any, index: number, url: Url) {
+        url.defaultTemplate = event;
+    }
 }

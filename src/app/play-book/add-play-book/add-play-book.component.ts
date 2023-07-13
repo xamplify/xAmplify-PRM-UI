@@ -17,6 +17,7 @@ export class AddPlayBookComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  mergeTagForGuide:any;
   constructor(public referenceService: ReferenceService, private router: Router,public route:ActivatedRoute) {
     /****XNFR-171****/
     this.viewType = this.route.snapshot.params["viewType"];
@@ -30,6 +31,7 @@ export class AddPlayBookComponent implements OnInit {
     } else {
       this.isAdd = true;
     }
+    this.mergeTagForGuide = 'creating_and_publishing_play_books';
   }
 
   goToManagePlayBooks(){

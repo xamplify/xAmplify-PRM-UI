@@ -316,6 +316,7 @@ export class HomeComponent implements OnInit {
       //this.getDefaultSkin();
       this.getActiveThemeData(this.vanityLoginDto);
       //this.getMainContent(this.userId);  
+      this.showLeftSideMenu();
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
@@ -431,4 +432,10 @@ export class HomeComponent implements OnInit {
         });
   }
   /************* XNFR-238 *********************/
+
+  /******** user guide *******/
+ showLeftMenu:boolean;
+  showLeftSideMenu() {
+  this.showLeftMenu = this.referenceService.hideLeftSideMenu();
+  }
 }

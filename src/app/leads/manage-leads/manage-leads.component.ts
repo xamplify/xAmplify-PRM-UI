@@ -83,6 +83,8 @@ export class ManageLeadsComponent implements OnInit {
   syncMicrosoft: boolean = false;
   activeCRMDetails: any;
   titleHeading:string = "";
+  /********** user guide *************/
+  mergeTagForGuide:any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -105,6 +107,7 @@ export class ManageLeadsComponent implements OnInit {
   ngOnInit() {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
+    this.mergeTagForUserGuide();
   }
 
   init() {
@@ -200,6 +203,7 @@ export class ManageLeadsComponent implements OnInit {
       this.isPartnerVersion = false;
       this.getActiveCRMDetails();
       this.showLeads();
+      this.mergeTagForUserGuide();
       if (this.prm) {
         this.listView = true;
       }
@@ -211,7 +215,17 @@ export class ManageLeadsComponent implements OnInit {
     this.isVendorVersion = false;
     this.isPartnerVersion = true;
     this.showLeads();
+    this.mergeTagForUserGuide();
   }
+
+  mergeTagForUserGuide(){
+    if(this.isVendorVersion){
+      this.mergeTagForGuide = "manage_leads";
+    } else {
+      this.mergeTagForGuide = "manage_leads_partner";
+  
+    }
+   }
 
   setViewType() {
     this.leadsService.getViewType(this.vanityLoginDto).subscribe(

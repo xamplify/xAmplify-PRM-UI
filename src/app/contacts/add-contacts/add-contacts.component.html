@@ -73,7 +73,7 @@
 			 {{checkingContactTypeName}}s
 		  </li>
 	   </ul>
-	   <div align="right" style="margin-top: 3px;" class="hidden-xs"
+	   <div align="right" style="margin-top: 3px;float: right;" class="hidden-xs"
 		  *ngIf="!assignLeads">
 		  <a (click)="downloadEmptyCsv()">
 		  <button type="button" class="btn Btn-Green" download
@@ -85,6 +85,8 @@
 		  </button>
 		  </a>
 	   </div>
+	   <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+
 	</div>
 	<!-- BEGIN PAGE CONTENT-->
 	<div class="portlet-body">

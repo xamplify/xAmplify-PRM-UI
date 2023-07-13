@@ -28,6 +28,8 @@ export class ManageDamComponent implements OnInit {
 	modulesDisplayType = new ModulesDisplayType();
 	videoId: number;
 	damId: number;
+    /*** user guides **** */
+    mergeTagForGuide:any;
 
 	constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, 
 		private router: Router,private route: ActivatedRoute, public videoFileService: VideoFileService, public userService: UserService) {
@@ -50,6 +52,7 @@ export class ManageDamComponent implements OnInit {
 		} else if(this.router.url.indexOf('/previewVideo')>-1){
 		 this.getVideo(this.videoId, this.damId, 'playVideo');
 		}
+        this.mergeTagForGuide = this.isPartnerView ? 'accessing _shared_assets': 'manage_assets';
 	}
 	
 	  getDefaultVideoSettings() {

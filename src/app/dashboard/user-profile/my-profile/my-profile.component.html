@@ -20,6 +20,7 @@
                 <a translate>User Account</a>
             </li>
         </ul>
+        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <div>
     <div id="org-admin-info" class="alert alert-info" style="display: none;">
@@ -110,7 +111,6 @@
                             <!---Themes-->
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
-
                                     {{properties.customskin | translate}} </a>
                             </li>
                              <!--------------Lead/Deal Configuration----------------------->
@@ -299,8 +299,7 @@
                                 <app-response-message class="pg8" [customResponse]="themeResponse"
                                         *ngIf="themeResponse.isVisible">
                                     </app-response-message>
-                                Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
-                                Based on selecting color in below tab.
+                                {{properties?.customThemeDescription}}
                                 <br><br>
                                 <div class="div thembgc">
                                     <div class="row">
@@ -1115,6 +1114,7 @@
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
                                     <!-- Customize Left Menu -->
+
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
                                       </div>
                                     <!-- GDPR SETTINGS TAB -->

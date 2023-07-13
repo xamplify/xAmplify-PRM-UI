@@ -15,6 +15,7 @@
                 <a *ngIf="isPartnerLandingPage" translate>Pages Shared By Vendors</a>
             </li>
         </ul>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <div id="custom-response-div">
         <app-response-message *ngIf="customResponse.isVisible" [customResponse]="customResponse"></app-response-message>

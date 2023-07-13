@@ -100,6 +100,7 @@ export const routes: Routes = [
 			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: false } },
 			/*******XNFR-83*******/
 			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: false } },
+			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: false } },
 			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
 		]
 	},
