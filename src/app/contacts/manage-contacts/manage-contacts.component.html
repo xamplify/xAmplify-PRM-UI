@@ -50,7 +50,8 @@
             </span>
          </li>
       </ul>
-      <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+      <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+      </div>
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div id="manageContacts">
       <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -732,13 +733,17 @@
 </div>
 </div>
 </div>
-</div>
-<app-edit-contacts *ngIf="showEdit" [contacts]="users" (notifyParent)="update($event)"
-[selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
-[contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
-[isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"
-[isFormList]="isFormList" [isTeamMemberPartnerList]="isTeamMemberPartnerList"></app-edit-contacts>
-</div>
+      </div>
+      <app-edit-contacts *ngIf="showEdit" [contacts]="users" (notifyParent)="update($event)"
+      [selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
+      [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
+      [isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"
+      [isFormList]="isFormList" [isTeamMemberPartnerList]="isTeamMemberPartnerList"></app-edit-contacts>
+   </div>
+
+
+
+
 <div *ngIf="! showListOfContactList">
    <div class="alert alert-success alert-dismissible" *ngIf="invalidDeleteSucessMessage" style="margin-bottom: 20px;">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -1161,6 +1166,8 @@
 </div>
 </div>
 <app-scroll-top></app-scroll-top>
+</div>
+
 </div>
 <!-- Filter Modal -->
 <div id="filterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
