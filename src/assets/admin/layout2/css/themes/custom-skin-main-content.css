@@ -1380,3 +1380,6 @@ background-color: var(--page-content) !important;
   background-color: var(--top-buton-color) !important;
   color: var(--top-button-value-color) !important;
 }
+h5.designpage-dark-cu {
+  padding-bottom: 12px;
+}
