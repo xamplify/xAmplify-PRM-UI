@@ -594,20 +594,53 @@ table.table-bordered.dataTable {
 
 .website-work-flow{
   background-color: #f76c1a;
-  padding: 9px 0;
 }
 .workflow-icon-style{
   margin: 0 5px;
 }
+.padding-9px{
+  padding: 9px 0 !important;
+}
 
 .auto-response-style{
   background-color: #f4555c;
-  padding: 9px 0;
+  
 }
 
 .pr-b-7px{
   position: relative; 
   bottom: -7px;
+}
+
+.switch-choose {
+  position: relative;
+  top: 6px;
+  left: -5px;
+}
+
+.error-div {
+  width: 97%;
+  top: 12px;
+  right: -17px;
+  position: relative;
+}
+.radio-button-css {
+  float: left;
+  position: relative;
+  top: 31px;
+  left: -7px;
+  cursor: pointer;
+}
+.colorBlue {
+  background: #808080;
+}
+.colorRed {
+  background: #5bb1d4;
+}
+.email-search {
+  padding-top: 3px !important;
+  position: absolute;
+  top: 5px;
 }
 
 

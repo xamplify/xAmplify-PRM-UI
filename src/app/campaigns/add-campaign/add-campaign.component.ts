@@ -1062,6 +1062,11 @@ export class AddCampaignComponent implements OnInit {
 
 
     /********Workflows**************/
+
+    isEven(n) {
+        if (n % 2 === 0) { return true; }
+        return false;
+    }
     addReplyRows() {
         this.reply = new Reply();
         let length = this.allItems.length;

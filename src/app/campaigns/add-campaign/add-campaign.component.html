@@ -670,17 +670,17 @@
                                 <div class="portlet-body padding-top-45px">
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur website-work-flow" translate>
+                                            <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur website-work-flow padding-9px" translate>
                                                 <i class="fa fa-ban p0" aria-hidden="true"></i> No website links found
                                             </a>
-                                            <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold website-work-flow"  (click)="addClickRows()">
-                                                <i class="fa fa-plus-square p0 workflow-icon-style" aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                                            <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold website-work-flow padding-9px"  (click)="addClickRows()">
+                                                <i class="fa fa-plus-square p0 workflow-icon-style" aria-hidden="true"></i> {{properties?.ADD_AUTO_RESPONSE_WEBSITE}}
                                             </a>
                                         </div>
 
                                         <div class="col-xs-6">
-                                            <a class="dashboard-stat yellow-gold auto-response-style" (click)="addReplyRows()">
-                                                <i class="fa fa-plus-square p0 workflow-icon-style"  aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                                            <a class="dashboard-stat yellow-gold auto-response-style padding-9px" (click)="addReplyRows()">
+                                                <i class="fa fa-plus-square p0 workflow-icon-style"  aria-hidden="true"></i> {{properties?.ADD_AUTO_RESPONSE_EMAIL}}
                                             </a>
                                         </div>
                                          <!-- -------------------------------------Email Auto Response----------------------------- -->
@@ -689,7 +689,7 @@
                                                 <strong>Please complete the required fields</strong>
                                             </div>
                                             <fieldset *ngIf="replies?.length>0">
-                                                <legend> {{properties?.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                                                <legend>{{properties?.ADD_AUTO_RESPONSE_EMAIL}}</legend>
                                                 <div *ngFor="let reply of replies;let i=index">
                                                     <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
