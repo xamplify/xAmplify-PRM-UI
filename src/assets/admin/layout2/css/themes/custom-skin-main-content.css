@@ -1461,3 +1461,25 @@ h5.designpage-dark-cu {
 div#removeborder {
   border: none !important;
 }
+.drap-arrow-cu {
+  color: var(---text-color)!important;
+}
+
+/* user guides hover icon */
+.help-iconbgadd:hover {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.help-iconbgadd i:hover {
+  color: var(---text-color)!important;
+}/* end */
+
+/* Create Campaign Select Campaign bar bg */
+.custometheme-bar {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.custometheme-bar span, strong {
+  color: var(---text-color) !important;
+}
+/* end */
