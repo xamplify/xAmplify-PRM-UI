@@ -226,7 +226,7 @@
                        *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                        <div class="table-responsive">
                           <table [class.bottomTableCss]="pagination.pagedItems.length<5"
-                          class='table tgrid table-hover table-sm hidden-xs' aria-describedby="campaignsListTable"
+                          class='table tgrid table-hover table-sm hidden-xs responsive-scrool' aria-describedby="campaignsListTable"
                           *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
                           <thead>
                              <tr>

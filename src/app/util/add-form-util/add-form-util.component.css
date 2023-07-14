@@ -673,6 +673,8 @@ label {
 .img-grid {
   max-width: 218px !important;
   height: 118px !important;
+  object-fit: contain;
+  width: 218px !important;
 }
 
 /* new switch */

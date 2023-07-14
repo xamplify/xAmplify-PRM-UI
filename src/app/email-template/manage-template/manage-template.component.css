@@ -92,9 +92,10 @@ td h6 {
   content: "";
   width: 0;
   height: 0;
-  margin-left: -44px;
-  border-left: 44px solid transparent;
-  border-right: 44px solid transparent;
+  margin-left: -49px;
+  margin-top: 0px;
+  border-left: 51px solid transparent;
+  border-right: 51px solid transparent;
   border-top: 10px solid #8dd8f8;
 }
 .ribbon1 span {
@@ -102,12 +103,12 @@ td h6 {
   display: block;
   text-align: center;
   background: #8dd8f8;
-  font-size: 14px;
-  color: #ffffff;
+  font-size: 10px;
+  color: #fff;
   line-height: 1;
-  padding: 12px 8px 10px;
+  padding: 8px 4px 8px;
   border-top-right-radius: 8px;
-  width: 90px;
+  width: 100px;
 }
 .ribbon1 span:before,
 .ribbon1 span:after {
@@ -201,4 +202,19 @@ td h6 {
 /* 04-07-2023 */
 div#htmlContent {
   padding-left: 15px;
+}
+
+/* 10-07-2023 */
+.whitelabeled-ribbon > span {
+  background-color: #68b4f1 !important;
+  color: white !important;
+}
+
+.whitelabeled-ribbon > span::before {
+  border-left: 3px solid #68b4f1;
+  border-top: 3px solid #68b4f1;
+}
+.whitelabeled-ribbon > span::after {
+  border-right: 3px solid #68b4f1;
+  border-top: 3px solid #68b4f1;
 }
