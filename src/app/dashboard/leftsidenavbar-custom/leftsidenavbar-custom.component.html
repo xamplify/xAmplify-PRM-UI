@@ -19,7 +19,8 @@
     </div>
     <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 dragdrop-gif-cu">
         <h4 class="boltext-dr">Demo - Customize Left Menu</h4>
-        <img src="/assets/images/customize-light-menu.webp" alt="Customize Left Menu" class="draganddrop-image-cu">
+        <img *ngIf="!authenticationService.isDarkForCharts"src="/assets/images/customize-light-menu.webp" alt="Customize Left Menu" class="draganddrop-image-cu">
+        <img *ngIf="authenticationService.isDarkForCharts" src="/assets/images/customize-dark-menu.gif" alt="Customize Left Menu" class="draganddrop-image-cu">
     </div>
 </div>
 
