@@ -25,9 +25,12 @@
                             <div class="col-md-12 col-lg-12 border-line" style="border:0px !important"
                                 >
                                 <div class="row">
-                                    <div class="col-md-6 col-lg-6 track-title text-color content-bg" title="{{tracksPlayBook.title}}">
+                                    <div class="col-md-6 col-lg-6 track-title text-color content-bg"
+                                  >
                                         <div class="title-class">Title:</div>
                                         <a class="title padding_bottom text-color content-bg"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="{{tracksPlayBook.title}}"
                                             style="font-size: 15px; padding-top: 10px;">{{tracksPlayBook.title}}</a>
             
                                     </div>
@@ -40,11 +43,15 @@
                                                                                                        width: 200px !important;">
                                 </div>
                                 <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                    <div class="center" style="padding-top: 10px;" title="{{tracksPlayBook.createdByName}}"
+                                    <div class="center" style="padding-top: 10px;" 
+                                    data-toggle="tooltip" data-placement="bottom"
+                                    title="{{tracksPlayBook.createdByName}}"
                                         translate>
                                         Created By <strong>{{tracksPlayBook.createdByName}}</strong>
                                     </div>
-                                    <div class="center" style="padding-top: 10px;" title="{{tracksPlayBook.createdTime}}" translate>
+                                    <div class="center" style="padding-top: 10px;"
+                                    data-toggle="tooltip" data-placement="bottom"
+                                     title="{{tracksPlayBook.createdTime}}" translate>
                                         Created On
                                         <strong>
                                             <app-timestamp [showInLine]="'true'" [dateAndTime]="tracksPlayBook.createdTime">
@@ -55,6 +62,7 @@
                                         style="padding-top: 10px;">
                                         <button style="border-radius: 5px;"
                                             [className]="authenticationService.module.playbookAccess ? 'btn-primary':'inactive'"
+                                            data-toggle="tooltip" data-placement="bottom"
                                             [title]="authenticationService.module.playbookAccess?'':'You do not have access'"
                                             (click)="saveAsPlayBook(authenticationService.module.playbookAccess)" translate>
                                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -97,13 +105,17 @@
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 breadcrumb-font-color" style="color: #888;padding-right:5px;">
                                                                 <a (click)="closeView();closeVideoPlayer()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
                                                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;" title="{{tracksPlayBook.title}}">
+                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;"
+                                                                 data-toggle="tooltip" data-placement="bottom"
+                                                                 title="{{tracksPlayBook.title}}">
                                                                     <div class="title-class"> Title:</div>
                                                                     <a class="title padding_bottom breadcrumb-font-color" style="font-size: 15px; padding-top: 10px;color: #888;">{{tracksPlayBook.title}}</a>
                                                                 </h4>
                                                             </div>
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
-                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;" title="{{assetDetails?.assetName}}">
+                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;" 
+                                                                data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{assetDetails?.assetName}}">
                                                                     <div class="Asset-title-class">Asset Title:</div>
                                                                     <strong>{{assetDetails?.assetName}}</strong>
                                                                 </h4>
@@ -115,7 +127,8 @@
                                                                     alt="No Image Found">
                                                             </div>
                                                             <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                                <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" title="{{assetDetails.assetType}}"
+                                                                <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" 
+                                                                data-toggle="tooltip" data-placement="bottom" title="{{assetDetails.assetType}}"
                                                                     translate>
                                                                     <strong>Type: </strong>{{assetDetails.assetType}}<br>
                                                                 </div>
@@ -181,7 +194,7 @@
                                                                 class="overlay-icon">
                                                                 <button
                                                                     [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" title="View"
+                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="bottom"  title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-play list-play-icon"></i>
                                                                 </button>
@@ -190,7 +203,7 @@
                                                                 class="overlay-icon">
                                                                 <button
                                                                     [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" title="View"
+                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-file list-file-icon"></i>
                                                                 </button>
@@ -198,7 +211,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{content?.dam?.assetName}}">
+                                                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{content?.dam?.assetName}}">
                                                             <span><strong>{{content?.dam?.assetName}}</strong></span>
                                                         </h4>
                                                         <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
@@ -224,7 +237,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{content.quiz.name}}">
+                                                        <h4 class="mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{content.quiz.name}}">
                                                             <span><strong>{{content.quiz.name}}</strong></span>
                                                         </h4>
                                                         <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
@@ -242,7 +255,7 @@
                                                 <td id="actions-row" class="text-center">
                                                     <div class="actions-block override-actions custom-width-icon no-float">
                                                         <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                            data-toggle="tooltip" data-placement="top" title="View"
+                                                            data-toggle="tooltip" data-placement="bottom" title="View"
                                                             (click)="$event.stopPropagation();viewContent(content, i)">
                                                             <i class="fa fa-eye" aria-hidden="true"></i>
                                                         </a>

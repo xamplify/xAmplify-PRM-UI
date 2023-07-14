@@ -108,13 +108,15 @@
                                         <td>
                                             <h4 class="mt5 mb5 f-w-600" translate>
                                                 <span data-toggle="tooltip" data-placement="bottom"
-                                                title="{{learningTrack.title}}" ><strong>{{learningTrack.title}}</strong></span>
+                                                title="{{learningTrack.title}}" ><strong>{{learningTrack.title | slice:0:25}}</strong></span>
+                                                <span *ngIf="learningTrack.title?.length>25">...</span>
                                             </h4>
                                             <h6 class="">
                                                 <span data-toggle="tooltip" data-placement="bottom"
                                                 title="{{learningTrack?.category?.name}}"
                                                 translate> Folder
-                                                    <strong>{{learningTrack?.category?.name}}</strong></span>
+                                                    <strong>{{learningTrack?.category?.name | slice:0:17}}</strong></span>
+                                                    <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                                             </h6>
                                             <h6 class="">
                                                 <span data-toggle="tooltip" data-placement="bottom"
@@ -125,11 +127,13 @@
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
                                                 <div class="tag tablegray-tag">
-                                                    {{learningTrack.tagNames[0]}}
+                                                   <span data-toggle="tooltip" data-placement="bottom"
+                                                   title="{{learningTrack.tagNames[0]}}"> {{learningTrack.tagNames[0]}}</span>
                                                 </div>
                                                 <ng-container *ngIf="learningTrack.tagNames.length > 1">
                                                     <div class="tag tablegray-tag">
-                                                        {{learningTrack.tagNames[1]}}
+                                                       <span data-toggle="tooltip" data-placement="bottom"
+                                                       title="{{learningTrack.tagNames[1]}}">{{learningTrack.tagNames[1]}}</span> 
                                                     </div>
                                                 </ng-container>
                                                 <span *ngIf="learningTrack.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
