@@ -163,7 +163,7 @@
                                         </ng-container>
 
                                         <!--One Click Launch-->
-                                        <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && isPageCampaign">
+                                        <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && !isPageCampaign">
                                             <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -309,7 +309,7 @@
                                         </div>
 
                                         <!--Configure Pipelines-->
-                                        <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && isPageCampaign) || (campaignAccess?.enableLeads && isPageCampaign && showMarketingAutomationOption))">
+                                        <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && !isPageCampaign) || (campaignAccess?.enableLeads && !isPageCampaign && showMarketingAutomationOption))">
                                             <label class="control-label col-sm-4" translate>Configure Pipelines</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -442,7 +442,7 @@
                                                                     <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate)" data-original-title="Preview">
                                                                     <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
                                                                 </span>
-                                                                <div  class="bar hover-bar custometheme-bar">
+                                                                <div  class="bar hover-bar">
                                                                     <a  data-placement="top"  class="border-none-dark">
                                                                     <div class="row">
                                                                         <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
@@ -1081,8 +1081,8 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
-                                                <input type="radio" class="text-center mLabelAlign mr10" name="scheduleCampaign"
-                                                    [value]="launchOption.value" (click)="selectLaunchOption()" />
+                                                <input type="radio" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
+                                                    [value]="launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
                                                 <span class="text-algn">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>
@@ -1091,9 +1091,9 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em">Previous</button>
-                                    <button *ngIf="isPageCampaign" type="button" class="btn green mBtnAlign w-10em">Send Test Email</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em">Send Test Email</button>
                                     <button type="submit" class="btn green mBtnAlign w-10em" (click)="validateAndLaunchCampaign()">{{buttonName}}</button>
-                                    <button *ngIf="isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
                                 </div>
                             </div>
                         </fieldset>

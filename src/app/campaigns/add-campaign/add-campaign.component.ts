@@ -1214,7 +1214,6 @@ export class AddCampaignComponent implements OnInit {
 
     selectLaunchOption(){
        let selectedLaunchOption =  $('input[name="scheduleCampaign"]:checked').val();
-       alert(selectedLaunchOption);
     }
 
     validateAndLaunchCampaign(){
