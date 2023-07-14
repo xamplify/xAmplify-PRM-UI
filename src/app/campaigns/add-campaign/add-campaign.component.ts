@@ -755,6 +755,7 @@ export class AddCampaignComponent implements OnInit {
     selectEmailTemplate(emailTemplate:any){
         this.ngxLoading = true;
         this.emailTemplateHrefLinks = [];
+        this.urls = [];
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
@@ -765,6 +766,7 @@ export class AddCampaignComponent implements OnInit {
                 },
                 error => {
                     this.emailTemplateHrefLinks = [];
+                    this.urls = [];
                     this.isEmailTemplateOrPageSelected = true;
                     this.ngxLoading = false;
                 });

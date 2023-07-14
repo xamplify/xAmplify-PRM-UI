@@ -3200,8 +3200,6 @@ export class ReferenceService {
   goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
-  
-   
 
   
 }
