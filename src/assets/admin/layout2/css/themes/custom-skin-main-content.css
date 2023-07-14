@@ -1449,20 +1449,20 @@ h5.designpage-dark-cu {
   border: 1px solid var(--border-color) !important;
 }
 .custom-btn-ref {
-  background-color: var(--button-primary-bg-color) !important;
-  color: var(--button-primary-text-color) !important;
+  /* background-color: var(--button-primary-bg-color) !important;
+  color: var(--button-primary-text-color) !important; */
   border: 1px solid var(--button-primary-border-color) !important;
 }
 .custom-sec-btn-ref {
-  background-color: var(--button-secondary-bg-color) !important;
-  color: var(--button-secondary-text-color) !important;
+  /* background-color: var(--button-secondary-bg-color) !important;
+  color: var(--button-secondary-text-color) !important; */
   border: 1px solid var(--button-secondary-border-color) !important;
 }
 div#removeborder {
   border: none !important;
 }
 .drap-arrow-cu {
-  color: var(---text-color)!important;
+  color: var(---text-color) !important;
 }
 
 /* user guides hover icon */
@@ -1471,15 +1471,16 @@ div#removeborder {
   border: 1px solid var(--border-color) !important;
 }
 .help-iconbgadd i:hover {
-  color: var(---text-color)!important;
-}/* end */
+  color: var(---text-color) !important;
+} /* end */
 
 /* Create Campaign Select Campaign bar bg */
 .custometheme-bar {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
-.custometheme-bar span, strong {
+.custometheme-bar span,
+strong {
   color: var(---text-color) !important;
 }
 /* end */
