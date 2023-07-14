@@ -265,7 +265,7 @@
 							   </td>
 							   <td>
 								  <div class="actions-block override-actions"
-									 style="text-align: center !important;">
+									 style="text-align: center !important;width: max-content;">
 									 <a *ngIf="campaign.campaignType !== 'SOCIAL'"
 									 (click)="showCampaignPreview(campaign)"
 									 data-toggle="tooltip" data-placement="bottom"
@@ -417,7 +417,7 @@
 										class="fa fa-wpforms" aria-hidden="true"></i>
 									 </span>
 								  </div>
-								  <div class="ribbon">
+								  <div class="ribbon tab-ribbon">
 									 <div class="cancel-ribbon"
 										*ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1"
 										translate>Cancelled</div>

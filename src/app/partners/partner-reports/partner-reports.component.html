@@ -621,7 +621,7 @@
                               aria-hidden="true"></i>
                           </span>
                         </div>
-                        <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
+                        <div class="ribbon tab-ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
                           <span *ngIf="campaign.launched">Launched</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>

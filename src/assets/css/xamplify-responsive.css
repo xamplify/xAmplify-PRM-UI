@@ -80,7 +80,7 @@
             padding-bottom: 6px;
           }
           .tb_view_10{
-           margin-top:20px;
+           margin-top:10px;
           }
           .tb_view_actions{
             white-space: nowrap;
@@ -112,6 +112,9 @@
           }
           .tab_mt_20{
            margin-bottom: 20px;
+          }
+          .tab_srch_w{
+           width: 111px!important;
           }
     
     }
@@ -154,6 +157,8 @@
         div#vendor-details-tile {
             left: 12px;
             width: 82.4%!important;
+            word-break: break-all;
+            margin: 5px 0px;
             
         }
         .mb-search{
@@ -221,9 +226,39 @@
               .mb_hgh_grid{
              height: unset!important;
               }
+              .mb_v_srch{
+                margin-right: 3px!important;
+
+              }
+              .mb_imgwidth{
+               width:100%!important;
+              }
+              .mb_pl_15{
+                padding-left: 15px!important;
+              }
     }
     @media only screen and (max-width:1024px){
         #bee-plugin-container{
             overflow-x: scroll!important;
+        }
+        .ml_0{
+          margin-left: 0px!important;
+        }
+        .pl_4{
+            padding-left: 4px!important;
+        }
+        .action_inline{
+            white-space: nowrap;
+            display: flex;
+            justify-content: center;
+        }
+        .tab_folderscroll{
+            overflow-x: scroll;
+        }
+        .tab_gridfolder{
+            display: grid;
+        }
+        .tabheight{
+            height: 100%!important;
         }
     }
