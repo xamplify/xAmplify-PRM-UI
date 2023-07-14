@@ -163,12 +163,17 @@ export class AddCampaignComponent implements OnInit {
   hasInternalError: boolean = false;
   countries: Country[];
   timezones: Timezone[];
+  sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
+  launchOptions = [{'key':'Now','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
+  isLaunched: boolean = false;
+  lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
+  buttonName: string = "Launch";
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
-    private contactService:ContactService,private render: Renderer,) {
+    private contactService:ContactService,private render: Renderer) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     if("email"!=this.campaignType){
         this.referenceService.goToPageNotFound();
@@ -1205,5 +1210,14 @@ export class AddCampaignComponent implements OnInit {
             url.selectedEmailTemplateId = emailTemplateId;
             $('#url-' + index + emailTemplateId).prop("checked", true);
         }
+    }
+
+    selectLaunchOption(){
+       let selectedLaunchOption =  $('input[name="scheduleCampaign"]:checked').val();
+       alert(selectedLaunchOption);
+    }
+
+    validateAndLaunchCampaign(){
+
     }
 }
