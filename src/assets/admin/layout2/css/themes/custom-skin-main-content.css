@@ -1458,3 +1458,6 @@ h5.designpage-dark-cu {
   color: var(--button-secondary-text-color) !important;
   border: 1px solid var(--button-secondary-border-color) !important;
 }
+div#removeborder {
+  border: none !important;
+}

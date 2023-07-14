@@ -1633,3 +1633,6 @@ h5.designpage-dark-cu {
 .portlet-light-fields {
   border: 1px solid #2f4857 !important;
 }
+div#removeborder {
+  border: none !important;
+}
