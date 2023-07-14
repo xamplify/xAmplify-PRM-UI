@@ -759,13 +759,12 @@ export class AddCampaignComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(data.body, this.emailTemplateHrefLinks);
-                    this.urls = this.emailTemplateHrefLinks;this.selectedEmailTemplateRow = emailTemplate.id;
+                    this.selectedEmailTemplateRow = emailTemplate.id;
                     this.isEmailTemplateOrPageSelected = true;
                     this.ngxLoading = false;
                 },
                 error => {
                     this.emailTemplateHrefLinks = [];
-                    this.urls = this.emailTemplateHrefLinks;
                     this.isEmailTemplateOrPageSelected = true;
                     this.ngxLoading = false;
                 });

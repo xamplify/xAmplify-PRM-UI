@@ -434,7 +434,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
