@@ -2319,3 +2319,10 @@ button.table-scbscribe-btn:hover {
   background: #cb5a5e;
   color: #fff !important;
 }
+/***14/07/2023 */
+.assettype-bgcolor {background-color: #ff8196!important;
+  border: 1px solid #ff8196 !important;
+  color: #fff !important;
+  border-radius: 2px !important;
+  padding: 4px 10px !important;
+  font-size: 10px !important;}

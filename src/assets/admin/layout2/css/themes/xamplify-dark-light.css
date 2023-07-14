@@ -1563,7 +1563,7 @@ input.ng-valid.ng-dirty.ng-touched {
 }
 /* 04-07-2024 */
 .dark-beige {
-  background: transparent;
+  background: #2a404d !important;
 }
 
 /* 10-07-2023 */
@@ -1636,3 +1636,11 @@ h5.designpage-dark-cu {
 div#removeborder {
   border: none !important;
 }
+/* user guides hover icon */
+.help-iconbgadd:hover {
+  background: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.help-iconbgadd i:hover {
+  color: #fff !important;
+}/* end */
