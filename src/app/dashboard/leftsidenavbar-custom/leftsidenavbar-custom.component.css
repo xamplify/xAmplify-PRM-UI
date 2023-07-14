@@ -11,8 +11,10 @@ img.draganddrop-image-cu {height: 300px;object-fit: contain;}
 h4.boltext-dr {font-weight: 600;margin-top: 0px;}
 p.contentwrap-dr {padding-top: 0px;padding-right: 6px;padding-bottom: 6px;padding-left: 6px;}
 ul.drag-menu-cu li:hover { background-color: #34495a; cursor: pointer;color: #fff;}
-.drap-arrow-cu{padding: 4px 0px;font-size: 10px;color: #fff}
-
+.drap-arrow-cu{padding: 4px 0px;font-size: 10px;}
+i.fa.fa-arrows.pull-right.drap-arrow-cu:hover {
+    color: #fff !important;
+}
 
 @media (min-width: 300px) and (max-width: 992px)  {
     .dragdrop-graph-bg { padding: 0px;}
@@ -24,3 +26,5 @@ ul.drag-menu-cu li:hover { background-color: #34495a; cursor: pointer;color: #ff
         width: 91%;
     }
 }
+
+
