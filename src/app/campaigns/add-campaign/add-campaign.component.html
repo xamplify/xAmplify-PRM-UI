@@ -163,7 +163,7 @@
                                         </ng-container>
 
                                         <!--One Click Launch-->
-                                        <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && campaignType!='page'">
+                                        <div class="form-group" *ngIf="campaign?.channelCampaign && campaignAccess?.oneClickLaunch && !isPageCampaign">
                                             <label class="control-label col-sm-4" translate>One-Click Launch</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign?.oneClickLaunch" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -309,7 +309,7 @@
                                         </div>
 
                                         <!--Configure Pipelines-->
-                                        <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && campaignType!='page') || (campaignAccess?.enableLeads && campaignType!='page' && showMarketingAutomationOption))">
+                                        <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && !isPageCampaign) || (campaignAccess?.enableLeads && !isPageCampaign && showMarketingAutomationOption))">
                                             <label class="control-label col-sm-4" translate>Configure Pipelines</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -434,7 +434,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -662,7 +662,7 @@
             </div>
 
             <!---Campaign Workflows---->
-            <div class="portlet light shadow" *ngIf="'landingPage'!=campaignType">
+            <div class="portlet light shadow" *ngIf="'page'!=campaignType">
                 <div class="row">
                     <div class="col-xs-12">
                             <fieldset class="scheduler-border">
@@ -1070,7 +1070,36 @@
                 </div> 
             </div>
 
-
+            <!--Launch Options-->
+            <div class="portlet light shadow">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Launch</legend>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="btn-group btn-group-justified">
+                                        <ng-container *ngFor="let launchOption of launchOptions;let i = index">
+                                            <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
+                                                <input type="radio" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
+                                                    [value]="launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
+                                                <span class="text-algn">{{launchOption.key}}</span>
+                                            </label>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <!--Other Buttons-->
+                                <div class="text-center">
+                                    <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em">Previous</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em">Send Test Email</button>
+                                    <button type="submit" class="btn green mBtnAlign w-10em" (click)="validateAndLaunchCampaign()">{{buttonName}}</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -1101,8 +1130,6 @@
         </div>
         </div>
     </div>
-
-
 
 </div>
 

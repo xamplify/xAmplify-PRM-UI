@@ -111,7 +111,7 @@
 												</h6>
 										</div>
 									</td>
-										<td class="text-center">{{asset?.assetType}}</td>
+										<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}} </span> </td>
 										<td class="text-center"><app-timestamp
 												[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 										<td class="mAlignView" >
@@ -303,7 +303,7 @@
 									</ng-container>
 									 <!---XNFR-255-->
 									<div class="divapdding-or-cards">
-										<span class="view-banner-dam tag-color-and-custimization">{{asset?.assetType}}</span>
+										<span class="view-banner-dam assettype-bgcolor">{{asset?.assetType}}</span>
 										<h6 translate>
 											<span *ngIf="isPartnerView">Published On</span> <span
 												*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp

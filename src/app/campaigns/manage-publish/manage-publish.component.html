@@ -50,7 +50,8 @@
                     <div class="row m0">
                        <ul class="mix-filter col-xs-12 col-sm-6 col-md-4 p0 m0 mWid"
                           *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                          
+                          <li class="filter" (click)="filterCampaigns('NONE',0)"
+                          [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                           <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                           [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign || authenticationService?.module?.deletedPartner"
                           translate>
@@ -78,8 +79,7 @@
                           <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                           [class.campaign-type-selected]="7 == selectedCampaignTypeIndex" *ngIf="campaignAccess.survey || authenticationService?.module?.deletedPartner"
                           translate>Survey</li>
-                          <li class="filter" (click)="filterCampaigns('NONE',0)"
-                          [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
+                        
                           <li class="filter" style="display: none;" translate>Own Template</li>
                        </ul>
                        <div class="page-toolbar col-xs-12 col-sm-6 col-md-8 p0"
@@ -226,7 +226,7 @@
                        *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                        <div class="table-responsive">
                           <table [class.bottomTableCss]="pagination.pagedItems.length<5"
-                          class='table tgrid table-hover table-sm hidden-xs' aria-describedby="campaignsListTable"
+                          class='table tgrid table-hover table-sm hidden-xs responsive-scrool' aria-describedby="campaignsListTable"
                           *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
                           <thead>
                              <tr>

@@ -1,8 +1,8 @@
-ul.drag-menu-cu li:hover { background-color: #ddd;cursor: pointer;}
+/* ul.drag-menu-cu li:hover { background-color: #ddd;cursor: pointer;} */
 .custome-portlet {border-radius: 0px !important;border: none !important;padding: 0px !important;margin: 0px !important}
 .drag-menu-cu li {margin-bottom: 2px;}
 .dragdrop-graph-bg { padding-top: 0px;padding-right: 20px;padding-bottom: 0px;padding-left: 5px;}
-.drap-arrow-cu { padding: 4px 0px;font-size: 10px;color: #333;}
+/* .drap-arrow-cu { padding: 4px 0px;font-size: 10px;color: #333;} */
 /* .add-graph-bg {background-image: url(/assets/images/graph.png);padding: 28px !important;background-repeat: round;background-size: 100%;} */
 .list-group {padding-left: 0;margin-bottom: 0px;}
 img.draganddrop-image-cu {height: 300px;object-fit: contain;}
@@ -10,7 +10,11 @@ img.draganddrop-image-cu {height: 300px;object-fit: contain;}
 .dragdrop-gif-cu {border: 1px solid #ddd;padding: 15px;border-radius: 5px;}
 h4.boltext-dr {font-weight: 600;margin-top: 0px;}
 p.contentwrap-dr {padding-top: 0px;padding-right: 6px;padding-bottom: 6px;padding-left: 6px;}
-
+ul.drag-menu-cu li:hover { background-color: #34495a; cursor: pointer;color: #fff;}
+.drap-arrow-cu{padding: 4px 0px;font-size: 10px;}
+i.fa.fa-arrows.pull-right.drap-arrow-cu:hover {
+    color: #fff !important;
+}
 
 @media (min-width: 300px) and (max-width: 992px)  {
     .dragdrop-graph-bg { padding: 0px;}
@@ -22,3 +26,5 @@ p.contentwrap-dr {padding-top: 0px;padding-right: 6px;padding-bottom: 6px;paddin
         width: 91%;
     }
 }
+
+

@@ -58,7 +58,7 @@
 }
 
 #copy-link {
-  width: 270px;
+  width: 230px;
   height: 35px;
   cursor: not-allowed;
   background-color: #eae9e9;
@@ -194,3 +194,15 @@ span.quiz_optionname {
    font-weight: 600;
    line-height: 1;
 }
+
+   /* 14-07-2023 */
+.abjusttextarea-width {
+  width: 260px;
+}
+
+@media (min-width: 767px) and (max-width: 1025px)  {
+  .scroll-top-margin {
+      margin-top: 26px;
+  }
+}
+  

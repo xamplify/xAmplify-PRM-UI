@@ -254,3 +254,9 @@ span.gearicon-font-cu {
   white-space: break-spaces;
   line-height: 2.5;
 }
+
+@media (min-width: 767px) and (max-width: 1268px)  {
+.scroll-top-margin {
+    margin-top: 26px;
+}
+}

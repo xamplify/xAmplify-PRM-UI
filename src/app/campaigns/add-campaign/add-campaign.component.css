@@ -655,4 +655,22 @@ table.table-bordered.dataTable {
   color: black !important;
 }
 
+span.text-algn {
+  position: relative;
+  bottom: 2px;
+}
+.mBtnAlign {
+  margin: 5px;
+}
 
+.mTop {
+  top: 10px;
+}
+
+.pt-6px {
+  padding-top: 6px;
+}
+
+.w-10em{
+  width: 10em;
+}

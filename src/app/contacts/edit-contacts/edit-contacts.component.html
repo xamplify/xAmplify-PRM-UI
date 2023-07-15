@@ -1198,18 +1198,23 @@
 					  <tr>
 						 <th scope="row" translate>Entity Info</th>
 						 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
-							<span id="tooltip-helper">
-							<i class="fa fa-question-circle" aria-hidden="true" title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
+							<span >
+							<i class="fa fa-question-circle" aria-hidden="true" 
+							data-toggle="tooltip" data-placement="bottom"
+							 title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)" 
+							></i>
 							</span>
 						 </th>
 						 <th scope="row" translate>Sign up Notification
-							<span id="tooltip-helper">
-							<i class="fa fa-question-circle" aria-hidden="true"  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+							<span id="">
+							<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+							  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
 							</span>
 						 </th>
 						 <th *ngIf="authenticationService?.module?.adminOrSuperVisor" scope="row" translate>Team Member Group
-							<span id="tooltip-helper">
-							<i class="fa fa-question-circle" aria-hidden="true"  title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+							<span id="">
+							<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+							 title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
 							</span>
 						 </th>
 					  </tr>

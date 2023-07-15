@@ -94,7 +94,7 @@
                                             <td [hidden]="!showEmbedLink || authenticationService.isShowForms">
                                                 <div style="display:flex">
                                                     <span>
-                                                        <textarea id="text-area" class="video" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                                                        <textarea id="text-area" class="video abjusttextarea-width" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
                                                     </span>
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
                                                         <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" 
@@ -119,7 +119,7 @@
                                 </table>
                             </div>
 
-                            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin">
                                 <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listForms($event)" [hidden]="formsLoader.isLoading"></app-pagination>
                             </div>
                             <!-- End of 24 -->

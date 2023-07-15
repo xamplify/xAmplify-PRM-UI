@@ -18,7 +18,8 @@
                     <div class="colxs-12 col-sm-12 col-md-5">
                         <div>
                             <ul class="mix-filter">
-                                
+                                <li class="filter" (click)="filterCampaigns('NONE',0)"
+                                [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
                                     [class.campaign-type-selected]="1 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.emailCampaign  || authenticationService?.module?.deletedPartner">
@@ -46,8 +47,7 @@
                                 <li class="filter" (click)="filterCampaigns('SURVEY',7)"
                                     [class.campaign-type-selected]="7 == selectedCampaignTypeIndex"
                                     *ngIf="campaignAccess.survey  || authenticationService?.module?.deletedPartner">Survey</li>
-                                <li class="filter" (click)="filterCampaigns('NONE',0)"
-                                    [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
+                               
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
                         </div>

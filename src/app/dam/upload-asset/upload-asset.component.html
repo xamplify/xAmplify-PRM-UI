@@ -28,7 +28,8 @@
                <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
                   <div class="cf-padding-dam">
                      <div style="margin-top: -1px;">
-                        <a class="close-circle" (click)="closeCircle()"  title="Close">
+                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom"
+                        title="Close">
                         <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                      </div>
@@ -48,7 +49,8 @@
                      {{headerText}}
                   </div>
                   <div *ngIf="previewItems" class="btn-group" id="right">
-                     <a class="close-circle" (click)="closePreview()"  title="Close">
+                     <a class="close-circle" (click)="closePreview()" data-toggle="tooltip" data-placement="bottom"
+                     title="Close">
                      <i class="fa fa-times" aria-hidden="true"></i>
                      </a> 
                   </div>
