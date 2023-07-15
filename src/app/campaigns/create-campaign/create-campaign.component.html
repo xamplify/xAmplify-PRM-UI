@@ -1055,7 +1055,7 @@
                                                             </th>
                                                             <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
-                                                                <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'user_list_tb',2)"></span>
+                                                                <span class="ui-column-resizer" (mousedown)="refService?.onMouseDown($event,'user_list_tb',2)"></span>
                                                                 <span class="gridHeader" translate>List Name</span>
                                                             </th>
                                                             <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
@@ -2252,8 +2252,8 @@
                                                                             <div class="input-icon right pull-right cebp">
                                                                                 <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search"
                                                                                  (keypress)="eventHandlerForUrlEmailTemplate($event, url)">
-                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchWebsiteLinkAutoResponseEmailTemplates(url)"></button>
-                                                                                <button type="submit" class="search-box-item-click email-search" (click)="searchWebsiteLinkAutoResponseEmailTemplates(url)">
+                                                                                 <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url)"></button>
+                                                                                <button type="submit" class="search-box-item-click email-search" (click)="searchClickEmailTemplate(url)">
                                                                                     <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                                                             </div>
                                                                             <div class="portlet-body">
