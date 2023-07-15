@@ -39,7 +39,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
-    selectedCampaignTypeIndex = 1;
+    selectedCampaignTypeIndex = 0;
     pager: any = {};
     pagedItems: any[];
     totalRecords = 1;
@@ -1113,8 +1113,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         
         this.pagination.maxResults = 12;
         this.itemsSize = this.numberOfItemsPerPage[0];
-        this.pagination.campaignType = 'REGULAR';
-        this.selectedCampaignTypeIndex = 1;
+        this.pagination.campaignType = 'NONE';
+        this.selectedCampaignTypeIndex = 0;
         this.modulesDisplayType.isListView = true;
         this.modulesDisplayType.isGridView = false;
         this.modulesDisplayType.isFolderGridView = false;

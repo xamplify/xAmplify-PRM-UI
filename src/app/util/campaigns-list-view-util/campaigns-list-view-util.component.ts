@@ -40,7 +40,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
     isScheduledCampaignLaunched = false;
     loggedInUserId = 0;
     hasAllAccess = false;
-    selectedCampaignTypeIndex = 1;
+    selectedCampaignTypeIndex = 0;
     pager: any = {};
     pagedItems: any[];
     totalRecords = 1;
@@ -312,7 +312,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     this.pagination.categoryId = this.categoryId;
                     this.pagination.categoryType = 'c';
                 }
-                this.pagination.campaignType = 'REGULAR';
                 this.listCampaign(this.pagination);
             }
         );
@@ -675,7 +674,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
             this.selectedCancelEventToPartnerCampaign)
             .subscribe(data => {
                 if (data.access) {
-                    console.log(data);
                     $(window).scrollTop(0);
                     this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
                     console.log("Event Successfully cancelled");
