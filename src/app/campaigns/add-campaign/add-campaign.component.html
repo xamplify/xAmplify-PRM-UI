@@ -496,10 +496,14 @@
                                 <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)">
                                 </app-pagination>
                             </div>
+                            <div>
+                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab" (click)="isValidCampaignDetailsTab && showLaunchTab()">Next</button>
+                            </div>  
                         </fieldset>
                     </div>
                 </div>
             </div>
+            
         </div>
 
         <!---Tab-2--->
@@ -1148,9 +1152,9 @@
                                 </div>
                                 <!--Other Buttons-->
                                 <div class="text-center">
-                                    <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em">Previous</button>
+                                    <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
                                     <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em">Send Test Email</button>
-                                    <button type="submit" class="btn green mBtnAlign w-10em" (click)="validateAndLaunchCampaign()">{{buttonName}}</button>
+                                    <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
                                     <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
                                 </div>
                             </div>

@@ -227,18 +227,19 @@ export class AddCampaignComponent implements OnInit {
 
     showCampaignDetailsTab(){
         this.campaignDetailsTabClass = this.activeTabClass;
-        if(this.selectedContactListIds.length>0){
+        if(this.isContactList){
             this.launchTabClass = this.completedTabClass;
         }else{
            // this.launchTabClass = this.activeTabClass;
         }
         $('#launch-tab').hide(600);
         $('#campaign-details').show(600);
-       
+        this.referenceService.goToTop();
     }
 
     showLaunchTab(){
         if(this.isValidCampaignDetailsTab){
+            this.referenceService.goToTop();
             this.campaignDetailsTabClass = this.completedTabClass;
             this.launchTabClass = this.activeTabClass;
             $('#campaign-details').hide(600);
@@ -610,7 +611,14 @@ export class AddCampaignComponent implements OnInit {
         this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
     }
-    
+
+     /***XNFR-125*****/
+     getSelectedPartnerCompanyIdAndShareLeads(event:any){
+        this.selectedPartnershipId = event['selectedPartnershipId'];
+        this.selectedContactListIds = event['selectedShareListIds'];
+        this.isContactList = this.selectedPartnershipId>0 && this.selectedContactListIds.length>0;
+    }
+
     setEmailOpened(event: any) {
         this.campaign.emailOpened = event;
     }
@@ -1291,7 +1299,7 @@ export class AddCampaignComponent implements OnInit {
         if(this.workflowError){
             this.referenceService.goToDiv('campaign-work-flow');
         }
-        if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime){
+        if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime && this.isContactList){
             alert("All Success");
             this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
             this.workflowError = false;
