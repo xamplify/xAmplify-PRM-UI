@@ -4,6 +4,7 @@ import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
+import { ActivatedRoute } from '@angular/router';
 declare var swal:any, $: any;
 @Component({
   selector: 'app-send-test-email',
@@ -36,7 +37,7 @@ export class SendTestEmailComponent implements OnInit {
   isValidSubject = false;
   sendTestEmailDto:SendTestEmailDto = new SendTestEmailDto();
   clicked = false;
-  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties) { }
+  constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,public properties:Properties,private activatedRoute:ActivatedRoute) { }
 
   ngOnInit() {
     this.processing = true;
@@ -102,16 +103,22 @@ private sendCampaignTestEmail(){
   data['campaignName'] = campaign.campaignName;
   data['fromName'] = campaign.fromName;
   data['email'] = campaign.email;
-  data['subjectLine'] = campaign.subjectLine;
+  data['subjectLine'] = this.sendTestEmailDto.subject;
   data['nurtureCampaign'] = false;
   data['channelCampaign'] = campaign.channelCampaign;
   data['preHeader'] = campaign.preHeader;
-  if(campaign.campaignTypeInString=='LANDINGPAGE'){
+  let campaignType = this.activatedRoute.snapshot.params['campaignType'];
+  if(campaignType=="page"){
       data['landingPageId'] = this.id;
   }else{
       data['selectedEmailTemplateId'] = this.id;
   }
-  data['campaignTypeInString'] = campaign.campaignTypeInString;
+  if(campaignType=="page"){
+    data['campaignTypeInString'] = "LANDINGPAGE";
+  }else if(campaignType=="email"){
+    data['campaignTypeInString'] = "REGULAR";
+  }
+ 
   data['testEmailId'] = this.sendTestEmailDto.toEmail;
   data['userId'] = this.authenticationService.getUserId();
   data['selectedVideoId'] = campaign.selectedVideoId;
