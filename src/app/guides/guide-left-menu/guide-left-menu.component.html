@@ -20,9 +20,13 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
         <a>Search Results</a>
       </li>
+      <li *ngIf="statusCode === 404 || statusCode === 403">
+        <!-- <i class="fa fa-angle-right" aria-hidden="true"></i> -->
+        <a>Error Page</a>
+      </li>
     </ul>
   </div>
-  <div class="page-bar page-bar-padding-cu">
+  <div class="page-bar page-bar-padding-cu" *ngIf="statusCode != 404">
     <div class="row">
       <!-- {{guideMergeTag}} -->
       <div class="col-lg-3 col-md-3 col-sm-12">
@@ -202,8 +206,17 @@
               <li
                 *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"
                 [ngClass]="showListId === 'Configuration'? 'active':''">
+                <!----------- All Logins--------->
                 <a href="#Configuration" data-toggle="collapse" aria-expanded="false"
-                  (click)="getUserGuidesByModuleName('Configuration')"
+                  (click)="getUserGuidesByModuleName('Configuration')" *ngIf="!authenticationService?.module?.isOnlyPartnerCompany"
+                  [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                  <span class="title" translate>Configuration</span>
+                  <!-- <span class="selected"></span> -->
+                </a>
+                <!------------ For only Partner login-->
+                <a href="#Configuration" data-toggle="collapse" aria-expanded="false"
+                  (click)="goToProcessing()" *ngIf="authenticationService?.module?.isOnlyPartnerCompany"
                   [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
                   <i class="fa fa-cog" aria-hidden="true"></i>
                   <span class="title" translate>Configuration</span>
@@ -238,19 +251,7 @@
           </div>
         </div>
         <div *ngIf="isSearch" class="card-left-padd">
-        <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [searchKey]="searchKey" [pagination]="pagination"></app-search-guides>
-          <!-- <div class="page-bar bg-result-color" *ngFor="let guide of userGuides">
-            <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
-            <div>
-              {{guide.description}}
-            </div>
-          </div>
-          <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords == 0" class="alert alert-info">
-            <strong translate>No results found</strong>
-          </div>
-          <app-pagination *ngIf="pagination.totalRecords != 0" [pagination]="pagination"
-            (notifyParent)="setPage($event)"
-            (notifyParentDropDown)="getSearchResultsOfUserGuides($event)"></app-pagination> -->
+        <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [loading]="loading" [searchKey]="searchKey" [pagination]="pagination"></app-search-guides>
         </div>
       </div>
       <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 500" style="padding: 10px;">
@@ -262,6 +263,26 @@
             <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
           </div>
         </div>
+      </div>
+      <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 405" style="padding: 10px;">
+        <div class="">
+          <div class="text-center">
+            <h1>404</h1>
+            <h4>ACCESS DENIED</h4>
+            <h3>Your Request for this help guides are in Progress...</h3>
+            <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-bar"   *ngIf="statusCode === 404">
+    <div class="">
+      <div class="text-center">
+        <h1>404</h1>
+        <h4>ACCESS DENIED</h4>
+        <h3>Your Request for this help guides are in processing...</h3>
+        <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
       </div>
     </div>
   </div>

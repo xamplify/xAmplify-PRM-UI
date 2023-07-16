@@ -289,7 +289,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 });
-                this.mergeTagForGuide = 'manage_campaigns';
+                 /******* user guide  ********/
+            if (this.authenticationService.isOnlyPartner()) {
+                this.mergeTagForGuide = 'manage_campaigns_partner';
+            } else {
+                this.mergeTagForGuide = 'manage_campaigns_vendor';
+            }
+            /******* user guide  ********/
             
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);

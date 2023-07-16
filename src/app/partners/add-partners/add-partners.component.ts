@@ -255,7 +255,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    selectedUserIdsForMerging: any[];
 	/****XNFR-278****/
    /****** User guide ******/
-   mergeTagForGuide:any;
+   searchWithModuleName:any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2645,8 +2645,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		try {
 			this.socialContactImage();
-			this.urlLink = "partner_onboarding";
-			this.mergeTagForGuide = "partner_onboarding";
+			this.searchWithModuleName = "Partner";
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
