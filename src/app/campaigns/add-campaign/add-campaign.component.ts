@@ -187,6 +187,10 @@ export class AddCampaignComponent implements OnInit {
   timeZoneDivClass:string =  this.launchOptionsDivClass;
   launchTimeDivClass:string = this.launchOptionsDivClass;
   statusCode =0;
+  emailReceiversCountError: boolean;
+  validUsersCount = 0;
+  allUsersCount = 0;
+  emailReceiversCountLoader = true;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -1051,6 +1055,28 @@ export class AddCampaignComponent implements OnInit {
         } else if (trLength == selectedRowsLength) {
             $('#checkAllExistingContacts').prop("checked", true);
         }
+        this.getValidUsersCount();
+
+
+    }
+
+    getValidUsersCount() {
+        if (this.selectedContactListIds.length > 0 && this.campaign.emailNotification) {
+            this.ngxLoading = true;
+            this.emailReceiversCountError = false;
+            this.contactService.findAllAndValidUserCounts(this.selectedContactListIds)
+                .subscribe(
+                    data => {
+                        this.validUsersCount = data['validUsersCount'];
+                        this.allUsersCount = data['allUsersCount'];
+                        this.emailReceiversCountError = false;
+                        this.ngxLoading = false;
+                    },
+                    (error: any) => {
+                        this.ngxLoading = false;
+                        this.emailReceiversCountError = true;
+                    });
+        }
     }
 
     checkAll(ev: any) {
@@ -1067,6 +1093,7 @@ export class AddCampaignComponent implements OnInit {
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
             if (this.selectedContactListIds.length == 0) { this.isContactList = false; }
             this.userListDTOObj = this.referenceService.removeDuplicates(this.userListDTOObj);
+            this.getValidUsersCount();
         } else {
             $('[name="campaignContact[]"]').prop('checked', false);
             $('#campaignRecipientsTable tr').removeClass("contact-list-selected");

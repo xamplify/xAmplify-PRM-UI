@@ -527,6 +527,13 @@
                                     <div class="row">
                                         <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
                                             <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
+                                            <ng-container *ngIf="emailReceiversCountError">
+                                                <span class="required float-right" translate>Something went wrong.Please contact admin</span>
+                                            </ng-container>
+                                            <ng-container *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
+                                                <span *ngIf="campaign?.emailNotification" class="success float-right">Email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                <span *ngIf="!campaign?.emailNotification" class="required float-right">No email will be sent.</span>
+                                            </ng-container>
                                         </div>
                                         <table class="table table-filter" *ngIf="campaignRecipientsPagination?.totalRecords==0" aria-describedby="">
                                             <tr>
