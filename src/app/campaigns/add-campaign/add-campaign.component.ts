@@ -56,6 +56,7 @@ export class AddCampaignComponent implements OnInit {
 
 
   /************Campaign Details******************/
+  isValidCampaignDetailsTab = false;
   formGroupClass = "form-group";
   campaignNameDivClass:string = this.formGroupClass;
   fromNameDivClass:string =  this.formGroupClass;
@@ -207,13 +208,17 @@ export class AddCampaignComponent implements OnInit {
 
     showCampaignDetailsTab(){
         $('#launch-tab').hide(600);
+        this.campaignDetailsTabClass = this.activeTabClass;
         $('#campaign-details').show(600);
        
     }
 
     showLaunchTab(){
-        $('#campaign-details').hide(600);
-        $('#launch-tab').show(600);
+        if(this.isValidCampaignDetailsTab){
+            this.campaignDetailsTabClass = this.completedTabClass;
+            $('#campaign-details').hide(600);
+            $('#launch-tab').show(600);
+        }
     }
 
     loadCampaignDetailsSection(){
@@ -423,7 +428,6 @@ export class AddCampaignComponent implements OnInit {
     }
 
     validateForm() {
-        var isValidFirstTab = true;
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
         /*******Campaign Name*****/
@@ -442,25 +446,22 @@ export class AddCampaignComponent implements OnInit {
         let trimmedPreHeader = $.trim(this.campaign.preHeader);
         let isValidPreHeader = trimmedPreHeader.length>0;
         this.preHeaderDivClass = isValidPreHeader ? successClass : errorClass;
-        isValidFirstTab = isValidCampaignName && isValidFromName && isValidSubjectLine && isValidPreHeader;
+        this.isValidCampaignDetailsTab = isValidCampaignName && isValidFromName && isValidSubjectLine && isValidPreHeader;
         /****Configure PipeLines**/
         if(this.campaign.channelCampaign && this.campaign.configurePipelines){
             let isValidLeadPipeLineSelected = this.campaign.leadPipelineId!=undefined && this.campaign.leadPipelineId>0;
             let isValidDealPipeLineSelected = this.campaign.dealPipelineId!=undefined && this.campaign.dealPipelineId>0;
             this.leadPipelineClass = isValidLeadPipeLineSelected ? successClass : errorClass;
             this.dealPipelineClass = isValidDealPipeLineSelected ? successClass : errorClass;
-            isValidFirstTab = isValidFirstTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
+            this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
         }
-        if(isValidFirstTab){
+        if(this.isValidCampaignDetailsTab){
             this.launchTabClass = this.activeTabClass;
         }else{
             this.launchTabClass = this.disableTabClass;
             this.campaignDetailsTabClass = this.activeTabClass;
         }
     }
-
-   
-
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
         this.campaignRecipientsPagination.pageIndex = 1;
@@ -756,6 +757,11 @@ export class AddCampaignComponent implements OnInit {
                     this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(data.body, this.emailTemplateHrefLinks);
                     this.selectedEmailTemplateRow = emailTemplate.id;
                     this.isEmailTemplateOrPageSelected = true;
+                    if(this.isValidCampaignDetailsTab){
+                        this.isValidCampaignDetailsTab = true;
+                    }else{
+                        this.isValidCampaignDetailsTab = false;
+                    }
                     this.ngxLoading = false;
                 },
                 error => {
@@ -763,7 +769,7 @@ export class AddCampaignComponent implements OnInit {
                     this.urls = [];
                     this.isEmailTemplateOrPageSelected = true;
                     this.ngxLoading = false;
-                });
+        });
     }
 
     previewEmailTemplate(emailTemplate:any){
