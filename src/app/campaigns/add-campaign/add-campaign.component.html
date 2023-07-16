@@ -34,15 +34,7 @@
                     <div  class="col-block" [attr.class]="launchTabClass"  style="width: 50%;" (click)="showLaunchTab()">
                         <div  class="cenetered-block colorbox-2">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
-                            <h5 class="hidden-xs text-clr">
-                                <span *ngIf="campaign?.oneClickLaunch">
-                                    Select Share Leads & Launch
-                                </span>
-                                <span *ngIf="!campaign?.oneClickLaunch">
-                                    Select {{partnerModuleCustomName}} & Launch
-                                </span>
-                                
-                            </h5>
+                            <h5 class="hidden-xs text-clr">{{launchTabText}}</h5>
                         </div>
                     </div>
                 </div>
@@ -497,7 +489,7 @@
                                 </app-pagination>
                             </div>
                             <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab" (click)="isValidCampaignDetailsTab && showLaunchTab()">Next</button>
+                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab || selectedEmailTemplateRow==0" (click)="isValidCampaignDetailsTab && selectedEmailTemplateRow>0 && showLaunchTab()">Next</button>
                             </div>  
                         </fieldset>
                     </div>
@@ -1107,8 +1099,8 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
-                                                <input type="radio" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
-                                                    [value]="launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
+                                                <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
+                                                    [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
                                                 <span class="text-algn">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>

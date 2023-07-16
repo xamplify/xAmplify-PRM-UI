@@ -114,7 +114,7 @@ export class AddCampaignComponent implements OnInit {
   /****Email Templates****/
   emailTemplatesOrLandingPagesLoader = false;
   campaignEmailTemplates:Array<any> = Array<any>();
-  selectedEmailTemplateRow: number;
+  selectedEmailTemplateRow = 0;
   isEmailTemplateOrPageSelected: boolean;
   isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
@@ -146,6 +146,7 @@ export class AddCampaignComponent implements OnInit {
   /***Filter Popup****/
 
   /***Launch Tab****/
+  launchTabText = "";
   contactsOrPartnersSelectionText = "";
   campaignRecipientsLoader = false;
   campaignRecipientsPagination:Pagination = new Pagination();
@@ -238,7 +239,7 @@ export class AddCampaignComponent implements OnInit {
     }
 
     showLaunchTab(){
-        if(this.isValidCampaignDetailsTab){
+        if(this.isValidCampaignDetailsTab && this.selectedEmailTemplateRow>0){
             this.referenceService.goToTop();
             this.campaignDetailsTabClass = this.completedTabClass;
             this.launchTabClass = this.activeTabClass;
@@ -257,7 +258,7 @@ export class AddCampaignComponent implements OnInit {
         if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
         this.partnerModuleCustomName = partnerModuleCustomName;
         }
-        if ('landingPage' == this.campaignType) {
+        if ('page' == this.campaignType) {
         this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
         this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
         } else {
@@ -310,9 +311,9 @@ export class AddCampaignComponent implements OnInit {
                 this.isOrgAdminCompany  = data['isOrgAdminCompany'];
                 let isMarketingCompany  = data['isMarketingCompany'];
                 let isVendorCompany = data['isVendorCompany'];
-                this.showMarketingAutomationOption = this.isOrgAdminCompany;
                 this.isVendorCompany = isVendorCompany;
                 this.isMarketingCompany = isMarketingCompany;
+                this.showMarketingAutomationOption = this.isOrgAdminCompany || this.isMarketingCompany;
                 this.setRecipientsHeaderText();
                 this.setFromEmailAndFromName(data);
             },error=>{
@@ -348,10 +349,18 @@ export class AddCampaignComponent implements OnInit {
             this.contactsOrPartnersSelectionText = "Select One "+ this.partnerModuleCustomName + " Company";
         }else{
             if (this.isOrgAdminCompany) {
-                this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+                if(this.campaign.channelCampaign){
+                    this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
+                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+                }else{
+                    this.launchTabText = "Select "+this.partnerModuleCustomName +" / Recipients & Launch";
+                    this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+                }
             } else if (this.isMarketingCompany) {
+                this.launchTabText = "Select Recipients & Launch";
                 this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
             } else if (this.isVendorCompany) {
+                this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
                 this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
             }
         }
@@ -496,14 +505,14 @@ export class AddCampaignComponent implements OnInit {
         this.preHeaderDivClass = isValidPreHeader ? successClass : errorClass;
         this.isValidCampaignDetailsTab = isValidCampaignName && isValidFromName && isValidSubjectLine && isValidPreHeader;
         /****Configure PipeLines**/
-        if(this.campaign.channelCampaign && this.campaign.configurePipelines){
+        if((this.campaign.channelCampaign && this.campaign.configurePipelines) || (this.showMarketingAutomationOption && this.campaign.configurePipelines)){
             let isValidLeadPipeLineSelected = this.campaign.leadPipelineId!=undefined && this.campaign.leadPipelineId>0;
             let isValidDealPipeLineSelected = this.campaign.dealPipelineId!=undefined && this.campaign.dealPipelineId>0;
             this.leadPipelineClass = isValidLeadPipeLineSelected ? successClass : errorClass;
             this.dealPipelineClass = isValidDealPipeLineSelected ? successClass : errorClass;
             this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
         }
-        if(this.isValidCampaignDetailsTab){
+        if(this.isValidCampaignDetailsTab && this.selectedEmailTemplateRow){
             this.launchTabClass = this.activeTabClass;
         }else{
             this.launchTabClass = this.disableTabClass;
@@ -512,19 +521,20 @@ export class AddCampaignComponent implements OnInit {
     }
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
+        this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
         this.campaignRecipientsPagination.maxResults = 12;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
-        if(this.campaignType!='page'){
+        if(!this.isPageCampaign){
             this.campaign.whiteLabeled = false;
         }
         if (event) {
             this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
-            if (this.campaignType != 'page') {
+            if (!this.isPageCampaign) {
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
            this.findCampaignRecipients(this.campaignRecipientsPagination);
@@ -534,7 +544,6 @@ export class AddCampaignComponent implements OnInit {
             this.findCampaignRecipients(this.campaignRecipientsPagination);
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
-
         }
     }
     removePartnerRules() {
