@@ -207,8 +207,13 @@ export class AddCampaignComponent implements OnInit {
     }
 
     showCampaignDetailsTab(){
-        $('#launch-tab').hide(600);
+        if(this.selectedContactListIds.length>0){
+            this.launchTabClass = this.completedTabClass;
+        }else{
+            this.launchTabClass = this.activeTabClass;
+        }
         this.campaignDetailsTabClass = this.activeTabClass;
+        $('#launch-tab').hide(600);
         $('#campaign-details').show(600);
        
     }
@@ -216,6 +221,7 @@ export class AddCampaignComponent implements OnInit {
     showLaunchTab(){
         if(this.isValidCampaignDetailsTab){
             this.campaignDetailsTabClass = this.completedTabClass;
+            this.launchTabClass = this.activeTabClass;
             $('#campaign-details').hide(600);
             $('#launch-tab').show(600);
         }
