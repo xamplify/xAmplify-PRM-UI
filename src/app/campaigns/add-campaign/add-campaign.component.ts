@@ -1235,6 +1235,9 @@ export class AddCampaignComponent implements OnInit {
 
     selectLaunchOption(){
        this.selectedLaunchOption =  $('input[name="scheduleCampaign"]:checked').val();
+       if("SCHEDULE"==this.selectedLaunchOption){
+        this.validateLaunchTimeAndCountryAndTimeZone();
+       }
     }
 
     validateAndLaunchCampaign(){
@@ -1248,7 +1251,52 @@ export class AddCampaignComponent implements OnInit {
         }
         if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime){
             alert("All Success");
-            console.log(data);
+            this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
+            this.referenceService.goToTop();
+            this.workflowError = false;
+            this.campaignService.saveCampaign(data)
+            .subscribe(
+                response => {
+                    swal.close();
+                    if (response.access) {
+                        if (response.statusCode == 2000) {
+                            this.referenceService.campaignSuccessMessage = data['scheduleCampaign'];
+                            this.isLaunched = true;
+                            this.reInitialize();
+                            this.router.navigate(["/home/campaigns/manage"]);
+                       }else if(response.statusCode==2020){
+                            this.selectedContactListIds = [];
+                            this.selectedPartnershipId = 0;
+                            this.isContactList = false;
+                            this.invalidShareLeadsSelection = true;
+                            this.invalidShareLeadsSelectionErrorMessage = response.message;
+                        } else {
+                           this.invalidScheduleTime = true;
+                            this.invalidScheduleTimeError = response.message;
+                            if (response.statusCode == 2016) {
+                               this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                               this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                            }
+                        }
+                   } else {
+                        this.ngxLoading = false;
+                        this.authenticationService.forceToLogout();
+                    }
+                    this.ngxLoading = false;
+                },
+                error => {
+                  this.ngxLoading = false;
+                   swal.close();
+                    this.hasInternalError = true;
+                    let statusCode = JSON.parse(error["status"]);
+                    if (statusCode == 400) {
+                        this.router.navigate(["/home/campaigns/manage"]);
+                        this.referenceService.scrollSmoothToTop();
+                        this.referenceService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
+                    } else {
+                        this.xtremandLogger.errorPage(error);
+                   }
+                });
         }
         this.ngxLoading = false;
         return false;
@@ -1261,7 +1309,8 @@ export class AddCampaignComponent implements OnInit {
             let selectedTimeZone = $('#timezoneId option:selected').val();
             this.isValidSelectedCountryId = selectedCountryId > 0;
             this.isValidSelectedTimeZone = $.trim(selectedTimeZone).length > 0;
-            this.isValidLaunchTime = this.campaign.scheduleTime!=undefined;
+            let trimmedScheduleTime = $.trim(this.campaign.scheduleTime);
+            this.isValidLaunchTime = trimmedScheduleTime!=undefined && trimmedScheduleTime.length>0;
         } else {
             this.isValidSelectedCountryId = true;
             this.isValidSelectedTimeZone = true;
