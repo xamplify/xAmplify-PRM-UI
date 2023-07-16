@@ -76,6 +76,7 @@ export class AddCampaignComponent implements OnInit {
   partnerModuleCustomName = "Partner";
   toPartnerToolTipMessage = "";
   throughPartnerToolTipMessage = "";
+  toPartnerText = "To Partner";
   throughPartnerAndToPartnerHelpToolTip: string;
   shareWhiteLabeledContent = false;
   campaignDetailsLoader = false;
@@ -175,7 +176,7 @@ export class AddCampaignComponent implements OnInit {
   launchOptions = [{'key':'Now','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
   isLaunched: boolean = false;
   lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
-  buttonName: string = "Launch";
+  buttonName: string = "Save";
   selectedLaunchOption = "SAVE";
   invalidShareLeadsSelection: boolean;
   invalidShareLeadsSelectionErrorMessage: any;
@@ -254,19 +255,6 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.countryId = this.countries[0].id;
         this.campaign.emailNotification = true;
         this.getTimeZones(this.campaign.countryId);
-        let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-        if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
-        this.partnerModuleCustomName = partnerModuleCustomName;
-        }
-        if ('page' == this.campaignType) {
-        this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Share a private page";
-        this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
-        } else {
-            this.toPartnerToolTipMessage = "To "+this.partnerModuleCustomName+": Send a campaign intended just for your "+this.partnerModuleCustomName;
-            this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
-        }
-        this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
-        this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
         this.initializeEndDatePicker();
         this.initializeLaunchTimeDatePicker();
         this.findCampaignDetailsData();
@@ -316,6 +304,25 @@ export class AddCampaignComponent implements OnInit {
                 this.showMarketingAutomationOption = this.isOrgAdminCompany || this.isMarketingCompany;
                 this.setRecipientsHeaderText();
                 this.setFromEmailAndFromName(data);
+                let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+                if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
+                    this.partnerModuleCustomName = partnerModuleCustomName;
+                }
+                if(this.isOrgAdminCompany){
+                    this.toPartnerText = "To Recipients";
+                }else{
+                    this.toPartnerText = "To "+this.partnerModuleCustomName;
+                }
+                if (this.isPageCampaign) {
+                    this.toPartnerToolTipMessage = this.toPartnerText+": Share a private page";
+                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
+                } else {
+                    let toolTipSuffixMessage  = this.isOrgAdminCompany ? this.partnerModuleCustomName+' / Contacts':this.partnerModuleCustomName;
+                    this.toPartnerToolTipMessage = this.toPartnerText+": Send a campaign intended just for your "+ toolTipSuffixMessage;
+                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+                }
+                this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+                this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
             },error=>{
                 this.xtremandLogger.errorPage(error);
         },()=>{
@@ -545,7 +552,19 @@ export class AddCampaignComponent implements OnInit {
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
         }
+        this.updateLaunchTabClass();
+
     }
+    private updateLaunchTabClass() {
+        if (this.selectedEmailTemplateRow > 0 && this.isContactList && this.isValidCampaignDetailsTab) {
+            this.launchTabClass = this.completedTabClass;
+        } else if (this.selectedEmailTemplateRow > 0 && !this.isContactList && this.isValidCampaignDetailsTab) {
+            this.launchTabClass = this.activeTabClass;
+        } else {
+            this.launchTabClass = this.disableTabClass;
+        }
+    }
+
     removePartnerRules() {
         let self = this;
         $.each(this.replies, function (index, reply) {
@@ -594,6 +613,7 @@ export class AddCampaignComponent implements OnInit {
         } else {
             this.findEmailTemplates(this.emailTemplatesPagination);
         }
+        this.updateLaunchTabClass();
     }
 
     
@@ -608,17 +628,17 @@ export class AddCampaignComponent implements OnInit {
 
     /***XNFR-125****/
     setOneClickLaunch(event:any){
-    this.campaign.oneClickLaunch = event;
-    this.setRecipientsHeaderText();
-    this.campaignRecipientsPagination.pageIndex = 1;
-    this.campaignRecipientsPagination.maxResults = 12;
-    this.selectedContactListIds = [];
-    this.userListDTOObj = [];
-    this.isContactList = false;
-    this.selectedPartnershipId = 0;
-    if(!event){
-        this.findCampaignRecipients(this.campaignRecipientsPagination);
-    }
+        this.campaign.oneClickLaunch = event;
+        this.setRecipientsHeaderText();
+        this.campaignRecipientsPagination.pageIndex = 1;
+        this.campaignRecipientsPagination.maxResults = 12;
+        this.selectedContactListIds = [];
+        this.userListDTOObj = [];
+        this.isContactList = false;
+        this.selectedPartnershipId = 0;
+        if(!event){
+            this.findCampaignRecipients(this.campaignRecipientsPagination);
+        }
     }
 
      /***XNFR-125*****/
@@ -821,8 +841,10 @@ export class AddCampaignComponent implements OnInit {
                     this.isEmailTemplateOrPageSelected = true;
                     if(this.isValidCampaignDetailsTab){
                         this.isValidCampaignDetailsTab = true;
+                        this.launchTabClass = this.activeTabClass;
                     }else{
                         this.isValidCampaignDetailsTab = false;
+                        this.launchTabClass = this.disableTabClass;
                     }
                     this.ngxLoading = false;
                 },
