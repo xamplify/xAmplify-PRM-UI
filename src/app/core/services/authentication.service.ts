@@ -1059,6 +1059,11 @@ sendTestEmail(sendTestEmailDto:SendTestEmailDto){
   let url = this.REST_URL +"email-template/sendTestEmail?access_token=" + this.access_token;
   return this.callPostMethod(url,sendTestEmailDto);
 }
+
+sendCampaignTestEmail(data:any){
+  let url = this.REST_URL +"admin/sendTestEmail?access_token=" + this.access_token;
+  return this.callPostMethod(url,data);
+}
 /****XNFR-317****/
 
 private callGetMethod(url: string) {

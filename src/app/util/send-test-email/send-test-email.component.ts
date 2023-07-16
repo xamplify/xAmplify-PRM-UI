@@ -20,6 +20,7 @@ export class SendTestEmailComponent implements OnInit {
   @Input() fromEmail = "";
   @Input() fromName = "";
   @Input() campaignSendTestEmail = false;
+  @Input() campaign:any;
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -80,27 +81,64 @@ getTemplateHtmlBodyAndMergeTagsInfo(){
 
 
 send(){
-this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
- this.validateForm();
- if(this.isValidForm){
-  this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
-    response=>{
-      this.referenceService.showSweetAlertSuccessMessage(response.message);
-      this.callEventEmitter();
-    },error=>{
-      this.showErrorMessage("Unable to send test email.Please try after some time.");
-    });
- }else{
-  this.showErrorMessage("Please provide valid inputs.");
-  
- }
+  this.referenceService.showSweetAlertProcessingLoader("We are sending the email");
+  this.validateForm();
+  if(this.isValidForm){
+    if(this.campaignSendTestEmail){
+      this.sendCampaignTestEmail();
+    }else{
+      this.sendTestEmail();
+    }
+   
+  }else{
+   this.showErrorMessage("Please provide valid inputs.");
+  }
  
 }
+
+private sendCampaignTestEmail(){
+  let data: Object = {};
+  let campaign = this.campaign;
+  data['campaignName'] = campaign.campaignName;
+  data['fromName'] = campaign.fromName;
+  data['email'] = campaign.email;
+  data['subjectLine'] = campaign.subjectLine;
+  data['nurtureCampaign'] = false;
+  data['channelCampaign'] = campaign.channelCampaign;
+  data['preHeader'] = campaign.preHeader;
+  if(campaign.campaignTypeInString=='LANDINGPAGE'){
+      data['landingPageId'] = this.id;
+  }else{
+      data['selectedEmailTemplateId'] = this.id;
+  }
+  data['campaignTypeInString'] = campaign.campaignTypeInString;
+  data['testEmailId'] = this.sendTestEmailDto.toEmail;
+  data['userId'] = this.authenticationService.getUserId();
+  data['selectedVideoId'] = campaign.selectedVideoId;
+  data['parentCampaignId'] = campaign.parentCampaignId;
+  this.authenticationService.sendCampaignTestEmail(data).subscribe(
+    response => {
+      this.referenceService.showSweetAlertSuccessMessage("Email Sent Successfully");
+      this.callEventEmitter();
+    }, error => {
+      this.showErrorMessage("Unable to send test email.Please try after some time.");
+    });
+}
+
+  private sendTestEmail() {
+    this.authenticationService.sendTestEmail(this.sendTestEmailDto).subscribe(
+      response => {
+        this.referenceService.showSweetAlertSuccessMessage(response.message);
+        this.callEventEmitter();
+      }, error => {
+        this.showErrorMessage("Unable to send test email.Please try after some time.");
+      });
+  }
 
 showErrorMessage(errorMessage:string){
   this.processing = false;
   this.customResponse = new CustomResponse();
-  this.referenceService.showSweetAlertErrorMessage("Please provide valid inputs.");
+  this.referenceService.showSweetAlertErrorMessage(errorMessage);
   this.clicked = false;
 }
 

@@ -744,7 +744,6 @@ export class CampaignService {
             }
             data['selectedVideoId'] = campaign.selectedVideoId;
             data['parentCampaignId'] = campaign.parentCampaignId;
-          console.log(data);
             this.sendTestEmail(data)
                 .subscribe(
                 data => {

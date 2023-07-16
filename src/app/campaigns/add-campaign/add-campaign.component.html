@@ -1211,6 +1211,7 @@
     [fromEmail]="campaign?.fromEmail"
     [fromName]="campaign?.fromName"
     [campaignSendTestEmail]="true"
+    [campaign]="campaign"
   (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
   <ng-container *ngIf="showUsersPreview">
