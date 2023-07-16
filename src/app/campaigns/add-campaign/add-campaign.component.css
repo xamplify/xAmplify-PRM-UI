@@ -692,3 +692,10 @@ span.text-algn {
   margin-left: -17px;
   margin-top: 12px;
 }
+
+.campaign-blur{
+  filter: blur(3px);
+  pointer-events: none;
+  cursor: not-allowed;
+
+}

@@ -219,12 +219,19 @@ export class AddCampaignComponent implements OnInit {
    }
 
     ngOnInit() {
+        this.addBlur();
         this.countries = this.referenceService.getCountries();
         if(this.isAdd){
             this.showCampaignDetailsTab();
         }
         this.loadCampaignDetailsSection();
         this.findEmailTemplates(this.emailTemplatesPagination);
+    }
+    addBlur(){
+        $('#campaign-details-and-launch-tabs').addClass('campaign-blur');
+    }
+    removeBlur(){
+        $('#campaign-details-and-launch-tabs').removeClass('campaign-blur');
     }
 
     showCampaignDetailsTab(){
@@ -323,7 +330,9 @@ export class AddCampaignComponent implements OnInit {
                 }
                 this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
+                this.removeBlur();
             },error=>{
+                this.removeBlur();
                 this.xtremandLogger.errorPage(error);
         },()=>{
             if (this.activeCRMDetails.activeCRM) {

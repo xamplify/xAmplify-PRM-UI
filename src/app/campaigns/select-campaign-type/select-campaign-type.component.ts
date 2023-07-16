@@ -150,5 +150,10 @@ export class SelectCampaignTypeComponent implements OnInit{
     this.customResponse = new CustomResponse('SUCCESS',message, true);
   }
 
+  goToAddCampaign(campaignType:string){
+    this.loading = true;
+    this.refService.goToRouter("/home/campaigns/create/"+campaignType);
+  }
+
 
 }
