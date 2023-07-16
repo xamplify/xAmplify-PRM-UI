@@ -1152,7 +1152,9 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em">Send Test Email</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                        <i class="fa fa-envelope-o mr5"></i>Send Test Email
+                                    </button>
                                     <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
                                     <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
                                 </div>
