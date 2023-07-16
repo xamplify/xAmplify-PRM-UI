@@ -63,7 +63,7 @@
                                                 <span class="required">*</span>
                                             </label>
                                             <div class="col-sm-8">
-                                                <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"/>
+                                                <input type="text" autocomplete="off" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();"/>
                                                 <span class="pull-left required" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0">Already Exists</span>
                                             </div>
                                         </div>
@@ -217,7 +217,7 @@
                                                 <span class="required"> <strong>*</strong></span>
                                             </label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" autocomplete="off" />
+                                                <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();" maxlength="200" autocomplete="off" />
                                             </div>
                                         </div>
 
@@ -228,7 +228,7 @@
                                             </label>
                                             <div class="col-sm-8 col-xs-12">
                                                 <div class="input-group merge-tag-input-border">
-                                                    <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();validateField('subjectLine');" autocomplete="off" />
+                                                    <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();" autocomplete="off" />
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default button-color" type="button" 
                                                         data-toggle="tooltip" data-placement="right"
@@ -263,7 +263,7 @@
                                                 <span class="required"><strong>*</strong></span>
                                             </label>
                                             <div class="col-sm-8">
-                                                <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" autocomplete="off" />
+                                                <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();" maxlength="200" autocomplete="off" />
                                             </div>
                                         </div>
 
