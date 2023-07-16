@@ -686,6 +686,9 @@
                                             <div class="alert alert-danger" *ngIf="workflowError">
                                                 <strong>Please complete the required fields</strong>
                                             </div>
+                                            <div class="alert alert-danger" *ngIf="invalidScheduleTime && statusCode==2016" id="invalidScheduleTimeDiv">
+                                                <strong>{{invalidScheduleTimeError}}</strong>
+                                            </div>
                                          <!---Email Auto Responses--->
                                             <fieldset *ngIf="replies?.length>0">
                                                 <legend>{{properties?.ADD_AUTO_RESPONSE_EMAIL}}</legend>
@@ -1062,13 +1065,16 @@
             </div>
 
             <!--Launch Options-->
-            <div class="portlet light shadow">
+            <div class="portlet light shadow" id="launch-section">
                 <div class="row">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Launch</legend>
                             <div class="portlet-body">
                                 <div class="row">
+                                    <div class="alert alert-danger" *ngIf="invalidScheduleTime && statusCode==2015" id="invalidScheduleTimeDiv">
+                                        <strong>{{invalidScheduleTimeError}}</strong>
+                                    </div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">

@@ -767,7 +767,7 @@ export class CampaignService {
     }
     addErrorClassToDiv(list: any) {
         let self = this;
-        $.each(list, function (index, divId) {
+        $.each(list, function (index:number, divId:string) {
             $('#' + divId).removeClass('portlet light dashboard-stat2 border-error');
             self.removeStyleAttrByDivId('send-time-' + divId);
             $('#' + divId).addClass('portlet light dashboard-stat2 border-error');

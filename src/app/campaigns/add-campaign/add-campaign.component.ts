@@ -186,6 +186,7 @@ export class AddCampaignComponent implements OnInit {
   countryNameDivClass:string = this.launchOptionsDivClass;
   timeZoneDivClass:string =  this.launchOptionsDivClass;
   launchTimeDivClass:string = this.launchOptionsDivClass;
+  statusCode =0;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -1252,19 +1253,20 @@ export class AddCampaignComponent implements OnInit {
         if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime){
             alert("All Success");
             this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
-            this.referenceService.goToTop();
             this.workflowError = false;
             this.campaignService.saveCampaign(data)
             .subscribe(
                 response => {
                     swal.close();
                     if (response.access) {
+                        this.statusCode = response.statusCode;
                         if (response.statusCode == 2000) {
                             this.referenceService.campaignSuccessMessage = data['scheduleCampaign'];
                             this.isLaunched = true;
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
                        }else if(response.statusCode==2020){
+                            this.referenceService.goToDiv('campaign-work-flow');
                             this.selectedContactListIds = [];
                             this.selectedPartnershipId = 0;
                             this.isContactList = false;
@@ -1272,10 +1274,15 @@ export class AddCampaignComponent implements OnInit {
                             this.invalidShareLeadsSelectionErrorMessage = response.message;
                         } else {
                            this.invalidScheduleTime = true;
-                            this.invalidScheduleTimeError = response.message;
+                           this.invalidScheduleTimeError = response.message;
                             if (response.statusCode == 2016) {
+                               this.referenceService.goToDiv('campaign-work-flow');
                                this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
                                this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                            }else{
+                                this.referenceService.goToDiv('launch-section');
+                                this.isValidLaunchTime = false;
+                                this.launchTimeDivClass = this.launchOptionsErrorClass;
                             }
                         }
                    } else {
@@ -1290,9 +1297,14 @@ export class AddCampaignComponent implements OnInit {
                     this.hasInternalError = true;
                     let statusCode = JSON.parse(error["status"]);
                     if (statusCode == 400) {
-                        this.router.navigate(["/home/campaigns/manage"]);
-                        this.referenceService.scrollSmoothToTop();
-                        this.referenceService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
+                        if(this.isAdd){
+                            this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+                        }else{
+                            this.router.navigate(["/home/campaigns/manage"]);
+                            this.referenceService.scrollSmoothToTop();
+                            this.referenceService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
+                        }
+                        
                     } else {
                         this.xtremandLogger.errorPage(error);
                    }
@@ -1325,6 +1337,7 @@ export class AddCampaignComponent implements OnInit {
         this.selectedContactListIds = [];
         this.userListDTOObj = [];
         this.names = [];
+        this.statusCode = 0;
     }
     getCampaignData(emailId: string) {
         this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
@@ -1389,7 +1402,7 @@ export class AddCampaignComponent implements OnInit {
             'country': country,
             'createdFromVideos': this.campaign.createdFromVideos,
             'nurtureCampaign': false,
-            'pushToCRM': true,
+            'pushToCRM': [],
             'landingPageId': this.selectedLandingPageRow,
             'vanityUrlDomainName': vanityUrlDomainName,
             'vanityUrlCampaign': vanityUrlCampaign,
