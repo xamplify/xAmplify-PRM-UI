@@ -395,10 +395,10 @@ export class HomeComponent implements OnInit {
             && activeThemeDto.name === "Light") {
             require("style-loader!../../../assets/admin/layout2/css/layout.css");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Dark"){
+            && activeThemeDto.name === "Dark" && !this.router.url.includes('home/help')){
               this.authenticationService.isDarkForCharts = true;
               require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
-          } else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 ) {
+          } else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help') ) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
             document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
             document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);

@@ -127,10 +127,10 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     }
   }
   getMergeTagForGuide(){
-    if(this.authenticationService.module.isVendor) {
-      this.mergeTagForGuide = 'vendor_account_dashboard';
-    } else {
+    if(this.authenticationService.isOnlyPartner()) {
       this.mergeTagForGuide = 'partner_account_dashboard';
+    } else {
+      this.mergeTagForGuide = 'vendor_account_dashboard';
     }
   }
   ngOnDestroy(){

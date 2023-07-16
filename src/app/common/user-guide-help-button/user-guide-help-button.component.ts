@@ -4,6 +4,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { UserService } from 'app/core/services/user.service';
 import { UserGuide } from 'app/guides/models/user-guide';
 
+declare var $:any;
 @Component({
   selector: 'app-user-guide-help-button',
   templateUrl: './user-guide-help-button.component.html',
@@ -32,6 +33,14 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
       this.getGuideUrl()
     }
   }
+  ngAfterViewChecked() {
+    // $('[data-toggle="tooltip"]').tooltip({
+    //   trigger: 'hover'
+    // });
+    // $('[data-toggle="tooltip"]').on('click', function () {
+    //   $(this).tooltip('dispose');
+    // });
+   }
   userGuide: UserGuide = new UserGuide();
   getGuideUrl() {
     this.loading = true;

@@ -49,9 +49,23 @@ button.circle-icon {
   width: 100%;
   height: 65%;
 }
+.col-block-active:hover {
+  background-color: #b8def1;
+}
+.col-block-complete {
+  color: #fff !important;
+  background-color: #34495c !important;
+  cursor: pointer;
+}
+.col-block-complete:hover {
+  background-color: #465460 !important;
+  color: #fff;
+  cursor: pointer;
+}
 .col-block-active {
   color: black;
   vertical-align: central;
+  cursor: pointer;
   background: linear-gradient(
     to right,
     #b8def1,
@@ -673,4 +687,15 @@ span.text-algn {
 
 .w-10em{
   width: 10em;
+}
+.ml-17-mt12{
+  margin-left: -17px;
+  margin-top: 12px;
+}
+
+.campaign-blur{
+  filter: blur(3px);
+  pointer-events: none;
+  cursor: not-allowed;
+
 }
