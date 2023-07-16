@@ -666,7 +666,7 @@
                 <div class="row">
                     <div class="col-xs-12">
                             <fieldset class="scheduler-border">
-                                <legend class="scheduler-border">Add Workflows</legend>
+                                <legend class="scheduler-border" id="campaign-work-flow">Add Workflows</legend>
                                 <div class="portlet-body padding-top-45px">
                                     <div class="row">
                                         <div class="col-xs-6">
@@ -683,7 +683,7 @@
                                             </a>
                                         </div>
                                          <div class="col-xs-12 pr-b-7px" id="reply-onclick-div">
-                                            <div class="alert alert-danger" *ngIf="dataError">
+                                            <div class="alert alert-danger" *ngIf="workflowError">
                                                 <strong>Please complete the required fields</strong>
                                             </div>
                                          <!---Email Auto Responses--->
@@ -1086,6 +1086,41 @@
                                                 <span class="text-algn">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>
+                                    </div>
+                                    <div class="col-md-12 ml-17-mt12" [hidden]="buttonName!='Schedule'">
+                                        <div [attr.class]="launchTimeDivClass">
+                                            <label class="float-left">Date<span class="required">*</span></label>
+                                            <br>
+                                            <input type="text" class="form-control flatpickr square-box" placeholder="Select" id="launchTime" [(ngModel)]="campaign.scheduleTime" name="launchTime" [value]="campaign.scheduleTime"/>
+                                        </div>
+                                        <div [attr.class]="countryNameDivClass">
+                                            <label class="float-left">Country<span class="required">*</span></label>
+                                            <br>
+                                            <select class="form-control" style="width: 100%" (change)="getTimeZones($event.target.value)" id="countryName">
+                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                    {{country.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div [attr.class]="timeZoneDivClass">
+                                            <label class="float-left">TimeZone<span class="required">*</span></label>
+                                            <br>
+                                            <select class="form-control" style="width: 100%"  id="timezoneId">
+                                                <ng-container *ngIf="timezones?.length==1">
+                                                    <option *ngFor="let timeZone of timezones"
+                                                        [value]="timeZone.timezoneId"
+                                                        [selected]="campaign.countryId==timeZone.countryId">
+                                                        {{timeZone.cityName}}
+                                                    </option>
+                                                </ng-container>
+                                                <ng-container *ngIf="timezones?.length>1">
+                                                    <option *ngFor="let timeZone of timezones"
+                                                        [value]="timeZone.timezoneId">
+                                                        {{timeZone.cityName}}
+                                                    </option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <!--Other Buttons-->

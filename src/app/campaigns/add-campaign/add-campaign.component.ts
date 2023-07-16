@@ -25,7 +25,7 @@ import { ContactService } from 'app/contacts/services/contact.service';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { CampaignType } from '../models/campaign-type';
-import { error } from 'console';
+import { count, error } from 'console';
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 var moment = require('moment-timezone');
@@ -47,6 +47,8 @@ export class AddCampaignComponent implements OnInit {
   isSurveyCampaign = false;
   ngxLoading = false;
 
+  errorClass = "form-group has-error has-feedback";
+  successClass = "form-group has-success has-feedback";
   defaultTabClass = "col-block";
   activeTabClass = "col-block col-block-active width";
   completedTabClass = "col-block col-block-complete";
@@ -95,7 +97,7 @@ export class AddCampaignComponent implements OnInit {
   selectedPartnershipId: number;
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
-  dataError: boolean;
+  workflowError: boolean;
   showUsersPreview = false;
   mergeTagsInput: any = {};
   teamMemberEmailIds: any[] = [];
@@ -175,7 +177,15 @@ export class AddCampaignComponent implements OnInit {
   invalidShareLeadsSelection: boolean;
   invalidShareLeadsSelectionErrorMessage: any;
   invalidScheduleTimeError: any;
-  launchTime:any;
+  isValidSelectedCountryId = true;
+  isValidSelectedTimeZone = true;
+  isValidLaunchTime = true;
+  launchOptionsDivClass = "col-md-4 form-group";
+  launchOptionsErrorClass = this.launchOptionsDivClass+" has-error has-feedback";
+  launchOptionsSuccessClass =  this.launchOptionsDivClass+" has-success has-feedback";
+  countryNameDivClass:string = this.launchOptionsDivClass;
+  timeZoneDivClass:string =  this.launchOptionsDivClass;
+  launchTimeDivClass:string = this.launchOptionsDivClass;
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -195,10 +205,12 @@ export class AddCampaignComponent implements OnInit {
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
+    this.referenceService.renderer = this.render;
 
    }
 
     ngOnInit() {
+        this.countries = this.referenceService.getCountries();
         if(this.isAdd){
             this.showCampaignDetailsTab();
         }
@@ -207,12 +219,12 @@ export class AddCampaignComponent implements OnInit {
     }
 
     showCampaignDetailsTab(){
+        this.campaignDetailsTabClass = this.activeTabClass;
         if(this.selectedContactListIds.length>0){
             this.launchTabClass = this.completedTabClass;
         }else{
-            this.launchTabClass = this.activeTabClass;
+           // this.launchTabClass = this.activeTabClass;
         }
-        this.campaignDetailsTabClass = this.activeTabClass;
         $('#launch-tab').hide(600);
         $('#campaign-details').show(600);
        
@@ -230,6 +242,9 @@ export class AddCampaignComponent implements OnInit {
     loadCampaignDetailsSection(){
         this.campaignDetailsLoader = true;
         this.campaign.emailNotification = true;
+        this.campaign.countryId = this.countries[0].id;
+        this.campaign.emailNotification = true;
+        this.getTimeZones(this.campaign.countryId);
         let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
         if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
         this.partnerModuleCustomName = partnerModuleCustomName;
@@ -244,7 +259,15 @@ export class AddCampaignComponent implements OnInit {
         this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
         this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
         this.initializeEndDatePicker();
+        this.initializeLaunchTimeDatePicker();
         this.findCampaignDetailsData();
+    }
+    private initializeLaunchTimeDatePicker() {
+        flatpickr('#launchTime', {
+            enableTime: true,
+            dateFormat: 'm/d/Y h:i K',
+            time_24hr: false
+        });  
     }
 
     private initializeEndDatePicker() {
@@ -434,8 +457,8 @@ export class AddCampaignComponent implements OnInit {
     }
 
     validateForm() {
-        var errorClass = "form-group has-error has-feedback";
-        var successClass = "form-group has-success has-feedback";
+        let errorClass = this.errorClass;
+        let successClass = this.successClass;
         /*******Campaign Name*****/
         let trimmedCampaignName = $.trim(this.campaign.campaignName);
         let isValidCampaignName = trimmedCampaignName.length>0 &&  this.isValidCampaignName;
@@ -582,9 +605,6 @@ export class AddCampaignComponent implements OnInit {
     }
     setReplyWithVideo(event: any) {
         this.campaign.replyVideo = event;
-    }
-    setSocialSharingIcons(event: any) {
-        this.campaign.socialSharingIcons = event;
     }
 
 
@@ -1086,7 +1106,7 @@ export class AddCampaignComponent implements OnInit {
         let editorName = 'editor' + index;
         let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         if (errorLength == 0) {
-            this.dataError = false;
+            this.workflowError = false;
         }
     }
 
@@ -1218,71 +1238,38 @@ export class AddCampaignComponent implements OnInit {
     }
 
     validateAndLaunchCampaign(){
-       // this.ngxLoading = true;
+        this.ngxLoading = true;
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-        if (errorLength == 0) {
-            this.ngxLoading = false;
-            console.log(data);
-
-            // let message = "";
-            // if ("SAVE" == this.selectedLaunchOption) {
-            //     message = " saving "
-            // } else if ("SCHEDULE" == this.selectedLaunchOption) {
-            //     message = " scheduling ";
-            // } else if ("NOW" == this.selectedLaunchOption) {
-            //     message = " launching ";
-            // }
-            // this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
-            // this.dataError = false;
-            // this.referenceService.goToTop();
-            // this.campaignService.saveCampaign(data)
-            //     .subscribe(
-            //         response => {
-            //             swal.close();
-            //             if (response.access) {
-            //                 if (response.statusCode == 2000) {
-            //                     this.referenceService.campaignSuccessMessage = data['scheduleCampaign'];
-            //                     this.referenceService.launchedCampaignType = this.campaignType;
-            //                     this.isLaunched = true;
-            //                     this.reInitialize();
-            //                     this.router.navigate(["/home/campaigns/manage"]);
-            //                 }else if(response.statusCode==2020){
-            //                     this.selectedContactListIds = [];
-            //                     this.selectedPartnershipId = 0;
-            //                     this.isContactList = false;
-            //                     this.invalidShareLeadsSelection = true;
-            //                     this.invalidShareLeadsSelectionErrorMessage = response.message;
-            //                 } else {
-            //                     this.invalidScheduleTime = true;
-            //                     this.invalidScheduleTimeError = response.message;
-            //                     if (response.statusCode == 2016) {
-            //                         this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-            //                         this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
-            //                     }
-            //                 }
-            //             } else {
-            //                 this.authenticationService.forceToLogout();
-            //             }
-            //             this.ngxLoading = false;
-            //         },
-            //         error => {
-            //             swal.close();
-            //             this.hasInternalError = true;
-            //             let statusCode = JSON.parse(error["status"]);
-            //             if (statusCode == 400) {
-            //                 this.router.navigate(["/home/campaigns/manage"]);
-            //                 this.referenceService.scrollSmoothToTop();
-            //                 this.referenceService.showSweetAlertErrorMessage("This campaign cannot be updated as we are processing this campaign.");
-            //             } else {
-            //                 this.xtremandLogger.errorPage(error);
-            //             }
-            //         });
-        } else {
-            this.referenceService.goToDiv("email-template-preview-div");
-            this.dataError = true;
+        this.validateLaunchTimeAndCountryAndTimeZone();
+        this.workflowError = errorLength>0;
+        if(this.workflowError){
+            this.referenceService.goToDiv('campaign-work-flow');
         }
+        if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime){
+            alert("All Success");
+            console.log(data);
+        }
+        this.ngxLoading = false;
         return false;
+    }
+
+    private validateLaunchTimeAndCountryAndTimeZone() {
+        let isCampaignScheduled = this.selectedLaunchOption == "SCHEDULE";
+        if (isCampaignScheduled) {
+            let selectedCountryId = $.trim($('#countryName option:selected').val());
+            let selectedTimeZone = $('#timezoneId option:selected').val();
+            this.isValidSelectedCountryId = selectedCountryId > 0;
+            this.isValidSelectedTimeZone = $.trim(selectedTimeZone).length > 0;
+            this.isValidLaunchTime = this.campaign.scheduleTime!=undefined;
+        } else {
+            this.isValidSelectedCountryId = true;
+            this.isValidSelectedTimeZone = true;
+            this.isValidLaunchTime = true;
+        }
+        this.countryNameDivClass = this.isValidSelectedCountryId ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
+        this.timeZoneDivClass = this.isValidSelectedTimeZone ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
+        this.launchTimeDivClass = this.isValidLaunchTime ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
     }
 
     reInitialize() {
@@ -1291,35 +1278,26 @@ export class AddCampaignComponent implements OnInit {
         this.names = [];
     }
     getCampaignData(emailId: string) {
-        this.campaign.regularEmail = "regular"==this.campaignType;
-        this.getRepliesData();
-        this.getOnClickData();
         this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
-        let scheduleTime: any;
         let selectedLaunchOption = this.selectedLaunchOption;
         if (selectedLaunchOption == "NOW" || selectedLaunchOption == "SAVE" || selectedLaunchOption == "") {
-            let intlTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            if (intlTimeZone != undefined) {
-                timeZoneId = intlTimeZone;
-            } else if (moment.tz.guess() != undefined) {
-                timeZoneId = moment.tz.guess();
-            }
-            scheduleTime = this.campaignService.setLaunchTime();
+            timeZoneId = this.referenceService.getBrowserTimeZone();
+            this.campaign.scheduleTime = this.campaignService.setLaunchTime();
         } else {
             timeZoneId = $('#timezoneId option:selected').val();
-            scheduleTime = this.launchTime;
+            this.campaign.scheduleTime = this.campaign.scheduleTime;
         }
+        this.getRepliesData();
+        this.getOnClickData();
         let campaignType = CampaignType.REGULAR;
-        if ("regular" == this.campaignType) {
+        if(this.isEmailCampaign){
             campaignType = CampaignType.REGULAR;
-        } else if ("video" == this.campaignType) {
+        }else if(this.isVideoCampaign){
             campaignType = CampaignType.VIDEO;
-        } else if ("sms" == this.campaignType) {
-            campaignType = CampaignType.SMS;
-        } else if ("landingPage" == this.campaignType) {
+        }else if(this.isPageCampaign){
             campaignType = CampaignType.LANDINGPAGE;
-        }  else if ("survey" == this.campaignType) {
+        }else if(this.isSurveyCampaign){
             campaignType = CampaignType.SURVEY;
         }
         let country = $.trim($('#countryName option:selected').text());
@@ -1344,18 +1322,17 @@ export class AddCampaignComponent implements OnInit {
             'emailNotification': this.campaign.emailNotification,
             'linkOpened': this.campaign.linkOpened,
             'enableCoBrandingLogo': this.campaign.enableCoBrandingLogo,
-            'socialSharingIcons': true,
             'userId': this.loggedInUserId,
             'selectedVideoId': this.campaign.selectedVideoId,
             'partnerVideoSelected': this.campaign.partnerVideoSelected,
             'userListIds': this.selectedContactListIds,
             "optionForSendingMials": "MOBINAR_SENDGRID_ACCOUNT",
             "scheduleCampaign": this.selectedLaunchOption,
-            'scheduleTime': scheduleTime,
+            'scheduleTime': this.campaign.scheduleTime,
             'timeZoneId': timeZoneId,
             'campaignId': this.campaign.campaignId,
             'selectedEmailTemplateId': this.selectedEmailTemplateRow,
-            'regularEmail': this.campaign.regularEmail,
+            'regularEmail': this.isEmailCampaign,
             'testEmailId': emailId,
             'campaignReplies': this.replies,
             'campaignUrls': this.urls,
@@ -1372,7 +1349,7 @@ export class AddCampaignComponent implements OnInit {
             'viewInBrowserTag': this.campaign.viewInBrowserTag,
             'unsubscribeLink': this.campaign.unsubscribeLink,
             'endDate': this.campaign.endDate,
-            'clientTimeZone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+            'clientTimeZone': this.referenceService.getBrowserTimeZone(),
             /****XNFR-125****/
             "oneClickLaunch":this.campaign.oneClickLaunch,
             'partnershipId':this.selectedPartnershipId,
@@ -1433,7 +1410,7 @@ export class AddCampaignComponent implements OnInit {
             this.addReplyDivError(reply.divId);
             $('#send-time-' + reply.divId).css('color', 'red');
         } else {
-            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, reply.replyInDays, reply.replyTime, this.launchTime);
+            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, reply.replyInDays, reply.replyTime, this.campaign.scheduleTime);
             reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
         }
     }
@@ -1501,7 +1478,7 @@ export class AddCampaignComponent implements OnInit {
             this.addReplyDivError(url.divId);
             $('#send-time-' + url.divId).css('color', 'red');
         } else {
-            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, url.replyInDays, url.replyTime, this.launchTime);
+            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, url.replyInDays, url.replyTime, this.campaign.scheduleTime);
             url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
         }
     }
@@ -1575,6 +1552,14 @@ export class AddCampaignComponent implements OnInit {
             url.scheduled = false;
         }
 
+    }
+
+    getTimeZones(countryId:number){
+        this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
+        this.isValidSelectedCountryId  = countryId>0;
+        this.isValidSelectedTimeZone = countryId>0;
+        this.countryNameDivClass = this.isValidSelectedCountryId ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
+        this.timeZoneDivClass = this.isValidSelectedTimeZone ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
     }
 
 }
