@@ -106,6 +106,8 @@ export class AddCampaignComponent implements OnInit {
   dealPipelineClass: string = this.formGroupClass;
   endDateDivClass: string = this.formGroupClass;
   isOrgAdminCompany = false;
+  isMarketingCompany = false;
+  isVendorCompany = false;
   endDatePickr: any;
 
 
@@ -308,13 +310,9 @@ export class AddCampaignComponent implements OnInit {
                 let isMarketingCompany  = data['isMarketingCompany'];
                 let isVendorCompany = data['isVendorCompany'];
                 this.showMarketingAutomationOption = this.isOrgAdminCompany;
-                if(this.isOrgAdminCompany){
-                    this.contactsOrPartnersSelectionText = "  Select List of "+this.partnerModuleCustomName+" / Recipients  to be used in this campaign";
-                }else if(isMarketingCompany){
-                    this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
-                }else if(isVendorCompany){
-                    this.contactsOrPartnersSelectionText = "Select List of "+this.partnerModuleCustomName+" to be used in this campaign";
-                }
+                this.isVendorCompany = isVendorCompany;
+                this.isMarketingCompany = isMarketingCompany;
+                this.setRecipientsHeaderText();
                 this.setFromEmailAndFromName(data);
             },error=>{
                 this.xtremandLogger.errorPage(error);
@@ -342,6 +340,21 @@ export class AddCampaignComponent implements OnInit {
             this.campaignDetailsLoader = false;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
+    }
+
+    private setRecipientsHeaderText() {
+        if(this.campaign.oneClickLaunch){
+            this.contactsOrPartnersSelectionText = "Select One "+ this.partnerModuleCustomName + " Company";
+        }else{
+            if (this.isOrgAdminCompany) {
+                this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " / Recipients  to be used in this campaign";
+            } else if (this.isMarketingCompany) {
+                this.contactsOrPartnersSelectionText = "Select List of Recipients to be used in this campaign";
+            } else if (this.isVendorCompany) {
+                this.contactsOrPartnersSelectionText = "Select List of " + this.partnerModuleCustomName + " to be used in this campaign";
+            }
+        }
+        
     }
 
     private setFromEmailAndFromName(data: any) {
@@ -586,6 +599,7 @@ export class AddCampaignComponent implements OnInit {
     /***XNFR-125****/
     setOneClickLaunch(event:any){
     this.campaign.oneClickLaunch = event;
+    this.setRecipientsHeaderText();
     this.campaignRecipientsPagination.pageIndex = 1;
     this.campaignRecipientsPagination.maxResults = 12;
     this.selectedContactListIds = [];
@@ -596,7 +610,7 @@ export class AddCampaignComponent implements OnInit {
         this.findCampaignRecipients(this.campaignRecipientsPagination);
     }
     }
-
+    
     setEmailOpened(event: any) {
         this.campaign.emailOpened = event;
     }
