@@ -119,7 +119,6 @@ export class AddCampaignComponent implements OnInit {
   isEmailTemplateOrPageSelected: boolean;
   isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
-  isSendTestEmailIconClicked = false;
   isPreviewEmailTemplateButtonClicked = false;
   selectedEmailTemplateIdForPreview = 0;
   emailTemplateHrefLinks = [];
@@ -195,6 +194,8 @@ export class AddCampaignComponent implements OnInit {
   validUsersCount = 0;
   allUsersCount = 0;
   emailReceiversCountLoader = true;
+  emailTemplateIdForSendTestEmail = 0;
+  emailTemplateNameForSendTestEmail = "";
 
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -842,6 +843,8 @@ export class AddCampaignComponent implements OnInit {
         this.ngxLoading = true;
         this.emailTemplateHrefLinks = [];
         this.urls = [];
+        this.emailTemplateIdForSendTestEmail = emailTemplate.id;
+        this.emailTemplateNameForSendTestEmail = emailTemplate.name;
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
@@ -872,11 +875,18 @@ export class AddCampaignComponent implements OnInit {
 
     }
 
+    openSendTestEmailModalPopUp(){
+        this.isSendTestEmailOptionClicked = true;
+    }
+
     sendTestEmailModalPopupEventReceiver(){
+        this.isSendTestEmailOptionClicked = false;
+    }
+
+    previewEmailTemplateModalPopupEventReceiver(){
         this.selectedEmailTemplateIdForPreview = 0;
         this.selectedEmailTemplateNameForPreview = "";
         this.isPreviewEmailTemplateButtonClicked = false;
-        this.isSendTestEmailOptionClicked = false;
     }
 
     editTemplate(emailTemplate:any){

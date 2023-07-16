@@ -17,6 +17,9 @@ export class SendTestEmailComponent implements OnInit {
   @Input() subject:string = "";
   @Input() isPreviewEmailTemplate = false;
   @Input() templateName:string = "";
+  @Input() fromEmail = "";
+  @Input() fromName = "";
+  @Input() campaignSendTestEmail = false;
   email = "";
   headerTitle = "";
   @Output() sendTestEmailComponentEventEmitter = new EventEmitter();
@@ -36,7 +39,10 @@ export class SendTestEmailComponent implements OnInit {
 
   ngOnInit() {
     this.processing = true;
-    this.headerTitle =  this.isPreviewEmailTemplate ? this.templateName:"Send Test Email";
+    this.headerTitle =  this.templateName;
+    this.sendTestEmailDto.subject = this.subject;
+    this.sendTestEmailDto.fromEmail = this.fromEmail;
+    this.sendTestEmailDto.fromName = this.fromName;
     this.referenceService.openModalPopup(this.modalPopupId);
     $('#sendTestEmailHtmlBody').val('');
     this.getTemplateHtmlBodyAndMergeTagsInfo();

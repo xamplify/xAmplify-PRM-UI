@@ -3,4 +3,5 @@ export class SendTestEmailDto {
     toEmail = "";
     subject = "";
     body = "";
+    fromName = "";
 }

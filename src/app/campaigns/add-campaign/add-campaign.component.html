@@ -8,7 +8,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
-                <a [routerLink]="['../campaigns/select']" translate>Select Campaign</a>
+                <a [routerLink]="['../../select']" translate>Select Campaign</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
@@ -408,6 +408,13 @@
                                     <select class="form-control" [(ngModel)]="emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortEmailTemplates($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
                                     <option   *ngFor="let option of emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
+                                </div>
+
+                                <div class="input-icon right pull-right pr-epx">
+                                    <button class="btn btn-primary"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                        <i class="fa fa-envelope-o"></i>
+                                        Send Test Email
+                                    </button>
                                 </div>
                                 <!--Filter Option-->
                                 <div *ngIf="!filterCategoryLoader && isShowFilterDiv">
@@ -1189,11 +1196,23 @@
 
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 <app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
-<app-send-test-email *ngIf="isSendTestEmailOptionClicked || isPreviewEmailTemplateButtonClicked"
+<!--Preview  Email Template-->
+<app-send-test-email *ngIf="isPreviewEmailTemplateButtonClicked"
  [id]="selectedEmailTemplateIdForPreview"
   [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" 
   [templateName]="selectedEmailTemplateNameForPreview"
+  (sendTestEmailComponentEventEmitter)="previewEmailTemplateModalPopupEventReceiver()"></app-send-test-email>
+  <!--Send Test Email-->
+  <app-send-test-email *ngIf="isSendTestEmailOptionClicked"
+    [id]="emailTemplateIdForSendTestEmail"
+    [isPreviewEmailTemplate]="false" 
+    [templateName]="emailTemplateNameForSendTestEmail"
+    [subject] = "campaign?.subjectLine"
+    [fromEmail]="campaign?.fromEmail"
+    [fromName]="campaign?.fromName"
+    [campaignSendTestEmail]="true"
   (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+
   <ng-container *ngIf="showUsersPreview">
     <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
  </ng-container>
