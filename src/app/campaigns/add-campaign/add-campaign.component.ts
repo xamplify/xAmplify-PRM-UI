@@ -133,6 +133,7 @@ export class AddCampaignComponent implements OnInit {
   editTemplateMergeTagsInput:any = {};
   jsonBody: any;
   templateMessageClass = "";
+  emailTemplate:any;
  /***Filter Popup****/
   public selectedFolderIds = [];
   public emailTemplateFolders: Array<any>;
@@ -849,6 +850,7 @@ export class AddCampaignComponent implements OnInit {
             .subscribe(
                 (data: any) => {
                     this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(data.body, this.emailTemplateHrefLinks);
+                    this.emailTemplate = data;
                     this.selectedEmailTemplateRow = emailTemplate.id;
                     this.isEmailTemplateOrPageSelected = true;
                     if(this.isValidCampaignDetailsTab){
@@ -1350,7 +1352,6 @@ export class AddCampaignComponent implements OnInit {
             this.referenceService.goToDiv('campaign-work-flow');
         }
         if(!this.workflowError && this.isValidSelectedCountryId && this.isValidSelectedTimeZone && this.isValidLaunchTime && this.isContactList){
-            alert("All Success");
             this.referenceService.showSweetAlertProcessingLoader(this.properties.deployingCampaignMessage);
             this.workflowError = false;
             this.campaignService.saveCampaign(data)
@@ -1721,6 +1722,10 @@ export class AddCampaignComponent implements OnInit {
         this.isValidSelectedTimeZone = countryId>0;
         this.countryNameDivClass = this.isValidSelectedCountryId ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
         this.timeZoneDivClass = this.isValidSelectedTimeZone ? this.launchOptionsSuccessClass : this.launchOptionsErrorClass;
+    }
+
+    spamCheck() {
+        $("#email_spam_check").modal('show');
     }
 
 }

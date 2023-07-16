@@ -1220,3 +1220,21 @@
     <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
  </ng-container>
 
+ <div class="modal fade right" id="email_spam_check" *ngIf="emailTemplate" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-template mSpamCheckWid" style="width: 65%;right:0">
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+             <i class="fa fa-times" aria-hidden="true"></i></button>
+             <h4 class="modal-title" translate>Email Spam Check</h4>
+          </div>
+          <div class="modal-body">
+             <app-email-spam-check *ngIf="emailTemplate" [emailTemplate]="emailTemplate"></app-email-spam-check>
+          </div>
+          <div class="modal-footer">
+             <a href="javascript:void(0)" data-dismiss="modal" class="Btn-Gray" style="float: right" translate>Close</a>
+          </div>
+       </div>
+    </div>
+ </div>
+
