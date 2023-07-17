@@ -25,7 +25,7 @@ import { ContactService } from 'app/contacts/services/contact.service';
 import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { CampaignType } from '../models/campaign-type';
-import { count, error } from 'console';
+import { unescape } from 'querystring';
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
 var moment = require('moment-timezone');
@@ -39,6 +39,7 @@ var moment = require('moment-timezone');
 export class AddCampaignComponent implements OnInit {
 
   loggedInUserId = 0;
+  campaignId = 0;
   campaign: Campaign = new Campaign();
   isAdd = false;
   isEmailCampaign = false;
@@ -204,31 +205,67 @@ export class AddCampaignComponent implements OnInit {
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
     private contactService:ContactService,private render: Renderer,private router:Router) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
+    this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
     if("email"!=this.campaignType){
         this.referenceService.goToPageNotFound();
     }
-    $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-    this.loggedInUserId = this.authenticationService.getUserId();
     let currentUrl = this.referenceService.getCurrentRouteUrl();
     this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
+    if (this.campaignService.campaign == undefined) {
+        if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
+            this.isReloaded = true;
+            this.router.navigate(["/home/campaigns/manage"]);
+        } else if (this.campaignType.length == 0) {
+            this.isReloaded = true;
+            this.router.navigate(["/home/campaigns/select"]);
+        }
+    }
+    $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
+    this.loggedInUserId = this.authenticationService.getUserId();
+    this.campaign.userId = this.loggedInUserId;
     this.referenceService.renderer = this.render;
     this.isEmailCampaign = "email"==this.campaignType;
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
     this.referenceService.renderer = this.render;
-
    }
 
     ngOnInit() {
         this.addBlur();
         this.countries = this.referenceService.getCountries();
-        if(this.isAdd){
-            this.showCampaignDetailsTab();
+        this.showCampaignDetailsTab();
+        if(!this.isAdd){
+            let campaign = this.campaignService.campaign;
+            if(campaign!=undefined){
+               // this.editedCampaignName = campaign.campaignName;
+                this.campaign = campaign;
+                this.userListDTOObj = this.campaignService.campaign.userLists;
+                if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
+            }
         }
         this.loadCampaignDetailsSection();
-        this.findEmailTemplates(this.emailTemplatesPagination);
+        
     }
+
+    getCampaignById(){
+        if(this.campaignId>0){
+            this.campaignDetailsLoader = true;
+            let data = {};
+            data['campaignId'] = this.campaignId;
+            this.campaignService.getCampaignById(data).subscribe(
+                response=>{
+                    this.campaign = response.data;
+                },error=>{
+                    this.xtremandLogger.errorPage(error);
+                },()=>{
+                    alert("finallyy");
+                    this.loadCampaignDetailsSection();
+                });
+        }
+    }
+
+
     addBlur(){
         $('#campaign-details-and-launch-tabs').addClass('campaign-blur');
     }
@@ -260,10 +297,6 @@ export class AddCampaignComponent implements OnInit {
 
     loadCampaignDetailsSection(){
         this.campaignDetailsLoader = true;
-        this.campaign.emailNotification = true;
-        this.campaign.countryId = this.countries[0].id;
-        this.campaign.emailNotification = true;
-        this.getTimeZones(this.campaign.countryId);
         this.initializeEndDatePicker();
         this.initializeLaunchTimeDatePicker();
         this.findCampaignDetailsData();
@@ -332,32 +365,56 @@ export class AddCampaignComponent implements OnInit {
                 }
                 this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
+                if(this.isAdd){
+                    this.campaign.countryId = this.countries[0].id;
+                    this.campaign.emailNotification = true;
+                }
+                this.getTimeZones(this.campaign.countryId);
                 this.removeBlur();
             },error=>{
                 this.removeBlur();
                 this.xtremandLogger.errorPage(error);
         },()=>{
             if (this.activeCRMDetails.activeCRM) {
-                if("SALESFORCE" === this.activeCRMDetails.type){
-                    this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data => {
-                        let cfResponse = data;                            
-                        if (cfResponse.statusCode === 400) {
-                            swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
-                        } else if (cfResponse.statusCode === 401 && cfResponse.message === "Expired Refresh Token") {
-                            swal("Your Salesforce Integration was expired. Please re-configure.", "", "error");
-                        }
-                    }, error => {
-                        this.xtremandLogger.error(error, "Error in salesforce checkIntegrations()");
-                    });
-                }else{
-                    this.listCampaignPipelines();
-                }
-            }else{
+              if ("SALESFORCE" === this.activeCRMDetails.type) {
+                this.integrationService
+                  .checkSfCustomFields(this.authenticationService.getUserId())
+                  .subscribe(
+                    (data) => {
+                      let cfResponse = data;
+                      if (cfResponse.statusCode === 400) {
+                        swal(
+                          "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
+                          "",
+                          "error"
+                        );
+                      } else if (
+                        cfResponse.statusCode === 401 &&
+                        cfResponse.message === "Expired Refresh Token"
+                      ) {
+                        swal(
+                          "Your Salesforce Integration was expired. Please re-configure.",
+                          "",
+                          "error"
+                        );
+                      }
+                    },
+                    (error) => {
+                      this.xtremandLogger.error(
+                        error,
+                        "Error in salesforce checkIntegrations()"
+                      );
+                    }
+                  );
+              } else {
                 this.listCampaignPipelines();
+              }
+            } else {
+              this.listCampaignPipelines();
             }
-
             /***Load Partners /Contacts***/
             this.campaignDetailsLoader = false;
+            this.findEmailTemplates(this.emailTemplatesPagination);
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
     }
@@ -493,13 +550,13 @@ export class AddCampaignComponent implements OnInit {
 
   /****************Campaign Details***********/
     validateCampaignName(campaignName:string){
-    let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
-    var list = this.names[0];
-    if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
-        this.isValidCampaignName = false;
-    }else{
-        this.isValidCampaignName = true;
-    }
+        let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
+        var list = this.names[0];
+        if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
+            this.isValidCampaignName = false;
+        }else{
+            this.isValidCampaignName = true;
+        }
     }
 
     validateForm() {
@@ -537,6 +594,7 @@ export class AddCampaignComponent implements OnInit {
             this.campaignDetailsTabClass = this.activeTabClass;
         }
     }
+
     setChannelCampaign(event: any) {
         this.campaign.channelCampaign = event;
         this.setRecipientsHeaderText();
@@ -673,15 +731,6 @@ export class AddCampaignComponent implements OnInit {
     setReplyWithVideo(event: any) {
         this.campaign.replyVideo = event;
     }
-
-
-    filterCoBrandedLandingPages(event: any) {
-        //throw new Error('Method not implemented.');
-    }
-    filterCoBrandedTemplates(event: any) {
-       // throw new Error('Method not implemented.');
-    }
-
 
     clearSelectedContactList() {
         if (this.isOrgAdminCompany) {
@@ -985,7 +1034,6 @@ export class AddCampaignComponent implements OnInit {
     }
   
     /***********Contacts/Partners************/
-
     findCampaignRecipientsOnEnterKeyPress(eventKeyCode:number){
         if(eventKeyCode==13){
             this.searchCampaignRecipients();
