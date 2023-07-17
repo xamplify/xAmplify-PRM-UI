@@ -235,27 +235,33 @@ export class AddCampaignComponent implements OnInit {
     ngOnInit() {
         this.addBlur();
         this.countries = this.referenceService.getCountries();
+        this.editCampaign();
+        this.showCampaignDetailsTab();
+        this.loadCampaignDetailsSection();
+        
+    }
+
+    private editCampaign() {
         let campaign = this.campaignService.campaign;
-        if(!this.isAdd && campaign!=undefined){
-             this.editedCampaignName = campaign.campaignName;
-                this.campaign = campaign;
-                this.userListDTOObj = this.campaignService.campaign.userLists;
-                if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
-                this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
-                if(this.isEmailCampaign){
-                    this.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-                }else if(this.isVideoCampaign){
-                    this.emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
-                }else if(this.isSurveyCampaign){
-                    this.emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
-                }else if(this.isPageCampaign){
-                    this.isLandingPageSwitch = true;
-                }
-                this.validateForm();
-                alert(this.isValidCampaignDetailsTab);
-                this.getCampaignReplies(this.campaign);
-                this.getCampaignUrls(this.campaign);
-                /***********Select Contact List Tab*************************/
+        if (!this.isAdd && campaign != undefined) {
+            this.editedCampaignName = campaign.campaignName;
+            this.campaign = campaign;
+            this.userListDTOObj = this.campaignService.campaign.userLists;
+            if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
+            this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+            if (this.isEmailCampaign) {
+                this.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+            } else if (this.isVideoCampaign) {
+                this.emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
+            } else if (this.isSurveyCampaign) {
+                this.emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
+            } else if (this.isPageCampaign) {
+                this.isLandingPageSwitch = true;
+            }
+            this.validateForm();
+            this.getCampaignReplies(this.campaign);
+            this.getCampaignUrls(this.campaign);
+            /***********Select Contact List Tab*************************/
             if (this.campaign.userListIds.length > 0) {
                 this.isContactList = true;
                 this.launchTabClass = this.activeTabClass;
@@ -263,9 +269,11 @@ export class AddCampaignComponent implements OnInit {
                 this.selectedContactListIds = this.campaign.userListIds.sort();
                 let selectedListSortOption = {
                     'name': 'Selected List', 'value': 'selectedList'
-                }
+                };
                 this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
                 this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
+                this.getValidUsersCount();
+
             }
             /****XNFR-125****/
             this.selectedPartnershipId = this.campaign.partnershipId;
@@ -284,11 +292,22 @@ export class AddCampaignComponent implements OnInit {
                 this.campaign.scheduleTime = "";
                 this.campaign.scheduleCampaign = this.sheduleCampaignValues[2];
             }
-            
+            if (this.campaign.timeZoneId == undefined) {
+                this.campaign.countryId = this.countries[0].id;
+                this.getTimeZones(this.campaign.countryId);
+            } else {
+                let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
+                let countryIndex = countryNames.indexOf(this.campaign.country)
+                if (countryIndex > -1) {
+                    this.campaign.countryId = this.countries[countryIndex].id;
+                    this.getTimeZones(this.campaign.countryId);
+                } else {
+                    this.campaign.countryId = this.countries[0].id;
+                    this.getTimeZones(this.campaign.countryId);
+                }
+
+            }
         }
-        this.showCampaignDetailsTab();
-        this.loadCampaignDetailsSection();
-        
     }
 
     getCampaignReplies(campaign: Campaign) {
@@ -342,22 +361,6 @@ export class AddCampaignComponent implements OnInit {
 
     }
 
-    getCampaignById(){
-        if(this.campaignId>0){
-            this.campaignDetailsLoader = true;
-            let data = {};
-            data['campaignId'] = this.campaignId;
-            this.campaignService.getCampaignById(data).subscribe(
-                response=>{
-                    this.campaign = response.data;
-                },error=>{
-                    this.xtremandLogger.errorPage(error);
-                },()=>{
-                    alert("finallyy");
-                    this.loadCampaignDetailsSection();
-                });
-        }
-    }
 
 
     addBlur(){
@@ -462,8 +465,8 @@ export class AddCampaignComponent implements OnInit {
                 if(this.isAdd){
                     this.campaign.countryId = this.countries[0].id;
                     this.campaign.emailNotification = true;
+                    this.getTimeZones(this.campaign.countryId);
                 }
-                this.getTimeZones(this.campaign.countryId);
                 this.removeBlur();
             },error=>{
                 this.removeBlur();
