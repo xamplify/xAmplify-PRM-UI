@@ -71,7 +71,7 @@ export class AddCampaignComponent implements OnInit {
   isCampaignDetailsFormValid = true;
   names:string[]=[];
   editedCampaignName = "";
-  isValidCampaignName = false;
+  isValidCampaignName = true;
   categoryNames: any;
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   partnerModuleCustomName = "Partner";
@@ -125,6 +125,7 @@ export class AddCampaignComponent implements OnInit {
   emailTemplateHrefLinks = [];
   isSendTestEmailOptionClicked = false;
   selectedEmailTemplateNameForPreview = "";
+  isLandingPageSwitch = false;
   /******Edit Template******/
   isEditTemplateLoader = false;
   beeContainerInput = {};
@@ -211,6 +212,7 @@ export class AddCampaignComponent implements OnInit {
     }
     let currentUrl = this.referenceService.getCurrentRouteUrl();
     this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
+    this.campaign = new Campaign();
     if (this.campaignService.campaign == undefined) {
         if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
             this.isReloaded = true;
@@ -228,24 +230,116 @@ export class AddCampaignComponent implements OnInit {
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
-    this.referenceService.renderer = this.render;
    }
 
     ngOnInit() {
         this.addBlur();
         this.countries = this.referenceService.getCountries();
-        this.showCampaignDetailsTab();
-        if(!this.isAdd){
-            let campaign = this.campaignService.campaign;
-            if(campaign!=undefined){
-               // this.editedCampaignName = campaign.campaignName;
+        let campaign = this.campaignService.campaign;
+        if(!this.isAdd && campaign!=undefined){
+             this.editedCampaignName = campaign.campaignName;
                 this.campaign = campaign;
                 this.userListDTOObj = this.campaignService.campaign.userLists;
                 if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
+                this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+                if(this.isEmailCampaign){
+                    this.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+                }else if(this.isVideoCampaign){
+                    this.emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
+                }else if(this.isSurveyCampaign){
+                    this.emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
+                }else if(this.isPageCampaign){
+                    this.isLandingPageSwitch = true;
+                }
+                this.validateForm();
+                alert(this.isValidCampaignDetailsTab);
+                this.getCampaignReplies(this.campaign);
+                this.getCampaignUrls(this.campaign);
+                /***********Select Contact List Tab*************************/
+            if (this.campaign.userListIds.length > 0) {
+                this.isContactList = true;
+                this.launchTabClass = this.activeTabClass;
+                this.campaignRecipientsPagination.editCampaign = true;
+                this.selectedContactListIds = this.campaign.userListIds.sort();
+                let selectedListSortOption = {
+                    'name': 'Selected List', 'value': 'selectedList'
+                }
+                this.recipientsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+                this.recipientsSortOption.selectedCampaignRecipientsDropDownOption = this.recipientsSortOption.campaignRecipientsDropDownOptions[this.recipientsSortOption.campaignRecipientsDropDownOptions.length - 1];
             }
+            /****XNFR-125****/
+            this.selectedPartnershipId = this.campaign.partnershipId;
+            /***********Select Email Template Tab*************************/
+            var selectedTemplateId = campaign.selectedEmailTemplateId;
+            if (selectedTemplateId > 0) {
+                this.selectedEmailTemplateRow = selectedTemplateId;
+                this.emailTemplate = this.campaign.emailTemplate;
+                this.emailTemplateIdForSendTestEmail = this.emailTemplate.id;
+                this.emailTemplateNameForSendTestEmail = this.emailTemplate.name;
+            }
+            /************Launch Campaign**********************/
+            if (campaign.campaignScheduleType == "SCHEDULE") {
+                this.campaign.scheduleCampaign = this.sheduleCampaignValues[1];
+            } else {
+                this.campaign.scheduleTime = "";
+                this.campaign.scheduleCampaign = this.sheduleCampaignValues[2];
+            }
+            
         }
+        this.showCampaignDetailsTab();
         this.loadCampaignDetailsSection();
         
+    }
+
+    getCampaignReplies(campaign: Campaign) {
+        if (campaign.campaignReplies != undefined) {
+            this.replies = campaign.campaignReplies;
+            for (var i = 0; i < this.replies.length; i++) {
+                let reply = this.replies[i];
+                if (reply.defaultTemplate) {
+                    reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
+                }
+                reply.emailTemplatesPagination = new Pagination();
+                reply.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(reply.replyTimeInHoursAndMinutes);
+                if ($.trim(reply.subject).length == 0) {
+                    reply.subject = campaign.subjectLine;
+                }
+                let length = this.allItems.length;
+                length = length + 1;
+                var id = 'reply-' + length;
+                reply.divId = id;
+                this.allItems.push(id);
+                this.findEmailTemplatesForAutoResponseWorkFlow(reply);
+            }
+        }
+
+    }
+
+
+    getCampaignUrls(campaign: Campaign) {
+        if (campaign.campaignUrls != undefined) {
+            this.urls = campaign.campaignUrls;
+            for (var i = 0; i < this.urls.length; i++) {
+                let url = this.urls[i];
+                if (url.defaultTemplate) {
+                    url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
+                }
+                url.emailTemplatesPagination = new Pagination();
+                if (url.scheduled) {
+                    url.replyTime = this.campaignService.setHoursAndMinutesToAutoReponseReplyTimes(url.replyTimeInHoursAndMinutes);
+                }
+                if ($.trim(url.subject).length == 0) {
+                    url.subject = campaign.subjectLine;
+                }
+                let length = this.allItems.length;
+                length = length + 1;
+                var id = 'click-' + length;
+                url.divId = id;
+                this.allItems.push(id);
+                this.findEmailTemplatesForWebSiteWorkFlow(url);
+            }
+        }
+
     }
 
     getCampaignById(){
@@ -552,10 +646,18 @@ export class AddCampaignComponent implements OnInit {
     validateCampaignName(campaignName:string){
         let lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
         var list = this.names[0];
-        if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
-            this.isValidCampaignName = false;
-        }else{
-            this.isValidCampaignName = true;
+        if (this.isAdd) {
+            if ($.inArray(lowerCaseCampaignName, list) > -1) {
+                this.isValidCampaignName = false;
+            } else {
+                this.isValidCampaignName = true;
+            }
+        } else {
+            if ($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase() != lowerCaseCampaignName) {
+                this.isValidCampaignName = false;
+            } else {
+                this.isValidCampaignName = true;
+            }
         }
     }
 

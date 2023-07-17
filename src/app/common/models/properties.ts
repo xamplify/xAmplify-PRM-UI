@@ -267,6 +267,9 @@ export class Properties {
 
 	/***XNFR-318***/
 	campaignRegularEmailsFilter = "CampaignRegularEmails";
+	campaignVideoEmailsFilter = "CampaignVideoEmails";
+	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
+
 
 	customThemeDescription = "Custom Themes enable the creation of unique branded experiences such as Background Color, Text Color, Button Color, Icon Color and so on. You can select from existing Light and Dark Themes. Set your own theme by choosing colors for the Header, Left Menu, Footer and Page Content blocks.";
 
