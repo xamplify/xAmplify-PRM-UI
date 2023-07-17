@@ -39,7 +39,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
+                  <div class="desc" data-toggle="tooltip" data-placement="top" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -65,7 +65,7 @@
                 <div class="details">
                   <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth" style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth"   data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
@@ -86,7 +86,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top" title="{{throughPartnerCampaignsTabName}}">
                     {{throughPartnerCampaignsTabName | slice:0:20}}
                     <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
                   </div>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{approvePartnersCount}}</div>
-                  <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -158,7 +158,7 @@
         <!---XNFR-220----->
         <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
-          <div class="portlet light" style="margin-bottom: 20px;max-height: 355px;">
+          <div class="portlet light" style="margin-bottom: 20px;">
             <div class="portlet-title">
               <div class="caption">
                 <i class="icon-bar-chart font-green-sharp hide" aria-hidden="true"></i>
@@ -371,7 +371,7 @@
                   [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-7 col-md-7 p0">
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 p0 mb_6">
                 <div class="btn-group pull-right">
                   <ng-container class='m10 hidden-xs'>
                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
@@ -579,7 +579,7 @@
                   <ng-container
                     *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
-                      class="col-xs-12 col-sm-4 col-lg-3">
+                      class="col-xs-12 col-sm-4 col-lg-3 mt_13">
                       <div class="grid-box">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -621,7 +621,7 @@
                               aria-hidden="true"></i>
                           </span>
                         </div>
-                        <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
+                        <div class="ribbon tab-ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
                           <span *ngIf="campaign.launched">Launched</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>

@@ -153,6 +153,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   categoryNames: any;
   showFolderDropDown = false;
   folderId:number = 0;
+    hasShareWhiteLabeledContentAccess: any;
+    loading: boolean;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -231,7 +233,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.uploader.queue[0].upload();
       };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          console.log(response);
           this.saveVideoFile.imagePath = JSON.parse(response).path;
           this.defaultSaveImagePath = this.saveVideoFile.imagePath;
       }
@@ -268,7 +269,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
    const fileList: File = event;
       if (fileList) {
           const file: File = fileList;
-          console.log(file);
           const isSupportfile: any = file.type;
           if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
               return true;
@@ -438,7 +438,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   // embed video methods
   closeEmbedModal(event) {
-      console.log('closed model success');
       this.embedModelVideo = undefined;
   }
   // normal and 360 video methods
@@ -978,10 +977,11 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if(!this.defaultPlayerValues ||!this.defaultPlayerValues.playerColor || !this.defaultPlayerValues.enableVideoController){ this.clientError = true;}
      }
   }
-  setGifPath(event:any){ event.target.src=this.giffirst; }
+  setGifPath(event:any){ 
+    event.target.src="assets/images/no-thumbnail.png";
+ }
 
   public onAdding(tag: any){
-    console.log(this.itemOfTags);
       const tags = this.itemOfTags;
       let newTags = [];
           for (let i = 0; i < tags.length; i++) {
@@ -1024,11 +1024,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultGifPaths();
       /****XNFR-169*****/
       this.listCategories();
+      /*******XNFR-255***/
+      this.findShareWhiteLabelContentAccess();
       } catch (error) {
           this.clientError = true;
-          console.log('error' + error);
       }
   }
+
+  /*******XNFR-255***/
+  findShareWhiteLabelContentAccess() {
+    this.loading = true;
+    this.authenticationService.findShareWhiteLabelContentAccess()
+    .subscribe(
+        response=>{
+            this.hasShareWhiteLabeledContentAccess = response.data;
+            this.loading = false;
+        },error=>{
+            this.loading = false;
+        });
+}
 
   listCategories() {
     this.authenticationService.getCategoryNamesByUserId(this.authenticationService.getUserId()).subscribe(
@@ -1067,7 +1081,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                }, function () {
                   const player = this;
                   const isValid = callactionValue.callAction.overLayValue;
-                  console.log(isValid);
                   const document: any = window.document;
                   let isCallActionthere = false;
                   this.ready(function () {
@@ -1301,6 +1314,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.isValidTitle === false && this.checkTagsValidation()) {
           this.saveButtonTitle = this.saveButtonTitle==='Save'? 'Saving': 'Updating';
           this.isDisable = true;
+          /****XNFR-255****/
+          let shareAsWhiteLabeledAsset = this.saveVideoFile.shareAsWhiteLabeledAsset;
+          let partnerGroupIds = this.saveVideoFile.partnerGroupIds;
+          let partnerIds = this.saveVideoFile.partnerIds;
+          let partnerGroupSelected = this.saveVideoFile.partnerGroupSelected;
+          /****XNFR-255****/
           this.saveVideoFile = this.videoForm.value;
           this.saveVideoFile.damId = damId;
           this.saveVideoFile.defaultSetting = this.defaultSettingValue;
@@ -1355,6 +1374,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           this.saveVideoFile.callACtion = this.enableCalltoAction;
           this.saveVideoFile.folderId = this.folderId;
+          /****XNFR-255****/
+          this.saveVideoFile.partnerGroupIds = partnerGroupIds
+          this.saveVideoFile.partnerIds = partnerIds;
+          this.saveVideoFile.partnerGroupSelected = partnerGroupSelected;
+          this.saveVideoFile.shareAsWhiteLabeledAsset = shareAsWhiteLabeledAsset;
+           /****XNFR-255****/
           return this.videoFileService.updateVideoContent(this.saveVideoFile)
               .subscribe((result: any) => {
             	  if(result.access){
@@ -1371,7 +1396,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   }
                   } else {
                       this.isDisable = false;
-                    //  this.saveButtonTitle = 'Save';
                       this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                   }
               }else{
@@ -1380,7 +1404,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               },
               (error: any) => {
                   this.isDisable = false;
-                //  this.saveButtonTitle = 'Save';
                   this.xtremandLogger.error('Edit video Component : saveVideo File method():' + error);
                   this.xtremandLogger.errorPage(error);
               }),
@@ -1488,4 +1511,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
                 return callAction;
     }
+
+    /******XNFR-255*****/
+    setWhiteLabeled(event:any){
+        this.saveVideoFile.shareAsWhiteLabeledAsset = event;
+    }
+    receivePartnerCompanyAndGroupsEventEmitterData(event:any){
+        this.saveVideoFile.partnerGroupIds = event['partnerGroupIds'];
+        this.saveVideoFile.partnerIds = event['partnerIds'];
+        this.saveVideoFile.partnerGroupSelected = event['partnerGroupSelected'];
+    }
+    /******XNFR-255*****/
 }

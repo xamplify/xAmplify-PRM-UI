@@ -1,253 +1,46 @@
 <ng-container *ngIf="!isSuperAdmin">
   <div class="page-sidebar-wrapper" *ngIf="authenticationService?.user?.hasCompany">
-    <div class="page-sidebar navbar-collapse collapse left-menu-color" [ngClass]="authenticationService?.isLeft?'page-custom-sidebar':''">
-      <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader" [topNavbarLoader]="false"></app-lefside-navigation-loader>
+    <div class="page-sidebar navbar-collapse collapse left-menu-color"
+      [ngClass]="authenticationService?.isLeft?'page-custom-sidebar':''">
+      <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader"
+        [topNavbarLoader]="false"></app-lefside-navigation-loader>
       <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && menuItemError">
-          <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
+        <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
       </ng-container>
-      <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && !menuItemError && menuItem?.companyProfileCreated">
+      <ng-container
+        *ngIf="!loading && !authenticationService?.leftSideMenuLoader && !menuItemError && menuItem?.companyProfileCreated">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu page-custom-sidebar-menu"
-        [ngClass]="{'page-sidebar-menu-closed':referenceService?.isSidebarClosed}" 
-           data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-         <!---Account Dashboard-->
-         <li *ngIf="menuItem?.accountDashboard" [ngClass]="{'active': location.path().includes('dashboard')}">
-           <a  (click)="startLoader()"  [routerLink]="['/home/dashboard/default']">
-               <i class="fa fa-home"  aria-hidden="true"></i>
-               <span class="title" translate >Account Dashboard</span>                    
-               <span class="selected"></span>
-           </a>
-         </li>
-         <!--Partners-->
-         <li *ngIf="menuItem?.partners" [ngClass]="{'active': location.path().includes('partners')}">
-           <a href="javascript:;"  class="partner" (click)="openOrCloseTabs('partners')">
-               <i class="fa fa-handshake-o"   aria-hidden="true"></i>
-               <span class="title" translate>{{customNamePartners}}</span>
-               <span class="arrow"></span>
-               <span class="selected"></span>
-           </a>
-           <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
-             <li>
-                 <a class="onboardPartner"  (click)="startLoader()" [routerLink]="['./partners/add']" >
-                     <i class="fa fa-users" aria-hidden="true"></i>
-                     <span class="title" translate>Onboarding {{customNamePartners}}</span>
-                 </a>
-             </li>
-             <li>
-                 <a class="managePartner"  (click)="startLoader()" [routerLink]="['./partners/manage']" >
-                     <i class="fa fa-list" aria-hidden="true"></i>
-                     <span class="title" translate>Manage {{customNamePartners}}</span>
-                 </a>
-             </li>
-           </ul>
-         </li>
-
-         <!--Content-->
-         <li *ngIf="menuItem?.content"  [ngClass]="{'active': location.path().includes('select-modules') || location.path().includes('content') || location.path().includes('dam') 
-                 || location.path().includes('tracks') || location.path().includes('playbook') }">
-           <a (click)="startLoader()"  [routerLink]="['/home/select-modules']" (onChange)="tileColor()">
-             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-             <span class="title">Content</span>
-             <span class="selected"></span>
-           </a>
-         </li> 
-
-         <!--Contacts-->
-         <li *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
-         <a href="javascript:;"  (click)="openOrCloseTabs('contacts')">
-             <i class="fa fa-id-card" aria-hidden="true"></i>
-             <span class="title" translate>Contacts</span>
-             <span class="arrow"></span>
-             <span class="selected"></span>
-         </a>
-         <ul class="sub-menu" [ngStyle]="{'display': contacts? 'block': 'none' }">
-             <li>
-                 <a (click)="startLoader()"  [routerLink]="['./contacts/add']" >
-                     <i class="fa fa-users" aria-hidden="true"></i>
-                     <span class="title" translate>Add Contacts</span>
-                 </a>
-             </li>
-             <li>
-                 <a (click)="startLoader()"  [routerLink]="['./contacts/manage']" >
-                     <i class="fa fa-list" aria-hidden="true"></i>
-                     <span class="title" translate>Manage Contacts</span>
-                 </a>
-             </li>
-         </ul>
-         </li>
-
-         <!--------Contacts For Deleted Partner------ -->
-         <li *ngIf="menuItem?.contacts && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('contacts')}">
-           <a (click)="startLoader()"  [routerLink]="['./contacts/manage']"  >
-               <i class="fa fa-id-card"  aria-hidden="true"></i>
-               <span class="title" translate>Contacts</span>
-               <span class="selected"></span>
-           </a>
-         </li>
-
-         <!--Share Leads-->
-         <li *ngIf="menuItem?.shareLeads" [ngClass]="{'active': location.path().includes('assignleads')}">
-         <a href="javascript:;"  (click)="openOrCloseTabs('assignleads')"> 
-           <i class="fa fa-id-badge" aria-hidden="true"></i> 
-           <span class="title"	translate>Share Leads</span>
-           <span class="arrow "></span> 
-           <span	class="selected"></span>
-         </a>
-         <ul class="sub-menu" [ngStyle]="{'display': assignLeads? 'block': 'none' }">
-           <li>
-             <a (click)="startLoader()"  [routerLink]="['./assignleads/add']" > 
-               <i class="fa fa-users" aria-hidden="true"></i>
-                <span class="title" translate>Add Share Leads</span>
-             </a>
-           </li>
-           <li>
-             <a (click)="startLoader()"  [routerLink]="['./assignleads/manage']" > 
-               <i class="fa fa-list" aria-hidden="true"></i> 
-               <span class="title"  translate>Manage Share Leads</span>
-             </a>
-           </li>
-         </ul>
-         </li> 
-
-         <!--Shared Leads-->
-         <li *ngIf="menuItem?.sharedLeads"	[ngClass]="{'active': location.path().includes('sharedleads')}">
-             <a (click)="startLoader()"  [routerLink]="['./sharedleads/manage']" >
-             <i class="fa fa-id-badge" aria-hidden="true"></i> 
-             <span class="title" translate>Shared Leads</span>
-             <span class="selected"></span>
-             </a>
-         </li>
-
-         <!--Pages--->
-         <li *ngIf="menuItem?.pagesAccessAsPartner"	[ngClass]="{'active': location.path().includes('pages/partner') ||location.path().includes('forms/partner') }">
-             <a (click)="startLoader()"  [routerLink]="['./pages/partner']" > 
-               <i class="fa fa-wpforms" aria-hidden="true"></i> 
-               <span class="title" translate>Pages</span>
-               <span class="selected"></span>
-             </a>
-         </li>
-         
-         <!--Design (Email Templates/ Forms Pages)-->
-         <li  *ngIf="menuItem?.design" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') || 
-             (location.path().includes('forms') && !location.path().includes('forms/partner') && !location.path().includes('forms/clpf') && !location.path().includes('/analytics/cfa') )
-              ||(location.path().includes('pages') && !location.path().includes('pages/partner')) && !location.path().includes('campaign')  }">
-           <a (click)="startLoader()"  [routerLink]="['./design/add']" >
-               <i class="fa fa-paint-brush" aria-hidden="true"></i>
-               <span class="title" translate>Design</span>
-               <span class="selected"></span>
-           </a>
-         </li>
-
-         <!---Campaigns---->
-         <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner" [ngClass]="{'active':(location.path().includes('campaigns') || 
-                   location.path().includes('campaign') || location.path().includes('clpf') || location.path().includes('/analytics/cfa'))}">
-           <a href="javascript:;"  (click)="openOrCloseTabs('campaigns')">
-               <i class="fa fa-bullhorn" aria-hidden="true"></i>
-               <span class="title" translate>Campaign</span>
-               <span class="arrow "></span>
-               <span class="selected"></span>
-           </a>
-           <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
-               <!--Redistribute Campaign-->
-               <li *ngIf="menuItem?.campaignAccessAsPartner">
-                 <a (click)="startLoader()"  [routerLink]="['./campaigns/partner/all']" >
-                   <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                   <span class="title" translate>Redistribute Campaign</span>
-                 </a>
-               </li>
-
-               <!--Create Campaign-->
-               <li *ngIf="menuItem?.campaign">
-                   <a (click)="startLoader()"  [routerLink]="['./campaigns/select']" >
-                       <i class="fa fa-bullhorn" aria-hidden="true"></i>
-                       <span class="title" translate>Create Campaign</span>
-                   </a>
-               </li>
-
-               <!--Manage Campaigns-->
-               <li>
-                   <a (click)="startLoader()"  [routerLink]="['./campaigns/manage']" >
-                     <i class="fa fa-list" aria-hidden="true"></i>
-                     <span class="title" translate>Manage Campaigns</span>
-                   </a>
-               </li>
-           </ul>
-         </li>
-
-          <!--------Campaigns For Deleted Partner------ -->
-          <li *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && authenticationService.module.deletedPartner"  [ngClass]="{'active': location.path().includes('campaigns')}">
-           <a (click)="startLoader()"   [routerLink]="['./campaigns/manage']"  >
-               <i class="fa fa-bullhorn"  aria-hidden="true"></i>
-               <span class="title" translate>Campaigns</span>
-               <span class="selected"></span>
-           </a>
-         </li>
-
-
-         <!-- ------Oppportunities----- -->
-         <li *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner" [ngClass]="{'active': (location.path().includes('deal') || location.path().includes('leads') && !location.path().includes('assign') 
-                 && !location.path().includes('shared')) }">
-           <a href="javascript:;"  (click)="openOrCloseTabs('deal')">
-               <i class="fa fa-money" aria-hidden="true"></i>
-               <span class="title" translate>Opportunities</span>
-               <span class="arrow"></span>
-               <span class="selected"></span>
-           </a>
-           <ul class="sub-menu" [ngStyle]="{'display': deals? 'block': 'none' }">
-               <!--Manage Leads-->
-               <li>
-                   <a (click)="startLoader()"  [routerLink]="['/home/leads/']" >
-                       <i class="fa fa-user-circle" aria-hidden="true"></i>
-                       <span class="title" translate>Manage Leads</span>
-                   </a>
-               </li>
-               <!--Manage Deals-->
-               <li>
-                   <a (click)="startLoader()"  [routerLink]="['/home/deal/']" >
-                       <i class="fa fa-tags" aria-hidden="true"></i>
-                       <span class="title" translate>Manage Deals</span>
-                   </a>
-               </li>
-           </ul>
-         </li>
-
-         <!-- ------Social Feeds / Rss Feeds------ -->
-         <li  *ngIf="menuItem?.socialFeeds || menuItem?.socialFeedsAccessAsPartner" [ngClass]="{'active': location.path().includes('rss')}">
-           <a (click)="startLoader()"  [routerLink]="['/home/rss/']" >
-            <i class="fa fa-rss" aria-hidden="true"></i>
-            <span class="title">Social Feeds</span>
-            <span class="selected"></span>
-           </a>
-         </li> 
-
-         <!--------MDF------ -->
-         <li *ngIf="menuItem?.mdf || menuItem?.mdfAccessAsPartner" [ngClass]="{'active': location.path().includes('mdf') }" >
-           <a (click)="startLoader()"  [routerLink]="['/home/mdf/select']" >
-             <i class="fa fa-dollar" aria-hidden="true"></i>
-             <span class="title">MDF</span>
-             <span class="selected"></span>
-           </a>
-         </li> 
-
-
-         <!--------Team------->
-         <li *ngIf="menuItem?.team"  [ngClass]="{'active': location.path().includes('team')}">
-             <a (click)="startLoader()"  [routerLink]="['./team/add-team']" >
-                 <i class="fa fa-users" aria-hidden="true"></i>
-                 <span class="title" translate>Team</span>
-                 <span class="selected"></span>
-             </a>
-         </li>
-
-         <!-------Configuration-------->
-         <li *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner"  [ngClass]="{'active': location.path().includes('myprofile')}">
-           <a (click)="startLoader()"   [routerLink]="['/home/dashboard/myprofile']" >
-               <i class="fa fa-cog" aria-hidden="true"></i>
-               <span class="title" translate>Configuration</span>
-               <span class="selected"></span>
-           </a>
-       </li>
-         </ul>
+          [ngClass]="{'page-sidebar-menu-closed':referenceService?.isSidebarClosed}" data-keep-expanded="false"
+          data-auto-scroll="true" data-slide-speed="200">
+          <ng-container *ngFor="let menu of menuItems">
+            <li *ngIf="!menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
+              <a (click)="startLoader()" [routerLink]="menu.angularPath">
+                <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                <span class="title" translate>{{menu.customName}}</span>
+                <span class="selected"></span>
+              </a>
+            </li>
+            <li *ngIf="menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
+              <a href="javascript:;" (click)="openOrCloseTabs('menu.mergeTag')">
+                <i [className]="menu.angularIcon" aria-hidden="true"></i>
+                <span class="title" translate>{{menu.customName}}</span>
+                <span class="arrow "></span>
+                <span class="selected"></span>
+              </a>
+              <ul class="sub-menu" *ngIf="menu.showSubMenu"
+                [ngStyle]="{'display': menu.mergeTag === clickedMergeTag? 'block': 'none' }">
+                <li *ngFor="let subMenu of menu.subModules">
+                  <a (click)="startLoader()" [routerLink]="subMenu.angularPath">
+                    <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
+                    <span class="title" translate>{{subMenu.customName}}</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ng-container>
+        </ul>
       </ng-container>
     </div>
+
   </div>
 </ng-container>

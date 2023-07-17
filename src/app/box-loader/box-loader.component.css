@@ -1,29 +1,25 @@
-.timeline-item {
-    background: #fff;
-    border-color: #e5e6e9 #dfe0e4 #d0d1d5;
-    border-radius: 3px;
-    padding: 5px;
-    margin-bottom: 10px;
+.timeline-item-box-loader {
+  margin-bottom: 10px;
 }
-
-
 
 .animated-background-box {
-    animation: pulse 1s infinite ease-in-out;
-    background-size: 800px 104px;
-    height: 96px;
-    position: relative;
+  animation: box-loader-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  height: 96px;
+  position: relative;
+  border-radius: 5px;
 }
 
-@keyframes pulse {
-    0% {
-      background-color: rgba(165, 165, 165, 0.1);
-    }
-    50% {
-      background-color: rgba(165, 165, 165, 0.3);
-    }
-    100% {
-      background-color: rgba(165, 165, 165, 0.1);
-    }
+@keyframes box-loader-animation {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
   }
-  
+
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}

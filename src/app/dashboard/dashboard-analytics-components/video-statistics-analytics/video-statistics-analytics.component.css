@@ -1,15 +1,16 @@
-.stats{
-    color: #54a7e9;
-    font-size: 20px;
-    margin: 5px;
+.stats {
+  color: #54a7e9;
+  font-size: 20px;
+  margin: 5px;
 }
-
 .sparkline-chart .number {
-    width: 100% !important;
-  }
-  .sparkline-chart .number > canvas {
-    width: 100% !important;
-  }
-
-
-.chart-css{ font-size: 13px;font-weight: 500;cursor: default;}
+  width: 100% !important;
+}
+.sparkline-chart .number > canvas {
+  width: 100% !important;
+}
+.chart-css {
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+}

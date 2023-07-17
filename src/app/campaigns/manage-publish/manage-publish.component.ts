@@ -123,6 +123,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editButtonClicked = false;
     selectedCampaignId = 0;
     showUpArrowButton = false;
+    /******** user guide *************/
+    mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -170,7 +172,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
-        // this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -288,6 +289,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 });
+                 /******* user guide  ********/
+            if (this.authenticationService.isOnlyPartner()) {
+                this.mergeTagForGuide = 'manage_campaigns_partner';
+            } else {
+                this.mergeTagForGuide = 'manage_campaigns_vendor';
+            }
+            /******* user guide  ********/
             
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -339,6 +347,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.pagination.campaignType = 'REGULAR';
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');
@@ -433,7 +442,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             }
                             else {
                                 /********XNFR-125*******/
-                                this.checkOneClickLaunchAccess(campaign.campaignId);
+                                this.checkOneClickLaunchAccess(campaign.campaignId,data.campaignType);
                             }
                         }
                     }
@@ -456,7 +465,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     /*****XNFR-125*****/
-    checkOneClickLaunchAccess(campaignId:number){
+    checkOneClickLaunchAccess(campaignId:number,campaignType:string){
         this.isloading = true;
         this.customResponse = new CustomResponse();
         this.campaignService.checkOneClickLaunchAccess(campaignId).
@@ -465,7 +474,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let access = response.data;
                 if(access){
                     this.refService.isEditNurtureCampaign = false;
-                    this.router.navigate(["/home/campaigns/edit"]);
+                    if(this.refService.isProduction()){
+                        this.router.navigate(["/home/campaigns/edit"]);
+                    }else{
+                        if("REGULAR"==campaignType){
+                            //this.router.navigate(["/home/campaigns/edit/email"]);
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }else{
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }
+                    }
+                    
                 }else{
                     this.refService.scrollSmoothToTop();
                     let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
@@ -919,12 +938,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.modulesDisplayType.isListView = false;
+            this.pagination.campaignType = 'REGULAR';
             this.listCampaign(this.pagination);
         }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
                  &&  (this.categoryId==undefined || this.categoryId==0)){
@@ -937,6 +958,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isListView = false;
            }
+           this.pagination.campaignType = 'REGULAR';
            this.listCampaign(this.pagination);
         }else  if(this.router.url.endsWith('/')){
             if(this.teamMemberId!=undefined){

@@ -22,4 +22,9 @@ export class DamUploadPostDto {
 
     /****XNFR-255****/
     shareAsWhiteLabeledAsset = false;
+    partnerGroupIds = [];
+    partnerIds = [];
+    partnerGroupSelected = false;
+    disableWhiteLabelOption = false;
+    whiteLabeledToolTipMessage = "";
 }

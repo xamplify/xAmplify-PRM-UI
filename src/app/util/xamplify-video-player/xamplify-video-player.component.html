@@ -1,0 +1,15 @@
+<app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+ <div style="margin-bottom: 1em;" [hidden]="modalPopupLoader">
+  <div id="overLayImage"></div>
+  <div id="overlay-logo" class="video-js"
+    [ngClass]="{'logoCssplay':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
+    <a [href]="videoFile?.brandingLogoDescUri"
+      target="_blank"
+      [class.disabled]="videoFile?.brandingLogoDescUri===null">
+      <img id="imageDivHide" *ngIf="videoFile?.brandingLogoUri"
+      [src]="authenticationService?.MEDIA_URL + videoFile?.brandingLogoUri"
+      class="img-responsive">
+    </a>
+  </div>
+  <div id="xamplify-video-player"></div>
+</div> 

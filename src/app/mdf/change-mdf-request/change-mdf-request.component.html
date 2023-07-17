@@ -30,20 +30,20 @@
    <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
    <div class="row" *ngIf="!pageLoader">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
+         <div class="portlet light tabheight" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
             <div class="col-md-12 col-lg-12">
                <div class="row">
                   <div class="col-md-9 col-lg-9 pr0">
                      <div class="row">
-                        <div class="col-md-10 col-lg-10">
+                        <div class=" col-xs-8 col-sm-10 col-md-10 col-lg-10">
                            <h2 style="font-weight: 500; color: #867c7c;">
                               {{mdfRequest?.title | slice:0:40}}
                               <span *ngIf="mdfRequest?.title?.length>40">..</span>
                            </h2>
                         </div>
-                        <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                        <div class=" col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;">
                            <div class="row">
-                              <div class="col-md-6 col-lg-6" style="text-align: right;">
+                              <div class="col-md-6 col-lg-6">
                                  <div class="dropdown">
                                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                     <span class="caret"></span></button>
@@ -73,10 +73,10 @@
                               <div class="row row-space">
                                  <div class="col-md-6 col-lg-6 pr0 right-border">
                                     <div class="row">
-                                       <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                       <div class="col-sm-2 col-md-2 col-lg-2">
                                           <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                                        </div>
-                                       <div class="col-md-10 col-lg-10 pl0">
+                                       <div class="col-sm-9 col-md-10 col-lg-10 pl0">
                                           <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
                                           <label title="{{mdfRequestOwner?.displayName}} ({{mdfRequestOwner?.companyName}})" style="font-size: 14px;color: #65b6e4;">
                                              {{mdfRequestOwner?.displayName | slice:0:18}}
@@ -89,28 +89,28 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <div class="col-md-6 col-lg-6 ">
+                                 <div class="col-sm-6 col-md-6 col-lg-6 ">
                                     <label style="font-size: 15px;font-weight: 600;">Event Date:</label>
                                     {{mdfRequest?.eventDateInString}}
                                  </div>
                               </div>
                               <div class="row">
-                                 <div class="col-md-12 col-lg-12">
+                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="row">
-                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left border-right" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Request Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
                                              <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
                                           </div>
                                        </div>
-                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left border-right" style="padding-left: 30px;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
-                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Reimbursement Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfReimbursementAmount | number:'1.0':'en-US'}}</label><br>
@@ -192,10 +192,10 @@
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
                                     <label title="{{mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="mdfRequestOwner?.fullName!=null">
                                     {{mdfRequestOwner?.fullName | slice:0:15}}
@@ -224,10 +224,10 @@
                         <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="vendorContact?.fullName!=null">
                                     <label title="{{vendorContact?.fullName}}" style="font-size: 15px;font-weight: 600;">
                                     {{vendorContact?.fullName | slice:0:15}}
@@ -256,10 +256,10 @@
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Manager</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="partnerManager?.fullName!=null">
                                     <label title="{{partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
                                     {{partnerManager?.fullName | slice:0:15}}
@@ -443,7 +443,7 @@
             </div>
          </div>
          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
-            <button class="btn btn-default" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
+            <button class="btn Btn-Gray" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
             <button type="button" class="btn btn-primary"  (click)="updateMdfRequest()" translate>Update</button>
          </div>
       </div>

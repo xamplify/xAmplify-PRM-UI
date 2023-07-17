@@ -124,12 +124,12 @@
                      Analytics
                   </div>
                   <div class="inputs"  style="float: right; padding: 4px">
-                     <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 m0 campaign-filter-option">
+                     <ul class="mix-filter m0 campaign-filter-option">
                         <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
                         <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
                         <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
                     </ul>
-                     <div class="portlet-input input-inline" style="margin-left: 97px;margin-right: -104px;">
+                     <div class="portlet-input input-inline">
                         <div class="input-icon right">
                            <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
@@ -141,11 +141,6 @@
             
             <!--End Of Portlet Box-->
             <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px;">
-               <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
-                  <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
-                  <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
-                  <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
-              </ul> -->
               <app-list-loader *ngIf="analyticsLoader.isLoading"></app-list-loader>
               <div class="clearfix"  *ngIf="!analyticsLoader.isLoading">
                <div class="col-xs-12" style="padding: 0px 0;">

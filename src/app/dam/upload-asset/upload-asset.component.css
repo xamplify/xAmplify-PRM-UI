@@ -8,11 +8,9 @@
   padding: 19px;
   position: relative;
   cursor: pointer;
-  margin-bottom: 0
+  margin-bottom: 0;
 }
-
 /* Fixes for IE < 8 */
-
 @media screen\9 {
   .fileinput-button input {
     filter: alpha(opacity=0);
@@ -20,86 +18,41 @@
     height: 100%;
   }
 }
-
-.asset-thumbnail-div {
-  display: block;
-  height: 214px;
-  background: linear-gradient(45deg, #0000006e, transparent);
-  padding: 1px;
-  margin: 0 auto;
-  border: 2px dotted #ddd;
-  position: relative;
-  cursor: pointer;
-  text-align: center;
-  color: #fff;
-}
-
-.asset-thumbnail-div:hover .profile-overlay {
-  width: 100%;
-  background: #111;
-  position: relative;
-  bottom: 35px;
-  left: 0;
-  display: inline-block;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
 .mb-padding {
   padding-top: 10px;
 }
-
 .text-css {
   position: absolute;
   left: 57px;
   top: 13px;
 }
-
 .message-content {
   border: dotted 2px lightgray;
   min-height: 60px;
   padding: 4px 0px;
   border-radius: 6px;
 }
-
 .top10px {
   margin-top: 10px;
 }
-
 .profile-pic {
   margin-top: -5px;
-    position: absolute;
-    right: -5px;
-    top: 0px;
-    border: none;
-}
-
-.thumbnail-remover{
   position: absolute;
-    left: 286px;
-    top: -7px;
+  right: -5px;
+  top: 0px;
   border: none;
-  background: transparent;
 }
-
-.scroll-overflow{
-  overflow: scroll;
+@media screen and (max-width: 600px) {
+  .mDesc {
+    width: 150%;
+  }
 }
-
-@media screen and (max-width:600px){
-.mDesc{
-width:150%;
-}
-}
-
 .inline {
   display: inline-flex;
 }
-
 .tags-table tr:nth-child(odd) {
   background-color: #f2f2f2;
 }
-
 .asset-thumbnail-div-sm {
   display: block;
   height: 180px;
@@ -111,98 +64,112 @@ width:150%;
   cursor: pointer;
   text-align: center;
   color: #fff;
-  border-radius:5px
+  border-radius: 5px;
 }
-
 .asset-img-grid-sm {
   top: 31px;
   height: 110px !important;
   max-width: 100%;
   position: relative;
 }
-
 .scroller-lg {
   height: 172px;
   padding: 5px;
   overflow: auto;
 }
-
 .bottom-padding {
   padding-bottom: 10px;
 }
-
-.desc { 
+.desc {
   border: none;
 }
-
-
-
-@media screen and (max-width:600px){
-  .mScroll{
+@media screen and (max-width: 600px) {
+  .mScroll {
     overflow-x: auto;
   }
-  .mThumbwidth{
+  .mThumbwidth {
     width: fit-content;
   }
-  .mWidth{
-    width:250%;
+  .mWidth {
+    width: 250%;
   }
 }
-
-@media only screen and (max-width:600px){
-  #my-video{  height:160px; width: 287px }
+@media only screen and (max-width: 600px) {
+  #my-video {
+    height: 160px;
+    width: 287px;
+  }
 }
-@media only screen and (min-width:768px){
-  #my-video{  height:160px; width: 217px; }
+@media only screen and (min-width: 768px) {
+  #my-video {
+    height: 160px;
+    width: 217px;
+  }
 }
-@media only screen and (min-width:992px){
-  #my-video{  height:160px; width:290px;}
+@media only screen and (min-width: 992px) {
+  #my-video {
+    height: 160px;
+    width: 290px;
+  }
 }
-#myVideo{  background-color: #5fdbf5; width: 100%; height: 350px;}
-
+.custom {
+  background-color: #008fd5;
+  color: #fff;
+  border: 1px solid #3575b5;
+}
+#myVideo {
+  background-color: #5fdbf5;
+  width: 100%;
+  height: 350px;
+}
 .customDisableCss {
-    cursor: not-allowed !important;
-    opacity: 0.6;
-    pointer-events: none;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  pointer-events: none;
 }
-
-.loaderSymbol{ height: 63px;color: black; border-color: #000000; background: #dff0d8;}
-@media only screen and (max-width:600px){
-.loaderSymbol{ height: 130px;color: black; border-color: #000000; background: #dff0d8;}
+.loaderSymbol {
+  height: 63px;
+  color: black;
+  border-color: #000000;
+  background: #dff0d8;
 }
-
+@media only screen and (max-width: 600px) {
+  .loaderSymbol {
+    height: 130px;
+    color: black;
+    border-color: #000000;
+    background: #dff0d8;
+  }
+}
 .loader-image-tag {
   width: 64px;
   top: -16px;
   left: -18px;
   position: relative;
 }
-
-.cf-padding-dam{
+.cf-padding-dam {
   padding-top: 4px;
   padding-bottom: 4px;
   padding-right: 0px;
 }
-.custom{
-  background-color: #008fd5 ;
-  color: #fff;
-  border: 1px solid #3575b5;
-}
 
-.video{
-  background-color:white; cursor:default
+.video {
+  background-color: white;
+  cursor: default;
 }
-.btn-primary-light{
+.btn-primary-light {
   background-color: #cdcdcd;
 }
-.btn-primary-light:hover{
+.btn-primary-light:hover {
   background-color: #c0c0c0;
 }
-
 
 .text-wrap-tag {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
 }
-
+.toggle-info-white-label {
+  font-size: 20px !important;
+  margin: 9px 0px 0 15px !important;
+}

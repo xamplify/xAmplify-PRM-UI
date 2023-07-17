@@ -1,32 +1,31 @@
-<table style="background: #fff">
+<table>
 	<tr *ngFor="let number of rowsCount">
-		<td *ngIf="page != 'Admin'">
-			<div class='text-input__loading--line rect-box'></div>
-		</td>
-		<td>
-			<div class='text-input__loading--line thick w75'></div>
-			<div class='text-input__loading--line thin w50'></div>
-		</td>
-		<td  *ngIf="page === 'Admin'">
-			<div class='text-input__loading--line thin w50'></div>
-		</td>
-		<td *ngIf="page === 'Admin'">
-			<div class='text-input__loading--line thin w50'></div>
-		</td>
-		<td *ngIf="page === 'Admin'">
-			<div class='text-input__loading--line thin w50'></div>
-		</td>
-		<td>
-			<div class='text-input__loading--line thin w50'></div>
-		</td>
-		<td>
-			<div class='text-input__loading--line thin w75'></div>
-		</td>
-		<td *ngIf="page != 'Admin'">
-		<ng-container *ngFor="let number of icons">
-			<div class='text-input__loading--line action-icon'></div>
-		</ng-container>
-		</td>
+	   <td *ngIf="page != 'Admin'">
+		  <div class='text-input__loading--line rect-box'></div>
+	   </td>
+	   <td>
+		  <div class='text-input__loading--line thick w75'></div>
+		  <div class='text-input__loading--line thin w50'></div>
+	   </td>
+	   <td  *ngIf="page === 'Admin'">
+		  <div class='text-input__loading--line thin w50'></div>
+	   </td>
+	   <td *ngIf="page === 'Admin'">
+		  <div class='text-input__loading--line thin w50'></div>
+	   </td>
+	   <td *ngIf="page === 'Admin'">
+		  <div class='text-input__loading--line thin w50'></div>
+	   </td>
+	   <td>
+		  <div class='text-input__loading--line thin w50'></div>
+	   </td>
+	   <td>
+		  <div class='text-input__loading--line thin w75'></div>
+	   </td>
+	   <td *ngIf="page != 'Admin'">
+		  <ng-container *ngFor="let number of icons">
+			 <div class='text-input__loading--line action-icon'></div>
+		  </ng-container>
+	   </td>
 	</tr>
-</table>
-
+ </table>

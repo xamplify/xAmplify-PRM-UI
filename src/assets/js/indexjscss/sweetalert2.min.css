@@ -22,7 +22,7 @@
 
 .swal2-modal {
     background-color: #fff;
-    border-radius: 0;
+    border-radius: 8px;
     box-sizing: border-box;
     text-align: center;
     left: 50%;
@@ -34,8 +34,8 @@
     z-index: 2000;
     width: 350px !important;
     margin-left: -175px !important;
+    box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.1);
 }
-
 .swal2-modal.loading {
     overflow-y: hidden
 }
@@ -45,10 +45,10 @@
     font-size: 17px;
     font-weight: 500;
     margin-bottom: 10px;
-    margin-top: 5px;
+    margin-top: 50px;
 }
 .swal2-modal hr {
-    height: 30px;
+    height: 15px;
     color: transparent;
     border: 0
 }
@@ -57,10 +57,10 @@
     color: #fff;
     border: 0;
     box-shadow: none;
-    font-size: 13px;
-    font-weight: 100;
-    border-radius: 1px;
-    padding: 5px 25px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 6px 18px;
     margin: 0 5px;
     cursor: pointer;
 }
@@ -150,7 +150,7 @@
     float: none;
     margin: 0;
     line-height: normal;
-    color: #999
+    color: #000000
 }
 
 .swal2-icon.swal2-success,
@@ -158,16 +158,16 @@
 .swal2-icon.swal2-question,
 .swal2-icon.swal2-warning,
 .swal2-icon.swal2-error {
-    font-size: 40px;
-    line-height: 40px;
+    font-size: 30px;
+    line-height: 37px;
     text-align: center;
     float:left;
 }
 
 .swal2-icon {
-    width: 40px;
-    height: 40px;
-    border: 4px solid grey;
+    width: 35px;
+    height: 35px;
+    border: 3px solid grey;
     border-radius: 50%;
     box-sizing: content-box;
     cursor: default;
@@ -175,7 +175,12 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none
+    user-select: none;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .swal2-icon.swal2-error {
@@ -191,10 +196,10 @@
 .swal2-icon.swal2-error .line {
     position: absolute;
     height: 4px;
-    width: 30px;
+    width: 23px;
     background-color: #f27474;
     display: block;
-    top: 12px;
+    top: 9px;
     border-radius: 2px;
     margin: 6px;
 }
@@ -215,7 +220,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #f8bb86;
     border-color: #f8bb86;
-    margin-top: 20px;
+    margin-top: 3px;
 }
 
 .swal2-icon.swal2-info {
@@ -292,7 +297,7 @@
 }
 
 .swal2-icon.swal2-success .line {
-    height: 5px;
+    height: 3px;
     background-color: #a5dc86;
     display: block;
     border-radius: 2px;
@@ -301,17 +306,17 @@
 }
 
 .swal2-icon.swal2-success .line.tip {
-    width: 15px;
+    width: 14px;
     left: 3px;
-    top: 24px;
+    top: 20px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg)
 }
 
 .swal2-icon.swal2-success .line.long {
-    width: 30px;
-    left: 9px;
-    top: 20px;
+    width: 22px;
+    left: 10px;
+    top: 17px;
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg)
 }
@@ -778,4 +783,28 @@
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg)
     }
+}
+
+/* 14-06-2023 */
+button.swal2-confirm.styled {
+    background: #008fd5 !important;
+    border: #008fd5 !important;
+    outline-style: none;
+}
+button.swal2-confirm.styled:hover {
+    background: #4db1e2 !important;
+    border: #4db1e2 !important;
+    outline-style: none;
+}
+
+
+button.swal2-cancel.styled {
+    background: #6C757D !important;
+    border: #6C757D !important;
+    outline-style: none;
+}
+button.swal2-cancel.styled:hover {
+    background: #aaa !important;
+    border: #aaa !important;
+    outline-style: none;
 }

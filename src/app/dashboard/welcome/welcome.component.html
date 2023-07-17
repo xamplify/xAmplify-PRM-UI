@@ -8,9 +8,7 @@
  pointer-events:none;
  cursor: not-allowed;
  }
- .page-bar-shadow {
-     /* box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important; */
- }
+
  </style>
  <div class="page-content" *ngIf="!showDealForm">
   <div *ngIf="showSandboxText" class="alert alert-info">
@@ -24,7 +22,7 @@
                 <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
                'fa-exclamation': userDefaultPage.responseType == 'ERROR'}"
                 aria-hidden="true" style="padding-right: 7px;"></i>
-                <span>{{userDefaultPage.responseMessage}}</span>
+                <span class="msg-color">{{userDefaultPage.responseMessage}}</span>
              </h4>
       </div>
     </div>
@@ -42,6 +40,7 @@
             </div>
           </div>
         </div>
+        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
         <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
         && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"   [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>

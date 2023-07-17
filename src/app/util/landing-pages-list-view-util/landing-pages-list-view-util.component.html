@@ -136,12 +136,12 @@
                                                 <span class="view-banner-white-labeled">White-Labeled</span>
                                             </ng-container>
                                              <!---XNFR-255-->
-                                            <span class="view-banner">{{landingPage.type}}</span>
+                                            <span class="view-banner green-btn-cu">{{landingPage.type}}</span>
                                         </td>
 
                                         <td class="hidden-xs text-center">
-                                            <span *ngIf="landingPage.coBranded" class="view-banner">Co-Branded</span>
-                                            <span *ngIf="!landingPage.coBranded" class="view-banner">Regular</span>
+                                            <span *ngIf="landingPage.coBranded" class="view-banner Assigned-lable">Co-Branded</span>
+                                            <span *ngIf="!landingPage.coBranded" class="view-banner Assigned-lable">Regular</span>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
@@ -201,7 +201,7 @@
                 <!---Grid View----->
                 <div class="row">
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                        <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                        <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
@@ -211,7 +211,7 @@
                                 <div>
                                     <h4 id="landing-page-title" title="{{landingPage.name}}">
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
-                                    <span class="view-banner">{{landingPage.type}}</span>
+                                    <span class="view-banner green-btn-cu">{{landingPage.type}}</span>
                                      <!---XNFR-255-->
                                      <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
                                         <span class="view-banner-white-labeled mb5">White-Labeled</span>

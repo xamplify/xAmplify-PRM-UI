@@ -75,6 +75,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   @Input() moduleName: any;
   @Input() teamMemberGroupId: number;
   isTeamMemberModule = false;
+  isModalPopupshow = false ;
   showModulesPopup: boolean;
   moveToTop: boolean;
   showPartnersPopup:boolean;
@@ -86,6 +87,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   adminsLoader:HttpRequestLoader = new HttpRequestLoader();
   admins:Array<any> = new Array<any>();
+  mergeTagForGuide:any;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -104,6 +106,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.primaryAdminSweetAlertParameterDto.confirmButtonText = "Yes, Change It";
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
+    this.mergeTagForGuide = 'add_and_manage_team_members';
     this.findAll(this.pagination);
     
   }
@@ -917,6 +920,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   findPrimaryAdminAndExtraAdmins(){
     this.admins = [];
     $('#adminsPreviewPopup').modal('show');
+    this.isModalPopupshow = true;
     this.referenceService.scrollToModalBodyTopByClass();
     this.referenceService.startLoader(this.adminsLoader);
     this.teamMemberService.findPrimaryAdminAndExtraAdmins().subscribe(

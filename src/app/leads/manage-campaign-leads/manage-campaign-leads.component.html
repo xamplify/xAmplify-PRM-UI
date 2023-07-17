@@ -144,7 +144,7 @@
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
               </h5>
-              <h5 class='ellipsis' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
+              <h5 class='ellipsis m_t_view' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
                 <span *ngIf="lead.createdByName?.length>20">...</span>
               </h5>
               <h6 class='m0' style="font-weight: 400;">
@@ -178,7 +178,7 @@
                       <i class="fa fa-edit mr5" aria-hidden="true"></i>
                     </a>
                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
-                      <i class="fa fa-trash mr5" aria-hidden="true"></i>
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
                       <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>

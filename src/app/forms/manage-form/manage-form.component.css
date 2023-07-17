@@ -1,11 +1,12 @@
 .img-class-list{
-	height: 80px;
-    width: 155px;
-    margin: 0;
+  height: 140px;
+  width: 130px;
+  margin: 0;
+  border-radius: 1px;
+  max-width: 130px;
+  object-fit: cover;
     /* background: #f2f4f9; */
     /* border: solid 1px #008fd5; */
-    border-radius: 1px;
-    max-width: 155px;
 }
 .img-class{
 	  height: 80px;
@@ -72,14 +73,16 @@ cursor: default;
 }
 
 .view-banner-white-labeled{
-  background-color: green;
-   color: white !important;
-   padding: 4px;
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+  width: 125px;
    text-align: center;
-   width: 125px;
+   /* width: 125px; */
    margin: 0 0;
-   font-size: 11px;
+   font-size: 10px;
    font-weight: 600;
+   line-height: 1;
 }
 
 .ribbon div {
@@ -186,4 +189,17 @@ cursor: default;
 
 .pg8{
   top: -1px;
+}
+
+
+/* 14/06/23 */
+
+.ribbon span::before {
+	border-left: 3px solid #5ab1eb;
+	border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5ab1eb ;
+	border-top: 3px solid #5ab1eb;
 }

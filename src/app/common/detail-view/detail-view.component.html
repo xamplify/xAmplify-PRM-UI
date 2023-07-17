@@ -1,249 +1,224 @@
 <section>
- <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
-<div id="timeline-view" class="page-content">
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-<!-- <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
-	<div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
-
-    <a (click)="analyticsComponent.showRsvpDetails = false; analyticsComponent.clearPaginationValues()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
-			aria-hidden="true"></span></a>
-
-    <div class="col-xs-12 caption-subject font-red-sunglo">
-		<h4 class="pull-left">Your Campaign Response</h4>
-		</div>
-	<!-- 	<div class="col-xs-12 col-sm-4 p-5x">
-		<div class="p-5x">
-			<div class="portlet light">
-				<div class="portlet-body clearfix">
-					<div class="col-xs-12 p0">
-						<span class="btn btn-sm btn-primary pull-right" style="font-size: 10px;cursor: default;">{{campaignType}} CAMPAIGN <br><span *ngIf="analyticsComponent.isPartnerCampaign === '(PARTNER)'">(THROUGH PARTNER)</span></span>
-						<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:18}} <span *ngIf="campaign.campaignName?.length>18">...</span>
-						</h4>
-						<h5 class="text-info mb10">{{campaign.launchTime | date: 'fullDate'}}</h5>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-		<div class="col-xs-12  emails-info">
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'invities'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpInvitiesDetails()"
-			 [disabled]="campaignReport.totalInvities < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+	<ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
+	<div id="timeline-view" class="page-content">
+	   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+	   <div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
+		  <a (click)="analyticsComponent.showRsvpDetails = false; analyticsComponent.clearPaginationValues()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+			 aria-hidden="true"></span></a>
+		  <div class="col-xs-12 caption-subject font-red-sunglo">
+			 <h4 class="pull-left">Your Campaign Response</h4>
+		  </div>
+		  <div class="col-xs-12  emails-info">
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'invities'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpInvitiesDetails()"
+				[disabled]="campaignReport.totalInvities < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope"></i>
-					<h1>
-						<b>{{campaignReport.totalInvitiesCount}}</b>
-						<span>Invites</span>
-					</h1>
-
+				   <i class="fa fa-envelope"></i>
+				   <h1>
+					  <b>{{campaignReport.totalInvitiesCount}}</b>
+					  <span>Invites</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()"
-			 >
+				</button>
+			 </div>
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()"
+				>
 				<div class="portlet-body text-center">
-						<i class="fa fa-envelope-open"></i>
-					<h1>
-						<b>{{campaignReport.totalEmailOpenCount}}</b>
-						<span>Opened</span>
-					</h1>
-
+				   <i class="fa fa-envelope-open"></i>
+				   <h1>
+					  <b>{{campaignReport.totalEmailOpenCount}}</b>
+					  <span>Opened</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('YES')"
-			 [disabled]="campaignReport.totalYesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				</button>
+			 </div>
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('YES')"
+				[disabled]="campaignReport.totalYesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-check-circle"></i>
-					<h1>
-						<b>{{campaignReport.totalYesCount}}</b>
-
-					<span>Yes ({{campaignReport.totalAdditionalCount}})</span>
-					</h1>
+				   <i class="fa fa-check-circle"></i>
+				   <h1>
+					  <b>{{campaignReport.totalYesCount}}</b>
+					  <span>Yes ({{campaignReport.totalAdditionalCount}})</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
-			 [disabled]="campaignReport.totalNoCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				</button>
+			 </div>
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
+				[disabled]="campaignReport.totalNoCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-times-circle"></i>
-					<h1>
-						<b>{{campaignReport.totalNoCount}}</b>
-						<span>No</span>
-					</h1>
-
+				   <i class="fa fa-times-circle"></i>
+				   <h1>
+					  <b>{{campaignReport.totalNoCount}}</b>
+					  <span>No</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
-			 [disabled]="campaignReport.totalMayBeCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				</button>
+			 </div>
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
+				[disabled]="campaignReport.totalMayBeCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-question-circle"></i>
-					<h1>
-						<b>{{campaignReport.totalMayBeCount}}</b>
-						<span>Maybe</span>
-					</h1>
-
+				   <i class="fa fa-question-circle"></i>
+				   <h1>
+					  <b>{{campaignReport.totalMayBeCount}}</b>
+					  <span>Maybe</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NOTYET')"
-			 [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				</button>
+			 </div>
+			 <div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NOTYET')"
+				[disabled]="campaignReport.totalNotYetRespondedCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
-						<i class="fa fa-exclamation-circle"></i>
-					<h1>
-						<b>{{campaignReport.totalNotYetRespondedCount}}</b>
-
-					<span>Not yet</span>
-					</h1>
+				   <i class="fa fa-exclamation-circle"></i>
+				   <h1>
+					  <b>{{campaignReport.totalNotYetRespondedCount}}</b>
+					  <span>Not yet</span>
+				   </h1>
 				</div>
-			</button>
-		</div>
-		<ng-container *ngIf="campaign.publicEventCampaign">
-		<div  class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_LEADS'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_LEADS')"
-			 [disabled]="campaignReport.totalLeadsCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
-				<div class="portlet-body text-center">
-					<i class="fa fa-user-secret"></i>
-					<h1>
-						<b>{{campaignReport.totalLeadsCount}}</b>
-						<span>Leads</span>
-					</h1>
-
+				</button>
+			 </div>
+			 <ng-container *ngIf="campaign.publicEventCampaign">
+				<div  class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				   <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_LEADS'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_LEADS')"
+				   [disabled]="campaignReport.totalLeadsCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				   <div class="portlet-body text-center">
+					  <i class="fa fa-user-secret"></i>
+					  <h1>
+						 <b>{{campaignReport.totalLeadsCount}}</b>
+						 <span>Leads</span>
+					  </h1>
+				   </div>
+				   </button>
 				</div>
-			</button>
-		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
-			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_ATTENDEES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_ATTENDEES')"
-			 [disabled]="campaignReport.totalAttendeesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
-				<div class="portlet-body text-center">
-					<i class="fa fa-user"></i>
-					<h1>
-						<b>{{campaignReport.totalAttendeesCount}}</b>
-						<span>Total</span>
-					</h1>
-
+				<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+				   <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_ATTENDEES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_ATTENDEES')"
+				   [disabled]="campaignReport.totalAttendeesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				   <div class="portlet-body text-center">
+					  <i class="fa fa-user"></i>
+					  <h1>
+						 <b>{{campaignReport.totalAttendeesCount}}</b>
+						 <span>Total</span>
+					  </h1>
+				   </div>
+				   </button>
 				</div>
-			</button>
-		</div>
-		</ng-container>
-	</div>
-<ng-container *ngIf="detailType!='TOTAL_LEADS' && detailType!='TOTAL_ATTENDEES' && detailType!='TOTAL_PARTNER_LEADS'">
-		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-			<div class="col-xs-12 col-sm-7 col-lg-7">
-        <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAYBE</h4>
-				<h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who have not yet responded</h4>
-				<div class="pull-left" *ngIf="detailType === 'email open' || detailType === 'email not open'">
-				<ul class="mix-filter m0">
-								<li class="filter" [class.selectedBox]="detailType ==='email open'"  (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</li>
-								<li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailNotOpenDetails()" [class.disabled]="!analyticsComponent.isPartnerEnabledAnalyticsAccess"> People who haven't opened your email</li>
-								</ul>
-				<!-- <a (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</a><span> <a (click)="analyticsComponent.getRsvpEmailNotOpenDetails()">Not yet opened details</a></span> -->
+			 </ng-container>
+		  </div>
+		  <ng-container *ngIf="detailType!='TOTAL_LEADS' && detailType!='TOTAL_ATTENDEES' && detailType!='TOTAL_PARTNER_LEADS'">
+			 <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+				<div class="col-xs-12 col-sm-7 col-lg-7">
+				   <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
+				   <h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
+				   <h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
+				   <h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAYBE</h4>
+				   <h4 class="pull-left" *ngIf="detailType === 'NOTYET'">People who have not yet responded</h4>
+				   <div class="pull-left" *ngIf="detailType === 'email open' || detailType === 'email not open'">
+					  <ul class="mix-filter m0">
+						 <li class="filter" [class.selectedBox]="detailType ==='email open'"  (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</li>
+						 <li class="filter" [class.selectedBox]="detailType !=='email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailNotOpenDetails()" [class.disabled]="!analyticsComponent.isPartnerEnabledAnalyticsAccess"> People who haven't opened your email</li>
+					  </ul>
+				   </div>
 				</div>
-			</div>
-			<div class="pull-right col-xs-12 col-sm-5 col-lg-5">
-				<div class='col-xs-10 col-sm-10 col-lg-10'>
-			        <input type="text"  [(ngModel)]="analyticsComponent.searchKey"  [ngModelOptions]="{standalone: true}"
-			        class="form-control" placeholder="Search " (keypress)="analyticsComponent.eventHandler($event.keyCode)">
-			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
+				<div class="pull-right col-xs-12 col-sm-5 col-lg-5">
+				   <div class='col-xs-10 col-sm-10 col-lg-10'>
+					  <input type="text"  [(ngModel)]="analyticsComponent.searchKey"  [ngModelOptions]="{standalone: true}"
+					  class="form-control" placeholder="Search " (keypress)="analyticsComponent.eventHandler($event.keyCode)">
+					  <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
 					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-					</button>
-			        <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
-						</div>
-				<div class="col-xs-2 col-sm-2 col-lg-2">
-				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="cursor:pointer; color: #7d8c98;margin-top: 8px;">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;float:right;display:flex;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
-					<ul class="dropdown-menu pull-right" style="right: 5px!important;">
-						<li><a id="delete_button" (click)="analyticsComponent.downloadFunctionality()"> Export To Excel </a></li>
-					</ul>
+					  </button>
+					  <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
+				   </div>
+				   <div class="col-xs-2 col-sm-2 col-lg-2">
+					  <div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="cursor:pointer; color: #7d8c98;margin-top: 8px;">
+						 <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;float:right;display:flex;">
+						 <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+						 </span>
+						 <ul class="dropdown-menu pull-right" style="right: 5px!important;">
+							<li><a id="delete_button" (click)="analyticsComponent.downloadFunctionality()"> Export To Excel </a></li>
+						 </ul>
+					  </div>
+				   </div>
 				</div>
+			 </div>
+			 <div class="col-xs-12">
+				<div class="alert alert-info flex" *ngIf="analyticsComponent.isLoadingDownloadList">
+				   <div class="loader"
+					  style="margin-right: 10px; width: 25px; height: 25px;"></div>
+				   <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
-				</div>
-    </div>
-    <div class="col-xs-12">
-    <div class="alert alert-info flex" *ngIf="analyticsComponent.isLoadingDownloadList">
-			  <div class="loader"
-				style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<h4 class="m5">Please wait while we process your request.</h4>
-			</div>
-					<div class="table-responsive">
-<!-- 					 <app-list-loader *ngIf="analyticsComponent.httpRequestLoader.isLoading"></app-list-loader> -->
-					<div class="alert alert-info alert-dismissible" *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0">
-						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						  No results found.
-						</div>
-				 	<ng-container *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems?.length !== 0">
-						 <div class="table-responsive">
-						<table class="table tgrid">
+				<div class="table-responsive">
+				   <div class="alert alert-info alert-dismissible" *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0">
+					  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					  No results found.
+				   </div>
+				   <ng-container *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems?.length !== 0">
+					  <div class="table-responsive">
+						 <table class="table tgrid">
 							<thead>
-								<tr>
-									<th class="text-center-css" style="width:25%; text-align: left !important">NAME</th>
-									<th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'"><span>MESSAGE</span></th>
-									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
-									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
-									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities' && detailType !== 'email not open'"><span>Most Recent</span></th>
-									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
-									<th class="text-center-css" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'">Reminder</th>
-								</tr>
+							   <tr>
+								  <th class="text-center-css" style="width:25%; text-align: left !important">NAME</th>
+								  <th class="text-center-css" *ngIf="detailType !== 'email open' && detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'"><span>MESSAGE</span></th>
+								  <th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">CAMPAIGN NAME</th>
+								  <th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
+								  <th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities' && detailType !== 'email not open'"><span>Most Recent</span></th>
+								  <th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
+								  <th class="text-center-css" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'">Reminder</th>
+							   </tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let item of details">
-									<td>
-										<app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
-									</td>
-									<td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'email not open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
-									<span [hidden]="detailType === 'email not open'">	<h6>{{item.message}}</h6>
-										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6> </span>
-									</td>
-									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
-									<td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
-									<td class="text-center" *ngIf="detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'"> <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
-										<!-- {{item.responseTime | date: 'short'}} -->
-										<span [hidden]="detailType === 'email not open'"><app-timestamp [dateAndTime]="item.responseTime"> </app-timestamp></span>
-									</h6>
-									<h6 class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center">
-										<!-- {{item.time | date: 'short'}} -->
+							   <tr *ngFor="let item of details">
+								  <td>
+									 <app-user-info  [userInfo]="item" [isCompanyInfo] = "true"> </app-user-info>
+								  </td>
+								  <td class="text-center" *ngIf="detailType !== 'email open' && detailType !== 'email not open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
+									 <span [hidden]="detailType === 'email not open'">
+										<h6>{{item.message}}</h6>
+										<h6 *ngIf="!item.message" style="text-align:center"><b>-</b></h6>
+									 </span>
+								  </td>
+								  <td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center"> {{item.campaignName}}</td>
+								  <td class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center" style="text-align:center">{{item.subject}}</td>
+								  <td class="text-center" *ngIf="detailType !== 'NOTYET' && detailType !== 'invities' && detailType !== 'email not open'">
+									 <h6 *ngIf="detailType !== 'email open' && detailType !== 'NOTYET'  && detailType !== 'invities'" style="text-align:center">
+										<span [hidden]="detailType === 'email not open'">
+										   <app-timestamp [dateAndTime]="item.responseTime"> </app-timestamp>
+										</span>
+									 </h6>
+									 <h6 class="text-center" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'" style="text-align:center">
 										<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-									</h6>
-									</td>
-									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
-									<td class="text-center" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
-									<i class="fa fa-bell-o" aria-hidden="true"></i>
-									</a> </td>
-								</tr>
+									 </h6>
+								  </td>
+								  <td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
+								  <td class="text-center" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									 <i class="fa fa-bell-o" aria-hidden="true"></i>
+									 </a> 
+								  </td>
+							   </tr>
 							</tbody>
-						</table>
-						</div>
-						</ng-container>
-						<app-pagination *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
-						 [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
-
-					</div>
+						 </table>
+					  </div>
+				   </ng-container>
+				   <app-pagination *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
+				   [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
 				</div>
-		</ng-container>
-		<ng-container *ngIf="detailType=='TOTAL_LEADS'">
-		  <div class="col-xs-12">
-			  	<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
-		</div>	
-		</ng-container>	
-		<ng-container *ngIf="detailType=='TOTAL_ATTENDEES'">
-		  <div class="col-xs-12">
-			  	<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
-		</div>	
-		</ng-container>		
+			 </div>
+		  </ng-container>
+		  <ng-container *ngIf="detailType=='TOTAL_LEADS'">
+			 <div class="col-xs-12">
+				<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
+			 </div>
+		  </ng-container>
+		  <ng-container *ngIf="detailType=='TOTAL_ATTENDEES'">
+			 <div class="col-xs-12">
+				<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
+			 </div>
+		  </ng-container>
+	   </div>
 	</div>
-</div>
-<app-scroll-top></app-scroll-top>
-</section>
-
+	<app-scroll-top></app-scroll-top>
+ </section>

@@ -42,6 +42,12 @@ export class RedistributedCampaignsWordcloudMapComponent implements OnInit {
             chart: {
                 backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
               },
+              tooltip: {
+                backgroundColor: 'black', 
+                style: {
+                  color: '#fff' 
+                }
+              },
             credits: {
                 enabled: false
             },

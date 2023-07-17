@@ -22,11 +22,14 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
+import { EnvService } from "app/env.service";
+
 
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+ 
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -138,15 +141,17 @@ export class ReferenceService {
   regularExpressions = new RegularExpressions();
   loaderFromAdmin = false;
   newVersionDeployed = false;
+  /*** XNFR-user-guides */
+  mergeTagName:any;
+  hideLeftMenu : boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private route: ActivatedRoute
+    private envService:EnvService
   ) {
-    console.log("reference service constructor");
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
     this.coBrandingTag =
@@ -339,6 +344,11 @@ export class ReferenceService {
   }
   validateEmailId(emailId: string) {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+  }
+
+  validateEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
   }
 
   validateWebsiteURL(url: string) {
@@ -2475,6 +2485,10 @@ export class ReferenceService {
     $("#" + modalId).modal("hide");
   }
 
+  openModalPopup(modalId:string) {
+    $("#" + modalId).modal("show");
+  }
+
   deleteAndEditAccess() {
     return (
       this.hasAllAccess() ||
@@ -3038,6 +3052,8 @@ export class ReferenceService {
       categoryType="LEARNING_TRACK";
     }else if(this.roles.playbookId==moduleId){
       categoryType = "PLAY_BOOK";
+    }else if(this.roles.campaignId==moduleId){
+      categoryType = "CAMPAIGN";
     }
     return categoryType;
   }
@@ -3151,6 +3167,45 @@ export class ReferenceService {
     return description;
   }
 
+
+  /**** user guide *****/
+  hideLeftSideMenu(){
+    if(this.router.url.includes('/help/')){
+      return  false;
+    } else {
+      return true;
+    }
+  }
+  getUserMergeTag(){
+    return this.mergeTagName;
+  }
+
+  closeSweetAlertWithDelay() {
+    setTimeout(() => {
+      swal.close();
+    }, 1000);
+  }
+
+  goToManageCampaigns(viewType: string) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToManageCampaignsByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageCampaignsByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageCampaigns(viewType);
+    }
+  }
+  goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  public isProduction(){
+    return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
+  }
+
+  
 
   
 }

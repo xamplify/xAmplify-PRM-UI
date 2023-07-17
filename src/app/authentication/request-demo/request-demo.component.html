@@ -1,331 +1,288 @@
 <!--hero section-->
-<!-- <div class="loader-container">
-    <div class="loader"></div>
-    <img alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
-  </div> -->
-  <div>
-  <header class="hero-section"> 
-     
-    <div class="overlay"></div>
-  
-  <nav class="navbar navbar-default" id="navbar">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-        <a class="navbar-brand" style="background: none;" href="https://xamplify.com">
-          <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
-          <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo.png">
-        </a>
-      </div>
-      <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://www.xamplify.com" lang="en">Home</a></li>
-            <li><a href="https://www.xamplify.com/features/" lang="en">Features</a></li>
-            <li><a href="https://www.xamplify.com/sail/" lang="en">Services</a></li>
-            <li><a href="https://www.xamplify.com/about-us/" lang="en">About Us</a></li>
-            <li><a href="https://www.xamplify.com/blog/" lang="en">Blog</a></li>
-            <li><a href="https://www.xamplify.com/contact/" lang="en">Contact</a></li>
-            <li ><a class="loginTF" href="https://xamplify.io/login" lang="en" style="background: none;">Login</a></li>
-            <li ><a href="https://xamplify.io/requestdemo" lang="en" class="btn signUpTF">Request a Demo</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  
-    <!--navigation end-->
-  
-    <!--welcome message-->
-  
-
-  
-    <!--welcome message end-->
-  
+<div>
+  <header class="hero-section">
+     <div class="overlay"></div>
+     <nav class="navbar navbar-default" id="navbar">
+        <div class="container">
+           <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+              <a class="navbar-brand" style="background: none;" href="https://xamplify.com">
+              <img class="logo-nav" alt="logo" style="height: 54px;" src="/assets/images/xamplify-logo.png">
+              <img class="logo-head" alt="logo" style="height: 50px;" src="/assets/images/xamplify-logo.png">
+              </a>
+           </div>
+           <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                 <li><a href="https://www.xamplify.com" lang="en">Home</a></li>
+                 <li><a href="https://www.xamplify.com/features/" lang="en">Features</a></li>
+                 <li><a href="https://www.xamplify.com/sail/" lang="en">Services</a></li>
+                 <li><a href="https://www.xamplify.com/about-us/" lang="en">About Us</a></li>
+                 <li><a href="https://www.xamplify.com/blog/" lang="en">Blog</a></li>
+                 <li><a href="https://www.xamplify.com/contact/" lang="en">Contact</a></li>
+                 <li ><a class="loginTF" href="https://xamplify.io/login" lang="en" style="background: none;">Login</a></li>
+                 <li ><a href="https://xamplify.io/requestdemo" lang="en" class="btn signUpTF">Request a Demo</a></li>
+              </ul>
+           </div>
+        </div>
+     </nav>
+     <!--navigation end-->
+     <!--welcome message-->
+     <!--welcome message end-->
   </header>
-  
   <!--benefits end-->
-  
   <!--Features-->
-  
   <section class="benefits section-spacing text-center" #features id="features" style="background: #f7f7f7 !important;padding-bottom: 0;">
-    <div class="container">
-      <header class="section-header">
-        <h1 lang="en">Schedule a Quick Demo</h1>
-        <h3 lang="en">The World's #1 TCMA Platform</h3>
-        <p lang="en" style="margin-top: 20px;">A channel marketing automation software platform that empowers you to deliver co-branded marketing campaigns through your channel partners. Enable your partners to co-market with you without relying on them to sign into a partner portal.</p>
-      </header>
-    </div>
+     <div class="container">
+        <header class="section-header">
+           <h1 lang="en">Schedule a Quick Demo</h1>
+           <h3 lang="en">The World's #1 TCMA Platform</h3>
+           <p lang="en" style="margin-top: 20px;">A channel marketing automation software platform that empowers you to deliver co-branded marketing campaigns through your channel partners. Enable your partners to co-market with you without relying on them to sign into a partner portal.</p>
+        </header>
+     </div>
   </section>
-      <div class="features section-spacing" id="startDiv">
-      <div class="container">
-      <!--feature 2-->
-      <div class="row">
-        <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
-        <div class="col-md-5 col-md-pull-7" >
-          <article style="margin-top: 0 !important;">
-            <form *ngIf="!isContacted">
-              <div class="form-group">
-                <label for="email">First Name</label>
-                <input type="text" [(ngModel)]="requestDemo.firstName"  maxlength="255" class="form-control" id="firstName" [ngModelOptions]="{standalone: true}">
-              </div>
-              <div class="form-group">
-                  <label for="email">Last Name</label>
-                  <input type="text" [(ngModel)]="requestDemo.lastName"  maxlength="255" class="form-control" id="lastName" [ngModelOptions]="{standalone: true}">
-              </div>
-              <div class="form-group">
-                  <label for="email">Email address <span class="required">*</span></label>
-                  <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
-             	    <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
-              </div>
-               <div class="form-group">
-                  <label for="email">Mobile Number <span class="required">*</span></label>
-              		<input type="text" (input)="validateMobileNumber()" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
-              </div>
-              <div class="form-group">
-                  <label for="email">Company Name<span class="required">*</span></label>
-                  <input type="text" [(ngModel)]="requestDemo.company" class="form-control" (input)="validateCompany()" id="company" [ngModelOptions]="{standalone: true}">
-              </div>
-              <div class="form-group">
-                <div class="row" style="margin-bottom: 24px;">
-                  <div class=col-md-6>
-                    <label for="sel1">Country</label>
-                  <select class="form-control"  (change)="onSelect($event.target.value)" id="demo-countryName">
-                      <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-                  </select>
-                </div>
-                <div class=col-md-6>
-                  <label for="sel1">Time Zone</label>
-                    <select class="form-control"  id="demo-timezoneId">
-                    <ng-container *ngIf="timezones?.length==1">
-                      <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="requestDemo.countryId==timeZone.countryId">
-                        {{timeZone.cityName}}
-                      </option>
-                    </ng-container>
-                    <ng-container *ngIf="timezones?.length>1">
-                      <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
-                        {{timeZone.cityName}}
-                      </option>
-                    </ng-container>
-                  </select>
-                  </div>
-                </div>
-              </div>
-              	<div id="wrapper">
-              		<button *ngIf="!submitted" id="demo-button" type="submit" class="btn btn-default" [disabled]="!isValidForm" (click)="save()">Contact Me Now</button>
-              		<button *ngIf="submitted" id="demo-button" class="btn btn-success" disabled="disabled">Please Wait...</button>
-              	</div>
-            </form>
-            <div *ngIf="isContacted">
-             <h1 class="display-3">Thank You</h1>
-			        <p class="lead"><strong>We will contact you shortly to schedule a demo.</strong></p>
-			    </div>
-          </article>
+  <div class="features section-spacing" id="startDiv">
+     <div class="container">
+        <!--feature 2-->
+        <div class="row">
+           <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
+           <div class="col-md-5 col-md-pull-7" >
+              <article style="margin-top: 0 !important;">
+                 <form *ngIf="!isContacted">
+                    <div class="form-group">
+                       <label for="email">First Name</label>
+                       <input type="text" [(ngModel)]="requestDemo.firstName"  maxlength="255" class="form-control" id="firstName" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                       <label for="email">Last Name</label>
+                       <input type="text" [(ngModel)]="requestDemo.lastName"  maxlength="255" class="form-control" id="lastName" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                       <label for="email">Email address <span class="required">*</span></label>
+                       <input type="email" (input)="validateEmailId()"  maxlength="255" [(ngModel)]="requestDemo.emailId" class="form-control" id="emailId" [ngModelOptions]="{standalone: true}">
+                       <span class="required" *ngIf="errorClass=='error'">Please enter a valid email address</span>
+                    </div>
+                    <div class="form-group">
+                       <label for="email">Mobile Number <span class="required">*</span></label>
+                       <input type="text" (input)="validateMobileNumber()" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                       <label for="email">Company Name<span class="required">*</span></label>
+                       <input type="text" [(ngModel)]="requestDemo.company" class="form-control" (input)="validateCompany()" id="company" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="form-group">
+                       <div class="row" style="margin-bottom: 24px;">
+                          <div class=col-md-6>
+                             <label for="sel1">Country</label>
+                             <select class="form-control"  (change)="onSelect($event.target.value)" id="demo-countryName">
+                             <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                             </select>
+                          </div>
+                          <div class=col-md-6>
+                             <label for="sel1">Time Zone</label>
+                             <select class="form-control"  id="demo-timezoneId">
+                                <ng-container *ngIf="timezones?.length==1">
+                                   <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="requestDemo.countryId==timeZone.countryId">
+                                   {{timeZone.cityName}}
+                                   </option>
+                                </ng-container>
+                                <ng-container *ngIf="timezones?.length>1">
+                                   <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+                                   {{timeZone.cityName}}
+                                   </option>
+                                </ng-container>
+                             </select>
+                          </div>
+                       </div>
+                    </div>
+                    <div id="wrapper">
+                       <button *ngIf="!submitted" id="demo-button" type="submit" class="btn btn-default" [disabled]="!isValidForm" (click)="save()">Contact Me Now</button>
+                       <button *ngIf="submitted" id="demo-button" class="btn btn-success" disabled="disabled">Please Wait...</button>
+                    </div>
+                 </form>
+                 <div *ngIf="isContacted">
+                    <h1 class="display-3">Thank You</h1>
+                    <p class="lead"><strong>We will contact you shortly to schedule a demo.</strong></p>
+                 </div>
+              </article>
+           </div>
         </div>
-      </div>
-    </div>
+     </div>
   </div>
-  
   <!--Features end-->
-  
   <!--Video section-->
-  
   <section class="video-tour text-center" id="preview" [hidden]="true">
-    <div class="play-btn"> <a href="/embed/sb63hg" class="play litebox-tour"><img  src="/assets/images/play-btn-vs.png" alt="play"></a>
-      <h2 lang="en">Video Preview Of Product</h2>
-    </div>
-  
-    <!--HTML5 Video-->
-    <video autoplay loop muted id="bgvid" poster="/assets/images/poster.jpg">
-      <source src="https://xamp.io/vod/vb.mp4" type="video/mp4">
-      <source src="https://xamp.io/vod/vb.webm" type="video/webm">
-    </video>
-    <!--HTML5 Video end-->
-  
+     <div class="play-btn">
+        <a href="/embed/sb63hg" class="play litebox-tour"><img  src="/assets/images/play-btn-vs.png" alt="play"></a>
+        <h2 lang="en">Video Preview Of Product</h2>
+     </div>
+     <!--HTML5 Video-->
+     <video autoplay loop muted id="bgvid" poster="/assets/images/poster.jpg">
+        <source src="https://xamp.io/vod/vb.mp4" type="video/mp4">
+        <source src="https://xamp.io/vod/vb.webm" type="video/webm">
+     </video>
+     <!--HTML5 Video end-->
   </section>
-  
   <!--Video section end-->
-  
   <!--Tour-->
-  
   <section class="tour section-spacing text-center" #tour id="tour" *ngIf="false">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 center-block">
-          <h2 lang="en">Learn More About The Application <a href="" class="btn" lang="en">TAKE A TOUR <i class="fa fa-arrow-right"></i></a></h2>
+     <div class="container">
+        <div class="row">
+           <div class="col-md-8 center-block">
+              <h2 lang="en">Learn More About The Application <a href="" class="btn" lang="en">TAKE A TOUR <i class="fa fa-arrow-right"></i></a></h2>
+           </div>
         </div>
-      </div>
-    </div>
+     </div>
   </section>
-  
   <!--Tour end-->
-  
-  
-  
   <!--Pricing-->
-  
   <section class="pricing section-spacing text-center hidden" #pricing id="pricing">
-    <div class="container">
-      <header class="section-header">
-        <h2 lang="en">We Provide Flexible Plans</h2>
-        <h3 lang="en">Free signup. 14 days free trial. No credit card required.</h3>
-      </header>
-      <div class="row">
-        <div class="col-md-12">
-  
-          <!--PRICE TABLE-->
-          <div class="plan">
-            <div class="plan-details">
-              <div class="header">
-                <h4 lang="en">Free</h4>
-                <h5 lang="en">For beginners and pioneers</h5>
-                 <h6>Free forever!</h6>
+     <div class="container">
+        <header class="section-header">
+           <h2 lang="en">We Provide Flexible Plans</h2>
+           <h3 lang="en">Free signup. 14 days free trial. No credit card required.</h3>
+        </header>
+        <div class="row">
+           <div class="col-md-12">
+              <!--PRICE TABLE-->
+              <div class="plan">
+                 <div class="plan-details">
+                    <div class="header">
+                       <h4 lang="en">Free</h4>
+                       <h5 lang="en">For beginners and pioneers</h5>
+                       <h6>Free forever!</h6>
+                    </div>
+                    <div class="price"> <span class="currency">$</span><span class="price-amount">0</span><span class="period" lang="en">/ mo</span> </div>
+                    <ul class="plan-features">
+                       <li lang="en"><span lang="en">All our </span> standard features<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">100</span> Contacts<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">5</span> Templates<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">5 Free</span> Videos<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">10</span> Campaigns<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">1</span> Team members<i class="fa fa-check"></i></li>
+                    </ul>
+                 </div>
+                 <div class="buy-button">
+                    <a class="btn" routerLink="/login" lang="en">Get Started</a>
+                    <p lang="en">**Limited time offer.</p>
+                 </div>
               </div>
-              <div class="price"> <span class="currency">$</span><span class="price-amount">0</span><span class="period" lang="en">/ mo</span> </div>
-              <ul class="plan-features">
-                <li lang="en"><span lang="en">All our </span> standard features<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">100</span> Contacts<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">5</span> Templates<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">5 Free</span> Videos<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">10</span> Campaigns<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">1</span> Team members<i class="fa fa-check"></i></li>
-              </ul>
-            </div>
-            <div class="buy-button"><a class="btn" routerLink="/login" lang="en">Get Started</a>
-              <p lang="en">**Limited time offer.</p>
-            </div>
-          </div>
-          <!--PRICE TABLE END-->
-          <!--PRICE TABLE-->
-          <div class="plan">
-            <div class="plan-details">
-              <div class="header">
-                <h4 lang="en">BASIC</h4>
-                <h5 lang="en">For  individual marketing professionals and pioneers</h5>
-  
+              <!--PRICE TABLE END-->
+              <!--PRICE TABLE-->
+              <div class="plan">
+                 <div class="plan-details">
+                    <div class="header">
+                       <h4 lang="en">BASIC</h4>
+                       <h5 lang="en">For  individual marketing professionals and pioneers</h5>
+                    </div>
+                    <div class="price"> <span class="currency">$</span><span class="price-amount">199</span><span class="period" lang="en">/ mo</span> </div>
+                    <ul class="plan-features">
+                       <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">1000</span> Contacts<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">10</span> Templates<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">20</span> Videos<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">100</span> Campaigns<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">5</span> Team members<i class="fa fa-check"></i></li>
+                    </ul>
+                 </div>
+                 <div class="buy-button">
+                    <a class="btn" href="#" lang="en">Start for Free</a>
+                    <p lang="en">5% OFF. Limited time offer.</p>
+                 </div>
               </div>
-              <div class="price"> <span class="currency">$</span><span class="price-amount">199</span><span class="period" lang="en">/ mo</span> </div>
-              <ul class="plan-features">
-                <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">1000</span> Contacts<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">10</span> Templates<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">20</span> Videos<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">100</span> Campaigns<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">5</span> Team members<i class="fa fa-check"></i></li>
-              </ul>
-            </div>
-            <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
-              <p lang="en">5% OFF. Limited time offer.</p>
-            </div>
-          </div>
-          <!--PRICE TABLE END-->
-  
-  
-  
-          <!--PRICE TABLE-->
-          <div class="plan">
-            <div class="plan-details">
-              <div class="header">
-                <h4 lang="en">PREMIUM</h4>
-                <h5 lang="en">For business who has marketing wing and marketing agencies</h5>
-  
+              <!--PRICE TABLE END-->
+              <!--PRICE TABLE-->
+              <div class="plan">
+                 <div class="plan-details">
+                    <div class="header">
+                       <h4 lang="en">PREMIUM</h4>
+                       <h5 lang="en">For business who has marketing wing and marketing agencies</h5>
+                    </div>
+                    <div class="price"> <span class="currency">$</span><span class="price-amount">499</span><span class="period" lang="en">/ mo</span> </div>
+                    <ul class="plan-features">
+                       <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">Unlimited</span> Contacts<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">50</span> Templates<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">50</span> Videos<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">Unlimited</span> Campaigns<i class="fa fa-check"></i></li>
+                       <li lang="en"><span lang="en">Unlimited</span> Team members<i class="fa fa-check"></i></li>
+                    </ul>
+                 </div>
+                 <div class="buy-button">
+                    <a class="btn" href="#" lang="en">Start for Free</a>
+                    <p lang="en">10% OFF. Limited time offer.</p>
+                 </div>
               </div>
-              <div class="price"> <span class="currency">$</span><span class="price-amount">499</span><span class="period" lang="en">/ mo</span> </div>
-              <ul class="plan-features">
-                <li lang="en"><span lang="en">All our </span> standard featuers<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">Unlimited</span> Contacts<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">50</span> Templates<i class="fa fa-check"></i></li>
-                <li lang="en"><span lang="en">50</span> Videos<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">Unlimited</span> Campaigns<i class="fa fa-check"></i></li>
-              <li lang="en"><span lang="en">Unlimited</span> Team members<i class="fa fa-check"></i></li>
-              </ul>
-            </div>
-            <div class="buy-button"><a class="btn" href="#" lang="en">Start for Free</a>
-              <p lang="en">10% OFF. Limited time offer.</p>
-            </div>
-          </div>
-          <!--PRICE TABLE END-->
-  
+              <!--PRICE TABLE END-->
+           </div>
         </div>
-      </div>
-    </div>
+     </div>
   </section>
-  
   <!--Pricing end-->
-  
   <!--site-footer-->
   <footer class="site-footer section-spacing text-center fbg">
-    <div class="container">
-      <div class="row">
-          <div class="col-md-3">
+     <div class="container">
+        <div class="row">
+           <div class="col-md-3">
               <!--social-->
-      
               <ul class="social">
-                <li><a href="https://www.facebook.com/xAmplifyUSA/" target="_blank"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="https://twitter.com/xamplifys" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="https://www.instagram.com/xamplifyapp/" target="_blank"><i class="fa fa-instagram"></i></a></li>
-                <li><a href="https://www.youtube.com/channel/UC9B5_0wZAVs1Ey86zjM_H9A" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                 <li><a href="https://www.facebook.com/xAmplifyUSA/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                 <li><a href="https://twitter.com/xamplifys" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                 <li><a href="https://www.instagram.com/xamplifyapp/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                 <li><a href="https://www.youtube.com/channel/UC9B5_0wZAVs1Ey86zjM_H9A" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
               </ul>
-      
               <!--social end-->
-      
-            </div>
-        <div class="col-md-6">
-          <p class="footer-links">
-            <a href="https://www.xamplify.com/terms-conditions/" lang="en">Terms of Use </a> 
-            <a href="https://www.xamplify.com/privacy-policy/" lang="en">|   Privacy Policy</a>
-            <a href="https://www.xamplify.com/subprocessors/" lang="en">|   Sub Processors</a></p>
+           </div>
+           <div class="col-md-6">
+              <p class="footer-links">
+                 <a href="https://www.xamplify.com/terms-conditions/" lang="en">Terms of Use </a> 
+                 <a href="https://www.xamplify.com/privacy-policy/" lang="en">|   Privacy Policy</a>
+                 <a href="https://www.xamplify.com/subprocessors/" lang="en">|   Sub Processors</a>
+              </p>
+           </div>
+           <div class="col-md-3"> <small lang="en">support@xamplify.com</small></div>
         </div>
-        <div class="col-md-3"> <small lang="en">support@xamplify.com</small></div>
-        
-      </div>
-      <div calss=row>
-      <div class="col-md-12"> <small lang="en"> Copyrights &copy; 2019 xAmplify. All rights reserved by xAmplify Inc. </small></div>
-      </div>
-      <!--chat-btn-->
-      <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
-      <!--chat-btn end-->
-  
-    </div>
+        <div calss=row>
+           <div class="col-md-12"> <small lang="en"> Copyrights &copy; 2019 xAmplify. All rights reserved by xAmplify Inc. </small></div>
+        </div>
+        <!--chat-btn-->
+        <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
+        <!--chat-btn end-->
+     </div>
   </footer>
   <!--site-footer end-->
-  
   <!--contact form modal-->
-  
   <div class="modal fade" id="modal-contact-form" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <div class="modal-body">
-  
-          <!--contact form-->
-  
-          <div class="contact-form text-center">
-            <header class="section-header"> <img src="/assets/images/support-icon.svg" alt="support icon">
-              <h2>Contact us</h2>
-              <h3>Have any questions? Send us a message.</h3>
-            </header>
-            <form class="cta-form" action="php/contact.php" method="post">
-              <div class="form-group">
-                <input  type="text" name="name" class="contact-name form-control input-lg" placeholder="Name *" id="contact-name">
+     <div class="modal-dialog" role="document">
+        <div class="modal-content">
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <div class="modal-body">
+              <!--contact form-->
+              <div class="contact-form text-center">
+                 <header class="section-header">
+                    <img src="/assets/images/support-icon.svg" alt="support icon">
+                    <h2>Contact us</h2>
+                    <h3>Have any questions? Send us a message.</h3>
+                 </header>
+                 <form class="cta-form" action="php/contact.php" method="post">
+                    <div class="form-group">
+                       <input  type="text" name="name" class="contact-name form-control input-lg" placeholder="Name *" id="contact-name">
+                    </div>
+                    <div class="form-group">
+                       <input  type="text"  name="email" class="contact-email form-control input-lg" placeholder="Email address *" id="contact-email">
+                    </div>
+                    <div class="form-group">
+                       <textarea name="message" class="contact-message form-control input-lg" rows="4" placeholder="Message *" id="contact-message"></textarea>
+                    </div>
+                    <div class="form-group">
+                       <input type="text" name="antispam" placeholder="Antispam question: 7 + 5 = ?" class="contact-antispam form-control input-lg" id="contact-antispam">
+                    </div>
+                    <button type="submit" class="btn">SEND MESSAGE</button>
+                 </form>
               </div>
-              <div class="form-group">
-                <input  type="text"  name="email" class="contact-email form-control input-lg" placeholder="Email address *" id="contact-email">
-              </div>
-              <div class="form-group">
-                <textarea name="message" class="contact-message form-control input-lg" rows="4" placeholder="Message *" id="contact-message"></textarea>
-              </div>
-              <div class="form-group">
-                <input type="text" name="antispam" placeholder="Antispam question: 7 + 5 = ?" class="contact-antispam form-control input-lg" id="contact-antispam">
-              </div>
-              <button type="submit" class="btn">SEND MESSAGE</button>
-            </form>
-          </div>
-  
-          <!--contact form end-->
-  
-          <p class="contact-form-success"><i class="fa fa-check"></i><span>Thanks for contacting us!</span> We will get back to you very soon.</p>
+              <!--contact form end-->
+              <p class="contact-form-success"><i class="fa fa-check"></i><span>Thanks for contacting us!</span> We will get back to you very soon.</p>
+           </div>
         </div>
-      </div>
-    </div>
+     </div>
   </div>
-  </div>
-  
+</div>

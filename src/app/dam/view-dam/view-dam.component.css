@@ -1,26 +1,24 @@
-.zero-margin{
-    margin:0 !important;
+.zero-margin {
+  margin: 0 !important;
 }
-
-.mxv{
-    max-width: 175px!important;
+.mxv {
+  max-width: 175px !important;
 }
-.mhtpx{
-    min-height: 200px !important;
+.mhtpx {
+  min-height: 200px !important;
 }
-
 .desc-break {
-    word-break: break-word;
+  word-break: break-word;
 }
-
 .text-wrap {
-    text-overflow: ellipsis;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-
 :host ::ng-deep .desc-html * {
-    max-height: 100%;
-    max-width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
-
-a.disabled{pointer-events:none;cursor:not-allowed}
+a.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}

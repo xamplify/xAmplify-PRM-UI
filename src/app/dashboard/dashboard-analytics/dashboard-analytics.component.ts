@@ -81,7 +81,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    userId: number;
     editVideo : boolean = false;
    playVideo : boolean = false;
-
+   mergeTagForGuide:any;
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService,
@@ -108,6 +108,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     localStorage.removeItem('assetName');
     localStorage.removeItem('campaignReport');
     localStorage.removeItem('saveVideoFile');
+    this.getMergeTagForGuide();
     this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
@@ -125,7 +126,13 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
         this.getUserCampaignReport();
     }
   }
-
+  getMergeTagForGuide(){
+    if(this.authenticationService.isOnlyPartner()) {
+      this.mergeTagForGuide = 'partner_account_dashboard';
+    } else {
+      this.mergeTagForGuide = 'vendor_account_dashboard';
+    }
+  }
   ngOnDestroy(){
     $('#customizeCampaignModal').modal('hide');
   }
@@ -358,6 +365,12 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                 marginLeft: i === 0 ? 100 : 10,
                 backgroundColor   :isDark ? "#2b3c46" : "#fff",
             },
+            tooltip: {
+                backgroundColor: 'black', 
+                style: {
+                  color: '#fff' 
+                }
+              },
 
             title: {
                 text: dataset.name,

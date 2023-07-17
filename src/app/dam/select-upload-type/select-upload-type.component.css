@@ -1,74 +1,63 @@
-
 .portlet.light .portlet-body {
-    padding-top: 0px!important;
+  padding-top: 0px !important;
 }
-
 .text {
-    text-align: center;
+  text-align: center;
 }
-.text-border{
-    border-bottom: 1px solid #ddd;
+.text-border {
+  border-bottom: 1px solid #ddd;
 }
 h4 {
-    font-weight: 500!important;
-    font-size: 15px!important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
 }
-
 h5 {
-    font-size: 14px!important;
-    font-weight: 400!important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
 }
-
 .img1 {
-    background: #34495a;
-    text-align: center;
-    height: 233px;
-    border-radius: 10px 10px 0px 0px;
+  background: #34495a;
+  text-align: center;
+  height: 233px;
+  border-radius: 10px 10px 0px 0px;
 }
-
-.img-responsive,
-.thumbnail a>img,
-.thumbnail>img {
-    padding-top: 13px;
-    display: block;
-    max-width: 200px;
+.img-responsive {
+  padding-top: 13px;
+  display: block;
+  max-width: 200px;
 }
-
-.image-center{
-    padding-top: 60px;
-    display: block;
-    max-width: 100px;
+.image-center {
+  padding-top: 60px;
+  display: block;
+  max-width: 100px;
 }
-
 .hover-effect:hover {
-    border: 1px solid #4eafd6;
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-    box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
+  border: 1px solid #4eafd6;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  box-shadow: 0 4px 8px 3px rgb(0 0 0 / 15%), 0 1px 3px rgb(0 0 0 / 30%);
 }
-
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
-
-.design-name{
-	color: #008fd5;
-    font-size: 13px;
-    font-weight: 600;
+.design-name {
+  color: #008fd5;
+  font-size: 13px;
+  font-weight: 600;
 }
-.portlet{
-    margin-bottom: 21px !important;
+.portlet {
+  margin-bottom: 21px !important;
 }
-.img1:hover{
-    background-position: 100%;
-    background-color: #b8def1;
-    transition-duration: 500ms;
+.img1:hover {
+  background-position: 100%;
+  background-color: #b8def1;
+  transition-duration: 500ms;
 }
 .header-text-css {
-    text-align: center;
-    padding-left: 10px;
-    padding-bottom: 11px;
-    border-bottom: 1px solid #ddd;
+  text-align: center;
+  padding-left: 10px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #ddd;
 }

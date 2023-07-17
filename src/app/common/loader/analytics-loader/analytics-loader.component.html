@@ -1,70 +1,69 @@
 <div class="row m10" style="background: #fff " *ngIf="referenceService.campaignType === 'VIDEO'">
   <div class="col-xs-12 p0">
-    <div class="col-sm-4" *ngFor="let no of textLoader">
-      <div class='text-input__loading--line rect-box box-custom'></div>
-    </div>
+     <div class="col-sm-4" *ngFor="let no of textLoader">
+        <div class='text-input__loading--line rect-box box-custom'></div>
+     </div>
   </div>
   <div class="col-xs-12">
-    <div class="col-xs-12 col-sm-6 p0">
-      <div class='text-input__loading--line rect-box' style="width: auto; height: 302px;">
-        <div class="text-input__loading--line thick w75" style="position: relative;top: 20px !important;height: 7px !important"></div>
-        <div class="text-input__loading--line thick w75 map-css"></div>
-      </div>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-      <div class="col-xs-12">
-        <div class="row p0">
-          <div class="col-sm-3 p0" *ngFor="let i of rowsCount">
-            <div class='text-input__loading--line rect-box  box-custom'></div>
-          </div>
+     <div class="col-xs-12 col-sm-6 p0">
+        <div class='text-input__loading--line rect-box' style="width: auto; height: 302px;">
+           <div class="text-input__loading--line thick w75" style="position: relative;top: 20px !important;height: 7px !important"></div>
+           <div class="text-input__loading--line thick w75 map-css"></div>
         </div>
-      </div>
-      <fieldset style="font-size: 6.5px; padding: inherit;">
-        <div class="text-input__loading--line thick w75"></div>
-        <div class="text-input__loading--line thick w75 donut-css"></div>
+     </div>
+     <div class="col-xs-12 col-sm-6">
         <div class="col-xs-12">
-          <div class="col-xs-4" *ngFor="let number of textLoader">
-            <div class="circle-css circle-custom"></div>
-          </div>
+           <div class="row p0">
+              <div class="col-sm-3 p0" *ngFor="let i of rowsCount">
+                 <div class='text-input__loading--line rect-box  box-custom'></div>
+              </div>
+           </div>
         </div>
-      </fieldset>
-    </div>
+        <fieldset style="font-size: 6.5px; padding: inherit;">
+           <div class="text-input__loading--line thick w75"></div>
+           <div class="text-input__loading--line thick w75 donut-css"></div>
+           <div class="col-xs-12">
+              <div class="col-xs-4" *ngFor="let number of textLoader">
+                 <div class="circle-css circle-custom"></div>
+              </div>
+           </div>
+        </fieldset>
+     </div>
   </div>
   <div class="col-xs-12">
-    <app-list-loader></app-list-loader>
+     <app-list-loader></app-list-loader>
   </div>
 </div>
-
 <div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === 'EVENT' || referenceService.campaignType === 'LANDINGPAGE'">
   <div class="col-xs-12 p0">
-    <div class="col-sm-6" *ngIf="referenceService.campaignType !== 'SOCIAL'">
-      <div class='text-input__loading--line rect-box box-custom'></div>
-    </div>
-    <div [ngClass]='{"col-sm-12":referenceService.campaignType === "SOCIAL", "col-sm-6":(referenceService.campaignType === "REGULAR" || referenceService.campaignType === "LANDINGPAGE" || referenceService.campaignType === "EVENT" ) }'>
-      <div class='text-input__loading--line rect-box box-custom'></div>
-    </div>
+     <div class="col-sm-6" *ngIf="referenceService.campaignType !== 'SOCIAL'">
+        <div class='text-input__loading--line rect-box box-custom'></div>
+     </div>
+     <div [ngClass]='{"col-sm-12":referenceService.campaignType === "SOCIAL", "col-sm-6":(referenceService.campaignType === "REGULAR" || referenceService.campaignType === "LANDINGPAGE" || referenceService.campaignType === "EVENT" ) }'>
+        <div class='text-input__loading--line rect-box box-custom'></div>
+     </div>
   </div>
   <div class="col-xs-12 p0">
-    <div class="col-sm-6">
-      <div class='text-input__loading--line rect-box box-custom'></div>
-    </div>
-    <div class="col-sm-6">
-      <div class="row p0" *ngIf="referenceService.campaignType != 'EVENT'">
-        <div class="col-sm-4" *ngFor="let no of textLoader">
-          <div class='text-input__loading--line rect-box  box-custom'></div>
+     <div class="col-sm-6">
+        <div class='text-input__loading--line rect-box box-custom'></div>
+     </div>
+     <div class="col-sm-6">
+        <div class="row p0" *ngIf="referenceService.campaignType != 'EVENT'">
+           <div class="col-sm-4" *ngFor="let no of textLoader">
+              <div class='text-input__loading--line rect-box  box-custom'></div>
+           </div>
         </div>
-      </div>
-      <div class="row p0" *ngIf="referenceService.campaignType === 'EVENT'">
-        <div class="col-sm-3" *ngFor="let no of rowsCount">
-          <div class='text-input__loading--line rect-box  box-custom'></div>
+        <div class="row p0" *ngIf="referenceService.campaignType === 'EVENT'">
+           <div class="col-sm-3" *ngFor="let no of rowsCount">
+              <div class='text-input__loading--line rect-box  box-custom'></div>
+           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-sm-12" *ngIf="referenceService.campaignType==='SOCIAL'">
-      <div class='text-input__loading--line rect-box box-custom'></div>
-    </div>
+     </div>
+     <div class="col-sm-12" *ngIf="referenceService.campaignType==='SOCIAL'">
+        <div class='text-input__loading--line rect-box box-custom'></div>
+     </div>
   </div>
   <div class="col-xs-12">
-    <app-list-loader></app-list-loader>
+     <app-list-loader></app-list-loader>
   </div>
 </div>

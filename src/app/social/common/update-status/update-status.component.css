@@ -552,11 +552,11 @@ body {
   position: relative;
   padding-bottom: 5px;
   display: inline-flex;
-  float:right ;
+  float: right;
 }
 .table tr.contact-list-selected td {
-  background-color: #ddd ;
-  color:#000 ;
+  background-color: #ddd;
+  color: #000;
 }
 
 .status-media img {
@@ -567,4 +567,16 @@ body {
   width: 100%;
   margin: 0 auto;
   float: left;
+}
+.btn-group > .dropdown-toggle:not(:first-child) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.left-flt{
+  float: left !important;
 }

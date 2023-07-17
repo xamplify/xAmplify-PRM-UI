@@ -1,500 +1,551 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
-  <ng-container *ngIf="initLoader">
-    <app-modal-popup-loader></app-modal-popup-loader>
-  </ng-container>
-  <ng-container *ngIf="!initLoader">
-  <div class="page-bar">
-    <div class="col-md-12 col-lg-12">
-      <div class="row">
-        <div class="col-md-6 col-lg-6 text-left">
-          <ul class="page-breadcrumb">
-            <li>
-              <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li>
-              <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-					    <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li>
-              <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
-              <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </li>
-            <li><a translate>{{headerText}}</a></li>
-          </ul>
-        </div>
-        <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
-          <div class="cf-padding-dam">
-            <div style="margin-top: -1px;">
-            <a class="close-circle" (click)="closeCircle()"  title="Close">
-              <i class="fa fa-times" aria-hidden="true"></i>
-              </a>
-              </div>
-            <div>
-              <button class="btn btn custom" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-            </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-lg-12">
-      <div class="portlet light mScroll">
-        <div class="portlet-title">
-          <div class="caption" translate>
-            {{headerText}}
-          </div>
-          <div *ngIf="previewItems" class="btn-group" id="right">
-            <a class="close-circle" (click)="closePreview()"  title="Close">
-            <i class="fa fa-times" aria-hidden="true"></i>
-            </a> 
-          </div>
-        </div>
-        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-        </app-response-message>
-        <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
-        <ng-container *ngIf="!previewItems">
-          <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
-            <div class="form-horizontal form-bordered form-label-stripped">
-              <div class="portlet box">
-                <div class="">
-                  <div class="col-md-12 col-lg-12">
-                    <div class="form-group">
-                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
-                      
-                      <!-- start here -->
-                      <div class="col-xs-12">
-					<div *ngIf="processing" class="row">
-            <div class="alert alert-success alertMessageCustom loaderSymbol mb10">
-              <span><img alt="" src="assets/images/loadbar.gif" class="loader-image-tag"></span>
-              <span class="text-css" *ngIf="processing">{{properties.VIDEO_PROCESS_MESSAGE}}</span>
-            </div>
-					</div>
-					<!-- changes   -->
-					<div class="col-xs-12 row" [ngClass]="{'upload-video-css': showVideoPreview}">
-						<div *ngIf="showVideoPreview">
-							<div >
-								<div class="col-xs-12 col-sm-4 col-md-4 video-padding">
-									<video *ngIf="browserInfo!=='safari'" id="my-video" controls preload="auto">
-										<source [src]='videoPreviewPath' type='video/mp4'>
-										<source [src]='videoPreviewPath' type='video/quicktime'>
-										<source [src]="videoPreviewPath" type='video/x-msvideo'>
-										<source [src]="videoPreviewPath" type='video/mpeg'>
-										<source [src]="videoPreviewPath" type='video/dvd'>
-										<source [src]="videoPreviewPath" type='video/xvid'>
-									</video>
-									<img alt="" *ngIf="browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" id="my-video">
-                </div>
-                <div class="col-xs-12 col-sm-8 col-md-8">
-								<div class="col-xs-12 col-sm-12 col-md-6">
-									<h3 [title]="item?.file?.name" style=" color: #00a6e8;font-weight: 550;font-size: 19px; ">{{ trimVideoTitle(uploadedAssetName) }}</h3>
-									<h5 style="font-weight: 700;color: #929292;letter-spacing: 1px;">{{(fileSize/1024/1024).toFixed(2) }} MB</h5>
-									<div class="progress">
-										<div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0"
-										 aria-valuemax="100" [ngStyle]="{ 'width': progress + '%' }">
-											<span *ngIf="progress !== 0">{{progress}} %</span>
-										</div>
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-12 col-md-6 upload-button" nowrap style="float: right;">
-									<button class="text-center video" *ngIf="processing">
-											<span *ngIf="processing"><i class="glyphicon glyphicon-ok"></i></span>
-										</button> 
-									<button [disabled]="processing==true || isDisableForm" type="button" class="btn btn-danger btn-sm" (click)="removefileUploadVideo()" translate>
-											<span class="glyphicon glyphicon-trash"></span> Remove
-										</button>
-                </div>
-                </div>
-							</div>
-						</div>
-					</div>
-					<!-- changes done  -->
-					<div>
-					</div>
-				</div>
-                      <!-- end here -->
-                      
-                        <!---Asset-->
-                        <div class="mb-padding" *ngIf="isAdd">
-                          <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
-                                class="required">*</span></strong></span>
-<div class="row">
-      
-  <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
-                          <div class="upload-asset-div" (click)="browse()" (drop)="chooseAsset($event)">
-                            <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;"
-                              id="uploadedAsset">
-                            <div class="text-center">
-                              <img src="../../../assets/images/uploadimage.png" alt="">
-                              <h2 class="upload-video" style="margin:-5px;padding-top: 5px;" translate>Upload
-                                Asset</h2>
-                              <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6>
-                              <button class="btn btn-primary" style="color:#fff" translate>Browse</button>
-                              <br><br>
-                              <span *ngIf="uploadedAssetName?.length>0">
-                                <strong>File Name : {{uploadedAssetName | slice: 0: 23}}</strong>
-                              </span>
-                              <span *ngIf="uploadedAssetName?.length==0">
-                                <strong>No File Selected</strong>
-                              </span>
-                            </div>
-                          </div>
-  </div>
- <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
- <div class="upload-asset-div">
-  <div class="text-center" style="margin-bottom:10px;">
-  <br/> 
-					<div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" >
-						<img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
-						 height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
-						<div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;" translate>WebCam</div>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-3 text-center" >
-						<img src="assets/images/Dropbox.png" class="dropBox" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
-						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
-						<div style="font-weight: 600;color: #55bede;margin: 9px 13px;" translate>DropBox</div>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
-						<img src="assets/images/box.png" class="box" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="downloadFrombox()"
-						 height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
-						<div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;" translate>Box</div>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
-						<img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
-						 (click)="googleDriveChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
-						 onMouseOut="this.style.opacity= 0.7">
-						<div style="font-weight: 600; color: #eec24c; margin: 9px 3px" translate>GoogleDrive</div>
-          </div>
-                              <span *ngIf="uploadedCloudAssetName?.length>0">
-                                <strong>File Name : {{uploadedCloudAssetName | slice: 0: 23}}</strong>
-                              </span>
-                              <span *ngIf="uploadedCloudAssetName?.length==0">
-                                <strong>No File Selected</strong>
-                              </span>
-                              </div>
-                              <br/>
-          </div>
-  </div>
-
-</div>
-                          <div class="col-xs-12 p0 top10px md-padd">
-                            <div class="col-xs-12 message-content">
-                              <ul>
-                                <li translate>Maximum file size is 800 MB.</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row" [class.customDisableCss]='isDisableForm==true'>
-                        <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8" style="padding-right: 0;">
-                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" translate>Name
-                                <span class="required">*</span>
-                              </label>
-                              <div class="col-sm-10">
-                                <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"
-                                  [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
-                                <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
-                              </div>
-                            </div>
-                          </div>
-                          <!---XNFR-169-->
-                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" translate>Folder
-                                <span class="required">*</span>
-                              </label>
-                              <div class="col-sm-10" *ngIf="showFolderDropDown">
-                                <app-select-dropdown [categoryId]="damUploadPostDto.categoryId" [disabled]="damUploadPostDto.historyTemplate"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!---White Labeled-- XNFR-255-->
-                          <!-- <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
-                            <div class="form-group">
-                              <label class="control-label col-sm-2" translate>White Labeled</label>
-                              <div class="col-sm-10">
-                                <switch class="pull-left" [status]="damUploadPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                (statusChange)="setWhiteLabeled($event)">
-                                </switch>
-                              </div>
-                            </div>
-                          </div> -->
-                          <!---White Labeled-- XNFR-255-->
-
-                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                            <div class="form-group" style="margin-bottom: 0;">
-                              <label class="control-label col-sm-2" translate>Tags
-                              </label>
-                              <div class="col-sm-10 inline">
-                                <div class="portlet light" style="width: 100%;padding: 5px !important;">
-                                  <div class="portlet-title tabbable-line " style="margin-bottom: 0px !important;">
-                                    <div class="inline" style="float: right;">
-                                      <div class="input-icon left" style="padding-bottom: 5px;">
-                                        <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
-                                          placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
-                                          style="padding: 6px 12px;">
-                                        <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
-                                          (click)="tagSearchKey='';searchTags();"></button>
-                                        <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
-                                          <i class="fa fa-search cesf-xamp"></i></button>
-                                      </div>
-                                      <div style="padding-left: 10px;">
-                                        <button type="button" class="btn btn-primary add-btn" (click)="addTag()">
-                                          <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="scroller-lg">
-                                    <table class="table table-bordered no-footer tags-table" id="tags_list">
-                                      <tbody>
-                                        <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
-                                          style="vertical-align: middle;padding: 0px;">
-                                          <td style="padding: 5px;vertical-align: middle;"
-                                            (click)="updateSelectedTags(tag,$event.target.checked)">
-                                            <div class="col-sm-2 col-sm-offset-2">
-                                              <label class="forms-check-label inline">
-                                                <input type="checkbox" class="form-check-input "
-                                                  [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tag.id)>-1">
-                                              </label>
-                                            </div>
-                                            <div class="col-sm-5" style="padding-left: 0px !important;" title="{{tag.tagName}}">
-
-                                              <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
-                                                {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
-
-                                            </div>
-                                          </td>
-                                          <td style="padding: 5px;vertical-align: middle;"
-                                            (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
-                                            <div class="col-sm-2 col-sm-offset-2">
-                                              <label class="forms-check-label inline">
-                                                <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                                  type="checkbox" class="form-check-input "
-                                                  [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
-                                              </label>
-                                            </div>
-                                            <div class="col-sm-5" style="padding-left: 5px !important;">
-                                              <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"  title="{{tagsListSecondColumn[i].tagName}}"
-
-                                                class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
-                                                {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
-
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                    <div
-                                      *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
-                                      class="alert alert-info">
-                                      <strong>No Tags Found.</strong>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4" style="padding-left: 0;">
-                          <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
-                            <!---Thumbnail Image-->
-                            <!-- <label *ngIf="!isAdd" class="control-label" translate>
-                                            </label> -->
-                            <div>
-                              <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>
-                              <div class="asset-thumbnail-div-sm mThumbwidth" (click)="browseThumbnail()">
-                                <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
-                                  style="opacity: 0.0; position: absolute;">
-                                <span *ngIf="showDefaultLogo && !croppedImage">
-                                  <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
-                                </span>
-                                <span *ngIf="croppedImage">
-                                  <!-- <a class="close-circle" (click)="$event.stopPropagation();clearThumbnailImage();" title="Remove">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                  </a> -->
-                                  <img class="asset-img-grid-sm" [src]="croppedImage" alt="">
-                                </span>
-                                <!-- <span *ngIf="imagepath">
-                                  <img class="asset-img-grid-sm" [src]="imagepath" alt="">
-                                </span> -->
-                                <span *ngIf="!isAdd && !croppedImage">
-                                  <img class="asset-img-grid-sm" [src]="damUploadPostDto.thumbnailPath" (error)="errorHandler($event)"
-                                    alt="">
-                                </span>
-                                <a class="btn btn-primary1 profile-pic" title="upload 2:1 ratio logo">
-                                  &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
-                                    style="font-size:25px;padding-top:10px"></i></a>
-                              </div>
-                              <div class="col-xs-12 p0 top10px mWidth">
-                                <div class="col-xs-12 message-content">
-                                  <ul>
-                                    <li translate>Maximum file size is 10 MB.</li>
-                                    <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div style="text-align: center;">
-                        <span class="required" *ngIf="!damUploadPostDto.validDescription && descriptionErrorMessage?.length > 0"
-                          style="position: absolute;">{{descriptionErrorMessage}}</span>
-                      </div>
-                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mb-padding" [class.customDisableCss]='isDisableForm==true'>
-                        <table class="table" id="description" style="margin-top: 5px;">
-                          <tbody>
-                            <tr>
-                              <td class="desc" style="width: 11%;"><label class="control-label" translate>Description
-                                  <span class="required">*</span>
-                                </label></td>
-                              <td class="desc">
-                                <div class="mDesc">
-                                  <!-- <textarea class="form-control" rows="7"  [(ngModel)]="damUploadPostDto.description"  [ngModelOptions]="{standalone: true}"  placeholder="Enter Description" maxlength="5000" (input)="validateForm('description')"></textarea> -->
-                                  <ckeditor #ckeditor [(ngModel)]="damUploadPostDto.description" [ngModelOptions]="{standalone: true}"
-                                    [config]="ckeConfig" (ready)="onReady($event)" debounce="500" maxlength="5000"
-                                    (change)="validateForm('description')"
-                                    (input)="getCkEditorData();validateForm('description')">
-                                  </ckeditor>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+   <ng-container *ngIf="initLoader">
+      <app-modal-popup-loader></app-modal-popup-loader>
+   </ng-container>
+   <ng-container *ngIf="!initLoader">
+      <div class="page-bar">
+         <div class="col-md-12 col-lg-12">
+            <div class="row">
+               <div class="col-md-6 col-lg-6 text-left">
+                  <ul class="page-breadcrumb">
+                     <li>
+                        <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                     </li>
+                     <li>
+                        <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                     </li>
+                     <li>
+                        <a *ngIf="isAdd" (click)="goToSelect()" translate>Design/Upload</a>
+                        <a *ngIf="!isAdd" (click)="goToManageDam()" translate>Manage</a>    
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                     </li>
+                     <li><a translate>{{headerText}}</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
+                  <div class="cf-padding-dam">
+                     <div style="margin-top: -1px;">
+                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom"
+                        title="Close">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+                     </div>
+                     <div>
+                        <button class="btn btn-primary" style="margin-right: 4px;"  (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                     </div>
                   </div>
-                </div>
-          </div>
-          <div class="footer">
-          <button [disabled]="isDisableForm" class="btn btn-default" id="right" style="margin-right: 20px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
-          <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate>{{submitButtonText}}</button>
-          </div>
-        </div>
+               </div>
+            </div>
+         </div>
       </div>
-      </ng-container>
-      <ng-container *ngIf="previewItems">
-        <app-image-loader  image="{{previewPath}}"></app-image-loader>
-      </ng-container>
-    </div>
-  </div>
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            <div class="portlet light mScroll">
+               <div class="portlet-title">
+                  <div class="caption" translate>
+                     {{headerText}}
+                  </div>
+                  <div *ngIf="previewItems" class="btn-group" id="right">
+                     <a class="close-circle" (click)="closePreview()" data-toggle="tooltip" data-placement="bottom"
+                     title="Close">
+                     <i class="fa fa-times" aria-hidden="true"></i>
+                     </a> 
+                  </div>
+               </div>
+               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+               </app-response-message>
+               <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
+               <ng-container *ngIf="!previewItems">
+                  <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
+                     <div class="form-horizontal form-bordered form-label-stripped">
+                        <div class="portlet box">
+                           <div class="">
+                              <div class="col-md-12 col-lg-12">
+                                 <div class="form-group">
+                                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
+                                       <!-- start here -->
+                                       <div class="col-xs-12">
+                                          <div *ngIf="processing" class="row">
+                                             <div class="alert alert-success alertMessageCustom loaderSymbol mb10">
+                                                <span><img alt="" src="assets/images/loadbar.gif" class="loader-image-tag"></span>
+                                                <span class="text-css" *ngIf="processing">{{properties.VIDEO_PROCESS_MESSAGE}}</span>
+                                             </div>
+                                          </div>
+                                          <!-- changes   -->
+                                          <div class="col-xs-12 row" [ngClass]="{'upload-video-css': showVideoPreview}">
+                                             <div *ngIf="showVideoPreview">
+                                                <div >
+                                                   <div class="col-xs-12 col-sm-4 col-md-4 video-padding">
+                                                      <video *ngIf="browserInfo!=='safari'" id="my-video" controls preload="auto">
+                                                         <source [src]='videoPreviewPath' type='video/mp4'>
+                                                         <source [src]='videoPreviewPath' type='video/quicktime'>
+                                                         <source [src]="videoPreviewPath" type='video/x-msvideo'>
+                                                         <source [src]="videoPreviewPath" type='video/mpeg'>
+                                                         <source [src]="videoPreviewPath" type='video/dvd'>
+                                                         <source [src]="videoPreviewPath" type='video/xvid'>
+                                                      </video>
+                                                      <img alt="" *ngIf="browserInfo==='safari'" src="assets/images/no-preview.jpg" style="border: 2px solid #00a6e8;" id="my-video">
+                                                   </div>
+                                                   <div class="col-xs-12 col-sm-8 col-md-8">
+                                                      <div class="col-xs-12 col-sm-12 col-md-6">
+                                                         <h3 [title]="item?.file?.name" style=" color: #00a6e8;font-weight: 550;font-size: 19px; ">{{ trimVideoTitle(uploadedAssetName) }}</h3>
+                                                         <h5 style="font-weight: 700;color: #929292;letter-spacing: 1px;">{{(fileSize/1024/1024).toFixed(2) }} MB</h5>
+                                                         <div class="progress">
+                                                            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                                                               aria-valuemax="100" [ngStyle]="{ 'width': progress + '%' }">
+                                                               <span *ngIf="progress !== 0">{{progress}} %</span>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <div class="col-xs-12 col-sm-12 col-md-6 upload-button" nowrap style="float: right;">
+                                                         <button class="text-center video" *ngIf="processing">
+                                                         <span *ngIf="processing"><i class="glyphicon glyphicon-ok"></i></span>
+                                                         </button> 
+                                                         <button [disabled]="processing==true || isDisableForm" type="button" class="btn btn-danger btn-sm" (click)="removefileUploadVideo()" translate>
+                                                         <span class="glyphicon glyphicon-trash"></span> Remove
+                                                         </button>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <!-- changes done  -->
+                                          <div>
+                                          </div>
+                                       </div>
+                                       <!-- end here -->
+                                       <!---Asset-->
+                                       <div class="mb-padding" *ngIf="isAdd">
+                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
+                                             class="required">*</span></strong></span>
+                                          <div class="row">
+                                             <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+                                                <div class="upload-asset-div" (click)="browse()" (drop)="chooseAsset($event)">
+                                                <input type="file" (change)="chooseAsset($event)" style="opacity: 0.0; position: absolute;"
+                                                   id="uploadedAsset">
+                                                <div class="text-center">
+                                                   <img src="../../../assets/images/uploadimage.png" alt="">
+                                                   <h2 class="upload-video" style="margin:-5px;padding-top: 5px;" translate>Upload
+                                                      Asset
+                                                   </h2>
+                                                   <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE | translate}}</h6>
+                                                   <button class="btn btn-primary" style="color:#fff" translate>Browse</button>
+                                                   <br><br>
+                                                   <span *ngIf="uploadedAssetName?.length>0">
+                                                   <strong>File Name : {{uploadedAssetName | slice: 0: 23}}</strong>
+                                                   </span>
+                                                   <span *ngIf="uploadedAssetName?.length==0">
+                                                   <strong>No File Selected</strong>
+                                                   </span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+                                             <div class="upload-asset-div">
+                                                <div class="text-center" style="margin-bottom:10px;">
+                                                   <br/> 
+                                                   <div class="col-xs-6 col-sm-3 col-md-3 text-center hidden-xs hidden-sm" >
+                                                      <img src="assets/images/record.png" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to record using your webcam" (click)="cameraChange()"
+                                                         height="50" width="auto" class="camera" style=" border: 5px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+                                                      <div style="font-weight: 600;color: #ea7b92; margin: 9px 12px;" translate>WebCam</div>
+                                                   </div>
+                                                   <div class="col-xs-4 col-sm-4 col-md-3 text-center" >
+                                                      <img src="assets/images/Dropbox.png" class="dropBox" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Dropbox account" (click)="dropBoxChange()"
+                                                         height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+                                                      <div style="font-weight: 600;color: #55bede;margin: 9px 13px;" translate>DropBox</div>
+                                                   </div>
+                                                   <div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
+                                                      <img src="assets/images/box.png" class="box" alt="" data-toggle="tooltip" data-placement="bottom" title="Click here to access videos from your Box account" (click)="downloadFrombox()"
+                                                         height="50" width="auto" style="cursor:pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1" onMouseOut="this.style.opacity= 0.7">
+                                                      <div style="font-weight: 600;margin: 9px 24px;color: #6eabd7;" translate>Box</div>
+                                                   </div>
+                                                   <div class="col-xs-4 col-sm-4 col-md-3 text-center margin-top-16" >
+                                                      <img src="assets/images/GoogleDrive.png" alt="" data-toggle="tooltip" data-placement="bottom" class="googleDrive" title="Click here to access videos from your GoogleDrive account"
+                                                         (click)="googleDriveChange()" height="50" width="auto" style="cursor: pointer; border: 1px; margin: 10px;" onMouseOver="this.style.opacity= 1"
+                                                         onMouseOut="this.style.opacity= 0.7">
+                                                      <div style="font-weight: 600; color: #eec24c; margin: 9px 3px" translate>GoogleDrive</div>
+                                                   </div>
+                                                   <span *ngIf="uploadedCloudAssetName?.length>0">
+                                                   <strong>File Name : {{uploadedCloudAssetName | slice: 0: 23}}</strong>
+                                                   </span>
+                                                   <span *ngIf="uploadedCloudAssetName?.length==0">
+                                                   <strong>No File Selected</strong>
+                                                   </span>
+                                                </div>
+                                                <br/>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-xs-12 p0 top10px md-padd">
+                                          <div class="col-xs-12 message-content">
+                                             <ul>
+                                                <li translate>Maximum file size is 800 MB.</li>
+                                             </ul>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row" [class.customDisableCss]='isDisableForm==true'>
+                                    <div class="col-md-8 col-lg-8 col-xs-12 col-sm-8">
+                                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                          <div class="form-group">
+                                             <label class="control-label col-sm-2" translate>Name
+                                             <span class="required">*</span>
+                                             </label>
+                                             <div class="col-sm-10">
+                                                <input type="text" maxlength="255" class="form-control" [(ngModel)]="damUploadPostDto.assetName"
+                                                [ngModelOptions]="{standalone: true}" placeholder="Enter Name" (input)="validateForm('assetName')">
+                                                <span class="required" *ngIf="dupliateNameErrorMessage?.length>0">{{dupliateNameErrorMessage}}</span>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <!---XNFR-169-->
+                                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                          <div class="form-group">
+                                             <label class="control-label col-sm-2" translate>Folder
+                                             <span class="required">*</span>
+                                             </label>
+                                             <div class="col-sm-10" *ngIf="showFolderDropDown">
+                                                <app-select-dropdown [categoryId]="damUploadPostDto.categoryId" [disabled]="damUploadPostDto.historyTemplate"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <!---White Labeled-- XNFR-255-->
+                                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
+                                          <div class="form-group">
+                                          <label class="control-label col-sm-2" translate>White Labeled</label>
+                                          <div class="col-sm-10">
+                                             <switch [disabled]="damUploadPostDto?.disableWhiteLabelOption" class="pull-left" [status]="damUploadPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                             (statusChange)="setWhiteLabeled($event)">
+                                             </switch>
+                                             <span class="info-color-xampc">
+                                                <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                                                   data-placement="top" aria-hidden="true"
+                                                   [title]="isAdd ? 'Share As White Labeled Content':damUploadPostDto?.whiteLabeledToolTipMessage"></i>
+                                             </span>
+                                          </div>
+                                          </div>
+                                       </div>
+                                       <!---White Labeled-- XNFR-255-->
+                                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                          <div class="form-group" style="margin-bottom: 0;">
+                                             <label class="control-label col-sm-2" translate>Tags
+                                             </label>
+                                             <div class="col-sm-10  col-xs-12 inline">
+                                                <div class="portlet light" style="width: 100%;padding: 5px !important;">
+                                                   <div class="portlet-title tabbable-line aligncheckbox-lineto-table">
+                                                      <div class="inline" style="float: right;">
+                                                         <div class="input-icon left" style="padding-bottom: 5px;">
+                                                            <input type="text" [(ngModel)]="tagSearchKey" [ngModelOptions]="{standalone: true}"
+                                                            placeholder="Search..." class="form-control" (keypress)="tagEventHandler($event.keyCode);"
+                                                            style="padding: 6px 12px;">
+                                                            <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSearchKey"
+                                                            (click)="tagSearchKey='';searchTags();"></button>
+                                                            <button type="button" class="search-box-item-click email-search" (click)="searchTags()">
+                                                            <i class="fa fa-search cesf-xamp"></i></button>
+                                                         </div>
+                                                         <div style="padding-left: 10px;">
+                                                            <button type="button" class="btn btn-primary add-btn" (click)="addTag()"  data-toggle="tooltip"  data-placement="top" title="Add a Tag"> 
+                                                            <i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="scroller-lg">
+                                                      <table class="table table-bordered no-footer tags-table" id="tags_list">
+                                                         <tbody>
+                                                            <tr role="row" *ngFor="let tag of tagsListFirstColumn;let i = index"
+                                                               style="vertical-align: middle;padding: 0px;">
+                                                               <td style="padding: 5px;vertical-align: middle;"
+                                                                  (click)="updateSelectedTags(tag,$event.target.checked)">
+                                                                  <div class="col-xs-2 col-sm-2 col-lg-2 col-sm-offset-2 ml_0">
+                                                                     <label class="forms-check-label inline">
+                                                                     <input type="checkbox" class="form-check-input "
+                                                                        [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tag.id)>-1">
+                                                                     </label>
+                                                                  </div>
+                                                                  <div>
+                                                                  <div class="col-xs-9 col-sm-9 col-lg-5 pl_4" style="padding-left: 0px;" 
+                                                                  data-toggle="tooltip" data-placement="bottom"
+                                                                  title="{{tag.tagName}}">
+                                                                     <div class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
+                                                                        {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span>
+                                                                     </div>
+                                                                  </div>
+                                                                 </div>
+                                                               </td>
+                                                               <td style="padding: 5px;vertical-align: middle;"
+                                                                  (click)="updateSelectedTags(tagsListSecondColumn[i],$event.target.checked)">
+                                                                  <div class="col-xs-2 col-sm-2 col-lg-2 col-sm-offset-2 ml_0">
+                                                                     <label class="forms-check-label inline">
+                                                                     <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                                                     type="checkbox" class="form-check-input "
+                                                                     [checked]="damUploadPostDto.tagIds != undefined && damUploadPostDto.tagIds.length > 0 && damUploadPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
+                                                                     </label>
+                                                                  </div>
+                                                                  <div class="col-xs-9 col-sm-9 col-lg-5 pl_4" style="padding-left: 0px;" *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
+                                                                     title="{{tagsListSecondColumn[i].tagName}}"  data-toggle="tooltip" data-placement="bottom">
+                                                                     <div 
+                                                                        class="btn text-wrap btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 2px !important;">
+                                                                        {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span>
+                                                                     </div>
+                                                                  </div>
+                                                               </td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                      <div
+                                                         *ngIf="(tagsListFirstColumn == undefined || 1 > tagsListFirstColumn.length) && (tagsListSecondColumn == undefined || 1 > tagsListSecondColumn.length)"
+                                                         class="alert alert-info">
+                                                         <strong>No Tags Found.</strong>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 mb_pl_15" style="padding-left: 0;">
+                                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                          <!---Thumbnail Image-->
+                                          <div>                                            
+                                             <span [style.color]="invalidThumbnail ? 'red':''"><strong>Upload Thumbnail </strong></span>        
+                                             <div class="asset-thumbnail-div-sm mThumbwidth mb_imgwidth" (click)="browseThumbnail()">
+                                                <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
+                                                   style="opacity: 0.0; position: absolute;">                                                 
+                                                <span *ngIf="showDefaultLogo && !croppedImage">
+                                                <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
+                                                </span>
+                                                <span *ngIf="croppedImage">
+                                                <img class="asset-img-grid-sm" [src]="croppedImage" alt="">
+                                                </span>
+                                                <span *ngIf="!isAdd && !croppedImage">
+                                                <img class="asset-img-grid-sm" [src]="damUploadPostDto.thumbnailPath" (error)="errorHandler($event)"
+                                                alt="">
+                                                </span>
+                                                <a class="btn btn-primary1 profile-pic"  data-toggle="tooltip" data-placement="bottom" 
+                                                 title="upload 2:1 ratio logo">
+                                                &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                                                   style="font-size:25px;padding-top:10px"></i></a>
+                                             </div>
+                                             <div class="col-xs-12 p0 top10px mWidth">
+                                                <div class="col-xs-12 message-content">
+                                                   <ul>
+                                                      <li translate>Maximum file size is 10 MB.</li>
+                                                      <li translate>Please Upload <strong>.jpg, .jpeg, .png </strong>files only.</li>
+                                                   </ul>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div style="text-align: center;">
+                                    <span class="required" *ngIf="!damUploadPostDto.validDescription && descriptionErrorMessage?.length > 0"
+                                       style="position: absolute;">{{descriptionErrorMessage}}</span>
+                                 </div>
+                                 <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 mb-padding" [class.customDisableCss]='isDisableForm==true'>
+                                    <table class="table" id="description" style="margin-top: 5px;">
+                                       <tbody>
+                                          <tr>
+                                             <td class="desc" style="width: 11%;"><label class="control-label" translate>Description
+                                                <span class="required">*</span>
+                                                </label>
+                                             </td>
+                                             <td class="desc">
+                                                <div class="mDesc">                                 
+                                                   <ckeditor #ckeditor [(ngModel)]="damUploadPostDto.description" [ngModelOptions]="{standalone: true}"
+                                                   [config]="ckeConfig" (ready)="onReady($event)" debounce="500" maxlength="5000"
+                                                   (change)="validateForm('description')"
+                                                   (input)="getCkEditorData();validateForm('description')">
+                                                   </ckeditor>
+                                                </div>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                                 <!---XNFR-255-->
+                                 <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                                    <table class="table">
+                                    <tbody>
+                                       <tr>
+                                          <td class="desc" style="width: 11%;">
+                                          <label class="control-label" translate>
+                                          </label>
+                                          </td>
+                                          <td class="desc">
+                                          <div class="mDesc">
+                                             <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                                          </div>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="footer">
+                        <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right" style="margin-right: 20px;"  type="button"  (click)="closeCircle()" translate>Cancel</button>
+                        <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"  class="btn btn-primary" type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate>{{submitButtonText}}</button>
+                     </div>
+                  </div>
+            </div>
+            </ng-container>
+            <ng-container *ngIf="previewItems">
+               <app-image-loader  image="{{previewPath}}"></app-image-loader>
+            </ng-container>
+         </div>
+      </div>
 </div>
 </ng-container>
 </div>
 <!---Thumbnail Modal Pop Up-->
 <div class="modal right fade" id="thumbnailImageModal" tabindex="-1"
-	role="dialog" aria-labelledby="thumbnailImageModal" data-keyboard="false"
-	data-backdrop="static">
-	<div class="modal-dialog imgCrop-modal scroll-overflow" role="document">
-		<div class="modal-content rounded-0">
-			<div class="modal-header">
-				<h4 class="modal-title">{{thumbnailImageText}}</h4>
-			</div>
+   role="dialog" aria-labelledby="thumbnailImageModal" data-keyboard="false"
+   data-backdrop="static">
+   <div class="modal-dialog imgCrop-modal" role="document">
+      <div class="modal-content rounded-0">
+         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
+         <div class="modal-header">
+            <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+             </a>
+            <h4 class="modal-title">{{thumbnailImageText}}</h4>
+         </div>
          <div class="modal-body" style="overflow-y: unset !important;">
             <div>
-					<ul style="padding: 0 15px;">
-						<li>For optimal results, your logo should fit within the
-							white rectangle.</li>
-						<li>If you would like to use a different logo in an email
-							template, you can change it during the template design process.</li>
-					</ul>
+               <ul style="padding: 0 15px;">
+                  <li>For optimal results, your logo should fit within the
+                     white rectangle.
+                  </li>
+                  <li>If you would like to use a different logo in an email
+                     template, you can change it during the template design process.
+                  </li>
+               </ul>
             </div>
             <br>
-				<div>
-					<div [hidden]="!imageSelected">
-						<image-cropper [imageChangedEvent]="imageSelected"
-							[maintainAspectRatio]="false" [onlyScaleDown]="true"
-							[roundCropper]="false" format="jpg" outputType="base64"
-							(imageCropped)="cropThumbnailImage($event)"
-							(imageLoaded)="loadThumbnailImage()"
-							(imageQuality)=0 	[style.display]="showCropper ? null : 'none'"></image-cropper>
-					</div>
-					<div *ngIf="!imageSelected">
-						<legend style="background: #cacaca; height: 227px; margin-bottom: 5px;">
-						</legend>
-					</div>
+            <div>
+               <div [hidden]="!imageSelected">
+                  <!-- <image-cropper [imageChangedEvent]="imageSelected"
+                  [maintainAspectRatio]="false" [onlyScaleDown]="true"
+                  [roundCropper]="false" format="jpg" outputType="base64"
+                  (imageCropped)="cropThumbnailImage($event)"
+                  (imageLoaded)="loadThumbnailImage()"
+                  (imageQuality)=0 	[style.display]="showCropper ? null : 'none'"></image-cropper> -->
+                  <app-img-croppr-v2
+                  [imageChangedEvent]="imageSelected"
+                  [maintainAspectRatio]="true"
+                  [containWithinAspectRatio]="containWithinAspectRatio"
+                  [aspectRatio]="16/ 9"
+                  [resizeToWidth]="1920"
+                  [cropperMinWidth]="1080"
+                  [onlyScaleDown]="true"
+                  [roundCropper]="false"
+                  [alignImage]="'left'"
+                  [style.display]="showCropper ? null : 'none'"
+                  format="png"
+                  [transform]="transform"
+                  (imageCropped)="imageCroppedMethod($event)"
+                  (imageLoaded)="imageLoaded()"
+                  (cropperReady)="cropperReady($event)"
+                  (loadImageFailed)="loadImageFailed()">
+                  </app-img-croppr-v2>
+               </div>
+               <div *ngIf="!imageSelected">
+                  <legend style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+                  </legend>
+               </div>
             </div>
             <br>
-				<div>
-					<button class="btn btn-primary" [disabled]="!showCropper"
-						(click)="saveThumbnail()">Save Changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<svg id="svg-filter">
-        <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
-        </filter>
-    </svg>
+            <div class="d-flex justify-content-between">
+            <div class="button-group" style="position: relative;text-align:left">
+               <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                 <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+                 {{
+                   containWithinAspectRatio
+                   ? 'Fill Aspect Ratio'
+                   : 'Contain Within Aspect Ratio'
+                 }}
+                 </button>
+               <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
+               <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                           <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+             </div>
+            <div>
+               <button class="btn btn-primary" [disabled]="!showCropper"
+               (click)="saveThumbnail()">Save Changes</button>
+            </div>
+         </div>
+         </div>
+      </div>
+   </div>
+   <svg id="svg-filter">
+      <filter id="svg-blur">
+         <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+      </filter>
+   </svg>
 </div>
-
 <!-- ADD TAG POPUP -->
 <div *ngIf="openAddTagPopup">
-  <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
-  </app-add-tags-util>
+   <app-add-tags-util [pagination]="pagination" [isAddTag]="true" (notifyParent)="resetTagValues($event)">
+   </app-add-tags-util>
 </div>
-
-
-
-	<!--record video model popup start-->
-	<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog modal-cam" role="document">
-			<div class="modal-content" style="border-radius:0">
-				<div class="modal-header">
-					<button [ngClass]="{customDisableCss: !closeModalId }" [disabled]="closeModalId ==false" type="button" class="closeModal close-circle"
-					 data-dismiss="modal" aria-hidden="true" (click)="recordModalPopupAfterUpload()"><i class="fa fa-times"></i></button>
-					<h4 class="modal-title" id="myModalLabel"><strong translate>Record Video from WebCam</strong></h4>
-				</div>
-        <div class="modal-body" style="padding: 0px 10px 0px 10px;">
-          <app-response-message [customResponse]="recordCustomResponse" *ngIf="recordCustomResponse.isVisible"></app-response-message>
-					<form>
-						<div class="input-group" style="width: 100%;">
-							<div>
-								<div id="script" style="display: block;">
-									<textarea id="script-text" class="record-textarea heading-top" [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" [ngModelOptions]="{standalone:true}"
-									 placeholder=" Don't forget what you want to say. Add your script here.">
-						      </textarea>
-								</div>
-								<div id="scrollSpeedDiv" class="col-xs-12 col-md-12" style="padding:0">
-									<div class="col-xs-12 col-sm-4 col-md-4" style="padding:0" translate>Scroll Speed: 1
-										<span style="color: red;" translate> [fast]</span> - 10
-										<span style="color: red;" translate> [slow]</span>
-									</div>
-									<div class="col-xs-11 col-sm-7 col-md-7" style="padding:0">
-										<input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10"
-										 value="1" step="1" [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" style="border: 0px solid #cecece; width:100%">
-									</div>
-									<div class="col-xs-1 col-sm-1 col-md-1" style="padding:0">
-										<span style="color: red;font-weight: bold;float:right">{{changeVolume}}</span>
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-3" style="float:right;padding:0">
-									<button class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" style="float: right; margin-bottom: 4px;"
-									 *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true" translate>Test Scroll Speed</button>
-									<button class="btn btn-primary" type="button" value="Stop" (click)="stop()" style="float: right; margin-bottom: 4px;" *ngIf="stopButtonShow"
-									 [disabled]="stopButtonDisabled ==true" translate>Stop</button>
-								</div>
-							</div>
-							<video id="myVideo" class="col-xs-12 video-js vjs-default-skin"></video>
-						</div>
-						<div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
-							<div>
-								<button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()" translate>Upload</button>
-								<button [disabled]="discardVideo==false" class="btn btn-danger" role="button" (click)="removeRecordVideo()" translate>Discard</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- record video modal popup end  -->
-  <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
+<!--record video model popup start-->
+<div class="modal right fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
+   <div class="modal-dialog modal-cam" role="document">
+      <div class="modal-content" style="border-radius:0">
+         <div class="modal-header">
+            <button [ngClass]="{customDisableCss: !closeModalId }" [disabled]="closeModalId ==false" type="button" class="closeModal close-circle"
+            data-dismiss="modal" aria-hidden="true" (click)="recordModalPopupAfterUpload()"><i class="fa fa-times"></i></button>
+            <h4 class="modal-title" id="myModalLabel"><strong translate>Record Video from WebCam</strong></h4>
+         </div>
+         <div class="modal-body" style="padding: 0px 10px 0px 10px;">
+            <app-response-message [customResponse]="recordCustomResponse" *ngIf="recordCustomResponse.isVisible"></app-response-message>
+            <form>
+               <div class="input-group" style="width: 100%;">
+                  <div>
+                     <div id="script" style="display: block;">
+                        <textarea id="script-text" class="record-textarea heading-top" [(ngModel)]="textAreaValue" (ngModelChange)="textAreaEmpty()" [ngModelOptions]="{standalone:true}"
+                        placeholder=" Don't forget what you want to say. Add your script here.">
+                        </textarea>
+                     </div>
+                     <div id="scrollSpeedDiv" class="col-xs-12 col-md-12" style="padding:0">
+                        <div class="col-xs-12 col-sm-4 col-md-4" style="padding:0" translate>Scroll Speed: 1
+                           <span style="color: red;" translate> [fast]</span> - 10
+                           <span style="color: red;" translate> [slow]</span>
+                        </div>
+                        <div class="col-xs-11 col-sm-7 col-md-7" style="padding:0">
+                           <input type="range" [class.customDisableCss]="RecordSave==true || rageDisabled==true" id="rangeDisabled" min="1" max="10"
+                           value="1" step="1" [(ngModel)]="changeVolume" [ngModelOptions]="{standalone:true}" style="border: 0px solid #cecece; width:100%">
+                        </div>
+                        <div class="col-xs-1 col-sm-1 col-md-1" style="padding:0">
+                           <span style="color: red;font-weight: bold;float:right">{{changeVolume}}</span>
+                        </div>
+                     </div>
+                     <div class="col-xs-12 col-sm-6 col-md-3" style="float:right;padding:0">
+                        <button class="btn btn-primary" type="button" value="Test Scroll Speed" (click)="testSpeed()" style="float: right; margin-bottom: 4px;"
+                        *ngIf="testSpeedshow" [disabled]="testSpeeddisabled ==true" translate>Test Scroll Speed</button>
+                        <button class="btn btn-primary" type="button" value="Stop" (click)="stop()" style="float: right; margin-bottom: 4px;" *ngIf="stopButtonShow"
+                        [disabled]="stopButtonDisabled ==true" translate>Stop</button>
+                     </div>
+                  </div>
+                  <video id="myVideo" class="col-xs-12 video-js vjs-default-skin"></video>
+               </div>
+               <div style="text-align: right;margin-bottom: 3px;margin-top: 3px;">
+                  <div>
+                     <button [disabled]="saveVideo==false" class="btn btn-primary" (click)="uploadRecordedVideo()" translate>Upload</button>
+                     <button [disabled]="discardVideo==false" class="btn btn-danger" role="button" (click)="removeRecordVideo()" translate>Discard</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- record video modal popup end  -->
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>

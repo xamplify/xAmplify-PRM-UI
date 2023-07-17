@@ -87,11 +87,16 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
         chart: {
           backgroundColor   : this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
         },
+        
         exporting: { enabled: false },
         tooltip: {
           formatter: function () {
             return 'Campaign Name: <b>' + this.point.name + '</b><br> Email Open Count: <b>' + this.point.value + '</b>' +
               '<br> Interaction : <b>' + this.point.interactionPercentage + '%</b><br>Launch Date:<b>' + this.point.launchTime + '</b>';
+          },
+          backgroundColor: 'black', 
+          style: {
+            color: '#fff' 
           }
         },
         plotOptions: {

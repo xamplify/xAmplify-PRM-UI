@@ -35,6 +35,7 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   @Input()selectedShareLeadsListIds =  [];
   @Input()selectedPartnershipId = 0;
   @Input()campaignId = 0;
+  @Input() hideHeaderText = false;
   showLeadsPreview = false;
   selectedListName = "";
   selectedListId = 0;
@@ -45,6 +46,9 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
+	if(this.hideHeaderText==undefined){
+		this.hideHeaderText = false;
+	}
 	this.pagination.campaignId = this.campaignId;
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();

@@ -1,67 +1,106 @@
-.add-options button{min-height:85px; border-radius: 7px;}
-.add-options .portlet-title {min-height: 0; padding: 5px 0 10px; margin-bottom:0px; font-size:15px}
-.add-options i{display:block; font-size:24px; margin:0 auto 10px}
-.add-options span{display:block; font-size:14px; text-align:center}
-.add-options .portlet-body {padding: 15px 0 5px;}
-
-
-.cloud-services .portlet-title {min-height: 0; padding: 5px 0 10px; margin-bottom:0px; font-size:15px}
-.cloud-services img{display:block; margin:0 auto;border-radius: 8px;}
-.cloud-services .portlet-body {padding: 10px 0 0px;}
-.cloud-services.portlet.light {padding-bottom: 0px;}
-.center{ text-align: center; }
-.chagneText { text-transform: none !important;}
-.pb0{ padding-bottom: 0 !important}
-@media screen and (min-width:601px){
-  .modal-css{  width: 50% !important; right: 0 !important;}
-  .salesforce{margin-top: -44px;text-align: center; }
+.add-options button {
+  min-height: 85px;
+  border-radius: 7px;
+}
+.add-options .portlet-title {
+  min-height: 0;
+  padding: 5px 0 10px;
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+.add-options i {
+  display: block;
+  font-size: 24px;
+  margin: 0 auto 10px;
+}
+.add-options span {
+  display: block;
+  font-size: 14px;
+  text-align: center;
+}
+.add-options .portlet-body {
+  padding: 15px 0 5px;
+}
+.cloud-services .portlet-title {
+  min-height: 0;
+  padding: 5px 0 10px;
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+.cloud-services img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+.cloud-services .portlet-body {
+  padding: 10px 0 0px;
+}
+.cloud-services.portlet.light {
+  padding-bottom: 0px;
+}
+.chagneText {
+  text-transform: none !important;
+}
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 50% !important;
+    right: 0 !important;
   }
-@media screen and (max-width:600px){
-  .modal-css {width: 100% !important; right: 0 !important;} .cloud-css{  left: 73px !important; }
-  .salesforce{margin-top: -25px;text-align: center; }
+  .salesforce {
+    margin-top: -44px;
+    text-align: center;
+  }
 }
-@media screen and (max-width:768px){
-  .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px; }
+@media screen and (max-width: 600px) {
+  .modal-css {
+    width: 100% !important;
+    right: 0 !important;
+  }
+  .cloud-css {
+    left: 73px !important;
+  }
+  .salesforce {
+    margin-top: -25px;
+    text-align: center;
+  }
 }
-.cloud-items{
-  position: relative; font-size: 19px; top: -81px;left: 71px;
+@media screen and (max-width: 768px) {
+  .cloud-items {
+    position: relative;
+    font-size: 19px;
+    top: -82px !important;
+    left: 93px;
+  }
 }
-.gray-color{position: relative; color: grey;}
-
- @media only screen and (max-width: 992px) and (min-width: 601px) { .cloud-css{  left: 100px !important; } }
-.csv-list-name{
-	font-size: 15px;
-    color: #565555;
-    padding-left: 13px;
+.cloud-items {
+  position: relative;
+  font-size: 19px;
+  top: -81px;
+  left: 71px;
+}
+@media only screen and (max-width: 1024px) and (min-width: 601px) {
+  .cloud-css {
+    left: 100px !important;
+  }
+}
+.csv-list-name {
+  font-size: 15px;
+  color: #565555;
+  padding-left: 13px;
 }
 @media only screen and (min-width: 768px) {
-
- .p-drop-down{
-   float: right; 
-   font-size: 15px;
- }
-  
+  .p-drop-down {
+    float: right;
+    font-size: 15px;
+  }
 }
-
-.mr8{
-	margin-right: 20px !important;
-}
-.share-partner{
-	margin-top: 12px;
-	box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
-	border: 1px solid #d9d9d9;
-}
-
-.mlm8{
+.mlm8 {
   margin-left: -3px;
 }
-
 .close-circle i {
   margin-top: 3px;
 }
-.border{
-  padding-left: 50px; margin-left: 55px;
-}
-.border-botom{
-  border-bottom: 1px solid #dcdcdc;
+.border {
+  padding-left: 50px;
+  margin-left: 55px;
 }

@@ -122,7 +122,6 @@ export class VideoFileService {
     }
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
-        console.log(alias);
         const url = this.URL + 'video-by-alias/' + alias +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy;
         return this.http.get(url, '')
             .map(this.extractData)
@@ -367,11 +366,12 @@ export class VideoFileService {
     
       getVideoById(videoId: number, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
-        console.log(videoId);
         const url = this.URL + 'video-by-id/' + videoId +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy + '&access_token=' + this.authenticationService.access_token;;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+  
     
 }

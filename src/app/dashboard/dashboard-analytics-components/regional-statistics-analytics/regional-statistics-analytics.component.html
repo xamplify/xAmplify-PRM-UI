@@ -16,7 +16,6 @@
 
 
 <div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  <!-- style="width: 80%; margin: 1em auto" -->
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -39,7 +38,7 @@
           <div class="modal-body clearfix">
               <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                   <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                  <h4 class="m5">Please wait while we process your request.</h4>
+                  <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
               </div>
               <div *ngIf="isLoadingList">
                   <app-list-loader></app-list-loader>
@@ -71,7 +70,7 @@
                                       <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
                                   </td>
                                   <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                      <button id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
+                                      <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
                         <span *ngIf="!item.isShowDetails">More</span>
                         <span *ngIf="item.isShowDetails">Less</span>
                       </button>

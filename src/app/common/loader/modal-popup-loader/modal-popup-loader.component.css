@@ -1,25 +1,22 @@
-
-
 .animated-background-modal-popup {
-    animation: pulse 1s infinite ease-in-out;
-    background-size: 800px 104px;
-    position: relative;
+  animation: modal-popup-animation 1s infinite ease-in-out;
+  background-size: 800px 104px;
+  position: relative;
+  border-radius: 5px;
 }
-
-.circle-loader-css{
-    width: 300px;
-    margin: 30px auto;
-    border-radius: 50%;
+.circle-loader-css {
+  width: 300px;
+  margin: 30px auto;
+  border-radius: 50%;
 }
-
-@keyframes pulse {
-    0% {
-      background-color: rgba(165, 165, 165, 0.1);
-    }
-    50% {
-      background-color: rgba(165, 165, 165, 0.3);
-    }
-    100% {
-      background-color: rgba(165, 165, 165, 0.1);
-    }
+@keyframes modal-popup-animation {
+  0% {
+    background-color: rgba(165, 165, 165, 0.1);
   }
+  50% {
+    background-color: rgba(165, 165, 165, 0.3);
+  }
+  100% {
+    background-color: rgba(165, 165, 165, 0.1);
+  }
+}

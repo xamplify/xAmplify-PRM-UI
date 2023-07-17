@@ -15,7 +15,7 @@
         <div class="page-bar m10 tab-border-none " style="border:none !important">
           <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0">
             <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
-            All</li>
+              All</li>
             <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" *ngIf="campaignAccess.emailCampaign">Email</li>
             <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" *ngIf="campaignAccess.videoCampaign">Video</li>
             <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign">Social
@@ -92,19 +92,20 @@
                     <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
                   </td>
                   <td>
-                    <h4 class="moreipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
-                      <span>{{campaign.campaignName}}</span>
+                    <h4 class=" mt5 mb5 f-w-600" style="font-size: 14px;"
+                  >
+                      <span   data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">{{campaign.campaignName}}</span>
                     </h4>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.createdBy">
-                      <span> By <b>{{campaign.createdBy}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span [title]="campaign.createdBy" data-toggle="tooltip" data-placement="bottom"> By <b>{{campaign.createdBy}}</b></span>
                     </h5>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.companyName">
-                      <span> From <b>{{campaign.companyName}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span [title]="campaign.companyName"  data-toggle="tooltip" data-placement="bottom"> From <b>{{campaign.companyName}}</b></span>
                     </h5>
-                    <h5 class="moreipsis mobile-left" [title]="campaign.categoryName">
-                      <span> Folder <b>{{campaign.categoryName}}</b></span>
+                    <h5 class="moreipsis mobile-left" >
+                      <span  data-toggle="tooltip" data-placement="bottom" [title]="campaign.categoryName"> Folder <b>{{campaign.categoryName}}</b></span>
                     </h5>
-                    <h5 class="ellipsis view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
+                    <h5 class="ellipsis view-banner Cancelled-tag-cu" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</h5>
                   </td>
                   <td class="moreipsis custom-center hidden-xs">
                     <span><b>{{campaign.companyName}}</b></span>
@@ -120,7 +121,7 @@
                     </span>
                   </td>
                   <td>
-                    <div class="actions-block override-actions" style="text-align: center !important;">
+                    <div class="actions-block override-actions" style="text-align: center !important;width: max-content;">
                       <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
                       <i class="fa fa-eye mr5"></i>
                       </a>
@@ -185,7 +186,7 @@
             <div class="row mix-grid p10">
               <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
               <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+                <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3 tab_mt_20">
                   <div class="grid-box">
                     <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
                     <!-- <br> -->
@@ -229,7 +230,7 @@
                         class="fa fa-wpforms" aria-hidden="true"></i>
                       </span>
                     </div>
-                    <div class="ribbon">
+                    <div class="ribbon tab-ribbon">
                       <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
                         Cancelled
                       </div>
@@ -253,7 +254,7 @@
                         <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload">
                           <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;" title="Download"></span>
                           <span data-toggle="dropdown" title="Download"></span>
-                          <ul class="dropdown-menu pull-right">
+                          <ul class="dropdown-menu pull-right custome-dropdown-changs">
                             <li>
                               <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" title="Download Html">
                               <i class="fa fa-file" style="width: 30px;"></i> Download Html

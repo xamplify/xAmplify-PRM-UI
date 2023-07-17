@@ -525,6 +525,20 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getLeftSideNavBarItems(vanityUrlPostDto: any){
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vanityUrlPostDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    updateLeftSideNavBarItems(customleftmenu: any){
+        const url = this.moduleUrl + 'updateLeftMenuItems?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, customleftmenu)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     getWelcomePageItems(vanityUrlPostDto: any) {
         const url = this.authenticationService.REST_URL + 'dashboard/views/getWelcomePageItems?access_token=' + this.authenticationService.access_token;
@@ -1088,6 +1102,40 @@ getDefaultThemes(){
 
     upgradeAccount(companyId:number,roleId:number){
         return this.http.get(this.superAdminUrl + "/upgradeAccount/" + companyId + "/"+roleId+"?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    /***  user-guides ***/
+    getUserGuideLeftMenu(vanityLoginDto:VanityLoginDto){
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getSearchResultsOfUserGuides(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/search/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getUserGuidesByModuleName(pagination:Pagination){
+        const url =this.authenticationService.REST_URL + 'user/guide/moduleName/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getGuideLinkByTitle(title:string){
+        return this.http.get(this.authenticationService.REST_URL + 'user/guide/'+title+'/?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getGuideGuideBySlug(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/slug/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,pagination)
         .map(this.extractData)
         .catch(this.handleError);
     }

@@ -1,13 +1,19 @@
 .sparkline-chart .number {
+  width: 100% !important;
+}
+.sparkline-chart .number > canvas {
+  width: 100% !important;
+}
+.email-action-desscription {
+  font-size: 12px;
+}
+@media screen and (max-width: 600px) {
+  .modal-css {
     width: 100% !important;
   }
-  .sparkline-chart .number > canvas {
-    width: 100% !important;
+}
+@media screen and (min-width: 601px) {
+  .modal-css {
+    width: 75% !important;
   }
-
-  .email-action-desscription{
-      font-size: 12px;
-  }
-
-  @media screen and (max-width:600px){.modal-customize{ width: 100% !important; } .modal-css { width: 100% !important;}}
-@media screen and (min-width:601px){.modal-customize{ width: 45% !important;} .modal-css { width: 75% !important;}}
+}

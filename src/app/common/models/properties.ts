@@ -167,6 +167,7 @@ export class Properties {
 	dealPipelines = "Deal Pipelines";
 	tags = "Tags";
 	customskin = "Themes";
+	customizeleftmenu = "Customize Left Menu";
 
 	exclude = "Exclusion"
 	exclude_add = "User(s) added successfully";
@@ -260,6 +261,17 @@ export class Properties {
 
 	/****XNFR-224****/
 	supportText = "Enable support access to vendor";
+
+	/****XNFR-314****/
+	teamMemberPartnerFilter = "Default Partner Filter";
+
+	/***XNFR-318***/
+	campaignRegularEmailsFilter = "CampaignRegularEmails";
+	campaignVideoEmailsFilter = "CampaignVideoEmails";
+	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
+
+
+	customThemeDescription = "Custom Themes enable the creation of unique branded experiences such as Background Color, Text Color, Button Color, Icon Color and so on. You can select from existing Light and Dark Themes. Set your own theme by choosing colors for the Header, Left Menu, Footer and Page Content blocks.";
 
 
 

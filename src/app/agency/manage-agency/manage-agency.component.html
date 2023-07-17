@@ -2,405 +2,384 @@
   <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
 </div>
 <div [@fadeInOut] class="page-content"  *ngIf="!loader.isLoading && agencyAccess">
-  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <!--Page-bar---->
-   <div class="page-bar">
-    <ul class="page-breadcrumb">
-        <li *ngIf="!authenticationService.isSuperAdmin()">
-          <i class="fa fa-home" aria-hidden="true"></i> 
-            <a [routerLink]="referenceService.homeRouter"  translate>Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li *ngIf="authenticationService.isSuperAdmin()">
-          <i class="fa fa-home" aria-hidden="true"></i>
-          <a (click)="goToAdminReport('/home/dashboard/admin-report')"  translate>Admin Report</a>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li>
-            <a translate>{{properties?.agencies}}</a>
-        </li>
-    </ul>
-   </div>
-  <!--End Of Page-bar---->
-
-  <!-- CSV Errors---->
-  <div [@fadeInOut] class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
-    <button (click)="referenceService.hideDiv('agency-csv-error-div')" type="button" class="close" aria-label="Close">
-      <span aria-hidden="true">x</span>
-    </button>
-    <div>
-        <table class="table table-bordered" aria-describedby="csv-error-messages-table">
-            <ng-container *ngFor="let error of csvDto.csvErrors">
-                <tr>
-                    <th class="align-bold" id="csverror-th">{{error}}</th>
-                </tr>
-            </ng-container>
-        </table>
-    </div>
+<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<!--Page-bar---->
+<div class="page-bar">
+  <ul class="page-breadcrumb">
+     <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a [routerLink]="referenceService.homeRouter"  translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+     </li>
+     <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a (click)="goToAdminReport('/home/dashboard/admin-report')"  translate>Admin Report</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+     </li>
+     <li>
+        <a translate>{{properties?.agencies}}</a>
+     </li>
+  </ul>
+</div>
+<!--End Of Page-bar---->
+<!-- CSV Errors---->
+<div [@fadeInOut] class="alert alert-danger" id="agency-csv-error-div" style="display: none;">
+<button (click)="referenceService.hideDiv('agency-csv-error-div')" type="button" class="close" aria-label="Close">
+<span aria-hidden="true">x</span>
+</button>
+<div>
+  <table class="table table-bordered" aria-describedby="csv-error-messages-table">
+     <ng-container *ngFor="let error of csvDto.csvErrors">
+        <tr>
+           <th class="align-bold" id="csverror-th">{{error}}</th>
+        </tr>
+     </ng-container>
+  </table>
+</div>
+</div>
+<!-- End Of CSV Errors---->
+<div [@fadeInOut] class="row mrzero-mlzero" *ngIf="customResponse.isVisible">
+<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
+<!--Add & Manage Agencies-->
+<div class="row">
+  <div [@fadeInOut] *ngIf="!showAddAgencyDiv && !showUploadedAgencies && !editAgency">
+  <!---Header-->
+  <div class="clearfix">
+     <section class="clearfix">
+        <div class="col-xs-6 col-sm-2 hidden-xs">
+           <div class="btn-xs btn-info fileinput-button btn-block rounded-0 position-relative">
+              <h6 class="text-center fsfpx" translate>Upload a CSV</h6>
+              <input type="file" title="" class="file-upload" #agencyCsvInput name="Upload Csv" id="agencyCsvInput" accept=".csv" (change)="readCsvFile($event)" />
+           </div>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+           <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddAgencyDiv()">
+              <h6 class="fsfpx" translate>Add</h6>
+           </button>
+        </div>
+        <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
+           <a id="right" class="btn btn-success" (click)="downloadCsv()" download translate>Download CSV Template</a>
+        </div>
+     </section>
   </div>
-  <!-- End Of CSV Errors---->
-
- 
-  <div [@fadeInOut] class="row mrzero-mlzero" *ngIf="customResponse.isVisible">
-    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  </div>
-
-  <!--Add & Manage Agencies-->
-  <div class="row">
-    <div [@fadeInOut] *ngIf="!showAddAgencyDiv && !showUploadedAgencies && !editAgency">
-    <!---Header-->
-      <div class="clearfix">
-        <section class="clearfix">
-            <div class="col-xs-6 col-sm-2 hidden-xs">
-              <div class="btn-xs btn-info fileinput-button btn-block rounded-0 position-relative">
-                  <h6 class="text-center fsfpx" translate>Upload a CSV</h6>
-                  <input type="file" title="" class="file-upload" #agencyCsvInput name="Upload Csv" id="agencyCsvInput" accept=".csv" (change)="readCsvFile($event)" />
-              </div>
-          </div>
-            <div class="col-xs-12 col-sm-2">
-                <button class="btn-xs btn-primary btn-block rounded-0" (click)="goToAddAgencyDiv()">
-                    <h6 class="fsfpx" translate>Add</h6>
-                </button>
-            </div>
-            <div class="col-xs-12 col-sm-3 hidden-xs pull-right">
-                <a id="right" class="btn btn-success" (click)="downloadCsv()" download translate>Download CSV Template</a>
-            </div>
-        </section>
-      </div>
-    <!---End Of Header-->
-
-    <!--List Of Agencies---->
-    <div class="portlet light">
-      <div class="portlet-title">
+  <!---End Of Header-->
+  <!--List Of Agencies---->
+  <div class="portlet light">
+     <div class="portlet-title">
         <div class="caption" translate>{{properties?.agencies}}</div>
         <div class="tools zero-padding-margin">
-            <div class="inputs zero-padding-display-inline">
-                <div class="portlet-input input-inline">
-                    <div class="input-icon right flex">
-                      <!--Sort DropDown-->
-                      <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedAgencySortDropDownOption" (ngModelChange)="sortBy($event)">
-                        <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
-                            {{option.name}}
-                        </option>
-                     </select>
-                      <!--Search Key--->
-                        <input type="text" class="form-control ml5" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';search()"></button>
-                        <button type="submit" class="search-box-item-click" (click)="search()">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
-              <i aria-hidden="true" class="fa fa-refresh"></i>
-          </a>
+           <div class="inputs zero-padding-display-inline">
+              <div class="portlet-input input-inline">
+                 <div class="input-icon right flex">
+                    <!--Sort DropDown-->
+                    <select class="form-control" id="users-dropdown" [(ngModel)]="sortOption.selectedAgencySortDropDownOption" (ngModelChange)="sortBy($event)">
+                    <option *ngFor="let option of sortOption.activeUsersSortDropDownOptions" [ngValue]="option">
+                    {{option.name}}
+                    </option>
+                    </select>
+                    <!--Search Key--->
+                    <input type="text" class="form-control ml5" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';search()"></button>
+                    <button type="submit" class="search-box-item-click" (click)="search()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                 </div>
+              </div>
+           </div>
+           <a aria-hidden="true" class="close-circle xamp-margin-left-icon chtfpx" (click)="refreshList()" title="Refresh">
+           <i aria-hidden="true" class="fa fa-refresh"></i>
+           </a>
         </div>
-      </div>
-      <div class="portlet-body clearfix">
+     </div>
+     <div class="portlet-body clearfix">
         <div class="table-responsive">
-          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-          <table class="table table-striped silvertm" id="agencies" *ngIf="!httpRequestLoader.isLoading" aria-describedby="Agencies">
-            <thead>
+           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+           <table class="table table-striped silvertm" id="agencies" *ngIf="!httpRequestLoader.isLoading" aria-describedby="Agencies">
+              <thead>
+                 <tr>
+                    <th scope="row">
+                       <h4 class="user-permission-min-width" translate>
+                          <img src="assets/images/user-permission.png" alt="No Image Found">
+                          {{properties?.agencies}}
+                       </h4>
+                    </th>
+                    <th  scope="" translate>
+                       <i class="fa fa-lock ml10" aria-hidden="true"></i><br>Status
+                    </th>
+                    <th scope="" class="text-center" translate>
+                       <i class="fa fa-tasks ml10" aria-hidden="true"></i><br>Actions
+                    </th>
+                 </tr>
+              </thead>
+              <ng-container *ngIf="pagination.totalRecords>0">
+                 <tbody>
+                    <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
+                       <td>
+                          <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agency"></app-user-info>
+                       </td>
+                       <!---Enabled---->
+                       <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This account is not activated yet':''">
+                       <div class="actions-block float-none">
+                          <i class="fa fa-times red" aria-hidden="true"></i>
+                       </div>
+                       </td>
+                       <td *ngIf="agency?.status!='UNAPPROVED' && agency?.status!='DECLINE'">
+                          <div class="actions-block float-none">
+                             <i class="fa fa-check active-status" aria-hidden="true"></i>
+                          </div>
+                       </td>
+                       <td *ngIf="agency?.status=='DECLINE'" title="This account is inactive">
+                          <div class="actions-block float-none">
+                             <i class="fa fa-times red" aria-hidden="true"></i>
+                          </div>
+                       </td>
+                       <!---Actions-->
+                       <td  class="actions-row">
+                          <div class="actions-block override-actions custom-width-icon">
+                             <!--Preview--->
+                             <a  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="preview(agency.id)" >
+                             <i class="fa fa-eye" aria-hidden="true"></i>
+                             </a>
+                             <!--Edit--->
+                             <a data-toggle="tooltip" data-placement="bottom"  title="Edit" (click)="edit(agency.id)" >
+                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                             </a>
+                             <!--Resend Invitation-->
+                             <ng-container>
+                                <a data-toggle="tooltip" data-placement="bottom" title="Resend the invitation email"  (click)="openResendEmailInvitationAlert(agency.id)">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </a>
+                             </ng-container>
+                             <!---Delete-->
+                             <a data-toggle="tooltip" data-placement="bottom" title="Delete"  (click)="showConfirmSweetAlert(agency.id)">
+                             <i class="fa fa-trash red" aria-hidden="true"></i>
+                             </a>
+                          </div>
+                       </td>
+                    </tr>
+                 </tbody>
+              </ng-container>
               <tr>
-                <th scope="row">
-                <h4 class="user-permission-min-width" translate>
-                    <img src="assets/images/user-permission.png" alt="No Image Found">
-                    {{properties?.agencies}}
-                </h4>
-                </th>
-                <th  scope="" translate>
-                  <i class="fa fa-lock ml10" aria-hidden="true"></i><br>Status
-                </th>
-                <th scope="" class="text-center" translate>
-                  <i class="fa fa-tasks ml10" aria-hidden="true"></i><br>Actions
-                </th>
+                 <td colspan="16">
+                    <div *ngIf="pagination.totalRecords==0" class="alert alert-info text-center">
+                       <strong translate>No {{properties?.agencies}} Found</strong>
+                    </div>
+                 </td>
               </tr>
-            </thead>
-            <ng-container *ngIf="pagination.totalRecords>0">
-              <tbody>
-                <tr *ngFor="let agency of agencies;let i=index" id="list-agency-{{i}}" class="list-agency-class">
-                  <td>
-                    <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agency"></app-user-info>
-                  </td>
-                  <!---Enabled---->
-                  <td *ngIf="agency?.status=='UNAPPROVED'" [title]="agency?.status=='UNAPPROVED'? 'This account is not activated yet':''">
-                    <div class="actions-block float-none">
-                      <i class="fa fa-times red" aria-hidden="true"></i>
-                    </div>
-                  </td>
-                  <td *ngIf="agency?.status!='UNAPPROVED' && agency?.status!='DECLINE'">
-                  <div class="actions-block float-none">
-                      <i class="fa fa-check active-status" aria-hidden="true"></i>
-                    </div>
-                  </td>
-                  <td *ngIf="agency?.status=='DECLINE'" title="This account is inactive">
-                    <div class="actions-block float-none">
-                      <i class="fa fa-times red" aria-hidden="true"></i>
-                    </div>
-                    </td>
-                  <!---Actions-->
-                  <td  class="actions-row">
-                    <div class="actions-block override-actions custom-width-icon">
-                       <!--Preview--->
-                       <a  title="Preview" (click)="preview(agency.id)" >
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                      </a>
-                      <!--Edit--->
-                      <a  title="Edit" (click)="edit(agency.id)" >
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                      </a>
-                      <!--Resend Invitation-->
-                      <ng-container>
-                        <a title="Resend the invitation email"  (click)="openResendEmailInvitationAlert(agency.id)">
-                          <i class="fa fa-envelope" aria-hidden="true"></i>
-                        </a>
-                      </ng-container>
-                      <!---Delete-->
-                      <a title="Delete"  (click)="showConfirmSweetAlert(agency.id)">
-                        <i class="fa fa-trash red" aria-hidden="true"></i>
-                      </a>
-                    </div>
-                  </td> 
-              </tr>
-              </tbody>
-            </ng-container>
-            <tr>
-              <td colspan="16">
-                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info text-center">
-                    <strong translate>No {{properties?.agencies}} Found</strong>
-                </div>
-              </td>
-            </tr>
-          </table>
+           </table>
         </div>
         <!-- -----------Pagination---------------->
         <div *ngIf="pagination.totalRecords!=0  && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-            <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
-          </div>
-      </div>
-    </div>
-
-    </div>
-
-    <!--Add Agency Div-->
-    <ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
-      <div [@fadeInOut] class="portlet light">
-        <div class="portlet-title">
-          <div class="caption" translate>
-            <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>
-            <span *ngIf="editAgency">Edit {{properties?.agency}}</span>
-          </div>
-          <div>
-            <a class="close-circle"  title="Go Back" (click)="cancel()">
-              <i class="fa fa-close" aria-hidden="true"></i>
-            </a>
+           <app-pagination [pagination]="pagination" (notifyParentDropDown)="findAll($event)" (notifyParent)="setPage($event)"></app-pagination>
         </div>
-        </div>
-       
-        <app-modal-popup-loader *ngIf="addAgencyLoader.isLoading"></app-modal-popup-loader>
-        <div *ngIf="!addAgencyLoader.isLoading" class="row" style="margin-top: 20px;">
-          <form role="form" class="form-horizontal form-bordered form-label-stripped">
-            <div class="portlet box">
-              <div>
-                <!---Agency Name--->
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
+     </div>
+  </div>
+</div>
+<!--Add Agency Div-->
+<ng-container *ngIf="(showAddAgencyDiv || editAgency) && !showUploadedAgencies">
+  <div [@fadeInOut] class="portlet light">
+  <div class="portlet-title">
+     <div class="caption" translate>
+        <span *ngIf="showAddAgencyDiv">Add {{properties?.agency}}</span>
+        <span *ngIf="editAgency">Edit {{properties?.agency}}</span>
+     </div>
+     <div>
+        <a class="close-circle" data-toggle="tooltip" data-placement="bottom" title="Go Back" (click)="cancel()">
+        <i class="fa fa-close" aria-hidden="true"></i>
+        </a>
+     </div>
+  </div>
+  <app-modal-popup-loader *ngIf="addAgencyLoader.isLoading"></app-modal-popup-loader>
+  <div *ngIf="!addAgencyLoader.isLoading" class="row" style="margin-top: 20px;">
+     <form role="form" class="form-horizontal form-bordered form-label-stripped">
+        <div class="portlet box">
+           <div>
+              <!---Agency Name--->
+              <div class="col-md-12 col-lg-12">
+                 <div class="form-group">
                     <label class="control-label col-sm-3">Agency Name<span class="required">*</span></label>
-                      <div  class="{{agencyDto?.agencyNameDivClass}}">
-                        <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
-                        <span class="required" *ngIf="agencyDto?.agencyNameErrorMessage?.length>0">{{agencyDto?.agencyNameErrorMessage}}</span>
-                      </div>
-                  </div>
-                </div>
-                <!---First Name--->
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
+                    <div  class="{{agencyDto?.agencyNameDivClass}}">
+                       <input type="text" autocomplete="off" (input)="validateAddAgencyForm('agencyName')"  id="agencyName" name="agencyName" placeholder="Agency Name" class="form-control" [(ngModel)]="agencyDto.agencyName" [ngModelOptions]="{standalone: true}"  maxlength="255">
+                       <span class="required" *ngIf="agencyDto?.agencyNameErrorMessage?.length>0">{{agencyDto?.agencyNameErrorMessage}}</span>
+                    </div>
+                 </div>
+              </div>
+              <!---First Name--->
+              <div class="col-md-12 col-lg-12">
+                 <div class="form-group">
                     <label class="control-label col-sm-3">First Name</label>
-                      <div class="col-sm-8">
-                        <input type="text" autocomplete="off"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="agencyDto.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
-                      </div>
-                  </div>
-                </div>
-
-                <!---Last Name--->
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
+                    <div class="col-sm-8">
+                       <input type="text" autocomplete="off"  id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="agencyDto.firstName" [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                    </div>
+                 </div>
+              </div>
+              <!---Last Name--->
+              <div class="col-md-12 col-lg-12">
+                 <div class="form-group">
                     <label class="control-label col-sm-3">Last Name</label>
-                      <div class="col-sm-8">
-                        <input type="text" autocomplete="off"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="agencyDto.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
-                      </div>
-                  </div>
-                </div>
-
-                <!---Email Id--->
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
+                    <div class="col-sm-8">
+                       <input type="text" autocomplete="off"  id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="agencyDto.lastName" [ngModelOptions]="{standalone: true}" name="lastName" maxlength="255">
+                    </div>
+                 </div>
+              </div>
+              <!---Email Id--->
+              <div class="col-md-12 col-lg-12">
+                 <div class="form-group">
                     <label class="control-label col-sm-3">Email Id<span class="required">*</span></label>
-                      <div class="{{agencyDto?.emaillIdDivClass}}">
-                        <ng-container *ngIf="showAddAgencyDiv">
+                    <div class="{{agencyDto?.emaillIdDivClass}}">
+                       <ng-container *ngIf="showAddAgencyDiv">
                           <input  type="email" autocomplete="off" class="form-control lowercase-text" (input)="validateAddAgencyForm('emailId')"  placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
                           <span class="required" *ngIf="agencyDto?.emailIdErrorMessage?.length>0">{{agencyDto?.emailIdErrorMessage}}</span>
-                        </ng-container>
-                        <ng-container *ngIf="editAgency">
+                       </ng-container>
+                       <ng-container *ngIf="editAgency">
                           <input disabled type="email" class="form-control" placeholder="Email" [(ngModel)]="agencyDto.emailId" [ngModelOptions]="{standalone: true}" name="emailId"  placeholder="Email" autocomplete="off" maxlength="250">
-                        </ng-container>
-                      </div>
-                  </div>
-                </div>
-
-                <!--Modules-->
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
+                       </ng-container>
+                    </div>
+                 </div>
+              </div>
+              <!--Modules-->
+              <div class="col-md-12 col-lg-12">
+                 <div class="form-group">
                     <label class="control-label col-sm-3" translate>Select Modules<span class="required">*</span></label>
                     <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:defaultModules,even:true,uploadCsv:false}"></ng-template>
                     <ng-template [ngTemplateOutlet]="modulesTemplate" [ngTemplateOutletContext]="{modules:defaultModules,even:false,uploadCsv:false}"></ng-template>
-                  </div>
-                </div>
-                <div id="right">
-                  <button [disabled]="!agencyDto?.validForm" type="submit" class="btn btn-primary" (click)="addOrUpdate($event)">{{saveOrUpdateButtonText}}</button>
-                  <button  type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
-                </div>
+                 </div>
               </div>
-            </div>
-          </form>
+              <div id="right">
+                 <button [disabled]="!agencyDto?.validForm" type="submit" class="btn btn-primary" (click)="addOrUpdate($event)">{{saveOrUpdateButtonText}}</button>
+                 <button  type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+              </div>
+           </div>
         </div>
-      </div>
-    </ng-container>
-    <!--End of Add Agency Div-->
-
-
-    <!-----Uplodaded Agencies----->
-    <div class="portlet light" *ngIf="showUploadedAgencies && !showAddAgencyDiv && !editAgency">
-      <div class="portlet-title">
-        <div class="caption" translate>Uploaded {{properties?.agencies}}</div>
-        <div [hidden]="addAgencyLoader.isLoading">
-          <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
-            <i class="fa fa-close" aria-hidden="true"></i>
-          </a>
-        </div>
-      </div>
-      <app-list-loader [hidden]="!addAgencyLoader.isLoading"></app-list-loader>
-      <div class="portlet-body clearfix" [hidden]="addAgencyLoader.isLoading">
-        <div class="table-responsive overflow-hidden">
-          <table class="table table-striped silvertm" id="add-agency-table"  aria-describedby="Agencies">
-            <thead>
+     </form>
+  </div>
+  </div>
+</ng-container>
+<!--End of Add Agency Div-->
+<!-----Uplodaded Agencies----->
+<div class="portlet light" *ngIf="showUploadedAgencies && !showAddAgencyDiv && !editAgency">
+  <div class="portlet-title">
+     <div class="caption" translate>Uploaded {{properties?.agencies}}</div>
+     <div [hidden]="addAgencyLoader.isLoading">
+        <a class="close-circle" data-toggle="tooltip"  title="Go Back" (click)="clearUploadCsvDataAndGoBack()">
+        <i class="fa fa-close" aria-hidden="true"></i>
+        </a>
+     </div>
+  </div>
+  <app-list-loader [hidden]="!addAgencyLoader.isLoading"></app-list-loader>
+  <div class="portlet-body clearfix" [hidden]="addAgencyLoader.isLoading">
+     <div class="table-responsive overflow-hidden">
+        <table class="table table-striped silvertm" id="add-agency-table"  aria-describedby="Agencies">
+           <thead>
               <tr>
-                <th scope="row">
-                <h4 translate>
-                    <img src="assets/images/user-permission.png" alt="No Image Found">
-                    {{properties?.agency}}
-                </h4>
-                </th>
-                <th  scope="" translate>
-                  <i class="fa fa-list-alt ml10" aria-hidden="true"></i><br>Modules
-                </th>
-                <th  scope="" translate>
-                  <i class="fa fa-trash ml10 required" aria-hidden="true"></i><br>Delete
-                </th>
+                 <th scope="row">
+                    <h4 translate>
+                       <img src="assets/images/user-permission.png" alt="No Image Found">
+                       {{properties?.agency}}
+                    </h4>
+                 </th>
+                 <th  scope="" translate>
+                    <i class="fa fa-list-alt ml10" aria-hidden="true"></i><br>Modules
+                 </th>
+                 <th  scope="" translate>
+                    <i class="fa fa-trash ml10 required" aria-hidden="true"></i><br>Delete
+                 </th>
               </tr>
-            </thead>
-            <tbody>
+           </thead>
+           <tbody>
               <ng-container *ngFor="let agencyDto of agencyDtos;let i=index" class="upload-team-member-class">
-              <tr>
-                <td>
-                  <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
-                  <p class="required" *ngIf="errorResponses?.length>0">
-                    <strong>{{agencyDto.emailIdErrorMessage}}</strong>
-                  </p>
-                  <p class="required" *ngIf="errorResponses?.length>0">
-                    <strong>{{agencyDto.invalidModuleIdsErrorMessage}}</strong>
-                  </p>
-                </td>
-                <!---Modules-->
-                <td>
-                  <strong>
-                    <i class="{{agencyDto.module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                    {{agencyDto.module?.moduleName}}
-                  </strong>
-                  <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto,i)">
-                      <i class="fa fa-gear" aria-hidden="true"></i>
-                    </a>
-                </td>
-                <!---Delete-->
-                <td>
-                  <a (click)="deleteRow(i,agencyDto)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
-                </td>
-              </tr>
-              <tr [@fadeInOut] [hidden]="!agencyDto?.expand">
-                <td colspan="4">
-                  <div class="table-responsive">
-                    <table  class="table tgrid table-condensed table-bordered child-table-bg-color" aria-describedby="team-members-info" 
-                        id="upload-agency-modules-table-{{i}}">
-                    <tbody>
-                      <tr *ngFor="let module of agencyDto.modules;let moduleIndex = index;" id="agency-module-{{i}}"  >
-                        <td class="text-center" *ngIf="module.moduleName=='All'">
-                           <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event,i)" id="agency-all-module-{{module.roleId}}-{{i}}" >
-                        </td>
-                        <td class="text-center" *ngIf="module.moduleName!='All'">
-                          <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" name="agencyModuleCheckBox-{{i}}" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}">
-                       </td>
-                        <td>
-                            <i class="{{module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-                            {{module?.moduleName}}
-                            <a title="{{module?.description}}">
-                            <i class="fa fa-question-circle mrfpx"></i>
-                          </a>
-                        </td>
-                     </tr>
-                    </tbody>
-                    </table> 
-                  </div>
-                </td>
-                </tr>
+                 <tr>
+                    <td>
+                       <app-user-info [isPartnerInfo]="true" [isPartnerEntityInfo]="true"  [userInfo]="agencyDto"></app-user-info>
+                       <p class="required" *ngIf="errorResponses?.length>0">
+                          <strong>{{agencyDto.emailIdErrorMessage}}</strong>
+                       </p>
+                       <p class="required" *ngIf="errorResponses?.length>0">
+                          <strong>{{agencyDto.invalidModuleIdsErrorMessage}}</strong>
+                       </p>
+                    </td>
+                    <!---Modules-->
+                    <td>
+                       <strong>
+                       <i class="{{agencyDto.module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                       {{agencyDto.module?.moduleName}}
+                       </strong>
+                       <a title="Customize Your Modules" (click)="showOrHideModules(agencyDto,i)">
+                       <i class="fa fa-gear" aria-hidden="true"></i>
+                       </a>
+                    </td>
+                    <!---Delete-->
+                    <td>
+                       <a (click)="deleteRow(i,agencyDto)"><i class="fa fa-trash required" aria-hidden="true"></i></a>
+                    </td>
+                 </tr>
+                 <tr [@fadeInOut] [hidden]="!agencyDto?.expand">
+                 <td colspan="4">
+                    <div class="table-responsive">
+                       <table  class="table tgrid table-condensed table-bordered child-table-bg-color" aria-describedby="team-members-info" 
+                          id="upload-agency-modules-table-{{i}}">
+                          <tbody>
+                             <tr *ngFor="let module of agencyDto.modules;let moduleIndex = index;" id="agency-module-{{i}}"  >
+                                <td class="text-center" *ngIf="module.moduleName=='All'">
+                                   <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event,i)" id="agency-all-module-{{module.roleId}}-{{i}}" >
+                                </td>
+                                <td class="text-center" *ngIf="module.moduleName!='All'">
+                                   <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" name="agencyModuleCheckBox-{{i}}" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}">
+                                </td>
+                                <td>
+                                   <i class="{{module?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                                   {{module?.moduleName}}
+                                   <a title="{{module?.description}}">
+                                   <i class="fa fa-question-circle mrfpx"></i>
+                                   </a>
+                                </td>
+                             </tr>
+                          </tbody>
+                       </table>
+                    </div>
+                 </td>
+                 </tr>
               </ng-container>
-            </tbody>
-          </table>
-          <div id="right">
-            <button  type="submit" class="btn btn-primary" (click)="addAllAgencies($event)">{{saveOrUpdateButtonText}}</button>
-            <button  type="button" class="btn btn-default" (click)="clearUploadCsvDataAndGoBack()">Cancel</button>
-          </div>
+           </tbody>
+        </table>
+        <div id="right">
+           <button  type="submit" class="btn btn-primary" (click)="addAllAgencies($event)">{{saveOrUpdateButtonText}}</button>
+           <button  type="button" class="btn btn-default" (click)="clearUploadCsvDataAndGoBack()">Cancel</button>
         </div>
-      </div>
-    </div>
-    <!-----End Of Uplodaded Agencies----->
+     </div>
   </div>
 </div>
-
-
+<!-----End Of Uplodaded Agencies----->
+</div>
+</div>
 <ng-template #modulesTemplate let-defaultModules="modules" let-even="even">
-<div [className]="uploadCsv ?'col-sm-6':'col-sm-4'">
-  <div class="table-responsive">
-    <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
-      <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
-        <tr *ngIf="(0 === i % 2 && even) ||(0 != i % 2 && !even)">
-          <th  scope="row" class="fstcw-tm">
-            <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
-              {{defaultModule?.moduleName}}
-              <a title="{{defaultModule?.description}}">
-                <i class="fa fa-question-circle mrfpx"></i>
-              </a>
-            <br>
-          </th>
-          <th class="normal-font-weight">
-            <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
-            </switch>
-          </th>
-        </tr>
-      </ng-container>
-    </table>
+  <div [className]="uploadCsv ?'col-sm-6':'col-sm-4'">
+     <div class="table-responsive">
+        <table class='table tgrid table-hover' aria-describedby="Agency-Module-Table">
+           <ng-container *ngFor="let defaultModule of defaultModules;let i = index;">
+              <tr *ngIf="(0 === i % 2 && even) ||(0 != i % 2 && !even)">
+                 <th  scope="row" class="fstcw-tm">
+                    <i class="{{defaultModule?.moduleIcon}} mrfpx" aria-hidden="true"></i>
+                    {{defaultModule?.moduleName}}
+                    <a title="{{defaultModule?.description}}">
+                    <i class="fa fa-question-circle mrfpx"></i>
+                    </a>
+                    <br>
+                 </th>
+                 <th class="normal-font-weight">
+                    <switch [status]="defaultModule.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                    [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="changeStatus($event,defaultModule)">
+                    </switch>
+                 </th>
+              </tr>
+           </ng-container>
+        </table>
+     </div>
   </div>
-</div>
 </ng-template>
-
 <!-- Modules Preview Popup -->
 <app-team-member-group-preview-popup *ngIf="showModulesPopup" [agencyId]="selectedAgencyId" (previewGroupPopupEventEmitter)="showModulesPopup=false;selectedAgencyId=0"></app-team-member-group-preview-popup>
 <!-- Modules Preview Popup -->
-
 <app-confirm-sweet-alert-util *ngIf="isDelete" (notifyComponent)="delete($event)"></app-confirm-sweet-alert-util>
-
 <app-confirm-sweet-alert-util *ngIf="showResendEmailInvitationAlert" [parameterDto]="resendEmailInvitationSweetAlertParameterDto" (notifyComponent)="resendEmailInvitationEventEmitter($event)"></app-confirm-sweet-alert-util>
-
-
-

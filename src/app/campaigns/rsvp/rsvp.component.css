@@ -24,15 +24,15 @@ button {
   background: #ffffff;
   border: 0.23px solid #ece8e8;
 }
-.selectedType{
+.selectedType {
   background: #95b101;
 }
-.alertDanger{
+.alertDanger {
   margin: 9px 8px;
   position: relative;
   left: -7px;
 }
-.text-area-css{
+.text-area-css {
   float: right;
   font-size: 11px;
   position: relative;
@@ -40,91 +40,84 @@ button {
   color: #7b8894;
   bottom: 22px;
 }
-.alignCss{
-  position: relative;left: 95px !important;
+.expired-event-class {
+  background-color: #ffffff;
+  color: #0006ff;
+  font-weight: 600;
+  text-align: center;
+  font-size: 26px;
+  margin: 132px 50px 0px 50px;
 }
-.right-css{
-  position: relative; right: -16px;
+.form-submit-success {
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  font-size: 26px;
+  margin: 132px 50px 0px 50px;
 }
-
-.expired-event-class{
-	background-color: #ffffff;
-    color: #0006ff;
-    font-weight: 600;
-    text-align: center;
-    font-size: 26px;
-    margin: 132px 50px 0px 50px;
+#custom-width {
+  width: 150px;
 }
-
-.form-submit-success{
-    color: #333;
-    font-weight: 600;
-    text-align: center;
-    font-size: 26px;
-    margin: 132px 50px 0px 50px;
+.footer {
+  text-align: right;
 }
-
-#custom-width{
-	width: 150px;
+.save-button-align-class {
+  margin-right: -20px;
 }
-
-.footer{
-	text-align: right;
+.title-css-no-border {
+  border-bottom: 0 !important;
+  margin-bottom: -5px !important;
 }
-.save-button-align-class{
-	 margin-right: -20px;
-}
-.title-css-no-border{
-	border-bottom: 0 !important;
-	margin-bottom: -5px !important;
-}
-
 .fieldrsvp {
-    padding: 0 10px !important;
-    margin: 0 0px !important;
-    border: none !important;
+  padding: 0 10px !important;
+  margin: 0 0px !important;
+  border: none !important;
 }
-
 .portlet.light {
-    padding: 0px;
-    background-color: rgba(0, 0, 0, 0.2)!important;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 .portlet.light .portlet-body {
-    padding-top: 0px!important;
+  padding-top: 0px !important;
 }
-.portlet.light, .dashboard-stat2 {
-    border: 1px solid #CCC;
-    padding: 0px !important;
+.portlet.light,
+.dashboard-stat2 {
+  border: 1px solid #ccc;
+  padding: 0px !important;
 }
 .table thead tr th {
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff!important;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff !important;
 }
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 8px;
-    line-height: 1.42857143;
-    vertical-align: top;
-    border-top: 1px solid #ddd;
-    color: #fff!important;
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+  color: #fff !important;
 }
-.table-hover>tbody>tr:hover {
-    background-color: transparent!important;
+.table-hover > tbody > tr:hover {
+  background-color: transparent !important;
 }
-
-
-
 @media (max-width: 767px) {
-	.small{
-	border: none; padding-top: 10px; margin-bottom: 10px;
-	 clear: both; 
-	 background: rgba(0, 0, 0, 0.2);
-	}
-	
+  .small {
+    border: none;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    clear: both;
+    background: rgba(0, 0, 0, 0.2);
+  }
 }
-
-.small{
-	border: 1px solid #fff; padding-top: 10px; margin-bottom: 10px;
-	clear: both;
-	background: rgba(0, 0, 0, 0.2);
-	}
+.small {
+  border: 1px solid #fff;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  clear: both;
+  background: rgba(0, 0, 0, 0.2);
+}

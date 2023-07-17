@@ -81,7 +81,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
     skin:CustomSkin = new CustomSkin();
     userId: number;
-
+    mergeTagForGuide:any;
     constructor(
         private userService: UserService,
         public authenticationService: AuthenticationService,
@@ -198,12 +198,20 @@ export class WelcomeComponent implements OnInit, OnDestroy {
           const currentUser = localStorage.getItem( 'currentUser' );
           this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
           this.loggedInUserId = this.authenticationService.getUserId();
+          this.getMergeTagForGuide();
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
         this.getWelcomePageItems();
         this.getMainContent(this.userId);
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
+  }
+  getMergeTagForGuide(){
+    if(this.authenticationService.isOnlyPartner()) {
+      this.mergeTagForGuide = 'partner_account_dashboard';
+    } else {
+      this.mergeTagForGuide = 'vendor_account_dashboard';
+    }
   }
     ngOnDestroy(){
       $('#myModal').modal('hide');

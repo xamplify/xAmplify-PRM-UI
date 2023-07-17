@@ -96,7 +96,12 @@ export class FunnelChartAnalyticsComponent implements OnInit {
       title: {
         text: "",
       },
-
+      tooltip: {
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
+        }
+      },
       plotOptions: {
         funnel3d: {
           allowPointSelect: true,

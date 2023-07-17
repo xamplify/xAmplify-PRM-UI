@@ -1,13 +1,13 @@
-.table-header-alignment{
-	padding: 6px 0px 6px 25px;
+.table-header-alignment {
+  padding: 6px 0px 6px 25px;
 }
-.grey{
+.grey {
   background-color: #8a8282c4 !important;
 }
-.white{
-	color: white !important;
+.white {
+  color: white !important;
 }
-
-.disabled { 
-	pointer-events: none; opacity: 0.7; 
+.disabled {
+  pointer-events: none;
+  opacity: 0.7;
 }

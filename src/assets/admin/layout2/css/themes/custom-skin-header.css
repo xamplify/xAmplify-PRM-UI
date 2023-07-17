@@ -1,13 +1,14 @@
 .page-header.navbar .customskin-top {
-    background-color: var(--top-bg-color) !important;
+  background-color: var(--top-bg-color) !important;
 }
 .customskin,
 .custom {
-    background-color: var(--top-buton-color) !important;
-    color: var(--top-button-value-color) !important;
-    border: 1px solid var(--top-button-border-color) !important;
+  background-color: var(--top-buton-color) !important;
+  color: var(--top-button-value-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
 }
-.customskin-icon{  color: var(--top-button-icon-color) !important;
+.customskin-icon {
+  color: var(--top-button-value-color) !important;
 }
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username {
     color: var(--top-button-value-color) !important

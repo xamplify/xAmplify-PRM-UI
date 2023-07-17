@@ -1,136 +1,93 @@
 <div class="loader-container" *ngIf="mainLoader">
 	<div class="loader"></div>
 	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
-</div>
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+ </div>
+ <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+ <div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
 	<div style="background-color: rgba(0,0,0,.0);">
-		<app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
-		<app-video *ngIf="vanityURLEnabled"></app-video>
-		</div>		
+	   <app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+	   <app-video *ngIf="vanityURLEnabled"></app-video>
+	</div>
 	<div class="row">
-	<!-- BEGIN LOGIN FORM -->
-	<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
-		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-		<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			<h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
-					<span style="position: relative;top: 4px;">Click to <a class="underlinetext"
-							(click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
-			</h4>
-		</div>
-		<form class="login-form" (ngSubmit)="login()">
-			<h3 class="form-title text-white">{{signInText}}</h3>
-			<div class="alert alert-danger display-hide">
+	   <!-- BEGIN LOGIN FORM -->
+	   <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+			 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			 </button>
+			 <h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+				<span style="position: relative;top: 4px;">Click to <a class="underlinetext"
+				   (click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
+			 </h4>
+		  </div>
+		  <form class="login-form" (ngSubmit)="login()">
+			 <h3 class="form-title text-white">{{signInText}}</h3>
+			 <div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
 				<label class="custom-label">Enter any Email and password.</label>
-			</div>
-			<div class="form-group">
+			 </div>
+			 <div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
 				<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag"
-					name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
-					autocomplete="off" placeholder="Email" />
-			</div>
-			<div class="form-group has-feedback">
+				name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
+				autocomplete="off" placeholder="Email" />
+			 </div>
+			 <div class="form-group has-feedback">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
 				<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
-					[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
-					placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
+				[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
+				placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
 				<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password"
-					(click)="referenceService.showPassword('password')"
-					*ngIf="!referenceService.showInputPassword && model.password"></span>
+				(click)="referenceService.showPassword('password')"
+				*ngIf="!referenceService.showInputPassword && model.password"></span>
 				<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password"
-					(click)="referenceService.showPassword('password')"
-					*ngIf="referenceService.showInputPassword && model.password"></span>
-			</div>
-			<button id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
-		</form>
-		<div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
-			<label class="rememberme check">
-				<span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
-			</label>
-			<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
-		</div>
-		<div class="row solid-wb" style="margin-top: 28px;"></div>
-		<!--Added On 08/06/20222---->
-		<!-- <div class="text-center mt10">
-			<label class="check">
-				<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
-				<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-			</label>
-		</div> -->
-
-		<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
-			<h4>Or login with</h4>
-			<ul class="social-icons">
+				(click)="referenceService.showPassword('password')"
+				*ngIf="referenceService.showInputPassword && model.password"></span>
+			 </div>
+			 <button id="submitBitton" type="submit" class="btn btn-primary pull-left  signin">{{signInText}}</button>
+		  </form>
+		  <div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
+			 <label class="rememberme check">
+			 <span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
+			 </label>
+			 <a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
+		  </div>
+		  <div class="row solid-wb" style="margin-top: 28px;"></div>
+		  <div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
+			 <h4>Or login with</h4>
+			 <ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">
-					<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-						<a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-							<span class="img-child {{socialProvider.iconName}}"></span>
-						</a>
-					</li>
+				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+					  <a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+					  <span class="img-child {{socialProvider.iconName}}"></span>
+					  </a>
+				   </li>
 				</ng-container>
-			</ul>
-		</div>
-		<div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
-			<h4>Or login with</h4>
-			<ul class="social-icons">
+			 </ul>
+		  </div>
+		  <div class="login-options login-form m5" *ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
+			 <h4>Or login with</h4>
+			 <ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of vanitySocialProviders">
-					<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-						<a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-							<span class="img-child {{socialProvider.iconName}}"></span>
-						</a>
-					</li>
+				   <li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+					  <a class="" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
+					  <span class="img-child {{socialProvider.iconName}}"></span>
+					  </a>
+				   </li>
 				</ng-container>
-			</ul>
-		</div>
-
-		<!-- <div class="col-xs-4 pull-right">
-			<ul class="">
-				<div class="row">
-				<ng-container >
-					<div class="col-xs-1" *ngFor="let socialProvider of socialProviders">
-					<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
-						<a  title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)">
-							<img class="social-icon-color" src="{{socialProvider.iconName}}">
-						</a>
-					</li>
-				</div>
-				</ng-container>
-			</div>
-			</ul>
-		</div> -->
-		<!-- <div class="col-xs-4 pull-right">
-			<div class="row">
-			<div class="col-xs-1">
-		    <a data-toggle="tooltip" data-placement="bottom" title="salesforce" (click)="loginUsingSocialAccounts('salesforce')">
-            <img class="social-icon-color" src="\assets\global\img\social\salesforce.svg">
-		    </a>
-		    </div>
-			<div class="col-xs-1">
-			<a data-toggle="tooltip"  data-placement="bottom" title="facebook" (click)="loginUsingSocialAccounts('facebook')">
-            <img  class="social-icon-color" src="\assets\global\img\social\facebook.svg">
-		    </a>
-		    </div>
-			<div class="col-xs-1">
-			<a data-toggle="tooltip"  data-placement="bottom" title="linkedin" (click)="loginUsingSocialAccounts('linkedin')">
-            <img class="social-icon-color" src="\assets\global\img\social\linkedin.svg">
-		   </a>
-		    </div>
-		</div>
-		</div>-->
-	 <!-- </div>  -->
-		<div class="text-center mt10">
-			<label class="check">
-				<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
-				<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
-			</label>
-		</div>
+			 </ul>
+		  </div>
+		  <!-- </div>  -->
+		  <div class="text-center mt10">
+			 <label class="check">
+			 <a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&
+			 <a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+			 </label>
+		  </div>
+	   </div>
 	</div>
-	</div>
-</div>
-<app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
-<app-copyright *ngIf="vanityURLEnabled"></app-copyright>
+ </div>
+ <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+ <app-copyright *ngIf="vanityURLEnabled"></app-copyright>

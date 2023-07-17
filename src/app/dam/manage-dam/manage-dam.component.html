@@ -1,5 +1,5 @@
 <div class="page-content">
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div class="page-bar">
       <ul class="page-breadcrumb">
          <li><i class="fa fa-home" aria-hidden="true"></i> 
@@ -8,21 +8,18 @@
          </li>
          <li>
             <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-					<i class="fa fa-angle-right" aria-hidden="true"></i>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li>
-            <a (click)="goToDam()" translate>DAM</a></li>
-            <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
-            <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
-            
+            <a (click)="goToDam()" translate>DAM</a>
+         </li>
+         <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
+         <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
       </ul>
+      <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
    </div>
    <!---Component Comes here-->
    <app-dam-list-and-grid-view *ngIf="manageDam && !editVideo && !playVideo" ></app-dam-list-and-grid-view>
-   
    <app-edit-video *ngIf="editVideo && !manageDam" (notifyParent)="update($event)" ></app-edit-video> 
-   
    <app-play-video *ngIf="playVideo && !manageDam"></app-play-video>
-   
-   </div>
-   
+</div>

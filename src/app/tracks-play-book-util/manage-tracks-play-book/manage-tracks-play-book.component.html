@@ -43,7 +43,7 @@
                                 </span>
                                </div>
                                <div class="inputs mDamTop" style="float: right">
-                                <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh">
+                                <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh" data-toggle="tooltip" data-placement="bottom">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                 </a>
                                 <div class="pb3 float-left">
@@ -106,26 +106,34 @@
                                             <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="Image Not Found">
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{learningTrack.title}}" translate>
-                                                <span><strong>{{learningTrack.title}}</strong></span>
+                                            <h4 class="mt5 mb5 f-w-600" translate>
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack.title}}" ><strong>{{learningTrack.title | slice:0:25}}</strong></span>
+                                                <span *ngIf="learningTrack.title?.length>25">...</span>
                                             </h4>
-                                            <h6 class="moreipsis" title="{{learningTrack?.category?.name}}">
-                                                <span translate> Folder
-                                                    <strong>{{learningTrack?.category?.name}}</strong></span>
+                                            <h6 class="">
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack?.category?.name}}"
+                                                translate> Folder
+                                                    <strong>{{learningTrack?.category?.name | slice:0:17}}</strong></span>
+                                                    <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                                             </h6>
-                                            <h6 class="moreipsis" title="{{learningTrack.createdByName}}">
-                                                <span translate> Created By
+                                            <h6 class="">
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{learningTrack.createdByName}}" translate> Created By
                                                     <strong>{{learningTrack.createdByName}}</strong></span>
                                             </h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
-                                                <div class="tag">
-                                                    {{learningTrack.tagNames[0]}}
+                                                <div class="tag tablegray-tag">
+                                                   <span data-toggle="tooltip" data-placement="bottom"
+                                                   title="{{learningTrack.tagNames[0]}}"> {{learningTrack.tagNames[0]}}</span>
                                                 </div>
                                                 <ng-container *ngIf="learningTrack.tagNames.length > 1">
-                                                    <div class="tag">
-                                                        {{learningTrack.tagNames[1]}}
+                                                    <div class="tag tablegray-tag">
+                                                       <span data-toggle="tooltip" data-placement="bottom"
+                                                       title="{{learningTrack.tagNames[1]}}">{{learningTrack.tagNames[1]}}</span> 
                                                     </div>
                                                 </ng-container>
                                                 <span *ngIf="learningTrack.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
@@ -135,7 +143,7 @@
                                         <td class="hidden-xs text-center">
                                             <app-timestamp style="display: block;margin-bottom: 4px;" [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                             </app-timestamp>
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner" style="background-color: #5cb85c;" translate>Published</h6>
+                                            <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner published" translate>Published</h6>
                                         </td>
                                         <td>
                                             <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" class="row">
@@ -153,7 +161,7 @@
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
+                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
@@ -210,8 +218,8 @@
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box" id="box-dark-defalut-clr">
                             <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
-                            <h4 class="ellipsis mt5 mb5 f-w-600 grid-title" title="{{learningTrack.title}}" style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
-                                {{learningTrack.title | slice:0:25}} <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
+                            <h4 class="mt5 mb5 f-w-600 grid-title"  style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
+                               <span data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.title}}"> {{learningTrack.title | slice:0:25}}</span> <span *ngIf="learningTrack.title?.length>25">...</span><br><br>
                             </h4>
                             <div class="CardDetailstext"> 
                                 <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 0px 15px 0px 15px;">
@@ -223,23 +231,24 @@
                                     <span *ngIf="learningTrack.progress == undefined">0%</span>
                                     <br>
                                 </div>
-                                <h6 class="track-info-grid" title="{{learningTrack?.category?.name}}" translate>
+                                <h6 class="track-info-grid" data-toggle="tooltip" data-placement="bottom"
+                                title="{{learningTrack?.category?.name}}" translate>
                                     Folder <strong>{{learningTrack?.category?.name | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                                 </h6>
                                 <h6 class="track-info-grid" translate>
-                                    Created On <strong>
+                                    Created On <strong> 
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                         </app-timestamp>
                                     </strong>
                                 </h6>
-                                <h6 class="track-info-grid" title="{{learningTrack.createdByName}}" translate>
+                                <h6 class="track-info-grid" data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.createdByName}}" translate>
                                     By <strong>{{learningTrack.createdByName | slice:0:17}}</strong>
                                     <span *ngIf="learningTrack.createdByName?.length>17">..</span>
                                 </h6>
                             </div>
-                            <div class="ribbon">
-                                <span style="background-color: #5cb85c;" *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
+                            <div class="ribbon tab-ribbon">
+                                <span *ngIf="learningTrack.published && !isPartnerView" translate>Published</span>
                             </div>
                             <div [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar" style="padding: 0px 10px;">
                                 <div class="btnAlignPad mbtnAlignPad">
@@ -248,7 +257,7 @@
                                 </a>
                                 </div>
                                 <div class="btnAlignPad mbtnAlignPad">
-                                    <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false, learningTrack)">
+                                    <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
                                         <i class="fa fa-reply" aria-hidden="true"></i>
                                     </a>
                                 </div>
@@ -318,6 +327,37 @@
 				<app-folder-type-view-util [moduleId]="moduleId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
 			</div>
         </div>
-        <!-- END PAGE CONTENT-->
+        <!-- UnPublish Modal Popup-->
+                <div class="modal fade in" id="unpublished-modal" data-backdrop="static">
+                    <div class="modal-dialog modal-copy" role="document">
+                        <div class="modal-content mSweetalertWid popup-cu-widthalign">
+                            <div class="modal-header">
+                                <h4 class="modal-title f-w-600" id="" translate="" >Are you sure you want to unpublish this track?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <h4  class="modal-title" translate="" >Please share your reason for unpublishing this Track.</h4>
+                                </div>
+                            
+                                <div  class="form-check" style="margin-top: 15px;">
+                                    <input type="radio"  [(ngModel)]="selectedOption"  name="rdaction" value="Assets_or_Quiz">
+                                    <label class="option-color">Want to update Assets/Quiz</label><br>
+                                    <input type="radio"  [(ngModel)]="selectedOption" name="rdaction" value="Partner_List" >
+                                    <label class="option-color">Want to update the Partner/List of partner</label><br>
+                                    <input type="radio" [(ngModel)]="selectedOption" name="rdaction" value="Other"   >
+                                    <label class="option-color">Other</label><br>
+                                </div>                     
+                            <div>
+                                <p class="warning-red-textcolor">* When you unpublish the track,all the related analytics will no
+                                longer exists.</p>
+                              </div>
+                            </div>
+                            <div  class="modal-footer">
+                                <button class="btn Btn-Gray"  type="button" (click)="closePopUp()" >Cancel</button>
+                                <button  class="btn Btn-Green"  type="button"  [disabled]="!selectedOption" (click)="unPublishAction(UnPublishedId, false)">Unpublish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </div>
 </div>

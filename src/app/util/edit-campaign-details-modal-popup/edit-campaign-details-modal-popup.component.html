@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">From Name<span class="required">*</span></label>
                             <div class="col-sm-9">
-                            <input class="form-control" autocomplete="false" maxlength="200" placeholder="From Name" [(ngModel)]="campaignDetailsDto.fromName" [ngModelOptions]="{standalone: true}" >
+                            <input class="form-control" autocomplete="false" placeholder="From Name" [(ngModel)]="campaignDetailsDto.fromName" [ngModelOptions]="{standalone: true}" >
                             </div>
                         </div>
                         <!---From Email------>
@@ -180,7 +180,7 @@
                  </div>
             </ng-container>
             <div class="modal-footer" *ngIf="!loader">
-                <button type="button" class="btn btn-default" (click)="closePopup()" translate>Close</button>
+                <button type="button" class="btn Btn-Gray" (click)="closePopup()" translate>Close</button>
                 <button *ngIf="!dataUpdated" [disabled]="buttonClicked" type="button" class="btn btn-primary"  (click)="update();buttonClicked=true" translate>Update</button>
             </div>
         </div>

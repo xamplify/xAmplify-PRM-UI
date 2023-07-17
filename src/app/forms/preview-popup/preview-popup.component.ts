@@ -53,6 +53,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {
         this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
         this.siteKey = this.envService.captchaSiteKey;
+        
     }
 
     ngOnInit() {
@@ -168,7 +169,15 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     previewForm(id: number) {
         this.customResponse = new CustomResponse();
         this.ngxloading = true;
-        this.formService.getById(id)
+        let formInput:Form = new Form();
+    	formInput.id = id;
+        formInput.userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        if (companyProfileName !== undefined && companyProfileName !== "") {
+            formInput.vendorCompanyProfileName = companyProfileName;
+            formInput.vanityUrlFilter = true;
+        }
+        this.formService.getById(formInput)
             .subscribe(
                 (data: any) => {
                     if (data.statusCode === 200) {
@@ -193,6 +202,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                                 //value.choiceType = "checkbox";
                             }
                         });
+                        this.setCustomCssValues();
                         console.log(data.data);
                         this.formError = false;
                     } else {
@@ -222,6 +232,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
             this.pageBackgroundColor = this.form.pageBackgroundColor;
             this.formBackgroundImage = "";
         }
+        this.setCustomCssValues();
         $('#form-preview-modal').modal('show');
     }
 
@@ -239,4 +250,14 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     resolved(captchaResponse: string) {
               console.log(captchaResponse)
     }
+
+    setCustomCssValues() {
+        document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+        document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+        document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+        document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+        document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+        document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+        require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
+      }
 }

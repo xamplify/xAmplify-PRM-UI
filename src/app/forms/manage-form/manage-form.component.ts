@@ -60,7 +60,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     surveyCampaignId = 0;
     selectedFormSubmitId = 0;
     detailedResponse: boolean = false;
-
+    mergeTagForGuide:any;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -90,6 +90,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedFormTypeIndex = 0;
+        this.mergeTagForGuide = 'manage_form'
         this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
@@ -295,7 +296,15 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     edit(id: number) {
-        this.formService.getById(id)
+        let formInput: Form = new Form();
+        formInput.id = id;
+        formInput.userId = this.authenticationService.getUserId();
+        let companyProfileName = this.authenticationService.companyProfileName;
+        if (companyProfileName !== undefined && companyProfileName !== "") {
+            formInput.vendorCompanyProfileName = companyProfileName;
+            formInput.vanityUrlFilter = true;
+        }
+        this.formService.getById(formInput)
             .subscribe(
                 (data: any) => {
                     this.ngxloading = false;

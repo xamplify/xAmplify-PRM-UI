@@ -60,4 +60,13 @@ export class Form {
     selected: boolean = false;
     associatedWithTrack = false;
 
+    vanityUrlFilter: boolean = false;
+    vendorCompanyProfileName:string = "";
+
+    customSkinTextColor: string = "";
+    customSkinBackgroundColor: string = "";
+    customSkinDivBackgroundColor: string = "";
+    customSkinButtonBorderColor: string = "";
+
+
 }

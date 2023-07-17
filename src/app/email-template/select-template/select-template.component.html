@@ -13,6 +13,9 @@
             </li>
             <li><a translate>Design Templates</a></li>
         </ul>
+        <app-user-guide-help-button
+                 *ngIf="5 != selectedTemplateTypeIndex && 11 != selectedTemplateTypeIndex && 12 != selectedTemplateTypeIndex"
+                [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
@@ -77,8 +80,8 @@
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngIf="filteredEmailTemplates?.length == 0">
                             No Templates Available
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
-                            <div class="grid-box">
+                        <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
+                            <div class="grid-box mb_hgh_grid">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
                                     <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
 										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>

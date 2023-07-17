@@ -1,16 +1,11 @@
-
 .min-h {
-	min-height: 245px;
+  min-height: 245px;
 }
-
 .view-banner-dam {
-	background-color: #00a6e8;
-	color: white;
-	padding: 3px 6px 3px 6px;
-	text-align: center;
-	font-size: 10px;
-	border-radius: 3px;
+  background-color: #00a6e8;
+  color: white;
+  padding: 3px 6px 3px 6px;
+  text-align: center;
+  font-size: 10px;
+  border-radius: 3px;
 }
-
-
-

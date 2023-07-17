@@ -15,6 +15,7 @@
                 <a *ngIf="isPartnerLandingPage" translate>Pages Shared By Vendors</a>
             </li>
         </ul>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <div id="custom-response-div">
         <app-response-message *ngIf="customResponse.isVisible" [customResponse]="customResponse"></app-response-message>
@@ -154,11 +155,11 @@
                                             <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{landingPage.name}}">
                                                 <span><strong translate>{{landingPage.name}}</strong></span>
                                             </h4>
                                             <ng-container>
-                                                <h6 class="moreipsis" title="{{landingPage.createdUser}}">
+                                                <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{landingPage.createdUser}}">
                                                     <span *ngIf="!isPartnerLandingPage" translate>Created By <strong translate>{{landingPage.createdUser}}</strong></span>
                                                     <span *ngIf="isPartnerLandingPage" translate>Shared By <strong translate>{{landingPage.createdUser}}</strong></span>
                                                 </h6>
@@ -184,11 +185,11 @@
                                                 <span class="view-banner-white-labeled">White-Labeled</span>
                                             </ng-container>
                                              <!---XNFR-255-->
-                                            <span class="view-banner" translate>{{landingPage.type}}</span>
+                                            <span class="view-banner green-btn-cu" translate>{{landingPage.type}}</span>
                                         </td>
                                         <td class="hidden-xs text-center">
-                                            <span *ngIf="landingPage.coBranded" class="view-banner" translate>Co-Branded</span>
-                                            <span *ngIf="!landingPage.coBranded" class="view-banner" translate>Regular</span>
+                                            <span *ngIf="landingPage.coBranded" class="view-banner Assigned-lable" translate>Co-Branded</span>
+                                            <span *ngIf="!landingPage.coBranded" class="view-banner Assigned-lable" translate>Regular</span>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
@@ -254,7 +255,7 @@
                 <!---Grid View----->
                 <div class="row">
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                        <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                        <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
@@ -264,7 +265,7 @@
                                 <div>
                                     <h4 id="landing-page-title" title="{{landingPage.name}}">
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
-                                    <span class="view-banner" translate>{{landingPage.type}}</span>
+                                    <span class="view-banner green-btn-cu" translate>{{landingPage.type}}</span>
                                     <!---XNFR-255-->
                                     <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
                                         <span class="view-banner-white-labeled mb5">White-Labeled</span>
@@ -384,7 +385,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-default" id="right" translate>Close</a>
+                    <a data-dismiss="modal" class="btn Btn-Gray" id="right" translate>Close</a>
                 </div>
             </div>
         </div>

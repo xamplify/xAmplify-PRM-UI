@@ -242,6 +242,10 @@ export class PieChartAnalyticsComponent implements OnInit {
       },
       tooltip: {
         pointFormat: "<b>{series.name}</b>:<b></b> ({point.y})",
+        backgroundColor: 'black', 
+        style: {
+          color: '#fff' 
+        }
       },
       plotOptions: {
         pie: {

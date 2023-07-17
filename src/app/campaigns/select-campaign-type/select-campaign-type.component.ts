@@ -9,8 +9,7 @@ import { UserService } from 'app/core/services/user.service';
 import { CampaignAccess } from '../models/campaign-access';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CustomResponse } from 'app/common/models/custom-response';
-
-declare var Metronic, Layout , Demo,TableManaged,swal:any;
+import { EnvService } from 'app/env.service';
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -36,8 +35,10 @@ export class SelectCampaignTypeComponent implements OnInit{
     loggedInUserCompanyId: number = 0;
     showSpf = false;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    searchWithModuleName:any;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
-      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess){
+      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,public envService: EnvService){
+        
        
     }
    cssClassChange(){
@@ -109,6 +110,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         try{
           this.campaignService.campaign = undefined;
  		      this.getCompanyIdByUserId(); 
+          this.searchWithModuleName = "Campaign";
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
         }
@@ -120,7 +122,13 @@ export class SelectCampaignTypeComponent implements OnInit{
                 (data: any) => {
                    if(data.access){
                     this.refService.selectedCampaignType = type;
-                      if(type=="regular" || type=="video" || type=="landingPage" || type=="survey"){
+                    if("regular"==type){
+                      if(this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/"){
+                        this.router.navigate(["/home/campaigns/create"]);
+                      }else{
+                        this.goToAddCampaign('email');
+                      }
+                    }else if(type=="video" || type=="landingPage" || type=="survey"){
                         this.router.navigate(["/home/campaigns/create"]);
                       }else if(type=="eventCampaign"){
                         this.router.navigate(["/home/campaigns/event"]); 
@@ -146,6 +154,11 @@ export class SelectCampaignTypeComponent implements OnInit{
 
   showSuccessMessage(message:any){
     this.customResponse = new CustomResponse('SUCCESS',message, true);
+  }
+
+  goToAddCampaign(campaignType:string){
+    this.loading = true;
+    this.refService.goToRouter("/home/campaigns/create/"+campaignType);
   }
 
 

@@ -7,6 +7,7 @@
             </li>
             <li><a translate>Create Design</a></li>
         </ul>
+        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <!-- End of page-bar -->
     <div class="row">
@@ -17,12 +18,11 @@
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet padding">
                 <div class="portlet-title">
-                    <div class="caption" translate style="font-size:20px !important;">
-                        <!-- <i class="fa fa-cogs mt" aria-hidden="true"></i> -->
+                    <div class="caption" translate style="font-size:20px !important;">                     
                         Create a Design
                     </div>
                     <div>
-                        <button class="btn btn custom" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="btn btn-primary" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -51,7 +51,7 @@
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
-                                            <h5>
+                                            <h5 class="designpage-dark-cu">
 
                                                 <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
                                     class="fa fa-list" aria-hidden="true">&nbsp;</i>&nbsp;
@@ -82,7 +82,7 @@
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
-                                            <h5>
+                                            <h5 class="designpage-dark-cu">
 
                                                 <a style="padding-left: 10px;" [routerLink]="['../../forms/manage']"><i
                                     class="fa fa-list"></i>&nbsp;
@@ -115,7 +115,7 @@
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
-                                            <h5>
+                                            <h5 class="designpage-dark-cu">
 
                                                 <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink]="['../../pages/manage']"><i
                                     class="fa fa-list"></i>&nbsp;

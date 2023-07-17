@@ -1,11 +1,15 @@
 .valid{
-    color: green;
+    color: green !important;
 }
 
 .invalid{
-    color: red;
+    color: red !important;
 }
 
 .custom-full-width{
     width: 100% !important;
+}
+
+.full-width{
+    width:80% !important;
 }

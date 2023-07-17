@@ -29,6 +29,8 @@ import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { TracksPlayBookType } from '../models/tracks-play-book-type.enum';
+import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
+import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 
 declare var $, swal, CKEDITOR: any;
 @Component({
@@ -164,6 +166,13 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   selectedPartnershipIds: any[] = [];
   selectedUserIds: any[] = [];
 
+  containWithinAspectRatio = false;
+  transform: ImageTransform = {};
+  scale = 1;
+  canvasRotation = 0;
+  rotation = 0;
+  circleData: any;
+
   isAssestPopUpOpen : boolean = false;
   isPreviewFromAssetPopup: boolean = false;
   viewType: string;
@@ -171,6 +180,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   folderViewType: string;
   selectedFileType = "";
   fileTypesForFilter:Array<any> = new Array<any>();
+  uploadButton = false;
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -459,7 +469,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           let toolTipTagNames: string = "";
           asset.tagNames.sort();
           $.each(asset.tagNames, function (index, tagName) {
-            if (index > 1) {
+            if (index > 0) {
               if (toolTipTagNames.length > 0) {
                 toolTipTagNames = toolTipTagNames + ", " + tagName;
               } else {
@@ -604,7 +614,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   previewForm(id: number) {
     this.customResponse = new CustomResponse();
     this.ngxloading = true;
-    this.formService.getById(id)
+    let formInput:Form = new Form();
+    formInput.id = id;
+    formInput.userId = this.authenticationService.getUserId();
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      formInput.vendorCompanyProfileName = companyProfileName;
+      formInput.vanityUrlFilter = true;
+    }
+    this.formService.getById(formInput)
       .subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
@@ -624,6 +642,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 value.choices = value.checkBoxChoices;
               }
             });
+            this.setCustomCssValues();
             this.formError = false;
           } else {
             this.formError = true;
@@ -818,21 +837,21 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     }
   }
 
-  imageCroppedMethod(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
+  // imageCroppedMethod(event: ImageCroppedEvent) {
+  //   this.croppedImage = event.base64;
+  // }
 
-  imageLoaded() {
-    this.showCropper = true;
-  }
+  // imageLoaded() {
+  //   this.showCropper = true;
+  // }
 
-  cropperReady() {
-  }
+  // cropperReady() {
+  // }
 
-  loadImageFailed() {
-    this.errorUploadCropper = true;
-    this.showCropper = false;
-  }
+  // loadImageFailed() {
+  //   this.errorUploadCropper = true;
+  //   this.showCropper = false;
+  // }
 
   fileChangeEvent() {
     this.cropRounded = false;
@@ -1505,6 +1524,83 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   filterAssetsByFileType(event:any){
     this.assetPagination.pageIndex = 1;
 		this.assetPagination.filterBy = event;
+    this.assetPagination.searchKey = this.assetSortOption.searchKey;
     this.listAssets(this.assetPagination);
   }
+
+  toggleContainWithinAspectRatio() {
+		if(this.croppedImage!=''){
+            this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		}else{
+        this.showCropper = false;
+        }
+    }
+
+    zoomOut() {
+      if(this.croppedImage!=""){
+        this.scale -= .1;
+        this.transform = {
+          ...this.transform,
+          scale: this.scale       
+        };
+      }else{
+        //this.errorUploadCropper = true;
+        this.showCropper = false; 
+      }
+      }
+
+      zoomIn() {
+        if(this.croppedImage!=''){
+                this.scale += .1;
+                this.transform = {
+                    ...this.transform,
+                    scale: this.scale
+                };
+          
+        }else{
+            this.showCropper = false;
+          //  this.errorUploadCropper = true;
+            }
+        }
+        resetImage() {
+          if(this.croppedImage!=''){
+                  this.scale = 1;
+                  this.rotation = 0;
+                  this.canvasRotation = 0;
+                  this.transform = {};
+          }else{
+              this.showCropper = false;
+             // this.errorUploadCropper = true;
+          }
+          }
+          imageCroppedMethod(event: ImageCroppedEvent) {
+            this.croppedImage = event.base64;
+            console.log(event, base64ToFile(event.base64));
+            }
+            imageLoaded() {
+              this.showCropper = true;
+              console.log('Image loaded')
+              }
+              cropperReady(sourceImageDimensions: Dimensions) {
+                  console.log('Cropper ready', sourceImageDimensions);
+              }
+            loadImageFailed () {
+              console.log('Load failed');
+              }
+              closeModal() {
+                this.cropRounded = !this.cropRounded;
+                this.circleData = {};
+                this.imageChangedEvent = null;
+                 this.croppedImage = '';
+              }   
+              
+  setCustomCssValues() {
+    document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+    document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+    document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+    document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+    document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+    document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+    require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
+  } 
 }

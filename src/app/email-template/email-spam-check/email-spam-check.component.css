@@ -1,134 +1,108 @@
-.status-success {color: #93941f;}
-.status-failure {color: #d5163a;}
-.panel-group .panel {border-radius: 0 !important;}
-.panel-title {font-weight: 600;}
-.panel-default > .panel-heading {background-color: #fff}
+.status-success {
+  color: #93941f;
+}
+.status-failure {
+  color: #d5163a;
+}
+.panel-group .panel {
+  border-radius: 0 !important;
+}
+.panel-title {
+  font-weight: 600;
+}
+.panel-default > .panel-heading {
+  background-color: #fff;
+}
 .text-input__loading--line {
   height: 10px;
   margin: 7px;
   animation: pulse 1s infinite ease-in-out;
 }
-.thick{height: 10px;}
-.thin{height: 5px;}
-.w75{width: 75%}
-.w100{width: 100%}
-.checksymbol {
-    background-image: url(https://cdn4.iconfinder.com/data/icons/icocentre-free-icons/137/f-check_256-24.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 24px;
-    min-height: 24px;
+.thick {
+  height: 10px;
 }
-
-.success { background-color: #c4c445; }
-.failure { background-color: #f2807e; }
-.warning { background-color: #f2ca72; }
-
-.status.warning {
-    border-color: #d59416 !important;
-    background-color: #f3bd47 !important;
+.thin {
+  height: 5px;
 }
-
-.status.failure {
-    border-color: #d5163a !important;
-    background-color: #f35957 !important;
+.w75 {
+  width: 75%;
 }
-.status.success {
-    border-color: #93941f !important;
-    background-color: #c4c51a !important;
-    text-indent: -9999px !important; 
+.w100 {
+  width: 100%;
 }
-
-
-.status-warning {
-    color: #d59416 !important;
-}
-
 .status-failure {
-    color: #d5163a !important;
+  color: #d5163a !important;
 }
 .status-success {
-    color: #93941f !important;
+  color: #93941f !important;
 }
-
- .status {
-    margin: -11px -15px 1px 1px;
-    float: right;
-    width: 37px;
-    min-height: 37px;
-    line-height: 37px;
-    margin-left: 1em;
-    text-align: center;
-    color: #fff;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-    border: 1px solid #a0a0a0;
-    background-color: #cacaca;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.33) inset;
+.status {
+  margin: -11px -15px 1px 1px;
+  float: right;
+  width: 37px;
+  min-height: 37px;
+  line-height: 37px;
+  margin-left: 1em;
+  text-align: center;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  border: 1px solid #a0a0a0;
+  background-color: #cacaca;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.33) inset;
 }
-
 .more-less {
-		float: left;
-		color: #212121;
-	}
-	
-a[aria-expanded="false"] .plusSymbol{
-    background-image: url(https://www.mail-tester.com/images/test-result-closed.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    
+  float: left;
+  color: #212121;
 }
-	
-a[aria-expanded="true"] .plusSymbol{
-    background-image: url(https://www.mail-tester.com/images/test-result-open.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-   
+a[aria-expanded="false"] .plusSymbol {
+  background-image: url(https://www.mail-tester.com/images/test-result-closed.png);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-
-a[aria-expanded="false"] .childPlusSymbol{
-    background-image: url(https://www.mail-tester.com/images/plus.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-    
+a[aria-expanded="true"] .plusSymbol {
+  background-image: url(https://www.mail-tester.com/images/test-result-open.png);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-	
-a[aria-expanded="true"] .childPlusSymbol{
-    background-image: url(https://www.mail-tester.com/images/minus.png);
-    background-repeat: no-repeat;
-    background-position: center center;
-   
+a[aria-expanded="false"] .childPlusSymbol {
+  background-image: url(https://www.mail-tester.com/images/plus.png);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-
-.headerRowPlusImage{
-	border: 0px solid;
-    background-color: #ececec;
-    margin: -10px 6px 0px -15px;
-    width: 39px;
-    min-height: 39px;
+a[aria-expanded="true"] .childPlusSymbol {
+  background-image: url(https://www.mail-tester.com/images/minus.png);
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-.childRowPlusImage{
-	border: 0px solid;
-    background-color: #ececec;
-    margin: -10px 6px 0px -15px;
-    width: 37px;
-    min-height: 37px;
+.headerRowPlusImage {
+  border: 0px solid;
+  background-color: #ececec;
+  margin: -10px 6px 0px -15px;
+  width: 39px;
+  min-height: 39px;
 }
-.text-blue{
-	color: #5b9bd1;
+.childRowPlusImage {
+  border: 0px solid;
+  background-color: #ececec;
+  margin: -10px 6px 0px -15px;
+  width: 37px;
+  min-height: 37px;
 }
-	
-@media screen and (max-width:600px){
-    .mSpamWid{
-        overflow-x: auto;
-    }
-    .mLabelSize{
-        font-size: 10px;
-        font-weight: 700;
-    }
-    .mLabelSizeSeal{
-        font-size: 9px;
-        font-weight: 800;
-    }
+.text-blue {
+  color: #5b9bd1;
+}
+@media screen and (max-width: 600px) {
+  .mSpamWid {
+    overflow-x: auto;
+  }
+  .mLabelSize {
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .mLabelSizeSeal {
+    font-size: 9px;
+    font-weight: 800;
+  }
 }

@@ -1,150 +1,146 @@
 <div class="page-content">
 	<div class="page-bar">
-		<ul class="page-breadcrumb">
-		   <li><i class="fa fa-home" aria-hidden="true"></i> 
-			  <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
-			  <i class="fa fa-angle-right" aria-hidden="true"></i>
-		   </li>
-		   <li>
-			  <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-				<i class="fa fa-angle-right" aria-hidden="true"></i>
-		   </li>
-		   <li>
-			  <a (click)="goToDam()" translate>DAM</a>
-			  <i class="fa fa-angle-right" aria-hidden="true"></i>
-			</li>
-			<li>
-				<a class="pointer-events-none" translate>History</a>
-			  </li>
-		</ul>
+	   <ul class="page-breadcrumb">
+		  <li><i class="fa fa-home" aria-hidden="true"></i> 
+			 <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a (click)="goToDam()" translate>DAM</a>
+			 <i class="fa fa-angle-right" aria-hidden="true"></i>
+		  </li>
+		  <li>
+			 <a class="pointer-events-none" translate>History</a>
+		  </li>
+	   </ul>
 	</div>
-
 	<div style="position: relative; top: -10px;">
-		<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+	   <app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 	</div>
-
 	<div class="row">
-		<div class="col-md-12">
-			<div class="portlet light clearfix minhsfp">
-				<div class="portlet-title bbnone">
-					<div class="row">
-					<div class="page-toolbar col-xs-12">
-						<div class="btn-group pull-right">
-						<div class="inputs" style="float: right">
+	   <div class="col-md-12">
+		  <div class="portlet light clearfix minhsfp">
+			 <div class="portlet-title bbnone">
+				<div class="row">
+				   <div class="page-toolbar col-xs-12">
+					  <div class="btn-group pull-right">
+						 <div class="inputs" style="float: right">
 							<a	class="close-circle ref-mar" (click)="goToDam()" title="Close"> 
-								<i	class="fa fa-times" aria-hidden="true"></i>
-						   </a>
+							<i	class="fa fa-times" aria-hidden="true"></i>
+							</a>
 							<a class="close-circle ref-mar" (click)="refreshList()"	title="Refresh">
-								<i class="fa fa-refresh" aria-hidden="true"></i>
+							<i class="fa fa-refresh" aria-hidden="true"></i>
 							</a>
 							<div style="float: left;margin-right:5px;">
-								<select	class="form-control" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
-									<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
-								</select> 
+							   <select	class="form-control" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+							   <option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
+							   </select> 
 							</div>
 							<div class="portlet-input input-inline input-small"	style="margin-right: 10px;">
-								<div class="input-icon right"	style="position: relative; right: -11px;">
-									<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-									<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
-									<button type="submit" class="search-box-item-click"	(click)="searchAssets()">
-										<i class="fa fa-search" aria-hidden="true"></i>
-									</button>
-								</div>
+							   <div class="input-icon right"	style="position: relative; right: -11px;">
+								  <input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+								  <button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
+								  <button type="submit" class="search-box-item-click"	(click)="searchAssets()">
+								  <i class="fa fa-search" aria-hidden="true"></i>
+								  </button>
+							   </div>
 							</div>
-						</div>
-						</div>
-						</div>
-
-					</div>
+						 </div>
+					  </div>
+				   </div>
 				</div>
-
-			<!---Grid Loader------>
-			<app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
-			<section *ngIf="!historyLoader.isLoading">
+			 </div>
+			 <!---Grid Loader------>
+			
+			 <app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
+			 <section *ngIf="!historyLoader.isLoading">
+				<div *ngIf="showRefreshNotification" class="alert alert-info">
+					<strong>Please <a (click)="refreshList()">click here</a> to find latest updates</strong>
+				</div>
 				<div class="row" *ngIf="!historyLoader.isLoading && !historyLoader.isServerError">
-					<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
-						<div class="grid-box min-h default-cursor box-shadow">
-							<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
-								alt="{{asset?.assetName}}">
-							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
-								{{asset?.assetName | slice:0:25}} <span
-									*ngIf="asset?.assetName?.length>25">...</span><br>
-							</h4>
-							<div>
-								<span class="view-banner-dam">{{asset?.assetType}}</span>
-								<h6 translate>
-									<span *ngIf="isPartnerView">Published On</span> <span
-										*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
-											[showInLine]="'true'" [dateAndTime]="asset?.displayTime">
-										</app-timestamp>
-									</strong>
-								</h6>
-								<h6 title="{{asset?.displayName}}" translate>
-									By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
-										*ngIf="asset?.displayName?.length>17">..</span>
-								</h6>
-								<h6 class="moreipsis" title="{{asset?.categoryName}}">
-									<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-								</h6>
-								<h6 class="moreipsis"
-									*ngIf="!isPartnerView && asset?.beeTemplate">
-									<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
-								</h6>
-								<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
-									From <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
-										*ngIf="asset?.vendorCompanyName?.length>17">..</span>
-								</h6>
-							</div>
-							<div class="ribbon">
-								<span *ngIf="asset?.published" translate>Published</span>
-							</div>
-							
-							<div class="bar auto-height">
-								
-								<app-asset-grid-view-actions [isPartnerView]="false" [asset]="asset"
-								(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
-								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
-								(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
-								>
-								</app-asset-grid-view-actions>
-							</div>
+				   <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
+					  <div class="grid-box min-h default-cursor box-shadow">
+						 <img class="img-class mxv" src="{{asset?.thumbnailPath}}"
+							alt="{{asset?.assetName}}">
+						 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+							{{asset?.assetName | slice:0:25}} <span
+							   *ngIf="asset?.assetName?.length>25">...</span><br>
+						 </h4>
+						 <div>
+							<span class="view-banner-dam">{{asset?.assetType}}</span>
+							<h6 translate>
+							   <span *ngIf="isPartnerView">Published On</span> <span
+								  *ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
+							   [showInLine]="'true'" [dateAndTime]="asset?.displayTime">
+							   </app-timestamp>
+							   </strong>
+							</h6>
+							<h6 title="{{asset?.displayName}}" translate>
+							   By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
+								  *ngIf="asset?.displayName?.length>17">..</span>
+							</h6>
+							<h6 class="moreipsis" title="{{asset?.categoryName}}">
+							   <span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+							</h6>
+							<h6 class="moreipsis"
+							   *ngIf="!isPartnerView && asset?.beeTemplate">
+							   <span translate> Version <strong>{{asset?.versionInString}}</strong></span>
+							</h6>
+							<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
+							   From <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
+								  *ngIf="asset?.vendorCompanyName?.length>17">..</span>
+							</h6>
+						 </div>
+						 <div class="ribbon">
+							<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+							<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 						</div>
-					</div>
+						 <div class="bar auto-height">
+							<app-asset-grid-view-actions [isPartnerView]="false" [asset]="asset"
+							(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
+							(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
+							(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+							>
+							</app-asset-grid-view-actions>
+						 </div>
+					  </div>
+				   </div>
 				</div>
-			</section>
-			<!---Pagination-->
-			<div *ngIf="pagination.totalRecords==0 && !historyLoader.isLoading"
+			 </section>
+			 <!---Pagination-->
+			 <div *ngIf="pagination.totalRecords==0 && !historyLoader.isLoading"
 				class="alert alert-info text-center">
 				<strong>No Data Found.</strong>
-			</div>
-			<div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="historyLoader.isLoading">
-				<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)"></app-pagination>
-			</div>
-			</div>
-		</div>
+			 </div>
+			 <div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="historyLoader.isLoading">
+			 <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAssetsHistory($event)"></app-pagination>
+		  </div>
+	   </div>
 	</div>
-</div>
-
-<!--Preview Popup-->
-<ng-container *ngIf="isPreview">
+ </div>
+ </div>
+ <!--Preview Popup-->
+ <ng-container *ngIf="isPreview">
 	<app-preview-asset-popup [asset]="asset" (previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>
-</ng-container>
-
-<!---Download PDF Popup-->
-<ng-container *ngIf="showPdfModalPopup">
+ </ng-container>
+ <!---Download PDF Popup-->
+ <ng-container *ngIf="showPdfModalPopup">
 	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
-</ng-container>
-<!--Publish To Partners Popup-->
-<ng-container *ngIf="showPublishPopup"> 
-<app-partner-company-and-groups-modal-popup
+ </ng-container>
+ <!--Publish To Partners Popup-->
+ <ng-container *ngIf="showPublishPopup"> 
+	<app-partner-company-and-groups-modal-popup
 	[companyId]="loggedInUserCompanyId" [inputId]="selectedAssetId" [moduleName]="'dam'"
 	(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
-</ng-container>
-
-<!-----Delete-------->
-<ng-container *ngIf="deleteAsset">
+ </ng-container>
+ <!-----Delete-------->
+ <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+	(deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
-</ng-container>
+ </ng-container>

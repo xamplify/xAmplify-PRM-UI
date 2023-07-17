@@ -12,5 +12,8 @@ export class DamPostDto {
 
 	 /****XNFR-255****/
 	 shareAsWhiteLabeledAsset = false;
+	 partnerGroupIds = [];
+	 partnerIds = [];
+	 partnerGroupSelected = false;
 
 }
