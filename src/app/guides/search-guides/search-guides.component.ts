@@ -98,6 +98,7 @@ export class SearchGuidesComponent implements OnInit, OnChanges {
           this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
           this.refService.loading(this.httpRequestLoader, false);
           this.location.replaceState('home/help/search');
+          this.loading = false;
         } else {
          this.loading = false;
         }
