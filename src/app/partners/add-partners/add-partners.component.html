@@ -914,9 +914,8 @@
                             </div>
                             <div class="clearfix">
                                 <div class="col-xs-12" style="padding: 0px 0;">
-                                    <div class="alert alert-info flex" *ngIf="isLoadingList">
-                                        <div class="loader processing-loader-style"></div>
-                                        <strong translate style="padding-left:10px;">Please wait while we process your request</strong>
+                                    <div class="alert alert-info" *ngIf="isLoadingList">
+                                        <strong>Please wait while we process your request</strong>
                                     </div>
                                     <div
                                         *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"

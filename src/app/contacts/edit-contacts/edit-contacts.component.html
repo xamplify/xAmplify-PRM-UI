@@ -385,11 +385,8 @@
 				   <u>{{duplicateEmailIds}}</u>
 				</h4>
 			 </div>
-			 <div *ngIf="noContactsFound==true" class="alert alert-info" style="padding: 10px!important;">
-				
-				<h4  style="padding-top: 6px;">
-					<span  id="responseMessage" class="text alert-message-fw" >No results found.</span>
-				 </h4>
+			 <div *ngIf="noContactsFound==true" class="alert alert-info">
+				<strong>No results found</strong>
 			 </div>
 			 <div *ngIf="showInvalidMaills==true" class="col-md-6"
 				class="col-md-9 alert alert alert-danger alert-dismissable">
@@ -785,8 +782,8 @@
  <div class="" *ngIf="showAllContactData">
 	<div class="col-xs-12">
 	   <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" 
-		  class="alert alert-info mt10">
-		  <h4 translate>No results found</h4>
+		  class="alert alert-info">
+		  <strong translate>No results found</strong>
 	   </div>
 	   <div class="alert alert-success alert-dismissable col-xs-12"
 		  style="padding: 15px 10px 12px;"
