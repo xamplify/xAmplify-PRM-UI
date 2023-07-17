@@ -1399,7 +1399,7 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-.btn-primary {
+/* .btn-primary {
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1427,7 +1427,7 @@ h5.designpage-dark-cu {
 .Btn-Green.btn:hover,
 .open .Btn-Green.btn.dropdown-toggle {
   color: var(--btn-secondary-text-color) !important;
-}
+} */
 .custom-header-img-color {
   color: var(--top-button-value-color) !important;
   background-color: var(--top-bg-color) !important;
