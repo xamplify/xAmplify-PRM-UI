@@ -5,7 +5,7 @@
 /* .drap-arrow-cu { padding: 4px 0px;font-size: 10px;color: #333;} */
 /* .add-graph-bg {background-image: url(/assets/images/graph.png);padding: 28px !important;background-repeat: round;background-size: 100%;} */
 .list-group {padding-left: 0;margin-bottom: 0px;}
-img.draganddrop-image-cu {height: 300px;object-fit: contain;}
+img.draganddrop-image-cu {height: auto; width: 100%;object-fit: fill;border-radius: 3px;}
 .btn-top-space {margin-top: 20px;}
 .dragdrop-gif-cu {border: 1px solid #ddd;padding: 15px;border-radius: 5px;}
 h4.boltext-dr {font-weight: 600;margin-top: 0px;}

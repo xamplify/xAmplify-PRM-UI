@@ -22,7 +22,8 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
-import { UserGuide } from "app/guides/models/user-guide";
+import { EnvService } from "app/env.service";
+
 
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
@@ -149,9 +150,8 @@ export class ReferenceService {
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private route: ActivatedRoute
+    private envService:EnvService
   ) {
-    console.log("reference service constructor");
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
     this.coBrandingTag =
@@ -3199,6 +3199,10 @@ export class ReferenceService {
   }
   goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  public isProduction(){
+    return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
   }
 
   

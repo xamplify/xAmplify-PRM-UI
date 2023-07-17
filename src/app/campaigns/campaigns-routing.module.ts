@@ -27,6 +27,7 @@ export const campaignRoutes: Routes = [
   { path: "select", component: SelectCampaignTypeComponent },
   { path: "create", component: CreateCampaignComponent },
   { path: "create/:campaignType", component: AddCampaignComponent },
+  { path: "edit/:campaignType", component: AddCampaignComponent },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },

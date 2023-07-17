@@ -442,7 +442,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             }
                             else {
                                 /********XNFR-125*******/
-                                this.checkOneClickLaunchAccess(campaign.campaignId);
+                                this.checkOneClickLaunchAccess(campaign.campaignId,data.campaignType);
                             }
                         }
                     }
@@ -465,7 +465,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     /*****XNFR-125*****/
-    checkOneClickLaunchAccess(campaignId:number){
+    checkOneClickLaunchAccess(campaignId:number,campaignType:string){
         this.isloading = true;
         this.customResponse = new CustomResponse();
         this.campaignService.checkOneClickLaunchAccess(campaignId).
@@ -474,7 +474,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let access = response.data;
                 if(access){
                     this.refService.isEditNurtureCampaign = false;
-                    this.router.navigate(["/home/campaigns/edit"]);
+                    if(this.refService.isProduction()){
+                        this.router.navigate(["/home/campaigns/edit"]);
+                    }else{
+                        if("REGULAR"==campaignType){
+                            //this.router.navigate(["/home/campaigns/edit/email"]);
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }else{
+                            this.router.navigate(["/home/campaigns/edit"]);
+                        }
+                    }
+                    
                 }else{
                     this.refService.scrollSmoothToTop();
                     let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";
