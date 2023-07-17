@@ -20,13 +20,13 @@
         <i class="fa fa-angle-right" aria-hidden="true"></i>
         <a>Search Results</a>
       </li>
-      <li *ngIf="statusCode === 404 || statusCode === 403">
+      <li *ngIf="(statusCode === 404 || statusCode === 500) && !isSearch">
         <!-- <i class="fa fa-angle-right" aria-hidden="true"></i> -->
         <a>Error Page</a>
       </li>
     </ul>
   </div>
-  <div class="page-bar page-bar-padding-cu" *ngIf="statusCode != 404">
+  <div class="page-bar page-bar-padding-cu" *ngIf="statusCode !== 404">
     <div class="row">
       <!-- {{guideMergeTag}} -->
       <div class="col-lg-3 col-md-3 col-sm-12">
@@ -232,7 +232,7 @@
           </nav>
         </div>
       </div>
-      <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200">
+      <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200 && !isError">
         <!-- <button type="button" (click)="hideAndShow()" class="btn btn-primary hide-mobile-menu" >
           <i class="glyphicon glyphicon-align-left"> Menu</i> 
          </button> -->
@@ -254,7 +254,7 @@
         <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [loading]="loading" [searchKey]="searchKey" [pagination]="pagination"></app-search-guides>
         </div>
       </div>
-      <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 500" style="padding: 10px;">
+      <div class="col-md-9 col-lg-9" *ngIf="statusCode === 500 && !isError" style="padding: 10px;">
         <div class="">
           <div class="text-center">
             <h1>403</h1>
@@ -264,7 +264,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-9 col-lg-9 " *ngIf="statusCode === 405" style="padding: 10px;">
+      <div class="col-md-9 col-lg-9 " *ngIf="isError" style="padding: 10px;">
         <div class="">
           <div class="text-center">
             <h1>404</h1>
@@ -276,12 +276,12 @@
       </div>
     </div>
   </div>
-  <div class="page-bar"   *ngIf="statusCode === 404">
+  <div class="page-bar" *ngIf="statusCode === 404">
     <div class="">
       <div class="text-center">
         <h1>404</h1>
         <h4>ACCESS DENIED</h4>
-        <h3>Your Request for this help guides are in processing...</h3>
+        <h3>Your Request for this help guides are in Progress...</h3>
         <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
       </div>
     </div>

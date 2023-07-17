@@ -69,10 +69,13 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		}
 	}
 	statusCode: any;
+	isProgress:boolean = false;
 	getUserGuideBySlug(pagination: Pagination) {
 		this.loading = true;
 		this.isSearch = false;
 		this.pagination.slug = this.slug;
+		this.isError = false;
+		this.isProgress = false;
 		this.dashboardService.getGuideGuideBySlug(pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
@@ -87,11 +90,13 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				} else if (response.statusCode === 404) {
 					this.isSearch = false;
 					this.loading = false;
+					this.isProgress = true;
+					this.goToProcessing();
 					this.statusCode = 404;
-				}
-				else {
+				} else if(response.statusCode === 403){
 					this.isSearch = false;
 					this.loading = false;
+					this.isProgress = false;
 					this.statusCode = 500;
 				}
 				this.loading = false;
@@ -151,17 +156,16 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		//this.pagination.searchKey = this.searchKey;
 	    //this.pagination.pageIndex = 1;
 		// this.statusCode = 200;
+		this.isError = false;
 		this.isSearch = true;
-		this.loading = false;
 	    //this.getUserGuidesByModuleName("");
+		this.loading = false;
 	}
+	isError:boolean = false;
 	goToProcessing() {
 		this.loading = false;
-		this.statusCode = 405;
-		 this.isSearch = false;
-		this.getSearchKey("");
+		this.isError = true;
 		this.loading= false;
-
 	}
 
 	ngOnInit() {
@@ -169,6 +173,9 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		if (currentUrl.includes('/home/help/search')) {
 			// this.pagination.searchWithModuleName = true;
 			this.searchKey = this.route.snapshot.params['moduleName'];
+			if(this.searchKey === undefined){
+				this.searchKey = "";
+			}
 			//this.getSearchKey(this.searchKey)
 			//this.isSearch = true;
 			//this.pagination.searchKey = this.searchKey;
@@ -407,6 +414,8 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.userGudeTitles = [];
 		this.showListId = moduleName;
 		this.pagination.moduleName = moduleName;
+		this.isError = false;
+		this.isProgress = false;
 		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
@@ -436,6 +445,8 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				this.loading = false;
 				this.isSearch = false;
 				this.searchKey = "";
+				this.isError = false;
+				this.isProgress = false;
 				if (response.statusCode === 200) {
 					this.statusCode = 200;
 					let map = response.map;
