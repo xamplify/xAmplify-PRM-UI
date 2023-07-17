@@ -46,10 +46,8 @@
 											<h5 class="mt-0 justify-content-end d-flex mv-color-text font-incresss-mv">{{vendorReport.counts[0].name}}</h5>
 										</div>  
 									</div>
-									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace">
-										<span class="mt-0 justify-content-end d-flex mv-color-text"> {{vendorReport.counts[1].count}} {{vendorReport.counts[1].name}} |</span>
-										<span class="mt-0 justify-content-end d-flex mv-color-text"> {{vendorReport.counts[2].count}} {{vendorReport.counts[2].name}} |</span>	
-										<span class="mt-0 justify-content-end d-flex mv-color-text"> {{vendorReport.counts[3].count}} {{vendorReport.counts[3].name}} </span>		
+									<div class="flex-row d-flex col-6 col-lg-auto pull-right mv-topspace" *ngFor="let count of vendorReport['counts'] | slice:1; let i = 'index+1'">
+										<h5 class="mt-0 justify-content-end d-flex mv-color-text"> {{vendorReport.counts[i].count}}  {{vendorReport.counts[i].name}} |</h5>
 								</div>
 								</div>
 								<div class="card-body p-0 card-bgcolor dark-card-body-cu">
