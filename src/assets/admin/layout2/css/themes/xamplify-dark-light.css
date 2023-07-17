@@ -369,9 +369,16 @@ fieldset,
   color: white !important;
 }
 /* 04-07-2023 Templates privew background */
-.table-striped > tbody > tr:nth-of-type(odd),
+/* .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
+.search-box-item-clear,
+input {
+  background-color: transparent !important;
+} */
+.table-striped > tbody > tr:nth-of-type(odd),
+table tr:nth-child(odd),
+table tr:nth-child(even),
 .search-box-item-clear,
 input {
   background-color: transparent !important;
@@ -1644,3 +1651,6 @@ div#removeborder {
 .help-iconbgadd i:hover {
   color: #fff !important;
 }/* end */
+.help-iconbgadd {
+  border: 1px solid #2f4857 !important;
+}
