@@ -9,7 +9,7 @@
    <span aria-hidden="true">x</span>
    </button>
    <h4 style="padding-top: 6px;">
-      <span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw'"  id='responseMessage'
+      <span [ngClass]="customResponse?.responseType=='SUCCESS'? 'text alert-message-fw login-success' : customResponse?.responseType=='ERROR'? 'text alert-message-fw login-error' : 'text alert-message-fw login-info'"  id='responseMessage'
       [innerHTML]="customResponse.responseMessage"></span>
    </h4>
 </div>

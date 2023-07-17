@@ -223,6 +223,14 @@
          <div [ngClass]="{'page-bar p10': showListOfContactList}">
             <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                <div class="tab-pane active" >
+                  <div class="row mr0 ml0">
+                     <div class="">
+                        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                        </app-response-message>
+                        <app-response-message [customResponse]="emailNotificationCustomResponse" *ngIf="emailNotificationCustomResponse.isVisible">
+                        </app-response-message>
+                     </div>
+                  </div>
                   <div class="clearfix"></div>
                   <!-- Remove Tiles here-->
                   <span *ngIf="iszohoAccessTokenExpired">
@@ -285,14 +293,7 @@
                      </div>
                   </div>
                </div>
-               <div class="row mr0 ml0">
-                  <div class="">
-                     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                     </app-response-message>
-                     <app-response-message [customResponse]="emailNotificationCustomResponse" *ngIf="emailNotificationCustomResponse.isVisible">
-                     </app-response-message>
-                  </div>
-               </div>
+               
                <!-- END DASHBOARD STATS -->
                <div class="clearfix"></div>
             </div>
