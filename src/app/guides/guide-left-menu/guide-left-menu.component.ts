@@ -90,8 +90,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				} else if (response.statusCode === 404) {
 					this.isSearch = false;
 					this.loading = false;
-					this.isProgress = true;
-					this.goToProcessing();
+					this.progressGuides();
 					this.statusCode = 404;
 				} else if(response.statusCode === 403){
 					this.isSearch = false;
@@ -148,6 +147,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		}
 		this.getUserGuidesByModuleName(this.expansionModuleName);
 	}
+	isShowSearchResults:boolean = false;
 	getSearchKey(event: any) {
 		this.searchKey = event;
 		this.loading = false;
@@ -158,6 +158,11 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		// this.statusCode = 200;
 		this.isError = false;
 		this.isSearch = true;
+		this.isProgress = false;
+		this.isDashBoard = false;
+		if(this.statusCode === 404) {
+         this.isShowSearchResults = true;
+		}
 	    //this.getUserGuidesByModuleName("");
 		this.loading = false;
 	}
@@ -166,6 +171,11 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.loading = false;
 		this.isError = true;
 		this.loading= false;
+	}
+	progressGuides() {
+		this.loading = false;
+		this.isProgress = true;
+		this.loading = false;
 	}
 
 	ngOnInit() {
@@ -185,6 +195,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			this.pagination.slug = this.slug;
 			this.isSearch = false;
 			this.getUserGuideBySlug(this.pagination);
+			this.loading = false;
 		}
 		this.findMenuItems();
 	}
@@ -440,6 +451,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 
 	getGuideLinkByTitle(title: string) {
 		//this.showListId = "";
+		this.isShowSearchResults = false;
 		this.dashboardService.getGuideLinkByTitle(title).subscribe(
 			(response) => {
 				this.loading = false;
@@ -467,11 +479,18 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				this.refService.scrollSmoothToTop();
 			})
 	}
+	dashBoardTitle= "";
+	isDashBoard = false;
 	getGuideLinkByType() {
 		if (this.authenticationService.module.isVendor) {
 			this.getGuideLinkByTitle('Account Dashboard')
-		} else {
+		} else if(this.authenticationService.module.isOnlyPartnerCompany) {
 			this.getGuideLinkByTitle('Partner Account Dashboard')
+		} else {
+			this.goToProcessing();
+            this.dashBoardTitle = "Account Dashboard";
+			this.isDashBoard = true;
+			this.isSearch = true;
 		}
 	}
 

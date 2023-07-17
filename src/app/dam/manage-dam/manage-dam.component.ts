@@ -52,7 +52,7 @@ export class ManageDamComponent implements OnInit {
 		} else if(this.router.url.indexOf('/previewVideo')>-1){
 		 this.getVideo(this.videoId, this.damId, 'playVideo');
 		}
-        this.mergeTagForGuide = this.isPartnerView ? 'accessing _shared_assets': 'manage_assets';
+        this.mergeTagForGuide = this.isPartnerView ? 'accessing_shared_assets': 'manage_assets';
 	}
 	
 	  getDefaultVideoSettings() {

@@ -90,7 +90,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedFormTypeIndex = 0;
-        this.mergeTagForGuide = 'manage_forms'
+        this.mergeTagForGuide = 'manage_form'
         this.pagination.filterKey = "All";
         if (this.router.url.endsWith('manage/')) {
             this.onlyForms = this.router.url.indexOf('/lf')<0;
