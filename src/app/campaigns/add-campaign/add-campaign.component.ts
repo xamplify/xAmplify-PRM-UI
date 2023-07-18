@@ -562,7 +562,9 @@ export class AddCampaignComponent implements OnInit {
             }
             /***Load Partners /Contacts***/
             this.campaignDetailsLoader = false;
+            this.emailTemplatesPagination.maxResults = 4;
             this.findEmailTemplates(this.emailTemplatesPagination);
+            this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
     }
@@ -756,7 +758,7 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.channelCampaign = event;
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
-        this.campaignRecipientsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.maxResults = 4;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -857,7 +859,7 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.oneClickLaunch = event;
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
-        this.campaignRecipientsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.maxResults = 4;
         this.selectedContactListIds = [];
         this.userListDTOObj = [];
         this.isContactList = false;
@@ -1427,7 +1429,7 @@ export class AddCampaignComponent implements OnInit {
         this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.replies.push(this.reply);
         this.allItems.push(id);
-        this.reply.emailTemplatesPagination.maxResults = 12;
+        this.reply.emailTemplatesPagination.maxResults = 4;
         this.findEmailTemplatesForAutoResponseWorkFlow(this.reply);
     }
     findEmailTemplatesForAutoResponseWorkFlow(reply: Reply) {
@@ -1485,7 +1487,7 @@ export class AddCampaignComponent implements OnInit {
         this.url.url = this.emailTemplateHrefLinks[0];
         this.urls.push(this.url);
         this.allItems.push(id);
-        this.url.emailTemplatesPagination.maxResults = 12;
+        this.url.emailTemplatesPagination.maxResults = 4;
         this.findEmailTemplatesForWebSiteWorkFlow(this.url);
     }
     findEmailTemplatesForWebSiteWorkFlow(url: Url) {

@@ -5,10 +5,18 @@
 </style>
 <div [hidden]="pagination.pagedItems.length == 0">
   <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
-     <select class="form-control margin-top" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
-     <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-     <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
-     <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+     <select class="form-control margin-top pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+      <ng-container *ngIf="customDropDown">
+         <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+         <option *ngIf="pagination.totalRecords>4" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+         <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+         <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
+      </ng-container>
+      <ng-container *ngIf="!customDropDown">
+         <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+         <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+         <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+      </ng-container>
      </select>
   </div>
 </div>
