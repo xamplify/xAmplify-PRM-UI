@@ -433,9 +433,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                     if(this.refService.isProduction()){
                         this.router.navigate(["/home/campaigns/edit"]);
                     }else{
-                        if("REGULAR"==campaignType){
-                           // this.router.navigate(["/home/campaigns/edit/email"]);
-                           this.router.navigate(["/home/campaigns/edit"]);
+                        if("REGULAR"==campaignType || "SURVEY"==campaignType){
+                            let urlSuffix = "REGULAR"==campaignType ? 'email' :'survey';
+                            this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
                         }else{
                             this.router.navigate(["/home/campaigns/edit"]);
                         }

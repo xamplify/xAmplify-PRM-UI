@@ -344,7 +344,7 @@ setViewType(viewType: string) {
 
   closePopUp(){
     $('#unpublished-modal').modal('hide');
-    this.selectedOption = null ;
+    $('input[name="rdaction"]').prop('checked', false);
     this.notifyParentComponent.emit();
   }
 
