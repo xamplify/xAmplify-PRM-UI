@@ -86,7 +86,7 @@
                                             <!--Through Partner Label-->
                                             <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
                                             data-placement="top" title="{{throughPartnerToolTipMessage}}">
-                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">Through {{authenticationService?.partnerModule?.customName}}</span>
+                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">{{throughPartnerText}}</span>
                                             </label>
                                             <div class="col-sm-8 col-xs-6">
                                                 <div class="email-options-checkbox-group email-options-notify">
@@ -192,14 +192,15 @@
                                         </div>
 
                                         <!--Notify Partners-->
-                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && campaign?.channelCampaign">
+                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
                                             <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                     (statusChange)="setPartnerEmailNotification($event)">
                                                 </switch>
                                                 <span class="info-color-xampc">
-                                                    <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                                                    <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                                     title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
                                                 </span>
                                             </div>
                                         </div>

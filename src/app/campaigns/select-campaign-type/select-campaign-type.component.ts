@@ -160,6 +160,8 @@ export class SelectCampaignTypeComponent implements OnInit{
     this.loading = true;
     if(campaignType=="regular"){
       campaignType="email";
+    }else if(campaignType=="landingPage"){
+      campaignType = "page";
     }
     this.refService.goToRouter("/home/campaigns/create/"+campaignType);
   }

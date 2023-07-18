@@ -78,6 +78,7 @@ export class AddCampaignComponent implements OnInit {
   toPartnerToolTipMessage = "";
   throughPartnerToolTipMessage = "";
   toPartnerText = "To Partner";
+  throughPartnerText = "Through Partner";
   throughPartnerAndToPartnerHelpToolTip: string;
   shareWhiteLabeledContent = false;
   campaignDetailsLoader = false;
@@ -211,7 +212,7 @@ export class AddCampaignComponent implements OnInit {
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
-    if(this.isEmailCampaign || this.isSurveyCampaign ){
+    if(this.isEmailCampaign || this.isSurveyCampaign || this.isPageCampaign){
         let currentUrl = this.referenceService.getCurrentRouteUrl();
         this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
         this.campaign = new Campaign();
@@ -492,20 +493,25 @@ export class AddCampaignComponent implements OnInit {
                 if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
                     this.partnerModuleCustomName = partnerModuleCustomName;
                 }
-                if(this.isOrgAdminCompany){
-                    this.toPartnerText = "To Recipients";
-                }else{
-                    this.toPartnerText = "To "+this.partnerModuleCustomName;
-                }
-                if (this.isPageCampaign) {
+                if(this.isPageCampaign){
+                    this.toPartnerText = "Private";
+                    this.throughPartnerText = "Public";
                     this.toPartnerToolTipMessage = this.toPartnerText+": Share a private page";
-                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
-                } else {
+                    this.throughPartnerToolTipMessage = this.throughPartnerText+": Share a public page";
+                    this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+
+                }else{
+                    if(this.isOrgAdminCompany){
+                        this.toPartnerText = "To Recipients";
+                    }else{
+                        this.toPartnerText = "To "+this.partnerModuleCustomName;
+                    }
+                    this.throughPartnerText = "Through "+this.partnerModuleCustomName;
                     let toolTipSuffixMessage  = this.isOrgAdminCompany ? this.partnerModuleCustomName+' / Contacts':this.partnerModuleCustomName;
                     this.toPartnerToolTipMessage = this.toPartnerText+": Send a campaign intended just for your "+ toolTipSuffixMessage;
-                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+                    this.throughPartnerToolTipMessage = this.throughPartnerText+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+                    this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 }
-                this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
                 if(this.isAdd){
                     this.campaign.countryId = this.countries[0].id;
