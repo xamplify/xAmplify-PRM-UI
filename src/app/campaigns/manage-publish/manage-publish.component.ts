@@ -477,8 +477,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                         this.router.navigate(["/home/campaigns/edit"]);
                     }else{
                         if("REGULAR"==campaignType){
-                            this.router.navigate(["/home/campaigns/edit"]);
-                            //this.router.navigate(["/home/campaigns/edit/email"]);
+                            this.router.navigate(["/home/campaigns/edit/email"]);
                         }else{
                             this.router.navigate(["/home/campaigns/edit"]);
                         }

@@ -1123,7 +1123,7 @@
                                             <label class="float-left">Country<span class="required">*</span></label>
                                             <br>
                                             <select class="form-control" style="width: 100%" (change)="getTimeZones($event.target.value)" id="countryName">
-                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                <option *ngFor="let country of countries" [value]="country.id" [selected]="campaign.countryId==country.id">
                                                     {{country.name}}
                                                 </option>
                                             </select>

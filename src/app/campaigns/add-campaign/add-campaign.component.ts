@@ -309,20 +309,16 @@ export class AddCampaignComponent implements OnInit {
                 this.campaign.scheduleTime = "";
                 this.selectedLaunchOption = this.sheduleCampaignValues[2];
             }
-            alert(this.campaign.timeZoneId);
             if (this.campaign.timeZoneId == undefined) {
                 this.campaign.countryId = this.countries[0].id;
                 this.getTimeZones(this.campaign.countryId);
             } else {
                 let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
                 let countryIndex = countryNames.indexOf(this.campaign.country);
-                alert("Country"+this.campaign.country);
-                alert("Country Index"+countryIndex);
                 if (countryIndex > -1) {
                     this.campaign.countryId = this.countries[countryIndex].id;
                     this.getTimeZones(this.campaign.countryId);
                 } else {
-                    alert("325 which should not");
                     this.campaign.countryId = this.countries[0].id;
                     this.getTimeZones(this.campaign.countryId);
                 }
