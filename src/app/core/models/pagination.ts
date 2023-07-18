@@ -102,5 +102,6 @@ export class Pagination {
 	moduleName:string = "";
 	slug:string = "";
     searchWithModuleName: boolean = false;
+	selectedEmailTempalteId = 0;
 
 }
