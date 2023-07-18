@@ -344,6 +344,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'reply-' + length;
                 reply.divId = id;
                 this.allItems.push(id);
+                if(reply.selectedEmailTemplateId>0){
+                    reply.emailTemplatesPagination.selectedEmailTempalteId = reply.selectedEmailTemplateId;
+                    reply.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForAutoResponseWorkFlow(reply);
             }
         }
@@ -371,6 +375,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'click-' + length;
                 url.divId = id;
                 this.allItems.push(id);
+                if(url.selectedEmailTemplateId>0){
+                    url.emailTemplatesPagination.selectedEmailTempalteId = url.selectedEmailTemplateId;
+                    url.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForWebSiteWorkFlow(url);
             }
         }
