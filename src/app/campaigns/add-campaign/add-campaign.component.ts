@@ -207,30 +207,33 @@ export class AddCampaignComponent implements OnInit {
     private contactService:ContactService,private render: Renderer,private router:Router) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
-    if("email"!=this.campaignType){
-        this.referenceService.goToPageNotFound();
-    }
-    let currentUrl = this.referenceService.getCurrentRouteUrl();
-    this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
-    this.campaign = new Campaign();
-    if (this.campaignService.campaign == undefined) {
-        if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
-            this.isReloaded = true;
-            this.router.navigate(["/home/campaigns/manage"]);
-        } else if (this.campaignType.length == 0) {
-            this.isReloaded = true;
-            this.router.navigate(["/home/campaigns/select"]);
+    this.isEmailCampaign = "email"==this.campaignType;
+    this.isVideoCampaign = "video"==this.campaignType;
+    this.isSurveyCampaign = "survey"==this.campaignType;
+    this.isPageCampaign = "page"==this.campaignType;
+    if(this.isEmailCampaign || this.isSurveyCampaign ){
+        let currentUrl = this.referenceService.getCurrentRouteUrl();
+        this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
+        this.campaign = new Campaign();
+        if (this.campaignService.campaign == undefined) {
+            if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/manage"]);
+            } else if (this.campaignType.length == 0) {
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/select"]);
+            }
         }
-    }
-    if(!this.isReloaded){
-        $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.campaign.userId = this.loggedInUserId;
-        this.referenceService.renderer = this.render;
-        this.isEmailCampaign = "email"==this.campaignType;
-        this.isVideoCampaign = "video"==this.campaignType;
-        this.isSurveyCampaign = "survey"==this.campaignType;
-        this.isPageCampaign = "page"==this.campaignType;
+        if(!this.isReloaded){
+            $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.campaign.userId = this.loggedInUserId;
+            this.referenceService.renderer = this.render;
+            
+        }
+    }else{
+        this.isReloaded = true;
+        this.referenceService.goToPageNotFound();
     }
     
    }
@@ -255,15 +258,7 @@ export class AddCampaignComponent implements OnInit {
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
             this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
-            if (this.isEmailCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-            } else if (this.isVideoCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
-            } else if (this.isSurveyCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
-            } else if (this.isPageCampaign) {
-                this.isLandingPageSwitch = true;
-            }
+            this.setEmailTemplatesFilter(this.emailTemplatesPagination);
             this.validateForm();
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
@@ -323,6 +318,31 @@ export class AddCampaignComponent implements OnInit {
                     this.getTimeZones(this.campaign.countryId);
                 }
 
+            }
+        }
+    }
+
+    private setEmailTemplatesFilter(emailTemplatesPagination:Pagination) {
+        if (this.isEmailCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
+        } else if (this.isVideoCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
+        } else if (this.isSurveyCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.SURVEY_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
         }
     }
@@ -936,14 +956,7 @@ export class AddCampaignComponent implements OnInit {
     /*************************Email Templates**************************/
     findEmailTemplates(emailTemplatesPagination:Pagination){
         this.emailTemplatesOrLandingPagesLoader = true;
-        if(this.isEmailCampaign){
-            emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-            if(this.campaign.enableCoBrandingLogo){
-                emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
-            }else{
-                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
-            }
-        }
+        this.setEmailTemplatesFilter(this.emailTemplatesPagination);
         this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
             response=>{
                 const data = response.data;

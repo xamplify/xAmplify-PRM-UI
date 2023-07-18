@@ -122,13 +122,13 @@ export class SelectCampaignTypeComponent implements OnInit{
                 (data: any) => {
                    if(data.access){
                     this.refService.selectedCampaignType = type;
-                    if("regular"==type){
-                      if(this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/"){
+                    if("regular"==type || "survey"==type){
+                      if(this.refService.isProduction()){
                         this.router.navigate(["/home/campaigns/create"]);
                       }else{
-                        this.goToAddCampaign('email');
+                        this.goToAddCampaign(type);
                       }
-                    }else if(type=="video" || type=="landingPage" || type=="survey"){
+                    }else if(type=="video" || type=="landingPage"){
                         this.router.navigate(["/home/campaigns/create"]);
                       }else if(type=="eventCampaign"){
                         this.router.navigate(["/home/campaigns/event"]); 
@@ -158,6 +158,9 @@ export class SelectCampaignTypeComponent implements OnInit{
 
   goToAddCampaign(campaignType:string){
     this.loading = true;
+    if(campaignType=="regular"){
+      campaignType="email";
+    }
     this.refService.goToRouter("/home/campaigns/create/"+campaignType);
   }
 
