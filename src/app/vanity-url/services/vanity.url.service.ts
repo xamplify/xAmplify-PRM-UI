@@ -108,6 +108,7 @@ export class VanityURLService {
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
         this.authenticationService.companyProfileName = domainName[0];
+        this.authenticationService.setDomainUrl();
         if (!this.authenticationService.vanityURLUserRoles) {
           let currentUser = localStorage.getItem('currentUser');
           if (currentUser) {
