@@ -21,7 +21,7 @@
               </a>
             </li>
             <li *ngIf="menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
-              <a href="javascript:;" (click)="openOrCloseTabs('menu.mergeTag')">
+              <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">
                 <i [className]="menu.angularIcon" aria-hidden="true"></i>
                 <span class="title" translate>{{menu.customName}}</span>
                 <span class="arrow "></span>

@@ -338,9 +338,19 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 			this.clearSubMenuValues(false, false, false, false, false, false, false, false, false, false, false, false, false, false);
 		}
 	}
+   
+	toggleSubMenu(urlType: string){
+		if (window.innerWidth < 990) {
+			if (urlType === this.clickedMergeTag) {
+				this.clickedMergeTag = "";
+			} else {
+				this.clickedMergeTag = urlType;
+			}
+		}
+	}
+
 
 	openOrCloseTabs(urlType: string) {
-		this.clickedMergeTag = urlType;
 		if (window.innerWidth < 990) {
 			if (urlType === 'emailtemplates') {
 				this.emailtemplates = this.router.url.includes('emailtemplates') ? true : (this.emailtemplates = !this.emailtemplates);
