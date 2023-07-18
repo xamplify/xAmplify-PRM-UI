@@ -39,6 +39,7 @@ export class AuthenticationService {
   expires_in: number;
   logged_in_time: Date;
   APP_URL: any;
+  DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
   MEDIA_URL: string;
@@ -148,6 +149,7 @@ export class AuthenticationService {
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
+    this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
     if(this.SERVER_URL.indexOf('localhost')>-1){
       this.MEDIA_URL = 'http://localhost:8000/';
@@ -1080,6 +1082,30 @@ private callPostMethod(url: string,requestDto:any) {
     .catch(this.handleError);
 }
 
+
+public isLocalHost(){
+  return this.envService.CLIENT_URL=="http://localhost:4200/";
+}
+
+public isQADomain(){
+  return this.envService.CLIENT_URL=="https://xamplify.co/";
+}
+
+public isProductionDomain(){
+  return this.envService.CLIENT_URL=="https://xamplify.io/";
+}
+
+setDomainUrl(){
+  if(this.vanityURLEnabled){
+    if(this.isQADomain() || this.isLocalHost()){
+      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.co/";
+    }else{
+      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.io/";
+    }
+  }else{
+    this.DOMAIN_URL =  this.APP_URL;
+  }
+}
 
 
   

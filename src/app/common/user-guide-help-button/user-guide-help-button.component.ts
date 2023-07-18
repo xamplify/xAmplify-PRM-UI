@@ -20,11 +20,7 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
 
   urllink: any
   ngOnInit() {
-    // if(this.searchForGuides != null) {
-
-    // } else {
-    // this.getGuideUrl()
-    // }
+  
   }
   ngOnChanges(changes: SimpleChanges) {
     if (this.searchForGuides != null) {
@@ -34,12 +30,7 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
     }
   }
   ngAfterViewChecked() {
-    // $('[data-toggle="tooltip"]').tooltip({
-    //   trigger: 'hover'
-    // });
-    // $('[data-toggle="tooltip"]').on('click', function () {
-    //   $(this).tooltip('dispose');
-    // });
+    
    }
   userGuide: UserGuide = new UserGuide();
   getGuideUrl() {
@@ -49,12 +40,11 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
         this.loading = false;
         if (response.statusCode === 200) {
           this.userGuide = response.data;
-          this.urllink = this.authenticationService.APP_URL + 'home/help/' + this.userGuide.slug;
+          this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/' + this.userGuide.slug;
         }
         this.loading = false;
       }, (error: any) => {
         this.loading = false;
-        //this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
       }
     )
   }
