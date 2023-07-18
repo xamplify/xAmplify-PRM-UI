@@ -543,6 +543,7 @@ export class AddCampaignComponent implements OnInit {
 
     private setRecipientsHeaderText() {
         if(this.campaign.oneClickLaunch){
+            this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
             this.contactsOrPartnersSelectionText = "Select One "+ this.partnerModuleCustomName + " Company";
         }else{
             if (this.isOrgAdminCompany) {
