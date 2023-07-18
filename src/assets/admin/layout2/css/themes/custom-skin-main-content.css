@@ -1491,3 +1491,18 @@ strong {
   color: var(---text-color) !important;
 }
 /* end */
+
+td.bgc-lg {
+  background: transparent !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+
+.dark-beige {
+  background-color: var(--page-content)
+}
+td.td-netbg {
+  background: transparent !important;
+}
+ 
