@@ -175,7 +175,7 @@ export class AddCampaignComponent implements OnInit {
   countries: Country[];
   timezones: Timezone[];
   sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
-  launchOptions = [{'key':'Now','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
+  launchOptions = [{'key':'Launch','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
   isLaunched: boolean = false;
   lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
   buttonName: string = "Save";
@@ -222,22 +222,28 @@ export class AddCampaignComponent implements OnInit {
             this.router.navigate(["/home/campaigns/select"]);
         }
     }
-    $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.campaign.userId = this.loggedInUserId;
-    this.referenceService.renderer = this.render;
-    this.isEmailCampaign = "email"==this.campaignType;
-    this.isVideoCampaign = "video"==this.campaignType;
-    this.isSurveyCampaign = "survey"==this.campaignType;
-    this.isPageCampaign = "page"==this.campaignType;
+    if(!this.isReloaded){
+        $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.campaign.userId = this.loggedInUserId;
+        this.referenceService.renderer = this.render;
+        this.isEmailCampaign = "email"==this.campaignType;
+        this.isVideoCampaign = "video"==this.campaignType;
+        this.isSurveyCampaign = "survey"==this.campaignType;
+        this.isPageCampaign = "page"==this.campaignType;
+    }
+    
    }
 
     ngOnInit() {
-        this.addBlur();
-        this.countries = this.referenceService.getCountries();
-        this.editCampaign();
-        this.showCampaignDetailsTab();
-        this.loadCampaignDetailsSection();
+        if(!this.isReloaded){
+            this.addBlur();
+            this.countries = this.referenceService.getCountries();
+            this.editCampaign();
+            this.showCampaignDetailsTab();
+            this.loadCampaignDetailsSection();
+        }
+       
         
     }
 
@@ -284,24 +290,39 @@ export class AddCampaignComponent implements OnInit {
                 this.emailTemplate = this.campaign.emailTemplate;
                 this.emailTemplateIdForSendTestEmail = this.emailTemplate.id;
                 this.emailTemplateNameForSendTestEmail = this.emailTemplate.name;
+                let selectedEmailTemplateSortOption = {
+                    'name': 'Selected Email Template', 'value': 'selectedEmailTemplate'
+                };
+                this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.push(selectedEmailTemplateSortOption);
+                this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions[this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.emailTemplatesPagination = this.utilService.sortOptionValues(this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, this.emailTemplatesPagination);
+                this.emailTemplatesPagination.editCampaign = true;
+                this.emailTemplatesPagination.selectedEmailTempalteId = selectedTemplateId;
+                this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(this.emailTemplate.body, this.emailTemplateHrefLinks);
+
             }
             /************Launch Campaign**********************/
             if (campaign.campaignScheduleType == "SCHEDULE") {
-                this.campaign.scheduleCampaign = this.sheduleCampaignValues[1];
+                this.selectedLaunchOption = this.sheduleCampaignValues[1];
+                this.buttonName = this.launchOptions[1]['key'];
             } else {
                 this.campaign.scheduleTime = "";
-                this.campaign.scheduleCampaign = this.sheduleCampaignValues[2];
+                this.selectedLaunchOption = this.sheduleCampaignValues[2];
             }
+            alert(this.campaign.timeZoneId);
             if (this.campaign.timeZoneId == undefined) {
                 this.campaign.countryId = this.countries[0].id;
                 this.getTimeZones(this.campaign.countryId);
             } else {
                 let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
-                let countryIndex = countryNames.indexOf(this.campaign.country)
+                let countryIndex = countryNames.indexOf(this.campaign.country);
+                alert("Country"+this.campaign.country);
+                alert("Country Index"+countryIndex);
                 if (countryIndex > -1) {
                     this.campaign.countryId = this.countries[countryIndex].id;
                     this.getTimeZones(this.campaign.countryId);
                 } else {
+                    alert("325 which should not");
                     this.campaign.countryId = this.countries[0].id;
                     this.getTimeZones(this.campaign.countryId);
                 }
@@ -328,6 +349,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'reply-' + length;
                 reply.divId = id;
                 this.allItems.push(id);
+                if(reply.selectedEmailTemplateId>0){
+                    reply.emailTemplatesPagination.selectedEmailTempalteId = reply.selectedEmailTemplateId;
+                    reply.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForAutoResponseWorkFlow(reply);
             }
         }
@@ -355,6 +380,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'click-' + length;
                 url.divId = id;
                 this.allItems.push(id);
+                if(url.selectedEmailTemplateId>0){
+                    url.emailTemplatesPagination.selectedEmailTempalteId = url.selectedEmailTemplateId;
+                    url.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForWebSiteWorkFlow(url);
             }
         }
@@ -944,7 +973,7 @@ export class AddCampaignComponent implements OnInit {
     }
 
     sortEmailTemplates(text: any) {
-		this.emailTemplatesSortOption.selectedGroupsDropDownOption = text;
+		this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
 		this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
 	}
 
@@ -955,7 +984,7 @@ export class AddCampaignComponent implements OnInit {
     setSearchAndSortOptionsForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption){
 		pagination.pageIndex = 1;
 		pagination.searchKey = emailTemplatesSortOption.searchKey;
-        pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedGroupsDropDownOption, pagination);
+        pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
         this.findEmailTemplates(pagination);
     }
 

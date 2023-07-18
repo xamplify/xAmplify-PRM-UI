@@ -282,9 +282,7 @@ export class CampaignListAndGridViewComponent implements OnInit,AfterViewInit {
         this.pagination.categoryId = this.categoryId;
         this.pagination.categoryType = 'c';
     }
-    if(this.selectedCampaignTypeIndex==1){
-        this.pagination.campaignType = 'REGULAR';
-    }
+    
     this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -1049,7 +1047,7 @@ resetPagination() {
   
   this.pagination.maxResults = 12;
   this.itemsSize = this.numberOfItemsPerPage[0];
-  this.pagination.campaignType = 'REGULAR';
+  this.pagination.campaignType = 'NONE';
   this.selectedCampaignTypeIndex = 1;
   this.modulesDisplayType.isListView = true;
   this.modulesDisplayType.isGridView = false;

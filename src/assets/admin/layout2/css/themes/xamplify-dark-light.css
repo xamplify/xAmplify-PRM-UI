@@ -1654,3 +1654,17 @@ div#removeborder {
 .help-iconbgadd {
   border: 1px solid #2f4857 !important;
 }
+/* 18-07-2023 */
+td.bgc-lg {
+  background-color: #2b3c46 !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+h5.Socialmedia-card-textcolor {
+  color: #31708f !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+ 
