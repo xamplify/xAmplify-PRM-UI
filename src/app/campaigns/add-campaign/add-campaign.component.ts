@@ -123,8 +123,7 @@ export class AddCampaignComponent implements OnInit {
   videos:Array<any> = new Array<any>();
   draftMessage = "";
   selectedVideoFileForPreview:SaveVideoFile;
-
-
+  videoCategories:Array<any> = new Array<any>();
   /****Email Templates****/
   emailTemplatesOrLandingPagesLoader = false;
   campaignEmailTemplates:Array<any> = Array<any>();
@@ -586,11 +585,13 @@ export class AddCampaignComponent implements OnInit {
 
     /***********Videos********************/
     findVideos(videosPagination: Pagination) {
+        this.referenceService.goToDiv('videos-section');
         this.videosLoader = true;
         this.campaignService.findVideos(videosPagination).subscribe(
             response=>{
                 const data = response.data;
                 this.videos = data.list;
+                this.videoCategories = data.categories;
                 videosPagination.totalRecords = data.totalRecords;
                 this.videosSortOption.totalRecords = data.totalRecords;
                 videosPagination = this.pagerService.getPagedItems(videosPagination, this.videos);
@@ -598,6 +599,21 @@ export class AddCampaignComponent implements OnInit {
             },error=>{
                 this.videosLoader = false;
             });
+    }
+
+    filterVideos(event: any) {
+        if (event.target.value != "") {
+            this.videosPagination.categoryId = event.target.value;
+            this.videosPagination.pageIndex = 1;
+            this.videosPagination.maxResults = 4;
+            this.findVideos(this.videosPagination);
+        } else {
+            this.videosPagination.categoryId = 0;
+            this.videosPagination.pageIndex = 1;
+            this.videosPagination.maxResults = 4;
+            this.findVideos(this.videosPagination);
+        }
+
     }
 
     findVideosOnEnterKeyPress(eventKeyCode:number){

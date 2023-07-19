@@ -384,7 +384,7 @@
 
 
             <!---Videos---->
-            <div class="portlet light shadow">
+            <div class="portlet light shadow" id="videos-section">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
@@ -402,6 +402,13 @@
                                 <div class="input-icon right pull-right pr-epx">
                                     <select class="form-control" [(ngModel)]="videosSortOption.selectedVideoDropDownOption" (ngModelChange)="sortVideos($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
                                     <option   *ngFor="let option of videosSortOption.videosDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                                    </select>
+                                </div>
+                                <!--Videos Category DropDown-->
+                                <div class="input-icon right pull-right pr-epx">
+                                    <select class="select_filter form-control" (change)="filterVideos($event)">
+                                        <option value="" translate>--Please Selet Category--</option>
+                                         <option *ngFor="let category of videoCategories"  value="{{category.id}}"  [selected]="category?.id==videosPagination?.categoryId">{{category.name}}</option>
                                     </select>
                                 </div>
                                 <!--List Of Videos-->
