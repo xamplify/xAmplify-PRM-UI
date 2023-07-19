@@ -161,7 +161,7 @@
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, true, learningTrack)">
+                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
                                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
