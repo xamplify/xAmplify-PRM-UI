@@ -157,7 +157,7 @@
 					  [ngClass]="{'has-error': eventError.eventSubjectLineError}"
 					  maxlength="1000" />
 					  <span *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" class="input-group-btn">
-					  <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+					  <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom"  title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
 					  <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
 					  </button>
 					  </span>
@@ -1306,7 +1306,7 @@
  <div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
  <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
  <span *ngIf="!isPreviewEvent" class="input-group-btn">
- <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">
+ <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">
  <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
  </button>
  </span>
