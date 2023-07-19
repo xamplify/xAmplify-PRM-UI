@@ -1500,9 +1500,15 @@ td.td-netbg {
 }
 
 .dark-beige {
-  background-color: var(--page-content)
+  background-color: var(--page-content);
 }
 td.td-netbg {
   background: transparent !important;
 }
- 
+tag {
+  background: var(--page-content) !important;
+  color: var(---text-color) !important;
+}
+.placeholder-bg-color {
+  background-color: transparent !important;
+}

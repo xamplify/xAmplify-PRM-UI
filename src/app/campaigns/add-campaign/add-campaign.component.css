@@ -642,7 +642,7 @@ table.table-bordered.dataTable {
   float: left;
   position: relative;
   top: 31px;
-  left: -7px;
+  left: -3px;
   cursor: pointer;
 }
 .colorBlue {
@@ -699,3 +699,4 @@ span.text-algn {
   cursor: not-allowed;
 
 }
+

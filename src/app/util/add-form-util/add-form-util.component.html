@@ -68,7 +68,7 @@
                                         </div>
                                         <div class="vertical-center">
                                             <div class="panel panel-info mWid" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
-                                                <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                                                <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
                                                 <div class="panel-body tab-content">
@@ -611,7 +611,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group" id="formButtonValueDiv">
                                         <label>Button Preview</label><br>
-                                        <button class=" btn green-haze" type="button" style="border-radius: 4px!important;" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                        <button class=" btn green-haze button-fixed" type="button" style="border-radius: 4px!important;" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
                                     </div>
 
                                 </div>
@@ -693,7 +693,7 @@
                                     <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
                                     <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
                                         <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
-                                            <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
+                                            <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;"> Please upload background image</div>
                                             <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
                                         </div>
                                     </div>

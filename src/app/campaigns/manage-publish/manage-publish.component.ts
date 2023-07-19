@@ -476,8 +476,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     if(this.refService.isProduction()){
                         this.router.navigate(["/home/campaigns/edit"]);
                     }else{
-                        if("REGULAR"==campaignType || "SURVEY"==campaignType){
-                            let urlSuffix = "REGULAR"==campaignType ? 'email' :'survey';
+                        if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType){
+                            let urlSuffix = "";
+                            if("REGULAR"==campaignType){
+                                urlSuffix="email";
+                            }else if("SURVEY"==campaignType){
+                                urlSuffix = "survey";
+                            }else if("VIDEO"==campaignType){
+                                urlSuffix = "video";
+                            }
                             this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
                         }else{
                             this.router.navigate(["/home/campaigns/edit"]);

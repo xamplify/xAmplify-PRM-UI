@@ -1705,3 +1705,10 @@ div.switch5 > input.switch:focus ~ label:before {
   top: 60px;
   left: 66px
 }
+
+.button-fixed {
+    max-width: fit-content;
+    min-width: 30% !important;
+    max-height: fit-content;
+    min-height: 32px;
+}

@@ -147,3 +147,11 @@ table.table-bordered.dataTable {
     display: flex;
   }
 }
+
+/* 19-07-2023 */
+img.Selected-email-template-imgcu {
+  width: 100%;
+  height: 102px;
+  object-fit: fill;
+  border-radius: 2px;
+}

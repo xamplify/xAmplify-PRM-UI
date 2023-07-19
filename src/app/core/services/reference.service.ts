@@ -3205,6 +3205,10 @@ export class ReferenceService {
     return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
   }
 
+  public isQA(){
+    return this.envService.SERVER_URL=="https://aravindu.com/" && this.envService.CLIENT_URL=="https://xamplify.co/";
+  }
+
   
 
   

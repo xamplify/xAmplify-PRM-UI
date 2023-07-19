@@ -17,7 +17,8 @@ import { UtilService } from 'app/core/services/util.service';
 
 declare var swal:any, $:any, Promise: any;
 @Injectable()
-export class CampaignService {    
+export class CampaignService {
+       
    
     campaign: Campaign;
     eventCampaign:any;
@@ -1292,6 +1293,15 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    /********XNFR-318********/
+    findVideos(videosPagination: Pagination) {
+        videosPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "videos/findVideos?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, videosPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
 
     private extractData(res: Response) {
         let body = res.json();
