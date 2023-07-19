@@ -32,7 +32,7 @@
 
                         <div *ngIf="(!formSubmitted) || (formSubmitted && learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)">
 
-                            <div *ngIf="form.showTitleHeader" class="panel-heading">
+                            <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                                 <div class="score"
                                     *ngIf="learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted && selectedPartnerFormAnswers?.score >= 0 && selectedPartnerFormAnswers?.maxScore >= 0">
                                     Score {{selectedPartnerFormAnswers?.score}}/{{selectedPartnerFormAnswers?.maxScore}}</div>
