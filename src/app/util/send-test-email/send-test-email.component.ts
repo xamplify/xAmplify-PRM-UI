@@ -117,8 +117,11 @@ private sendCampaignTestEmail(){
     data['campaignTypeInString'] = "LANDINGPAGE";
   }else if(campaignType=="email"){
     data['campaignTypeInString'] = "REGULAR";
+  }else if(campaignType=="video"){
+    data['campaignTypeInString'] = "VIDEO";
+  }else if(campaignType=="survey"){
+    data['campaignTypeInString'] = "SURVEY";
   }
- 
   data['testEmailId'] = this.sendTestEmailDto.toEmail;
   data['userId'] = this.authenticationService.getUserId();
   data['selectedVideoId'] = campaign.selectedVideoId;

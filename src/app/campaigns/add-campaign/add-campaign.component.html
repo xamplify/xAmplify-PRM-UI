@@ -384,7 +384,7 @@
 
 
             <!---Videos---->
-            <div class="portlet light shadow" id="videos-section">
+            <div class="portlet light shadow" *ngIf="isVideoCampaign" id="videos-section">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
@@ -435,7 +435,6 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr  class="pointer"  *ngFor="let videoFile of videosPagination?.pagedItems;let i =  index"
-                                                            (click)="highlightSelectedVideo(videoFile)"
                                                             [class.active]="(videoFile.id == selectedVideoId && videoFile.viewBy!=='DRAFT' && videoFile?.processed)"
                                                             data-toggle="tooltip" data-placement="bottom"
                                                             [attr.title]="draftMessage"
@@ -449,7 +448,7 @@
                                                                 type="radio" name="videoFileId" [value]="videoFile.id"
                                                                 (click)="highlightSelectedVideo(videoFile)"
                                                                 id="campaign_video_id_{{videoFile.id}}"
-                                                                [checked]="videoFile.id == selectedRow"> 
+                                                                [checked]="videoFile.id == selectedVideoId"> 
 
                                                                 <input
                                                                 class="radio-button-css"
@@ -489,12 +488,9 @@
                             </div>
                             <!--Pagination-->
                             <div *ngIf="videosPagination?.pagedItems?.length !== 0 && !videosLoader">
-                                <app-pagination [pagination]="videosPagination" (notifyParent)="paginateVideos($event)" (notifyParentDropDown)="findVideos($event)" [customDropDown]="true">
+                                <app-pagination [pagination]="videosPagination" (notifyParent)="paginateVideos($event)" (notifyParentDropDown)="findVideosOnLimitChange($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
-                            <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab || selectedEmailTemplateRow==0" (click)="isValidCampaignDetailsTab && selectedEmailTemplateRow>0 && showLaunchTab()">Next</button>
-                            </div>  
                         </fieldset>
                     </div>
                 </div>
@@ -530,9 +526,11 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button class="btn btn-primary"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                    <button class="btn btn-primary" [disabled]="selectedEmailTemplateRow==0"  data-toggle="tooltip" data-placement="top"
+                                     [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'"
+                                       (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <i class="fa fa-envelope-o"></i>
-                                        Send Test Email
+                                        Send Test Email 
                                     </button>
                                 </div>
                                 <!--Filter Option-->
@@ -615,7 +613,8 @@
                                 </app-pagination>
                             </div>
                             <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab || selectedEmailTemplateRow==0" (click)="isValidCampaignDetailsTab && selectedEmailTemplateRow>0 && showLaunchTab()">Next</button>
+                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab" 
+                                (click)="isValidFirstTab && showLaunchTab()">Next</button>
                             </div>  
                         </fieldset>
                     </div>
@@ -627,7 +626,7 @@
         <!---Tab-2--->
         <div id="launch-tab">
             <!---Select Campaign Recipients---->
-            <div class="portlet light shadow">
+            <div class="portlet light shadow" id="user-list-div">
                 <div class="row">
                     <div class="col-xs-12">
                     <form class="form-horizontal form-bordered form-label-stripped">
@@ -790,7 +789,7 @@
                                 </div>
                                 <!--Pagination-->
                                 <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0 && !campaignRecipientsLoader">
-                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)" [customDropDown]="true">
+                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipientsOnLimitChange($event)" [customDropDown]="true">
                                     </app-pagination>
                                 </div>
                             </div>
@@ -1008,7 +1007,8 @@
                                                                                 </div>
                                                                                 <!--Pagination-->
                                                                                 <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
-                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)" (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlow(reply)" [customDropDown]="true">
+                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)"
+                                                                                     (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlowOnLimitChange(reply,i)" [customDropDown]="true">
                                                                                     </app-pagination>
                                                                                 </div>
                                                                             </fieldset>
@@ -1117,7 +1117,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Email Template-->
-                                                                    <div id="click-email-template-{{url.divId}" *ngIf="url?.defaultTemplate">
+                                                                    <div id="click-email-template-{{url?.divId}" *ngIf="url?.defaultTemplate">
                                                                         <fieldset class="scheduler-border">
                                                                             <legend class="scheduler-border color-black">Select An Email Template<strong class="required">*</strong></legend>
                                                                             <app-landing-page-loader *ngIf="url?.loader"></app-landing-page-loader>
@@ -1174,7 +1174,7 @@
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                 </span> 
                                                                                                                             </div> 
-                                                                                                                            <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                                                                                            <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                         </div>       
                                                                                                                     </div>
                                                                                                                     </a>
@@ -1192,7 +1192,8 @@
                                                                             </div>
                                                                             <!--Pagination-->
                                                                             <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0 && url?.loader">
-                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)" (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlow(url)" [customDropDown]="true">
+                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)"
+                                                                                 (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlowOnLimitChange(url,i)" [customDropDown]="true">
                                                                                 </app-pagination>
                                                                             </div>
                                                                         </fieldset>
@@ -1271,7 +1272,8 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" 
+                                    [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <i class="fa fa-envelope-o mr5"></i>Send Test Email
                                     </button>
                                     <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>

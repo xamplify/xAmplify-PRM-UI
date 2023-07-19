@@ -103,5 +103,6 @@ export class Pagination {
 	slug:string = "";
     searchWithModuleName: boolean = false;
 	selectedEmailTempalteId = 0;
+	selectedVideoId = 0;
 
 }
