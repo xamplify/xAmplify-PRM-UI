@@ -9,3 +9,9 @@
   height: 50px;
   width: 50px;
 }
+.bgc-lg::-webkit-scrollbar {
+  display: none; /* Hide horizontal scrollbar */
+}
+.hide-scrollbar {
+  overflow: hidden;
+}
