@@ -78,6 +78,7 @@ export class AddCampaignComponent implements OnInit {
   toPartnerToolTipMessage = "";
   throughPartnerToolTipMessage = "";
   toPartnerText = "To Partner";
+  throughPartnerText = "Through Partner";
   throughPartnerAndToPartnerHelpToolTip: string;
   shareWhiteLabeledContent = false;
   campaignDetailsLoader = false;
@@ -175,7 +176,7 @@ export class AddCampaignComponent implements OnInit {
   countries: Country[];
   timezones: Timezone[];
   sheduleCampaignValues = ['NOW', 'SCHEDULE', 'SAVE'];
-  launchOptions = [{'key':'Now','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
+  launchOptions = [{'key':'Launch','value':'NOW'},{'key':'Schedule','value':'SCHEDULE'},{'key':'Save','value':'SAVE'}]
   isLaunched: boolean = false;
   lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
   buttonName: string = "Save";
@@ -207,37 +208,46 @@ export class AddCampaignComponent implements OnInit {
     private contactService:ContactService,private render: Renderer,private router:Router) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
-    if("email"!=this.campaignType){
-        this.referenceService.goToPageNotFound();
-    }
-    let currentUrl = this.referenceService.getCurrentRouteUrl();
-    this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
-    this.campaign = new Campaign();
-    if (this.campaignService.campaign == undefined) {
-        if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
-            this.isReloaded = true;
-            this.router.navigate(["/home/campaigns/manage"]);
-        } else if (this.campaignType.length == 0) {
-            this.isReloaded = true;
-            this.router.navigate(["/home/campaigns/select"]);
-        }
-    }
-    $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.campaign.userId = this.loggedInUserId;
-    this.referenceService.renderer = this.render;
     this.isEmailCampaign = "email"==this.campaignType;
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
+    if(this.isEmailCampaign || this.isSurveyCampaign || this.isPageCampaign){
+        let currentUrl = this.referenceService.getCurrentRouteUrl();
+        this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
+        this.campaign = new Campaign();
+        if (this.campaignService.campaign == undefined) {
+            if (this.router.url == "/home/campaigns/edit/"+this.campaignType) {
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/manage"]);
+            } else if (this.campaignType.length == 0) {
+                this.isReloaded = true;
+                this.router.navigate(["/home/campaigns/select"]);
+            }
+        }
+        if(!this.isReloaded){
+            $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.campaign.userId = this.loggedInUserId;
+            this.referenceService.renderer = this.render;
+            
+        }
+    }else{
+        this.isReloaded = true;
+        this.referenceService.goToPageNotFound();
+    }
+    
    }
 
     ngOnInit() {
-        this.addBlur();
-        this.countries = this.referenceService.getCountries();
-        this.editCampaign();
-        this.showCampaignDetailsTab();
-        this.loadCampaignDetailsSection();
+        if(!this.isReloaded){
+            this.addBlur();
+            this.countries = this.referenceService.getCountries();
+            this.editCampaign();
+            this.showCampaignDetailsTab();
+            this.loadCampaignDetailsSection();
+        }
+       
         
     }
 
@@ -249,15 +259,7 @@ export class AddCampaignComponent implements OnInit {
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
             this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
-            if (this.isEmailCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-            } else if (this.isVideoCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
-            } else if (this.isSurveyCampaign) {
-                this.emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
-            } else if (this.isPageCampaign) {
-                this.isLandingPageSwitch = true;
-            }
+            this.setEmailTemplatesFilter(this.emailTemplatesPagination);
             this.validateForm();
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
@@ -284,20 +286,31 @@ export class AddCampaignComponent implements OnInit {
                 this.emailTemplate = this.campaign.emailTemplate;
                 this.emailTemplateIdForSendTestEmail = this.emailTemplate.id;
                 this.emailTemplateNameForSendTestEmail = this.emailTemplate.name;
+                let selectedEmailTemplateSortOption = {
+                    'name': 'Selected Email Template', 'value': 'selectedEmailTemplate'
+                };
+                this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.push(selectedEmailTemplateSortOption);
+                this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions[this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.emailTemplatesPagination = this.utilService.sortOptionValues(this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, this.emailTemplatesPagination);
+                this.emailTemplatesPagination.editCampaign = true;
+                this.emailTemplatesPagination.selectedEmailTempalteId = selectedTemplateId;
+                this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(this.emailTemplate.body, this.emailTemplateHrefLinks);
+
             }
             /************Launch Campaign**********************/
             if (campaign.campaignScheduleType == "SCHEDULE") {
-                this.campaign.scheduleCampaign = this.sheduleCampaignValues[1];
+                this.selectedLaunchOption = this.sheduleCampaignValues[1];
+                this.buttonName = this.launchOptions[1]['key'];
             } else {
                 this.campaign.scheduleTime = "";
-                this.campaign.scheduleCampaign = this.sheduleCampaignValues[2];
+                this.selectedLaunchOption = this.sheduleCampaignValues[2];
             }
             if (this.campaign.timeZoneId == undefined) {
                 this.campaign.countryId = this.countries[0].id;
                 this.getTimeZones(this.campaign.countryId);
             } else {
                 let countryNames = this.referenceService.getCountries().map(function (a) { return a.name; });
-                let countryIndex = countryNames.indexOf(this.campaign.country)
+                let countryIndex = countryNames.indexOf(this.campaign.country);
                 if (countryIndex > -1) {
                     this.campaign.countryId = this.countries[countryIndex].id;
                     this.getTimeZones(this.campaign.countryId);
@@ -306,6 +319,31 @@ export class AddCampaignComponent implements OnInit {
                     this.getTimeZones(this.campaign.countryId);
                 }
 
+            }
+        }
+    }
+
+    private setEmailTemplatesFilter(emailTemplatesPagination:Pagination) {
+        if (this.isEmailCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
+        } else if (this.isVideoCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignVideoEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.VIDEO_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
+        } else if (this.isSurveyCampaign) {
+            emailTemplatesPagination.filterBy = this.properties.campaignSurveyEmailsFilter;
+            if (this.campaign.enableCoBrandingLogo) {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.SURVEY_CO_BRANDING;
+            } else {
+                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
         }
     }
@@ -328,6 +366,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'reply-' + length;
                 reply.divId = id;
                 this.allItems.push(id);
+                if(reply.selectedEmailTemplateId>0){
+                    reply.emailTemplatesPagination.selectedEmailTempalteId = reply.selectedEmailTemplateId;
+                    reply.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForAutoResponseWorkFlow(reply);
             }
         }
@@ -355,6 +397,10 @@ export class AddCampaignComponent implements OnInit {
                 var id = 'click-' + length;
                 url.divId = id;
                 this.allItems.push(id);
+                if(url.selectedEmailTemplateId>0){
+                    url.emailTemplatesPagination.selectedEmailTempalteId = url.selectedEmailTemplateId;
+                    url.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
+                }
                 this.findEmailTemplatesForWebSiteWorkFlow(url);
             }
         }
@@ -447,20 +493,25 @@ export class AddCampaignComponent implements OnInit {
                 if(partnerModuleCustomName!=null && partnerModuleCustomName!=undefined){
                     this.partnerModuleCustomName = partnerModuleCustomName;
                 }
-                if(this.isOrgAdminCompany){
-                    this.toPartnerText = "To Recipients";
-                }else{
-                    this.toPartnerText = "To "+this.partnerModuleCustomName;
-                }
-                if (this.isPageCampaign) {
+                if(this.isPageCampaign){
+                    this.toPartnerText = "Private";
+                    this.throughPartnerText = "Public";
                     this.toPartnerToolTipMessage = this.toPartnerText+": Share a private page";
-                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Share a public page";
-                } else {
+                    this.throughPartnerToolTipMessage = this.throughPartnerText+": Share a public page";
+                    this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
+
+                }else{
+                    if(this.isOrgAdminCompany){
+                        this.toPartnerText = "To Recipients";
+                    }else{
+                        this.toPartnerText = "To "+this.partnerModuleCustomName;
+                    }
+                    this.throughPartnerText = "Through "+this.partnerModuleCustomName;
                     let toolTipSuffixMessage  = this.isOrgAdminCompany ? this.partnerModuleCustomName+' / Contacts':this.partnerModuleCustomName;
                     this.toPartnerToolTipMessage = this.toPartnerText+": Send a campaign intended just for your "+ toolTipSuffixMessage;
-                    this.throughPartnerToolTipMessage = "Through "+this.partnerModuleCustomName+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+                    this.throughPartnerToolTipMessage = this.throughPartnerText+": Send a campaign that your "+this.partnerModuleCustomName+" can redistribute";
+                    this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 }
-                this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
                 this.oneClickLaunchToolTip = "Send a campaign that your "+this.partnerModuleCustomName+" can redistribute with one click";
                 if(this.isAdd){
                     this.campaign.countryId = this.countries[0].id;
@@ -511,13 +562,16 @@ export class AddCampaignComponent implements OnInit {
             }
             /***Load Partners /Contacts***/
             this.campaignDetailsLoader = false;
+            this.emailTemplatesPagination.maxResults = 4;
             this.findEmailTemplates(this.emailTemplatesPagination);
+            this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
     }
 
     private setRecipientsHeaderText() {
         if(this.campaign.oneClickLaunch){
+            this.launchTabText = "Select "+this.partnerModuleCustomName +" & Launch";
             this.contactsOrPartnersSelectionText = "Select One "+ this.partnerModuleCustomName + " Company";
         }else{
             if (this.isOrgAdminCompany) {
@@ -704,7 +758,7 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.channelCampaign = event;
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
-        this.campaignRecipientsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.maxResults = 4;
         this.clearSelectedContactList();
         this.setCoBrandingLogo(event);
         this.setSalesEnablementOptions(event);
@@ -805,7 +859,7 @@ export class AddCampaignComponent implements OnInit {
         this.campaign.oneClickLaunch = event;
         this.setRecipientsHeaderText();
         this.campaignRecipientsPagination.pageIndex = 1;
-        this.campaignRecipientsPagination.maxResults = 12;
+        this.campaignRecipientsPagination.maxResults = 4;
         this.selectedContactListIds = [];
         this.userListDTOObj = [];
         this.isContactList = false;
@@ -910,14 +964,7 @@ export class AddCampaignComponent implements OnInit {
     /*************************Email Templates**************************/
     findEmailTemplates(emailTemplatesPagination:Pagination){
         this.emailTemplatesOrLandingPagesLoader = true;
-        if(this.isEmailCampaign){
-            emailTemplatesPagination.filterBy = this.properties.campaignRegularEmailsFilter;
-            if(this.campaign.enableCoBrandingLogo){
-                emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
-            }else{
-                emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
-            }
-        }
+        this.setEmailTemplatesFilter(this.emailTemplatesPagination);
         this.campaignService.findCampaignEmailTemplates(emailTemplatesPagination).subscribe(
             response=>{
                 const data = response.data;
@@ -944,7 +991,7 @@ export class AddCampaignComponent implements OnInit {
     }
 
     sortEmailTemplates(text: any) {
-		this.emailTemplatesSortOption.selectedGroupsDropDownOption = text;
+		this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
 		this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
 	}
 
@@ -955,7 +1002,7 @@ export class AddCampaignComponent implements OnInit {
     setSearchAndSortOptionsForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption){
 		pagination.pageIndex = 1;
 		pagination.searchKey = emailTemplatesSortOption.searchKey;
-        pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedGroupsDropDownOption, pagination);
+        pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
         this.findEmailTemplates(pagination);
     }
 
@@ -1382,7 +1429,7 @@ export class AddCampaignComponent implements OnInit {
         this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.replies.push(this.reply);
         this.allItems.push(id);
-        this.reply.emailTemplatesPagination.maxResults = 12;
+        this.reply.emailTemplatesPagination.maxResults = 4;
         this.findEmailTemplatesForAutoResponseWorkFlow(this.reply);
     }
     findEmailTemplatesForAutoResponseWorkFlow(reply: Reply) {
@@ -1440,7 +1487,7 @@ export class AddCampaignComponent implements OnInit {
         this.url.url = this.emailTemplateHrefLinks[0];
         this.urls.push(this.url);
         this.allItems.push(id);
-        this.url.emailTemplatesPagination.maxResults = 12;
+        this.url.emailTemplatesPagination.maxResults = 4;
         this.findEmailTemplatesForWebSiteWorkFlow(this.url);
     }
     findEmailTemplatesForWebSiteWorkFlow(url: Url) {

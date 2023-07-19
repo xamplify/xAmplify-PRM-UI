@@ -86,7 +86,7 @@
                                             <!--Through Partner Label-->
                                             <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
                                             data-placement="top" title="{{throughPartnerToolTipMessage}}">
-                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">Through {{authenticationService?.partnerModule?.customName}}</span>
+                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">{{throughPartnerText}}</span>
                                             </label>
                                             <div class="col-sm-8 col-xs-6">
                                                 <div class="email-options-checkbox-group email-options-notify">
@@ -192,14 +192,15 @@
                                         </div>
 
                                         <!--Notify Partners-->
-                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && campaign?.channelCampaign">
+                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
                                             <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                     (statusChange)="setPartnerEmailNotification($event)">
                                                 </switch>
                                                 <span class="info-color-xampc">
-                                                    <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                                                    <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                                                     title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -464,14 +465,14 @@
                                                                                 </span>
                                                                                 <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
                                                                                     <strong translate>Created By:</strong>
-                                                                                    <span>{{emailTemplate?.createdBy|slice:0:25}}
-                                                                                        <span *ngIf="emailTemplate?.createdBy?.length>25">..</span>
+                                                                                    <span>{{emailTemplate?.createdBy|slice:0:20}}
+                                                                                        <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
                                                                                     </span>
                                                                                 </p>
                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
                                                                                     <strong translate>Folder:</strong>
-                                                                                    <span >{{emailTemplate?.category|slice:0:25}}</span>
-                                                                                    <span *ngIf="emailTemplate?.category?.length>25">..</span>
+                                                                                    <span >{{emailTemplate?.category|slice:0:20}}</span>
+                                                                                    <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                 </span> 
                                                                             </div> 
                                                                             <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
@@ -492,7 +493,7 @@
                             </div>
                             <!--Pagination-->
                             <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="emailTemplatesOrLandingPagesLoader">
-                                <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)">
+                                <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
                             <div>
@@ -671,7 +672,7 @@
                                 </div>
                                 <!--Pagination-->
                                 <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0" class="" [hidden]="campaignRecipientsLoader">
-                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)">
+                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)" [customDropDown]="true">
                                     </app-pagination>
                                 </div>
                             </div>
@@ -861,14 +862,14 @@
                                                                                                                                     </span>
                                                                                                                                     <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
                                                                                                                                         <strong translate>Created By:</strong>
-                                                                                                                                        <span>{{emailTemplate?.createdBy|slice:0:25}}
-                                                                                                                                            <span *ngIf="emailTemplate?.createdBy?.length>25">..</span>
+                                                                                                                                        <span>{{emailTemplate?.createdBy|slice:0:20}}
+                                                                                                                                            <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
                                                                                                                                         </span>
                                                                                                                                     </p>
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
                                                                                                                                         <strong translate>Folder:</strong>
-                                                                                                                                        <span >{{emailTemplate?.category|slice:0:25}}</span>
-                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>25">..</span>
+                                                                                                                                        <span >{{emailTemplate?.category|slice:0:20}}</span>
+                                                                                                                                        <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                     </span> 
                                                                                                                                 </div> 
                                                                                                                                 <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
@@ -889,7 +890,7 @@
                                                                                 </div>
                                                                                 <!--Pagination-->
                                                                                 <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="reply?.loader">
-                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)" (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlow(reply)">
+                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)" (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlow(reply)" [customDropDown]="true">
                                                                                     </app-pagination>
                                                                                 </div>
                                                                             </fieldset>
@@ -1045,14 +1046,14 @@
                                                                                                                                 </span>
                                                                                                                                 <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
                                                                                                                                     <strong translate>Created By:</strong>
-                                                                                                                                    <span>{{emailTemplate?.createdBy|slice:0:25}}
-                                                                                                                                        <span *ngIf="emailTemplate?.createdBy?.length>25">..</span>
+                                                                                                                                    <span>{{emailTemplate?.createdBy|slice:0:20}}
+                                                                                                                                        <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
                                                                                                                                     </span>
                                                                                                                                 </p>
                                                                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
                                                                                                                                     <strong translate>Folder:</strong>
-                                                                                                                                    <span >{{emailTemplate?.category|slice:0:25}}</span>
-                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>25">..</span>
+                                                                                                                                    <span >{{emailTemplate?.category|slice:0:20}}</span>
+                                                                                                                                    <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                 </span> 
                                                                                                                             </div> 
                                                                                                                             <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
@@ -1073,7 +1074,7 @@
                                                                             </div>
                                                                             <!--Pagination-->
                                                                             <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="url?.loader">
-                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)" (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlow(url)">
+                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)" (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlow(url)" [customDropDown]="true">
                                                                                 </app-pagination>
                                                                             </div>
                                                                         </fieldset>
@@ -1123,7 +1124,7 @@
                                             <label class="float-left">Country<span class="required">*</span></label>
                                             <br>
                                             <select class="form-control" style="width: 100%" (change)="getTimeZones($event.target.value)" id="countryName">
-                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                <option *ngFor="let country of countries" [value]="country.id" [selected]="campaign.countryId==country.id">
                                                     {{country.name}}
                                                 </option>
                                             </select>
