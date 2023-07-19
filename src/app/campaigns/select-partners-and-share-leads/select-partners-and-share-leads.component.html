@@ -63,13 +63,13 @@
                                </a>
                             </div>
                          </td>
-                      </tr>
+                      </tr>                    
                       <tr *ngIf="partner?.expand">
                          <td colspan="5" class="bgc-lg">
                             <div class="alert alert-success text-center" *ngIf="selectedShareLeadsListIds?.length>0 && selectedPartnershipId==partner.partnershipId">
                                <strong>Selected Rows : {{selectedShareLeadsListIds?.length}}</strong>
                             </div>
-                            <div class="table-responsive x-hidden">
+                            <div class="table-responsive x-hidden" [ngClass]="{'hide-scrollbar': isTableLoaded}">
                                <div class="portlet-input input-inline float-right mb10p" id="search-div" *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                                   <div class="input-icon right" id="icon">
                                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="shareLeadsPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="shareLeadsEventHandler($event.keyCode)">
@@ -84,6 +84,7 @@
                                      <app-response-message [customResponse]="shareLeadsErrorMessage"></app-response-message>
                                   </div>
                                </ng-container>
+
                                <div *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                                   <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
                                   <ng-container *ngIf="!shareLeadsLoader.isLoading">
@@ -188,9 +189,10 @@
                                      <strong>No Data Found</strong>
                                   </div>
                                </div>
+                              
                             </div>
                          </td>
-                      </tr>
+                      </tr>                 
                    </ng-container>
                 </tbody>
              </table>

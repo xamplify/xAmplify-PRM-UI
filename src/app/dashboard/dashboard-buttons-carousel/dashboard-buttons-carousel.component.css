@@ -130,3 +130,7 @@
   inline-size: 200px;
   overflow-wrap: break-word;
 }
+.row.glad-new-row {
+  margin-right: -14px;
+  margin-left: -14px;
+}

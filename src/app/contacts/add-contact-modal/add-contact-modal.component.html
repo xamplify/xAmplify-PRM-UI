@@ -17,7 +17,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <span class="star"> *</span>
           </label>
           <div class="form-group col-xs-10 col-sm-10">
-            <input type="company" style="border: none" class="form-control padding-mobile" id="company"
+            <input type="company" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="company"
               [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
               [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
             <div class="textCss"></div>
@@ -33,7 +33,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               <div class="textCss"></div>
           </div>
            <div class="form-group col-xs-10 col-sm-10" *ngIf="!isUpdateUser">
-              <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
+              <input type="email" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="email1"
               (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
               [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
               placeholder="Email *" autocomplete="off" maxlength="250">
@@ -46,12 +46,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
           </label>
           <div class="form-group col-xs-5 col-sm-5">
-            <input type="name" style="border: none" class="form-control padding-mobile" id="firstName"
+            <input type="name" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="firstName"
               [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="First Name" maxlength="250">
             <div class="textCss"></div>
           </div>
           <div class="form-group col-xs-6 col-sm-5">
-            <input type="name" style="border: none" class="form-control padding-mobile" id="lastName"
+            <input type="name" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="lastName"
             [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Last Name" maxlength="250">
             <div class="textCss"></div>
           </div>
@@ -60,7 +60,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
           </label>
           <div class="form-group col-xs-10 col-sm-10">
-            <input type="company" style="border: none" class="form-control padding-mobile" id="company"
+            <input type="company" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="company"
               [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
               [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
             <div class="textCss"></div>
@@ -73,7 +73,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <span class="star"> *</span>
           </label>
           <div class="form-group col-xs-10 col-sm-10" >
-            <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
+            <input type="number" min="0" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="contactsLimit"
               [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1"
               oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
             <div class="textCss"></div>
@@ -130,7 +130,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
            <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
           </label>
           <div class="form-group col-xs-10 col-sm-10">
-            <input type="text" style="border: none"  class="form-control padding-mobile" id="title"
+            <input type="text" style="border: none !important"  class="form-control padding-mobile placeholder-bg-color" id="title"
               [(ngModel)]="addContactuser.jobTitle"  [ngModelOptions]="{standalone: true}" placeholder="Job Title" maxlength="250">
             <div class="textCss"></div>
           </div>
@@ -143,12 +143,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               <label class="control-label col-xs-2 col-sm-2" for="vertical" style="color: #53affe;">
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0">
-                <input type="vertical" style="border: none" class="form-control"  id="vertical"
+                <input type="vertical" style="border: none !important" class="form-control placeholder-bg-color"  id="vertical"
                   [(ngModel)]="addContactuser.vertical" [ngModelOptions]="{standalone: true}" placeholder="Vertical" maxlength="55">
                 <div class="textCss"></div>
               </div>
               <div class="form-group col-xs-6 col-sm-5">
-                <input type="region" style="border: none" class="form-control" id="region"
+                <input type="region" style="border: none !important" class="form-control placeholder-bg-color" id="region"
                   [(ngModel)]="addContactuser.region" [ngModelOptions]="{standalone: true}" placeholder="Region" maxlength="55">
                 <div class="textCss"></div>
               </div>
@@ -161,12 +161,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               <label class="control-label col-xs-2 col-sm-2" for="partnerType" style="color: #53affe;">
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0">
-                <input type="partnerType" style="border: none" class="form-control"  id="partnerType"
+                <input type="partnerType" style="border: none !important" class="form-control placeholder-bg-color"  id="partnerType"
                   [(ngModel)]="addContactuser.partnerType" [ngModelOptions]="{standalone: true}" placeholder="Type" maxlength="55">
                 <div class="textCss"></div>
               </div>
               <div class="form-group col-xs-6 col-sm-5">
-                <input type="category" style="border: none" class="form-control" id="category"
+                <input type="category" style="border: none !important" class="form-control placeholder-bg-color" id="category"
                   [(ngModel)]="addContactuser.category" [ngModelOptions]="{standalone: true}" placeholder="Category" maxlength="55">
                 <div class="textCss"></div>
               </div>
@@ -177,7 +177,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
             </label>
             <div class="form-group col-xs-10 col-sm-10 px0">
-              <input type="address" style="border: none" class="form-control" id="address"
+              <input type="address" style="border: none !important" class="form-control placeholder-bg-color" id="address"
                 [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Address" maxlength="250">
               <div class="textCss"></div>
             </div>
@@ -189,12 +189,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0">
-                <input type="city" style="border: none" class="form-control"  id="city"
+                <input type="city" style="border: none !important" class="form-control placeholder-bg-color"  id="city"
                   [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="City/Town" maxlength="44">
                 <div class="textCss"></div>
               </div>
               <div class="form-group col-xs-6 col-sm-5">
-                <input type="state" style="border: none" class="form-control" id="state"
+                <input type="state" style="border: none !important" class="form-control placeholder-bg-color" id="state"
                   [(ngModel)]="addContactuser.state" [ngModelOptions]="{standalone: true}" placeholder="State" maxlength="44">
                 <div class="textCss"></div>
               </div>
@@ -204,13 +204,13 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for=""></label>
           <div class="form-group col-xs-5 col-sm-5 pxl0">
-            <input type="zip" style="border: none" class="form-control" id="zip"
+            <input type="zip" style="border: none !important" class="form-control placeholder-bg-color" id="zip"
               [(ngModel)]="addContactuser.zipCode"  [ngModelOptions]="{standalone: true}" placeholder="Zip Code" maxlength="10">
             <div class="textCss"></div>
          </div>
 
           <div class="form-group col-xs-6 col-sm-5">
-            <select class="form-control" style="border: none;"
+            <select class="form-control placeholder-bg-color" style="border: none !important;"
               [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="Country">
               <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
             </select>
@@ -222,7 +222,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
         </label>
             <div class="col-xs-10 col-sm-10 p0">
-            <input type="email" style="border: none" class="form-control padding-mobile"
+            <input type="email" style="border: none !important" class="form-control padding-mobile placeholder-bg-color"
               [(ngModel)]="addContactuser.mobileNumber"  [ngModelOptions]="{standalone: true}"
               placeholder="Enter your mobile no" maxlength="20">
             <div class="textCss"></div>
