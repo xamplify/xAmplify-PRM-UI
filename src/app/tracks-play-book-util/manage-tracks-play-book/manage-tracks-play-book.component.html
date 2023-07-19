@@ -339,11 +339,11 @@
                                     <h4  class="modal-title">Please share your reason for unpublishing this Track.</h4>
                                 </div>
                                 <div  class="form-check pointer mt15">
-                                    <input class="pointer" type="radio"   name="rdaction" value="Assets_or_Quiz">
+                                    <input class="pointer" type="radio" (click)="selectedOption=true"   name="rdaction" value="Assets_or_Quiz">
                                     <label class="option-color">Want to update Assets/Quiz</label><br>
-                                    <input class="pointer" type="radio"   name="rdaction" value="Partner_List" >
+                                    <input class="pointer" type="radio" (click)="selectedOption=true"  name="rdaction" value="Partner_List" >
                                     <label class="option-color">Want to update the {{authenticationService?.partnerModule?.customName}}/List of {{authenticationService?.partnerModule?.customName}}</label><br>
-                                    <input class="pointer" type="radio"  name="rdaction" value="Other"   >
+                                    <input class="pointer" type="radio"  (click)="selectedOption=true" name="rdaction" value="Other"   >
                                     <label class="option-color">Other</label><br>
                                 </div>                     
                             <div>
