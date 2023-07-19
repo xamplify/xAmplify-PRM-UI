@@ -488,7 +488,7 @@
                                 </div>       
                             </div>
                             <!--Pagination-->
-                            <div *ngIf="videosPagination?.pagedItems?.length !== 0" class="" [hidden]="videosLoader">
+                            <div *ngIf="videosPagination?.pagedItems?.length !== 0 && !videosLoader">
                                 <app-pagination [pagination]="videosPagination" (notifyParent)="paginateVideos($event)" (notifyParentDropDown)="findVideos($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
@@ -610,7 +610,7 @@
                                 </div>       
                             </div>
                             <!--Pagination-->
-                            <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="emailTemplatesOrLandingPagesLoader">
+                            <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplatesOrLandingPagesLoader">
                                 <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
@@ -789,7 +789,7 @@
                                     </div>    
                                 </div>
                                 <!--Pagination-->
-                                <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0" class="" [hidden]="campaignRecipientsLoader">
+                                <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0 && !campaignRecipientsLoader">
                                     <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)" [customDropDown]="true">
                                     </app-pagination>
                                 </div>
@@ -1007,7 +1007,7 @@
                                                                                     </div>       
                                                                                 </div>
                                                                                 <!--Pagination-->
-                                                                                <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="reply?.loader">
+                                                                                <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
                                                                                     <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)" (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlow(reply)" [customDropDown]="true">
                                                                                     </app-pagination>
                                                                                 </div>
@@ -1191,7 +1191,7 @@
                                                                                 </div>       
                                                                             </div>
                                                                             <!--Pagination-->
-                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="url?.loader">
+                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0 && url?.loader">
                                                                                 <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)" (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlow(url)" [customDropDown]="true">
                                                                                 </app-pagination>
                                                                             </div>
