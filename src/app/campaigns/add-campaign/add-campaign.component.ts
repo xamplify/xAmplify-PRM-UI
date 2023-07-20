@@ -1216,6 +1216,7 @@ export class AddCampaignComponent implements OnInit {
             this.emailTemplatesPagination.categoryIds = [];
         }
         this.emailTemplatesPagination.pageIndex = 1;
+        this.emailTemplatesPagination.maxResults = 4;
         this.findEmailTemplates(this.emailTemplatesPagination);
     }
 
