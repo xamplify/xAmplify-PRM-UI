@@ -19,3 +19,9 @@ li .disabled{
 .right-border{
     border-right: 1px solid #d8d4d4;
 }
+.h-205{
+    height: 205px;
+}
+.h-260{
+    height:260px;
+}

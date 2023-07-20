@@ -133,7 +133,7 @@
                           <!--Email Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0">Notify Me When</label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Email Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setEmailOpened($event)">
@@ -145,7 +145,7 @@
                           <!--Link Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Link Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setLinkOpened($event)">
@@ -156,7 +156,7 @@
                           <!--Video Played-->
                           <div class="form-group" *ngIf="campaignType=='VIDEO'">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Video Played</strong>
                                 <switch class="pull-left"  [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setVideoPlayed($event)">
@@ -703,7 +703,7 @@
                  <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Launch Option</legend>
                     <div>
-                       <div class="btn-group btn-group-justified">
+                       <div class="btn-group btn-group-justified width_unset">
                           <ng-container>
                              <label  class="btn btn-primary button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"

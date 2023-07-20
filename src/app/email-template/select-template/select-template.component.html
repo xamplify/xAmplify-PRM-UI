@@ -45,7 +45,7 @@
                         </div>
                         <div class="colxs-12 col-sm-3">
                             <div class="inputs regular_emails" align="right" style="float: right">
-                                <div class="portlet-input input-inline input-small">
+                                <div class="portlet-input input-inline input-small mb_10">
                                     <div class="input-icon right" style="width: 200px;margin-left: -55px;padding-top: 5px;">
                                         <input type="text" class="form-control" [(ngModel)]="templateFilter.name" placeholder="Search for a template">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
@@ -67,20 +67,20 @@
                             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                         </div>
                         <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0" style="width: 100%;padding-left: 15px;" class="row">
-                            <label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
+                            <label class="select-all-filter filter_btn" style="float:right;"> <input type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
 									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
                             <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
+                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
                             </div>
                             <div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
+                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngIf="filteredEmailTemplates?.length == 0">
                             No Templates Available
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
+                        <div class="col-md-3 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
                             <div class="grid-box mb_hgh_grid">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
                                     <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"

@@ -41,7 +41,7 @@
                               <span *ngIf="mdfRequest?.title?.length>40">..</span>
                            </h2>
                         </div>
-                        <div class=" col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;">
                            <div class="row">
                               <div class="col-md-6 col-lg-6">
                                  <div class="dropdown">
@@ -64,16 +64,16 @@
                            <span class="label label-warning">{{mdfRequest?.mdfWorkFlowStepTypeInString}}</span>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
-                           <div class="portlet light" style=" height: 260px;padding: 0px 0px!important;">
+                           <div class="portlet light h-260" style="padding: 0px 0px!important;">
                               <div class="portlet-title port-heading">
                                  <div class="caption caption-color">
                                     MDF Request Status
                                  </div>
                               </div>
                               <div class="row row-space">
-                                 <div class="col-md-6 col-lg-6 pr0 right-border">
+                                 <div class="col-sm-6 col-md-6 col-lg-6 pr0 right-border border_unset">
                                     <div class="row">
-                                       <div class="col-sm-2 col-md-2 col-lg-2">
+                                       <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                           <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                                        </div>
                                        <div class="col-sm-9 col-md-10 col-lg-10 pl0">
@@ -98,14 +98,14 @@
                                  <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="row">
                                        <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left border-right" style="padding-left: 30px;">
+                                          <div class="row text-left border-right border_unset" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Request Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
                                              <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
                                           </div>
                                        </div>
                                        <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left border-right" style="padding-left: 30px;height: 100px;">
+                                          <div class="row text-left border-right border_unset h_100" style="padding-left: 30px;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
@@ -122,7 +122,7 @@
                            </div>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 15px 40px 0px 17px;">
-                           <div class="portlet light" style=" height:205px;">
+                           <div class="portlet light h-205">
                               <div class="portlet-title">
                                  <div class="caption" translate>
                                     {{authenticationService?.partnerModule?.customName}} MDF Balances
@@ -161,7 +161,7 @@
                                           </span>
                                           </a>
                                        </div>
-                                       <div title="$ {{mdfAmountTiles?.availableBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                       <div title="$ {{mdfAmountTiles?.availableBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4 mt_10">
                                           <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
@@ -192,10 +192,10 @@
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
                                     <label title="{{mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="mdfRequestOwner?.fullName!=null">
                                     {{mdfRequestOwner?.fullName | slice:0:15}}
@@ -224,10 +224,10 @@
                         <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="vendorContact?.fullName!=null">
                                     <label title="{{vendorContact?.fullName}}" style="font-size: 15px;font-weight: 600;">
                                     {{vendorContact?.fullName | slice:0:15}}
@@ -256,10 +256,10 @@
                         <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Manager</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-sm-2 col-md-2 col-lg-2 text-right">
+                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
                                  <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
                               </div>
-                              <div class="col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="partnerManager?.fullName!=null">
                                     <label title="{{partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
                                     {{partnerManager?.fullName | slice:0:15}}
