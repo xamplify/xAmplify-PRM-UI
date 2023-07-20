@@ -176,7 +176,7 @@
                                         </div>
 
                                         <!--Co Branding Logo-->
-                                        <div class="form-group" *ngIf="campaign?.channelCampaign">
+                                        <div class="form-group" *ngIf="campaign?.channelCampaign || isPageCampaign">
                                             <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -193,14 +193,14 @@
 
                                         <!--Notify Partners-->
                                         <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
-                                            <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
+                                            <label class="control-label col-sm-4">{{notifyPartnersLabelText}}</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                     (statusChange)="setPartnerEmailNotification($event)">
                                                 </switch>
                                                 <span class="info-color-xampc">
                                                     <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                                     title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                                                     title="{{notifyPartnersToolTipMessage}}"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -267,7 +267,7 @@
                                         </div>
 
                                         <!--Notify Me When-->
-                                        <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch">
+                                        <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch && !isPageCampaign">
                                         <label class="control-label col-sm-4" translate>Notify Me When</label>
                                         <div class="col-sm-8">
                                             <div class="email-options-checkbox-group email-options-notify">

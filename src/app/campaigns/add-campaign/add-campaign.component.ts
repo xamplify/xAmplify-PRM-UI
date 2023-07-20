@@ -115,6 +115,8 @@ export class AddCampaignComponent implements OnInit {
   isMarketingCompany = false;
   isVendorCompany = false;
   endDatePickr: any;
+  notifyPartnersLabelText  = "";
+  notifyPartnersToolTipMessage = "";
 
   /****Video***/
   videosLoader = false;
@@ -529,8 +531,11 @@ export class AddCampaignComponent implements OnInit {
                     this.toPartnerToolTipMessage = this.toPartnerText+": Share a private page";
                     this.throughPartnerToolTipMessage = this.throughPartnerText+": Share a public page";
                     this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
-
+                    this.notifyPartnersLabelText = "Send Email Notifications";
+                    this.notifyPartnersToolTipMessage = "Send email notification about your page";
                 }else{
+                    this.notifyPartnersLabelText = "Notify "+this.partnerModuleCustomName+"?";
+                    this.notifyPartnersToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign";
                     if(this.isOrgAdminCompany){
                         this.toPartnerText = "To Recipients";
                     }else{
@@ -936,7 +941,11 @@ export class AddCampaignComponent implements OnInit {
         this.campaignRecipientsPagination.pageIndex = 1;
         this.campaignRecipientsPagination.maxResults = 4;
         this.clearSelectedContactList();
-        this.setCoBrandingLogo(event);
+        if(this.isPageCampaign){
+            this.setCoBrandingLogoForPageCampaign();
+        }else{
+            this.setCoBrandingLogo(event);
+        }
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
         if(!this.isPageCampaign){
@@ -1012,13 +1021,34 @@ export class AddCampaignComponent implements OnInit {
 
     setCoBrandingLogo(event: any) {
         this.campaign.enableCoBrandingLogo = event;
-        this.removeTemplateAndAutoResponse();
-        if (this.campaignType != 'page') {
+        if(this.isPageCampaign){
+            this.loadPages();
+        }else{
+            this.removeTemplateAndAutoResponse();
             this.findEmailTemplates(this.emailTemplatesPagination);
-        } else {
-            this.findEmailTemplates(this.emailTemplatesPagination);
+            this.updateLaunchTabClass();
         }
-        this.updateLaunchTabClass();
+        
+    }
+
+    private loadPages() {
+        if (this.campaign.channelCampaign) {
+            if (this.campaign.enableCoBrandingLogo) {
+                alert("Load Public & Co-Branded Pages");
+            } else {
+                alert("Load Public Pages");
+            }
+        } else {
+            if (this.campaign.enableCoBrandingLogo) {
+                alert("Load Private & Co-Branded Pages");
+            } else {
+                alert("Load Private Pages");
+            }
+        }
+    }
+
+    setCoBrandingLogoForPageCampaign(){
+        this.loadPages();
     }
 
     
