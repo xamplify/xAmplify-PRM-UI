@@ -134,14 +134,24 @@ export class AddCampaignComponent implements OnInit {
   campaignEmailTemplates:Array<any> = Array<any>();
   selectedEmailTemplateRow = 0;
   isEmailTemplateOrPageSelected: boolean;
-  isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
   isPreviewEmailTemplateButtonClicked = false;
   selectedEmailTemplateIdForPreview = 0;
   emailTemplateHrefLinks = [];
   isSendTestEmailOptionClicked = false;
   selectedEmailTemplateNameForPreview = "";
-  isLandingPageSwitch = false;
+  
+  /********Landing Pages*******/
+  selectedLandingPageId = 0;
+  pagesPagination = new Pagination();
+  pagesLoader = false;
+  isLandingPageSelected = false;
+  pagesSortOption:SortOption = new SortOption();
+  isPreviewPageButtonClicked = false;
+  selectedPageIdForPreview = 0;
+  selectedPageNameForPreview = "";
+
+
   /******Edit Template******/
   isEditTemplateLoader = false;
   beeContainerInput = {};
@@ -558,51 +568,64 @@ export class AddCampaignComponent implements OnInit {
                 this.removeBlur();
                 this.xtremandLogger.errorPage(error);
         },()=>{
-            if (this.activeCRMDetails.activeCRM) {
-              if ("SALESFORCE" === this.activeCRMDetails.type) {
-                this.integrationService
-                  .checkSfCustomFields(this.authenticationService.getUserId())
-                  .subscribe(
-                    (data) => {
-                      let cfResponse = data;
-                      if (cfResponse.statusCode === 400) {
-                        swal(
-                          "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
-                          "",
-                          "error"
-                        );
-                      } else if (
-                        cfResponse.statusCode === 401 &&
-                        cfResponse.message === "Expired Refresh Token"
-                      ) {
-                        swal(
-                          "Your Salesforce Integration was expired. Please re-configure.",
-                          "",
-                          "error"
-                        );
-                      }
-                    },
-                    (error) => {
-                      this.xtremandLogger.error(
-                        error,
-                        "Error in salesforce checkIntegrations()"
-                      );
-                    }
-                  );
-              } else {
-                this.listCampaignPipelines();
-              }
-            } else {
-              this.listCampaignPipelines();
-            }
+            this.findCampaignPipeLines();
             /***Load Email Templates/Videos/ Partners /Contacts***/
             this.campaignDetailsLoader = false;
             this.loadVideos();
-            this.emailTemplatesPagination.maxResults = 4;
-            this.findEmailTemplates(this.emailTemplatesPagination);
+            if(this.isPageCampaign){
+                this.pagesPagination.maxResults = 4;
+                this.pagesPagination.filterKey = "PRIVATE";
+                this.findPages(this.pagesPagination);
+            }else{
+                this.emailTemplatesPagination.maxResults = 4;
+                this.findEmailTemplates(this.emailTemplatesPagination);
+            }
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
+    }
+
+    findPages(pagesPagination:Pagination){
+        this.pagesLoader = true;
+    }
+
+
+    private findCampaignPipeLines() {
+        if (this.activeCRMDetails.activeCRM) {
+            if ("SALESFORCE" === this.activeCRMDetails.type) {
+                this.integrationService
+                    .checkSfCustomFields(this.authenticationService.getUserId())
+                    .subscribe(
+                        (data) => {
+                            let cfResponse = data;
+                            if (cfResponse.statusCode === 400) {
+                                swal(
+                                    "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
+                                    "",
+                                    "error"
+                                );
+                            } else if (cfResponse.statusCode === 401 &&
+                                cfResponse.message === "Expired Refresh Token") {
+                                swal(
+                                    "Your Salesforce Integration was expired. Please re-configure.",
+                                    "",
+                                    "error"
+                                );
+                            }
+                        },
+                        (error) => {
+                            this.xtremandLogger.error(
+                                error,
+                                "Error in salesforce checkIntegrations()"
+                            );
+                        }
+                    );
+            } else {
+                this.listCampaignPipelines();
+            }
+        } else {
+            this.listCampaignPipelines();
+        }
     }
 
     private loadVideos() {
@@ -995,7 +1018,6 @@ export class AddCampaignComponent implements OnInit {
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplateOrPageSelected = false;
         this.selectedLandingPageRow = 0;
-        this.isLandingPage = false;
     }
 
     setPartnerEmailNotification(event: any) {
