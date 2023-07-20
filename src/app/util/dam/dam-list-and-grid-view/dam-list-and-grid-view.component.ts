@@ -675,7 +675,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 this.router.navigateByUrl('/home/campaigns/create');
+                 this.router.navigateByUrl('/home/campaigns/create/'+this.referenceService.selectedCampaignType);
 				 this.referenceService.closeSweetAlertWithDelay();
                  }else{
 					this.referenceService.closeSweetAlert();

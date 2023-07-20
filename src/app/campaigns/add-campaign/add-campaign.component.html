@@ -391,25 +391,27 @@
                             <legend class="scheduler-border">Select The Video For Your Campaign</legend>
                             <app-list-loader *ngIf="videosLoader"></app-list-loader>
                             <div *ngIf="!videosLoader">
-                                <!--Search Key Icon-->
-                                <div class="input-icon right pull-right pr-epx">
-                                    <input type="text" [(ngModel)]="videosSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findVideosOnEnterKeyPress($event.keyCode)">
-                                    <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="videosSortOption.searchKey" (click)="videosSortOption.searchKey='';searchVideos()"></button>
-                                    <button type="submit" class="search-box-item-click email-search" (click)="searchVideos()" style="right: 9px !important;">
-                                        <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
-                                </div>
-                                <!--Sort DropDown-->
-                                <div class="input-icon right pull-right pr-epx">
-                                    <select class="form-control" [(ngModel)]="videosSortOption.selectedVideoDropDownOption" (ngModelChange)="sortVideos($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
-                                    <option   *ngFor="let option of videosSortOption.videosDropDownOptions" [ngValue]="option">{{option.name}}</option>
-                                    </select>
-                                </div>
-                                <!--Videos Category DropDown-->
-                                <div class="input-icon right pull-right pr-epx">
-                                    <select class="select_filter form-control" (change)="filterVideos($event)">
-                                        <option value="" translate>--Please Selet Category--</option>
-                                         <option *ngFor="let category of videoCategories"  value="{{category.id}}"  [selected]="category?.id==videosPagination?.categoryId">{{category.name}}</option>
-                                    </select>
+                                <div *ngIf="!isNavigatedFromManageContent">
+                                    <!--Search Key Icon-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <input type="text" [(ngModel)]="videosSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findVideosOnEnterKeyPress($event.keyCode)">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="videosSortOption.searchKey" (click)="videosSortOption.searchKey='';searchVideos()"></button>
+                                        <button type="submit" class="search-box-item-click email-search" (click)="searchVideos()" style="right: 9px !important;">
+                                            <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                                    </div>
+                                    <!--Sort DropDown-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <select class="form-control" [(ngModel)]="videosSortOption.selectedVideoDropDownOption" (ngModelChange)="sortVideos($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
+                                        <option   *ngFor="let option of videosSortOption.videosDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                    <!--Videos Category DropDown-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <select class="select_filter form-control" (change)="filterVideos($event)">
+                                            <option value="" translate>--Please Selet Category--</option>
+                                            <option *ngFor="let category of videoCategories"  value="{{category.id}}"  [selected]="category?.id==videosPagination?.categoryId">{{category.name}}</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <!--List Of Videos-->
                                 <div class="portlet-body padding-top-45px">
@@ -487,7 +489,7 @@
                                 </div>       
                             </div>
                             <!--Pagination-->
-                            <div *ngIf="videosPagination?.pagedItems?.length !== 0 && !videosLoader">
+                            <div *ngIf="videosPagination?.pagedItems?.length !== 0 && !videosLoader &&!isNavigatedFromManageContent">
                                 <app-pagination [pagination]="videosPagination" (notifyParent)="paginateVideos($event)" (notifyParentDropDown)="findVideosOnLimitChange($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>

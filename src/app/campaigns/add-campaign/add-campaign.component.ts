@@ -126,6 +126,7 @@ export class AddCampaignComponent implements OnInit {
   selectedVideoFileForPreview:SaveVideoFile;
   videoCategories:Array<any> = new Array<any>();
   isVideoSelected = false;
+  isNavigatedFromManageContent = false;
   /****Email Templates****/
   emailTemplatesOrLandingPagesLoader = false;
   campaignEmailTemplates:Array<any> = Array<any>();
@@ -314,15 +315,8 @@ export class AddCampaignComponent implements OnInit {
             var selectedVideoId = this.campaignService.campaign.selectedVideoId;
             if (selectedVideoId > 0) {
                 this.selectedVideoId = selectedVideoId;
-                this.campaign.selectedVideoId = selectedVideoId;
-                let selectedVideoSortOption = {
-                    'name': 'Selected Video', 'value': 'selectedVideo'
-                };
-                this.videosSortOption.videosDropDownOptions.push(selectedVideoSortOption);
-                this.videosSortOption.selectedVideoDropDownOption = this.videosSortOption.videosDropDownOptions[this.videosSortOption.videosDropDownOptions.length-1];
-                this.videosPagination = this.utilService.sortOptionValues(this.videosSortOption.selectedVideoDropDownOption,this.videosPagination);
-                this.videosPagination.selectedVideoId =this.selectedVideoId;
-                this.isVideoSelected = true;
+                this.setVideoSortOptionForSelectedVideo();
+                
             }   
             /************Launch Campaign**********************/
             if (campaign.campaignScheduleType == "SCHEDULE") {
@@ -598,15 +592,41 @@ export class AddCampaignComponent implements OnInit {
             }
             /***Load Email Templates/Videos/ Partners /Contacts***/
             this.campaignDetailsLoader = false;
-            if(this.isVideoCampaign){
-                this.videosPagination.maxResults = 4;
-                this.findVideos(this.videosPagination);
-            }
+            this.loadVideos();
             this.emailTemplatesPagination.maxResults = 4;
             this.findEmailTemplates(this.emailTemplatesPagination);
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
+    }
+
+    private loadVideos() {
+        if (this.isVideoCampaign) {
+            let contentVideoFile = this.referenceService.campaignVideoFile;
+            if (contentVideoFile != undefined) {
+                this.selectedVideoId = contentVideoFile.id;
+                this.campaign.campaignVideoFile = contentVideoFile;
+                this.isNavigatedFromManageContent = true;
+                this.setVideoSortOptionForSelectedVideo();
+                this.videosPagination.maxResults = 1;
+            } else {
+                this.isNavigatedFromManageContent = false;
+                this.videosPagination.maxResults = 4;
+            }
+            this.findVideos(this.videosPagination);
+        }
+    }
+
+    private setVideoSortOptionForSelectedVideo() {
+        this.campaign.selectedVideoId = this.selectedVideoId;
+        let selectedVideoSortOption = {
+            'name': 'Selected Video', 'value': 'selectedVideo'
+        };
+        this.videosSortOption.videosDropDownOptions.push(selectedVideoSortOption);
+        this.videosSortOption.selectedVideoDropDownOption = this.videosSortOption.videosDropDownOptions[this.videosSortOption.videosDropDownOptions.length - 1];
+        this.videosPagination = this.utilService.sortOptionValues(this.videosSortOption.selectedVideoDropDownOption, this.videosPagination);
+        this.videosPagination.selectedVideoId = this.selectedVideoId;
+        this.isVideoSelected = true;
     }
 
     /***********Videos********************/
