@@ -65,7 +65,7 @@ a.disabled {
     margin-right: 5px !important;
   }
   .refer-vendor-button {
-    padding: 17px 0px 0px 0px !important;
+    padding: 17px 8px 0px 0px !important;
   }
 }
 .img-circle {
@@ -302,7 +302,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
 /* tablet */
 @media (min-width: 810px) and (max-width: 850px) {
   .page-header.navbar .top-menu {
-    margin-top: 22px !important;
+    margin-top: 0px !important;
   }
 }
 .cls-pointer {

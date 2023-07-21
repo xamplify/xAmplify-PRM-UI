@@ -8,3 +8,26 @@ a.disabled {
   background-color: rgb(52, 73, 90);
   height: 100% !important;
 }
+
+@media only screen and (min-width: 360px) and (max-width: 991px) { 
+  .page-sidebar, .page-sidebar.in {
+    margin: 0px !important;
+    z-index: 1000 !important;
+    width: 60%;
+  }
+  .page-sidebar.navbar-collapse.in {
+    margin: 0px !important;
+    position: absolute;
+    z-index: 1000 !important;
+    width: 60%;
+  }
+  .page-sidebar .page-sidebar-menu .sub-menu, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu {
+    margin: 0px;
+    background: #414d58 !important;
+    border-bottom: 1px solid #3d4f65;
+    text-align: center;
+  }
+  .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar .page-sidebar-menu .sub-menu > li.active > a {
+    background: #465460 !important;
+  }
+}

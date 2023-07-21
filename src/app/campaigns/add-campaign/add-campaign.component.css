@@ -695,3 +695,6 @@ span.text-algn {
   pointer-events: none;
   cursor: not-allowed;
 }
+.view-banner {
+  margin-right: 5px;
+}

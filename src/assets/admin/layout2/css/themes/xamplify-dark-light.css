@@ -1723,3 +1723,7 @@ p.layoutcontent {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
 }
+.vendor-img-cu img {
+  border:1px solid #2f4857 !important;
+}
+

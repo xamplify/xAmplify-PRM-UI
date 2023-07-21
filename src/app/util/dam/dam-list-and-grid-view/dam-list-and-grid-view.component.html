@@ -524,33 +524,33 @@
 				<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
 					<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
 				</span>
-				<div class="inputs mDamTop" style="float: right">
-					<a class="close-circle ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
+				<div class="inputs mDamTop alignline-m-flex" style="float: right">
+					<a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
 						<i class="fa fa-refresh" aria-hidden="true"></i>
 					</a>
 					<div class="pb3 float-left">
 						<ng-container *ngIf="isPartnerView">
-							<select class="form-control mDamSort"	[(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
+							<select class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 							</select> 
 						</ng-container>
 						<ng-container *ngIf="!isPartnerView">
-							<select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+							<select	class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 							</select> 
 						</ng-container>
 					</div>
 					<!--Filter Type---->
-					<div class="pb3 float-left ml5">
+					<div class="pb3 float-left ml5" id="alignline-m-mleftright">
 						<ng-container *ngIf="fileTypes?.length>0">
-							<select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+							<select class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
 								<option value="">Select Asset Type</option>
 								<option	*ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}</option>
 							</select> 
 						</ng-container>
 					</div>
-					<div class="portlet-input input-inline input-small tab_srch_w"	style="margin-right: 10px;">
-						<div class="input-icon right mDamSearch rSearch" style="position: relative; right: -6px;">
+					<div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"	style="margin-right: 10px;">
+						<div class="input-icon right mDamSearch rSearch" id="alignline-m-serch" style="position: relative; right: -6px;">
 							<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
 							<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
 							<button type="submit" class="search-box-item-click"	(click)="searchAssets()">

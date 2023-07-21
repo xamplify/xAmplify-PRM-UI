@@ -271,6 +271,40 @@
               .mrg_b5{
                 margin-bottom: 5px;
               }
+
+              /* Content DAM search list */
+              .alignline-m-flex {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                padding-top: 0px !important;
+              }
+              #alignline-m-width {
+                width: 100%;
+                padding: 4px 2px !important;
+                display: flex;
+                font-size: 10px !important;
+                right: 0px !important;
+              }
+              #alignline-m-margin {
+                margin-right: 0px !important;
+              }
+              #alignline-m-serch {
+                right: 0px !important;
+                left: 0px;
+              }
+              #alignline-m-ref-mar {
+                margin-left: 1px !important;
+                padding: 6px 10px !important;
+              }
+              #alignline-m-mleftright {
+                margin-left: 2px !important;
+                margin-right: 2px;
+              }
+              div#alignline-m-serch input {
+                font-size: 10px !important;
+              }
+              /* End */
     }
     @media only screen and (max-width:1024px){
         #bee-plugin-container{

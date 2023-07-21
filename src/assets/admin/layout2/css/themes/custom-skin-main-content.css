@@ -1565,3 +1565,7 @@ p.layoutcontent {
 .required {
   color: red !important;
 }
+.vendor-img-cu img {
+  border:1px solid var(--border-color) !important;
+}
+
