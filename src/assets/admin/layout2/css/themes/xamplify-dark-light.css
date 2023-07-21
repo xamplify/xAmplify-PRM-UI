@@ -1719,3 +1719,6 @@ p.layoutcontent {
 .required {
   color: red !important;
 }
+.filter-button-color {
+  background-color: #22313a !important;
+}

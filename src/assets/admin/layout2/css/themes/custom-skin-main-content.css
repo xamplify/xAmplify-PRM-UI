@@ -205,7 +205,8 @@ ul.alt-row-style1 li:hover,
 .l-g-view,
 .alert-success,
 .campaign-email-template-filter-icon,
-.list__item.list__item--selected > .flex-row {
+.list__item.list__item--selected > .flex-row,
+.filter-button-color {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
