@@ -385,7 +385,6 @@ legend {
   border-bottom: none;
 }
 
-
 /****Redistribute Campaign*****/
 label {
   font-weight: 600;
@@ -523,17 +522,17 @@ table.table-bordered.dataTable {
   padding: 0px 25px;
 }
 
-.custom-font-weight{
+.custom-font-weight {
   font-weight: 700;
 }
 
-.to-partner-padding{
+.to-partner-padding {
   margin-left: 75px;
   margin-top: -24px;
   display: flex;
 }
 
-.ml-hpx{
+.ml-hpx {
   margin-left: -100px;
 }
 
@@ -555,11 +554,11 @@ table.table-bordered.dataTable {
   color: #54a7e9;
 }
 
-.width-fif-per{
+.width-fif-per {
   width: 50%;
 }
 
-.pr-epx{
+.pr-epx {
   padding-right: 8px;
 }
 
@@ -568,10 +567,10 @@ table.table-bordered.dataTable {
   text-align: right;
   border-top: 1px solid #e5e5e5;
 }
-.fontsize-16px{
+.fontsize-16px {
   font-size: 16px !important;
 }
-.margin-0px{
+.margin-0px {
   margin: 0px !important;
 }
 
@@ -588,41 +587,40 @@ table.table-bordered.dataTable {
 .zeropx {
   margin-top: 0px;
 }
-.padding-zero{
+.padding-zero {
   padding: 0;
 }
 
-.border-none{
+.border-none {
   border: none !important;
 }
 
-.search-button-padding{
-  padding:8px 10px 0px 0px;
+.search-button-padding {
+  padding: 8px 10px 0px 0px;
 }
-.search-icon-rp{
+.search-icon-rp {
   right: 9px !important;
 }
-.padding-top-45px{
+.padding-top-45px {
   padding-top: 45px !important;
 }
 
-.website-work-flow{
+.website-work-flow {
   background-color: #f76c1a;
 }
-.workflow-icon-style{
+.workflow-icon-style {
   margin: 0 5px;
 }
-.padding-9px{
+.padding-9px {
   padding: 9px 0 !important;
 }
 
-.auto-response-style{
+.auto-response-style {
   background-color: #f4555c;
-  
 }
 
-.pr-b-7px{
-  position: relative; 
+.pr-b-7px {
+  position: relative;
   bottom: -7px;
 }
 
@@ -652,11 +650,10 @@ table.table-bordered.dataTable {
   background: #5bb1d4;
 }
 
-
-.padding-left-0{
+.padding-left-0 {
   padding-left: 0;
 }
-.height-66px{
+.height-66px {
   height: 66px;
 }
 
@@ -665,8 +662,8 @@ table.table-bordered.dataTable {
   font-size: 15px !important;
 }
 
-.color-black{
-  color: black !important;
+.color-black {
+  color: black;
 }
 
 span.text-algn {
@@ -685,18 +682,16 @@ span.text-algn {
   padding-top: 6px;
 }
 
-.w-10em{
+.w-10em {
   width: 10em;
 }
-.ml-17-mt12{
+.ml-17-mt12 {
   margin-left: -17px;
   margin-top: 12px;
 }
 
-.campaign-blur{
+.campaign-blur {
   filter: blur(3px);
   pointer-events: none;
   cursor: not-allowed;
-
 }
-

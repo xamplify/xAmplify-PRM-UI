@@ -1721,4 +1721,5 @@ p.layoutcontent {
 }
 .filter-button-color {
   background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
 }
