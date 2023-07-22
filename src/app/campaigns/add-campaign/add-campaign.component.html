@@ -615,10 +615,7 @@
                                 <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
-                            <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab" 
-                                (click)="isValidFirstTab && showLaunchTab()">Next</button>
-                            </div>  
+                            <ng-template [ngTemplateOutlet]="nextButton"></ng-template>
                         </fieldset>
 
                          <!--Pages-->
@@ -722,13 +719,10 @@
                             </div>
                             <!--Pagination-->
                             <div *ngIf="pagesPagination?.pagedItems?.length !== 0 && !pagesLoader">
-                                <app-pagination [pagination]="pagesPagination" (notifyParent)="paginatePages($event)" (notifyParentDropDown)="findPagesOnLimitSelection($event)" [customDropDown]="true">
+                                <app-pagination [pagination]="pagesPagination" (notifyParent)="paginatePages($event)" (notifyParentDropDown)="findPages($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
-                            <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab" 
-                                (click)="isValidFirstTab && showLaunchTab()">Next</button>
-                            </div>  
+                           <ng-template [ngTemplateOutlet]="nextButton"></ng-template>
                         </fieldset>
                         
                     </div>
@@ -1475,4 +1469,11 @@
 
  <app-preview-video *ngIf="selectedVideoFileForPreview" [videoFile]="selectedVideoFileForPreview" (notifyParent)="closeCreateModal($event)">
 </app-preview-video>
+
+<ng-template #nextButton>
+    <div>
+        <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab" 
+        (click)="isValidFirstTab && showLaunchTab()">Next</button>
+    </div>  
+</ng-template>
 

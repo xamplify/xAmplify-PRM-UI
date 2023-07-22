@@ -599,6 +599,32 @@ export class AddCampaignComponent implements OnInit {
             });
     }
 
+    findPagesOnEnterKeyPress(eventKeyCode:number){
+        if(eventKeyCode==13){
+            this.searchPages();
+        }
+    }
+
+    paginatePages(event:any){
+        this.pagesPagination.pageIndex = event.page;
+		this.findPages(this.pagesPagination);
+    }
+
+    sortPages(text: any) {
+		this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
+		this.setSearchAndSortOptionsForPages(this.pagesPagination,this.pagesSortOption);
+	}
+
+    searchPages(){
+        this.setSearchAndSortOptionsForPages(this.pagesPagination,this.pagesSortOption);
+    }
+
+    setSearchAndSortOptionsForPages(pagination: Pagination, pagesSortOption: SortOption){
+		pagination.pageIndex = 1;
+		pagination.searchKey = pagesSortOption.searchKey;
+        pagination = this.utilService.sortOptionValues(pagesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
+        this.findPages(pagination);
+    }
 
     private findCampaignPipeLines() {
         if (this.activeCRMDetails.activeCRM) {
