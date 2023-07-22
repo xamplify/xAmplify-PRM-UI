@@ -587,6 +587,16 @@ export class AddCampaignComponent implements OnInit {
 
     findPages(pagesPagination:Pagination){
         this.pagesLoader = true;
+        this.campaignService.findPages(pagesPagination).subscribe(
+            response=>{
+                const data = response.data;
+                pagesPagination.totalRecords = data.totalRecords;
+                this.pagesSortOption.totalRecords = data.totalRecords;
+                pagesPagination = this.pagerService.getPagedItems(pagesPagination, data.list);
+                this.pagesLoader =  false;
+            },error=>{
+                this.xtremandLogger.errorPage(error);
+            });
     }
 
 

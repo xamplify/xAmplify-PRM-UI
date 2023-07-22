@@ -1286,6 +1286,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+     /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
         let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
@@ -1302,6 +1303,15 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     } 
+
+     /********XNFR-318********/
+    findPages(pagesPagination:Pagination){
+        pagesPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/findPages?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagesPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();
