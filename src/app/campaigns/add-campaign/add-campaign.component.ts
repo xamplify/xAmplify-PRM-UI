@@ -141,8 +141,8 @@ export class AddCampaignComponent implements OnInit {
   isSendTestEmailOptionClicked = false;
   selectedEmailTemplateNameForPreview = "";
   
-  /********Landing Pages*******/
-  selectedLandingPageId = 0;
+  /********Pages*******/
+  selectedPageId = 0;
   pagesPagination = new Pagination();
   pagesLoader = false;
   isLandingPageSelected = false;

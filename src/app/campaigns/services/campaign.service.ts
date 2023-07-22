@@ -1307,7 +1307,7 @@ export class CampaignService {
      /********XNFR-318********/
     findPages(pagesPagination:Pagination){
         pagesPagination.userId = this.authenticationService.getUserId();
-        let url = this.URL + "campaign/findPages?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "landing-page/findPagesForCampaign?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagesPagination)
             .map(this.extractData)
             .catch(this.handleError);
