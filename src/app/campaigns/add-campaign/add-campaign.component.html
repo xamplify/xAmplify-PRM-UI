@@ -176,7 +176,7 @@
                                         </div>
 
                                         <!--Co Branding Logo-->
-                                        <div class="form-group" *ngIf="campaign?.channelCampaign || isPageCampaign">
+                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
                                             <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
