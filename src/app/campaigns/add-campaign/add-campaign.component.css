@@ -280,7 +280,7 @@ span.icon-alignments {
   position: relative;
   bottom: 95px;
   visibility: initial;
-  opacity: 1;
+  opacity: 0;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border: 1px solid #54a7e9;
@@ -322,10 +322,7 @@ span.label-color-custmization {
   height: 350px;
 }
 
-.page-imgage-paddings {
-  background: #fff;
-  height: 360px;
-}
+
 /* tablet */
 @media screen and (max-width: 768px) {
   span.select-check-box {
@@ -705,8 +702,7 @@ span.text-algn {
 
  
 
-.landing-page-banner{
-  background-color: green !important;
+.banner-page{
   padding: 5px 10px !important;
   font-size: 10px !important;
   color: #fff;
@@ -714,7 +710,16 @@ span.text-algn {
   float: left;
   margin: 3px;
 }
+.bgc-green{
+  background-color: green !important;
+}
+
 .hotpx{
-  height: 108px !important;
+  height: 150px !important;
+}
+
+.page-imgage-paddings {
+  background: #fff;
+  height: 400px;
 }
 

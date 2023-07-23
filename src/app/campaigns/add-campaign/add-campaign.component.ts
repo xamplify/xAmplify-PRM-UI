@@ -1038,6 +1038,12 @@ export class AddCampaignComponent implements OnInit {
         }
     }
 
+    /****XNFR-255****/
+    setWhiteLabeled(event:any){
+        this.campaign.whiteLabeled = event;
+    }
+    
+
     removePartnerRules() {
         let self = this;
         $.each(this.replies, function (index, reply) {
@@ -1093,18 +1099,14 @@ export class AddCampaignComponent implements OnInit {
         if (this.campaign.channelCampaign) {
             if (this.campaign.enableCoBrandingLogo) {
                 this.pagesPagination.filterKey = "Co-Branded&PUBLIC";
-                alert("Load Public & Co-Branded Pages");
             } else {
                 this.pagesPagination.filterKey = "PUBLIC";
-                alert("Load Public Pages");
             }
         } else {
             if (this.campaign.enableCoBrandingLogo) {
                 this.pagesPagination.filterKey = "Co-Branded&PRIVATE";
-                alert("Load Private & Co-Branded Pages");
             } else {
                 this.pagesPagination.filterKey = "PRIVATE";
-                alert("Load Private Pages");
             }
         }
         this.pagesPagination.pageIndex = 1;
