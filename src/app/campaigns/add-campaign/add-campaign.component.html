@@ -648,7 +648,7 @@
                                     <h4  translate>Apply Filter</h4>
                                     <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
                                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-                                    [dataSource]='pageFolders' [fields]='folderFields'
+                                    [dataSource]='emailTemplateFolders' [fields]='folderFields'
                                     [placeholder]='folderFilterPlaceHolder'>
                                     </ejs-multiselect>
                                     <div class="float-right">
@@ -1425,6 +1425,7 @@
 
 </div>
 
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 <app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
 <!--Preview  Email Template-->

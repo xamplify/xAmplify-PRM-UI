@@ -27,6 +27,9 @@ import { Timezone } from '../../core/models/timezone';
 import { CampaignType } from '../models/campaign-type';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { EnvService } from 'app/env.service';
+import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -36,7 +39,7 @@ var moment = require('moment-timezone');
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.css'],
-  providers:[CallActionSwitch,SortOption,Properties]
+  providers:[CallActionSwitch,SortOption,Properties,LandingPageService]
 })
 export class AddCampaignComponent implements OnInit {
 
@@ -150,7 +153,8 @@ export class AddCampaignComponent implements OnInit {
   isPreviewPageButtonClicked = false;
   selectedPageIdForPreview = 0;
   selectedPageNameForPreview = "";
-
+  @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+  landingPage: LandingPage = new LandingPage();
 
   /******Edit Template******/
   isEditTemplateLoader = false;
@@ -463,7 +467,7 @@ export class AddCampaignComponent implements OnInit {
 
     showLaunchTab(){
         this.isValidVideoSelected();
-        if(this.isValidCampaignDetailsTab && this.selectedEmailTemplateRow>0 && this.isVideoSelected){
+        if(this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.referenceService.goToTop();
             this.campaignDetailsTabClass = this.completedTabClass;
             this.launchTabClass = this.activeTabClass;
@@ -625,6 +629,29 @@ export class AddCampaignComponent implements OnInit {
         pagination = this.utilService.sortOptionValues(pagesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
         this.findPages(pagination);
     }
+
+    selectPage(page:any){
+        this.selectedPageId = page.id;
+        this.landingPage = page;
+        if(this.isValidCampaignDetailsTab){
+            this.isValidFirstTab = true;
+            this.launchTabClass = this.activeTabClass;
+        }else{
+            this.isValidFirstTab = false;
+            this.launchTabClass = this.disableTabClass;
+        }
+    }
+    showPagePreview(landingPage: LandingPage) {
+        if (this.campaign.enableCoBrandingLogo) {
+            landingPage.showYourPartnersLogo = true;
+        } else {
+            landingPage.showYourPartnersLogo = false;
+        }
+        this.previewLandingPageComponent.showPreview(landingPage);
+    }
+
+
+    /*****Pages*****/
 
     private findCampaignPipeLines() {
         if (this.activeCRMDetails.activeCRM) {
@@ -1298,23 +1325,31 @@ export class AddCampaignComponent implements OnInit {
 
     clearFilter() {
         this.isShowFilterDiv = false;
-        if(this.selectedFolderIds.length>0){
-            this.selectedFolderIds = [];
-            this.applyFilter();
-        }else{
-            this.selectedFolderIds = [];
-        }
+        this.selectedFolderIds = [];
+        this.applyFilter();
     }
 
     applyFilter(){
-        if (this.selectedFolderIds.length > 0) {
-            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
-        } else {
-            this.emailTemplatesPagination.categoryIds = [];
+        if(this.isPageCampaign){
+            if (this.selectedFolderIds.length > 0) {
+                this.pagesPagination.categoryIds = this.selectedFolderIds;
+            } else {
+                this.pagesPagination.categoryIds = [];
+            }
+            this.pagesPagination.pageIndex = 1;
+            this.pagesPagination.maxResults = 4;
+            this.findPages(this.pagesPagination);
+        }else{
+            if (this.selectedFolderIds.length > 0) {
+                this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            } else {
+                this.emailTemplatesPagination.categoryIds = [];
+            }
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.emailTemplatesPagination.maxResults = 4;
+            this.findEmailTemplates(this.emailTemplatesPagination);
         }
-        this.emailTemplatesPagination.pageIndex = 1;
-        this.emailTemplatesPagination.maxResults = 4;
-        this.findEmailTemplates(this.emailTemplatesPagination);
+       
     }
 
     selectEmailTemplate(emailTemplate:any){
