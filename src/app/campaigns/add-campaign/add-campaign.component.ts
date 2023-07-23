@@ -1080,7 +1080,7 @@ export class AddCampaignComponent implements OnInit {
     setCoBrandingLogo(event: any) {
         this.campaign.enableCoBrandingLogo = event;
         if(this.isPageCampaign){
-            this.loadPages();
+            this.filterPageTypeAndFindPages();
         }else{
             this.removeTemplateAndAutoResponse();
             this.findEmailTemplates(this.emailTemplatesPagination);
@@ -1089,24 +1089,31 @@ export class AddCampaignComponent implements OnInit {
         
     }
 
-    private loadPages() {
+    private filterPageTypeAndFindPages() {
         if (this.campaign.channelCampaign) {
             if (this.campaign.enableCoBrandingLogo) {
+                this.pagesPagination.filterKey = "Co-Branded&PUBLIC";
                 alert("Load Public & Co-Branded Pages");
             } else {
+                this.pagesPagination.filterKey = "PUBLIC";
                 alert("Load Public Pages");
             }
         } else {
             if (this.campaign.enableCoBrandingLogo) {
+                this.pagesPagination.filterKey = "Co-Branded&PRIVATE";
                 alert("Load Private & Co-Branded Pages");
             } else {
+                this.pagesPagination.filterKey = "PRIVATE";
                 alert("Load Private Pages");
             }
         }
+        this.pagesPagination.pageIndex = 1;
+        this.pagesPagination.maxResults = 4;
+        this.findPages(this.pagesPagination)
     }
 
     setCoBrandingLogoForPageCampaign(){
-        this.loadPages();
+        this.filterPageTypeAndFindPages();
     }
 
     
