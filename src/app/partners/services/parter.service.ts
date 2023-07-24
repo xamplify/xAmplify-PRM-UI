@@ -201,6 +201,13 @@ export class ParterService {
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
+
+    /*********XNFR-316************/
+    getActivePartners(pagination:Pagination){
+        const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
     
     
     handleError( error: any ) {

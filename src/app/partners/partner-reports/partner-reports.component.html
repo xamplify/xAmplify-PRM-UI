@@ -3,7 +3,9 @@
     display: none;
   }
 </style>
+
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+  <!-- --------------------Breadcrumb-------- -->
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
@@ -26,26 +28,27 @@
   <!--card start -->
   <div class="page-bar p20">
     <div class="row">
-<div class="col-sm-12 col-md-12 col-lg-12">
-  <div class="col-sm-4 col-md-4 col-lg-4">
-    <div _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-        <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <div _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
+            <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
+          <p><b>Partner Comapny Name:</b> veera</p>
+          <p><b>Email Id:</b> veera@gmail.com</p>
+          <p><b>Full Name:</b> veera venkatrao</p>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
+          <p><b>Contact:</b> 9700926011</p>
+          <p><b>Recent Login:</b> 29-06-2023 11:42AM</p>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-     <p><b>Partner Comapny Name:</b> veera</p>
-     <p><b>Email Id:</b> veera@gmail.com</p>
-     <p><b>Full Name:</b> veera venkatrao</p>
-  </div>
-  <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-     <p><b>Contact:</b> 9700926011</p>
-     <p><b>Recent Login:</b> 29-06-2023 11:42AM</p>
-  </div>
-</div>
-</div>
-</div>
-<!--card End -->
+  <!--card End -->
 
+  <!-- --------------------Counts-------- -->
   <div class="row">
     <div class="col-xs-12 col-md-12 col-sm-12">
       <div>
@@ -172,13 +175,19 @@
       </div>
     </div>
   </div>
+
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
+  <!-- --------------------Active Partners Analytics-------- -->
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;padding-bottom: 10px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
         <!-- <app-view-partners></app-view-partners> -->
         <!---XNFR-220----->
+        <ng-container *ngIf="reloadWithFilter">
+            <app-active-partners-table [applyFilter]="applyFilter"></app-active-partners-table>
+        </ng-container>
+
         <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
           <div class="portlet light" style="margin-bottom: 20px;">
@@ -219,10 +228,8 @@
 
     </div>
   </div>
-  <!-- End Of active-partners-div -->
-
-
-  <!-- --------------------Inactive Partners Count-------- -->
+ 
+  <!-- --------------------Inactive Partners Analytics-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12 p5">
@@ -286,7 +293,7 @@
     </div>
   </div>
 
-  <!-- --------------------Approve Partners Count-------- -->
+  <!-- --------------------Approve Partners Analytics-------- -->
   <div id="approve-partners-div">
     <div class="row">
       <div class="col-xs-12 p5">
@@ -360,12 +367,13 @@
     </div>
   </div>
 
-  <!-- ------****************Through Partner Div************************** -->
+  <!-- ------****************Redistribute Partner Analytics************************** -->
   <div id="redistribute-partners-div" style="display: none;">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
     <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2" [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
 
+  <!-- ------****************Through Partner Analytics************************** -->
   <div id="through-partner-div" style="display: none;">
     <div class="row">
       <div class="col-md-12">
@@ -753,7 +761,6 @@
 </div>
 
 <!-- ..........Approve and Decline Partner request modal........... -->
-
 <div class="modal fade right" id="approve-decline-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
