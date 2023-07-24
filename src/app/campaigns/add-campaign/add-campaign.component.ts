@@ -234,7 +234,8 @@ export class AddCampaignComponent implements OnInit {
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
-    private contactService:ContactService,private render: Renderer,private router:Router,private envService:EnvService) {
+    private contactService:ContactService,private render: Renderer,private router:Router,private envService:EnvService,
+    private landingPageService:LandingPageService) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
     this.isEmailCampaign = "email"==this.campaignType;
@@ -663,6 +664,45 @@ export class AddCampaignComponent implements OnInit {
             landingPage.showYourPartnersLogo = false;
         }
         this.previewLandingPageComponent.showPreview(landingPage);
+    }
+
+    editPage(landingPage:any){
+        this.isShowEditTemplateMessageDiv = false;
+        this.isEditTemplateLoader = true;
+        this.referenceService.goToTop();
+        $('#campaign-details-and-launch-tabs').hide(600);
+        $('#edit-campaign-template').show(600);
+        this.beeContainerInput['emailTemplateName'] = landingPage.name;
+        this.landingPageService.getById(landingPage.id).subscribe(
+            response=>{
+                if(response.statusCode==200){
+                    this.beeContainerInput['module'] = "pages";
+                    this.beeContainerInput['jsonBody'] = response.data.jsonBody;
+                    this.beeContainerInput['id'] = landingPage.id;
+                }else{
+                    this.hideEditTemplateDiv();
+                    this.referenceService.showSweetAlertServerErrorMessage();
+                }
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.referenceService.showSweetAlertServerErrorMessage();
+            },() =>{
+                this.setOpenLinksInNewTab(landingPage.id);
+            });
+    }
+
+    setOpenLinksInNewTab(id:number){
+        this.landingPageService.getOpenLinksInNewTab(id).subscribe(
+            response=>{
+                this.beeContainerInput['module'] = "pages";
+                this.editTemplateMergeTagsInput['page'] = true;
+                this.beeContainerInput['openLinksInNewTab'] = response.data;
+                this.isShowEditTemplatePopup = true;
+                this.isEditTemplateLoader = false;
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.referenceService.showSweetAlertServerErrorMessage();
+            });
     }
 
 
