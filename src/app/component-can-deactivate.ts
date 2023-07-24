@@ -28,8 +28,8 @@ export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate
       // when navigating away from your angular app, the browser will show a generic warning message
       // see http://stackoverflow.com/a/42207299/7307355
       //https://stackoverflow.com/questions/35922071/warn-user-of-unsaved-changes-before-leaving-page
-     //confirm('WARNING: You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes.');
-     this.openConfirmDialog();
+     confirm('You have unsaved changes. Press Cancel to save these changes, or OK to lose these changes.');
+    // this.openConfirmDialog();
     }
 
     openConfirmDialog() {
