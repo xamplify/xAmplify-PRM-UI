@@ -45,6 +45,7 @@ import {SelectContentModulesComponent} from 'app/core/select-content-modules/sel
 import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unauthorized-page.component';
 import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
 import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
+
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },

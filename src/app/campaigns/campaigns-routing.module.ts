@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-
 import { ManagePublishComponent } from "./manage-publish/manage-publish.component";
 import { SelectCampaignTypeComponent } from "./select-campaign-type/select-campaign-type.component";
 import { CreateCampaignComponent } from "./create-campaign/create-campaign.component";
@@ -19,15 +18,15 @@ import { UserLevelTimelineComponent } from './user-level-timeline/user-level-tim
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 import { AddCampaignComponent } from "./add-campaign/add-campaign.component";
 import { ManageCampaignsComponent } from "./manage-campaigns/manage-campaigns.component";
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
-  { path: "create", component: CreateCampaignComponent },
-  { path: "create/:campaignType", component: AddCampaignComponent },
-  { path: "edit/:campaignType", component: AddCampaignComponent },
+  { path: "create/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
+  { path: "edit/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },

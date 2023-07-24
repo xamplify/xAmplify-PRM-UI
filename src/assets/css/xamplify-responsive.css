@@ -1,24 +1,22 @@
 /* 03-07-2023 - Account Dashboard */
 @media (min-width: 1025px) and (max-width: 1300px)  { 
-    /* Dashboard icons size */
-    .dashboard-stat .visual > i {font-size: 50px !important;}   
+/* Dashboard icons size */
+  .dashboard-stat .visual > i {font-size: 50px !important;}   
 }
 @media (min-width: 1025px) and (max-width: 1114px)  { 
-    /* Dashboard Regional Statistics height */
-    div#world-map {max-width: 100%; min-height: 327px !important;}
+/* Dashboard Regional Statistics height */
+  div#world-map {max-width: 100%; min-height: 327px !important;}
  
 }
 /* 07-07-2023 - Campaign  -- Manage Campaigns */
-
 @media (min-width: 767px) and (max-width: 1205px)  { 
-    .scroll-top-margin { margin-top: 30px;}
+  .scroll-top-margin { margin-top: 30px;}
 }
 
-
-.pb_8{
+  .pb_8{
     padding-bottom: 8px!important;
- }
- .btn_add{
+  }
+  .btn_add{
     padding: 5px 10px!important;
     border-radius: 4px;
   }
@@ -29,318 +27,325 @@
     left: auto;
     right: 0;
   }
-    /*app-detailed-campaign-analytics */
-    @media only screen and (min-width: 768px) and (max-width: 991px) { 
-        section.percentage-circle {
-            margin: 0px -22px;
-        }
-        span.dropdown-toggle {
-            float: none!important;
-        }
-        div#vendor-details-tile {
-            word-break: break-all;
-        }
-        .margin-flex{
-            padding-bottom: 12px;
-        }
-        .grid-box{
-            text-align: center;
-            /* height: 249px; */
-        }
-        .bar {
-            width: 100%;
-            width: calc(100% - 32px);
-        }
-        .mp-pt-carrdtop {
-            margin-top: 9px;
-        }
-        .grid-box:hover>.bar {
-            visibility: visible;
-            opacity: 1;
-        }
-        .table-condensed {
-            background-color:unset!important;
-        }
-        .tab_grid{
-         margin-bottom:15px;
-        }
-        /* td{
-        white-space: nowrap;
-        } */
-        .mb_6{
-            margin-bottom:6px;
-        }
-        .tb_view_temp{
-            padding-top: 0px!important;
-            padding-bottom: 6px;
-          }
-          .tb_view_10{
-           margin-top:10px;
-          }
-          .tb_view_actions{
-            white-space: nowrap;
-          }
-          .m_t_view{
-          float: none!important;
-          }
-          .grid-box h6 {
-            text-align: left;
-            margin: 5px 0 5px 20px;
-        }
-        h6 {
-            font-size: 11px;
-        }
-        .mrg_btm_23{
-         margin-bottom: 6px;
-        }
-        .tab_view_img{
-            margin-left:30px!important;
-          }
-          .tab_mt_grid{
-           margin-top:12px;
-          }
-          .intg_mb_16{
-            margin-bottom: 17px;
-          }
-          .tab_mt_20{
-            margin-top:0px!important;
-          }
-          .tab_mt_20{
-           margin-bottom: 20px;
-          }
-          .tab_srch_w{
-           width: 111px!important;
-          }
-          .mrg_10{
-            margin:12px 0px;
-          }
-    
-    }
-    /* Manage Campaigns ribbon adjustment 04-07-2023 */
-    @media only screen and (min-width: 601px) and (max-width: 991px) { 
+  /*app-detailed-campaign-analytics */
+  @media only screen and (min-width: 768px) and (max-width: 991px) { 
+  section.percentage-circle {
+    margin: 0px -22px;
+  }
+  span.dropdown-toggle {
+    float: none!important;
+  }
+  div#vendor-details-tile {
+    word-break: break-all;
+  }
+  .margin-flex{
+   padding-bottom: 12px;
+  }
+  .grid-box{
+    text-align: center;
+  /* height: 249px; */
+  }
+  .bar {
+    width: 100%;
+   width: calc(100% - 32px);
+  }
+  .mp-pt-carrdtop {
+    margin-top: 9px;
+  }
+  .grid-box:hover>.bar {
+    visibility: visible;
+    opacity: 1;
+  }
+  .table-condensed {
+    background-color:unset!important;
+  }
+  .tab_grid{
+    margin-bottom:15px;
+  }
+  /* td{
+    white-space: nowrap;
+  } */
+  .mb_6{
+    margin-bottom:6px;
+  }
+  .tb_view_temp{
+    padding-top: 0px!important;
+    padding-bottom: 6px;
+  }
+  .tb_view_10{
+    margin-top:10px;
+  }
+  .tb_view_actions{
+    white-space: nowrap;
+  }
+  .m_t_view{
+    float: none!important;
+  }
+  .grid-box h6 {
+    text-align: left;
+    margin: 5px 0 5px 20px;
+  }
+  h6 {
+    font-size: 11px;
+  }
+  .mrg_btm_23{
+    margin-bottom: 6px;
+  }
+  .tab_view_img{
+    margin-left:30px!important;
+  }
+  .tab_mt_grid{
+    margin-top:12px;
+  }
+  .intg_mb_16{
+    margin-bottom: 17px;
+  }
+  .tab_mt_20{
+    margin-top:0px!important;
+  }
+  .tab_mt_20{
+    margin-bottom: 20px;
+  }
+  .tab_srch_w{
+    width: 111px!important;
+  }
+  .mrg_10{
+    margin:12px 0px;
+  }
+}
+/* Manage Campaigns ribbon adjustment 04-07-2023 */
+@media only screen and (min-width: 601px) and (max-width: 991px) { 
+  .grid-box{
+    background: #f1f1f1 !important;
+  }
+  .tab-ribbon {
+    left: 10px;
+  }
+  .tab-bookmark-ribbon{
+    right: 22px;
+  }
+  /* Manage Campaigns folder view */
+  .full-width-folder {
+    width: 100% !important;
+    width: calc(100% - 0px) !important;
+  }
+  .full-height-folder {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+  .move-position-left {
+    position: relative;
+    left: 15px!important;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 767px) { 
+  .bar {
+    width: 100%;
+    width: calc(100% - 31px);
+  }
+}
+@media only screen and (min-width: 360px) and (max-width: 767px) { 
+  div#vendor-details-tile {
+  left: 12px;
+  width: 82.4%!important;
+  word-break: break-all;
+  /* margin: 5px 0px; */
+  }
+  .mb-search{
+  margin-bottom: 11px;
+  }
+  .mb-btn{
+  padding: 6px 10px;
+  border-radius: 3px!important;
+  }
+  .mb-gear{
+  top: 3px;
+  position: relative;
+  font-size: 19px!important;
+  }
+  /* Manage Campaigns 04-07-2023 */
+  .grid-box{
+    /* height: 249px!important; */
+    background: #f1f1f1 !important;
+  }
+  .table-condensed {
+    background-color:unset!important;
+  }
+  .mt_10{
+    margin-top: 10px;
+  }
+  .mb_pt{
+    padding: 8px 0px;
+  }
+  .mt_9{
+  margin-top: 9px;
+  }
+  .fa-cog {
+    left: unset !important;
+  }
+  .mb_6{
+    margin-bottom:6px;
+  }
+  .tb_view_temp{
+    padding-top: 0px!important;
+    padding-bottom: 6px;
+  }
+  .m_t_view{
+    float: none!important;
+  }
+  .mb_v_search{
+    top: 3px;
+  }
+  .mb_dwl{
+    margin-right: 9px!important;
+    margin-bottom: 9px;
+  }
+  .move-position-left {
+    position: relative;
+    left: 0px!important;
+  }
+  .mb_10{
+  margin-bottom: 10px;
+  }
+  .tab_mt_20{
+    margin-top:0px!important;
+  }
+  .intg_mb_16{
+    margin-bottom: 18px;
+  }
+  .mb_hgh_grid{
+    height: unset!important;
+  }
+  .mb_v_srch{
+    margin-right: 3px!important;
+  }
+  .mb_imgwidth{
+    width:100%!important;
+  }
+  .mb_pl_15{
+    padding-left: 15px!important;
+  }
+  .mb_v_top{
+    margin-top: 10px;
+  }
+  .mscroll_x{
+  overflow-x: scroll!important;
+  }
+  .ellipsis {
+    float: unset!important;
+  }
+  .pd_left5{
+  padding-left: 5px;
+  }
+  .mbsearch{
+    right: 0px!important;
+    padding-left: 10px;
+  }
+  .width_unset {
+    width: unset!important;
+  }
+  .gear_mbv{
+    left: 98px !important;
+  }
+  .h-260{
+    height: unset!important;
+  }
+  .h-205{
+    height: unset!important;
+  }
+  .h_100{
+    height: unset!important;
+  }
+  .border_unset{
+    border:unset!important;
+  }
+  .mrg_b5{
+    margin-bottom: 5px;
+  }
+  /* Content DAM search list */
+  .alignline-m-flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-top: 0px !important;
+  }
+  #alignline-m-width {
+    width: 100%;
+    padding: 4px 2px !important;
+    display: flex;
+    font-size: 10px !important;
+    right: 0px !important;
+  }
+  #alignline-m-margin {
+  margin-right: 0px !important;
+  }
+  #alignline-m-serch {
+    right: 0px !important;
+    left: 0px;
+  }
+  #alignline-m-ref-mar {
+    margin-left: 1px !important;
+    padding: 6px 10px !important;
+  }
+  #alignline-m-mleftright {
+   margin-left: 2px !important;
+   margin-right: 2px;
+  }
+  div#alignline-m-serch input {
+    font-size: 10px !important;
+  }
+  /* End */
+  .pr-epx {
+    padding-right: 2px;
+  }
+}
+@media only screen and (max-width:1024px){
+  #bee-plugin-container{
+    overflow-x: scroll!important;
+  }
+  #partner-template-bee-container {
+    overflow-x: scroll;
+    width: 100%;
+  }
+  .ml_0{
+    margin-left: 0px!important;
+  }
+  .pl_4{
+    padding-left: 4px!important;
+  }
+  .action_inline{
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+  }
+  .tab_folderscroll{
+    overflow-x: scroll;
+  }
+  .tab_gridfolder{
+    display: grid;
+  }
+  .tabheight{
+    height: 100%!important;
+  }
+  .mb_gridfolder{
+    margin-bottom: 10px;
+  }
+  .mb_v_center{
+    justify-content: center;
+  }
+}
+/*Select Campaign- campaign */
+@media only screen and (min-width: 991px) and (max-width: 1035px) {  
+  .responsive-screen-fontzise-dec {
+    font-size: 15px;
+  }
+  button.btn.responsive-screen-sidepaddings {
+    padding: 6px 10px;
+  }
+}
 
-        .grid-box{
-            background: #f1f1f1 !important;
-        }
-        .tab-ribbon {
-            left: 10px;
-        }
-        .tab-bookmark-ribbon{
-            right: 22px;
-        }
-        /* Manage Campaigns folder view */
-        .full-width-folder {
-            width: 100% !important;
-            width: calc(100% - 0px) !important;
-        }
-        .full-height-folder {
-            height: 100% !important;
-            max-height: 100% !important;
-        }
-        .move-position-left {
-            position: relative;
-            left: 15px!important;
-        }
-    }
-
-
-    @media only screen and (min-width: 601px) and (max-width: 767px) { 
-        .bar {
-            width: 100%;
-            width: calc(100% - 31px);
-        }
-    }
-
-    @media only screen and (min-width: 360px) and (max-width: 767px) { 
-        div#vendor-details-tile {
-            left: 12px;
-            width: 82.4%!important;
-            word-break: break-all;
-            /* margin: 5px 0px; */
-            
-        }
-        .mb-search{
-            margin-bottom: 11px;
-        }
-        .mb-btn{
-            padding: 6px 10px;
-            border-radius: 3px!important;
-        }
-        .mb-gear{
-            top: 3px;
-            position: relative;
-            font-size: 19px!important;
-        }
-        /* Manage Campaigns 04-07-2023 */
-        .grid-box{
-            /* height: 249px!important; */
-            background: #f1f1f1 !important;
-        }
-        .table-condensed {
-            background-color:unset!important;
-        }
-        .mt_10{
-            margin-top: 10px;
-        }
-        .mb_pt{
-            padding: 8px 0px;
-        }
-        .mt_9{
-            margin-top: 9px;
-        }
-        .fa-cog {
-         left: unset !important;
-        }
-        .mb_6{
-            margin-bottom:6px;
-        }
-        .tb_view_temp{
-            padding-top: 0px!important;
-            padding-bottom: 6px;
-          }
-          .m_t_view{
-            float: none!important;
-            }
-            .mb_v_search{
-                top: 3px;
-            }
-            .mb_dwl{
-                margin-right: 9px!important;
-                margin-bottom: 9px;
-            }
-            .move-position-left {
-                position: relative;
-                left: 0px!important;
-            }
-            .mb_10{
-                margin-bottom: 10px;
-            }
-            .tab_mt_20{
-                margin-top:0px!important;
-              }
-              .intg_mb_16{
-                margin-bottom: 18px;
-              }
-              .mb_hgh_grid{
-               height: unset!important;
-              }
-              .mb_v_srch{
-                margin-right: 3px!important;
-
-              }
-              .mb_imgwidth{
-               width:100%!important;
-              }
-              .mb_pl_15{
-                padding-left: 15px!important;
-              }
-              .mb_v_top{
-                margin-top: 10px;
-              }
-              .mscroll_x{
-               overflow-x: scroll!important;
-              }
-              .ellipsis {
-                float: unset!important;
-              }
-              .pd_left5{
-                padding-left: 5px;
-              }
-              .mbsearch{
-                right: 0px!important;
-                padding-left: 10px;
-              }
-              .width_unset {
-                width: unset!important;
-              }
-              .gear_mbv{
-                left: 98px !important;
-              }
-              .h-260{
-                height: unset!important;
-              }
-              .h-205{
-                height: unset!important;
-              }
-              .h_100{
-                height: unset!important;
-              }
-              .border_unset{
-                 border:unset!important;
-              }
-              .mrg_b5{
-                margin-bottom: 5px;
-              }
-
-              /* Content DAM search list */
-              .alignline-m-flex {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                padding-top: 0px !important;
-              }
-              #alignline-m-width {
-                width: 100%;
-                padding: 4px 2px !important;
-                display: flex;
-                font-size: 10px !important;
-                right: 0px !important;
-              }
-              #alignline-m-margin {
-                margin-right: 0px !important;
-              }
-              #alignline-m-serch {
-                right: 0px !important;
-                left: 0px;
-              }
-              #alignline-m-ref-mar {
-                margin-left: 1px !important;
-                padding: 6px 10px !important;
-              }
-              #alignline-m-mleftright {
-                margin-left: 2px !important;
-                margin-right: 2px;
-              }
-              div#alignline-m-serch input {
-                font-size: 10px !important;
-              }
-              /* End */
-              .pr-epx {
-                padding-right: 2px;
-            }
-    }
-    @media only screen and (max-width:1024px){
-        #bee-plugin-container{
-            overflow-x: scroll!important;
-        }
-        #partner-template-bee-container {
-            overflow-x: scroll;
-            width: 100%;
-        }
-        .ml_0{
-          margin-left: 0px!important;
-        }
-        .pl_4{
-            padding-left: 4px!important;
-        }
-        .action_inline{
-            white-space: nowrap;
-            display: flex;
-            justify-content: center;
-        }
-        .tab_folderscroll{
-            overflow-x: scroll;
-        }
-        .tab_gridfolder{
-            display: grid;
-        }
-        .tabheight{
-            height: 100%!important;
-        }
-        .mb_gridfolder{
-            margin-bottom: 10px;
-        }
-        .mb_v_center{
-          justify-content: center;
-        }
-    }
+@media only screen and (min-width: 990px) and (max-width: 1062px) {  
+  .responsive-screen-zeropadding {
+    padding: 0px;
+  }
+} 

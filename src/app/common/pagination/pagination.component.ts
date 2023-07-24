@@ -48,7 +48,7 @@ export class PaginationComponent implements OnInit {
       } else if (this.pagination.maxResults == 48) {
         if(this.pagination.totalRecords>4 && this.pagination.totalRecords<12){
           this.pageNumber = this.numberPerPage[1];
-        }else if(this.pagination.totalRecords>12 && this.pagination.totalRecords<48){
+        }else if(this.pagination.totalRecords>12 && this.pagination.totalRecords<24){
           this.pageNumber = this.numberPerPage[2];
         }else{
           this.pageNumber = this.numberPerPage[3];

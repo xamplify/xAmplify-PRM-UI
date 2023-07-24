@@ -542,21 +542,10 @@
                                         {{properties?.sendTestEmail}}
                                     </button>
                                 </div>
-                                <!--Filter Option-->
-                                <div *ngIf="!filterCategoryLoader && isShowFilterDiv">
-                                    <h4  translate>Apply Filter</h4>
-                                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
-                                    [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-                                    [dataSource]='emailTemplateFolders' [fields]='folderFields'
-                                    [placeholder]='folderFilterPlaceHolder'>
-                                    </ejs-multiselect>
-                                    <div class="float-right">
-                                        <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
-                                        <button class="btn btn-info" (click)="applyFilter()">Apply</button>
-                                    </div>
-                                </div>
                                 <!--List Of Email Templates-->
                                 <div class="portlet-body padding-top-45px">
+                                    <!--Filter Option-->
+                                    <ng-template [ngTemplateOutlet]="filter"></ng-template>
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
                                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
@@ -649,22 +638,10 @@
                                     <option   *ngFor="let option of pagesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
                                 </div>
-                                
                                 <!--List Of Pages-->
                                 <div class="portlet-body padding-top-45px">
                                 <!--Filter Option-->
-                                    <div class="portlet light ht125" *ngIf="!filterCategoryLoader && isShowFilterDiv">
-                                        <h4  translate>Apply Filter</h4>
-                                        <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
-                                        [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-                                        [dataSource]='emailTemplateFolders' [fields]='folderFields'
-                                        [placeholder]='folderFilterPlaceHolder'>
-                                        </ejs-multiselect>
-                                        <div class="float-right">
-                                            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
-                                            <button class="btn btn-info" (click)="applyFilter()">Apply</button>
-                                        </div>
-                                    </div>
+                                <ng-template [ngTemplateOutlet]="filter"></ng-template>
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
                                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let page of pagesPagination?.pagedItems ;let i =index" >                         
@@ -965,10 +942,10 @@
                                                                     <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                         (statusChange)="selectEmailTemplateForEmailAutoResponseWorkflow($event,i,reply)">
                                                                     </switch>
-                                                                    <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
+                                                                    <button type="button" class="btn btn-danger button-blue responsive-screen-sidepaddings" (click)="remove(reply.divId,'replies')">
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-primary button-blue" (click)="addReplyRows()">
+                                                                    <button type="button" class="btn btn-primary button-blue responsive-screen-sidepaddings" (click)="addReplyRows()">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
                                                                 </div>
@@ -1142,7 +1119,7 @@
                                                     <div class="portlet light dashboard-stat2" id="{{url?.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                             <div class="col-xs-6">
-                                                                <h4 class="text-left">Add an Auto-response to a website visit - {{i+1}}</h4>
+                                                                <h4 class="text-left responsive-screen-fontzise-dec">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                             </div>
                                                             <div class="col-xs-6">
                                                                 <div class="pull-right">
@@ -1151,10 +1128,10 @@
                                                                     <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                         (statusChange)="selectEmailTemplateForWebsiteLinkWorkflow($event,i,url)">
                                                                     </switch>
-                                                                    <button type="button" class="btn btn-danger button-blue" (click)="remove(url.divId,'url')">
+                                                                    <button type="button" class="btn btn-danger button-blue responsive-screen-sidepaddings" (click)="remove(url.divId,'url')">
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-primary button-blue" (click)="addClickRows()">
+                                                                    <button type="button" class="btn btn-primary button-blue responsive-screen-sidepaddings" (click)="addClickRows()">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
                                                                 </div>
@@ -1485,4 +1462,19 @@
         (click)="isValidFirstTab && showLaunchTab()">Next</button>
     </div>  
 </ng-template>
+<ng-template #filter>
+    <div class="portlet light ht125" *ngIf="!filterCategoryLoader && isShowFilterDiv">
+        <h4  translate>Apply Filter</h4>
+        <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+        [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+        [dataSource]='emailTemplateFolders' [fields]='folderFields'
+        [placeholder]='folderFilterPlaceHolder'>
+        </ejs-multiselect>
+        <div class="float-right">
+            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+            <button class="btn btn-info" (click)="applyFilter()">Apply</button>
+        </div>
+    </div>
+</ng-template>
+
 

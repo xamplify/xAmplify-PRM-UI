@@ -1,4 +1,6 @@
 import { Component, OnInit,ViewChild,Renderer } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CampaignService } from '../services/campaign.service';
@@ -31,6 +33,7 @@ import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-p
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -43,7 +46,7 @@ var moment = require('moment-timezone');
   providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
   animations:[CustomAnimation]
 })
-export class AddCampaignComponent implements OnInit {
+export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
   loggedInUserId = 0;
   campaignId = 0;
@@ -232,7 +235,8 @@ export class AddCampaignComponent implements OnInit {
   emailReceiversCountLoader = true;
   emailTemplateIdForSendTestEmail = 0;
   emailTemplateNameForSendTestEmail = "";
-
+  anyLaunchButtonClicked = false;
+  
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -296,7 +300,6 @@ export class AddCampaignComponent implements OnInit {
             if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
             this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
             this.setEmailTemplatesFilter(this.emailTemplatesPagination);
-            this.validateForm();
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
             /***********Select Contact List Tab*************************/
@@ -379,6 +382,7 @@ export class AddCampaignComponent implements OnInit {
                 }
 
             }
+            this.validateForm();
         }
     }
 
@@ -477,7 +481,7 @@ export class AddCampaignComponent implements OnInit {
 
     showCampaignDetailsTab(){
         this.campaignDetailsTabClass = this.activeTabClass;
-        if(this.isContactList){
+        if(this.isContactList && this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.launchTabClass = this.completedTabClass;
         }else{
            // this.launchTabClass = this.activeTabClass;
@@ -864,7 +868,7 @@ export class AddCampaignComponent implements OnInit {
             this.campaign.selectedVideoId = videoFile.id;
             $('#campaign_video_id_' + videoId).prop("checked", true);
             this.isValidVideoSelected();
-            if(this.isValidCampaignDetailsTab && this.isVideoSelected && this.selectedEmailTemplateRow>0){
+            if(this.isValidCampaignDetailsTab && this.isVideoSelected && (this.selectedEmailTemplateRow>0||this.selectedPageId>0)){
                 this.isValidFirstTab = true;
                 this.launchTabClass = this.activeTabClass;
             }else{
@@ -1068,7 +1072,7 @@ export class AddCampaignComponent implements OnInit {
             this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
         }
         this.isValidVideoSelected();
-        if(this.isValidCampaignDetailsTab && this.isEmailTemplateOrPageSelected && this.isVideoSelected){
+        if(this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.isValidFirstTab = true;
             this.launchTabClass = this.activeTabClass;
         }else{
@@ -1177,6 +1181,14 @@ export class AddCampaignComponent implements OnInit {
             this.filterPageTypeAndFindPages();
         }else{
             this.removeTemplateAndAutoResponse();
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.emailTemplatesPagination.maxResults = 4;
+            let dropDownLength =   this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length;
+            if(this.selectedEmailTemplateRow==0 && !this.isAdd && dropDownLength==5){
+                this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.pop();
+                this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions[this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.emailTemplatesPagination = this.utilService.sortOptionValues(this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, this.emailTemplatesPagination);
+            }
             this.findEmailTemplates(this.emailTemplatesPagination);
             this.updateLaunchTabClass();
         }
@@ -1199,6 +1211,12 @@ export class AddCampaignComponent implements OnInit {
         }
         this.pagesPagination.pageIndex = 1;
         this.pagesPagination.maxResults = 4;
+        let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
+        if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){
+            this.pagesSortOption.eventCampaignRecipientsDropDownOptions.pop();
+            this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+            this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
+        }
         this.findPages(this.pagesPagination)
     }
 
@@ -1934,6 +1952,7 @@ export class AddCampaignComponent implements OnInit {
 
     validateAndLaunchCampaign(){
         this.ngxLoading = true;
+        this.anyLaunchButtonClicked = false;
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         this.validateLaunchTimeAndCountryAndTimeZone();
@@ -1953,6 +1972,7 @@ export class AddCampaignComponent implements OnInit {
                         if (response.statusCode == 2000) {
                             this.referenceService.campaignSuccessMessage = data['scheduleCampaign'];
                             this.isLaunched = true;
+                            this.anyLaunchButtonClicked = true;
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
                        }else if(response.statusCode==2020){
@@ -2318,4 +2338,13 @@ export class AddCampaignComponent implements OnInit {
         $("#email_spam_check").modal('show');
     }
 
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        if(this.anyLaunchButtonClicked){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
 }
