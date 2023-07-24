@@ -36,6 +36,7 @@ export class PaginationComponent implements OnInit {
     this.notifyParentDropDown.emit(this.pagination);
   }
   ngOnInit() {
+    alert("Custom DropDown"+this.customDropDown);
     if(this.customDropDown){
       const newFirstElement = { 'name': '4', 'value': 4 };
       this.numberPerPage = [newFirstElement].concat(this.numberPerPage);

@@ -198,7 +198,8 @@
              </table>
              <!--Pagination-->
              <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
-                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
+                (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="hideHeaderText">
                 </app-pagination>
              </div>
              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
