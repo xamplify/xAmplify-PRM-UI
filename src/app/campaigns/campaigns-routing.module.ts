@@ -26,7 +26,7 @@ export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
   { path: "create/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
-  { path: "edit/:campaignType", component: AddCampaignComponent },
+  { path: "edit/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },

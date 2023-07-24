@@ -235,7 +235,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
   emailReceiversCountLoader = true;
   emailTemplateIdForSendTestEmail = 0;
   emailTemplateNameForSendTestEmail = "";
-
+  anyLaunchButtonClicked = false;
+  
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -299,7 +300,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             if (this.userListDTOObj === undefined) { this.userListDTOObj = []; }
             this.campaignRecipientsPagination.campaignId = this.campaign.campaignId;
             this.setEmailTemplatesFilter(this.emailTemplatesPagination);
-            this.validateForm();
             this.getCampaignReplies(this.campaign);
             this.getCampaignUrls(this.campaign);
             /***********Select Contact List Tab*************************/
@@ -382,6 +382,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                 }
 
             }
+            this.validateForm();
         }
     }
 
@@ -480,7 +481,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     showCampaignDetailsTab(){
         this.campaignDetailsTabClass = this.activeTabClass;
-        if(this.isContactList){
+        if(this.isContactList && this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.launchTabClass = this.completedTabClass;
         }else{
            // this.launchTabClass = this.activeTabClass;
@@ -867,7 +868,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             this.campaign.selectedVideoId = videoFile.id;
             $('#campaign_video_id_' + videoId).prop("checked", true);
             this.isValidVideoSelected();
-            if(this.isValidCampaignDetailsTab && this.isVideoSelected && this.selectedEmailTemplateRow>0){
+            if(this.isValidCampaignDetailsTab && this.isVideoSelected && (this.selectedEmailTemplateRow>0||this.selectedPageId>0)){
                 this.isValidFirstTab = true;
                 this.launchTabClass = this.activeTabClass;
             }else{
@@ -1071,7 +1072,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             this.isValidCampaignDetailsTab = this.isValidCampaignDetailsTab && isValidDealPipeLineSelected && isValidLeadPipeLineSelected;
         }
         this.isValidVideoSelected();
-        if(this.isValidCampaignDetailsTab && this.isEmailTemplateOrPageSelected && this.isVideoSelected){
+        if(this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.isValidFirstTab = true;
             this.launchTabClass = this.activeTabClass;
         }else{
@@ -1180,6 +1181,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             this.filterPageTypeAndFindPages();
         }else{
             this.removeTemplateAndAutoResponse();
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.emailTemplatesPagination.maxResults = 4;
+            let dropDownLength =   this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length;
+            if(this.selectedEmailTemplateRow==0 && !this.isAdd && dropDownLength==5){
+                this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.pop();
+                this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions[this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.emailTemplatesPagination = this.utilService.sortOptionValues(this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, this.emailTemplatesPagination);
+            }
             this.findEmailTemplates(this.emailTemplatesPagination);
             this.updateLaunchTabClass();
         }
@@ -1202,6 +1211,12 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         }
         this.pagesPagination.pageIndex = 1;
         this.pagesPagination.maxResults = 4;
+        let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
+        if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){
+            this.pagesSortOption.eventCampaignRecipientsDropDownOptions.pop();
+            this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+            this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
+        }
         this.findPages(this.pagesPagination)
     }
 
@@ -1937,6 +1952,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     validateAndLaunchCampaign(){
         this.ngxLoading = true;
+        this.anyLaunchButtonClicked = false;
         var data = this.getCampaignData("");
         var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
         this.validateLaunchTimeAndCountryAndTimeZone();
@@ -1956,6 +1972,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                         if (response.statusCode == 2000) {
                             this.referenceService.campaignSuccessMessage = data['scheduleCampaign'];
                             this.isLaunched = true;
+                            this.anyLaunchButtonClicked = true;
                             this.reInitialize();
                             this.router.navigate(["/home/campaigns/manage"]);
                        }else if(response.statusCode==2020){
@@ -2323,6 +2340,11 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
-        return false;
+        if(this.anyLaunchButtonClicked){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 }
