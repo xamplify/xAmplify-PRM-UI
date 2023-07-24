@@ -205,7 +205,8 @@ ul.alt-row-style1 li:hover,
 .l-g-view,
 .alert-success,
 .campaign-email-template-filter-icon,
-.list__item.list__item--selected > .flex-row {
+.list__item.list__item--selected > .flex-row,
+.filter-button-color {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
@@ -1486,8 +1487,11 @@ div#removeborder {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
-.custometheme-bar span,
+/* .custometheme-bar span,
 strong {
+  color: var(---text-color) !important;
+} */
+.custometheme-bar span {
   color: var(---text-color) !important;
 }
 /* end */
@@ -1512,3 +1516,56 @@ tag {
 .placeholder-bg-color {
   background-color: transparent !important;
 }
+
+/* 19-07-2023 Custom Theme Settings bg colors */
+.bg-color-for-card {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-card1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+p.layoutcontent {
+  color: var(---text-color) !important;
+}
+.bg-color-for-footercard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-footercard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-secondcard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-secondcard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-thirdcard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-thirdcard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.portlet-light-fields.custom-header-img-color {
+  color: var(--top-button-value-color) !important;
+}
+.portlet-light-fields.custom-left-img-color.left-left.box-center {
+  color: var(--left-text-color) !important;
+}
+.portlet-light-fields.custom-footer-img-color {
+  color: var(--footer-text-color) !important;
+}
+.required {
+  color: red !important;
+}
+.vendor-img-cu img {
+  border:1px solid var(--border-color) !important;
+}
+

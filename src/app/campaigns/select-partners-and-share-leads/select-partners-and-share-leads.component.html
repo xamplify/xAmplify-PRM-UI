@@ -18,7 +18,7 @@
           </div>
        </div>
        <!--List-->
-       <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+       <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0 mt5">
           <div class="table-responsive">
              <table class="table tgrid table-hover table-sm" id="one-click-partner-company-table" role="grid" aria-describedby="" *ngIf="pagination.totalRecords > 0">
                 <thead>
@@ -198,7 +198,8 @@
              </table>
              <!--Pagination-->
              <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
-                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
+                (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="hideHeaderText">
                 </app-pagination>
              </div>
              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">

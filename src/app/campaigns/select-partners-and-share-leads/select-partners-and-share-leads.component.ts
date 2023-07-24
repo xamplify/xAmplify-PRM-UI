@@ -54,6 +54,9 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 		this.hideHeaderText = false;
 	}
 	this.pagination.campaignId = this.campaignId;
+	if(this.hideHeaderText){
+		this.pagination.maxResults = 4;
+	}
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
 	

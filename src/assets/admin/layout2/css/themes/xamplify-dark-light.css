@@ -1674,3 +1674,56 @@ tag {
 .placeholder-bg-color {
   background-color: transparent !important;
 }
+
+/* 19-07-2023 Custom Theme Settings bg colors */
+.bg-color-for-card {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-card1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+p.layoutcontent {
+  color: #fff !important;
+}
+.bg-color-for-footercard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-footercard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-secondcard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-secondcard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-thirdcard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-thirdcard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.portlet-light-fields.custom-header-img-color,
+.portlet-light-fields.custom-left-img-color.left-left.box-center,
+.portlet-light-fields.custom-footer-img-color {
+  color: white !important;
+}
+.required {
+  color: red !important;
+}
+.filter-button-color {
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.vendor-img-cu img {
+  border:1px solid #2f4857 !important;
+}
+

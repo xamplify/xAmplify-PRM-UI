@@ -27,6 +27,10 @@ import { Timezone } from '../../core/models/timezone';
 import { CampaignType } from '../models/campaign-type';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { EnvService } from 'app/env.service';
+import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -36,7 +40,8 @@ var moment = require('moment-timezone');
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.css'],
-  providers:[CallActionSwitch,SortOption,Properties]
+  providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
+  animations:[CustomAnimation]
 })
 export class AddCampaignComponent implements OnInit {
 
@@ -61,6 +66,7 @@ export class AddCampaignComponent implements OnInit {
 
 
   /************Campaign Details******************/
+  campaignDetailsTabText ="Campaign Details & Templates";
   isValidCampaignDetailsTab = false;
   isValidFirstTab = false;
   formGroupClass = "form-group";
@@ -99,7 +105,6 @@ export class AddCampaignComponent implements OnInit {
   selectedContactListIds = [];
   userListDTOObj = [];
   isContactList = false;
-  selectedLandingPageRow: number;
   selectedPartnershipId: number;
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
@@ -115,6 +120,8 @@ export class AddCampaignComponent implements OnInit {
   isMarketingCompany = false;
   isVendorCompany = false;
   endDatePickr: any;
+  notifyPartnersLabelText  = "";
+  notifyPartnersToolTipMessage = "";
 
   /****Video***/
   videosLoader = false;
@@ -132,14 +139,25 @@ export class AddCampaignComponent implements OnInit {
   campaignEmailTemplates:Array<any> = Array<any>();
   selectedEmailTemplateRow = 0;
   isEmailTemplateOrPageSelected: boolean;
-  isLandingPage: boolean;
   emailTemplatesSortOption:SortOption = new SortOption();
   isPreviewEmailTemplateButtonClicked = false;
   selectedEmailTemplateIdForPreview = 0;
   emailTemplateHrefLinks = [];
   isSendTestEmailOptionClicked = false;
   selectedEmailTemplateNameForPreview = "";
-  isLandingPageSwitch = false;
+  
+  /********Pages*******/
+  selectedPageId = 0;
+  pagesPagination = new Pagination();
+  pagesLoader = false;
+  isLandingPageSelected = false;
+  pagesSortOption:SortOption = new SortOption();
+  isPreviewPageButtonClicked = false;
+  selectedPageIdForPreview = 0;
+  selectedPageNameForPreview = "";
+  @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+  landingPage: LandingPage = new LandingPage();
+
   /******Edit Template******/
   isEditTemplateLoader = false;
   beeContainerInput = {};
@@ -150,6 +168,7 @@ export class AddCampaignComponent implements OnInit {
   jsonBody: any;
   templateMessageClass = "";
   emailTemplate:any;
+  sendTestEmailToolTip = "Please select an email template";
  /***Filter Popup****/
   public selectedFolderIds = [];
   public emailTemplateFolders: Array<any>;
@@ -218,13 +237,17 @@ export class AddCampaignComponent implements OnInit {
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
-    private contactService:ContactService,private render: Renderer,private router:Router,private envService:EnvService) {
+    private contactService:ContactService,private render: Renderer,private router:Router,private envService:EnvService,
+    private landingPageService:LandingPageService) {
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
     this.isEmailCampaign = "email"==this.campaignType;
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
+    if(this.isPageCampaign){
+        this.campaignDetailsTabText = "Campaign Details & Pages";
+    }
     if(this.isEmailCampaign || this.isSurveyCampaign || this.isPageCampaign || this.isVideoCampaign){
         let currentUrl = this.referenceService.getCurrentRouteUrl();
         this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
@@ -292,7 +315,7 @@ export class AddCampaignComponent implements OnInit {
             }
             /****XNFR-125****/
             this.selectedPartnershipId = this.campaign.partnershipId;
-            /***********Select Email Template Tab*************************/
+            /***********Select Email Template*************************/
             var selectedTemplateId = campaign.selectedEmailTemplateId;
             if (selectedTemplateId > 0) {
                 this.selectedEmailTemplateRow = selectedTemplateId;
@@ -309,8 +332,23 @@ export class AddCampaignComponent implements OnInit {
                 this.emailTemplatesPagination.editCampaign = true;
                 this.emailTemplatesPagination.selectedEmailTempalteId = selectedTemplateId;
                 this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(this.emailTemplate.body, this.emailTemplateHrefLinks);
-
             }
+
+             /*****************Landing Page**************************/
+             let selectedLandingPageId = this.campaignService.campaign.landingPageId;
+             if (this.campaignType == "page") {
+                 if (selectedLandingPageId > 0) {
+                     this.selectedPageId = selectedLandingPageId;
+                     this.landingPage = this.campaign.landingPage;
+                 }
+                 let selectedPageSortOption = {
+                    'name': 'Selected Page', 'value': 'selectedPage'
+                };
+                this.pagesSortOption.eventCampaignRecipientsDropDownOptions.push(selectedPageSortOption);
+                this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
+                this.pagesPagination.selectedEmailTempalteId = selectedLandingPageId;
+             }
 
             var selectedVideoId = this.campaignService.campaign.selectedVideoId;
             if (selectedVideoId > 0) {
@@ -451,7 +489,7 @@ export class AddCampaignComponent implements OnInit {
 
     showLaunchTab(){
         this.isValidVideoSelected();
-        if(this.isValidCampaignDetailsTab && this.selectedEmailTemplateRow>0 && this.isVideoSelected){
+        if(this.isValidCampaignDetailsTab && (this.selectedEmailTemplateRow>0 || this.selectedPageId>0) && this.isVideoSelected){
             this.referenceService.goToTop();
             this.campaignDetailsTabClass = this.completedTabClass;
             this.launchTabClass = this.activeTabClass;
@@ -529,8 +567,11 @@ export class AddCampaignComponent implements OnInit {
                     this.toPartnerToolTipMessage = this.toPartnerText+": Share a private page";
                     this.throughPartnerToolTipMessage = this.throughPartnerText+": Share a public page";
                     this.throughPartnerAndToPartnerHelpToolTip = this.throughPartnerToolTipMessage +"<br><br>"+this.toPartnerToolTipMessage;
-
+                    this.notifyPartnersLabelText = "Send Email Notifications";
+                    this.notifyPartnersToolTipMessage = "Send email notification about your page";
                 }else{
+                    this.notifyPartnersLabelText = "Notify "+this.partnerModuleCustomName+"?";
+                    this.notifyPartnersToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign";
                     if(this.isOrgAdminCompany){
                         this.toPartnerText = "To Recipients";
                     }else{
@@ -553,51 +594,162 @@ export class AddCampaignComponent implements OnInit {
                 this.removeBlur();
                 this.xtremandLogger.errorPage(error);
         },()=>{
-            if (this.activeCRMDetails.activeCRM) {
-              if ("SALESFORCE" === this.activeCRMDetails.type) {
-                this.integrationService
-                  .checkSfCustomFields(this.authenticationService.getUserId())
-                  .subscribe(
-                    (data) => {
-                      let cfResponse = data;
-                      if (cfResponse.statusCode === 400) {
-                        swal(
-                          "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
-                          "",
-                          "error"
-                        );
-                      } else if (
-                        cfResponse.statusCode === 401 &&
-                        cfResponse.message === "Expired Refresh Token"
-                      ) {
-                        swal(
-                          "Your Salesforce Integration was expired. Please re-configure.",
-                          "",
-                          "error"
-                        );
-                      }
-                    },
-                    (error) => {
-                      this.xtremandLogger.error(
-                        error,
-                        "Error in salesforce checkIntegrations()"
-                      );
-                    }
-                  );
-              } else {
-                this.listCampaignPipelines();
-              }
-            } else {
-              this.listCampaignPipelines();
-            }
+            this.findCampaignPipeLines();
             /***Load Email Templates/Videos/ Partners /Contacts***/
             this.campaignDetailsLoader = false;
             this.loadVideos();
-            this.emailTemplatesPagination.maxResults = 4;
-            this.findEmailTemplates(this.emailTemplatesPagination);
+            if(this.isPageCampaign){
+                this.pagesPagination.maxResults = 4;
+                this.pagesPagination.filterKey = "PRIVATE";
+                this.findPages(this.pagesPagination);
+            }else{
+                this.emailTemplatesPagination.maxResults = 4;
+                this.findEmailTemplates(this.emailTemplatesPagination);
+            }
             this.campaignRecipientsPagination.maxResults = 4;
             this.findCampaignRecipients(this.campaignRecipientsPagination);
         });
+    }
+
+    findPages(pagesPagination:Pagination){
+        this.pagesLoader = true;
+        this.campaignService.findPages(pagesPagination).subscribe(
+            response=>{
+                const data = response.data;
+                pagesPagination.totalRecords = data.totalRecords;
+                this.pagesSortOption.totalRecords = data.totalRecords;
+                pagesPagination = this.pagerService.getPagedItems(pagesPagination, data.list);
+                this.pagesLoader =  false;
+            },error=>{
+                this.xtremandLogger.errorPage(error);
+            });
+    }
+
+    findPagesOnEnterKeyPress(eventKeyCode:number){
+        if(eventKeyCode==13){
+            this.searchPages();
+        }
+    }
+
+    paginatePages(event:any){
+        this.pagesPagination.pageIndex = event.page;
+		this.findPages(this.pagesPagination);
+    }
+
+    sortPages(text: any) {
+		this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
+		this.setSearchAndSortOptionsForPages(this.pagesPagination,this.pagesSortOption);
+	}
+
+    searchPages(){
+        this.setSearchAndSortOptionsForPages(this.pagesPagination,this.pagesSortOption);
+    }
+
+    setSearchAndSortOptionsForPages(pagination: Pagination, pagesSortOption: SortOption){
+		pagination.pageIndex = 1;
+		pagination.searchKey = pagesSortOption.searchKey;
+        pagination = this.utilService.sortOptionValues(pagesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
+        this.findPages(pagination);
+    }
+
+    selectPage(page:any){
+        this.selectedPageId = page.id;
+        this.landingPage = page;
+        if(this.isValidCampaignDetailsTab){
+            this.isValidFirstTab = true;
+            this.launchTabClass = this.activeTabClass;
+        }else{
+            this.isValidFirstTab = false;
+            this.launchTabClass = this.disableTabClass;
+        }
+    }
+    showPagePreview(landingPage: LandingPage) {
+        if (this.campaign.enableCoBrandingLogo) {
+            landingPage.showYourPartnersLogo = true;
+        } else {
+            landingPage.showYourPartnersLogo = false;
+        }
+        this.previewLandingPageComponent.showPreview(landingPage);
+    }
+
+    editPage(landingPage:any){
+        this.isShowEditTemplateMessageDiv = false;
+        this.isEditTemplateLoader = true;
+        this.referenceService.goToTop();
+        $('#campaign-details-and-launch-tabs').hide(600);
+        $('#edit-campaign-template').show(600);
+        this.beeContainerInput['emailTemplateName'] = landingPage.name;
+        this.landingPageService.getById(landingPage.id).subscribe(
+            response=>{
+                if(response.statusCode==200){
+                    this.beeContainerInput['module'] = "pages";
+                    this.beeContainerInput['jsonBody'] = response.data.jsonBody;
+                    this.beeContainerInput['id'] = landingPage.id;
+                }else{
+                    this.hideEditTemplateDiv();
+                    this.referenceService.showSweetAlertServerErrorMessage();
+                }
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.referenceService.showSweetAlertServerErrorMessage();
+            },() =>{
+                this.setOpenLinksInNewTab(landingPage.id);
+            });
+    }
+
+    setOpenLinksInNewTab(id:number){
+        this.landingPageService.getOpenLinksInNewTab(id).subscribe(
+            response=>{
+                this.beeContainerInput['module'] = "pages";
+                this.editTemplateMergeTagsInput['page'] = true;
+                this.beeContainerInput['openLinksInNewTab'] = response.data;
+                this.isShowEditTemplatePopup = true;
+                this.isEditTemplateLoader = false;
+            },error=>{
+                this.hideEditTemplateDiv();
+                this.referenceService.showSweetAlertServerErrorMessage();
+            });
+    }
+
+
+    /*****Pages*****/
+
+    private findCampaignPipeLines() {
+        if (this.activeCRMDetails.activeCRM) {
+            if ("SALESFORCE" === this.activeCRMDetails.type) {
+                this.integrationService
+                    .checkSfCustomFields(this.authenticationService.getUserId())
+                    .subscribe(
+                        (data) => {
+                            let cfResponse = data;
+                            if (cfResponse.statusCode === 400) {
+                                swal(
+                                    "Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.",
+                                    "",
+                                    "error"
+                                );
+                            } else if (cfResponse.statusCode === 401 &&
+                                cfResponse.message === "Expired Refresh Token") {
+                                swal(
+                                    "Your Salesforce Integration was expired. Please re-configure.",
+                                    "",
+                                    "error"
+                                );
+                            }
+                        },
+                        (error) => {
+                            this.xtremandLogger.error(
+                                error,
+                                "Error in salesforce checkIntegrations()"
+                            );
+                        }
+                    );
+            } else {
+                this.listCampaignPipelines();
+            }
+        } else {
+            this.listCampaignPipelines();
+        }
     }
 
     private loadVideos() {
@@ -936,7 +1088,11 @@ export class AddCampaignComponent implements OnInit {
         this.campaignRecipientsPagination.pageIndex = 1;
         this.campaignRecipientsPagination.maxResults = 4;
         this.clearSelectedContactList();
-        this.setCoBrandingLogo(event);
+        if(this.isPageCampaign){
+            this.setCoBrandingLogoForPageCampaign();
+        }else{
+            this.setCoBrandingLogo(event);
+        }
         this.setSalesEnablementOptions(event);
         /***XNFR-255*****/
         if(!this.isPageCampaign){
@@ -970,6 +1126,12 @@ export class AddCampaignComponent implements OnInit {
         }
     }
 
+    /****XNFR-255****/
+    setWhiteLabeled(event:any){
+        this.campaign.whiteLabeled = event;
+    }
+    
+
     removePartnerRules() {
         let self = this;
         $.each(this.replies, function (index, reply) {
@@ -985,8 +1147,7 @@ export class AddCampaignComponent implements OnInit {
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplateOrPageSelected = false;
-        this.selectedLandingPageRow = 0;
-        this.isLandingPage = false;
+        this.selectedPageId = 0;
     }
 
     setPartnerEmailNotification(event: any) {
@@ -1012,13 +1173,37 @@ export class AddCampaignComponent implements OnInit {
 
     setCoBrandingLogo(event: any) {
         this.campaign.enableCoBrandingLogo = event;
-        this.removeTemplateAndAutoResponse();
-        if (this.campaignType != 'page') {
+        if(this.isPageCampaign){
+            this.filterPageTypeAndFindPages();
+        }else{
+            this.removeTemplateAndAutoResponse();
             this.findEmailTemplates(this.emailTemplatesPagination);
-        } else {
-            this.findEmailTemplates(this.emailTemplatesPagination);
+            this.updateLaunchTabClass();
         }
-        this.updateLaunchTabClass();
+        
+    }
+
+    private filterPageTypeAndFindPages() {
+        if (this.campaign.channelCampaign) {
+            if (this.campaign.enableCoBrandingLogo) {
+                this.pagesPagination.filterKey = "Co-Branded&PUBLIC";
+            } else {
+                this.pagesPagination.filterKey = "PUBLIC";
+            }
+        } else {
+            if (this.campaign.enableCoBrandingLogo) {
+                this.pagesPagination.filterKey = "Co-Branded&PRIVATE";
+            } else {
+                this.pagesPagination.filterKey = "PRIVATE";
+            }
+        }
+        this.pagesPagination.pageIndex = 1;
+        this.pagesPagination.maxResults = 4;
+        this.findPages(this.pagesPagination)
+    }
+
+    setCoBrandingLogoForPageCampaign(){
+        this.filterPageTypeAndFindPages();
     }
 
     
@@ -1201,23 +1386,31 @@ export class AddCampaignComponent implements OnInit {
 
     clearFilter() {
         this.isShowFilterDiv = false;
-        if(this.selectedFolderIds.length>0){
-            this.selectedFolderIds = [];
-            this.applyFilter();
-        }else{
-            this.selectedFolderIds = [];
-        }
+        this.selectedFolderIds = [];
+        this.applyFilter();
     }
 
     applyFilter(){
-        if (this.selectedFolderIds.length > 0) {
-            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
-        } else {
-            this.emailTemplatesPagination.categoryIds = [];
+        if(this.isPageCampaign){
+            if (this.selectedFolderIds.length > 0) {
+                this.pagesPagination.categoryIds = this.selectedFolderIds;
+            } else {
+                this.pagesPagination.categoryIds = [];
+            }
+            this.pagesPagination.pageIndex = 1;
+            this.pagesPagination.maxResults = 4;
+            this.findPages(this.pagesPagination);
+        }else{
+            if (this.selectedFolderIds.length > 0) {
+                this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            } else {
+                this.emailTemplatesPagination.categoryIds = [];
+            }
+            this.emailTemplatesPagination.pageIndex = 1;
+            this.emailTemplatesPagination.maxResults = 4;
+            this.findEmailTemplates(this.emailTemplatesPagination);
         }
-        this.emailTemplatesPagination.pageIndex = 1;
-        this.emailTemplatesPagination.maxResults = 4;
-        this.findEmailTemplates(this.emailTemplatesPagination);
+       
     }
 
     selectEmailTemplate(emailTemplate:any){
@@ -1242,6 +1435,7 @@ export class AddCampaignComponent implements OnInit {
                         this.launchTabClass = this.disableTabClass;
                     }
                     this.ngxLoading = false;
+                    this.sendTestEmailToolTip = this.properties.sendTestEmail;
                 },
                 error => {
                     this.emailTemplateHrefLinks = [];
@@ -1899,7 +2093,7 @@ export class AddCampaignComponent implements OnInit {
             'createdFromVideos': this.campaign.createdFromVideos,
             'nurtureCampaign': false,
             'pushToCRM': [],
-            'landingPageId': this.selectedLandingPageRow,
+            'landingPageId': this.selectedPageId,
             'vanityUrlDomainName': vanityUrlDomainName,
             'vanityUrlCampaign': vanityUrlCampaign,
             'leadPipelineId': this.campaign.leadPipelineId,

@@ -175,7 +175,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Salesforce')"> <i
-                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -208,7 +208,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Google')"> <i
-                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -243,7 +243,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Zoho')"> <i
-                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -445,7 +445,7 @@
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
                
             </div>
-            <div class="col-xs-12 p0"
+            <div class="col-xs-12 p0 mb_10"
                 *ngIf="referenceService.isMobileScreenSize()">
                 <input type="text" [(ngModel)]="searchKey"
                     [ngModelOptions]="{standalone: true}" class="form-control"
