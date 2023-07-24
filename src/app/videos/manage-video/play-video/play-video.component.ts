@@ -18,6 +18,7 @@ import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
+import { Properties } from 'app/common/models/properties';
 
 declare const $, videojs: any;
 
@@ -28,7 +29,7 @@ declare const $, videojs: any;
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../../../../assets/css/video-css/call-action.css'],
-    providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent]
+    providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent,Properties]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     /*@Input()*/ totalRecords: number;
@@ -73,7 +74,8 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(public authenticationService: AuthenticationService, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
-        public pagerService: PagerService, public referenceService: ReferenceService, public embedModalComponent:EmbedModalComponent) {
+        public pagerService: PagerService, public referenceService: ReferenceService, 
+        public embedModalComponent:EmbedModalComponent,public properties:Properties) {
         this.disLikesValues = 0;
         this.likesValues = 0;
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -326,6 +328,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
+                playbackRates: this.properties.playbackRates,
                 fullscreenKey: function (event: any, player: any) {
                     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                 },
@@ -534,11 +537,10 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#videoId').css('width', 'auto');
         this.videoUrl = this.selectedVideo.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         const self = this;
         const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
-        console.log(overrideNativevalue);
         this.videoJSplayer = videojs('videoId', {
             html5: {
                 hls: {
@@ -721,6 +723,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
+                playbackRates:this.properties.playbackRates,
                 fullscreenKey: function (event: any, player: any) {
                     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                 },
