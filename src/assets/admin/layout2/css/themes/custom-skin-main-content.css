@@ -1566,6 +1566,8 @@ p.layoutcontent {
   color: red !important;
 }
 .vendor-img-cu img {
-  border:1px solid var(--border-color) !important;
+  border: 1px solid var(--border-color) !important;
 }
-
+.template-height {
+  margin-top: 9px !important;
+}
