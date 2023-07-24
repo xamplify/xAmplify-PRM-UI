@@ -446,6 +446,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
 			this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
 				{
+				 playbackRates: [0.5, 1, 1.5, 2],
 					html5: {
 						hls: {
 							overrideNative: overrideNativeValue
