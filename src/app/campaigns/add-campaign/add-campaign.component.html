@@ -1343,7 +1343,8 @@
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
                                                 <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
-                                                <span class="text-algn">{{launchOption.key}}</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key!='Launch'">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>
                                     </div>
