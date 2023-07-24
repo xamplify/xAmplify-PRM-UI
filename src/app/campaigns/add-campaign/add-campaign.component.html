@@ -529,11 +529,16 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button class="btn btn-primary" [disabled]="selectedEmailTemplateRow==0"
-                                    [title] = "selectedEmailTemplateRow==0 ? 'Please select an email template':'Send Test Email'"
+                                    <button *ngIf="selectedEmailTemplateRow==0" class="btn btn-primary" [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip" data-placement="top"
+                                     title="{{sendTestEmailToolTip}}">
+                                        <i class="fa fa-envelope-o"></i>
+                                        {{properties?.sendTestEmail}}
+                                    </button>
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                                         title="{{sendTestEmailToolTip}}"
                                        (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <i class="fa fa-envelope-o"></i>
-                                        Send Test Email 
+                                        {{properties?.sendTestEmail}}
                                     </button>
                                 </div>
                                 <!--Filter Option-->
@@ -1299,7 +1304,7 @@
                                                                                 </div>       
                                                                             </div>
                                                                             <!--Pagination-->
-                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0 && url?.loader">
+                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0 && !url?.loader">
                                                                                 <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)"
                                                                                  (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlowOnLimitChange(url,i)" [customDropDown]="true">
                                                                                 </app-pagination>
@@ -1380,9 +1385,9 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" 
-                                    [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o mr5"></i>Send Test Email
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" title="Send Test Email"  data-toggle="tooltip" data-placement="top" 
+                                    (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                        <i class="fa fa-envelope-o mr5"></i>{{properties?.sendTestEmail}}
                                     </button>
                                     <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
                                     <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>

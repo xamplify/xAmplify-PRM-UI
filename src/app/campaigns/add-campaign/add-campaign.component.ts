@@ -165,6 +165,7 @@ export class AddCampaignComponent implements OnInit {
   jsonBody: any;
   templateMessageClass = "";
   emailTemplate:any;
+  sendTestEmailToolTip = "Please select an email template";
  /***Filter Popup****/
   public selectedFolderIds = [];
   public emailTemplateFolders: Array<any>;
@@ -1388,6 +1389,7 @@ export class AddCampaignComponent implements OnInit {
                         this.launchTabClass = this.disableTabClass;
                     }
                     this.ngxLoading = false;
+                    this.sendTestEmailToolTip = this.properties.sendTestEmail;
                 },
                 error => {
                     this.emailTemplateHrefLinks = [];
