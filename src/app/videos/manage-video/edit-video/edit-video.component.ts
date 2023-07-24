@@ -716,6 +716,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.vjs-VR-control .vjs-control .vjs-button').css('cssText', 'color:'+this.saveVideoFile.playerColor+'!important');
       $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
       $('.vjs-VR-control .vjs-control .vjs-button enable').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+      $('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+
   }
   changeControllerColor(event: any, enableVideoController:boolean) {
      try{
