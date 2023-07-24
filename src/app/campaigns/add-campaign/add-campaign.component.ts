@@ -1,4 +1,6 @@
 import { Component, OnInit,ViewChild,Renderer } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CampaignService } from '../services/campaign.service';
@@ -31,6 +33,7 @@ import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-p
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -43,7 +46,7 @@ var moment = require('moment-timezone');
   providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
   animations:[CustomAnimation]
 })
-export class AddCampaignComponent implements OnInit {
+export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
   loggedInUserId = 0;
   campaignId = 0;
@@ -2318,4 +2321,8 @@ export class AddCampaignComponent implements OnInit {
         $("#email_spam_check").modal('show');
     }
 
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        return false;
+    }
 }

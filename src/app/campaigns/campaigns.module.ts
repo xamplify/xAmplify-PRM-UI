@@ -46,6 +46,7 @@ import { AddCampaignComponent } from './add-campaign/add-campaign.component';
 import { CampaignDetailsComponent } from './campaign-details/campaign-details.component';
 import { ManageCampaignsComponent } from './manage-campaigns/manage-campaigns.component';
 import { SelectCampaignRecipientListComponent } from './select-campaign-recipient-list/select-campaign-recipient-list.component';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 @NgModule({
   imports: [
@@ -92,6 +93,6 @@ import { SelectCampaignRecipientListComponent } from './select-campaign-recipien
     SelectCampaignRecipientListComponent  ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent,UserCampaignsListUtilComponent
 ],
-  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService]
+  providers: [ContactService, VideoFileService, EmailTemplateService,DealRegistrationService, LeadsService,PendingChangesGuard]
 })
 export class CampaignsModule {}
