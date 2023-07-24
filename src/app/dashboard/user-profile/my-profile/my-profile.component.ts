@@ -482,6 +482,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						}
 					});
 				});
+			this.videoUtilService.setDefaultPlayBackRateText();
 			this.defaultVideoSettings();
 			this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
 			if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
@@ -1115,6 +1116,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+
+
 	}
 	transperancyControllBar(value: any) {
 		this.valueRange = value;

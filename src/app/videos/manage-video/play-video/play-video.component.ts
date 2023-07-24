@@ -323,6 +323,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         $('#videoId').css('height', this.videoWidth);
         $('#videoId').css('width', 'auto');
         const player = videojs('videoId',{ playbackRates: [0.5, 1, 1.5, 2]}).ready(function () {
+            this.videoUtilService.setDefaultPlayBackRateText();
             this.hotkeys({
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
