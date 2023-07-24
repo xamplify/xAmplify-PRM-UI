@@ -18,7 +18,6 @@ import { Pagination } from '../../../core/models/pagination';
 import { XtremandLog } from '../../models/xtremand-log';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { EmbedModalComponent } from '../../../common/embed-modal/embed-modal.component';
-import { Properties } from 'app/common/models/properties';
 
 declare const $, videojs: any;
 
@@ -29,7 +28,7 @@ declare const $, videojs: any;
         '../../../../assets/css/video-css/videojs-overlay.css', '../../../../assets/css/about-us.css',
         '../../../../assets/css/todo.css', '../edit-video/edit-video.component.css',
         '../../../../assets/css/video-css/call-action.css'],
-    providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent,Properties]
+    providers: [Pagination, XtremandLog, HttpRequestLoader, EmbedModalComponent]
 })
 export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     /*@Input()*/ totalRecords: number;
@@ -75,7 +74,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         public videoUtilService: VideoUtilService, public pagination: Pagination, public xtremandLog: XtremandLog,
         public deviceService: Ng2DeviceService, public xtremandLogger: XtremandLogger,public userService: UserService,
         public pagerService: PagerService, public referenceService: ReferenceService, 
-        public embedModalComponent:EmbedModalComponent,public properties:Properties) {
+        public embedModalComponent:EmbedModalComponent) {
         this.disLikesValues = 0;
         this.likesValues = 0;
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -328,7 +327,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
-                playbackRates: this.properties.playbackRates,
+                playbackRates: [0.5, 1, 1.5, 2],
                 fullscreenKey: function (event: any, player: any) {
                     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                 },
@@ -723,7 +722,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
-                playbackRates:this.properties.playbackRates,
+                playbackRates: [0.5, 1, 1.5, 2],
                 fullscreenKey: function (event: any, player: any) {
                     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                 },
