@@ -58,7 +58,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf('.'));
         videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
         $( "#" + divId + " video").append('<source src=' + videoUrl + ' type="application/x-mpegURL">');
-        let player = videojs( 'videoId' );
+        let player = videojs( 'videoId', { playbackRates: [0.5, 1, 1.5, 2] } );
         let isPreview = this.isPreview;
         const newValue = this;
         player.panorama( {
@@ -115,6 +115,8 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         this.videoJSplayer = videojs( "videoId", {
           "controls": true,
           "autoplay": !isPreview,
+           playbackRates: [0.5, 1, 1.5, 2],
+          
             html5: {
                 hls: {
                     overrideNative: overrideNativeValue

@@ -195,7 +195,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             videoPath = videoPath.replace(".m3u8", ".mp4");
             console.log("Updated 360 video path" + videoPath);
             $("#" + divId + " video").append('<source src="' + videoPath + '" type="video/mp4">');
-            var player = videojs('videoId');
+            var player = videojs('videoId',{ playbackRates: [0.5, 1, 1.5, 2]});
             player.panorama({
                 autoMobileOrientation: true,
                 clickAndDrag: true,
@@ -225,6 +225,7 @@ export class ViewsReportComponent implements OnInit, OnDestroy {
             var document: any = window.document;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs("videoId", {
+             playbackRates: [0.5, 1, 1.5, 2],
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue

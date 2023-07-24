@@ -410,7 +410,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
              "autoplay": true,
              "preload": "auto",
              "customControlsOnMobile": true,
-             "nativeControlsForTouch": true
+             "nativeControlsForTouch": true,
+              playbackRates: [0.5, 1, 1.5, 2]
              }).ready(function () {
             this.hotkeys({
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
@@ -613,6 +614,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
+             playbackRates: [0.5, 1, 1.5, 2],
+            
                 // "controls": true,
                 // "autoplay": false,
                 // "preload": "auto",

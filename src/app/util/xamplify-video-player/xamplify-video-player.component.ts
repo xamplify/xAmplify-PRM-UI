@@ -51,6 +51,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     const self = this;
     const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
     this.videoJSplayer = videojs('xamplify-video-player-id', {
+    playbackRates: [0.5, 1, 1.5, 2],
         html5: {
             hls: {
                 overrideNative: overrideNativevalue
@@ -151,7 +152,6 @@ export class XamplifyVideoPlayerComponent implements OnInit {
             volumeStep: 0.1, seekStep: 5, enableMute: true,
             enableFullscreen: false, enableNumbers: false,
             enableVolumeScroll: true,
-             playbackRates: [0.5, 1, 1.5, 2],
             fullscreenKey: function (event: any, player: any) {
                 return ((event.which === 70) || (event.ctrlKey && event.which === 13));
             },
@@ -211,12 +211,11 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
-    const player = videojs('xamplify-video-player-id').ready(function () {
+    const player = videojs('xamplify-video-player-id', { playbackRates: [0.5, 1, 1.5, 2] }).ready(function () {
         this.hotkeys({
             volumeStep: 0.1, seekStep: 5, enableMute: true,
             enableFullscreen: false, enableNumbers: false,
             enableVolumeScroll: true,
-             playbackRates: [0.5, 1, 1.5, 2],
             fullscreenKey: function (event: any, player: any) {
                 return ((event.which === 70) || (event.ctrlKey && event.which === 13));
             },
