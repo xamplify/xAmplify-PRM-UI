@@ -1574,7 +1574,26 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         this.isShowEditTemplateMessageDiv = true;
     }
     updatePage(event: any) {
-       // throw new Error('Method not implemented.');
+        let landingPage = new LandingPage();
+        landingPage.id = event.id;
+        landingPage.jsonBody = event.jsonContent;
+        landingPage.htmlBody = event.htmlContent;
+        landingPage.userId = this.loggedInUserId;
+        landingPage.openLinksInNewTab = this.beeContainerInput['openLinksInNewTab'];
+        landingPage.companyProfileName = this.authenticationService.companyProfileName;
+        this.landingPageService.updateJsonAndHtmlBody(landingPage).subscribe(
+            response => {
+                this.showTemplateUpdatedSuccessMessage();
+            }, error => {
+                this.ngxLoading =false;
+                if (error.status == 400) {
+                    let message = JSON.parse(error['_body']).message;
+                    swal(message, "", "error");
+                } else {
+                    this.showTemplateUpdateErrorMessage();
+                }
+            }
+        )
     }
   
     /***********Contacts/Partners************/
