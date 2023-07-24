@@ -559,7 +559,7 @@
                                 <div class="portlet-body padding-top-45px">
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                 <div  class="row">
                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
@@ -667,7 +667,7 @@
                                     </div>
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let page of pagesPagination?.pagedItems ;let i =index" >                         
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let page of pagesPagination?.pagedItems ;let i =index" >                         
                                                 <div  class="row">
                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                         <div class="grid-box imgage-paddings"  [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' " (click)="selectPage(page)">
@@ -1063,7 +1063,7 @@
                                                                                     <div class="portlet-body padding-top-45px">
                                                                                         <div class="row">
                                                                                             <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                                                                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                                                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                                                                     <div  class="row">
                                                                                                         <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                                                                             <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
@@ -1248,7 +1248,7 @@
                                                                                 <div class="portlet-body padding-top-45px">
                                                                                     <div class="row">
                                                                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                                                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of url?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of url?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                                                                 <div  class="row">
                                                                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
@@ -1343,7 +1343,8 @@
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
                                                 <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
-                                                <span class="text-algn">{{launchOption.key}}</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key!='Launch'">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>
                                     </div>
