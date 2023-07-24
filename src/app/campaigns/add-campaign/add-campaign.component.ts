@@ -66,6 +66,7 @@ export class AddCampaignComponent implements OnInit {
 
 
   /************Campaign Details******************/
+  campaignDetailsTabText ="Campaign Details & Templates";
   isValidCampaignDetailsTab = false;
   isValidFirstTab = false;
   formGroupClass = "form-group";
@@ -244,6 +245,9 @@ export class AddCampaignComponent implements OnInit {
     this.isVideoCampaign = "video"==this.campaignType;
     this.isSurveyCampaign = "survey"==this.campaignType;
     this.isPageCampaign = "page"==this.campaignType;
+    if(this.isPageCampaign){
+        this.campaignDetailsTabText = "Campaign Details & Pages";
+    }
     if(this.isEmailCampaign || this.isSurveyCampaign || this.isPageCampaign || this.isVideoCampaign){
         let currentUrl = this.referenceService.getCurrentRouteUrl();
         this.isAdd = currentUrl!=undefined && currentUrl!=null && currentUrl!="" && currentUrl.indexOf("create")>-1;
