@@ -365,3 +365,9 @@ a.disabled {
     margin: 0 auto;
     display: block;
 }
+/* 24-07-2023 */
+span.preview-publishing-aligntectcenter {
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
