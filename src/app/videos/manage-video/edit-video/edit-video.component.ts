@@ -472,6 +472,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
               volumeStep: 0.1, seekStep: 5, enableMute: true,
               enableFullscreen: false, enableNumbers: false,
               enableVolumeScroll: true,
+               playbackRates: [0.5, 1, 1.5, 2],
               fullscreenKey: function (event: any, player: any) {
                   return ((event.which === 70) || (event.ctrlKey && event.which === 13));
               },
@@ -1176,6 +1177,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                       volumeStep: 0.1, seekStep: 5, enableMute: true,
                       enableFullscreen: false, enableNumbers: false,
                       enableVolumeScroll: true,
+                       playbackRates: [0.5, 1, 1.5, 2],
                       fullscreenKey: function (event: any, player: any) {
                           return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                       },
