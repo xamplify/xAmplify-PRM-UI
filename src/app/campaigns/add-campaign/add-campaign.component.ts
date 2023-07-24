@@ -102,7 +102,6 @@ export class AddCampaignComponent implements OnInit {
   selectedContactListIds = [];
   userListDTOObj = [];
   isContactList = false;
-  selectedLandingPageRow: number;
   selectedPartnershipId: number;
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
@@ -308,7 +307,7 @@ export class AddCampaignComponent implements OnInit {
             }
             /****XNFR-125****/
             this.selectedPartnershipId = this.campaign.partnershipId;
-            /***********Select Email Template Tab*************************/
+            /***********Select Email Template*************************/
             var selectedTemplateId = campaign.selectedEmailTemplateId;
             if (selectedTemplateId > 0) {
                 this.selectedEmailTemplateRow = selectedTemplateId;
@@ -325,8 +324,23 @@ export class AddCampaignComponent implements OnInit {
                 this.emailTemplatesPagination.editCampaign = true;
                 this.emailTemplatesPagination.selectedEmailTempalteId = selectedTemplateId;
                 this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(this.emailTemplate.body, this.emailTemplateHrefLinks);
-
             }
+
+             /*****************Landing Page**************************/
+             let selectedLandingPageId = this.campaignService.campaign.landingPageId;
+             if (this.campaignType == "page") {
+                 if (selectedLandingPageId > 0) {
+                     this.selectedPageId = selectedLandingPageId;
+                     this.landingPage = this.campaign.landingPage;
+                 }
+                 let selectedPageSortOption = {
+                    'name': 'Selected Page', 'value': 'selectedPage'
+                };
+                this.pagesSortOption.eventCampaignRecipientsDropDownOptions.push(selectedPageSortOption);
+                this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+                this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
+                this.pagesPagination.selectedEmailTempalteId = selectedLandingPageId;
+             }
 
             var selectedVideoId = this.campaignService.campaign.selectedVideoId;
             if (selectedVideoId > 0) {
@@ -1086,7 +1100,7 @@ export class AddCampaignComponent implements OnInit {
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplateOrPageSelected = false;
-        this.selectedLandingPageRow = 0;
+        this.selectedPageId = 0;
     }
 
     setPartnerEmailNotification(event: any) {
@@ -2031,7 +2045,7 @@ export class AddCampaignComponent implements OnInit {
             'createdFromVideos': this.campaign.createdFromVideos,
             'nurtureCampaign': false,
             'pushToCRM': [],
-            'landingPageId': this.selectedLandingPageRow,
+            'landingPageId': this.selectedPageId,
             'vanityUrlDomainName': vanityUrlDomainName,
             'vanityUrlCampaign': vanityUrlCampaign,
             'leadPipelineId': this.campaign.leadPipelineId,

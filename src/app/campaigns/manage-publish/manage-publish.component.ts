@@ -476,7 +476,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     if(this.refService.isProduction()){
                         this.router.navigate(["/home/campaigns/edit"]);
                     }else{
-                        if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType){
+                        if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType || "LANDINGPAGE"==campaignType){
                             let urlSuffix = "";
                             if("REGULAR"==campaignType){
                                 urlSuffix="email";
@@ -484,6 +484,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                                 urlSuffix = "survey";
                             }else if("VIDEO"==campaignType){
                                 urlSuffix = "video";
+                            }else if("LANDINGPAGE"==campaignType){
+                                urlSuffix = "page";
                             }
                             this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
                         }else{
