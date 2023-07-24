@@ -30,6 +30,7 @@ import { EnvService } from 'app/env.service';
 import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
+import { CustomAnimation } from 'app/core/models/custom-animation';
 
 
 declare var swal:any, $:any, videojs:any, flatpickr:any, CKEDITOR:any, require: any;
@@ -39,7 +40,8 @@ var moment = require('moment-timezone');
   selector: 'app-add-campaign',
   templateUrl: './add-campaign.component.html',
   styleUrls: ['./add-campaign.component.css'],
-  providers:[CallActionSwitch,SortOption,Properties,LandingPageService]
+  providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
+  animations:[CustomAnimation]
 })
 export class AddCampaignComponent implements OnInit {
 

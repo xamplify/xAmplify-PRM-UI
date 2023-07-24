@@ -508,7 +508,8 @@
                             <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                             <div *ngIf="!emailTemplatesOrLandingPagesLoader">
                                 <!--Filter Icon-->
-                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv"
+                                 (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
                                     <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
@@ -648,21 +649,22 @@
                                     <option   *ngFor="let option of pagesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
                                 </div>
-                                <!--Filter Option-->
-                                <div *ngIf="!filterCategoryLoader && isShowFilterDiv">
-                                    <h4  translate>Apply Filter</h4>
-                                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
-                                    [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-                                    [dataSource]='emailTemplateFolders' [fields]='folderFields'
-                                    [placeholder]='folderFilterPlaceHolder'>
-                                    </ejs-multiselect>
-                                    <div class="float-right">
-                                        <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
-                                        <button class="btn btn-info" (click)="applyFilter()">Apply</button>
-                                    </div>
-                                </div>
+                                
                                 <!--List Of Pages-->
                                 <div class="portlet-body padding-top-45px">
+                                <!--Filter Option-->
+                                    <div class="portlet light ht125" *ngIf="!filterCategoryLoader && isShowFilterDiv">
+                                        <h4  translate>Apply Filter</h4>
+                                        <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+                                        [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                                        [dataSource]='emailTemplateFolders' [fields]='folderFields'
+                                        [placeholder]='folderFilterPlaceHolder'>
+                                        </ejs-multiselect>
+                                        <div class="float-right">
+                                            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+                                            <button class="btn btn-info" (click)="applyFilter()">Apply</button>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
                                             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let page of pagesPagination?.pagedItems ;let i =index" >                         
