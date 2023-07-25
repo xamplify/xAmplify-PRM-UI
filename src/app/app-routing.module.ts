@@ -46,6 +46,7 @@ import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unaut
 import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
 import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 
+
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'home/contacts/google-callback', component: VanitySocialContactsCallbackComponent },
@@ -73,36 +74,36 @@ export const routes: Routes = [
 	{
 		path: 'home', component: HomeComponent, canActivate: [AuthGuard],
 		children: [
-			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-			{ path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
-			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: false } },
-			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
-			{ path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
-			{ path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule' },
-			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
-			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
-			{ path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
-			{ path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: false } },
-			{ path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: false } },
-			{ path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
-			{ path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
-			{ path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
+			{ path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule', data: { preload: true } },
+			{ path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule', data: { preload: true } },
+			{ path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: true } },
+			{ path: 'social', loadChildren: 'app/social/social.module#SocialModule', data: { preload: true } },
+			{ path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule', data: { preload: true } },
+			{ path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule', data: { preload: true } },
+			{ path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'assignleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'sharedleads', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: true } },
+			{ path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: true } },
+			{ path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: true } },
+			{ path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule', data: { preload: true } },
+			{ path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule', data: { preload: true } },
+			{ path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule', data: { preload: true } },
 			{ path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule', data: { preload: true } },
 			{ path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule', data: { preload: true } },
 			{ path: 'design', loadChildren: 'app/design/design.module#DesignModule', data: { preload: true } },
-			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule', data: { preload: false } },
-			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: false } },
-			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: false } },
-			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: false } },
-			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: false } },
-			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: false } },
-			{ path: 'select-modules', component: SelectContentModulesComponent },
+			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule', data: { preload: true } },
+			{ path: 'dam', loadChildren: 'app/dam/dam.module#DamModule', data: { preload: true } },
+			{ path: 'leads', loadChildren: 'app/leads/leads.module#LeadsModule',  data: { preload: true } },
+			{ path: 'deal', loadChildren: 'app/deals/deals.module#DealsModule', data: { preload: true } },
+			{ path: 'tracks', loadChildren: 'app/lms/lms.module#LmsModule',  data: { preload: true } },
+			{ path: 'playbook', loadChildren: 'app/play-book/play-book.module#PlayBookModule',  data: { preload: true } },
+			{ path: 'select-modules', component: SelectContentModulesComponent, data: { preload: true }},
 			/*******XNFR-83*******/
-			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: false } },
+			{ path: 'agency', loadChildren: 'app/agency/agency.module#AgencyModule',  data: { preload: true } },
 			/*******XNFR-83*******/
-			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: false } },
-			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: false } },
-			{ path: 'error/:errorStatusId', component: ErrorPagesComponent }
+			{ path: 'azuga', loadChildren: 'app/azuga/azuga.module#AzugaModule',  data: { preload: true } },
+			{ path: 'help', loadChildren: 'app/guides/guides.module#GuidesModule',  data: { preload: true } },
+			{ path: 'error/:errorStatusId', component: ErrorPagesComponent, data: { preload: true } }
 		]
 	},
 	{ path: 'terms-conditions', component: TermsConditonComponent },

@@ -2359,6 +2359,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
+        this.authenticationService.module.contentLoader = false;
+        this.authenticationService.leftSideMenuLoader = false;
         if(this.anyLaunchButtonClicked){
             return true;
         }else{

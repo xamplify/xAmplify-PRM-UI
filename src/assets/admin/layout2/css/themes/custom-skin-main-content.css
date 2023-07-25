@@ -1571,3 +1571,25 @@ p.layoutcontent {
 .template-height {
   margin-top: 9px !important;
 }
+/* app preview */  
+input[type="file"]::file-selector-button {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+}
+.brodercolorcu {
+  border: 1px solid var(--border-color) !important;
+}
+span.center-itams a {
+  color: var(---text-color) !important;
+}
+p.addhrtosvg {
+  background: var(--border-color) !important;
+}
+.appmobileview .mobileview-align { 
+  background: var(--page-content) !important;
+}
+/* app preview End*/
+
+.profile-usermenu {
+  border-top: 1px dashed var(--border-color) !important;
+}

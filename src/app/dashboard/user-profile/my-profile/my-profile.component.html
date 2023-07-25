@@ -414,8 +414,9 @@
                                 </app-response-message>
                                 <div class="tab-content">
                                     <!---Personal Info-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'personalInfo'}">
                                         <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
+                                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>First Name</label>
                                                 <span class="star"> *</span>
@@ -423,44 +424,56 @@
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
                                             </div>
-
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Middle Name</label>
                                                 <input type="text" placeholder="Middle Name" class="form-control" formControlName="middleName" maxlength="50">
                                                 <div *ngIf="formErrors.middleName" class="alert alert-danger">
                                                     {{ formErrors.middleName }}</div>
                                             </div>
-
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Last Name</label>
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Mobile Number</label>
                                                 <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Interests</label>
                                                 <input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
                                                 <div *ngIf="formErrors.interests" class="alert alert-danger">
                                                     {{ formErrors.interests }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Job Title</label>
                                                 <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Job Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>About</label>
                                                 <textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
                                                 <div *ngIf="formErrors.description" class="alert alert-danger">
                                                     {{ formErrors.description }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Select Preferred Language</label>                                                
                                                 <select formControlName="preferredLanguage" class="form-control">
@@ -470,14 +483,19 @@
                                                 <div *ngIf="formErrors.preferredLanguage" class="alert alert-danger">
                                                     {{ formErrors.preferredLanguage }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Website Url</label>
                                                 <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
                                                     {{ formErrors.websiteUrl }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn Btn-Green" translate>
                                                 Save Changes</button>
+                                            </div>
                                         </form>
                                     </div>
                                     <!---Deal Types-->
@@ -1041,8 +1059,9 @@
                                         </ng-container>
                                     </div>
                                     <!--Pasword-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
+                                            <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="form-group" *ngIf="userData.hasPassword">
                                                 <label class="control-label" translate>Current Password</label>
                                                 <input id="oldPassword" type="password" [class]="className" formControlName="oldPassword" required="required" />
@@ -1053,6 +1072,8 @@
                                                 <div *ngIf="formErrors.oldPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.oldPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>New Password</label>
                                                 <input id="password" type="password" class="form-control" formControlName="newPassword" required="required" />
@@ -1062,6 +1083,8 @@
                                                 <div *ngIf="formErrors.newPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.newPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Re-type New Password</label>
                                                 <input id="comfirmPassword" type="password" class="form-control" formControlName="confirmNewPassword" required="required" />
@@ -1074,16 +1097,20 @@
                                                     {{formErrors.confirmNewPassword}}</div>
                                                 <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger" style="margin-top: 5px;">Password do not match.</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="margin-top-10">
                                                 <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn Btn-Green" translate>
                                                     Change Password</button>
                                                 <input type="reset" class="btn Btn-Gray" value="Cancel">
                                             </div>
+                                        </div>
                                         </form>
                                     </div>
                                     <!-- PRIVACY SETTINGS TAB -->
-                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
-                                       <div class="container">
+                                    <!-- hidden-xs -->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'settings'}">
+                                       <div class="">
                                             <label class="container-checkbox-xamplify" translate>List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
