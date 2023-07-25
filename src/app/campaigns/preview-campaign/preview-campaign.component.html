@@ -96,7 +96,7 @@
                      </div>
                   </div>
                   <!--XNFR-118-->
-                  <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign">
+                  <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign && campaign?.campaignTypeInString!='LANDINGPAGE'">
                      <div class="media col-xs-12">
                         <!--Email is opened-->
                         <div class="col-xs-6 col-sm-6">

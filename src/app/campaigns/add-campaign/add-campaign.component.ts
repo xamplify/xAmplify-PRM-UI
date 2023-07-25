@@ -603,8 +603,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             this.campaignDetailsLoader = false;
             this.loadVideos();
             if(this.isPageCampaign){
-                this.pagesPagination.maxResults = 4;
-                this.pagesPagination.filterKey = "PRIVATE";
+               this.setPageCampaignFilterOptions()
                 this.findPages(this.pagesPagination);
             }else{
                 this.emailTemplatesPagination.maxResults = 4;
@@ -1151,7 +1150,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplateOrPageSelected = false;
-        this.selectedPageId = 0;
     }
 
     setPartnerEmailNotification(event: any) {
@@ -1196,6 +1194,17 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     }
 
     private filterPageTypeAndFindPages() {
+        this.setPageCampaignFilterOptions();
+        let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
+        if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){
+            this.pagesSortOption.eventCampaignRecipientsDropDownOptions.pop();
+            this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+            this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
+        }
+        this.findPages(this.pagesPagination)
+    }
+
+    private setPageCampaignFilterOptions() {
         if (this.campaign.channelCampaign) {
             if (this.campaign.enableCoBrandingLogo) {
                 this.pagesPagination.filterKey = "Co-Branded&PUBLIC";
@@ -1211,13 +1220,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         }
         this.pagesPagination.pageIndex = 1;
         this.pagesPagination.maxResults = 4;
-        let dropDownLength =   this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length;
-        if(this.selectedPageId==0 && !this.isAdd && dropDownLength==5){
-            this.pagesSortOption.eventCampaignRecipientsDropDownOptions.pop();
-            this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption = this.pagesSortOption.eventCampaignRecipientsDropDownOptions[this.pagesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
-            this.pagesPagination = this.utilService.sortOptionValues(this.pagesSortOption.selectedCampaignEmailTemplateDropDownOption, this.pagesPagination);
-        }
-        this.findPages(this.pagesPagination)
     }
 
     setCoBrandingLogoForPageCampaign(){
@@ -2361,7 +2363,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.module.contentLoader = false;
         this.authenticationService.leftSideMenuLoader = false;
-        if(this.anyLaunchButtonClicked){
+        let isInvalidEditPage = !this.isAdd && this.campaignService.campaign==undefined;
+        if(this.anyLaunchButtonClicked || isInvalidEditPage){
             return true;
         }else{
             return false;

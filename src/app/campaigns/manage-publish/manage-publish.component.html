@@ -284,13 +284,11 @@
                                    </ng-container>
                                    <br>
                                    <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                      <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign"
-                                         translate>
+                                      <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign">
                                          Through Campaign
                                       </h6>
-                                      <h6 class="view-banner banner-top"
-                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" translate>
-                                         To Campaign
+                                      <h6 class="view-banner banner-top" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">
+                                        To Campaign
                                       </h6>
                                    </ng-container>
                                    <h6 class="view-banner"
@@ -994,15 +992,11 @@
                                          <span *ngIf="campaign.campaignName?.length>22">...</span>
                                          <br><br>
                                          <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                            <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign"
-                                               style="position: relative;top: -3px;" translate>Through Campaign</span>
-                                            <span class="view-banner"
-                                               *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                               style="position: relative;top: -3px;" translate>To Campaign</span><br>
+                                            <span class="view-banner prt3px" *ngIf="campaign.launched && campaign.channelCampaign">{{campaign?.campaignType=='LANDINGPAGE' ? 'Public Page':'Through Campaign'}}</span>
+                                            <span class="view-banner prt3px"*ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">{{campaign?.campaignType=='LANDINGPAGE' ? 'Private Page':'To Campaign'}}</span>
                                          </ng-container>
                                          <!--XNFR-125--->
                                          <ng-container *ngIf="campaign?.oneClickLaunch">
-                                            <!-- <br><br> -->
                                             <span class="green-banner prt3px" translate>{{properties?.oneClickLaunch}}</span>
                                          </ng-container>
                                          <!--XNFR-125--->
@@ -1025,10 +1019,8 @@
                                             translate>Archived</span>
                                          <span id="onelinebtnposition" class="view-banner" *ngIf="campaign.ended" style="position: relative;top: -3px; background-color: #b6039e !important"
                                             translate>Ended</span>
-                                         <br>
-                                         <span class="view-banner banner-top" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress">
-                                         <span translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
-                                         </span>
+                                          <br>
+                                         <span class="view-banner banner-top mt5" *ngIf="campaign?.campaignEmailNotificationStatusInString=='IN_PROGRESS'" title="Sending in progress" translate>Email Notifications <img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
                                       </h4>
                                       <h6 [title]="campaign.createdBy" translate>By
                                          <strong>{{campaign.createdBy | slice:0:15}}<span

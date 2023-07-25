@@ -727,3 +727,12 @@ span.text-algn {
   height: 400px;
 }
 
+.custom-selection-alert{
+  padding: 10px !important;
+  width: 50% !important;
+}
+
+.pt0px{
+  padding-top: 0px;
+}
+
