@@ -2,11 +2,14 @@
   <div class="page-sidebar-wrapper" *ngIf="authenticationService?.user?.hasCompany">
     <div class="page-sidebar navbar-collapse collapse left-menu-color"
       [ngClass]="authenticationService?.isLeft?'page-custom-sidebar':''">
-      <app-lefside-navigation-loader *ngIf="loading || authenticationService.leftSideMenuLoader"
+      <app-lefside-navigation-loader *ngIf="loading || authenticationService?.leftSideMenuLoader"
         [topNavbarLoader]="false"></app-lefside-navigation-loader>
+
       <ng-container *ngIf="!loading && !authenticationService?.leftSideMenuLoader && menuItemError">
         <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
       </ng-container>
+
+      
       <ng-container
         *ngIf="!loading && !authenticationService?.leftSideMenuLoader && !menuItemError && menuItem?.companyProfileCreated">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu page-custom-sidebar-menu"
