@@ -402,11 +402,14 @@ input:checked + .slider:before {
   padding-top: 5px;
 }
 .container-checkbox-xamplify {
-  display: block;
+  display: inline-block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
+  padding-left: 32px;
   cursor: pointer;
+  margin-top: 0px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  margin-left: 0px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -480,6 +483,8 @@ input:checked + .slider:before {
 
 .profile-usermenu {
   /* padding-bottom: 10px; */
+  margin-top: 20px !important;
+  border-top: 1px dashed #ddd;
   /*tharak*/
   padding-bottom: 0px !important;
 }
@@ -773,8 +778,7 @@ input:checked + .slider-new:before {
   color: #5b9bd1;
   font-size: 13px;
   font-weight: 800;
-  margin-bottom: 7px;
-  margin-left: 5px;
+  margin: 7px;
 }
 
 .integration-row {
@@ -1279,4 +1283,9 @@ th.border-top{border-bottom: none !important}
 }
 .tab_mt_20{
   margin-top: 20px;
+}
+@media only screen and (min-width: 300px) and (max-width: 767px) { 
+  .container-checkbox-xamplify {
+    display: block;
+  }
 }

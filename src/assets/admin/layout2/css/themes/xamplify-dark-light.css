@@ -1729,3 +1729,26 @@ p.layoutcontent {
 .template-height {
   margin-top: 9px !important;
 }
+/* app preview */
+input[type="file"]::file-selector-button {
+  background-color: #22313a !important;
+  color:#fff !important;
+}
+.appmobileview .mobileview-align { 
+  background: #22313a !important;
+}
+.brodercolorcu {
+  border: 1px solid #2f4857 !important;
+}
+span.center-itams a {
+  color:#fff !important;
+}
+p.addhrtosvg {
+  background: #2f4857 !important;
+}
+/* app preview End*/
+
+
+.profile-usermenu {
+  border-top: 1px dashed #2f4857 !important;
+}
