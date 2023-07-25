@@ -299,6 +299,24 @@
     padding-right: 2px;
   }
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {  
+  /* myprofile old dropdown */
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+    background-color: transparent;
+  } 
+  a.dropdown-toggle.circlebg-none-v {
+    border: none !important;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > i {
+    display: none;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+    height: 36px;
+    width: 36px;
+  }
+   /* myprofile old dropdown end*/
+}
+
 @media only screen and (max-width:1024px){
   #bee-plugin-container{
     overflow-x: scroll!important;
@@ -349,3 +367,4 @@
     padding: 0px;
   }
 } 
+

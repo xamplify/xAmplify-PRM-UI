@@ -1639,6 +1639,7 @@ h5.designpage-dark-cu {
 }
 .portlet-light-fields {
   border: 1px solid #2f4857 !important;
+  background-color: #5a738e85 !important;
 }
 div#removeborder {
   border: none !important;
@@ -1732,23 +1733,30 @@ p.layoutcontent {
 /* app preview */
 input[type="file"]::file-selector-button {
   background-color: #22313a !important;
-  color:#fff !important;
+  color: #fff !important;
 }
-.appmobileview .mobileview-align { 
+.appmobileview .mobileview-align {
   background: #22313a !important;
 }
 .brodercolorcu {
   border: 1px solid #2f4857 !important;
 }
 span.center-itams a {
-  color:#fff !important;
+  color: #fff !important;
 }
 p.addhrtosvg {
   background: #2f4857 !important;
 }
 /* app preview End*/
 
-
 .profile-usermenu {
   border-top: 1px dashed #2f4857 !important;
+}
+.bg-color-for-footercard2 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.cardfotter-toggleon {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
 }

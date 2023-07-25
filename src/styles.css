@@ -668,8 +668,8 @@ a {
 .circled-number {
   border: 1px solid #5bb2f5;
   color: #5bb2f5;
-  width: 28px;
-  height: 28px;
+  width: 27px;
+  height: 27px;
   border-radius: 50%;
   text-align: center;
   line-height: 26px !important;
@@ -2123,7 +2123,7 @@ fieldset[disabled] .btn-danger.active {
 
 /* Site gray button */
 .Btn-Gray {
-  background-color: #5a6268;
+  background-color: #5a6268 !important;
   border-color: #5a6268;
   color: #ffffff;
   border-radius: 4px;

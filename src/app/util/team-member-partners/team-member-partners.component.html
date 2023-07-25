@@ -83,7 +83,7 @@
             <div class="modal-footer" *ngIf="!partnersLoader.isLoading">
                 <button type="submit" [disabled]="selectedPartnerTeamMemberGroupMappingIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedPartners()" translate>Clear</button>
                 <button type="submit" [disabled]="selectedPartnerTeamMemberGroupMappingIds?.length==0" class="btn btn-danger"  (click)="openSweetAlert()" translate>Delete</button>
-                <button type="submit" class="btn btn-default"  (click)="closePartnersPreviewPopup()" translate>Close</button>
+                <button type="submit" class="btn Btn-Gray"  (click)="closePartnersPreviewPopup()" translate>Close</button>
               </div>
           </ng-container>
          <ng-container *ngIf="apiError">
