@@ -1586,14 +1586,14 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeUsersFilePreview"
+                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
@@ -1744,14 +1744,14 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeDomainsFilePreview"
+                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
