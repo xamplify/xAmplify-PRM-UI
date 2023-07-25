@@ -285,10 +285,12 @@
                                    <br>
                                    <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                       <h6 class="view-banner banner-top" *ngIf="campaign.launched && campaign.channelCampaign">
-                                         Through Campaign
+                                       <span *ngIf="campaign?.campaignType=='LANDINGPAGE'">Public Page</span>
+                                       <span *ngIf="campaign?.campaignType!='LANDINGPAGE'">Through Campaign</span>
                                       </h6>
                                       <h6 class="view-banner banner-top" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">
-                                        To Campaign
+                                       <span *ngIf="campaign?.campaignType=='LANDINGPAGE'">Private Page</span>
+                                       <span *ngIf="campaign?.campaignType!='LANDINGPAGE'">To Campaign</span>
                                       </h6>
                                    </ng-container>
                                    <h6 class="view-banner"
