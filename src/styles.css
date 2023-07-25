@@ -2123,7 +2123,7 @@ fieldset[disabled] .btn-danger.active {
 
 /* Site gray button */
 .Btn-Gray {
-  background-color: #5a6268;
+  background-color: #5a6268 !important;
   border-color: #5a6268;
   color: #ffffff;
   border-radius: 4px;

@@ -1407,7 +1407,7 @@ h5.designpage-dark-cu {
   padding-bottom: 12px;
 }
 /* 11-7-2023 sudha sri */
-/* .btn-primary {
+.btn-primary {
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
@@ -1435,7 +1435,7 @@ h5.designpage-dark-cu {
 .Btn-Green.btn:hover,
 .open .Btn-Green.btn.dropdown-toggle {
   color: var(--btn-secondary-text-color) !important;
-} */
+}
 .custom-header-img-color {
   color: var(--top-button-value-color) !important;
   background-color: var(--top-bg-color) !important;
@@ -1459,12 +1459,12 @@ h5.designpage-dark-cu {
 .custom-btn-ref {
   /* background-color: var(--button-primary-bg-color) !important;
   color: var(--button-primary-text-color) !important; */
-  border: 1px solid var(--button-primary-border-color) !important;
+  /* border: 1px solid var(--button-primary-border-color) !important; */
 }
 .custom-sec-btn-ref {
   /* background-color: var(--button-secondary-bg-color) !important;
   color: var(--button-secondary-text-color) !important; */
-  border: 1px solid var(--button-secondary-border-color) !important;
+  /* border: 1px solid var(--button-secondary-border-color) !important; */
 }
 div#removeborder {
   border: none !important;
@@ -1571,7 +1571,7 @@ p.layoutcontent {
 .template-height {
   margin-top: 9px !important;
 }
-/* app preview */  
+/* app preview */
 input[type="file"]::file-selector-button {
   color: var(---text-color) !important;
   background-color: var(--page-content) !important;
@@ -1585,11 +1585,19 @@ span.center-itams a {
 p.addhrtosvg {
   background: var(--border-color) !important;
 }
-.appmobileview .mobileview-align { 
+.appmobileview .mobileview-align {
   background: var(--page-content) !important;
 }
 /* app preview End*/
 
 .profile-usermenu {
   border-top: 1px dashed var(--border-color) !important;
+}
+.cardfotter-toggleon {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-footercard2 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
 }
