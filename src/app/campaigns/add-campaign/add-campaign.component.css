@@ -322,7 +322,6 @@ span.label-color-custmization {
   height: 350px;
 }
 
-
 /* tablet */
 @media screen and (max-width: 768px) {
   span.select-check-box {
@@ -698,11 +697,9 @@ span.text-algn {
 }
 .view-banner {
   margin-right: 5px;
-} 
+}
 
- 
-
-.banner-page{
+.banner-page {
   padding: 5px 10px !important;
   font-size: 10px !important;
   color: #fff;
@@ -710,15 +707,15 @@ span.text-algn {
   float: left;
   margin: 3px;
 }
-.bgc-green{
+.bgc-green {
   background-color: green !important;
 }
 
-.hotpx{
+.hotpx {
   height: 150px !important;
 }
 
-.ht125{
+.ht125 {
   height: 125px !important;
 }
 
@@ -727,12 +724,21 @@ span.text-algn {
   height: 400px;
 }
 
-.custom-selection-alert{
+.custom-selection-alert {
   padding: 10px !important;
   width: 50% !important;
 }
 
-.pt0px{
+.pt0px {
   padding-top: 0px;
 }
-
+.btn-primary {
+  float: right;
+  height: 30px;
+  padding-top: 4px;
+  margin-right: 10px;
+}
+#folder-margin-xamp {
+  margin-top: 5px;
+  margin-right: -4px;
+}

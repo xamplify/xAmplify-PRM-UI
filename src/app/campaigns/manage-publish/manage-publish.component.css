@@ -255,13 +255,16 @@ span.gearicon-font-cu {
   line-height: 2.5;
 }
 
-@media (min-width: 767px) and (max-width: 1268px)  {
-.scroll-top-margin {
+@media (min-width: 767px) and (max-width: 1268px) {
+  .scroll-top-margin {
     margin-top: 26px;
-}
+  }
 }
 
-.prt3px{
+.prt3px {
   position: relative;
   top: -3px;
+}
+.active-campaign-color {
+  background-color: #5cb85c;
 }
