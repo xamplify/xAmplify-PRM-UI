@@ -1,4 +1,4 @@
-<div class="page-content-wrapper">
+<div class="page-content-wrapper" *ngIf="!isReload">
     <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
         <div class="my-container">
             <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
