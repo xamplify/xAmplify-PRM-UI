@@ -1317,7 +1317,7 @@
                                     </div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
-                                            <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
+                                            <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
                                                 <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
                                                 <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
@@ -1365,12 +1365,12 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" title="Send Test Email"  data-toggle="tooltip" data-placement="top" 
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em" title="Send Test Email"  data-toggle="tooltip" data-placement="top" 
                                     (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <i class="fa fa-envelope-o mr5"></i>{{properties?.sendTestEmail}}
                                     </button>
-                                    <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
+                                    <button type="submit" class="btn Btn-Green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
                                 </div>
                             </div>
                         </fieldset>
