@@ -1393,7 +1393,7 @@
                 </a>
                 <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
                 <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
-                <button  class="btn-primary" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
+                <button  class="btn-primary olint" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
                     Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                   </button>
                 </div>
