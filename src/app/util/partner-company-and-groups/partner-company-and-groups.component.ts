@@ -404,6 +404,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
 			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
 			confirmButtonText: 'Yes, delete it!'
 		}).then(function () {
 			self.clearTabs();

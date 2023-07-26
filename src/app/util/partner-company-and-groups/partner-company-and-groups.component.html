@@ -49,7 +49,7 @@
                     <strong>
                       Selected Companies : {{selectedPartnershipIds?.length}}
                     </strong>
-                    <ng-template [ngTemplateOutlet]="clearAll"></ng-template>
+                    <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
                   </div>
                 </div>
               </div>
@@ -136,7 +136,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
+                                  <tr class="pointer" *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
                                     id="publishToPartners-{{adminAndTeamMember.userId}}"
                                     [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -211,7 +211,7 @@
           <strong>
             Selected Lists : {{selectedPartnerGroupIds?.length}}
           </strong>
-          <ng-template [ngTemplateOutlet]="clearAll"></ng-template>
+          <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
         </div>
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
@@ -234,7 +234,7 @@
               </thead>
               <tbody>
                 <ng-container *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;">
-                  <tr id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                  <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
                       <input class="pointer" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
@@ -295,7 +295,7 @@
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
 
-<ng-template #clearAll>
+<ng-template #clearAllSelectedRowsTemplate>
   <button data-toggle="tooltip" data-placement="bottom" title="Clear"  (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
     <i class="fa fa-times-circle-o"></i>
   </button>
