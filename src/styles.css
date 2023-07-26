@@ -2337,3 +2337,9 @@ button.table-scbscribe-btn:hover {
   border-radius: 3px;
   width: 100px;
 }
+
+.xamplify-blur {
+  filter: blur(3px);
+  pointer-events: none;
+  cursor: not-allowed;
+}

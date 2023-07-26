@@ -3209,6 +3209,14 @@ export class ReferenceService {
     return this.envService.SERVER_URL=="https://aravindu.com/" && this.envService.CLIENT_URL=="https://xamplify.co/";
   }
 
+
+  addBlur(divId:string){
+    $('#'+divId).addClass('xamplify-blur');
+  }
+
+  removeBlur(divId:string){
+    $('#'+divId).removeClass('xamplify-blur');
+  }
   
 
   

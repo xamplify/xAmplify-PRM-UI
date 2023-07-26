@@ -690,11 +690,7 @@ span.text-algn {
   margin-top: 12px;
 }
 
-.campaign-blur {
-  filter: blur(3px);
-  pointer-events: none;
-  cursor: not-allowed;
-}
+
 .view-banner {
   margin-right: 5px;
 }

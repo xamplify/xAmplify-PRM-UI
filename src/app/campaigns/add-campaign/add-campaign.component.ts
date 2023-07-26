@@ -473,10 +473,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
 
     addBlur(){
-        $('#campaign-details-and-launch-tabs').addClass('campaign-blur');
+        this.referenceService.addBlur("campaign-details-and-launch-tabs");
     }
     removeBlur(){
-        $('#campaign-details-and-launch-tabs').removeClass('campaign-blur');
+        this.referenceService.removeBlur("campaign-details-and-launch-tabs");
     }
 
     showCampaignDetailsTab(){
