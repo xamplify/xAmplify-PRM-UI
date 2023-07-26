@@ -32,6 +32,14 @@
 								<br>
 								<br>
 							</h4>
+							<!---XNFR-255-->
+							<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+								<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+									<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+								</h6>
+								<span class="view-banner-white-labeled mb5">White-Labeled</span>
+							</ng-container>
+							 <!---XNFR-255-->
 							<div>
 								<span class="view-banner-dam">{{asset?.assetType}}</span>
 								<h6 translate>
