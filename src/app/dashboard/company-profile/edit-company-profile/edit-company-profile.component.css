@@ -24,7 +24,7 @@
 }
 .profile-image-wrapper {
   display: block;
-  width: 224px;
+  width: 100%;
   height: auto;
   background: #fff;
   padding: 1px;
@@ -76,7 +76,7 @@ a:hover {
   border: 1px solid #f1f1f1;
   width: 93%;
   margin: 0 auto;
-  margin: 1.5em auto;
+  margin: 1em auto;
 }
 svg {
   margin: 0 auto;
@@ -129,7 +129,7 @@ svg {
   }
 }
 .image-border {
-  padding: 0px 0px 10px 0px !important;
+  padding: 0px 0px 0px 0px !important;
   border: 1px solid #eaeaea;
   border-radius: 4px !important;
 }
@@ -149,4 +149,12 @@ svg {
   background-color: #dff0d8 !important;
   border-radius: 3px !important;
   color: #3c763d !important;
+}
+/* 26-07-2023 */
+.partlet-cardbody {
+  text-align: center;
+  padding:12px 20px;
+}
+.responsive-screen-wordwrap{
+  word-wrap: break-word;
 }

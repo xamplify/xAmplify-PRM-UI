@@ -159,7 +159,9 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.beeContainerInput["jsonBody"] = this.jsonBody;
             this.damPostDto.name = dam.assetName;
             this.damPostDto.description = dam.description;
-            this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
+            if(dam.whiteLabeledAssetSharedWithPartners!=undefined){
+              this.damPostDto.shareAsWhiteLabeledAsset = dam.whiteLabeledAssetSharedWithPartners;
+            }
             this.name = dam.assetName;
             this.validForm = true;
             this.isValidName = true;

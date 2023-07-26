@@ -49,9 +49,7 @@
                     <strong>
                       Selected Companies : {{selectedPartnershipIds?.length}}
                     </strong>
-                    <button title="Clear" (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
-                      <i class="fa fa-times-circle-o"></i>
-                    </button>
+                    <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
                   </div>
                 </div>
               </div>
@@ -61,8 +59,7 @@
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <ng-container *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
-              <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0"
-                id="parnter-companies" aria-describedby="trackPlayBookPartnersTableDescription">
+              <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                 <thead>
                   <tr>
                     <th scope="col"></th>                    
@@ -132,19 +129,19 @@
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                      <input class="pointer" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                     </th>
                                     <th scope="row">Entity Info</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
+                                  <tr class="pointer" *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
                                     id="publishToPartners-{{adminAndTeamMember.userId}}"
                                     [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
-                                      <input type="checkbox" id="{{adminAndTeamMember.userId}}"
+                                      <input class="pointer" type="checkbox" id="{{adminAndTeamMember.userId}}"
                                         [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -214,9 +211,7 @@
           <strong>
             Selected Lists : {{selectedPartnerGroupIds?.length}}
           </strong>
-          <button title="Clear"  (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
-            <i class="fa fa-times-circle-o"></i>
-          </button>
+          <ng-template [ngTemplateOutlet]="clearAllSelectedRowsTemplate"></ng-template>
         </div>
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
@@ -227,7 +222,7 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">
-                    <input type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
+                    <input class="pointer" type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
                       id="parnterGroupsHeaderCheckBox"
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
                   <th *ngIf="showExpandButton"></th>
@@ -239,10 +234,10 @@
               </thead>
               <tbody>
                 <ng-container *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;">
-                  <tr id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                  <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                      <input class="pointer" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                         name="partnerGroupsCheckBox[]" value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
                     </td>
@@ -299,3 +294,9 @@
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
+
+<ng-template #clearAllSelectedRowsTemplate>
+  <button data-toggle="tooltip" data-placement="bottom" title="Clear"  (click)="clearAll()" class="btn btn-danger btn-xs margin-left-one-per float-right">
+    <i class="fa fa-times-circle-o"></i>
+  </button>
+</ng-template>

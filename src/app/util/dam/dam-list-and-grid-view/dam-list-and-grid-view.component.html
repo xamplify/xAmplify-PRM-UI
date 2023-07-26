@@ -470,12 +470,6 @@
 <ng-container *ngIf="showPdfModalPopup">
 <app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
-<!---Publish Pop Up-->
-<ng-container *ngIf="showPublishPopup"> 
-<app-partner-company-and-groups-modal-popup
-	[companyId]="loggedInUserCompanyId" [inputId]="selectedAssetId" [moduleName]="'dam'"
-	(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
-</ng-container>
 <!---Preview Pop Up-->
 <ng-container *ngIf="isPreview">
 	<app-preview-asset-popup [asset]="asset" (previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>

@@ -1321,4 +1321,7 @@ th.border-top{border-bottom: none !important}
     padding-bottom: 8px;
     padding-left: 4px;
   }
+  button.customize-btn-space {
+    margin-bottom: 5px;
+  }
 }
