@@ -89,12 +89,6 @@
 <ng-container *ngIf="showPdfModalPopup">
 	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
-<!--Publish To Partners Popup-->
-<ng-container *ngIf="showPublishPopup"> 
-<app-partner-company-and-groups-modal-popup
-	[companyId]="loggedInUserCompanyId" [inputId]="selectedAssetId" [moduleName]="'dam'"
-	(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
-</ng-container>
 
 <!-----Delete-------->
 <ng-container *ngIf="deleteAsset">
