@@ -3,7 +3,7 @@
 </div>
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div class="col-md-12 mTop">
+    <div class="col-md-12 mTop mrg_top0">
         <div class="portlet light clearfix">
             <!--List/Grid View-->
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
@@ -156,7 +156,7 @@
                                             </div>
                                         </td>
                                         <td id="actions-row " class="text-center mActionAlign">
-                                            <div class="actions-block override-actions custom-width-icon" [ngClass]="{actionAlignment : !isPartnerView}">
+                                            <div class="actions-block override-actions custom-width-icon mb_whitespace" [ngClass]="{actionAlignment : !isPartnerView}">
                                                 <div>
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>

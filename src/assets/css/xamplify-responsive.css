@@ -112,6 +112,15 @@
   .mrg_10{
     margin:12px 0px;
   }
+  .mrg_right6{
+    margin-right: 6px;
+  }
+  .tab_whitespace{
+   white-space: unset!important;
+  }
+  .actionbtn{
+   white-space: nowrap;
+  }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
 @media only screen and (min-width: 601px) and (max-width: 991px) { 
@@ -231,9 +240,9 @@
   .mscroll_x{
   overflow-x: scroll!important;
   }
-  .ellipsis {
+  /* .ellipsis {
     float: unset!important;
-  }
+  } */
   .pd_left5{
   padding-left: 5px;
   }
@@ -298,6 +307,18 @@
   .pr-epx {
     padding-right: 2px;
   }
+  .mrg_top0{
+    margin-top:0px!important;
+   }
+   .m_mb8{
+    margin-bottom: 8px;
+   }
+   .mb_whitespace{
+    white-space: nowrap;
+  }
+  .mb_top10{
+   margin-top:10px;
+  }
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -350,6 +371,9 @@
   }
   .mb_v_center{
     justify-content: center;
+  }
+   .tab_flex{
+    display: flex;
   }
 }
 /*Select Campaign- campaign */
