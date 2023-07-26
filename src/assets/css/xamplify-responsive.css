@@ -308,7 +308,7 @@
     border: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > i {
-    display: none;
+    display: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
     height: 36px;

@@ -51,7 +51,7 @@
 						<div class="col-sm-3 col-xs-12 mPad1">
 							<div class="image blur-content" id="image-blur-content-div">
 								<div class="portlet light border-radius-0 shadow image-border">
-									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
+									<div class="portlet-body clearfix partlet-cardbody">
 										<label class="control-label">Upload Logo</label>
 										<div class="profile-image-wrapper dotted-image-border"
 											(click)="imageClick()">
@@ -109,7 +109,7 @@
 											| slice:0:10}}<span
 												*ngIf="authenticationService.user.lastName?.length>10">..</span>
 										</h4>
-										<h5>{{authenticationService.user.emailId}}</h5>
+										<h5 class="responsive-screen-wordwrap">{{authenticationService.user.emailId}}</h5>
 										</ng-container>
 										<!-- modal pop up-->
 
@@ -121,7 +121,7 @@
 											| slice:0:10}}<span
 												*ngIf="companyProfile.lastName?.length>10">..</span>
 										</h4>
-										<h5>{{companyProfile.userEmailId}}</h5>
+										<h5 class="responsive-screen-wordwrap">{{companyProfile.userEmailId}}</h5>
 										</ng-container>
 										
 
