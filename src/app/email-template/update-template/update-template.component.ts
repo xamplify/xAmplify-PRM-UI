@@ -41,6 +41,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     showDropDown = false;
     categoryNames: any;
     routerLink = "/home/emailtemplates/manage";
+    isReload = false;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             public authenticationService:AuthenticationService,public refService:ReferenceService,
@@ -53,27 +54,31 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate == undefined){
+            this.isReload = true;
             this.navigateToManageSection();
+        }else{
+            this.listAvailableNames();
+            this.getCategories();
+             this.model.isRegularUpload =0;
+             if (emailTemplateService.emailTemplate != undefined) {
+                 let emailTemplate = emailTemplateService.emailTemplate;
+                 let body  = emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
+                 this.model.content = body;
+                 this.model.categoryId = emailTemplate.categoryId;
+                 this.isValidType = true;
+                 this.model.draft = emailTemplate.draft;
+                 this.mycontent = this.model.content;
+                 this.model.templateName = emailTemplate.name;
+                 this.coBrandingLogo = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+                 if(emailTemplate.source.toString()!="MANUAL"){
+                     if(this.model.draft){
+                         this.showDropDown = true;
+                         this.model.uploadType = "REGULAR";
+                     }
+                 }
+             }
         }
-       this.listAvailableNames();
-       this.getCategories();
-        this.model.isRegularUpload =0;
-        if (emailTemplateService.emailTemplate != undefined) {
-            let emailTemplate = emailTemplateService.emailTemplate;
-            let body  = emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
-            this.model.content = body;
-            this.model.categoryId = emailTemplate.categoryId;
-            this.isValidType = true;
-            this.model.draft = emailTemplate.draft;
-            this.mycontent = this.model.content;
-            this.model.templateName = emailTemplate.name;
-            if(emailTemplate.source.toString()!="MANUAL"){
-                if(this.model.draft){
-                    this.showDropDown = true;
-                    this.model.uploadType = "REGULAR";
-                }
-            }
-        }
+       
 
     }
 
@@ -275,16 +280,18 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
       return body;
     }
     ngOnInit() {
-        try {
-        } catch (errr) { }
+       
     }
 
 
     ngOnDestroy() {
-        let body = this.getCkEditorData();
-        if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton && $.trim(body).length>0){
-            this.showSweetAlert(body);
+        if(!this.isReload){
+            let body = this.getCkEditorData();
+            if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton && $.trim(body).length>0){
+                this.showSweetAlert(body);
+            }
         }
+        
     }
 
 
