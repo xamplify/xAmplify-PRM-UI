@@ -2361,10 +2361,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
-        this.authenticationService.module.contentLoader = false;
-        this.authenticationService.leftSideMenuLoader = false;
+        this.authenticationService.stopLoaders();
         let isInvalidEditPage = !this.isAdd && this.campaignService.campaign==undefined;
-        if(this.anyLaunchButtonClicked || isInvalidEditPage){
+        if(this.anyLaunchButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked){
             return true;
         }else{
             return false;

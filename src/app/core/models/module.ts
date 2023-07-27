@@ -117,5 +117,8 @@ export class Module {
     /***XNFR-318***/
     isOrgAdminCompany = false;
 
+    topNavBarLoader = false;
+    logoutButtonClicked =false;
+
 
 }

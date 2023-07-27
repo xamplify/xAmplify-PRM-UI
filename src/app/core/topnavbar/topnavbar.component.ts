@@ -492,6 +492,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
 
 // getting loading from here
 delayAndNavigate(url:string){
+  this.authenticationService.module.topNavBarLoader = true;
   let self = this;
     setTimeout(()=>{                         
       self.refService.goToRouter(url);

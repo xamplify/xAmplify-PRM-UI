@@ -641,6 +641,7 @@ export class AuthenticationService {
   }
 
   logout(): void {
+    this.module.logoutButtonClicked = true;
    $("body").addClass("logout-loader");
     this.resetData();
     this.access_token = null;
@@ -1105,6 +1106,12 @@ setDomainUrl(){
   }else{
     this.DOMAIN_URL =  this.APP_URL;
   }
+}
+
+stopLoaders(){
+  this.module.contentLoader = false;
+  this.leftSideMenuLoader = false;
+  this.module.topNavBarLoader = false;
 }
 
 
