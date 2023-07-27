@@ -142,6 +142,7 @@ table.table-bordered.dataTable {
   }
   .mb_wrap{
     white-space: unset!important;
+    word-wrap: break-word!important;
   }
   .mb_flex{
     display: flex;

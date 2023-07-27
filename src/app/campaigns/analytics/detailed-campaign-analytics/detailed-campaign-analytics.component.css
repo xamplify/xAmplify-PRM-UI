@@ -606,3 +606,7 @@ a > span.glyphicon.glyphicon-remove {
   position: relative;
   left: 38px;
 }
+.delbtn{
+  position: relative;
+  top:3px;
+}
