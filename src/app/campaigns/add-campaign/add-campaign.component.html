@@ -721,10 +721,8 @@
             <div class="portlet light shadow" id="user-list-div">
                 <div class="row">
                     <div class="col-xs-12">
-                    <form class="form-horizontal form-bordered form-label-stripped">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">{{contactsOrPartnersSelectionText}}</legend>
-
                             <!--Partners/Contacts-->    
                             <div *ngIf="!campaign?.oneClickLaunch">
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
@@ -885,7 +883,6 @@
                                     </app-pagination>
                                 </div>
                             </div>
-
                             <!--Share Leads--> 
                             <div id="one-click-launch-list-selection" *ngIf="campaign?.oneClickLaunch">
                                 <div class="alert alert-danger" *ngIf="invalidShareLeadsSelection">
@@ -894,7 +891,6 @@
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)" [hideHeaderText]="true"></app-select-partners-and-share-leads>
                             </div> 
                         </fieldset>
-                    </form>
                     </div>
                 </div>
             </div>
