@@ -28,7 +28,7 @@
         <button type="button" class="btn btn-primary breadcrumb-right-btn" *ngIf="!archived"
         (click)="showArchivedCampaigns()"><i class="fa fa-archive" aria-hidden="true"></i>  Archived Campaigns</button>
         <button type="button" class="btn btn-primary breadcrumb-right-btn active-campaign-color" *ngIf="archived"
-         (click)="showActiveCampaigns()"><i class="fa fa-bullhorn"></i>
+        style="background-color: #5cb85c !important;border:none !important" (click)="showActiveCampaigns()"><i class="fa fa-bullhorn"></i>
         Active Campaigns</button>
     </div>
     <app-user-guide-help-button   [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
