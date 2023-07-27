@@ -1,3 +1,90 @@
-<p>
-  active-partners-table works!
-</p>
+<div id="active-partners-table-div" >
+  <div class="row">
+    <div class="col-md-12">
+      <!--tabbable tabbable-custom tabbable-noborder-->
+      <div class="page-bar p10" id="header">
+        <div class="tab-content">          
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <div class="" [hidden]="httpRequestLoader.isLoading">           
+            <div class="page-toolbar col-xs-12 col-sm-7 col-md-7 p0">
+              <div class="btn-group pull-right">                
+                <div class="inputs" style="float: right;display: inline-flex;">
+                  <div style="float: left;">
+                    <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
+                      (ngModelChange)="getSortedResults($event)"
+                      style="position: relative;right: -3px;">
+                      <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="portlet-input input-inline input-medium ml10" style="display: inline-flex;">
+                    <div class="input-icon right mr5" style="position: relative;">
+                      <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="Search for a Partner Company"
+                        (keypress)="searchKeyPress($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                        (click)="sortOption.searchKey='';search()"></button>
+                      <button type="submit" class="search-box-item-click"
+                        (click)="search()">
+                        <i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <section class='col-xs-12 p0'
+            *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+            <div class="table-responsive">
+              <table class='table tgrid table-hover table-sm' aria-describedby="">
+                <thead>
+                  <tr>
+                    <th scope="col" class="hidden-xs" colspan="2" style="width: 50%">Company Details</th>
+                    <th scope="col" class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
+                    <th scope="col" class="hidden-xs">Status</th>
+                    <th scope="col" class="hidden-xs">Created On</th>
+                    <th scope="col" style="text-align:left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor='let partnerCompany of pagination.pagedItems; let i=index'>
+                    <td style="width: 10%;" class="hidden-xs">
+                      <img class="imageClass image-padding" 
+                        src="assets/images/video-email.svg" style="height: 50px;"
+                        alt="{{partnerCompany.companyName}}">
+                      
+                    </td>
+                    <td>
+                      <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{partnerCompany?.companyName}}">
+                        {{partnerCompany?.companyName | slice:0:25}}
+                        <span *ngIf="partnerCompany?.companyName?.length>25">...</span>
+                      </h4>
+                      <h5 class='m0' style="float:left">{{partnerCompany?.partnerName | slice:0:15}}
+                        <span class='f-w-300'>{{partnerCompany?.partnerName | slice:0:25}}<span
+                            *ngIf="partnerCompany?.partnerName?.length>25">...</span></span>
+                      </h5>
+                    </td>                   
+                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <div *ngIf="sortOption.totalRecords <= 0" class="alert alert-info">
+            <strong>No Partners found</strong>
+          </div>
+
+
+          <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
+           class="bg-card-header">
+            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="getActivePartners()">
+            </app-pagination>
+          </div>
+        </div>
+        <!-- End Of tab Content -->
+      </div>
+    </div>
+  </div>
+</div>

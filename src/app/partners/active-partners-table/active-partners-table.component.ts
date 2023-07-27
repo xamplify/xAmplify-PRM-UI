@@ -7,6 +7,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { PagerService } from '../../core/services/pager.service';
 import { ParterService } from 'app/partners/services/parter.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
+import { SortOption } from 'app/core/models/sort-option';
 
 @Component({
   selector: 'app-active-partners-table',
@@ -23,11 +24,12 @@ export class ActivePartnersTableComponent implements OnInit {
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService,
-    public xtremandLogger: XtremandLogger) {
+    public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
       this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    alert("Hiiii");
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
 		this.getActivePartners();
   }
@@ -36,10 +38,11 @@ export class ActivePartnersTableComponent implements OnInit {
 		this.referenseService.loading(this.httpRequestLoader, true);
 		this.pagination.userId = this.loggedInUserId;
     this.parterService.getActivePartners(this.pagination).subscribe(
-			(response: any) => {				
-				this.pagination.totalRecords = response.totalRecords;
-				this.pagination = this.pagerService.getPagedItems(this.pagination, response.activePartnesList);
-				this.referenseService.loading(this.httpRequestLoader, false);
+			(response: any) => {	
+        this.referenseService.loading(this.httpRequestLoader, false);
+        this.sortOption.totalRecords = response.data.totalRecords;
+				this.pagination.totalRecords = response.data.totalRecords;
+				this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);				
 			},
 			(_error: any) => {
 			}
@@ -57,6 +60,47 @@ export class ActivePartnersTableComponent implements OnInit {
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
 		this.getActivePartners();
-	}
+	}  
+
+  getSortedResults(text: any) {
+    this.sortOption.selectedSortedOption = text;
+    this.getAllFilteredResults(this.pagination);
+  }
+
+  getAllFilteredResults(pagination: Pagination) {
+    pagination.pageIndex = 1;
+    pagination.searchKey = this.sortOption.searchKey;
+    if (this.sortOption.itemsSize.value == 0) {
+        pagination.maxResults = pagination.totalRecords;
+    } else {
+        pagination.maxResults = this.sortOption.itemsSize.value;
+    }
+    let sortedValue = this.sortOption.defaultSortOption.value;
+        this.setSortColumns(pagination, sortedValue);
+        this.getActivePartners();
+  }
+
+  setSortColumns(pagination: Pagination, sortedValue: any) {
+    if (sortedValue != "") {
+        let options: string[] = sortedValue.split("-");
+        pagination.sortcolumn = options[0];
+        pagination.sortingOrder = options[1];
+    }
+  }
+
+  searchKeyPress(keyCode: any) {
+    if (keyCode === 13) { 
+      this.search(); 
+    } 
+  }
+
+  search() {
+    this.getAllFilteredResults(this.pagination); 
+  }  
+
+  dropDownList(event) {
+    this.pagination = event;
+    this.getAllFilteredResults(this.pagination);
+  }
 
 }
