@@ -118,6 +118,7 @@ export class Module {
     isOrgAdminCompany = false;
 
     topNavBarLoader = false;
+    logoutButtonClicked =false;
 
 
 }
