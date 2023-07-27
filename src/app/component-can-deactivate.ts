@@ -21,8 +21,7 @@ export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate
     };
 
   canDeactivate(component: ComponentCanDeactivate): boolean | Observable<boolean> {
-     this.authenticationService.module.contentLoader = false;
-      this.authenticationService.leftSideMenuLoader = false;
+     this.authenticationService.stopLoaders();
     if(component!=null){
       return component.canDeactivate() ?
       true :

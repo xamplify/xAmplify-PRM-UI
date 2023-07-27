@@ -1107,6 +1107,12 @@ setDomainUrl(){
   }
 }
 
+stopLoaders(){
+  this.module.contentLoader = false;
+  this.leftSideMenuLoader = false;
+  this.module.topNavBarLoader = false;
+}
+
 
   
 }
